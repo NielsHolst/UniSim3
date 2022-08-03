@@ -1,0 +1,18 @@
+Simulation {
+	ModelA a { 
+		.input1|sum = b[input1]|b[input2]
+		.input2|sum = b[input1] | b[input3]
+		+total|sum = b[*]
+		+mean|mean = b[input1]|b[input2]
+		+min|min = b[input1]|b[input2]
+		+max|max = b[*]
+		+any|any = b[*]
+		+all|all = b[*]
+		+all2|all = b[input1]|b[input2]
+		ModelA b {
+			.input1 = 3
+			.input2 = 11
+			.input3 = 17
+		}
+	}
+} 

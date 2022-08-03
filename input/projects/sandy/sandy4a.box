@@ -1,0 +1,7 @@
+Simulation(a=2 b{X=on Y=off}=5 c{}=-3)
+{
+  Sandy A()
+  Sandy B{}
+  Sandy C
+  Sandy D(){}
+}

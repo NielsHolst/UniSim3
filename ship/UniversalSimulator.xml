@@ -1,0 +1,177 @@
+<project>
+    <shortName>UniversalSimulator</shortName>
+    <fullName>Universal Simulator</fullName>
+    <version>3.0.0</version>
+    <installerFilename></installerFilename>
+    <licenseFile>builder-input/gpl-3.0.txt</licenseFile>
+    <leftImage>builder-input/squirrel 163x314.png</leftImage>
+    <logoImage>builder-input/squirrel 48x48.png</logoImage>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <shortcutList>
+                        <shortcut>
+                            <comment>Uninstall</comment>
+                            <exec>${installdir}/${uninstallerName}</exec>
+                            <icon></icon>
+                            <name>Uninstall ${product_fullname}</name>
+                            <path>${installdir}</path>
+                            <platforms>all</platforms>
+                            <runAsAdmin>0</runAsAdmin>
+                            <runInTerminal>0</runInTerminal>
+                            <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon></windowsIcon>
+                            <windowsPath>${installdir}</windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindowslinux</name>
+                    <platforms>windows-x64 linux</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>bin</origin>
+                        </distributionDirectory>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosx</name>
+                    <platforms>osx</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../bin/unisim.app</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Library Files</description>
+                    <destination>~/lib</destination>
+                    <name>libraryfilesosx</name>
+                    <platforms>osx</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.2.3.22.dylib</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.2.3.dylib</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.2.dylib</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.dylib</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux</name>
+                    <platforms>linux</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>UniversalSimulator.run</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <startMenuShortcutList>
+                <startMenuShortcut>
+                    <comment>Run UniversalSimulator</comment>
+                    <name>${product_fullname}</name>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/bin/unisim.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/bin/N86.ico</windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </startMenuShortcut>
+            </startMenuShortcutList>
+        </component>
+        <component>
+            <name>desktopshortcut</name>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <desktopShortcutList>
+                <shortcut>
+                    <comment>UniversalSimulator</comment>
+                    <exec>${installdir}/bin/unisim.command</exec>
+                    <icon>${installdir}/bin/N86.ico</icon>
+                    <name>UniversalSimulator</name>
+                    <path>${installdir}</path>
+                    <platforms>all</platforms>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/bin/unisim.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/bin/N86.ico</windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </shortcut>
+            </desktopShortcutList>
+        </component>
+    </componentList>
+
+    <!--
+    <preBuildActionList>
+			<runProgram>
+					<program>${build_project_directory}/fill_folders_win.bat</program>
+					<programArguments></programArguments>
+					<ruleList>
+							<platformTest type="windows"/>
+					</ruleList>
+			</runProgram>
+    </preBuildActionList>
+		-->
+
+    <preInstallationActionList>
+        <setInstallerVariable name="suffix" value=""/>
+    </preInstallationActionList>
+    <preUninstallationActionList>
+        <deleteFile path="~/.config/AarhusUniversity/*.conf"/>
+        <deleteFile path="~/.config/Aarhus University/*.conf"/>
+        <deleteFile path="~/.config/AarhusUniversity/"/>
+        <deleteFile path="~/.config/Aarhus University/"/>
+    </preUninstallationActionList>
+    <disableSplashScreen>1</disableSplashScreen>
+    <enableRollback>1</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <outputDirectory>.</outputDirectory>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+    <saveRelativePaths>1</saveRelativePaths>
+    <vendor>AarhusUniversity</vendor>
+    <finalPageActionList>
+        <createSymLink linkName="~/Desktop/Universal Simulator" progressText="Create Desktop Shortcut" target="${installdir}/unisim.app"/>
+    </finalPageActionList>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${project.fullName}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>yes</ask>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>yes</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>40</width>
+        </directoryParameter>
+    </parameterList>
+</project>
+

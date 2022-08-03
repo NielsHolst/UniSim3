@@ -1,0 +1,92 @@
+// butterfly6.box
+Simulation sim 
+{
+  .steps = 1085
+  Calendar calendar {
+    .initialDateTime = 1/1/2009 
+  }
+  Records weather {
+    .fileName = "weather/flakkebjerg 2009.txt"
+    .cycle = TRUE
+  }
+  
+  Box butterfly {
+    Stage egg {
+      .initial = 100 
+      .inflow = ../adult/oviposition[outflow] 
+      .duration = 140
+      .timeStep = ./time[value]
+      OnOff time { 
+        .x = calendar[dayOfYear]
+        .xOn = 107    // 17 April
+        .xOff = 152   //  1 June
+        .valueOn = ./dayDegrees[step]
+        .valueOff = 0
+        DayDegrees dayDegrees {
+          .T0 = 5
+          .T = weather[Tavg]
+        }
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = weather[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Box adult {
+      Stage adult {
+        .inflow = ../../pupa[outflow]
+        .duration = 28
+        .timeStep = 1
+      }
+      Stage preOviposition {
+        .inflow = ../../pupa[outflow]
+        .duration = 5
+        .timeStep = 1
+      }
+      Stage oviposition {
+        .inflow = ../preOviposition[outflow]
+        .duration = 10
+        .timeStep = 1
+        .growthFactor = 40
+      }
+    }
+  }
+  
+
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .ncol = 2 
+      +monthBreaks = "scale_x_datetime(
+                        breaks = date_breaks('4 months'), 
+                        labels = date_format('%b')
+                      ) + 
+                      ylim(0,NA)" 
+      PlotR {
+        .ports = *[content]
+        .ggplot = ..[monthBreaks]
+        .transform = "log10"
+      }
+      PlotR {
+        .ports = *[outflowTotal]
+        .ggplot = ..[monthBreaks]
+        .transform = "log10"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,130 @@
+Simulation sim {
+  .iterations = 12
+  .steps = 1000
+  .silent = TRUE
+  SensitivityAnalysis {
+  }
+  Box random {
+    RandomUniform K {
+      .restartAtReset = TRUE
+      .minValue = 5000
+      .maxValue = 15000 @ (uniform 10000 20000)
+      .drawAtReset = TRUE
+      .drawAtUpdate = TRUE
+    }
+    Box immigration {
+      RandomUniform proportion {
+        .restartAtReset = TRUE
+        .minValue = ./bounds[Pmin]
+        .maxValue = ./bounds[Pmax]
+        .drawAtReset = TRUE
+        .drawAtUpdate = TRUE
+        ProportionBounds bounds {
+          .logP = -4 @ (uniform -6 -2)
+          .logWidth = 2
+        }
+      }
+      RandomUniform q {
+        .restartAtReset = TRUE
+        .minValue = ./bounds[Pmin]
+        .maxValue = ./bounds[Pmax]
+        .drawAtReset = TRUE
+        .drawAtUpdate = TRUE
+        ProportionBounds bounds {
+          .logP = -5 @ (uniform -6 -4)
+          .logWidth = 2
+        }
+      }
+    }
+  }
+  Box pest {
+    resist::Immigration immigration {
+      .K = random/K[value]
+      .proportion = random/immigration/proportion[value]
+      .q = random/immigration/q[value]
+    }
+    SprayResponse survival {
+      .a = 1
+      .b = -2
+      .c = 0.5
+      .coverage = 1
+      .S = 0.5
+    }
+    Box density {
+      Density ss {
+        .immigration = immigration[ss]
+        .genotypeFrequency = genotypeFrequency/*[value]
+        .reproduction = reproduction/*[value]
+        .survival = survival[ss] | survival[sr] | survival[rr]
+      }
+      Density sr {
+        .immigration = immigration[sr]
+        .genotypeFrequency = genotypeFrequency/*[value]
+        .reproduction = reproduction/*[value]
+        .survival = survival[ss] | survival[sr] | survival[rr]
+      }
+      Density rr {
+        .immigration = immigration[rr]
+        .genotypeFrequency = genotypeFrequency/*[value]
+        .reproduction = reproduction/*[value]
+        .survival = survival[ss] | survival[sr] | survival[rr]
+      }
+    }
+    Box total {
+      +density|sum = density/*[value]
+    }
+    Box genotypeFrequency {
+      GenotypeFrequency ss {
+        .N = density/ss[value]
+        .Ntotal = pest/total[density]
+      }
+      GenotypeFrequency sr {
+        .N = density/sr[value]
+        .Ntotal = pest/total[density]
+      }
+      GenotypeFrequency rr {
+        .N = density/rr[value]
+        .Ntotal = pest/total[density]
+      }
+    }
+    ReproductiveRate reproductiveRate {
+      .R = 5
+      .fitnessCost = 0.20  @ (uniform 0 0.40)
+      .Ntotal = pest/total[density]
+      .K = K[value]
+    }
+    Box reproduction {
+      Reproduction ss {
+        .R = reproductiveRate[ss]
+        .N = density/ss[value]
+        .survival = survival[ss]
+      }
+      Reproduction sr {
+        .R = reproductiveRate[sr]
+        .N = density/sr[value]
+        .survival = survival[sr]
+      }
+      Reproduction rr {
+        .R = reproductiveRate[rr]
+        .N = density/rr[value]
+        .survival = survival[rr]
+      }
+    }
+  }
+  OutputR {
+    .keepPages = FALSE
+    PageR {
+      .xAxis = sim[step]
+      .ncol = 2
+      PlotR {
+        .ports = ./frequency[q]
+        AlleleFrequency frequency {
+          .genotypeFrequency = genotypeFrequency/*[value]
+        }
+      }
+      PlotR {
+        .ports = total[density]
+      }
+    }
+  }
+}

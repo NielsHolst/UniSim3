@@ -1,0 +1,68 @@
+(A) Windows
+=======
+1. Edit C:\data\QDev\UniSim3\ship\cmd\win\build.bat.
+- Update SUB version number.
+- Note that the bin target folder will be erased before building.
+- Note that the batch file will switch UniSim3.pro to release mode before building and then restore it to debug mode at the end.
+- Note that C:\data\QDev\UniSim3\input will be copied to C:\data\QDev\UniSim3\src\resources\data\input. Subsequently, the resource file in C:\data\QDev\UniSim3\src\resources\application.qrc will be updated accordingly.
+
+2. Check that the input folder contains the correct files in
+- demo
+- papers
+- scripts
+
+3. Check that UniSim3.pro contains the intended plug-ins.
+
+4. In the student source remove day_scale and weather files.
+
+5. If the Qt installation has been updated, check that QTENV is set correctly in build.bat and QT_ROOT, in fill-folders.bat.
+
+6. In fill-folders.bat UNISIM_SHIP must be the correct folder.
+
+7. If unisim(d).exe is running, access will be denied to clear the UniSim3/bin folder: Close unisim(d).exe before building.
+
+8.Execute batch file, *** not as administrator***; this produces errors (?!)
+
+9. Copy installer to sites\ecolmod2\static\download. 
+
+10. Update sites\ecolmod2\content\download.md.
+
+11. Open PowerShell in sites\ecolmod2 and run hugo.
+
+12. Upload ecolmod2\public using FileZilla.
+
+13. In Bash: cd /c/users/au152367/Documents/QDev/UniSim3
+
+> git commit -F "../commit-msg.txt"
+> git tag 2.3.n
+> git push origin master --tags
+- Note this pushes both source code changes and tags
+
+14. Do not erase the src/resources folder. This is part of the commit and is used by the subsequent build on Mac OS (and Linux).
+
+(B) Mac OS X
+============
+
+1. In Finder go to nielsholst/dev and delete UniSim3 folder.
+
+2. In Chrome go to Github and copy clone path. (cmd+C)
+ 
+3. In Terminal: 
+- cd ~/dev  (~ er Alt+^)
+- type >git clone <paste clone path> (cmd+V)
+
+4. Edit ~/dev/UniSim3/ship/cmd/osx/build.sh.
+- Update SUB version number.
+- Launch build.sh from Terminal >./build.sh
+
+5. Open InstallBuilder and build the installer.
+
+6. Optionally, test debug build in QtCreator:
+- run clean.sh
+- open UniSim3.pro in QtCreator and build.
+
+7. In Finder, right-click and compress the installer (which is a folder) into a zip file.
+
+8. Upload installer from ~/qdev/UniSim3/ship to ecolmod.org/download (~18 Mb) via FileZilla. The installer is a zip file.
+
+9. Update ecolmod.org/download.html.

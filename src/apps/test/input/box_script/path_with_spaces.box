@@ -1,0 +1,15 @@
+Simulation sim {
+	Calendar calendar {
+		.timeUnit = "d"
+	}
+	OutputR {
+		PageR{
+		.xAxis= calendar [date]
+			PlotR{
+			.layout = “merged”
+			.ports = (weather [Tavg]) 
+			.end = “scripts / month_breaks.R”
+			}
+			
+		}
+	}}

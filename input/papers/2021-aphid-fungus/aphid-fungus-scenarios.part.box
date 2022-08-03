@@ -1,0 +1,41 @@
+// 
+// This box script cannot run alone; it must be included in another box script.
+//
+  Box random {
+    Scenarios scenarios {
+      .fileName = $SCENARIO
+    }
+    Box fileNumber {
+      +value = scenarios[fileNumber]
+    }
+    Box cropAtStart {
+      +value = scenarios[cropAtStart]
+    }
+    Box cropHalfways {
+      +value = scenarios[cropHalfways]
+    }
+    Box k {
+      +value = scenarios[k]
+    }
+    Box propExposedImmigrants {
+      +value = scenarios[propExposedImmigrants]
+    }
+    Box lethalTime {
+      +value = scenarios[lethalTime]
+    }
+    Box immunityCost {
+      +value = scenarios[immunityCost]
+    }
+    Box cadaverDuration {
+      +value = scenarios[cadaverDuration]
+    }
+    Box timeAcceleration {
+      +value = scenarios[timeAcceleration]
+    }
+    Box sporulationOn {
+      +value = scenarios[sporulationOn]
+    }
+    Box transmissionEfficiency {
+      +value = scenarios[transmissionEfficiency]
+    }
+  }

@@ -1,0 +1,24 @@
+Simulation sim {
+  .steps =  5
+  Sum sum {
+    .values = stages/*[initial]
+  }
+  Maker stages {
+    .names = (stage1 stage2)
+    Stage {
+      .initial = 17.0
+    }
+  }
+  Modifier modifier {
+    .boxes = (stage2)
+    +initial = 21.0
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = sum[value]
+        .layout = "merged"
+      }
+    }
+  }  
+}

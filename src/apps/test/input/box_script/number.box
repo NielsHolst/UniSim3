@@ -1,0 +1,5 @@
+Simulation sim {
+  .steps = 1085
+  &a = 9.82
+}
+

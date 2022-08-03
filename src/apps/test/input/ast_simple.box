@@ -1,0 +1,10 @@
+ModelA a {
+	.input1 = 2
+	.input4 = 5
+	+abc = 117
+	ModelA b {
+		.input1 = 2
+	}
+	ModelA c {
+	}
+}

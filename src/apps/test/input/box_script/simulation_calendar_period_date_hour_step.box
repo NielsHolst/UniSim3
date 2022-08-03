@@ -1,0 +1,11 @@
+Simulation sim {
+  Calendar calendar {
+    .begin = 24/02/2022
+    .end   = 28/02/2022
+    .timeStep = 6
+    .timeUnit = "h"
+  }
+  OutputText output {
+    .ports = sim[step] | calendar[date] | calendar[time]| calendar[dateTime]
+  }
+}

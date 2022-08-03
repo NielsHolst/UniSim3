@@ -1,0 +1,355 @@
+Simulation sim { // #0
+  .steps = 5
+  Calendar calendar { // #0
+    .latitude = 10.05
+    .longitude = 55.3
+    .timeZone = 1
+    .initialDateTime = "2001/9/10 07:00:00"
+    .timeStep = 30
+    .timeUnit = "s"
+  }
+  vg::Sensor sensor { // #0
+    .indoorsTemperatureIn = 22.913
+    .indoorsRhIn = 63.2506
+    .indoorsCo2In = 420.417
+    .indoorsWindspeedIn = -999.0
+    .outdoorsTemperatureIn = 0.0
+    .outdoorsRhIn = 0.0
+    .outdoorsCo2In = 5000.0
+    .outdoorsGlobalRadiationIn = 0.0
+    .outdoorsWindSpeedIn = 3.54079
+    .soilTemperatureIn = -999.0
+  }
+  vg::Outdoors outdoors { // #6
+    .co2 = sensor[outdoorsCo2]
+    .temperature = sensor[outdoorsTemperature]
+    .rh = sensor[outdoorsRh]
+    .radiation = sensor[outdoorsGlobalRadiation]
+    .diffuseRadiation = ./diffuseIrradiationEstimate[value]
+    .windSpeed = sensor[outdoorsWindSpeed]
+    .skyTemperature = ./skyTemperatureEstimate[temperature]
+    DiffuseIrradiationRE diffuseIrradiationEstimate { // #0
+      .globalIrradiation = sensor[outdoorsGlobalRadiation]
+    }
+    SkyTemperature skyTemperatureEstimate { // #1
+      .airTemperature = sensor[outdoorsTemperature]
+      .rh = sensor[indoorsRh]
+    }
+    Box records { // #2
+    }
+    Accumulator soilTemperature { // #5
+      .initial = ./initial[value]
+      .change = ./controller[controlVariable]
+      Hump initial { // #3
+        .x = calendar[dayOfYear]
+        .x0 = 70.0
+        .x1 = 365.0
+        .ymin = 0.0
+        .ymax = 16.0
+      }
+      PidController controller { // #4
+        .sensedValue = ..[value]
+        .desiredValue = outdoors[temperature]
+        .Kprop = 5e-5
+      }
+    }
+  }
+  Box construction { // #30
+    vg::Geometry geometry { // #0
+      .numSpans = 6
+      .spanWidth = 3.2
+      .length = 104.0
+      .height = 104.0
+      .roofPitch = 22.0
+      .reflection = 0.002
+    }
+    vg::Shelter shelter { // #29
+      vg::ShelterFace roof1 { // #6
+        vg::Cover cover { // #1
+        }
+        vg::Screens screens { // #4
+          vg::Screen screen { // #2
+            .orientation = "horizontal"
+            .transmissivityLight = 0.35
+            .emissivityInner = 0.66
+            .emissivityOuter = 0.66
+            .energyLossReduction = 0.47
+            .haze = 0.97
+            .transmissivityAir = 0.3
+            .state = 0.74991
+          }
+          vg::Screen screen { // #3
+            .orientation = "horizontal"
+            .transmissivityLight = 0.8
+            .emissivityInner = 0.34
+            .emissivityOuter = 0.34
+            .energyLossReduction = 0.47
+            .haze = 0.97
+            .transmissivityAir = 0.3
+            .state = 0.0
+          }
+        }
+        vg::Vent vent { // #5
+          .length = 3.0
+          .width = 1.0
+          .number = 72
+          .state = 0.0
+        }
+      }
+      vg::ShelterFace roof2 { // #12
+        vg::Cover cover { // #7
+        }
+        vg::Screens screens { // #10
+          vg::Screen screen { // #8
+            .orientation = "horizontal"
+            .transmissivityLight = 0.35
+            .emissivityInner = 0.66
+            .emissivityOuter = 0.66
+            .energyLossReduction = 0.47
+            .haze = 0.97
+            .transmissivityAir = 0.3
+            .state = 0.74991
+          }
+          vg::Screen screen { // #9
+            .orientation = "horizontal"
+            .transmissivityLight = 0.8
+            .emissivityInner = 0.34
+            .emissivityOuter = 0.34
+            .energyLossReduction = 0.47
+            .haze = 0.97
+            .transmissivityAir = 0.3
+            .state = 0.0
+          }
+        }
+        vg::Vent vent { // #11
+          .length = 3.0
+          .width = 1.0
+          .number = 72
+          .state = 0.0
+        }
+      }
+      vg::ShelterFace side1 { // #16
+        vg::Cover cover { // #13
+        }
+        vg::Screens screens { // #14
+        }
+        Box noVent { // #15
+        }
+      }
+      vg::ShelterFace side2 { // #20
+        vg::Cover cover { // #17
+        }
+        vg::Screens screens { // #18
+        }
+        Box noVent { // #19
+        }
+      }
+      vg::ShelterFace end1 { // #24
+        vg::Cover cover { // #21
+        }
+        vg::Screens screens { // #22
+        }
+        Box noVent { // #23
+        }
+      }
+      vg::ShelterFace end2 { // #28
+        vg::Cover cover { // #25
+        }
+        vg::Screens screens { // #26
+        }
+        Box noVent { // #27
+        }
+      }
+    }
+  }
+  Box given { // #3
+    Box energyFlux { // #2
+      Box floor { // #0
+        +emissivity = 0.9
+        +temperature = sensor[indoorsTemperature]
+      }
+      Box shelter { // #1
+        +coverTemperature = sensor[outdoorsTemperature]
+        +screensTemperature = sensor[indoorsTemperature]
+      }
+    }
+  }
+  Box indoors { // #5
+    vg::IndoorsLight light { // #0
+    }
+    Box temperature { // #1
+      +value = sensor[indoorsTemperature]
+    }
+    IgIndoorsHumidity humidity { // #2
+      .rh = sensor[indoorsRh]
+    }
+    Box windSpeed { // #3
+      +value = sensor[indoorsWindspeed]
+    }
+    Box co2 { // #4
+      +value = sensor[indoorsCo2]
+    }
+  }
+  Box controllers { // #0
+    +chalk = 0.0
+  }
+  Actuators actuators { // #5
+    Box heating { // #0
+      +value = sensor[indoorsTemperature]
+    }
+    Box screens { // #1
+    }
+    Box vents { // #2
+    }
+    vg::GrowthLights growthLights { // #4
+      vg::GrowthLight growthLight { // #3
+        .powerUsage = 101.5
+        .type = "HPSL"
+        .intensity = 101.5
+        .parPhotonCoef = 1.732
+        .ageCorrectedEfficiency = 1.0
+        .on = TRUE
+      }
+    }
+  }
+  vg::Crop crop { // #51
+    Box lai { // #0
+      +value = 1.0
+      +fractionPlantArea = 0.9
+    }
+    Box periods { // #2
+      DateTimeSignal  { // #1
+        .circadian = FALSE
+      }
+    }
+    DayDegrees physTime { // #3
+      .T = indoors/temperature[value]
+      .timeStepDays = calendar[timeStepDays]
+      .resetTotal = ../periods/*[flagJustLowered]
+      .isTicking = ../periods/*[flagIsUp]
+    }
+    Box layers { // #34
+      vg::LeafLayer top { // #13
+        LeafWindSpeed windSpeed { // #4
+          .k = 0.6
+        }
+        vg::StomatalResistanceRose rs { // #5
+        }
+        vg::BoundaryLayerResistanceStanghellini rb { // #6
+        }
+        vg::LeafRadiationAbsorbed radiationAbsorbed { // #7
+        }
+        vg::LeafTranspiration transpiration { // #8
+        }
+        vg::LeafTemperature temperature { // #9
+        }
+        vg::LeafPhotosynthesis photosynthesis { // #12
+          LeafLightResponse lightResponse { // #11
+            LeafLightResponseProcesses processes { // #10
+            }
+          }
+        }
+      }
+      vg::LeafLayer middle { // #23
+        LeafWindSpeed windSpeed { // #14
+          .k = 0.6
+        }
+        vg::StomatalResistanceRose rs { // #15
+        }
+        vg::BoundaryLayerResistanceStanghellini rb { // #16
+        }
+        vg::LeafRadiationAbsorbed radiationAbsorbed { // #17
+        }
+        vg::LeafTranspiration transpiration { // #18
+        }
+        vg::LeafTemperature temperature { // #19
+        }
+        vg::LeafPhotosynthesis photosynthesis { // #22
+          LeafLightResponse lightResponse { // #21
+            LeafLightResponseProcesses processes { // #20
+            }
+          }
+        }
+      }
+      vg::LeafLayer bottom { // #33
+        LeafWindSpeed windSpeed { // #24
+          .k = 0.6
+        }
+        vg::StomatalResistanceRose rs { // #25
+        }
+        vg::BoundaryLayerResistanceStanghellini rb { // #26
+        }
+        vg::LeafRadiationAbsorbed radiationAbsorbed { // #27
+        }
+        vg::LeafTranspiration transpiration { // #28
+        }
+        vg::LeafTemperature temperature { // #29
+        }
+        vg::LeafPhotosynthesis photosynthesis { // #32
+          LeafLightResponse lightResponse { // #31
+            LeafLightResponseProcesses processes { // #30
+            }
+          }
+        }
+      }
+    }
+    vg::CropRadiation radiation { // #35
+    }
+    vg::Average temperature { // #36
+      .inputs = (../layers/*/temperature[value])
+    }
+    vg::Sum lightAbsorbed { // #37
+      .inputs = (../layers/*/radiationAbsorbed[lightAbsorbed])
+    }
+    vg::Sum heatingAbsorbed { // #38
+      .inputs = (../layers/*/radiationAbsorbed[heatingAbsorbed])
+    }
+    vg::Sum growthLightLwAbsorbed { // #39
+      .inputs = (../layers/*/radiationAbsorbed[growthLightLwAbsorbed])
+    }
+    vg::Sum radiationAbsorbed { // #40
+      .inputs = (../layers/*/radiationAbsorbed[lightAbsorbed])
+    }
+    vg::Average conductance { // #41
+      .inputs = (../layers/*/transpiration[conductance])
+    }
+    vg::Average vapourFlux { // #42
+      .inputs = (../layers/*/transpiration[vapourFlux])
+    }
+    vg::Average gain { // #43
+      .inputs = (../layers/*/transpiration[gain])
+    }
+    vg::Sum Pg { // #44
+      .inputs = (../layers/*/photosynthesis[Pg])
+    }
+    vg::Sum Pn { // #45
+      .inputs = (../layers/*/photosynthesis[Pn])
+    }
+    vg::Sum Rd { // #46
+      .inputs = (../layers/*/photosynthesis[Rd])
+    }
+    vg::CropGrowth growth { // #47
+    }
+    vg::FruitCropMass mass { // #49
+      .vegPropRoot = 0.0
+      .vegPropStem = 0.4
+      .vegPropLeaf = 0.6
+      .vegPropFruit = 0.0
+      .reproPropRoot = 0.0
+      .reproPropStem = 0.05
+      .reproPropLeaf = 0.1
+      .reproPropFruit = 0.85
+      .tempSumReproductive = 900.0
+      .tempMaxReproductive = 45.0
+      .fruitFactor = ./fruitFactor[value]
+      vg::FruitFactor fruitFactor { // #48
+        .minDensity = 3.9
+        .maxValue = 1.044
+      }
+    }
+    vg::CropYield yield { // #50
+      .produceMass = ../mass[fruit]
+      .fractionDryWeight = 0.045
+    }
+  }
+}

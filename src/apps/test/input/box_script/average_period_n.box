@@ -1,0 +1,16 @@
+Simulation sim {
+  .iterations = 2
+  .steps = 20
+  OutputSelector selector {
+    .period = 6
+  }
+  Box square {
+    &value = /.[step]^2
+  }
+  Average average {
+    .ports = /.[step] | square[value]
+  }
+  OutputText text {
+    .ports = /.[iteration] | /.[step] | average[*] | selector[isActive]
+  }
+}

@@ -1,0 +1,6 @@
+Simulation(a=2 b=5 c=-3)
+{
+  Sandy A(){}
+  Sandy B(){}
+  Sandy C(){}
+}

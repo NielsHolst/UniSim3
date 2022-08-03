@@ -1,0 +1,4 @@
+#!/bin/sh
+LD_LIBRARY_PATH=~/qdev/UniSim2/ship/bin/lib
+export LD_LIBRARY_PATH
+exec ~/qdev/UniSim2/ship/bin/unisimd "$@"

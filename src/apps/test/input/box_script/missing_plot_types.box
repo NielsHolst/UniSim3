@@ -1,0 +1,8 @@
+Simulation sim {
+  .steps =  20
+  OutputR {
+    OutputText {
+      .ports = sim[*]
+    }
+  }  
+}

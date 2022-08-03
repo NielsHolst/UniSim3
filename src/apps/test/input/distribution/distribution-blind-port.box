@@ -1,0 +1,25 @@
+Simulation sim {
+  .steps = 3
+  .iterations = 5
+  SensitivityAnalysisSimple {
+  }
+  Box p {
+    +a = 112
+    +b = 7.2
+    +c = TRUE
+    +d = "abc"
+    +e ="17/12/2018"
+    +f= 90.5 @ (uniform 50 200)
+  }
+  Stage a {
+    .initial = 100 @ (uniform 50 200)
+    .inflow = 15 @ (normal 15 2)
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = (p[a] p[f])
+      }
+    }
+  }
+}

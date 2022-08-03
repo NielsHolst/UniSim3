@@ -1,0 +1,10 @@
+Simulation sandy_demo
+{
+  Sequence seq{}
+  Sandy A{}
+  Sandy B{}
+  Sandy C{}
+  Sandy D{}
+  Sandy E{}
+  Sandy F{}
+}

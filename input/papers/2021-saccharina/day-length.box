@@ -1,0 +1,19 @@
+Simulation sim {
+  .steps = 202
+  Calendar calendar {
+    .initialDateTime = 14/11/2019
+    .latitude = 55.83
+    .longitude = 10.08
+  }
+  Sun sun {
+  
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = sun[dayLength]
+      }
+    }
+  }
+}

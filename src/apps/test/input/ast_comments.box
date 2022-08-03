@@ -1,0 +1,13 @@
+// abc def
+ModelA a { // abc def
+	.input1 = 2
+	.input4 = 32
+	ModelA b {
+	// abc def
+		.input1 = 2
+	} //		////
+	ModelA c {//
+	}//abc def
+}//
+// abc
+  //

@@ -1,0 +1,29 @@
+// briere2.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/01/2009
+    .end   = 31/12/2010
+  }
+  Records weather {
+   .fileName = "weather/flakkebjerg 2009.txt"
+   .cycle = TRUE
+  }
+  Briere clock {
+    .isTicking = (calendar[date] >= 01/05) && (calendar[date] < 01/10)
+    .resetTotal = (calendar[date] == 01/05) || (calendar[date] == 01/07)
+    .T0 = 8
+    .Tmax = 32
+    .a = 2.836e-5  
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = clock[output::*] | clock[isTicking] | clock[resetTotal]
+        .ggplot = "scale_x_datetime(breaks=date_breaks('3 months'), 
+                                    labels = date_format ('%b')) +
+                   labs(x='2009 - 2010')"
+      }
+    }
+  }
+}

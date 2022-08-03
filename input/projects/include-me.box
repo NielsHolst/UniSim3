@@ -1,0 +1,6 @@
+Simulation sim {
+  .steps = 273
+  #include "include-calendar.box"
+  Records weather {
+    .fileName = "book/weather/flakkebjerg 2009.txt"
+  }

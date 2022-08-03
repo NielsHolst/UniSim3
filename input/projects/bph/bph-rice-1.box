@@ -1,0 +1,53 @@
+Simulation sim {
+  .steps = 400
+  Calendar calendar {
+    .initialDateTime = "1/4/2004"
+  }
+  Records weather {
+    .fileName = "weather/AnGiang.txt"
+  }
+  Box rice {
+    DayDegrees time {
+      .T0 = 13
+      .T = weather[Tavg]
+    }
+    FixedSignal emergence {
+      .input = weather[Vegetative]
+    }
+    FixedSignal harvest {
+      .input = weather[Ripening]
+    }
+    Stage vegetative {
+      .inflow = ../emergence[flagUp]
+      .duration = 750
+      .timeStep = ../time[step]
+    }
+    Stage reproductive {
+      .inflow = vegetative[outflow]
+      .duration = 600
+      .timeStep = ../time[step]
+    }
+    Stage ripening {
+      .inflow = reproductive[outflow]
+      .duration = 400
+      .timeStep = ../time[step]
+    }
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .layout = "merged"
+        .ports = (weather[Vegetative] weather[Reproductive] weather[Ripening])
+        .ggplot = "geom_point() + geom_line()"
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = (rice/*[content] rice/emergence[flagUp] rice/emergence[flagDown])
+      }
+      PlotR {
+        .ports = (calendar[dayLength] weather[Tavg] weather[Sunshine])
+      }
+    }
+  }
+}
+

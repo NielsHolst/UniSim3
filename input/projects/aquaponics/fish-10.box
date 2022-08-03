@@ -1,0 +1,41 @@
+Simulation sim {
+  .steps = 2500
+  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomNormal initialWeight { // kg
+      .min = 0.005
+      .max = 0.050
+    }
+    RandomBinomial death {  // per day
+      .P = 0.005
+    }
+  }
+  Calendar calendar {
+    .timeStep = 1
+    .timeUnit = "h"
+  }
+  Fish fish {
+    .initialNumber = 10
+    .initialWeight = random/initialWeight[value]
+    .death = random/death[value]
+    .timeStepDays = calendar[timeStepDays]
+    .dayOfYear = calendar[dayOfYear]
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = fish[number]
+      }
+      PlotR {
+        .ports = fish[totalWeight]
+      }
+      PlotR {
+        .ports = fish[individuals]
+        .layout = "merged"
+      }
+    }
+  }
+}
+

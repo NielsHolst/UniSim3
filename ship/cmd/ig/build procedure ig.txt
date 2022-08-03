@@ -1,0 +1,27 @@
+(A) Windows 32-bit build
+========================
+1. Edit QDev\UniSim2\ship\cmd\win\build.bat.
+- Update SUB version number.
+- Run. 
+-> This recreates ressources and application.qrc.
+-> This sets the version number in boxes_common.pri.
+
+2. Remove all input files from application.qrc.
+
+3. Run clean.bat.
+
+4. In Qt Creator:
+- Open ig project.
+- Choose 32-bit target.
+- Update version number in iglib.h.
+- Build.
+
+5. Edit QDev\UniSim2\ship\cmd\igbuild.bat:
+- Update the UniSim version number.
+- Check the QT path which may differ between computers.
+
+6. Run QDev\UniSim2\ship\cmd\igbuild.bat
+
+7. Code-sign with QDev\certificates\codesign-iglib.bat
+
+8. Zip iglib_2.x.x and upload it to Dropbox.

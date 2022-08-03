@@ -1,0 +1,20 @@
+Simulation sim {
+  .steps =  5
+  Sum sum {
+    .values = stage[initial]
+  }
+  Stage stage {
+    .initial = 17
+  }
+  Stage stage {
+    .initial = 21
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = sum[value]
+        .layout = "merged"
+      }
+    }
+  }  
+}

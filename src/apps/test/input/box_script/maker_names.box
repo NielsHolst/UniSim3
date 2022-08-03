@@ -1,0 +1,20 @@
+Simulation maker_names {
+  Maker system {
+    .names = c("X", "Y", "Z")
+    Box {
+      &a = 13
+      Box B {
+        &b = 14
+        Stage D {
+          .inflow = 1000
+          .k = ..[b]
+          &d = 15
+        }
+      }
+      Box C {
+        &c = D[k]
+      }
+    }
+  }
+}
+

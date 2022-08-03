@@ -1,0 +1,60 @@
+Simulation {
+  .steps = 300
+  Stage S {
+    .initial = 999
+    .timeStep = 0
+    .phaseOutflowProportion = web/I/S[mortality]
+  }
+  Stage E {
+    .initial = 1
+    .phaseInflow = S[phaseOutflow]
+    .duration = 7
+  }
+  Stage I {
+    .inflow = E[outflow]
+    .duration = 7
+    Stage infectionRate {
+      .inflow = E[outflow]
+      .duration = ..[duration]
+      .growthFactor = 5
+    }
+  }
+  Stage Q {
+    .inflow = I[outflow]
+    .duration = 14
+  }
+  Stage R {
+    .inflow = Q[outflow]
+    .timeStep = 0
+  }
+  FoodWeb web {
+    +attackRate = 1.0
+    Predator I {
+      .density = I[content]
+      .demand = infectionRate[outflow]
+      Prey S {
+        .density = S[content]
+        .attackRate = web[attackRate]
+      }
+      Prey E {
+        .density = E[content]
+        .attackRate = web[attackRate]
+      }
+      Prey I {
+        .density = I[content]
+        .attackRate = web[attackRate]
+      }
+      Prey R {
+        .density = R[content]
+        .attackRate = web[attackRate]
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = (S[content] E[content] I[content] Q[content] R[content])
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+Simulation sim {
+  .iterations = 10
+  .steps = 3880
+  // .steps = 1186 
+  Calendar calendar {
+    .initialDateTime = 1/4/2004
+    // .initialDateTime = 9/8/2009  
+  }
+  Records environment {
+    .fileName = "env-AnGiang.txt"
+  }
+  // SensitivityAnalysis {
+  // }
+  // Scenarios scenarios {
+    // .fileName = "bph1-scenarios.txt"
+  // }
+  Box bph {
+    DayDegrees time {
+      .T0 = 10
+      .T = environment[Tavg]
+    }
+    OnOff noCrop {
+      .x|sum = environment[Vegetative] | environment[Reproductive] | environment[Ripening] 
+      .xOn = 0
+      .xOff = 0
+      .valueOn = 1
+      .valueOff = 0
+    }
+    ImmigrantOviposition immigration {
+      .fecundity = 0.5 @ (uniform 0.2 1)  //0.1
+      // .fecundity = scenarios[ImmigrantFecundity]
+    }
+    Stage egg {
+      .inflow|sum = immigration[value] | oviposition[outflow]
+      .duration = 150 // 211*0.7
+      .instantLossRate = noCrop[value]
+      .timeStep = ../time[step]
+    }
+    Stage nymph {
+      .inflow = ../egg[outflow]
+      .duration = 211
+      .instantLossRate = noCrop[value]
+      .timeStep = ../time[step]
+      .growthFactor = ./survival[value]
+      BphSurvival survival {
+        .density = ..[content]
+        .atDensity = 4000
+        .survival = 1e-2
+      }
+    }
+    Stage adult {
+      .inflow = ../nymph[outflow]
+      .duration = 34  // 25% of 134
+      .instantLossRate = noCrop[value]
+      .timeStep = ../time[step]
+    }
+    Stage adultR {
+      .inflow = ../adult[outflow]
+      .duration = 100  // 75% of 134
+      .instantLossRate = noCrop[value]
+      .timeStep = ../time[step]
+      BphReproduction reproduction {
+        .repScale = 0.2
+        .ripScale = 0.2
+        .max = 5 @ (uniform 2 5)
+        // .max = scenarios[AdultReproduction]
+      }
+      Stage oviposition {
+        .inflow = ..[inflow]
+        .duration = ..[duration]
+        .timeStep = ..[timeStep]
+        .instantLossRate = ..[instantLossRate]
+        .growthFactor = reproduction[value]
+      }
+    }
+  }
+  OutputR {
+    // .end = "bph1-end-sa.R"
+    // .end = "bph1-end-calibration.R"
+    .end = "bph1-end-time-series.R"
+    // .keepPages = TRUE
+    PageR {
+      +ggplot = "geom_line(size=1.1)  + scale_x_datetime(breaks = date_breaks('years'), labels=date_format('%Y'))"
+      .xAxis = calendar[date]
+      PlotR {
+        +adult|sum = bph/adult[content] | bph/adultR[content] | environment[Immigrants]
+        .layout = "merged"
+        .ports = (environment[Immigrants] .[adult])
+        .ggplot = ..[ggplot]
+      }
+      PlotR {
+        +oviposition = egg[inflow]
+        .layout = "merged"
+        .ports = (bph/*[content] .[oviposition])
+        .ggplot = ..[ggplot]
+      }
+    }
+    OutputText {
+      .ports = (scenarios[ImmigrantFecundity] scenarios[AdultReproduction] scenarios[K])
+    }
+    OutputText {
+      .ports = (environment[Vegetative] environment[Reproductive] environment[Ripening] 
+                 environment[Tavg], environment[Sunshine], environment[RH], environment[Rainfall])
+    }                             
+  }                               
+}
+

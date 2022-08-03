@@ -1,0 +1,12 @@
+Simulation sandy_demo( steps = 1000 )
+{
+  Sequence seq( min=10
+                max=30 )
+  Sandy A (x=seq[value] xMin=seq[min] xMax=seq[max] value{label="A"} a=0 b=0)
+  Sandy B (x=seq[value] xMin=seq[min] xMax=seq[max] value{label="B"} a=0.5 b=0.5)
+  Sandy C (x=seq[value] xMin=seq[min] xMax=seq[max] value{label="C"} a=1 b=1)
+  Sandy D (x=seq[value] xMin=seq[min] xMax=seq[max] value{label="D"} a=5 b=5)
+  Sandy E (x=seq[value] xMin=seq[min] xMax=seq[max] value{label="E"} a=2 b=1)
+  Sandy F (x=seq[value] xMin=seq[min] xMax=seq[max] value{label="F"} a=4 b=0.5)
+  OutputR (xAxis = seq[value], overlay=FALSE)
+}

@@ -1,0 +1,18 @@
+Simulation function_name {
+  .steps = 10
+  Box A {
+    Box B {
+    }
+    Box C {
+    }
+    Box D {
+    }
+  }
+  Box E {
+    &childrenOfA = A/*[]
+    &childrenOfANames  = name(A/*[])
+    &childB = A/B[]
+    &childBName  = name(A/B[])
+  }
+}
+

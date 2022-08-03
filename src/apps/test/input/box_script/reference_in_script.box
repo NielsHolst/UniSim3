@@ -1,0 +1,10 @@
+Simulation sim {
+  .steps = 0
+  Box outer {
+    &pint    = 117
+    &pdouble = 3.1214
+    &pstring = "xyz"
+    test_boxes::A boxA{
+    }
+  }
+}

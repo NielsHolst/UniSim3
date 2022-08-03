@@ -1,0 +1,50 @@
+Box all {
+  Box Null {
+    &a = c(X[x])
+    &b = c(X[x], 7)
+    &c = c(10, X[x], 7)
+    &d = c(11, X[x], 7, X[x])
+  }
+  Box Length {
+    &a = c(117)
+    &b = c(FALSE)
+    // &x = c()  // won't parse empty parameters
+  }
+  Box Mixed {
+    &a = c(6, 7, 8)
+    &b = c(7, 9.5, -9)
+    &c = c(7.3, 5e-6)
+    &d = c(5, TRUE)
+    &e = c(5.0, TRUE)
+    &f = c("dog", "cat")
+    &g = c("dog", "cat", 7)
+    &h = c("dog", "cat", TRUE)
+  }
+  Box Nested {
+    &a = c(6, c(7, 8), c(1,2))
+    &b = c(6, c(7, 8, c(1,2)))
+    &c = c(6, c(7, 8, c(1.5,2)))
+  }
+  Box Expr { // with mixed, nested function calls
+    &a = c(6, c(7+2*3, -8), sum(c(1,2)))
+    &b = c(6, c(7+2*3, -8), mean(c(1,2)))
+    &c = c(6, c(7+2*X[x], -8), sum(c(1,2)))
+  }
+  Box A {
+    &a = c(B[x], 8, 5+2*B/C[x]/4*D[x]) // 10,8; reset => 10,8,5+2*20/4*60 = 10,8,605
+  }
+  Box B {
+    &x = 10
+    Box C {
+      &x = 20
+    }
+  }
+  Box D {
+    &x = 60
+  }
+  Box E { 
+    &a = c(B[x], 8, 5+2*B/C[x]/4*D[x]) // 10,8,5+2*20/4*60 = 10,8,605
+    &b = c(B[x], 8, 5+2*B/C[x]*X[x])   // 10,8
+  }
+}
+

@@ -1,0 +1,41 @@
+Simulation sim {
+	.iterations = 3
+	.steps = 10
+	Box random {
+		RandomUniform latitude {
+			.minValue = 10
+			.maxValue = 20 
+			.drawAtImport = TRUE
+		}
+		RandomUniform longitude {
+			.minValue = -40
+			.maxValue = -30
+			.drawAtImport = TRUE
+		}
+		RandomUniform fox {
+			.minValue = 0
+			.maxValue = 5 
+			.drawAtImport = TRUE
+		}
+		RandomPoisson rabbit {
+			.mean = 100
+			.drawAtImport = TRUE
+		}
+	}
+	Maker islands {
+		.replicates = 3
+		Box island {
+			+latitude = random/latitude[value]
+			+longitude = random/longitude[value]
+			Stage fox {
+				.initial = random/fox[value]
+			}
+			Stage rabbit {
+				.initial = random/rabbit[value]
+			}
+		}
+	}
+	OutputText {
+		.ports = (*[latitude] *[longitude] *[initial])
+	}
+}

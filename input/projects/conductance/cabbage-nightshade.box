@@ -1,0 +1,68 @@
+Simulation {
+  .steps = 90
+  
+  Box weather {
+    +irradiation = 10
+  }
+  
+  conductance::Community community {
+    conductance::Plant cabbage {
+      .n = 9
+      .initWeight = 0.05
+      .F = 0.0158
+      .theta = 0.84
+      .A = 0.0314
+      .phi = 0.529
+      .k = 0.71
+      .eps = 1.40
+    }
+    conductance::Plant nightshade {
+      .n = 20
+      .initWeight = 0.05
+      .F = 0.0171
+      .theta = 0.866
+      .A = 0.0265
+      .phi = 0.747
+      .k = 0.70
+      .eps = 1.20
+    }
+  }
+  OutputR {
+    PageR {
+      .ncol = 3
+      .xAxis = community[time]
+      PlotR {
+        .layout = "merged"
+        .ports = *[phase]
+      }
+    PlotR {
+      .layout = "merged"
+      .ports = *[WeightPlant]
+    }
+    PlotR {
+      .layout = "merged"
+      .ports = *[WeightTotal]
+    }
+      PlotR {
+        .layout = "merged"
+        .ports = *[ZoneAreaPlant]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = *[LAPlant]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = *[LAI]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = *[fz]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = *[ZoneAreaTotal] 
+      }
+    }
+  }
+}

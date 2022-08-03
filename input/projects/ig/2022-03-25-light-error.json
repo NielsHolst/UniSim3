@@ -1,0 +1,56 @@
+[
+ {
+   "CompartmentId":14,
+  "BaseUtcOffset":1.0,
+          "TimeStamp": {
+          "DayOfYear": 47,
+          "TimeOfDay": 0.354,
+          "TimeZone": 1.0
+        },
+  "GreenHouse":{"Latitude":55.3,"Longitude":10.23,"Direction":97.0},"Culture":{"CultureType":"Tomato","LeafAreaIndex":{"Value":0.0,"Origin":"UserDefined"}},
+"Construction":{"Length":68.0,"SpanWidth":3.2,"SpanCount":21,"WallHeight":3.5,"RoofInclination":22.0,"InternalShading":0.1,"Infiltration":0.05,
+"End1":{"Emissivity":0.9,"Absorptivity":0.1,"Transmissivity":0.82,"Haze":0.0,"UValue":0.0,"HeatCapacity":1.0},
+"End2":{"Emissivity":0.95,"Absorptivity":0.1,"Transmissivity":0.74,"Haze":0.0,"UValue":2.4,"HeatCapacity":1.0},
+"Side1":{"Emissivity":0.9,"Absorptivity":0.1,"Transmissivity":0.82,"Haze":0.0,"UValue":0.0,"HeatCapacity":1.0},
+"Side2":{"Emissivity":0.95,"Absorptivity":0.1,"Transmissivity":0.74,"Haze":0.0,"UValue":2.4,"HeatCapacity":1.0},
+"Roof1":{"Emissivity":0.9,"Absorptivity":0.1,"Transmissivity":0.83,"Haze":0.0,"UValue":6.5,"HeatCapacity":1.0},
+"Roof2":{"Emissivity":0.9,"Absorptivity":0.1,"Transmissivity":0.83,"Haze":0.0,"UValue":6.5,"HeatCapacity":1.0},
+"Floor":{"Emissivity":0.9,"UIndoors":7.5,"USoil":7.5,"HeatCapacity":42000.0}},"Co2Dispenser":{"InjectionRate":null},
+"OutdoorClimate":{
+"Temperature":{"Value":4.6,"Origin":"Measured"},
+"Irradiation":{"Value":25.0,"Origin":"Measured"},
+"RelativeHumidity":{"Value":0.0,"Origin":"NotAvailable"},
+"Co2":{"Value":415.0,"Origin":"UserDefined"},
+"WindSpeed":{"Value":2.4,"Origin":"Measured"},
+"WindDirection":{"Value":150.0,"Origin":"Measured"}
+},
+"IndoorClimate":{
+"Temperature":{"Value":19.2,"Origin":"Measured"},
+"LightIntensity":{"Value":0.0,"Origin":"NotAvailable"},
+"RelativeHumidity":{"Value":76.0,"Origin":"Measured"},
+"Co2":{"Value":1136.0,"Origin":"Measured"}
+},
+"HeatPipes":[
+{"Material":"Iron","InnerDiameter":41.0,"WaterVolume":9.0503433133604627,"FlowRate":{"Value":30.0,"Origin":"UserDefined"},
+"TemperatureInFlow":{"Value":48.0,"Origin":"Measured"},"TemperatureOutFlow":{"Value":0.0,"Origin":"NotAvailable"}},
+{"Material":"Iron","InnerDiameter":41.0,"WaterVolume":9.0503433133604627,"FlowRate":{"Value":30.0,"Origin":"UserDefined"},
+"TemperatureInFlow":{"Value":48.0,"Origin":"Measured"},"TemperatureOutFlow":{"Value":0.0,"Origin":"NotAvailable"}}
+],
+"Vents":[
+{"Length":2.4,"Height":1.0,"NumberOfVents":115.0,"MaxOpening":45.0,"Porosity":1.0,"Opening":{"Value":0.0,"Origin":"Measured"}},
+{"Length":2.4,"Height":1.0,"NumberOfVents":105.0,"MaxOpening":45.0,"Porosity":1.0,"Opening":{"Value":0.0,"Origin":"Measured"}},
+{"Length":2.4,"Height":1.0,"NumberOfVents":115.0,"MaxOpening":45.0,"Porosity":1.0,"Opening":{"Value":0.0,"Origin":"Measured"}},
+{"Length":2.4,"Height":1.0,"NumberOfVents":105.0,"MaxOpening":45.0,"Porosity":1.0,"Opening":{"Value":0.0,"Origin":"Measured"}}
+],
+"GrowthLights":[
+{"Type":"Hpsl","CapacityUsage":21.105664488017428,"PowerUsage":23.743872549019606,"ParEfficiency":1.611,"AgeCorrectedEfficiency":1.0},
+{"Type":"Hpsl","CapacityUsage":21.105664488017428,"PowerUsage":23.743872549019606,"ParEfficiency":1.611,"AgeCorrectedEfficiency":1.0}
+],
+"Screens":[
+{"Material":{"TransmissivityLight":0.28,"EmissivityInner":0.02,"EmissivityOuter":0.72,"Haze":0.0,"EnergySaving":62.0,"TransmissivityAir":0.0,"UValue":2.2,"HeatCapacity":0.0},"Layer":"Inner","Position":"FlatRoof","Effect":{"Value":1.0,"Origin":"Measured"}},
+{"Material":{"TransmissivityLight":0.01,"EmissivityInner":0.0,"EmissivityOuter":0.99,"Haze":0.0,"EnergySaving":75.0,"TransmissivityAir":0.0,"UValue":0.45,"HeatCapacity":0.0},"Layer":"Outer","Position":"FlatRoof","Effect":{"Value":0.0,"Origin":"Measured"}}
+],
+"Dehumidifiers":[]
+}
+]
+

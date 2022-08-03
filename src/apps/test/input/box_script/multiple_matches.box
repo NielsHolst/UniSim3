@@ -1,0 +1,22 @@
+Box A {
+  &a = 100 + 2*mean(*[x]) - 80
+  &b = count(*[x])   // 3
+  &c = exists(*[x]) // true
+
+  &k = 100 + 2*max(X[b]) - 80 // null
+  &l = 100 + X[b] - 80 // null
+  
+  &u = 100 + 2*sum (X[b]) -   80 // 20
+  &v = count(X[b]) // 0
+  &w = exists(X[b]) // false
+  Box B {
+    &x = 10
+    Box C {
+      &x = 20
+    }
+  }
+  Box D {
+    &x = 60
+  }
+}
+

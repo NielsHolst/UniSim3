@@ -1,0 +1,10 @@
+Simulation sim {
+  .steps = 1085  // comment //
+// comment
+  Calendar calendar { /# xxx 
+  yyy
+  #/
+    .initialDateTime = 24/12/2007
+  }
+}
+

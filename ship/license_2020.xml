@@ -1,0 +1,12 @@
+<license> 
+    <issueDate>2020-11-09</issueDate> 
+    <licenseSchemaVersion>1.2</licenseSchemaVersion> 
+    <licenseType>standard</licenseType> 
+    <majorVersion>0</majorVersion> 
+    <minorVersion>0</minorVersion> 
+    <organization>Niels Hols - Open Source License</organization> 
+    <patchVersion>0</patchVersion> 
+    <product>VMware InstallBuilder for Qt</product> 
+    <project>Universal Simulator</project> 
+    <signature>b09a275a8c6d7160c7ccee4c165d44de</signature> 
+</license>

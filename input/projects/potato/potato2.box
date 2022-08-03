@@ -1,0 +1,199 @@
+Simulation {
+  .steps = 330
+  Scenarios scenarios {
+    .fileName = "scenarios.txt"
+  }
+  Calendar calendar {
+    .initialDateTime = scenarios[StartDate]
+  }
+  Records weather {
+    .fileName = scenarios[WeatherFile]
+  }
+  Box potato {
+    +k = 60
+    OnOff emergence {
+      .x = calendar[dayOfYear]
+      .xOn = 120
+      .xOff = 120
+    }
+    PotatoDevelopmentWE time {
+      .rMaxTub = scenarios[CropDevRate]
+    }
+    Stage vegetative {
+      .inflow = ../emergence[value]
+      .timeStep = ../time[stepVeg]
+      .duration = 1
+      .k = ..[k]
+    }
+    Stage tuberization {
+      .inflow = ../vegetative[outflow]
+      .timeStep = ../time[stepTub]
+      .duration = 0.8
+      .k = ..[k]
+    }
+    Stage senescence {
+      .inflow = ../tuberization[outflow]
+      .timeStep = ../time[stepSen]
+      .duration = 0.2
+      .k = ..[k]
+    }
+  }
+  Box beetle {
+    potato::Survival survival {
+    }
+    DayDegrees time {
+      .T0 = 10
+    }
+    ProportionalSignal frostKill {
+      .input = weather[Tmin]
+      .threshold = -2
+      .thresholdBand = 2
+      .minSignal = 0
+      .maxSignal = 1
+      .increasingSignal = FALSE
+    }
+    Stage emergence {
+      .initial = 1
+      .duration = 60 
+      .timeStep = ../time[step]
+      .k = 10
+    }
+    Stage maturation {
+      .inflow = ../emergence[outflow] 
+      .duration = 51 
+      .timeStep = ../time[step]
+    }
+    Stage preOviposition {
+      .inflow = ../maturation[outflow]
+      .duration = 90  // 6 d at 25C
+      .timeStep = ../time[step]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage oviposition {
+      .inflow = ../preOviposition[outflow]
+      .duration = 375 // 25 d at 25C
+      .timeStep = ../time[step]
+      .growthFactor = ../survival[value]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage postOviposition {
+      .inflow = ../oviposition[outflow]
+      .duration = 375 // 25 d at 25C
+      .timeStep = ../time[step]
+      .growthFactor = ../survival[value]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage fecundity {
+      .inflow = ../preOviposition[outflow]
+      .duration = ../oviposition[duration]
+      .timeStep = ../time[step]
+      .growthFactor = ./reproduction[value]
+      .instantLossRate = ../frostKill[value]
+      potato::Fecundity reproduction {
+        .R0 = scenarios[PestFecundity]
+      }
+    }
+    Stage egg {
+      .inflow = fecundity[outflow]
+      .duration = 41
+      .timeStep = ../time[step]
+      .instantLossRate = parasitization/funcResp[resourceMortality]    
+    }
+    Stage larva1 {
+      .inflow = egg[outflow]
+      .duration = 39
+      .timeStep = ../time[step]
+      .growthFactor = ../survival[value]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage larva2 {
+      .inflow = larva1[outflow]
+      .duration = 39
+      .timeStep = ../time[step]
+      .growthFactor = ../survival[value]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage larva3 {
+      .inflow = larva2[outflow]
+      .duration = 37
+      .timeStep = ../time[step]
+      .growthFactor = ../survival[value]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage larva4 {
+      .inflow = larva3[outflow]
+      .duration = 49
+      .timeStep = ../time[step]
+      .growthFactor = ../survival[value]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage pupa {
+      .inflow = larva4[outflow]
+      .duration = 95
+      .timeStep = ../time[step]
+      .instantLossRate = ../frostKill[value]
+    }
+    Stage hibernation {
+      .inflow = pupa[outflow]
+      .timeStep = 0
+    }
+  }
+  Box parasitoid {
+    OnOff release {
+      .x = calendar[dayOfYear]
+      .xOn = 180
+      .xOff = 180
+      .valueOn = scenarios[Parasitoids]
+    }
+    Stage preOviposition {
+      .inflow|sum = ../release[value] | juvenile[outflow]
+      .duration = 92 
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 7.1
+      }
+    }
+    Stage oviposition {
+      .inflow = ../preOviposition[outflow]
+      .duration = 240
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 5.8
+      }
+    }
+    Stage ovipositionDemand {
+      .inflow = ../preOviposition[outflow]
+      .duration = 240
+      .timeStep = ../oviposition/time[step]
+      .growthFactor = 150
+    }
+    Box parasitization {
+      DemandBudget demandBudget {
+        .netDemand = ../../ovipositionDemand[outflow]
+      }
+      FunctionalResponse funcResp {
+        .attacker = ../../oviposition[content]
+        .resource = beetle/egg[content]
+        .demand = ../demandBudget[demand]
+        .attackRate = 0.8
+      }
+      SupplyBudget supplyBudget {
+        .resourceAcquired = ../funcResp[resourceAcquired]
+      }
+    }
+    Stage juvenile {
+      .inflow = ../parasitization/supplyBudget[supply]
+      .duration = 266
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8.5
+      }
+    }
+  }
+  OutputR {
+    .end = "potato2-end.R"
+    OutputText {
+      .ports =  (beetle/hibernation[content]|end scenarios[PestFecundity] scenarios[*]) // parasitoid/juvenile[content] 
+    }
+  }
+}

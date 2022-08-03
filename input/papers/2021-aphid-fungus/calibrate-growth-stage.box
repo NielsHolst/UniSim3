@@ -1,0 +1,38 @@
+#define RANDOMISER = RandomiserStratified
+Simulation sim {
+  .iterations = 1
+  .steps =  230 
+  .silent = TRUE
+  Calendar calendar {
+    .begin = weather[firstDateTime]
+  }
+  Records weather {
+    .fileName =  "validation/flakkebjerg-1995.txt"
+  } 
+  Box wheat{
+    CropGrowthStage cropGrowthStage {
+      .valueAtStart       = 20
+      .dayDegreesHalfways = 750
+      .dayDegrees = ./time[total]
+      .slope = 4.5
+      Box isGrowing {
+        &start = 1/5/1995
+        &value = calendar[date] > .[start]
+      }
+      DayDegrees time{
+        .T = weather[Tavg]
+        .T0 = 0
+        .isTicking = ../isGrowing[value]
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = weather[Tavg] |cropGrowthStage[value]
+        .ggplot = "annotate('point', x=as.POSIXct(c(dmy('3/7/95'),dmy('24/7/95'))), y=c(60,90), colour=green, size=3)"
+      }
+    }
+  }
+}

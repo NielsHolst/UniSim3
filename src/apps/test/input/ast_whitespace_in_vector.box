@@ -1,0 +1,14 @@
+Box root {
+	VectorInput a {
+		.numbers1 = (7 9 13)
+		.numbers2 = ( 7 		9 
+		13
+		)
+	}
+	Box b {
+		+s1 =(abc def ghi)
+		+s2 = (	abc 	def
+		ghi	
+    )  
+	}
+}

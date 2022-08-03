@@ -1,0 +1,146 @@
+// --------------------------------------------------------------------------------------------
+// A model of Spissistilus festinus phenology
+// https://doi.org/10.1093/jee/toaa165
+// --------------------------------------------------------------------------------------------
+// Developed by
+// Emily N. Bick, UC Davis, enbick@ucdavis.edu 
+// --------------------------------------------------------------------------------------------
+// 
+// This box script cannot run alone; it must be included in another box script.
+
+  Calendar calendar {
+    .initialDateTime = settings[initialDateTime]
+  }
+  Records weather {
+    .fileName = "Oakville.txt"
+  }
+  Box S_festinus {
+    Stage egg {
+      .inflow = ../adult/oviposition[outflow]
+      .duration = 86.95  
+      .timeStep = ./time[step]
+       DayDegrees time { 
+        .T = weather[Tmax]
+        .T0   = 12.8
+        .Topt = 29.4
+        .Tmax = 35  
+       }
+    }
+    Stage n1 {
+      .inflow = ../egg[outflow]
+      .duration = 64.10256
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T = weather[Tmax]
+        .T0   = 12.8
+        .Topt = 29.4
+        .Tmax = 35
+      }
+    }
+    Stage n2 {
+        .inflow = ../n1[outflow]
+        .duration = 37.73584906
+        .timeStep = ./time[step]
+        DayDegrees time {
+          .T = weather[Tmax]
+          .T0   = 0
+          .Topt = 29.4
+          .Tmax = 35
+        }
+      }
+    Stage n3 {
+        .inflow = ../n2[outflow]
+        .duration = 52.35602
+        .timeStep = ./time[step]
+        DayDegrees time {
+          .T = weather[Tmax]
+          .T0   = 0
+          .Topt = 29.4
+          .Tmax = 35
+        }
+      }
+    Stage n4 {
+        .inflow = ../n3[outflow]
+        .duration = 43.10345
+        .timeStep = ./time[step]
+        DayDegrees time {
+          .T = weather[Tmax]
+          .T0   = 0
+          .Topt = 26.7
+          .Tmax = 35
+        }
+      }
+    Stage n5 {
+        .inflow = ../n4[outflow]
+        .duration = 72.99270073
+        .timeStep = ./time[step]
+        DayDegrees time {
+          .T = weather[Tmax]
+          .T0   = 0
+          .Topt = 29.4
+          .Tmax = 35
+        }
+      }
+    Box adult{
+      DayDegrees time {
+        .T = weather[Tmax]
+        .T0   = 0
+        .Topt = 29.4
+        .Tmax = 35
+      }
+      Hump immigration {
+        .x = calendar[dayOfYear]
+        .x0 = settings[immigrationFromDay]
+        .x1 = settings[immigrationToDay] 
+        .ymin = 0
+        .ymax = 2.2
+      }
+      Stage imcount {
+        .inflow = ../immigration[value]
+        .duration = 25
+        .timeStep = 1
+      }
+      Stage preoviposition {
+        .inflow = ../../n5[outflow] 
+        .duration = 212.7659574 
+        .timeStep = ../time[step]
+      }
+      Stage adults {
+        .inflow|sum = ../../n5[outflow]|../immigration[value]
+        .duration = 630.5 
+        .timeStep = ../time[step]
+          
+       }
+      Stage oviposition {
+        .initial = 0
+        .inflow|sum =  ../preoviposition[outflow]|../immigration[value]
+        .duration = 416.6666667 
+        .timeStep = ../time[step]
+        .growthFactor = 4 
+          
+      }
+    }
+    Sum smallNymphs {
+      .values = n1[content] | n2[content] | n3[content]
+    }
+    Sum largeNymphs {
+      .values = n4[content] | n5[content]
+    }
+  }
+  
+  OutputR {
+    Box curves { 
+      +Adults      = adults[content]
+      +LargeNymphs = largeNymphs[value]
+      +SmallNymphs = smallNymphs[value]
+    }
+    PageR {
+      .xAxis = calendar[date]
+      .title = settings[title]
+      PlotR {
+        .layout = "merged"
+        .ports = curves[*]
+      }  
+    }
+  }
+

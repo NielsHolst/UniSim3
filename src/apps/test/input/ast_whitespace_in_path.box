@@ -1,0 +1,14 @@
+Simulation sim {
+  .steps = 2
+  Box root {
+    ModelA a {
+      .input1 = b[input2]
+      .input2 = b [ input1 ]
+      ModelA b {
+        .input1 = 7
+        .input2 = 3
+      }
+    }
+  }
+ }
+ 

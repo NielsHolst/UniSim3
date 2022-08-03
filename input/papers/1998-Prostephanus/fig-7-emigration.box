@@ -1,0 +1,22 @@
+Simulation sim {
+  .steps = ./N[steps]
+  SequenceByStep N {
+    .min = 0
+    .max = 5000
+    .by  = 10
+  }
+  cmbp::Emigration emigration {
+    .N = N[value]
+    .e2 = 0.00076
+    .e3 = 0.346
+  }
+  OutputR {
+    PageR {
+      .xAxis = N[value]
+      PlotR {
+        .ports = emigration[value]
+      }
+    }
+  }
+}
+

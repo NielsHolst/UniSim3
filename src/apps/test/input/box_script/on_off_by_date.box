@@ -1,0 +1,25 @@
+Simulation sim {
+  .steps = 10
+  Calendar calendar {
+    .begin = 1/1/2009  
+  }
+  Box butterfly {
+    OnOffByDate time { 
+      .x = calendar[date]
+      .xOn = 5/1   
+      .xOff = 8/1  
+      .valueOn = 117
+      .valueOff = 0
+    }
+    OnOffByDate time2 { 
+      .x = calendar[date]
+      .xOn = 20/10   
+      .xOff = 3/1  
+      .valueOn = 118
+      .valueOff = 0
+    }
+  }
+  OutputText {
+    .ports = calendar[date] | time[isOn] | time2[isOn] 
+  }
+}

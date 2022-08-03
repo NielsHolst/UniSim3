@@ -1,0 +1,120 @@
+Simulation sim {
+  .steps = 20
+  Box sensor {
+    +indoorsTemperature = 22
+    +indoorsRh = 70
+    +indoorsCo2 = 600
+    +outdoorsTemperature = 22
+    +outdoorsHumidity = 80
+    +outdoorsGlobalRadiation = 300
+    +outdoorsPropParRadiation = 0.47
+    +outdoorsCo2 = 400
+    +outdoorsWindSpeed = 4
+    +soilTemperature = 10
+  }
+  Calendar calendar {
+    .latitude = 62
+    .initialDateTime = "15/6/2001 14:00:00"
+    .timeStep = 1
+    .timeUnit = "s"
+  }
+  Outdoors outdoors{
+    .propParRadiation = sensor[outdoorsPropParRadiation]
+    .co2 = sensor[outdoorsCo2]
+    .soilTemperature = sensor[soilTemperature]
+    .temperature = ./records[Tair]
+    .rh = ./records[Rhair]
+    .radiation = ./records[GlobRad]
+    .diffuseRadiation = ./diffuseIrradiation[value]
+    .windSpeed = ./records[Windspeed]
+    .skyTemperature = ./skyTemperature[temperature]
+    Box records{ 
+      +Tair    = sensor[outdoorsTemperature]
+      +Rhair   = sensor[outdoorsHumidity]
+      +GlobRad = sensor[outdoorsGlobalRadiation]
+      +Windspeed = sensor[outdoorsWindSpeed]
+    }
+    DiffuseIrradiationRE diffuseIrradiation {
+    }
+    SkyTemperature skyTemperature {
+      .airTemperature = sensor[outdoorsTemperature]
+      .rh = sensor[outdoorsHumidity]
+    }
+  }
+  Box construction {
+    Geometry geometry {
+    }
+    Shelter shelter {
+      ShelterFace roof1 {
+        Screens screens {
+          Screen energy {
+            .state = actuators/screens/energy[value]
+          }
+        }
+      }
+      ShelterFace roof2 {
+        Screens screens {
+          Screen energy {
+            .state = actuators/screens/energy[value]
+          }
+        }
+      }
+    }
+  }
+  vg::Indoors indoors {
+  }
+  vg::Setpoints setpoints {
+  }
+  vg::Controllers controllers {
+    Box chalk {
+      +value = 0
+    }
+  }
+  vg::Actuators actuators {
+    GrowthLights growthLights {
+      GrowthLight {
+        .type = "HPSL"
+        .intensity = 60
+        .lifeTime = 12000
+        .age = 2000
+      }
+    }
+    // !! Box heating/pipes/pipe { // replace
+      // +temperature = 60
+    // }
+    // ! heating/pipes/pipe { // change
+      // .length = 100
+    // }
+  }
+  vg::Crop crop {
+  }
+  vg::Budget budget {
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[time]
+      // PlotR { 
+        // .ports = (heating/minSupply[value] heating/maxSupply[value] heating/demand[value] heating/supply[value]) 
+      // }
+      // PlotR { 
+        // +pipeT = pipes/*[temperature]
+        // +indoorsT = indoors/temperature[value]
+        // +outdoorsT = outdoors[temperature]
+        // +windSpeed = outdoors[windSpeed]
+        // +indoorsRh = indoors/humidity[rh]
+        // .ports = (.[outdoorsT] .[indoorsT] .[pipeT] .[windSpeed] .[indoorsRh]) 
+      // }
+      // PlotR { 
+        // .ports = (*/supply[value]  temperature[energyFlux]) 
+      // }
+      // PlotR { 
+        // .ports = (given/airFlux[value] given/energyFlux/*[value])
+      // }
+      PlotR {
+        .nrow = 4
+        .ports = (crop/layers/*/photosynthesis[Pg]  crop/growth/Pg[value] top/photosynthesis[*] calendar[angot])
+        .ggplot = "geom_line() + geom_point() + scale_x_datetime(date_labels='%H')"
+      }
+    }
+  }
+}

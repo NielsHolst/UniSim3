@@ -1,0 +1,6 @@
+Simulation sim {
+	Calendar calendar {
+		+s = "æåÆØÅ"
+		.timeUnit = "d"	// æåÆØÅ
+	}
+}

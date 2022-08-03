@@ -1,0 +1,41 @@
+Simulation sim {
+  .steps = 350
+  Calendar calendar {
+    .initialDateTime = "1/4/2004"
+  }
+  Records weather {
+    .fileName = "weather/AnGiang.txt"
+  }
+  Box rice {
+    DayDegrees time {
+      .T0 = 13
+      .T = weather[Tavg]
+    }
+    FixedSignal emergence {
+      .input = weather[Vegetative]
+    }
+    Stage vegetative {
+      .inflow = ../emergence[flagUp]
+      .duration = 750
+      .timeStep = ../time[step]
+    }
+    Stage reproductive {
+      .inflow = vegetative[outflow]
+      .duration = 600
+      .timeStep = ../time[step]
+    }
+    Stage ripening {
+      .inflow = reproductive[outflow]
+      .duration = 400
+      .timeStep = ../time[step]
+    }
+  }
+  OutputR {
+    .end = "bph-rice-end.R"
+    OutputText {
+      .ports = (weather[Vegetative] weather[Reproductive] weather[Ripening] rice/*[content] 
+                calendar[dayLength] weather[Tavg]) 
+    }
+  }
+}
+

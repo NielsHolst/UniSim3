@@ -1,0 +1,11 @@
+Simulation sim {
+  .steps = 1085
+  Box s {
+    &a = sum(x[a])
+    &a = sum(x[a]+y[b])
+    &a = sum(mean(x[a]+y[b]))*abc[b]^2
+    &b = sum(x[a]|y[b])
+    &c = c(x[a], y[b], 123)
+  }
+}
+

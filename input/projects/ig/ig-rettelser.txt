@@ -1,0 +1,6 @@
+Construction/Infiltration er typisk mellem 0.1 og 0.5. Nuværende værdi på 60 er umulig. Tallet angiver hvor mange gang luften udskiftes i timen.
+
+HeatPipe/InnerDiameter skal være i mm ikke i m. Typisk værdi er 41.
+
+GrowthLight/PowerUsage skal være W/m2. Den nuværende værdi på 17600 W må være totalen for hele væksthuset.
+

@@ -1,0 +1,28 @@
+Simulation sim {
+  .steps = 3
+  Box {
+    Box a1 {
+      &x = "abc"
+    }
+    Box a2 {
+      &x = "xyz"
+    }
+    A a {
+    }
+  }
+  Box {
+    Box b1 {
+      &y = 13
+    }
+    Box b2 {
+      &y = 7
+    }
+    A b {
+      .ints = ../*[y]
+    }
+  }
+  A c {
+    .ints = ../*[z]
+  }
+}
+

@@ -1,0 +1,9 @@
+Simulation sim {
+  .steps = 3
+  Calendar calendar {
+    .begin = 24/02/2022
+  }
+  OutputText output {
+    .ports = sim[step] | calendar[date]
+  }
+}

@@ -1,0 +1,53 @@
+// butterflies.box
+Simulation sim {
+  .steps = 70
+  Box hero {
+    Stage egg {
+      .initial = 40 
+      .duration = 10
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 21
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 10
+    }
+    Stage adult {
+      .inflow = ../pupa[outflow]
+      .duration = 14
+    }
+  }
+  Box io {
+    Stage egg {
+      .initial = 100 
+      .duration = 7
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 15
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 7
+    }
+    Stage adult {
+      .inflow = ../pupa[outflow]
+      .duration = 30
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = sim[step]
+      .ncol = 2
+      PlotR {
+        .ports = hero/*[content]
+      }
+      PlotR {
+        .ports = io/*[content]
+      }
+    }
+  }
+}
+

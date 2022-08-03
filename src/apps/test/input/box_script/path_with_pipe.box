@@ -1,0 +1,25 @@
+Simulation sim {
+	Calendar calendar {
+		.timeUnit = "d"
+	}
+  Stage a {}
+  Stage b {}
+  Stage c {
+    .initial(transform=Sum) = a[contents]|b[contents]
+    .inflow(transform=Sum) = ../a[contents]|../b[contents]
+  }
+  Stage d {
+    .initial(transform=Sum) = a[contents] | b[contents]
+    .inflow(transform=Sum) = ../a[contents] | ../b[contents]
+  }
+	// OutputR {
+		// PageR{
+		// .xAxis= calendar[date]
+			// PlotR{
+			// .layout = “merged”
+			// .ports = (a[contents] b[contents] c[contents]) 
+			// } 
+			
+		// }
+	// }
+}

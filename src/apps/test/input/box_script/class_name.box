@@ -1,0 +1,12 @@
+Simulation {
+  Box box {
+  }
+  Stage stage {
+  }
+  Box monteCarlo {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniform rnd {
+    }
+  }
+}

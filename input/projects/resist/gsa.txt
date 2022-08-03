@@ -1,0 +1,25 @@
+(A) RISK OF INSECTICIDE RESISTANCE DEVELOPMENT
+             Parameter FirstOrderEffect TotalEffect
+     coverage_maxValue            0.284       0.552
+                 slope            0.255       0.540
+        resistanceGain            0.078       0.404
+proportion_bounds_logP            0.058       0.192
+                     R            0.053       0.188
+        fitnessPenalty            0.060       0.176
+          maxMortality            0.006       0.148
+         q_bounds_logP            0.078       0.140
+            K_maxValue            0.047       0.124
+SUM                               0.917       2.465
+            
+(B) RISK OF INSECT PEST OUTBREAK
+             Parameter FirstOrderEffect TotalEffect
+                     R            0.343       0.854
+            K_maxValue            0.092       0.586
+     coverage_maxValue            0.090       0.503
+        fitnessPenalty            0.098       0.498
+        resistanceGain            0.084       0.484
+                 slope            0.115       0.463
+          maxMortality            0.045       0.441
+         q_bounds_logP            0.022       0.417
+proportion_bounds_logP            0.112       0.416
+SUM                               1.000       4.662

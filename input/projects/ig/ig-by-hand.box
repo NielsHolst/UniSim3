@@ -1,0 +1,199 @@
+Simulation sim {
+  .steps = 100
+  Calendar calendar {
+    .initialDateTime = 1/8/2019
+    .timeStep = 30
+    .timeUnit = "m"
+    .latitude = 55.3 
+    .longitude = 10.05 
+  }
+  Outdoors outdoors {
+    .temperature  = ./sensors[OutdoorsTemperature]
+    .rh = ./sensors[IndoorsRH]  // no outdoors RH
+    .radiation = ./sensors[OutdoorsIrradiation]
+    .diffuseRadiation = ./diffuseRadiation[value]
+    .windSpeed = ./sensors[OutdoorsWindSpeed]
+    .skyTemperature = ./skyTemperature[temperature]
+    Records sensors {
+      .fileName = "ig-sensor-records.txt"
+    }
+    DiffuseIrradiationRE diffuseRadiation {
+      .globalIrradiation = ../sensors[OutdoorsIrradiation]
+    }
+    SkyTemperature skyTemperature {
+      .airTemperature  = ../sensors[OutdoorsTemperature]
+      .rh = ../sensors[IndoorsRH]  // no outdoors RH
+    }
+  }
+  Box construction { 
+    vg::Geometry geometry {
+      .orientation = 90.0 
+      .numSpans = 6 
+      .spanWidth = 3.2 
+      .length = 104 
+      .height = 4.5 
+      .roofPitch = 22 
+      .reflection = 0.002
+    }
+    vg::Shelter shelter { 
+      vg::ShelterFace roof1 { 
+        vg::Cover cover { 
+        }
+        vg::Screens screens { 
+          vg::Screen screen2 { 
+            .orientation = "horizontal"
+            .transmissivityLight = 0.3
+            .transmissivityAir = 0.8
+            .energyLossReduction = 0.47
+            .state = sensors[ScreenEffect2]
+          }
+          vg::Screen screen1 { 
+            .orientation = "horizontal"
+            .transmissivityLight = 0.3
+            .transmissivityAir = 0.35
+            .energyLossReduction = 0.47
+            .state = sensors[ScreenEffect1]
+          }
+        }
+        Vent vent { 
+          .length = 3
+          .width  = 1
+          .number = 72
+          .state = sensors[VentEffect1]
+          .ventTransmissivity = 1
+        }
+      }
+      vg::ShelterFace roof2 {
+        vg::Cover cover { 
+        }
+        vg::Screens screens { 
+          vg::Screen screen2 { 
+            .orientation = "horizontal"
+            .transmissivityLight = 0.3
+            .transmissivityAir = 0.8
+            .energyLossReduction = 0.47
+            .state = sensors[ScreenEffect2]
+          }
+          vg::Screen screen1 { 
+            .orientation = "horizontal"
+            .transmissivityLight = 0.3
+            .transmissivityAir = 0.35
+            .energyLossReduction = 0.47
+            .state = sensors[ScreenEffect1]
+          }
+        }
+        Vent vent { 
+          .length = 3
+          .width  = 1
+          .number = 72
+          .state = sensors[VentEffect2]
+          .ventTransmissivity = 1
+        }
+      }
+      vg::ShelterFace side1 { 
+        vg::Cover cover { 
+        }
+        vg::Screens screens { 
+        }
+      }
+      vg::ShelterFace side2 { 
+        vg::Cover cover { 
+        }
+        vg::Screens screens { 
+        }
+      }
+      vg::ShelterFace end1 { 
+        vg::Cover cover { 
+        }
+        vg::Screens screens { 
+        }
+      }
+      vg::ShelterFace end2 { 
+        vg::Cover cover { 
+        }
+        vg::Screens screens { 
+        }
+      }
+    }
+  }
+  Box energyFlux {
+    Box floor {
+      +emissivity = 0.9  // obs$Construction$Floor$Emissivity
+      +temperature = sensors[IndoorsTemperature] // hack
+    }
+  }
+  Box given {
+    Box energyFlux {
+      Box shelter {
+        +coverTemperature = sensors[OutdoorsTemperature] // hack
+        +screensTemperature = sensors[IndoorsTemperature] // hack
+      }
+    }
+  }
+  Box indoors {
+    Box temperature {
+      +value = sensors[IndoorsTemperature]
+
+    }
+    Box windSpeed {
+      +value = 0.1
+    }
+    Box co2 {
+      +value = sensors[IndoorsCo2]
+    }
+    IgIndoorsHumidity humidity {
+      .rh = sensors[IndoorsRH]
+    }
+    IndoorsLight light {
+    }
+  }
+  Box controllers {
+    +chalk = 0
+    Box growthLight {
+      +signal = sensors[GrowthLightIntensity]
+    }  
+  }
+  Box actuators {
+    GrowthLights growthLights {
+      GrowthLight growthLight {
+        .intensity = sensors[GrowthLightIntensity]
+        .parPhotonCoef = 1.732   // obs$growthLights[[1]]$ParEfficiency
+        .minPeriodOn = 30 // hack
+      }
+    }
+    Box heating {
+      +value = sensors[IndoorsTemperature] // hack
+    }
+  }
+  vg::Crop crop {
+    Box lai {
+      +value = 1
+      +fractionPlantArea = 0.9 // obs$Construction$CultivatedArea / 100
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = (sensors[OutdoorsIrradiation]
+                   sensors[GrowthLightIntensity]
+                  )
+      }
+      PlotR {
+        .ports = (Pg[value])
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = (sensors[ScreenEffect1]
+                   sensors[ScreenEffect2]
+                  )
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = (sensors[VentEffect1]
+                   sensors[VentEffect2]
+                  )
+      }
+    }
+  }
+}

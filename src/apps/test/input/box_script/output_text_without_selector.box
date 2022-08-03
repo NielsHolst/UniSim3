@@ -1,0 +1,11 @@
+Simulation sim {
+  Calendar calendar {
+  }
+  Stage a {
+  }
+  Stage b {
+  }
+  OutputText {
+    .ports = calendar[date] | a[content] | b[content]
+  }
+}

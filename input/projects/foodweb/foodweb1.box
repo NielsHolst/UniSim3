@@ -1,0 +1,75 @@
+Simulation sim {
+  .steps = 60
+  Box pop {
+    Stage mite {
+      .initial = 100
+      .duration = 30
+      .instantLossRate = web[mortality_mite]
+    }
+    Stage larva {
+      .initial = 100
+      .duration = 30
+      .instantLossRate = web[mortality_larva]
+    }
+    Stage midge {
+      .initial = 100
+      .duration = 30
+      .instantLossRate = web[mortality_midge]
+    }
+    Box ant {
+      +content = 10
+      +supply = web[supply_ant]
+      +sdRatio = web[sdRatio_ant]
+    }
+    Box wasp {
+      +content = 5
+      +supply = web[supply_wasp]
+      +sdRatio = web[sdRatio_wasp]
+    }
+  }
+  FoodWeb web {
+    Predator ant {
+      .density = pop/ant[content]
+      .demand = 2
+      Prey mite {
+        .density = pop/mite[content]
+        .attackRate = 0.1
+        .gainFactor = 1
+      }
+      Prey larva {
+        .density = pop/larva[content]
+        .attackRate = 0.2
+        .gainFactor = 3
+      }
+    }
+    Predator wasp {
+      .density = pop/wasp[content]
+      .demand = 4
+      Prey larva {
+        .density = pop/larva[content]
+        .attackRate = 0.4
+        .gainFactor = 1
+      }
+      Prey midge {
+        .density = pop/larva[content]
+        .attackRate = 0.1
+        .gainFactor = 0.5
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      .ncol = 3
+      PlotR {
+        .ports = *[content]
+      }
+      PlotR {
+        .ports = (web[loss_larva] web[loss_midge] web[loss_mite] pop/ant[supply] pop/wasp[supply])
+      }
+      PlotR {
+        .ports = (web[mortality_larva] web[mortality_midge] web[mortality_mite] pop/ant[sdRatio] pop/wasp[sdRatio])
+      }
+      
+    }
+  }
+}

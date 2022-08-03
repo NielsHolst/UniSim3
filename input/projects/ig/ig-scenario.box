@@ -1,0 +1,111 @@
+// i/ig-scenario.box
+Simulation greenhouse {
+  .steps =  2000 // 10800 // 15 days
+  Calendar calendar {
+    .initialDateTime = 1/8/2001
+    .timeStep = 2
+    .timeUnit = "m"
+  }
+  Outdoors outdoors {
+  }
+  Box construction {
+    Geometry geometry {
+    }
+    Shelter shelter {
+      ShelterFace roof1 {
+        Screens screens {
+          Screen energy {
+            .state = actuators/screens/energy[value]
+          }
+        }
+      }
+      ShelterFace roof2 {
+        Screens screens {
+          Screen energy {
+            .state = actuators/screens/energy[value]
+          }
+        }
+      }
+    }
+  }
+  vg::Indoors indoors {
+  }
+  vg::Setpoints setpoints {
+  }
+  vg::Controllers controllers {
+    Box chalk {
+      +value = 0
+    }
+  }
+  vg::Actuators actuators {
+    GrowthLights growthLights {
+      GrowthLight {
+        .type = "HPSL"
+        .intensity = 60
+        .lifeTime = 12000
+        .age = 2000
+      }
+    }
+    Box heating {
+      +value = 40
+      Box pipes {
+        Pipe pipe {
+          .density = 1.8
+        }
+      }
+    }
+  }
+//    if (!findMaybeOne<Box>("./heating"))
+//        builder.
+//        box().name("heating").
+//            box().name("pipes").
+//                newPort("energyFlux").imports("./*<Pipe>[energyFlux]").transform(Sum).
+//                box("vg::Pipe").
+//                    port("length").equals(1.8).
+//                    port("diameter").equals(52).
+//                    port("minTemperature").equals(20).
+//                    port("maxTemperature").equals(80).
+//                endbox().
+//            endbox().
+//        endbox();
+  vg::Crop crop {
+    Box lai {
+      +value = 1.
+      +fractionPlantArea = 1.
+    }
+  }
+  vg::Budget budget {
+  }
+  vg::CropDevelopment development {
+    .physDuration = 300
+    .physStep = ./time[step]
+    DayDegrees time {
+      .T = indoors/temperature[value]
+      .T0 = 12
+      .Topt = 27
+      .Tmax = 32
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR { 
+        +outdoorsT = outdoors[temperature]
+        +outdoorsWindSpeed = outdoors[windSpeed]
+
+        +indoorsCo2 = indoors/co2[value]
+        +indoorsT = indoors/temperature[value]
+        +indoorsRh = indoors/humidity[rh]
+
+        +growthLightPower = actuators/growthLights[powerUsage] // W/m2
+        +heatingPower = controlled/heating/energyFlux[value] // W/m2
+
+        +leafLightUseEfficiency = crop/layers/top/photosynthesis/lightResponse[LUE] // mg CO2/J
+        +leafNetPhotosynthesis = crop/layers/top/photosynthesis[Pn] // g CO2/leaf m2/h
+
+        +developmentDuration = development[duration]
+        +developmentRate = development[rate]
+      }
+    }
+  }
+}

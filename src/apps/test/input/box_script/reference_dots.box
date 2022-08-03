@@ -1,0 +1,10 @@
+Simulation sim {
+  .steps = 0
+  Box A {
+    &a = 3.12
+    &b = .[a]
+    Box B {
+      &c = ..[b]
+    }
+  }
+}

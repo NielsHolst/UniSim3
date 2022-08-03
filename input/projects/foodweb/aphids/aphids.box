@@ -1,0 +1,299 @@
+Simulation sim {
+  .steps =  273 // end of september
+  Box par {
+    +k = 15
+    +cropAtStart = 20
+    +cropHalfways = 800
+    +propExposedImmigrants = 0.1
+    +lethalTime = 80
+    +immunityCost = 0
+    +sporulationOn = 80
+    +cadaverDuration = 70
+    +timeAcceleration = 2
+    +transmissionEfficiency = 0.3
+    +juvenileApterousDuration = 172 
+    +juvenileAlateDuration = 195 
+    +adultDuration = 300
+    +fecundityDuration = 100
+    +fecundity_k = 1
+  }
+
+  Calendar calendar {
+    .timeStep=1
+    .timeUnit="d" 
+  }
+
+  Records weather {
+    .fileName =  ./files[fileNamePath]   
+    .overrideCalendarYear = TRUE
+    SelectFile files {
+      .folder = "weather"
+      .filter = "*.txt"
+      .selectFileNumber = 1
+      .showFileNames = FALSE
+    }
+  } 
+  
+  //
+  // Wheat
+  //
+  
+  Box wheat{
+    CropGrowthStage cropGrowthStage {
+      .valueAtStart=  par[cropAtStart]
+      .dayDegrees = ./time[total]
+      .dayDegreesHalfways = par[cropHalfways]
+      CropIsGrowing isGrowing {
+        .temperature = weather[Tavg] 
+      }
+      DayDegrees time{
+        .T = weather[Tavg]
+        .T0 = 0
+        .isTicking = ../isGrowing[value]
+      }
+    }
+  }
+  
+  //
+  // Aphid
+  //
+  Box aphids {
+    Box density {
+      // Sum for all aphid species
+      Sum total {
+        .values = aphids/*/density/total[value]
+      }
+    }
+  }
+  Maker aphids {
+    .names = ("avenae" "dirhodum" "padi")
+    Box {
+      DayDegrees time{
+        .T = weather[Tavg]
+        .T0 = 3 
+        .Topt = 18 
+        .Tmax = 30 
+      }  
+      DayDegrees fungusTime {
+        .T = weather[Tavg]
+        .T0 = 2 
+        .Topt = 18 
+        .Tmax = 30 
+      }
+      Box density {
+        Sum total {
+          .values = ../../*/*/*[content] 
+        }
+      }
+      AphidImmigration immigration {
+        .cropGrowthStage = cropGrowthStage[value]
+        .toCropGrowthStage = 69
+        .immigrationRate = 0.02
+        .propExposedImmigrants = par[propExposedImmigrants]
+        .k = par[k]
+      }
+      AphidNetReproduction netReproduction {
+        .Tmin = 3 
+        .Topt = 16.1 
+        .Tmax = 30
+        .R0opt = 51.6
+        .temperature = weather[Tavg]
+        .cropGrowthStage = cropGrowthStage[value]
+        .optimumCropGrowthStageFrom = 59
+        .optimumCropGrowthStageTo   = 73
+        .optimumCropFactor = 1.6
+        .aphidDensity = aphids/density/total[value] // use density all aphid species
+        .aphidDensityThreshold = 40 
+        .alateFactor = 0.67
+        .exposureCost = par[immunityCost] 
+      }
+      AphidOffspring offspring {
+        .offspringFromSusceptible|sum = ../susceptible/adult/*/fecundity[outflow] 
+        .offspringFromExposedApterous|sum = ../exposed/adult/apterous/fecundity[outflow] 
+        .offspringFromExposedAlate|sum = ../exposed/adult/alate/fecundity[outflow] 
+        .aphidDensity = aphids/density/total[value] // use density all aphid species
+        .cropGrowthStage = cropGrowthStage[value]
+      }
+      AphidJuvenileSurvival survival{
+        .cropGrowthStage = cropGrowthStage[value]
+        .temperature = weather[Tavg]
+      }
+      Box susceptible {
+        Box nymph {
+          Stage apterous {
+            .inflow = .../offspring[apterous]
+            .timeStep = .../time[step]
+            .k = par[k]
+            .duration = par[juvenileApterousDuration]
+            .growthFactor = .../survival[value]
+            .phaseOutflowProportion = .../infectious/infectionRate[value]
+          }
+          Stage alate {
+            .inflow = .../offspring[alate]
+            .timeStep = .../time[step]
+            .k = par[k]
+            .duration = par[juvenileAlateDuration]
+            .growthFactor = .../survival[value]
+            .phaseOutflowProportion = .../infectious/infectionRate[value]
+          }
+        }
+        Box adult {
+          Stage apterous {
+            .inflow = .../nymph/apterous[outflow]
+            .timeStep = .../time[step]
+            .duration = par[adultDuration]
+            .k = par[k]
+            .phaseOutflowProportion = .../infectious/infectionRate[value]
+            Stage fecundity {
+              .inflow = .../nymph/apterous[outflow]
+              .timeStep = .../time[step]
+              .duration = par[fecundityDuration]
+              .k = par[fecundity_k]
+              .growthFactor = .../netReproduction[apterous]
+              .phaseOutflowProportion = .../infectious/infectionRate[value]
+            }
+          }
+          Stage alate {
+            .inflow = .../immigration[susceptible]
+            .timeStep = .../time[step]
+            .duration = par[adultDuration]
+            .k = par[k]
+            .phaseOutflowProportion = .../infectious/infectionRate[value]
+            Stage fecundity {
+              .inflow = .../immigration[susceptible]
+              .timeStep = .../time[step]
+              .duration = par[fecundityDuration]
+              .k = par[fecundity_k]
+              .growthFactor = .../netReproduction[alate]
+              .phaseOutflowProportion = .../infectious/infectionRate[value]
+            }
+          }
+        }
+      } // susceptible
+      Box exposed {
+        Box nymph {
+          StageAndPhase apterous {
+            .timeStep = .../time[step]
+            .k = par[k]
+            .duration = par[juvenileApterousDuration]
+            .growthFactor = .../survival[value]
+            .phaseInflow = .../susceptible/nymph/apterous[phaseOutflow]
+            .phaseTimeStep = .../fungusTime[step]
+            .phaseK = par[k]
+            .phaseDuration = par[lethalTime]
+          }
+          StageAndPhase alate {
+            .timeStep = .../time[step]
+            .k = par[k]
+            .duration = par[juvenileAlateDuration]
+            .growthFactor = .../survival[value]
+            .phaseInflow = .../susceptible/nymph/alate[phaseOutflow]
+            .phaseTimeStep = .../fungusTime[step]
+            .phaseK = par[k]
+            .phaseDuration = par[lethalTime]
+          }
+        } // nymph
+        Box adult {
+          StageAndPhase apterous {
+            .inflow = .../nymph/apterous[outflow]
+            .timeStep = .../time[step]
+            .duration = par[adultDuration]
+            .k = par[k]
+            .phaseInflow = .../susceptible/adult/apterous[phaseOutflow]
+            .phaseTimeStep = .../fungusTime[step]
+            .phaseK = par[k]
+            .phaseDuration = par[lethalTime]
+            StageAndPhase fecundity {
+               // no inflow because exposed/nymphs don't reproduce as adults
+              .timeStep = .../time[step]
+              .duration = par[fecundityDuration]
+              .k = par[fecundity_k]
+              .growthFactor = .../netReproduction[apterousExposed] 
+              .phaseInflow = .../susceptible/adult/apterous/fecundity[phaseOutflow]
+              .phaseTimeStep = .../fungusTime[step]
+              .phaseK = par[k]
+              .phaseDuration = par[lethalTime]
+            }
+          }
+          StageAndPhase alate {
+            .inflow = .../immigration[exposed]
+            .timeStep = .../time[step]
+            .duration = par[adultDuration]
+            .k = par[k]
+            .phaseInflow = .../susceptible/adult/alate[phaseOutflow]
+            .phaseTimeStep = .../fungusTime[step]
+            .phaseK = par[k]
+            .phaseDuration = par[lethalTime]
+            StageAndPhase fecundity {
+              // 2019/08/06: Exposed immigrants reproduce after arriving
+              .inflow = .../immigration[exposed]
+              .timeStep = .../time[step]
+              .duration = par[fecundityDuration]
+              .k = par[fecundity_k]
+              .growthFactor = .../netReproduction[alateExposed] 
+              .phaseInflow = .../susceptible/adult/alate/fecundity[phaseOutflow]
+              .phaseTimeStep = .../fungusTime[step]
+              .phaseK = par[k]
+              .phaseDuration = par[lethalTime]
+            }
+          }
+        } // adult
+        CadaverConversion succumbed {
+          .succumbedApterousNymphs = .../nymph/apterous[phaseOutflow]
+          .succumbedAlateNymphs    = .../nymph/alate[phaseOutflow]  
+          .succumbedApterousAdults   = .../adult/apterous[phaseOutflow]
+          .succumbedAlateAdults    = .../adult/alate[phaseOutflow]   
+        }
+      } // exposed
+      Box infectious {
+        OnOff isSporulating {
+          .x = weather[RHmax]
+          .xOn = par[sporulationOn]
+          .xOff = 999 
+        }
+        CadaverTime time {
+          .isSporulating = ../isSporulating[isOn]
+          .timeStep = .../fungusTime[step]
+          .rhAccelaration = par[timeAcceleration] //2.33
+        }
+        Stage cadavers {
+          .inflow = .../exposed/succumbed[cadavers]
+          .timeStep = .../time[step]
+          .duration = par[cadaverDuration]
+          .k = par[k]
+        }
+        InfectionRate infectionRate {
+          .isSporulating = ../isSporulating[isOn]
+          .cadavers = ../cadavers[content]
+          .transmissionEfficiency = par[transmissionEfficiency] 
+        }
+      } // infectious
+    } // aphid
+  } // aphids
+
+  Box modifiers {
+    Modifier avenae {
+      .boxes = (aphids/avenae/immigration)
+      +immigrationRate = 0.02
+    }
+    Modifier dirhodum {
+      .boxes = (aphids/dirhodum/immigration)
+      +immigrationRate = 0.005
+    }
+    Modifier padi {
+      .boxes = (aphids/padi/immigration)
+      +immigrationRate = 0.01
+    }
+  }
+
+  OutputR {
+    .keepPages = TRUE
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = (aphids/*/density/total[value] aphids/density/total[value])
+        .layout = "merged"
+      }
+    }
+  }  
+}

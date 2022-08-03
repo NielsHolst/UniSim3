@@ -1,0 +1,18 @@
+// egg1.box
+Simulation sim {
+  .steps = 14
+  Stage egg {
+    .initial = 100 
+    .duration = 7
+  }
+  OutputR {
+    PageR {
+      .width = 4.0
+      .height = 2.5
+      .xAxis = sim[step]
+      PlotR {
+        .ports = egg[content]
+      }
+    }
+  }
+}

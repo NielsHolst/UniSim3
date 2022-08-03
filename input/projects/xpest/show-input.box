@@ -1,0 +1,18 @@
+Simulation {
+  .steps = 80
+  Calendar calendar {
+    .initialDateTime = "1/1/2001"
+    .timeUnit = "m"
+  }
+  Records input {
+    .fileName = "partition_below_ground.txt"
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[time]
+      PlotR {
+        .ports = (input[BelowGround])
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+Simulation sim {
+	OutputR {
+		PageR {
+			PlotR plot {
+				.ports = sim[step]
+			}
+		}
+	}
+}

@@ -1,0 +1,18 @@
+// computation1.box
+Simulation sim {
+  .iterations = 2
+  .steps = 3
+  Computation comp {  
+  }
+  Box pop { 
+    &r = 1.05
+    &density = if    (comp[step]=="reset" ) then 100.0 
+               elsif (comp[step]=="update") then .[r] * .[density]
+               else .[density]
+  }
+  OutputR {
+    OutputText output {
+      .ports = pop[*] | sim[step] | comp[step]
+    }
+  }
+}

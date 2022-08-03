@@ -1,0 +1,16 @@
+Simulation sim { // #0
+  .iterations = 1
+  .steps = 8760
+  Calendar calendar {
+    .initialDateTime = 1/1/2001
+    .timeUnit = "h"
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = calendar[sinb]
+      }
+    } 
+  }
+}

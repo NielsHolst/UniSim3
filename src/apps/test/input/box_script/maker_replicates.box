@@ -1,0 +1,49 @@
+Simulation maker_replicates {
+  .iterations = 4
+  .steps = 20
+  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniform latitude {
+      .min = 10
+      .max = 20 
+    }
+    RandomUniform longitude {
+      .min = -40
+      .max = -30
+    }
+    RandomUniform density {
+      .min = 20
+      .max = 50
+    }
+  }
+  Maker islands {
+    .replicates = 3
+    Box island {
+      &latitude  = random/latitude[value]
+      &longitude = random/longitude[value]
+      Box predator {
+        Stage fox {
+          .initial = random/density[value]
+          .duration = 12
+        }
+      }
+      Box prey {
+        Stage rabbit {
+          .initial = random/density[value]
+          .duration = 8
+        }
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = (*[content])
+      }
+    }
+    OutputText {
+      .ports = *[latitude] | *[longitude] | *[initial]
+    }
+  }
+}

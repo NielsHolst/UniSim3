@@ -1,0 +1,47 @@
+Dear Andrea,
+
+I hesitate to bother you with such a mundane question, while also admitting that I am in the process of carrying out myself for the first time a proper SA, but anyhow: I have constructed a simulation model of insect pest population dynamics. The outcome is (A) the risk of insecticide resistance development and (B) the risk of an insect pest outbreak. The model is governed by nine parameters.
+
+I calculated (by way of the R package 'sensitivity') both the first order and total effects and include the results below in two tables (attached in two plots as well). 
+
+I have had problems finding methods by which to interpret such results systematically and objectively. But let me try:
+
+(1) The sum of first order effects tells that for output A, the model was 92% linear on the model parameters, while for output B it was 100% linear. I was surprised by this outcome but anyway it means that we can be confident, that we can explain most of model sensitivity by the model parameters.
+
+(2) For output A, total effects highlight the top three most influential parameters. They all three take part in interactions (most likely among each other; this could be sorted out through second order indices). The resistanceGain parameter, in particular, gains importance through interactions, as it has a large difference between the first order and total effect.
+
+(3) For output B, it seems as if all parameters engage in influential interactions, parameter R being the most influential. Maybe second order indices are necessary to sort out what's going on. This analysis disappointingly points to that 'everything is important'.
+
+(4) I wonder if the sum of total effects has any usage? Can it be used to rescale the total effects to a sum of 1, thereby apportioning the relative total effect of each model parameter?
+
+Again, sorry to bother you. You are welcome simply to point me to proper references that can help me with my analysis.
+
+Kind regards,
+Niels.
+
+
+(A) RISK OF INSECTICIDE RESISTANCE DEVELOPMENT
+             Parameter FirstOrderEffect TotalEffect
+     coverage_maxValue            0.284       0.552
+                 slope            0.255       0.540
+        resistanceGain            0.078       0.404
+proportion_bounds_logP            0.058       0.192
+                     R            0.053       0.188
+        fitnessPenalty            0.060       0.176
+          maxMortality            0.006       0.148
+         q_bounds_logP            0.078       0.140
+            K_maxValue            0.047       0.124
+SUM                               0.917       2.465
+            
+(B) RISK OF INSECT PEST OUTBREAK
+             Parameter FirstOrderEffect TotalEffect
+                     R            0.343       0.854
+            K_maxValue            0.092       0.586
+     coverage_maxValue            0.090       0.503
+        fitnessPenalty            0.098       0.498
+        resistanceGain            0.084       0.484
+                 slope            0.115       0.463
+          maxMortality            0.045       0.441
+         q_bounds_logP            0.022       0.417
+proportion_bounds_logP            0.112       0.416
+SUM                               1.000       4.662

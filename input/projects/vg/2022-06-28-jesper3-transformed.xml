@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<box xmlns:ecolmod="http://www.ecolmod.org" class="Simulation" name="greenhouse">
+	<port name="steps" ref="/calendar[steps]"/>
+	<port name="unattended" value="TRUE"/>
+	<!-- *** Calendar *** -->
+	<box class="Calendar" name="calendar">
+		<port name="begin" source="/VG_SETUP/Description/StartTime" computes="01.01.2022 - 1"/>
+		<port name="end" source="/VG_SETUP/Description/StopTime" value="03.01.2022T24:00:00"/>
+		<port name="timeStep" source="/VG_SETUP/Description/TimeStep" value="3"/>
+		<port name="timeUnit" value="m" source="Fixed"/>
+		<port name="latitude" source="/VG_SETUP/Description/Latitude" value="55.4038"/>
+		<port name="longitude" source="/VG_SETUP/Description/Longitude" value="10.4024"/>
+	</box>
+	<!-- *** Outdoors *** -->
+	<box class="vg::Outdoors" name="outdoors">
+		<box class="Records" name="records">
+			<port name="fileName" source="/VG_SETUP/Description/WeatherFile" value="DNK_Copenhagen.txt"/>
+			<port name="cycle" value="TRUE"/>
+		</box>
+	</box>
+	<!-- *** Construction *** -->
+	<box name="construction">
+		<box class="vg::Geometry" name="geometry">
+			<port name="orientation" source="/VG_SETUP/Greenhouse/Orientation" value="0"/>
+			<port name="numSpans" source="/VG_SETUP/Greenhouse/NumberOfSpans" value="25"/>
+			<port name="spanWidth" source="/VG_SETUP/Greenhouse/SpanSize" value="4"/>
+			<port name="length" source="/VG_SETUP/Greenhouse/Length" value="1000"/>
+			<port name="height" source="/VG_SETUP/Greenhouse/TrempelHeight" value="4"/>
+			<port name="roofPitch" source="/VG_SETUP/Greenhouse/RoofPitch" value="26"/>
+			<port name="reflection" source="/VG_SETUP/Greenhouse/GreenhouseReductionFactorLight" value="0.1"/>
+		</box>
+		<box class="vg::Shelter" name="shelter">
+			<port name="screenAirExponent" source="/VG_SETUP/Greenhouse/screenAirExponent" value="6"/>
+			<port name="Uair" source="/VG_SETUP/Greenhouse/screenUair" value="2.27"/>
+			<port name="screenUstateExponent" source="/VG_SETUP/Greenhouse/screenUstateExponent" value="32"/>
+			<port name="screenUventilationSlope" source="/VG_SETUP/Greenhouse/screenUventilationSlope" value="0.5"/>
+			<port name="screenPerfection" source="/VG_SETUP/Greenhouse/screenPerfection" value="0.95"/>
+			<box class="vg::ShelterFace" name="roof1">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="UwindMinimum" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneUValue" value="6.5"/>
+					<port name="UwindSlope" source="/VG_SETUP/Greenhouse/UwindSlope" value="1.2"/>
+					<port name="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenRoof" name="layer1">
+						<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="Utop" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="Ubottom" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="transmissivityAir" source="/VG_SETUP/Greenhouse/Screens/Screen/Porosity" value="0.4"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+				<box class="vg::Vent" name="vent">
+					<port name="length" source="/VG_SETUP/Greenhouse/Vents/Vent/Length" value="3"/>
+					<port name="width" source="/VG_SETUP/Greenhouse/Vents/Vent/Width" value="1"/>
+					<port name="number" source="/VG_SETUP/Greenhouse/Vents/Vent/Number" value="200"/>
+					<port name="transmissivity" source="/VG_SETUP/Greenhouse/Vents/Vent/VentTransmissivity" value="1"/>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="roof2">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="UwindMinimum" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneUValue" value="6.5"/>
+					<port name="UwindSlope" source="/VG_SETUP/Greenhouse/UwindSlope" value="1.2"/>
+					<port name="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenRoof" name="layer1">
+						<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="Utop" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="Ubottom" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="transmissivityAir" source="/VG_SETUP/Greenhouse/Screens/Screen/Porosity" value="0.4"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+				<box class="vg::Vent" name="vent">
+					<port name="length" source="/VG_SETUP/Greenhouse/Vents/Vent/Length" value="3"/>
+					<port name="width" source="/VG_SETUP/Greenhouse/Vents/Vent/Width" value="1"/>
+					<port name="number" source="/VG_SETUP/Greenhouse/Vents/Vent/Number" value="200"/>
+					<port name="transmissivity" source="/VG_SETUP/Greenhouse/Vents/Vent/VentTransmissivity" value="1"/>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="side1">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="UwindMinimum" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneUValue" value="6.5"/>
+					<port name="UwindSlope" source="/VG_SETUP/Greenhouse/UwindSlope" value="1.2"/>
+					<port name="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0"/>
+						<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0"/>
+						<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0"/>
+						<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0"/>
+						<port name="Utop" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="100"/>
+						<port name="Ubottom" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="100"/>
+						<port name="transmissivityAir" source="/VG_SETUP/Greenhouse/Screens/Screen/Porosity" value="1"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="side2">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="UwindMinimum" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneUValue" value="6.5"/>
+					<port name="UwindSlope" source="/VG_SETUP/Greenhouse/UwindSlope" value="1.2"/>
+					<port name="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="Utop" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="Ubottom" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="transmissivityAir" source="/VG_SETUP/Greenhouse/Screens/Screen/Porosity" value="0.4"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="end1">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="UwindMinimum" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneUValue" value="6.5"/>
+					<port name="UwindSlope" source="/VG_SETUP/Greenhouse/UwindSlope" value="1.2"/>
+					<port name="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0"/>
+						<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0"/>
+						<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="1"/>
+						<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0"/>
+						<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0"/>
+						<port name="Utop" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="100"/>
+						<port name="Ubottom" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="100"/>
+						<port name="transmissivityAir" source="/VG_SETUP/Greenhouse/Screens/Screen/Porosity" value="1"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="end2">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneReflection" value="0.1"/>
+					<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneTransmission" value="0.8"/>
+					<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwReflection" value="0.15"/>
+					<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneLwTransmission" value="0.2"/>
+					<port name="UwindMinimum" source="/VG_SETUP/Greenhouse/Panes/Pane/PaneUValue" value="6.5"/>
+					<port name="UwindSlope" source="/VG_SETUP/Greenhouse/UwindSlope" value="1.2"/>
+					<port name="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="swReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="swReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="lwTransmissivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwTransmissivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/Transmission" value="0.6"/>
+						<port name="lwReflectivityTop" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionOutwards" value="0.02"/>
+						<port name="lwReflectivityBottom" source="/VG_SETUP/Greenhouse/Screens/Screen/ReflectionInwards" value="0.4"/>
+						<port name="Utop" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="Ubottom" source="/VG_SETUP/Greenhouse/Screens/Screen/U" value="5"/>
+						<port name="transmissivityAir" source="/VG_SETUP/Greenhouse/Screens/Screen/Porosity" value="0.4"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+		</box>
+		<box name="floor">
+			<aux name="reflectivity" source="/VG_SETUP/Greenhouse/floor-reflectance" value="0.4"/>
+			<aux name="Utop" source="/VG_SETUP/Greenhouse/floor-Uindoors" value="7.5"/>
+			<aux name="Ubottom" source="/VG_SETUP/Greenhouse/floor-Usoil" value="0.1"/>
+			<aux name="heatCapacity" source="/VG_SETUP/Greenhouse/floor-heatCapacity" value="42000"/>
+		</box>
+	</box>
+	<!-- *** Setpoints *** -->
+	<box class="vg::Setpoints" name="setpoints">
+		<box name="elementary">
+			<box class="PrioritySignal" name="heatingTemperatureNormalRh">
+				<port name="initialSignal" value="18"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="00:00"/>
+					<port name="signalInside" value="18"/>
+				</box>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="06:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="19:00"/>
+					<port name="signalInside" value="22"/>
+				</box>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="01/02"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/HeatingTemp" value="00:00"/>
+					<port name="signalInside" value="24"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="heatingTemperatureHighRhMargin">
+				<port name="initialSignal" value="2"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddHighRH" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddHighRH" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddHighRH" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddHighRH" value="00:00"/>
+					<port name="signalInside" value="2"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="heatingTemperatureLowRhMargin">
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddLowRH" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddLowRH" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddLowRH" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxHeatAddLowRH" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="minPipeTemperature1">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature1" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature1" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature1" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature1" value="00:00"/>
+					<port name="signalInside" value="0"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="minPipeTemperature2">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature2" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature2" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature2" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/minPipeTemperature2" value="00:00"/>
+					<port name="signalInside" value="0"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMax">
+				<port name="initialSignal" value="90"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxRelHmd" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxRelHmd" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxRelHmd" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/MaxRelHmd" value="00:00"/>
+					<port name="signalInside" value="90"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMaxBand">
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMaxBand" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMaxBand" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMaxBand" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMaxBand" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMin">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+			</box>
+			<box class="PrioritySignal" name="rhMinBand">
+				<port name="initialSignal" value="2"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMinBand" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMinBand" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMinBand" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/rhMinBand" value="00:00"/>
+					<port name="signalInside" value="2"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="ventilationTemperatureMargin">
+				<port name="initialSignal" value="5"/>
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="26/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/VentTemp" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="crackVentilationNormalTemperature">
+				<port name="initialSignal" value="0.05"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilation" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilation" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilation" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilation" value="00:00"/>
+					<port name="signalInside" value="0.05"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="crackVentilationTemperatureMin">
+				<port name="initialSignal" value="-5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMin" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMin" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMin" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMin" value="00:00"/>
+					<port name="signalInside" value="-5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="crackVentilationTemperatureMinBand">
+				<port name="initialSignal" value="1"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMinBand" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMinBand" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMinBand" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackVentilationTemperatureMinBand" value="00:00"/>
+					<port name="signalInside" value="1"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenCrackAtHighRh">
+				<port name="initialSignal" value="0.05"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighHumidity" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighHumidity" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighHumidity" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighHumidity" value="00:00"/>
+					<port name="signalInside" value="0.05"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenCrackAtHighTemperature">
+				<port name="initialSignal" value="0.05"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperature" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperature" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperature" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperature" value="00:00"/>
+					<port name="signalInside" value="0.05"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenCrackAtHighTemperatureBand">
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperatureBand" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperatureBand" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperatureBand" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/crackScreenHighTemperatureBand" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2Capacity">
+				<port name="initialSignal" value="50"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Capacity" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Capacity" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Capacity" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Capacity" value="00:00"/>
+					<port name="signalInside" value="50"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2Setpoint">
+				<port name="initialSignal" value="900"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Setpoint" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Setpoint" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Setpoint" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2Setpoint" value="00:00"/>
+					<port name="signalInside" value="900"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2VentilationThreshold">
+				<port name="initialSignal" value="2"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationThreshold" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationThreshold" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationThreshold" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationThreshold" value="00:00"/>
+					<port name="signalInside" value="2"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2VentilationBand">
+				<port name="initialSignal" value="1"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationBand" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationBand" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationBand" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/CO2VentilationBand" value="00:00"/>
+					<port name="signalInside" value="1"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="chalk">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/ShadingAgentReduction" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/ShadingAgentReduction" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/ShadingAgentReduction" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/ShadingAgentReduction" value="00:00"/>
+					<port name="signalInside" value="0"/>
+				</box>
+			</box>
+			<box name="growthLights">
+				<box name="growthLight1">
+					<box class="PrioritySignal" name="thresholdLow">
+						<port name="initialSignal" value="40"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn1" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn1" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn1" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn1" value="00:00"/>
+							<port name="signalInside" value="40"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="thresholdHigh">
+						<port name="initialSignal" value="600"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff1" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff1" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff1" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff1" value="00:00"/>
+							<port name="signalInside" value="600"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="setting">
+						<port name="initialSignal" value="1"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive1" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive1" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive1" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive1" value="00:00"/>
+							<port name="signalInside" value="1"/>
+						</box>
+					</box>
+				</box>
+				<box name="growthLight2">
+					<box class="PrioritySignal" name="thresholdLow">
+						<port name="initialSignal" value="40"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn2" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn2" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn2" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn2" value="00:00"/>
+							<port name="signalInside" value="40"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="thresholdHigh">
+						<port name="initialSignal" value="600"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff2" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff2" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff2" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff2" value="00:00"/>
+							<port name="signalInside" value="600"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="setting">
+						<port name="initialSignal" value="0"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive2" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive2" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive2" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive2" value="00:00"/>
+							<port name="signalInside" value="0"/>
+						</box>
+					</box>
+				</box>
+				<box name="growthLight3">
+					<box class="PrioritySignal" name="thresholdLow">
+						<port name="initialSignal" value="40"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn3" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn3" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn3" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOn3" value="00:00"/>
+							<port name="signalInside" value="40"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="thresholdHigh">
+						<port name="initialSignal" value="600"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff3" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff3" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff3" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightOff3" value="00:00"/>
+							<port name="signalInside" value="600"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="setting">
+						<port name="initialSignal" value="0"/>
+						<port name="reverseOrder" value="TRUE"/>
+						<box class="DateTimeSignal">
+							<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive3" value="01/01"/>
+							<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive3" value="31/12"/>
+							<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive3" value="00:00"/>
+							<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/AssLightActive3" value="00:00"/>
+							<port name="signalInside" value="0"/>
+						</box>
+					</box>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenEnergyThreshold1">
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenEnergyThreshold2">
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="00:00"/>
+					<port name="signalInside" value="5"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenEnergyThresholdBand">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+			</box>
+			<box class="PrioritySignal" name="screenShadeThreshold1">
+				<port name="initialSignal" value="500"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="00:00"/>
+					<port name="signalInside" value="500"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenShadeThreshold2">
+				<port name="initialSignal" value="500"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="00:00"/>
+					<port name="signalInside" value="500"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenShadeThresholdBand">
+				<port name="initialSignal" value="50"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="00:00"/>
+					<port name="signalInside" value="50"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenFixed1">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="00:00"/>
+					<port name="signalInside" value="0"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenFixed2">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="00:00"/>
+					<port name="signalInside" value="0"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenActive1">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
+					<port name="signalInside" value="./encode[value]"/>
+					<box name="encode" source="ScreenCombinationCode">
+						<port name="code" value="shade1+energy1"/>
+					</box>
+				</box>
+				<box class="Box" name="encode"/>
+			</box>
+			<box class="PrioritySignal" name="screenActive2">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
+					<port name="signalInside" value="./encode[value]"/>
+					<box name="encode" source="ScreenCombinationCode">
+						<port name="code" value=""/>
+					</box>
+				</box>
+				<box class="Box" name="encode"/>
+			</box>
+			<box class="PrioritySignal" name="screenActive3">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box class="DateTimeSignal">
+					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="01/01"/>
+					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="31/12"/>
+					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
+					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
+					<port name="signalInside" value="./encode[value]"/>
+					<box name="encode" source="ScreenCombinationCode">
+						<port name="code" value=""/>
+					</box>
+				</box>
+				<box class="Box" name="encode"/>
+			</box>
+			<box class="PrioritySignal" name="heatExchangersOn">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+			</box>
+			<box class="PrioritySignal" name="heatPumpsOn">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+			</box>
+			<box class="PrioritySignal" name="humidifiersOn">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+			</box>
+			<box class="PrioritySignal" name="padAndFansOn">
+				<port name="initialSignal" value="0"/>
+				<port name="reverseOrder" value="TRUE"/>
+			</box>
+		</box>
+	</box>
+	<!-- *** Controllers *** -->
+	<box class="vg::Controllers" name="controllers">
+		<box name="co2Injection">
+			<aux name="value" ref="./controller[controlVariable]"/>
+			<box class="PidController" name="controller">
+				<port name="sensedValue" ref="indoors/co2[value]"/>
+				<port name="desiredValue" ref="setpoints[co2Setpoint]"/>
+				<port name="Kprop" value="0.05"/>
+				<port name="lookAhead" value="10"/>
+			</box>
+		</box>
+	</box>
+	<!-- *** Actuators *** -->
+	<box class="vg::Actuators" name="actuators">
+		<box class="GrowthLights" name="growthLights">
+			<box class="vg::GrowthLight" name="growthLight1">
+				<port name="on" ref="controllers/growthLights/growthLight1[flagIsUp]"/>
+				<port name="intensity" source="/VG_SETUP/Greenhouse/Lamps/Lamp/LightCapacityPerSqm" value="100"/>
+				<port name="parPhotonCoef" source="/VG_SETUP/Greenhouse/Lamps/Lamp/MicromolParPerWatt" value="2.5"/>
+				<port name="ageCorrectedEfficiency" source="/VG_SETUP/Greenhouse/Lamps/Lamp/ageCorrectedEfficiency" value="1"/>
+			</box>
+		</box>
+		<box class="ActuatorHeatPipes" name="heating">
+			<port name="propConvection" source="/VG_SETUP/Greenhouse/HeatPipeConvection" value="0.85"/>
+			<box name="pipes">
+				<box class="vg::Pipe" name="pipe1">
+					<port name="density" source="/VG_SETUP/Greenhouse/Heatpipes/Heatpipe/PipeLengthPerSqm" value="2"/>
+					<port name="diameter" source="/VG_SETUP/Greenhouse/Heatpipes/Heatpipe/InnerDiameter" value="30000"/>
+					<port name="flowRate" source="/VG_SETUP/Greenhouse/Heatpipes/Heatpipe/heatPipeFlowRate" value="10"/>
+				</box>
+				<box class="vg::Pipe" name="pipe2">
+					<port name="density" source="/VG_SETUP/Greenhouse/Heatpipes/Heatpipe/PipeLengthPerSqm" value="2"/>
+					<port name="diameter" source="/VG_SETUP/Greenhouse/Heatpipes/Heatpipe/InnerDiameter" value="30000"/>
+					<port name="flowRate" source="/VG_SETUP/Greenhouse/Heatpipes/Heatpipe/heatPipeFlowRate" value="10"/>
+				</box>
+			</box>
+		</box>
+		<box class="ActuatorVentilation" name="ventilation"/>
+		<box name="heatExchangers"/>
+		<box name="heatPumps">
+			<box class="vg::ActuatorHeatPump" name="heatPump1">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump2">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump3">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump4">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump5">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump6">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump7">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+			<box class="vg::ActuatorHeatPump" name="heatPump8">
+				<port name="number" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/Number" value="1"/>
+				<port name="maxCoolingPower" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxCoolingLoad" value="1000"/>
+				<port name="coolingEfficiency" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingEfficiency" value="1"/>
+				<port name="maxFlowRate" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxFlowRate" value="100"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/MaxParasitLoad" value="10"/>
+				<port name="coolingTemperature" source="/VG_SETUP/Greenhouse/HeatPumps/HeatPump/CoolingTemperature" value="5"/>
+			</box>
+		</box>
+		<box name="humidifiers">
+			<box class="vg::ActuatorHumidifier" name="humidifier1">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier2">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier4">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier5">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier6">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier7">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier8">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+			<box class="vg::ActuatorHumidifier" name="humidifier3">
+				<port name="efficiency" source="/VG_SETUP/Greenhouse/Fogs/Fog/Efficiency" value="1"/>
+				<port name="maxHumidification" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxHumidification" value="50"/>
+				<port name="maxPowerUserParasitic" source="/VG_SETUP/Greenhouse/Fogs/Fog/MaxParasitLoad" value="10"/>
+			</box>
+		</box>
+		<box name="padAndFans"/>
+		<box class="Accumulator" name="co2Injection">
+			<port name="initial" value="0"/>
+			<port name="change" ref="controllers/co2Injection[value]"/>
+			<port name="minValue" value="0"/>
+			<port name="maxValue" ref="setpoints[co2Capacity]"/>
+		</box>
+	</box>
+	<!-- *** Climate variables *** -->
+	<box class="vg::EnergyBudgetOptimiser" name="energyBudgetOptimiser">
+		<port name="hasHeatSink" source="/VG_SETUP/Greenhouse/HasHeatSink" value="0"/>
+		<box class="vg::EnergyBudget" name="energyBudget"/>
+		<box name="indoors">
+			<box class="vg::IndoorsVentilation" name="ventilation">
+				<box class="vg::LeakageVentilation" name="leakage">
+					<port name="leakage" source="/VG_SETUP/Greenhouse/leakage" value="0.1"/>
+				</box>
+			</box>
+			<box class="vg::IndoorsTemperature" name="temperature"/>
+		</box>
+	</box>
+	<box class="WaterBudget" name="waterBudget"/>
+	<box class="Indoors" name="indoors"/>
+	<!-- *** Crop *** -->
+	<box class="vg::Crop" name="crop">
+		<port name="lai" source="/VG_SETUP/Greenhouse/Crop/LAI" value="1"/>
+		<port name="coverage" source="/VG_SETUP/Greenhouse/Crop/propAreaCultured" value="0.95"/>
+		<port name="gammaStar" source="/VG_SETUP/Greenhouse/Crop/gammaStar" value="55.47"/>
+		<port name="Jmax" source="/VG_SETUP/Greenhouse/Crop/Jmax" value="145.52"/>
+		<port name="lightRespiration" source="/VG_SETUP/Greenhouse/Crop/lightRespiration" value="0.74"/>
+		<port name="ballBerryIntercept" source="/VG_SETUP/Greenhouse/Crop/BallBerryIntercept" value="0.1"/>
+		<port name="ballBerrySlope" source="/VG_SETUP/Greenhouse/Crop/BallBerrySlope" value="1.64"/>
+	</box>
+	<!-- *** Budget *** -->
+	<box class="vg::Budget" name="budget"/>
+	<!-- *** Output *** -->
+	<box class="OutputR" name="output">
+		<box class="vg::Outputs" name="p"/>
+		<box class="PageR">
+			<port name="xAxis" value="calendar[dateTime]"/>
+			<box class="PlotR">
+				<port name="ncol" value="4"/>
+				<port name="ports" value="output/p[*]"/>
+			</box>
+		</box>
+		<box class="OutputSelector" name="selector">
+			<port name="skipFormats" value="TRUE"/>
+			<port name="useLocalDecimalChar" value="TRUE"/>
+			<port name="dateTime" source="/VG_SETUP/Description/StartTime" value="01.01.2022"/>
+			<port name="period" value="20"/>
+		</box>
+	</box>
+</box>

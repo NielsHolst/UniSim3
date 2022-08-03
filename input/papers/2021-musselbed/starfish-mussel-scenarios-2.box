@@ -1,0 +1,80 @@
+Simulation musselBed {
+  .steps = scenarios[steps]
+  Scenarios scenarios {
+    .fileName = "scenarios.txt"
+    .title = "oceanFileName"
+  }
+  Calendar calendar {
+    .initialDateTime = scenarios[initialDate]
+  }
+  Records ocean {
+    .fileName = scenarios[oceanFileName]
+    .dateColumnName = "date"
+  }
+  Starfish starfish {
+    .initAbundance = scenarios[starfishInitAbundance]
+    .initBiomass = scenarios[starfishInitBiomass]
+    .supply = ./funcresp[supply]
+    StarfishDemand demand {
+      .biomass = ..[biomass]
+      .size = ..[size]
+      .temperature = ocean[tmean]
+    }
+    StarfishSearchRate search{
+      .s = 1
+      StarfishTempScale stscale {
+        .temperature = ocean[tmean]
+      }
+      StarfishSalScale stscale {
+        .salinity = ocean[smean]
+      }
+      StarfishHdScale stscale {
+        .mBiomass = mussel[biomass]
+        .vmax = 30
+      }
+    }
+    FunctionalResponseGB funcresp {
+      .apparency = search[value]
+      .resourceDensity = mussel[biomass]
+      .demand = demand[netDemand]
+      .egestionRatio = 0.853
+      .respiration = demand[respiration]
+    }
+  }
+  
+  Mussel mussel {
+    .initAbundance = scenarios[musselInitAbundance]
+    .initBiomass = scenarios[musselInitBiomass]
+    .growth = ./growth[value]
+    .lossBiomass = ./thinning[lossBiomass]
+    .lossAbundance = ./thinning[lossAbundance]
+    .day = musselBed[step]
+    
+    MusselGrowthRate growth {
+      .biomass =..[biomass]
+      .size = ..[size]
+      .carryingCapacity = 15000
+      MusselTempScale scale {
+        .temperature = ocean[tmean]
+      }
+      MusselSalScale scale {
+        .salinity = ocean[smean]
+      }
+    }
+    MusselThinning thinning {
+      .biomass = ..[biomass]
+      .abundance =..[abundance]
+      .size = ..[size]
+      .supply =  funcresp[totalSupply]
+    }
+  }
+  OutputR output {
+    PageR {
+      .xAxis = scenarios[Scenario]
+      PlotR {
+        .ports = (starfish[biomass]|end mussel[biomass]|end)
+        .ggplot = "geom_point()"
+      }
+    }
+  }
+}

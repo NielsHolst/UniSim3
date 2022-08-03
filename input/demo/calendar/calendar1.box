@@ -1,0 +1,12 @@
+// calendar1.box
+Simulation sim {
+  .steps = 3
+  Calendar calendar {
+    .begin = 15/12/2022
+  }
+  OutputR {
+     OutputText {
+       .ports = calendar[date] | calendar[time] | calendar[dateTime]
+     }
+  }
+}

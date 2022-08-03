@@ -1,0 +1,44 @@
+Simulation sim {
+  .steps = 1000
+  Box parameters {
+    +K = 20000
+    +steps = 1
+  }
+  Box pest {
+    Box total {
+      +N|sum = otherSiblings::*[N]
+    }
+    resist::Population ss {
+      .Ninit = 100
+      .Ntotal = ../total[N]
+      .K = parameters[K]
+      .R = 5
+      .survival = 0.30
+      .steps = parameters[steps]
+    }
+    resist::Population sr {
+      .Ninit = 20
+      .Ntotal = ../total[N]
+      .K = parameters[K]
+      .R = 4
+      .survival = 0.80
+      .steps = parameters[steps]
+    }
+    resist::Population rr {
+      .Ninit = 5
+      .Ntotal = ../total[N]
+      .K = parameters[K]
+      .R = 2
+      .survival = 0.90
+      .steps = parameters[steps]
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = sim[step]
+      PlotR {
+        .ports = pest/*[N]
+      }
+    }
+  }
+}

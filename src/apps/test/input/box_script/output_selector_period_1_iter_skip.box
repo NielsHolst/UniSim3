@@ -1,0 +1,11 @@
+Simulation sim {
+  .iterations = 1
+  .steps = 24
+  OutputText text {
+    .ports = /.[iteration] | /.[step]
+    OutputSelector selector {
+      .beginStep = 3
+      .period    = 6
+    }
+  }
+}

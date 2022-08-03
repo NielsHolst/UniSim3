@@ -1,0 +1,4 @@
+Date	Treatment	Flag	Response
+1/1/2012	Low	0	12.3
+4/7/2013	Medium	0	4.56
+24/12/2011	High	1	7.89

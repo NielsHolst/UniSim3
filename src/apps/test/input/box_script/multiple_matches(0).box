@@ -1,0 +1,19 @@
+Box A {
+  &a = 100 + 2*mean(*[b]) - 80
+  &b = count(*[b])
+  // &c = exists(*[b])
+  // &k = 100 + 2*mean(X[b]) - 80
+  // &x = 100 + 2*sum (X[b]) - 80
+  // &y = count(X[b])
+  // &z = exists(X[b])
+  Box B {
+    &b = 10.0
+    Box C {
+      &b = 20.0
+    }
+  }
+  Box D {
+    &b = 60.0
+  }
+}
+

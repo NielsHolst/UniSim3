@@ -1,0 +1,76 @@
+Simulation t_urticae( steps = 30 )
+{
+  Calendar calendar ( initialDateTime = 1/5/2009 )
+  boxes::Weather weather
+  {
+    Records records( fileName = "weather/flakkebjerg 2009.txt" )
+  }
+  Box lifeTable
+  {
+    Sandy sexRatio ( x = weather[Tavg]
+                     yMax = 0.7432
+                     xMin = 0
+                     xMax = 45
+                     a = 0.6880
+                     b = 0.6661 )
+    Sandy devRate ( x = weather[Tavg]
+                    yMax = 0.1834
+                    xMin = 0
+                    xMax = 43.61
+                      a = 2.2225
+                    b = 0.3938 )
+    Sandy survival ( x = weather[Tavg]
+                     yMax = 0.9269
+                      xMin = 1.32
+                      xMax = 35.02
+                       a = 0.0077
+                     b = 0.0251 )
+    Sandy ovipositionPeriod ( x = weather[Tavg]
+                              yMax = 26.05
+                              xMin = 0
+                              xMax = 45
+                              a = 1.4491
+                              b = 3.2106 )
+    Sandy lifetimeFecundity ( x = weather[Tavg]
+                               yMax = 129.98
+                              xMin = 9.91
+                              xMax = 45
+                               a = 2.4921
+                              b = 4.7862 )
+    Sandy generationTime ( x = weather[Tavg]
+                            yMax = 8.5146
+                            xMin = 9.98
+                           xMax = 41.58
+                            a = -1.1618
+                            b = -0.1187 )
+    Sandy netReproductiveRate ( x = weather[Tavg]
+                                 yMax = 95.79
+                                xMin = 9.51
+                                xMax = 45
+                                 a = 3.0407
+                                b = 5.6595 )
+    Sandy rm ( x = weather[Tavg]
+               yMax = 1.4187
+               xMin = 0
+               xMax = 35.78
+                a = 0.5189
+               b = 0.0678 )
+  }
+  Box mite
+  {
+    Population population ( newBorn = 2 bufferSize = 5 )
+  }
+  OutputR ( ports = ( population[cohort] population[ageIncrements]) )
+  {
+    PageR urticae ( xAxis = calendar[date]
+                    ncol = 2
+                    width = 10 )
+    {
+      PlotR weather ( ports = ( records[Tmin] weather[Tavg] records[Tmax] )
+                      layout = "merged" )
+      PlotR lifeTable ( ports = ( lifeTable/*[value] )
+                        layout = "facetted" )
+    }
+  }
+
+}

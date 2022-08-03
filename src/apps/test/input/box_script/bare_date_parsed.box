@@ -1,0 +1,8 @@
+Simulation sim {
+  .steps = 1085
+  Box dates {
+    &a = 24/12
+    &b = 24/12
+  }
+}
+

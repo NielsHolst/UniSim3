@@ -1,0 +1,14 @@
+// date1.box
+Simulation sim {
+  .steps = 3
+  Date date {
+    .day   = sim[step] + 10
+    .month = 5
+  }
+  OutputR {
+    OutputText {
+      .ports = date[date]
+    }
+  }
+}
+

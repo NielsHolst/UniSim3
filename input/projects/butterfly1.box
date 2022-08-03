@@ -1,0 +1,60 @@
+// butterfly1.box
+#define ABC = 120
+#define WTH = weather  
+#include "include-me.box"
+  Box butterfly {
+    Stage egg {
+      .initial = $ABC 
+      .duration = 140
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 5
+        .T = weather[Tavg]
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = $WTH[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Stage adult {
+      .inflow = ../pupa[outflow]
+      .duration = 28
+      .timeStep = 1
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .ncol = 2
+      PlotR {
+        .ports = *[content]
+        .ggplot = "scale_x_datetime(
+                     breaks = date_breaks('months'), 
+                     labels = date_format('%b')
+                   )" 
+      }
+      PlotR {
+        .ports = *[outflowTotal]
+        .ggplot = "scale_x_datetime(
+                     breaks = date_breaks('months'), 
+                     labels = date_format('%b')
+                   )" 
+      }
+    }
+  }
+}
+

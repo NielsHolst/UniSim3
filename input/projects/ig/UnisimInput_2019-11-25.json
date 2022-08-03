@@ -1,0 +1,248 @@
+[
+{
+        "CompartmentId": 9,
+        "BaseUtcOffset": 1.0,
+        "TimeStamp": {
+          "DayOfYear": 253,
+          "TimeOfDay": 0.35408055555555557,
+          "TimeZone": 1.0
+        },
+        "GreenHouse": {
+            "Latitude": 55.3,
+            "Longitude": 10.3,
+            "Direction": 120.0
+        },
+        "Culture": {
+            "CultureType": "Tomato",
+            "LeafAreaIndex": {
+                "Value": 1.0,
+                "Origin": "UserDefined"
+            }
+        },
+        "Construction": {
+            "Length": 70.0,
+            "SpanWidth": 2.0,
+            "SpanCount": 8,
+            "WallHeight": 4.0,
+            "RoofInclination": 30.0,
+            "InternalShading": 0.1,
+            "Infiltration": 60.0,
+            "End1": {
+                "Emissivity": 0.9,
+                "Absorptivity": 0.1,
+                "Transmissivity": 0.82,
+                "Haze": 0.0,
+                "UValue": 2.7,
+                "HeatCapacity": 1.0
+            },
+            "End2": {
+                "Emissivity": 0.9,
+                "Absorptivity": 0.1,
+                "Transmissivity": 0.82,
+                "Haze": 0.0,
+                "UValue": 2.7,
+                "HeatCapacity": 1.0
+            },
+            "Side1": {
+                "Emissivity": 0.9,
+                "Absorptivity": 0.1,
+                "Transmissivity": 0.82,
+                "Haze": 0.0,
+                "UValue": 2.7,
+                "HeatCapacity": 1.0
+            },
+            "Side2": {
+                "Emissivity": 0.9,
+                "Absorptivity": 0.1,
+                "Transmissivity": 0.82,
+                "Haze": 0.0,
+                "UValue": 2.7,
+                "HeatCapacity": 1.0
+            },
+            "Roof1": {
+                "Emissivity": 0.95,
+                "Absorptivity": 0.1,
+                "Transmissivity": 0.74,
+                "Haze": 0.0,
+                "UValue": 2.4,
+                "HeatCapacity": 1.0
+            },
+            "Roof2": {
+                "Emissivity": 0.95,
+                "Absorptivity": 0.1,
+                "Transmissivity": 0.74,
+                "Haze": 0.0,
+                "UValue": 2.4,
+                "HeatCapacity": 1.0
+            },
+            "Floor": {
+                "Emissivity": 0.9,
+                "UIndoors": 7.5,
+                "USoil": 7.5,
+                "HeatCapacity": 42000.0
+            }
+        },
+        "Co2Dispenser": {
+            "InjectionRate": null
+        },
+        "OutdoorClimate": {
+            "Temperature": {
+                "Value": 6.5,
+                "Origin": "Measured"
+            },
+            "Irradiation": {
+                "Value": 800.0,
+                "Origin": "Measured"
+            },
+            "RelativeHumidity": {
+                "Value": 0.0,
+                "Origin": "NotAvailable"
+            },
+            "Co2": null,
+            "WindSpeed": {
+                "Value": 0.0,
+                "Origin": "Measured"
+            },
+            "WindDirection": {
+                "Value": 0.0,
+                "Origin": "Measured"
+            }
+        },
+        "IndoorClimate": {
+            "Temperature": {
+                "Value": 18.6,
+                "Origin": "Measured"
+            },
+            "LightIntensity": {
+                "Value": 0.0,
+                "Origin": "NotAvailable"
+            },
+            "RelativeHumidity": {
+                "Value": 77.0,
+                "Origin": "Measured"
+            },
+            "Co2": {
+                "Value": 800.0,
+                "Origin": "Measured"
+            }
+        },
+        "HeatPipes": [{
+                "HeatPipeMaterial": "Iron",
+                "InnerDiameter": 41.0,
+                "FlowRate": {
+                    "Value": 5.0,
+                    "Origin": "NotAvailable"
+                },
+                "temperatureInflow": {
+                    "Value": 50.0,
+                    "Origin": "Measured"
+                },
+                "temperatureOutflow": {
+                    "Value": 0.0,
+                    "Origin": "NotAvailable"
+                }                             
+            }
+        ],
+        "Vents": [{
+                "Length": 2.0,
+                "Height": 1.0,
+                "NumberOfVents": 8.0,
+                "MaxOpening": 45.0,
+                "Porosity": 1.0,
+                "Opening": {
+                    "Value": 0.0,
+                    "Origin": "Measured"
+                }
+            }, {
+                "Length": 2.0,
+                "Height": 1.0,
+                "NumberOfVents": 12.0,
+                "MaxOpening": 35.0,
+                "Porosity": 0.5,
+                "Opening": {
+                    "Value": 0.0,
+                    "Origin": "Measured"
+                }
+            }, {
+                "Length": 3.0,
+                "Height": 0.5,
+                "NumberOfVents": 4.0,
+                "MaxOpening": 50.0,
+                "Porosity": 0.0,
+                "Opening": {
+                    "Value": 0.0,
+                    "Origin": "Measured"
+                }
+            }, {
+                "Length": 22.0,
+                "Height": 1.0,
+                "NumberOfVents": 6.0,
+                "MaxOpening": 45.0,
+                "Porosity": 0.8,
+                "Opening": {
+                    "Value": 0.0,
+                    "Origin": "Measured"
+                }
+            }
+        ],
+        "GrowthLights": [{
+                "Type": "Led",
+                "PowerUsage": 0.12571428571428572,
+                "ParEfficiency": 1.0,
+                "AgeCorrectedEfficiency": 1.0
+            }, {
+                "Type": "Led",
+                "PowerUsage": 0.12571428571428572,
+                "ParEfficiency": 1.0,
+                "AgeCorrectedEfficiency": 1.0
+            }, {
+                "Type": "Led",
+                "PowerUsage": 0.12571428571428572,
+                "ParEfficiency": 1.0,
+                "AgeCorrectedEfficiency": 1.0
+            }, {
+                "Type": "Led",
+                "PowerUsage": 0.12571428571428572,
+                "ParEfficiency": 1.0,
+                "AgeCorrectedEfficiency": 1.0
+            }
+        ],
+        "Screens": [{
+                "Material": {
+                    "TransmissivityLight": 0.1,
+                    "EmissivityInner": 0.9,
+                    "EmissivityOuter": 0.9,
+                    "Haze": 0.98,
+                    "EnergySaving": 78.0,
+                    "TransmissivityAir": 0.0,
+                    "UValue": 0.0,
+                    "HeatCapacity": 0.0
+                },
+                "Layer": "Inner",
+                "Position": "Side1",
+                "Effect": {
+                    "Value": 1.0,
+                    "Origin": "Measured"
+                }
+            }, {
+                "Material": {
+                    "TransmissivityLight": 0.8,
+                    "EmissivityInner": 0.34,
+                    "EmissivityOuter": 0.34,
+                    "Haze": 0.97,
+                    "EnergySaving": 47.0,
+                    "TransmissivityAir": 0.0,
+                    "UValue": 0.0,
+                    "HeatCapacity": 0.0
+                },
+                "Layer": "Outer",
+                "Position": "Side2",
+                "Effect": {
+                    "Value": 1.0,
+                    "Origin": "Measured"
+                }
+            }
+        ],
+        "Dehumidifiers": []
+    }
+]

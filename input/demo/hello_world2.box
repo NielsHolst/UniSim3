@@ -1,0 +1,9 @@
+// hello_world2.box
+Simulation sim {
+  .iterations = 2
+  .steps = 3
+  OutputText {
+    &message = "Hello world!"
+    .ports = .[message]
+  }
+}

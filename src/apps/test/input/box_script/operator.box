@@ -1,0 +1,22 @@
+Simulation sim {
+  .steps = 1085
+  Box s {
+    &a = x[a]+x[b]
+    &a = x[a]-x[b]
+    &a = x[a]*x[b]
+    &a = x[a]/x[b]
+    &a = x[a]^x[b]
+    &a = x[a]&&x[b]
+    &a = x[a]||x[b]
+    &a = x[a]|x[b]
+    &a = x[a]>x[b]
+    &a = x[a]>=x[b]
+    &a = x[a]<x[b]
+    &a = x[a]<=x[b]
+    &a = x[a]==x[b]
+    &a = x[a]!=x[b]
+    &a = -x[a]
+    &a = !x[a]
+  }
+}
+

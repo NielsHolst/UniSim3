@@ -1,0 +1,8 @@
+Simulation sim {
+  Stage A {
+    .duration = ? A[k] ? 17
+  }
+  Stage B {
+    .duration = ? kkk[k] ? 17
+  }
+}

@@ -1,0 +1,6 @@
+Simulation sim {
+  Box A {
+    &a = if sim[step]==0 then 13 else 15
+  }
+}
+

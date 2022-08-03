@@ -1,0 +1,28 @@
+Simulation sim {
+  .steps = 1085
+  Box dates {
+    +a = 9
+    +a = -9
+    +a = +9
+    +b = XYZ[abc]
+    +b = -XYZ[abc]
+    +b = +XYZ[abc]
+    +b = /XYZ[abc]
+    +c = XYZ/A[abc]
+    +c = *[abc]
+    +c = XYZ/*[abc]
+    +d = XYZ/.[abc]
+    +d = XYZ/..[abc]
+    +d = XYZ/...[abc]
+    +e = XYZ/./A[abc]
+    +e = XYZ/../A[abc]
+    +e = XYZ/.../A[abc]
+    +f = ./XYZ[abc]
+    +f = ../XYZ[abc]
+    +f = .../XYZ[abc]
+    +f = .[abc]
+    +f = ..[abc]
+    +f = ...[abc]
+  }
+}
+

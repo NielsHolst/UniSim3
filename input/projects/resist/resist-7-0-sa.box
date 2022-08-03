@@ -1,0 +1,99 @@
+Simulation sim {
+  .iterations = sa[iterations]
+  .steps = 30 // max. number of generations
+  .stopSteps|all = frequencies[thresholdPassed] | density[thresholdPassed]
+  .useStopSteps = TRUE
+  .silent = TRUE
+  SensitivityAnalysisSobol sa {
+    .sampleSize = 1000
+  }
+  Box random {
+    RandomUniform K {
+      .restartAtReset = TRUE
+      .minValue = 5000
+      .maxValue = 15000 @ (uniform 10000 20000)
+      .drawAtReset = TRUE
+      .drawAtUpdate = TRUE
+    }
+    RandomUniform coverage {
+      .restartAtReset = TRUE
+      .minValue = 0
+      .maxValue = 0.4 @ (uniform 0.1 0.9)
+      .drawAtReset = TRUE
+      .drawAtUpdate = TRUE
+    }
+    Box immigration {
+      RandomUniform proportion {
+        .restartAtReset = TRUE
+        .minValue = ./bounds[Pmin]
+        .maxValue = ./bounds[Pmax]
+        .drawAtReset = TRUE
+        .drawAtUpdate = TRUE
+        ProportionBounds bounds {
+          .logP = -4 @ (uniform -6 -2)
+          .logWidth = 2
+        }
+      }
+      RandomUniform q {
+        .restartAtReset = TRUE
+        .minValue = ./bounds[Pmin]
+        .maxValue = ./bounds[Pmax]
+        .drawAtReset = TRUE
+        .drawAtUpdate = TRUE
+        ProportionBounds bounds {
+          .logP = -5 @ (uniform -6 -4)
+          .logWidth = 2
+        }
+      }
+    }
+  }
+  Box pest {
+    resist::Immigration immigration {
+      .K = random/K[value]
+      .proportion = random/immigration/proportion[value]
+      .q = random/immigration/q[value]
+    }
+    SpraySurvival survival {
+      .coverage = random/coverage[value]
+      .maxMortality = 0.95 @ (uniform 0.9 0.99)
+      .slope = 4 @ (uniform 1 10)
+      .resistanceGain = 0.4 @ (uniform 0.1 0.9)
+    }
+    Density density {
+      .immigration = immigration[values]
+      .reproduction = reproduction[values]
+      .survival = survival[values]
+      .densityThreshold = 30000 
+    }
+    ReproductiveRate reproductiveRate {
+      .R = 5 @ (uniform 2 50)
+      .fitnessPenalty = 0.20 @ (uniform 0 0.40)
+      .Ntotal|sum = density[values]
+      .K = random/K[value]
+    }
+    Reproduction reproduction {
+      .N = density[values]
+      .R = reproductiveRate[values]
+    }
+    GeneFrequencies frequencies {
+      .N = density[values]
+      .rThreshold = 0.5
+    }
+  }
+  OutputR output {
+    +myplot = "geom_point() + 
+               stat_quantile(formula=y ~ bs(x), quantiles = 0.50, size=1, colour='brown')"
+    PageR {
+      .xAxis = *<Distribution>/..<Port>
+      .ncol = 1
+      PlotR {
+        .ports = frequencies[thresholdPassed]|end
+        .ggplot = ../..[myplot]
+      }
+      PlotR {
+        .ports = density[thresholdPassed]|end
+        .ggplot = ../..[myplot]
+      }
+    }
+  }
+}

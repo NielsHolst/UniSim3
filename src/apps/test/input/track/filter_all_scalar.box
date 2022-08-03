@@ -1,0 +1,40 @@
+Simulation sim {
+	.iterations = 3
+	.steps = 10
+	Box butterfly {
+		Stage egg {
+			.initial = 100
+			.duration = 7 
+			.k = 30 
+		}
+		Stage larva {
+			.inflow = ../egg[outflow]
+			.duration = 15
+		}
+		Stage pupa {
+			.inflow = ../larva[outflow]
+			.duration = 7
+		}
+		Stage adult {
+			.inflow = ../pupa[outflow]
+			.duration = 30
+		}
+	}
+	OutputR {
+    PageR {
+      .xAxis = (sim[step])
+      PlotR {
+        .ports = (butterfly/*[content])
+      }
+      PlotR {
+        .ports = (egg[initial] egg[initial] adult[content])
+				.hide = TRUE
+      }
+      PlotR {
+        .ports = (egg[initial] egg[initial])
+				.hide = TRUE
+      }
+		}
+	}
+}
+

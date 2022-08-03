@@ -1,0 +1,31 @@
+Simulation sim {
+  .iterations = 3
+  .steps = 10
+  RandomiserMonteCarlo randomiser {
+    RandomUniform atInitialize {
+      .drawAtInitialize = TRUE
+    }
+    RandomUniform atReset {
+      .drawAtInitialize = TRUE
+      .drawAtReset = TRUE
+    }
+    RandomUniform atUpdate {
+      .drawAtInitialize = TRUE
+      .drawAtUpdate = TRUE
+    }
+    RandomUniform atUserReset {
+      .drawAtInitialize = TRUE
+    }
+    RandomUniform atUserUpdate {
+      .drawAtInitialize = TRUE
+    }
+  }
+  Box client {
+    +a = atInitialize[value]
+    +b = atReset[value]
+    +c = atUpdate[value]
+  }
+  OutputText {
+    .ports = (client[*])
+  }
+}

@@ -1,0 +1,6 @@
+Simulation sim {
+  Stage a {
+    .initial = 100 @ (uniform 50 200)
+    .inflow = 15 @ (normal 15 2)
+  }
+}

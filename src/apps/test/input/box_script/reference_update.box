@@ -1,0 +1,23 @@
+// Test that updates are reflected in references
+Simulation sim {
+  .steps = 2
+  Computation comp {  
+  }
+  Box A {
+    &xxx = comp[step]
+    &aaa = if    (comp[step]=="reset")  then 100
+           elsif (comp[step]=="update") then .[aaa] + 20
+           else .[aaa]
+    &b = .[aaa]
+    &c = .[b]
+    &d = .[c]
+  }
+  Box B {
+    &a = .[b]
+    &b = .[c]
+    &c = .[d]
+    &d = if    (comp[step]=="reset")  then 100
+         elsif (comp[step]=="update") then .[d] + 20
+         else .[d]
+  }
+}

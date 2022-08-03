@@ -1,0 +1,10 @@
+Simulation sim {
+  .steps = 1085
+  boxes::Stage s {
+  }
+  boxes::Stage {
+  }
+  Stage {
+  }
+}
+

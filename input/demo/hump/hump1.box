@@ -1,0 +1,49 @@
+// hump1.box
+Simulation sim {
+  .steps = temperature[steps]
+  SequenceByStep temperature {
+    .min = -5
+    .max = 40
+    .by = 0.5
+  }
+  Box humps {
+    Hump hump {
+      .x = temperature[value]
+      .x0 = 12
+      .x1 = 34
+      .ymax = 100
+    }
+    Hump humpOffset {
+      .x = temperature[value]
+      .x0 = 12
+      .x1 = 34
+      .ymax = 100
+      .ymin = 20
+    }
+    Hump ditch {
+      .x = temperature[value]
+      .x0 = 12
+      .x1 = 34
+      .ymax = 100
+      .ditch = TRUE
+    }
+    Hump ditchOffset {
+      .x = temperature[value]
+      .x0 = 12
+      .x1 = 34
+      .ymax = 100
+      .ymin = 20
+      .ditch = TRUE
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = temperature[value]
+      PlotR {
+        .ports = humps/*[value]
+        .ncol = 2
+      }
+    }
+  }
+}
+

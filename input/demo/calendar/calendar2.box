@@ -1,0 +1,14 @@
+// calendar2.box
+Simulation sim {
+  .steps = 3
+  Calendar calendar {
+    .begin = 15/12/2022
+    .timeStep = 2
+    .timeUnit = "m"
+  }
+  OutputR {
+     OutputText {
+       .ports = calendar[date] | calendar[time] | calendar[dateTime]
+     }
+  }
+}
