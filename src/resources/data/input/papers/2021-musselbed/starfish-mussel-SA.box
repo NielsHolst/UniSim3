@@ -1,0 +1,114 @@
+Simulation musselBed {
+  .steps = 57
+  .iterations = 3
+  Calendar calendar {
+    .initialDateTime = 22/09/2009
+  }
+  Box random {
+    RandomiserStratified randomiser {
+      .useFixed = FALSE
+      .doSensitivityAnalysis = FALSE
+      // .bootstrapSize = 10000
+    }
+    RandomNormal aMusselGrowthRate{
+      .min = 0.00354
+      .max = 0.0283
+      .P = 0.99
+    }
+    RandomNormal bMusselGrowthRate{
+      .min = -1.540
+      .max = 0.568
+      .P = 0.99
+    }
+  }
+  Records ocean {
+    .fileName = "data/BR_.txt"
+    .dateColumnName = "date"
+  }
+  Mussel mussel {
+    .initAbundance = 5096
+    .initBiomass = 3666
+    .growth = ./growth[value]
+    .lossBiomass = ./thinning[lossBiomass]
+    .lossAbundance = ./thinning[lossAbundance]
+    .day = musselBed[step]
+    
+    MusselGrowthRate growth {
+      .a = random/aMusselGrowthRate[value]
+      .b = random/bMusselGrowthRate[value]
+      .biomass =..[biomass]
+      .size = ..[size]
+      .carryingCapacity = 15000
+      MusselTempScale scale {
+        .temperature = ocean[tmean]
+      }
+      MusselSalScale scale {
+        .salinity = ocean[smean]
+      }
+    }
+    MusselThinning thinning {
+      .biomass = ..[biomass]
+      .abundance =..[abundance]
+      .size = ..[size]
+      .supply =  funcresp[totalSupply]
+    }
+  }
+
+  Starfish starfish {
+    .initAbundance = 3.13
+    .initBiomass = 26.2
+    .supply = ./funcresp[supply]
+    StarfishDemand demand {
+      .biomass = ..[biomass]
+      .size = ..[size]
+      .temperature = ocean[tmean]
+    }
+    StarfishSearchRate search{
+      .s = 1
+      StarfishTempScale stscale {
+        .temperature = ocean[tmean]
+      }
+      StarfishSalScale stscale {
+        .salinity = ocean[smean]
+      }
+      StarfishHdScale stscale {
+        .mBiomass = mussel[biomass]
+        .vmax = 30
+      }
+    }
+    FunctionalResponseGB funcresp {
+      .apparency = search[value]
+      .resourceDensity = mussel[biomass]
+      .demand = demand[netDemand]
+      .egestionRatio = 0.853
+      .respiration = demand[respiration]
+    }
+  }
+  
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Starfish functional response"
+      PlotR {
+        .ports = (funcresp[supply] funcresp[demand] funcresp[apparency] funcresp[respiration])
+      }
+    }  
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Ocean environment"
+      PlotR {
+        .ports = (ocean[tmean] ocean[smean])
+      }
+    }
+    PageR {
+      .ncol = 2
+      .title = "Mussels & Starfish"
+      PlotR {
+        .ports = (mussel[size] mussel[biomass] mussel[abundance])
+      }
+      PlotR {
+        .ports = (starfish[size] starfish[biomass] starfish[abundance])
+      }
+    }
+  }
+}

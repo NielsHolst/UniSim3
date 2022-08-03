@@ -1,0 +1,31 @@
+// briere1.box
+Simulation sim {
+  .steps = temperature[steps]
+  SequenceByStep temperature {
+    .min = 12
+    .max = 37
+    .by = 0.2
+  }
+  DayDegrees dayDegrees {
+    .timeStepDays = 1
+    .T0 = 14.2
+    .Topt = 29
+    .Tmax = 35
+    .T = temperature[value]
+  }
+  Briere briere {
+    .timeStepDays = 1
+    .T0 = 14.2
+    .Tmax = 35
+    .a = 2.836e-5
+    .T = temperature[value]
+  }
+  
+  OutputR {
+    .scripts = "briere1.R"
+    OutputText {
+      .ports = temperature[value] | dayDegrees[step] | briere[step]
+    }
+  }
+}
+

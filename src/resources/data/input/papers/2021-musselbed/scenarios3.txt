@@ -1,0 +1,4 @@
+Scenario	oceanFileName	initialDate	steps	starfishInitAbundance	starfishInitBiomass	musselInitAbundance	musselInitBiomass	stscale_vmax	stN2	stB2	mN2	mB2	sizem2	sizes2	OC	realdate
+7	data/BR_.txt	22/09/2009	57	3.13	26.20578618	5096.328219	3666.498053	30	3.13	36.62	1255.16	1379.74	1.099254278	11.69968051	gesloten	8
+10	data/BRz.txt	23/09/2009	55	82.89	843.3790985	11276.7875	6525.546096	30	82.89	1336.44	175.83	117.31	0.667178525	16.12305465	gesloten	8
+4	data/BSn.txt	21/09/2009	50	36.45	474.6947052	4095.537119	9319.833717	50	36.45	554.94	328.99	1176.22	3.575245448	15.22469136	gesloten	8

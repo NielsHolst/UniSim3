@@ -1,0 +1,161 @@
+// func-resp-pred-prey.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/01/2009 
+    .end   = 31/12/2009
+  }
+  Records weather {
+    .fileName = "weather/flakkebjerg 2009.txt"
+    .cycle = TRUE 
+  }
+  Box butterfly {
+    Stage egg {
+      .initial = 100 
+      .inflow = ../adult/oviposition[outflow] 
+      .duration = 140
+      .timeStep = ./time[value]
+      .instantLossRate = predation/funcResp[propPreyAttacked]
+      OnOffByDate time { 
+        .x = calendar[date]
+        .xOn  = 17/4    
+        .xOff =  1/6   
+        .valueOn = ./dayDegrees[step]
+        .valueOff = 0
+        DayDegrees dayDegrees {
+          .T0 = 5
+          .T = weather[Tavg]
+        }
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = weather[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Box adult {
+      Stage adult {
+        .inflow = ../../pupa[outflow]
+        .duration = 28
+        .timeStep = 1
+      }
+      Stage preOviposition {
+        .inflow = ../../pupa[outflow]
+        .duration = 5
+        .timeStep = 1
+      }
+      Stage oviposition {
+        .inflow = ../preOviposition[outflow]
+        .duration = 10
+        .timeStep = 1
+        .growthFactor = 40
+      }
+    }
+  }
+  Box predator {
+    Stage egg {
+      .initial = 100 
+      .inflow = ../predation/supplyBudget[supplyNet]
+      .duration = 140
+      .timeStep = ./time[value]
+      OnOffByDate time { 
+        .x = calendar[date]
+        .xOn  = 17/3    // 30 days earlier than prey
+        .xOff =  1/6  
+        .valueOn = ./dayDegrees[step]
+        .valueOff = 0
+        DayDegrees dayDegrees {
+          .T0 = 5
+          .T = weather[Tavg]
+        }
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = weather[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Stage adult {
+      .inflow = ../pupa[outflow]
+      .duration = 60
+      .timeStep = 1
+    }
+    Stage ovipositionDemand {
+      .inflow = ../pupa[outflow]
+      .duration = 60
+      .timeStep = 1
+      .growthFactor = 30
+    }
+    Box predation {
+      Box budget {
+        &demandNet = ../../ovipositionDemand[outflow]
+        &conversionCost = 0.25
+      }
+      DemandBudget demandBudget {
+        .demandNet = ../budget[demandNet]
+        .conversionCost = ../budget[conversionCost]
+      }
+      FunctionalResponse funcResp {
+        .attacker = ../../adult[content]
+        .prey = butterfly/egg[content]
+        .demandGross = ../demandBudget[demandGross]
+        .attackRate = 0.8
+      }
+      SupplyBudget supplyBudget {
+        .demandNet = ../budget[demandNet]
+        .conversionCost = ../budget[conversionCost]
+        .supplyGross = ../funcResp[supplyGross]
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .ncol = 3
+      &monthBreaks = "geom_line(size=1.1) + 
+                      scale_x_datetime(
+                        breaks = date_breaks('3 months'), 
+                        labels = date_format('%b')
+                      )" 
+      PlotR {
+        .ports = butterfly/*[content] | butterfly/adult/*[content]
+        .ggplot = ..[monthBreaks]
+      }
+      PlotR {
+        .ports = predator/*[content]
+        .ggplot = ..[monthBreaks]
+      }
+      PlotR {
+        .ports = demandBudget[demandNet] | supplyBudget[supplyNet] |
+                  supplyBudget[sdRatioNet] | funcResp[propPreyAttacked]
+        .ggplot = ..[monthBreaks]
+      }
+    }
+  }
+}
+

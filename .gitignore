@@ -21,4 +21,3 @@ tmp/
 debug/
 release/
 src/plugins/*/*.rc
-src/resources/data

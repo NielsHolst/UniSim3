@@ -1,0 +1,250 @@
+Simulation musselBed {
+  .steps = 57
+  .iterations = 50
+  .silent = TRUE
+  Calendar calendar {
+    .initialDateTime = 22/09/2009
+  }
+  Box random {
+    RandomiserStratified randomiser {
+      .useFixed = FALSE
+      .doSensitivityAnalysis = FALSE
+    }
+    RandomNormal aMusselGrowthRate{
+      .min = 0.00354
+      .fixed = 0.0159
+      .max = 0.0283
+      .P = 0.99
+    }
+    RandomNormal bMusselGrowthRate{
+      .min = -1.540
+      .fixed = -0.486
+      .max = 0.568
+      .P = 0.99
+    }
+    RandomNormal aMusselTempScale{
+      .min = -2.142
+      .fixed = 0.408
+      .max = 2.958
+      .P = 0.99
+    }
+    RandomNormal bMusselTempScale{
+      .min = -7.336
+      .fixed = -4.157
+      .max = -0.979
+      .P = 0.99
+    }
+    RandomNormal aMusselSalScale{
+      .min = -0.543
+      .fixed = 0.498
+      .max = 1.538
+      .P = 0.99
+    }
+    RandomNormal bMusselSalScale{
+      .min = -18.794
+      .fixed = -11.798
+      .max = -4.801
+      .P = 0.99
+    }
+    RandomNormal aMusselThinning{
+      .min = 2943
+      .fixed = 3330
+      .max = 3717
+      .P = 0.99
+    }
+    RandomNormal bMusselThinning{
+      .min = -1.096
+      .fixed = -0.871
+      .max = -0.646
+      .P = 0.99
+    }
+    // RandomNormal aStarfishDemandGrowth{
+      // .useFixed = TRUE
+      // .min = 0.106
+      // .fixed = 0.181
+      // .max = 0.256
+      // .P = 0.99
+    // }
+    // RandomNormal bStarfishDemandGrowth{
+      // .useFixed = TRUE
+      // .min = -0.689
+      // .fixed = -0.516
+      // .max = -0.343
+      // .P = 0.99
+    // }
+    // RandomNormal aStarfishDemandResp{
+      // .useFixed = TRUE
+      // .min = 0.000837
+      // .fixed = 0.00161
+      // .max = 0.00238
+      // .P = 0.99
+    // }
+    // RandomNormal bStarfishDemandResp{
+      // .useFixed = TRUE
+      // .min = 0.0489
+      // .fixed = 0.103
+      // .max = 0.157
+      // .P = 0.99
+    // }
+    RandomNormal conversionEfficiency {
+      .min = 0.787
+      .fixed = 0.842
+      .max = 0.897
+      .P = 0.99
+    }
+    RandomNormal egestion {
+      .min = 0.845
+      .fixed = 0.853
+      .max = 0.861
+      .P = 0.99
+    }
+    RandomNormal aStarfishTempScale{
+      .min = -1.338
+      .fixed = 0.528
+      .max = 2.393
+      .P = 0.99
+    }
+    RandomNormal bStarfishTempScale{
+      .min = -5.705
+      .fixed = -3.966
+      .max = -2.228 
+      .P = 0.99
+    }
+    RandomNormal aStarfishSalinityScale{
+      .min = -30.663
+      .fixed = -16.831
+      .max = -2.999
+      .P = 0.99
+    }
+    RandomNormal bStarfishSalinityScale{
+      .min = 0.125
+      .fixed = 0.743
+      .max = 1.361
+      .P = 0.99
+    }
+    RandomNormal aStarfishHdScale{
+      .min = 2.704
+      .fixed = 3.444
+      .max = 4.183
+      .P = 0.99
+    }
+    RandomNormal bStarfishHdScale{
+      .min = -0.200
+      .fixed = -0.169
+      .max = -0.138
+      .P = 0.99
+    }
+  }
+  Records ocean {
+    .fileName = "data/BR_.txt"
+    .dateColumnName = "date"
+  }
+  Mussel mussel {
+    .initAbundance = 5096
+    .initBiomass = 3666
+    .growth = ./growth[value]
+    .lossBiomass = ./thinning[lossBiomass]
+    .lossAbundance = ./thinning[lossAbundance]
+    .day = musselBed[step]
+    
+    MusselGrowthRate growth {
+      .a = random/aMusselGrowthRate[value]
+      .b = random/bMusselGrowthRate[value]
+      .biomass =..[biomass]
+      .size = ..[size]
+      .carryingCapacity = 15000
+      Box scales {
+        MusselTempScale temperature {
+          .a = random/aMusselTempScale[value]
+          .b = random/bMusselTempScale[value]
+          .temperature = ocean[tmean]
+        }
+        MusselSalScale salinity {
+          .a = random/aMusselSalScale[value]
+          .b = random/bMusselSalScale[value]
+          .salinity = ocean[smean]
+        }
+      }
+    }
+    MusselThinning thinning {
+      .a = random/aMusselThinning[value]
+      .b = random/bMusselThinning[value]
+      .biomass = ..[biomass]
+      .abundance =..[abundance]
+      .size = ..[size]
+      .supply =  funcresp[totalSupply]
+    }
+  }
+
+  Starfish starfish {
+    .initAbundance = 3.13
+    .initBiomass = 26.2
+    .conversionEfficiency =  random/conversionEfficiency[value]
+    .supply = ./funcresp[supply]
+    StarfishDemand demand {
+      // .aGrowth = random/aStarfishDemandGrowth[value]
+      // .bGrowth = random/bStarfishDemandGrowth[value]
+      // .aResp = random/aStarfishDemandResp[value]
+      // .bResp = random/bStarfishDemandResp[value]
+      .biomass = ..[biomass]
+      .size = ..[size]
+      .temperature = ocean[tmean]
+    }
+    StarfishSearchRate search{
+      .s = 1
+      Box scales {
+        // StarfishTempScale temperature {
+          // .a = random/aStarfishTempScale[value]
+          // .b = random/bStarfishTempScale[value]
+          // .temperature = ocean[tmean]
+        // }
+        // StarfishSalScale salinity{
+          // .a = random/aStarfishSalinityScale[value]
+          // .b = random/bStarfishSalinityScale[value]
+          // .salinity = ocean[smean]
+        // }
+        // StarfishHdScale hydrodynamic {
+          // .a = random/aStarfishHdScale[value]
+          // .b = random/bStarfishHdScale[value]
+          // .mBiomass = mussel[biomass]
+          // .vmax = 30
+        // }
+      }
+    }
+    FunctionalResponseGB funcresp {
+      .apparency = search[value]
+      .resourceDensity = mussel[biomass]
+      .demand = demand[netDemand]
+      .egestionRatio = random/egestion[value]
+      .respiration = demand[respiration]
+    }
+  }
+  
+  OutputR {
+    .end = "starfish-mussel-SA-1-end.R"
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Starfish functional response"
+      PlotR {
+        .ports = (funcresp[supply] funcresp[demand] funcresp[apparency] funcresp[respiration])
+      }
+    }  
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Ocean environment"
+      PlotR {
+        .ports = (ocean[tmean] ocean[smean])
+      }
+    }
+    PageR {
+      .ncol = 2
+      .title = "Mussels & Starfish"
+      PlotR {
+        .ports = (mussel[size] mussel[biomass] mussel[abundance] thinning[maxAbundance])
+      }
+      PlotR {
+        .ports = (starfish[size] starfish[biomass] starfish[abundance])
+      }
+    }
+  }
+}

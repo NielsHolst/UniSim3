@@ -1,0 +1,24 @@
+// fixed_signal1.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/01/2001
+    .end   = 31/12/2001
+  }
+  Box vivacity {
+    Accumulator accumulator {
+    }
+    DateTimeSignal summer {
+      .beginDate  = 01/06
+      .endDate    = 31/08
+      .signalInside = 25
+    }
+    DateTimeSignal autumn {
+      .beginDate  = 01/09
+      .endDate    = 30/11
+      .signalInside = 5
+    }
+    FixedSignal anyTime {
+      .initialSignal = -10
+    }
+  }
+}

@@ -1,0 +1,10 @@
+Simulation sim {
+  .steps = 150 
+  Box settings {
+    +initialDateTime    = /2/01/2016
+    +immigrationFromDay = 45
+    +immigrationToDay   = 69
+    +title              = "Figure 2. S. festinus phenology 2016"
+  }
+  #include "S-festinus-model.part.box" 
+}

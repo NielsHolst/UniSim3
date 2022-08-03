@@ -1,0 +1,30 @@
+// date_time_signal2.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/01/2001T12:00
+    .end   = 10/01/2001T12:00
+    .timeStep = 15
+    .timeUnit = "m"
+  }
+  DateTimeSignal signal {
+    .beginDate  = 03/01/2001
+    .beginTime  = 14:00
+    .endDate    = 07/01/2001
+    .endTime    = 20:00
+    .initialSignal = 50
+    .signalInside  = 80
+    .signalOutside = 50
+    .circadian = FALSE
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = signal[value] | signal[flagIsUp] | signal[flagJustRaised] | signal[flagJustLowered]
+        .ggplot = "scale_x_datetime(breaks=date_breaks('days'), 
+                                    labels = date_format ('%d')) +
+                   labs(x='January')"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+#define RANDOMISER = RandomiserStratified
+Simulation sim {
+  .steps =  273 // end of september
+  Box settings {
+    &doSensitivityAnalysis = FALSE
+    &bootstrapSize = 0 // no bootstrapping
+  }
+  #include "aphid-fungus-random-parameters.part.box"
+  #include "aphid-fungus-model.part.box" 
+  OutputR {
+    .scripts = "fig-2-end.R"
+    Box outputs {
+      &cropGrowthStage = cropGrowthStage[value]
+      &uncontrolled    = withoutFungus/density[total]
+    }
+    OutputText {
+      .ports = calendar[date] | outputs[*] |
+        withFungus/density[susceptible] | withFungus/density[exposed] | withFungus/density[cadavers] |
+        biocontrol[maxPrevalence] |
+        biocontrol[maxCadaverPrevalence] | biocontrol[yieldDifference] |
+        biocontrol[prevalence] | biocontrol[cadaverPrevalence]
+    }
+  }  
+}

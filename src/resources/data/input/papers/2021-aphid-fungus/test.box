@@ -1,0 +1,32 @@
+#define RANDOMISER = RandomiserStratified
+Simulation sim {
+  .steps =  273 // end of september
+  Box settings {
+    &doSensitivityAnalysis = FALSE
+    &bootstrapSize = 0 // no bootstrapping
+  }
+  #include "aphid-fungus-random-parameters.part.box"
+  #include "aphid-fungus-model.part.box" 
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = cropGrowthStage[value] 
+      }
+    }
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = withoutFungus/descendants::*[content] 
+        .ncol = 6
+      }
+    }
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = withFungus/descendants::*[content] 
+        .ncol = 6
+      }
+    }
+  }  
+}

@@ -1,0 +1,28 @@
+#define RANDOMISER = RandomiserStratified
+Simulation sim {
+  .iterations = 30
+  .steps =  230 
+  .silent = TRUE
+  Box settings {
+    &weatherFile = "validation/A95-weather-gs.txt"
+    &doSensitivityAnalysis = FALSE
+    &bootstrapSize = 0 // no bootstrapping
+    &immigrationRate = 0.0008
+  }
+  #include "aphid-fungus-random-parameters.part.box"
+  #include "aphid-fungus-model.part.box" 
+  OutputR {
+    .code = "subtitle='Aphid immigration rate = 0.0008 per tiller per day'"
+    .scripts = "validate_K95.R"
+    Box totals {
+      &nymphSusc = sum(withFungus/susceptible/nymph/*[content])
+      &nymphExp  = sum(withFungus/exposed/nymph/*[content])
+      &adultSusc = withFungus/susceptible/adult/apterous[content]
+      &adultExp  = withFungus/exposed/adult/apterous[content]
+      &cadavers  = withFungus/exposed/succumbed[cadavers] + withFungus/infectious/cadavers[content]
+    }
+    OutputText {
+      .ports =  calendar[date] | ../totals[*] | cropGrowthStage[value]
+    }
+  }  
+}

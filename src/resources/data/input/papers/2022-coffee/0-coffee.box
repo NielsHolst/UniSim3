@@ -1,0 +1,89 @@
+Simulation sim {
+  .steps = 2193
+  Calendar calendar {
+    .latitude  = 9.93
+    .longitude = -84.09
+  }
+  Sun sun {
+  }
+  Box weather {
+    +Tavg = ./Tavg[value]
+    Records weather {
+      .fileName = "Las_Colinas.txt"
+      .overrideCalendarYear = TRUE
+    }
+    Mean Tavg {
+      .values = weather[Tmin] | weather[Tmax] 
+    }
+  }
+  Box soil {
+    SoilWaterThresholds thresholds {
+    }
+    SoilNitrogen nitrogen {
+    }
+    RainInterception rainInterception {
+    }
+    WaterBudget waterBudget {
+    }  
+  }
+  Light light {
+  }
+  Box tree {
+    +lai = 2.0
+    +k = 0.70
+    Pet pet {
+      .globRad = light[globRad]
+      .lai = ..[lai]
+      .interceptedRain = rainInterception[tree]
+    }
+    WaterFlux waterFlux {
+      .potEvaporation   = ../pet[potEvaporation]
+      .potTranspiration = ../pet[potTranspiration  ]
+    }
+  }
+  Coffee coffee {
+    Phenology phenology {
+    }
+    coffee::Growth growth {
+    }
+    NitrogenSupply nitrogenSupply {
+    }
+    Foliage foliage {
+    }
+    Senescence senescence {
+    }
+    Pet pet {
+      .globRad = light[globRadShade]
+      .lai = /*/coffee[lai]
+      .interceptedRain = rainInterception[coffee]
+    }
+    WaterFlux waterFlux {
+      .potEvaporation   = ../pet[potEvaporation]
+      .potTranspiration = ../pet[potTranspiration  ]
+    }
+  }
+
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Weather"
+      PlotR {
+        .ports = (weather[GlobRad] weather[Tmin] weather[Tmax] weather[VP] weather[WindSpeed] weather[Rain])
+      }
+    }
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Phenology sub-model"
+      PlotR {
+        .ports = (phenology[growthStage])
+      }
+    }
+    PageR {
+      .xAxis = calendar[date]
+      .title = "Growth sub-model"
+      PlotR {
+        .ports = (growth[gLeafC] growth[gWoodyC] growth[gRootC] growth[gBerryC])
+      }
+    }
+  }
+}

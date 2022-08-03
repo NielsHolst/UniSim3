@@ -1,0 +1,22 @@
+// accumulator1.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/05/2009
+    .end   = 30/09/2009
+  }
+  Records weather {
+    .fileName = "weather/flakkebjerg 2009.txt"
+  }
+  Accumulator dd18 {
+    .change = if (weather[Tavg]>18) then weather[Tavg]-18 else 0
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .layout = "merged"
+        .ports = weather[Tavg] | dd18[change] | dd18[value]
+      }
+    }
+  }
+}
