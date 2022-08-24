@@ -21,7 +21,7 @@ Yield::Yield(QString name, Box *parent)
     Input(aphidIndex).help("Aphid density index of Entwistle-Dixon-Wratten ");
     Output(yield).help("Yield relative to uninfested crop").unit("[0;1]");
     Output(loss).help("Proportional yield loss due to aphids").unit("[0;1]");
-    Output(lossRate).help("Loss rate").unit("d-1");
+    Output(lossRate).help("Daily loss rate").unit("[0;1]");
 }
 
 void Yield::reset() {

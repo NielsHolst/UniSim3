@@ -16,7 +16,7 @@ using namespace base;
 namespace command {
 
 PUBLISH(find)
-HELP(find, "find <path expression>", "finds objects matching path expression")
+HELP(find, "find <path>", "finds objects matching path")
 
 find::find(QString name, Box *parent)
     : Command(name, parent)

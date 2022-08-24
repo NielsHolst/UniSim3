@@ -16,7 +16,6 @@ QT += widgets
 
 # What we are building
 TEMPLATE = app
-#DESTDIR = "$$_PRO_FILE_PWD_/../../../bin"
 DESTDIR = "$${BIN_PATH}"
 TARGET = $$BOXES_APP_NAME$${SUFFIX}
 

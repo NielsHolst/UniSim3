@@ -7,6 +7,7 @@
 #include <QDate>
 #include <QDateTime>
 #include <QTime>
+#include <base/bare_date.h>
 #include <base/box.h>
 
 namespace boxes {
@@ -34,6 +35,7 @@ private:
     QDateTime dateTime;
     int dayOfYear, totalTime, totalTimeSteps;
     double timeStepSecs, timeStepDays, totalDays;
+    base::BareDate bareDate;
 
     // methods
     void updateDerived();

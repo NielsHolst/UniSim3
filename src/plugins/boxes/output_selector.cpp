@@ -17,16 +17,14 @@ OutputSelector::OutputSelector(QString name, Box *parent)
     : Box(name, parent)
 {
     help("selects what to output");
-    Input(beginStep).equals(0).help("Output is written then this step is reached").unit("int");
-    Input(beginDateTime).equals(QDateTime()).help("Output is written then this time point is reached (optional)").unit("DateTime");
+    Input(beginStep).equals(0).help("Output is written when this step is reached").unit("int");
+    Input(beginDateTime).equals(QDateTime()).help("Output is written when this time point is reached (optional)").unit("DateTime");
     Input(step).imports("/.[step]");
     Input(dateTime).computes("if exists(Calendar::*[dateTime]) then Calendar::*[dateTime] else .[beginDateTime]");
-    Input(period).equals(1).help("If >1: A row of summary output will be produced with this period").unit("int>0");
+    Input(period).equals(1).help("If >1: A row of output will be produced with this period").unit("int>0");
     Input(final).equals(false).help("Overrules 'period'").unit("bool");
     Input(useLocalDecimalChar).equals(false).help("Use local decimal character in output?").unit("bool");
-    Input(skipFormats)
-            .computes("!exists(OutputR::*[skipFormats])")
-            .help("Skip line with column formats?").unit("bool");
+    Input(skipFormats).computes("!exists(OutputR::*[skipFormats])").unit("bool");
     Output(isActive).help("Should output be written?").unit("bool");
     Output(isSkipping).help("Are lines being skipped?").unit("bool");
 }
@@ -44,7 +42,7 @@ void OutputSelector::reset() {
 
 void OutputSelector::update() {
     updateSkipping();
-    isActive = !(isSkipping || final) ? (_periodCount++ % period == 0) : false;
+    isActive = (isSkipping || final) ? false : (_periodCount++ % period == 0);
 }
 
 void OutputSelector::cleanup() {
@@ -58,8 +56,9 @@ void OutputSelector::debrief() {
 }
 
 void OutputSelector::updateSkipping() {
-    bool dateReached = beginDateTime.isValid() && dateTime < beginDateTime;
-    isSkipping = (step < beginStep && !dateReached);
+    bool beforeBeginStep = (beginStep > 0) && (step < beginStep),
+         beforebeginDate = beginDateTime.isValid() && (dateTime < beginDateTime);
+    isSkipping = (beforeBeginStep || beforebeginDate);
 }
 
 }

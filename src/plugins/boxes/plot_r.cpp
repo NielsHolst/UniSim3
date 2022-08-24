@@ -6,8 +6,6 @@
 #include <base/path.h>
 #include <base/publish.h>
 #include <base/resolved_references.h>
-#include "layout_r.h"
-#include "page_r.h"
 #include "plot_r.h"
 
 using namespace base;
@@ -31,6 +29,7 @@ PlotR::PlotR(QString name, Box *parent)
     Input(maxData).help("Max. number of data rows to plot; ignored if zero");
     Input(ncol).equals(-1).help("Number of columns in arrangement of plots; -1 keeps default");
     Input(nrow).equals(-1).help("Number of rows in arrangement of plots; -1 keeps default");
+    Input(direction).equals("row").help("Fill in plots by 'row' or 'col'");
     Input(iteration) .imports("/.[iteration]");
     Input(xAxis)     .imports("..[xAxis]");
     Input(width)     .imports("..[width]");
@@ -42,8 +41,12 @@ PlotR::PlotR(QString name, Box *parent)
 void PlotR::initialize() {
     // Validate
     if (layout!="facetted" && layout!="merged")
-        ThrowException("Layout must be either \"facetted\" or \"merged\"")
+        ThrowException("'layout' must be either 'facetted' or 'merged'")
                 .value(layout).context(this);
+    if (direction.toLower()!="row" && direction.toLower()!="col")
+        ThrowException("'direction' must be either 'row' or 'col'")
+                .value(direction).context(this);
+
     // Set flag for list output
     _doPlotAsList = plotAsList || (type.toLower()=="sobolindices");
 
@@ -111,7 +114,7 @@ QString PlotR::toScript() {
 }
 
 inline QString df(int maxData) {
-    return (maxData==0) ? "df" : ("df[1:" + QString::number(maxData) + ",]");
+    return (maxData==0) ? "df" : ("df[1:min(nrow(sim)," + QString::number(maxData) + "),]");
 }
 
 QString PlotR::scriptForDefaultPlot(QStringList xLabels, QStringList yLabels) const {
@@ -128,6 +131,8 @@ QString PlotR::scriptForDefaultPlot(QStringList xLabels, QStringList yLabels) co
       << "ncol=" << ncolString()
       << ", "
       << "nrow=" << nrowString()
+      << ", "
+      << "dir=" << dirString()
       << ")";
     return string;
 }
@@ -144,6 +149,8 @@ QString PlotR::scriptForDensityPlot(QStringList yLabels) const {
       << "ncol=" << ncolString()
       << ", "
       << "nrow=" << nrowString()
+      << ", "
+      << "dir=" << dirString()
       << ")";
     return string;
 }
@@ -172,6 +179,8 @@ QString PlotR::scriptForHistogramPlot(QStringList yLabels, QString geom) const {
       << "ncol=" << ncolString()
       << ", "
       << "nrow=" << nrowString()
+      << ", "
+      << "dir=" << dirString()
       << ")";
     return string;
 }
@@ -199,6 +208,10 @@ QString PlotR::nrowString() const {
 QString PlotR::ncolString() const {
     int n = (ncol==-1 && nrow==-1) ? 1 : ncol;
     return (n == -1) ? QString("NULL") : QString::number(n);
+}
+
+QString PlotR::dirString() const {
+    return (direction.toLower()=="row") ? "'h'" : "'v'";
 }
 
 void PlotR::appendGgplot(QTextStream &s) {

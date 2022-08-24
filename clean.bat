@@ -10,6 +10,10 @@ for /f %%i in ('dir /S /B ..\build-*-Desktop*') do rmdir /S /Q "%%i"
 rmdir /S /Q output
 rmdir /S /Q bin
 rmdir /S /Q bin32
+rmdir /S /Q .qtc_clangd
+cd ship
+rmdir /S /Q bin
+cd ..
 
 for /f %%i in ('dir /S /B /AD ship\cmd\ig\iglib*') do rmdir /S /Q "%%i"
 del ship\cmd\ig\*.zip

@@ -27,7 +27,7 @@ private:
     bool show;
     // Outputs
     QString answer;
-    bool accepted, notAccepted;
+    bool accepted;
     // Data
     base::Computation::Step _when;
     // Methods

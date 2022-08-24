@@ -26,9 +26,9 @@ PopUp::PopUp(QString name, Box *parent)
     Input(icon).equals("information").help("Icon to show");
     Input(when).equals("initialize").help("In which step to show message, e.g., \"initialize\" or \"debrief\"");
     Input(show).equals(true).help("Determines whether pop-up will be shown");
-    Output(answer).help("Name of button pushed");
-    Output(accepted).help("Question accepted?");
-    Output(notAccepted).help("Question not accepted?");
+    Output(answer).noClear().help("Name of button pushed");
+    Output(accepted).noClear().help("Question accepted?");
+
 }
 
 void PopUp::amend() {
@@ -81,7 +81,6 @@ void PopUp::showPopUp() {
         default: ;// Never reached
     }
     accepted = (answer != "No");
-    notAccepted = !accepted;
 }
 
 QMessageBox::StandardButton PopUp::toButton(QString source) {

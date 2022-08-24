@@ -18,9 +18,9 @@ InfectionRate::InfectionRate(QString name, Box *parent)
 {
     help("calculates the proportion of hosts being infected per day");
     Input(isSporulating).help("Are cadavers sporulating?").unit("boolean");
-    Input(cadavers).help("Sporulating cadaverss").unit("per tiller");
+    Input(cadavers).help("Sporulating cadavers").unit("per tiller");
     Input(transmissionEfficiency).help("Transmission efficiency ").unit("per cadaver per day");
-    Output(value);
+    Output(value).unit("[0;1]").help("Proportion of hosts getting exposed in one day");
 }
 
 void InfectionRate::update() {

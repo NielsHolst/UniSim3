@@ -14,7 +14,7 @@ Simulation sim {
   #include "aphid-fungus-random-parameters.part.box"
   #include "aphid-fungus-model.part.box" 
   PopUp question {
-    .title = "You are about to run a simulation that will last many hours (at ~26,000 simulations per hour)."
+    .title = "You are about to run a simulation that will potentially last many hours (at ~26,000 simulations per hour)."
     .text = "Do you want to continue?"
     .icon = "question"
     .buttons = "(Yes No)"

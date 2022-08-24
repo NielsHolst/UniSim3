@@ -1,0 +1,34 @@
+// crop-model.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/04/2004
+    .end   = 31/08/2004
+  }
+  Records weather {
+    .fileName =  "weather/Aarnes_2004.txt"
+  } 
+  CropGrowthStage cropGrowthStage {
+    .valueAtStart       = 20.0
+    .dayDegreesHalfways = 800.0
+    .slope              = 2.8
+    .dayDegrees = ./time[total]
+    CropIsGrowing isGrowing {
+      .temperature = weather[Tavg] 
+    }
+    DayDegrees time{
+      .T = weather[Tavg]
+      .T0 = 0
+      .isTicking = ../isGrowing[value]
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .width = 6
+      .height = 3.5
+      PlotR {
+        .ports = cropGrowthStage[value]
+      }
+    }
+  }
+}

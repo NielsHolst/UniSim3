@@ -46,6 +46,14 @@ QString info(Node *node) {
     return info(QVector<Node*>() << node);
 }
 
+QString info(QVector<base::Box *> boxes) {
+    QVector<Node*> nodes;
+    for (auto box : boxes) {
+        nodes << box;
+    }
+    return info(nodes);
+}
+
 QString readHeader(QFile &file) {
     QString header = QString(file.readLine()).trimmed();
 
@@ -83,7 +91,6 @@ QStringList readTailLines(QFile &file, int n) {
 }
 
 void skipLines(QFile &file, int n) {
-    QStringList lines;
     int i = 0;
     while (!file.atEnd() && i<n) {
         file.readLine();

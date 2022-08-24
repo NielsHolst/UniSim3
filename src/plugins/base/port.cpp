@@ -324,24 +324,9 @@ const Value& Port::value() const {
 }
 
 void Port::verifyValue() const {
-    switch (_value.type()) {
-    case Value::Type::Double:
-        if (std::fpclassify(_value.as<double>()) == FP_NAN)
+    if (_value.type() == Value::Type::Double &&
+        std::fpclassify(_value.as<double>()) == FP_NAN) {
             ThrowException("Value is not a number").context(this);
-        break;
-    case Value::Type::Date:
-        if (!_value.as<QDate>().isValid())
-            ThrowException("Date is invalid").context(this);
-        break;
-    case Value::Type::Time:
-        if (!_value.as<QTime>().isValid())
-            ThrowException("Time is invalid").context(this);
-        break;
-    case Value::Type::DateTime:
-        if (!_value.as<QDateTime>().isValid())
-            ThrowException("Date-time is invalid").context(this);
-        break;
-    default: ;
     }
 }
 

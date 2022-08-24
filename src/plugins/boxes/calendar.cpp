@@ -44,6 +44,7 @@ Calendar::Calendar(QString name, Box *parent)
     Output(totalTime).help("Total time since calendar was reset; in units of timeUnit").unit(port("timeUnit")->value<QString>());
     Output(totalDays).help("Total time since calendar was reset").unit("d");
     Output(dayOfYear).help("Julian day").unit("[1;366]");
+    Output(bareDate).help("'date' as a bare date");
 }
 
 void Calendar::initialize() {
@@ -84,6 +85,7 @@ void Calendar::updateDerived() {
     dayOfYear = date.dayOfYear();
     totalTime = totalTimeSteps*timeStep;
     totalDays = totalTime*Time::toDays(timeUnit);
+    bareDate = BareDate(date);
 }
 
 } //namespace

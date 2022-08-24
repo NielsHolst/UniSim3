@@ -1,4 +1,0 @@
-Scenario	FileName	StoreMass	PtImmigrants	DayImmigrants	InitDate
-Pt=20	Mono9394.txt	75	20	0	1/9/1993
-Pt=50	Mono9394.txt	75	50	0	1/9/1993
-Pt=20+	Mono9394.txt	75	20	30	1/9/1993

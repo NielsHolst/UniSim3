@@ -125,7 +125,7 @@ Box *Box::latestRoot() {
 }
 
 QString Box::profileReport() {
-    QString result;
+    QString result = "Box\tTask\tmsecs\tPct\n";
     auto report = collectTimerReport();
     double total = 0.;
     for (auto rep : report)

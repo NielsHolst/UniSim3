@@ -1,8 +1,0 @@
-// 
-// This box script cannot run alone; it must be included in another box script.
-//
-  SelectFile weatherFiles {
-    .folder = "weather"
-    .filter = "*.txt"
-    .showFileNames = FALSE
-  }

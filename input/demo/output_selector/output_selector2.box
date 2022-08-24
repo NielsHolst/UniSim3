@@ -1,0 +1,16 @@
+// output_selector2.box
+Simulation sim {
+  .iterations = 2
+  Calendar calendar {
+    .begin = 01/08/2022T12:00
+    .end = 01/08/2022T12:40
+    .timeStep = 5
+    .timeUnit = "m"
+  }
+  OutputText {
+    .ports = calendar[dateTime]
+    OutputSelector {
+      .beginDateTime = 01/08/2022T12:30
+    }
+  }
+}

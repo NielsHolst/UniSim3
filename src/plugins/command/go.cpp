@@ -17,7 +17,7 @@ using namespace base;
 namespace command {
 
 PUBLISH(go)
-HELP(help_go, "go <path expression>", "goes to object matching path expression, must be unique")
+HELP(help_go, "go <path>", "goes to object matching the path, must be unique")
 
 go::go(QString name, Box *parent)
     : Command(name, parent)
@@ -25,14 +25,14 @@ go::go(QString name, Box *parent)
 }
 
 void go::doExecute() {
-    QVector<Node*> matches;
+    QVector<Box*> matches;
     if (_args.size() == 2) {
         QString path = _args.at(1);
         Box *box = environment().current();
         if (!box)
             box = Box::root();
         if (box) {
-            matches = box->findMany<Node*>(path);
+            matches = box->findMany<Box*>(path);
             if (matches.isEmpty())
                 dialog().error("No matches");
             else if (matches.size() > 1) {
@@ -52,7 +52,7 @@ void go::doExecute() {
             dialog().error("No matches; no objects loaded");
     }
     else
-        dialog().error("Write: 'go <path expression>'");
+        dialog().error("Write: 'go <path>'");
 }
 
 }

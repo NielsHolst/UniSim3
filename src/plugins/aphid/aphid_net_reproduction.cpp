@@ -25,13 +25,13 @@ AphidNetReproduction::AphidNetReproduction(QString name, Box *parent)
     Input(Topt).equals(16.1).help("Optimum temperature for reproduction").unit("oC");
     Input(temperature).equals(0).help("Daily average temperature").unit("oC");
     Input(cropGrowthStage).help("Crop growth stage").unit("Zadoks");
-    Input(optimumCropGrowthStageFrom).help("The crop is optimal for reproduction from this growth stage ").unit("Zadoks");
-    Input(optimumCropGrowthStageTo).help("The crop is optimal for reproduction until this growth stage ").unit("Zadoks");
+    Input(optimumCropGrowthStageMin).help("The crop is optimal for reproduction from this growth stage ").unit("Zadoks");
+    Input(optimumCropGrowthStageMax).help("The crop is optimal for reproduction until this growth stage ").unit("Zadoks");
     Input(optimumCropFactor).help("Fecundity increased by this factor when crop is optimal").unit("unitless");
     Input(alateFactor).help("Factor to correct alate relative to apterous fecundity").unit("unitless");
     Input(aphidDensity).help("Aphid density").unit("per tiller");
     Input(aphidDensityThreshold).help("Density threshold when net reproduction is zero").unit("per tiller");
-    Input(exposureCost).help("Relative reduction in reproduction when exposed").unit("[0;1]");
+    Input(immunityCost).help("Relative reduction in reproduction when exposed").unit("[0;1]");
     Output(apterous).help("Net reproduction for apterous aphids").unit("per capita");
     Output(alate).help("Net reproduction for alate aphids").unit("per capita");
     Output(apterousExposed).help("Net reproduction for infected apterous aphids").unit("per capita");
@@ -41,28 +41,21 @@ AphidNetReproduction::AphidNetReproduction(QString name, Box *parent)
 void AphidNetReproduction::update() {
     // TEMPERATURE EFFECT ON LIFETIME FECUNDITY
     // From Tmin to Topt
-    double a, b;
-    if (temperature>=Tmin && temperature<=Topt) {
-        a = R0opt/(Topt-Tmin);
-        b = (-Tmin*R0opt)/(Topt-Tmin);
-    }
+    if (temperature>=Tmin && temperature<=Topt)
+        apterous = R0opt*(temperature-Tmin)/(Topt-Tmin);
     // From Topt to Tmax
-    else if (temperature>Topt && temperature<=Tmax) {
-        a = R0opt/(Topt-Tmax);
-        b = (-Tmax*R0opt)/(Topt-Tmax);
-    }
+    else if (temperature>Topt && temperature<=Tmax)
+        apterous = R0opt*(temperature-Tmax)/(Topt-Tmax);
     // Outside Tmin and Tmax
-    else {
-        a = b = 0.;
-    }
-    apterous = a*temperature + b;
+    else
+        apterous = 0.;
 
-    // THE LIMIT SITUATIONS CLOSE TO Tmin AND Tmax
+    // NUMERIC IMPRECISION CLOSE TO Tmin AND Tmax
     if (apterous < 0.)
         apterous = 0.;
 
     // WHEAT PHENOLOGY EFFECT ON LIFETIME FECUNBITY
-    if (cropGrowthStage>=optimumCropGrowthStageFrom && cropGrowthStage<=optimumCropGrowthStageTo)
+    if (cropGrowthStage>=optimumCropGrowthStageMin && cropGrowthStage<=optimumCropGrowthStageMax)
         apterous *= optimumCropFactor;
     else if (cropGrowthStage>80)
         apterous = 0.;
@@ -77,8 +70,8 @@ void AphidNetReproduction::update() {
     alate = apterous*alateFactor;
 
     // Reduction when exposed
-    apterousExposed = (1.-exposureCost)*apterous;
-    alateExposed = (1.-exposureCost)*alate;
+    apterousExposed = (1.-immunityCost)*apterous;
+    alateExposed = (1.-immunityCost)*alate;
 }
 
 

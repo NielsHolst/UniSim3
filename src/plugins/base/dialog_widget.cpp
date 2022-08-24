@@ -3,6 +3,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <QApplication>
+#include <QClipboard>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFont>
@@ -19,7 +20,6 @@
 #include "dialog_widget.h"
 #include "environment.h"
 #include "exception.h"
-#include "mega_factory.h"
 #include "win_taskbar_progress.h"
 
 #include <QMessageBox>
@@ -73,7 +73,7 @@ void DialogWidget::saveFont() {
 void DialogWidget::setFont(QString family, int pt) {
     // Construct font
     QString family2 = fontExists(family) ? family : preferredFamily();
-    QFont font = QFontDatabase().font(family2, QString(), pt);
+    QFont font = QFontDatabase::font(family2, QString(), pt);
 
     // Set cursor to use font
     QTextCursor cursor = textCursor();
@@ -102,7 +102,7 @@ void DialogWidget::restoreFont() {
 
     QTextCursor cursor = textCursor();
     QTextCharFormat format = cursor.charFormat();
-    format.setFont(QFontDatabase().font(family, QString(), pt));
+    format.setFont(QFontDatabase::font(family, QString(), pt));
     cursor.setCharFormat(format);
     setTextCursor(cursor);
 }
@@ -128,7 +128,7 @@ QString DialogWidget::preferredFamily() {
 }
 
 bool DialogWidget::fontExists(QString family) {
-    return QFontDatabase().font(family, QString(), 10).family() !=
+    return QFontDatabase::font(family, QString(), 10).family() !=
            QGuiApplication::font().family();
 }
 
@@ -219,6 +219,10 @@ void DialogWidget::keyPressEvent(QKeyEvent *event) {
 void DialogWidget::handleCtrlKey(QKeyEvent *event) {
     QString s;
     switch (event->key()) {
+    case Qt::Key_V:
+        trimClipboard();
+        QTextEdit::keyPressEvent(event);
+        break;
     case Qt::Key_L:
         insertText("clear");
         submitCommand();
@@ -252,12 +256,14 @@ void DialogWidget::handleCtrlKey(QKeyEvent *event) {
 }
 
 QString DialogWidget::selectFile() {
+    // Legal commands
+    static QStringList commands = {"debug", "edit", "load", "run"};
     // Check command
     QStringList items = lineItems();
-    bool fileDialog   = items.at(0)=="load" || items.at(0)=="run" || items.at(0)=="debug";
+    bool fileDialog   = commands.contains(items.at(0));
     bool folderDialog = items.size()==3 && items.at(0)=="set" && items.at(1)=="folder" && items.at(2)=="work";
     if (!(fileDialog || folderDialog)) {
-        QMessageBox::warning(this, "Wrong command", "Use <Ctrl>+<space> only together with 'load', 'run', 'debug' or 'set folder work'");
+        QMessageBox::warning(this, "Wrong command", "Use <Ctrl>+<space> with one of these: "+commands.join(","));
         return QString();
     }
     // Extract paths
@@ -375,7 +381,7 @@ QTextCursor DialogWidget::getCursor() {
     QFont font = format.font();
     QString family = font.family();
     int pt = font.pointSize();
-    format.setFont(QFontDatabase().font(family, QString(), pt));
+    format.setFont(QFontDatabase::font(family, QString(), pt));
     cursor.setCharFormat(format);
     return cursor;
 }
@@ -483,13 +489,18 @@ void DialogWidget::clearLine() {
     }
 }
 
-void DialogWidget:: submitCommand() {
+void DialogWidget::submitCommand() {
+    // Retrieve commandline
+    QString line = DialogWidget::line();
+    QStringList items = line.split(" ");
+
+    // Move visible cursor to end of line
     QTextCursor cursor = getCursor();
     cursor.movePosition(QTextCursor::EndOfLine);
     setTextCursor(cursor);
-    QString line = DialogWidget::line();
-    QStringList items = lineItems();
-    if (!line.isEmpty() && !items.isEmpty()) {
+
+    // Submit command
+    if (!items.isEmpty()) {
         _history.add(line);
         try {
             Command::submit(items);
@@ -502,12 +513,30 @@ void DialogWidget:: submitCommand() {
 }
 
 QString DialogWidget::line() {
-    QTextBlock block = _textDocument->findBlock(cursorPosition());
-    return block.text().mid(_prompt.size()).simplified();
+    // Get current cursor position and current line
+    QTextCursor cursor = getCursor();
+    QString line = cursor.block().text();
+    // Look in previous line if empty
+    if (line.isEmpty()) {
+        QTextCursor cursor2 = getCursor();
+        bool ok = cursor2.movePosition(QTextCursor::PreviousBlock);
+        if (ok) {
+            line = cursor2.block().text();
+        }
+    }
+    // Remove prompt from line
+    if (!line.isEmpty() && line.startsWith(">"))
+        line = line.mid(_prompt.size());
+    return line.simplified();
 }
 
 QStringList DialogWidget::lineItems() {
     return line().split(" ");
+}
+
+void DialogWidget::trimClipboard() {
+    QString s = QApplication::clipboard()->text();
+    QApplication::clipboard()->setText(s.trimmed());
 }
 
 }

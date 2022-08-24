@@ -17,7 +17,7 @@ public:
     void update();
 private:
     // Inputs
-    QVector<double>
+    double
         succumbedApterousNymphs,
         succumbedAlateNymphs,
         succumbedApterousAdults,

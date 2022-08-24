@@ -105,7 +105,7 @@ void help::showPlugins() {
     for (int i=0; i < plugins.size(); ++i) {
         QString name = plugins.at(i)->id(),
                 desc = createBox(name + "Documentation") ?
-                       _box->port("title")->value().asString() : "undescribed";
+                       _box->port("title")->value<QString>() : "undescribed";
         info.addLine(name, desc);
     }
     dialog().information(info.combined().join("\n"));
@@ -117,8 +117,9 @@ void help::showHelp() {
                 "help ?  -- to show this help overview\n"
                 "help c  -- to show all commands\n"
                 "help p  -- to show all plugins\n"
-                "help <class name>  -- to show specific class documentation\n"
-                "help <plugin name> -- to show specific plugin documentation\n";
+                "help <class name>    -- to show specific class documentation\n"
+                "help <class name> md -- to show specific class documentation in Markdown format\n"
+                "help <plugin name>   -- to show specific plugin documentation\n";
     dialog().information(s);
 }
 
@@ -232,6 +233,7 @@ inline QString escaped(QString s, bool isComputed) {
     s = s.replace(">", "&#62;");
     s = s.replace(":", "&#58;");
     s = s.replace("|", "&#124;");
+    s = s.replace("*", "\\*");
     return isComputed ? "*"+s+"*" : s;
 }
 
@@ -253,6 +255,7 @@ void help::setColWidths() {
 
 QStringList help::portsHelp(PortType type) {
     QStringList list;
+    QString leftArrow = _useMarkdown ? "" : "<- ";
     for (const Port *port : _box->portsInOrder()) {
         if (port->type() == type) {
             QString item;
@@ -260,7 +263,7 @@ QStringList help::portsHelp(PortType type) {
             item +=       port->objectName().leftJustified(_colWidthName) +
                     "|" + port->value().typeName().leftJustified(_colWidthType) + "|";
 
-            bool isComputed = !port->isConstant();
+            bool isComputed = !port->unparsedExpression().isEmpty();
             if (isComputed && _useMarkdown) {
                 item += "*computed*";
             }
@@ -269,14 +272,18 @@ QStringList help::portsHelp(PortType type) {
                 item += value.rightJustified(_colWidthValue);
             }
 
-            if (_colWidthUnit > 0)
-                item += " " + inBrackets(port->unit()).leftJustified(_colWidthUnit);
+            if (_colWidthUnit > 0) {
+                QString unit = " " + inBrackets(port->unit()).leftJustified(_colWidthUnit);
+                if (_useMarkdown) {
+                    unit = unit.replace("-", "&minus;");
+                    unit = unit.replace("oC", "&#8451;");
+                }
+                item += unit;
+            }
 
             QString help = port->help();
-            if (help.isEmpty() &&
-                !port->unparsedExpression().isEmpty() &&
-                port->value().type() != Value::Type::Path)
-                    help = "<- " + port->unparsedExpression();
+            if (help.isEmpty() && !port->unparsedExpression().isEmpty())
+                help = leftArrow + port->unparsedExpression();
 
             item += "|";
             item += _useMarkdown ? escaped(help, isComputed) : help;

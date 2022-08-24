@@ -28,17 +28,12 @@ CadaverConversion::CadaverConversion(QString name, Box *parent)
 }
 
 void CadaverConversion::update() {
-    // The inputs come as vectors which hold the age-distribution of how far the individuals came
-    // in their development as aphids before turning into cadavers. That age distribution becomes
-    // irrelevant once they have become cadaders.
-    double apterousNymphs = sum(succumbedApterousNymphs),
-           alateNymphs    = sum(succumbedAlateNymphs),
-           apterousAdults = sum(succumbedApterousAdults),
-           alateAdults    = sum(succumbedAlateAdults);
-    cadavers = 0.5*(apterousNymphs + alateNymphs) + 0.8*alateAdults + apterousAdults;
     // Hemmati et al 2001: winged S. avenae produce 20% less spores than apterous adult.
-    // let's assume that nymphs produce on average 50% less spores than apterous adult.
-    count = apterousNymphs + alateNymphs + alateAdults + apterousAdults;
+    // Let's assume that nymphs produce on average 50% less spores than apterous adult.
+    cadavers = 0.5*(succumbedApterousNymphs + succumbedAlateNymphs) +
+               0.8*succumbedAlateAdults + succumbedApterousAdults;
+    count = succumbedApterousNymphs + succumbedAlateNymphs +
+            succumbedAlateAdults + succumbedApterousAdults;
 }
 
 }

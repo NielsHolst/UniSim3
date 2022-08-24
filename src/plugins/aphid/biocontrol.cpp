@@ -17,8 +17,8 @@ Biocontrol::Biocontrol(QString name, Box *parent)
     : Box(name, parent)
 {
     help("estimates biocontrol effects");
-    Input(aphidPressureWithoutF).help("Accumulated aphid pressure without fungus").unit("aphid-days");
-    Input(aphidPressureWithF).help("Accumulated aphid pressure with fungus").unit("aphid-days");
+    Input(aphidPressureWithoutF).help("Accumulated aphid pressure without fungus").unit("aphid days");
+    Input(aphidPressureWithF).help("Accumulated aphid pressure with fungus").unit("aphid days");
 
     Input(yieldWithoutF).help("Relative yield without fungus").unit("[0;1]");
     Input(yieldWithF).help("Relative yield witt fungus").unit("[0;1]");
@@ -27,7 +27,7 @@ Biocontrol::Biocontrol(QString name, Box *parent)
     Input(prevalence).help("Prevalence of exposed aphids").unit("%");
     Input(cadaverPrevalence).help("Prevalence of cadavers").unit("%");
 
-    Output(aphidPressureDifference).help("Difference in aphid pressure caused by fungus").unit("aphid-days");
+    Output(aphidPressureDifference).help("Difference in aphid pressure caused by fungus").unit("aphid days");
     Output(yieldImprovement).help("Improvement in yield when controlled").unit("%-points");
 
     Output(percentageCadaversGs43).help("Percentage cadavers at GS 43").unit("%");

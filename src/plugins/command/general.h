@@ -10,12 +10,14 @@
 #include <QVector>
 
 namespace base {
+    class Box;
     class Node;
 }
 
 namespace command {
 
-QString info(QVector<base::Node *> nodes);
+QString info(QVector<base::Node*> nodes);
+QString info(QVector<base::Box *> boxes);
 QString info(base::Node *node);
 
 QString readHeader(QFile &file);

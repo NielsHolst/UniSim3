@@ -16,6 +16,8 @@ set QT_ROOT=C:\Qt\5.12.1\mingw73_64
 if exist %QT_ROOT% goto :ok_qt
 set QT_ROOT=C:\Qt\5.9.2\mingw53_32
 if exist %QT_ROOT% goto :ok_qt
+set QT_ROOT=C:\Qt\6.3.1\mingw_64
+if exist %QT_ROOT% goto :ok_qt
 echo .
 echo Could not find %QT_ROOT%
 echo .
@@ -53,21 +55,18 @@ copy %UNISIM_SHIP%\..\..\AltovaXML.exe %UNISIM_BIN%
 
 echo = Copy MinGW libraries =
 pushd %QT_BIN%
-copy icu*.dll %UNISIM_BIN%\
 copy libwinpthread-1.dll %UNISIM_BIN%
-copy libgcc_s_dw2-1.dll %UNISIM_BIN%
 copy libgcc_s_seh-1.dll %UNISIM_BIN%
 copy libstd*.dll %UNISIM_BIN%
 
 echo = Copy Qt libraries =
-copy qt5core.dll %UNISIM_BIN%
-copy qt5gui.dll %UNISIM_BIN%
-copy Qt5Network.dll %UNISIM_BIN%
-copy Qt5PrintSupport.dll %UNISIM_BIN%
-copy qt5test.dll %UNISIM_BIN%
-copy Qt5Widgets.dll %UNISIM_BIN%
-copy qt5xmlpatterns.dll %UNISIM_BIN%
-copy Qt5WinExtras.dll %UNISIM_BIN%
+copy Qt6Core.dll %UNISIM_BIN%
+copy Qt6Gui.dll %UNISIM_BIN%
+copy Qt6Network.dll %UNISIM_BIN%
+copy Qt6PrintSupport.dll %UNISIM_BIN%
+copy Qt6Test.dll %UNISIM_BIN%
+copy Qt6Widgets.dll %UNISIM_BIN%
+copy Qt6Xml.dll %UNISIM_BIN%
 popd
 echo = Create Qt plugin folders =
 pushd %UNISIM_BIN%

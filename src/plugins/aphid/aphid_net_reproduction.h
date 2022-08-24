@@ -19,9 +19,9 @@ private:
     // Inputs
     double Tmin, Tmax, Topt, R0opt, temperature,
         cropGrowthStage,
-        optimumCropGrowthStageFrom, optimumCropGrowthStageTo, optimumCropFactor,
+        optimumCropGrowthStageMin, optimumCropGrowthStageMax, optimumCropFactor,
         alateFactor,
-        aphidDensity, aphidDensityThreshold, exposureCost;
+        aphidDensity, aphidDensityThreshold, immunityCost;
     // Outputs
     double apterous, alate,
         apterousExposed, alateExposed;

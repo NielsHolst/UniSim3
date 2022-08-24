@@ -79,6 +79,7 @@ private:
     void handleNormalKey(QKeyEvent *event);
     void handleEscKey();
     QString selectFile();
+    void trimClipboard();
 };
 
 }

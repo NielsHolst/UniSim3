@@ -351,10 +351,7 @@ void Environment::copyToClipboard(QString text, QString message) {
     }
     // Write text to clipboard
     if (message.isEmpty()) {
-        if (_isUnattended) {
-            dialog().information("Executable R script copied to clipboard file!");
-        }
-        else {
+        if (!_isUnattended) {
             QApplication::clipboard()->setText(text);
             dialog().information("Executable R snippet copied to clipboard!");
         }

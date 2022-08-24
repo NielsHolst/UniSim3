@@ -8,7 +8,7 @@
 
 # AUTO-CONFIG-BEGIN
 CONFIG += release
-VERSION = 3.0.0
+VERSION = 3.0.2
 CONFIG += skip_target_version_ext
 # AUTO-CONFIG-END
 
@@ -60,8 +60,9 @@ QMAKE_CXXFLAGS += -Wno-padded -Wno-int-in-bool-context -Wno-maybe-uninitialized
 #}
 
 # Compiler options to silence warnings when compiling Boost
-QMAKE_CXXFLAGS += -Wno-unused-local-typedefs -Wno-attributes -Wno-deprecated-declarations -Wno-misleading-indentation
+QMAKE_CXXFLAGS += -Wno-unused-local-typedefs -Wno-attributes -Wno-deprecated-declarations -Wno-misleading-indentation -Wno-nonnull
 DEFINES += BOOST_ALLOW_DEPRECATED_HEADERS
+DEFINES += BOOST_MATH_DISABLE_DEPRECATED_03_WARNING
 
 # Compiler options to silence warnings when compiling under Mac OS X
 MY_HASH = $$LITERAL_HASH
@@ -76,15 +77,11 @@ QMAKE_CXXFLAGS_DEBUG -= -g
 QMAKE_CXXFLAGS_DEBUG += -g3
 
 # Compiler options to speed up code
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -ffast-math -O3
+QMAKE_CXXFLAGS_RELEASE += -ffast-math -O2
 
 # Compiler option that would have saved me some days' work
 QMAKE_CXXFLAGS += -Wdelete-non-virtual-dtor
 
-# Compiler flags for gcc / gdb version incompatibility
-# https://stackoverflow.com/questions/16611678/how-to-make-the-locals-and-expressions-debugging-window-operational-with-gcc-4
-## QMAKE_CXXFLAGS += -gdwarf-3
 
 # Additional folders with header files
 BOOST_PATH = $$(BOOST_ROOT)

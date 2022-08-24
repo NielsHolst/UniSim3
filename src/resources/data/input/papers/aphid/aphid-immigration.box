@@ -1,0 +1,48 @@
+// aphid-immigration.box
+Simulation sim {
+
+  Calendar calendar {
+    .begin = 01/04/2004
+    .end   = 31/08/2004
+  }
+
+  Records weather {
+    .fileName =  "weather/Aarnes_2004.txt"
+  } 
+
+  Box wheat{
+    CropGrowthStage cropGrowthStage {
+      .valueAtStart       = 20.0
+      .dayDegreesHalfways = 800.0
+      .slope              = 2.8
+      .dayDegrees = ./time[total]
+      CropIsGrowing isGrowing {
+        .temperature = weather[Tavg] 
+      }
+      DayDegrees time{
+        .T = weather[Tavg]
+        .T0 = 0
+        .isTicking = ../isGrowing[value]
+      }
+    }
+  }
+  
+  Box aphid {
+    AphidImmigration immigration {
+      .cropGrowthStage = cropGrowthStage[value]
+      .toCropGrowthStage = 69
+      .immigrationRate = 0.02
+      .k = 15
+    }
+  }
+  
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      &exposed = sum(aphid/immigration[exposed])
+      PlotR {
+        .ports = wheat/cropGrowthStage[value] | aphid/immigration[susceptible] | ..[exposed]
+      }
+    }
+  }
+}

@@ -108,9 +108,10 @@
         .exposureCost = random/immunityCost[value] 
       }
       AphidOffspring offspring {
-        .offspringFromSusceptible     = sum(../susceptible/adult/*/fecundity[outflow])
-        .offspringFromExposedApterous = sum(../exposed/adult/apterous/fecundity[outflow])
-        .offspringFromExposedAlate    = sum(../exposed/adult/alate/fecundity[outflow])
+        .offspringTotal = sum(../*/adult/*/fecundity[outflow]) + 
+        // .offspringFromSusceptible     = sum(../susceptible/adult/*/fecundity[outflow])
+        // .offspringFromExposedApterous = sum(../exposed/adult/apterous/fecundity[outflow])
+        // .offspringFromExposedAlate    = sum(../exposed/adult/alate/fecundity[outflow])
         .aphidDensity = ../density[total]
         .cropGrowthStage = cropGrowthStage[value]
       }

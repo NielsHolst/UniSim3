@@ -16,13 +16,12 @@ include("$$_PRO_FILE_PWD_/../../boxes_common.pri")
 TEMPLATE = lib
 CONFIG += plugin
 TARGET = $$BOXES_PLUGIN_NAME$${SUFFIX}
-#DESTDIR = "$$_PRO_FILE_PWD_/../../../bin/plugins"
 DESTDIR = "$${BIN_PLUGINS_PATH}"
 DEFINES += BOXES_PLUGIN_NAME=$$BOXES_PLUGIN_NAME
 DEFINES += BOXES_PLUGIN_NAME_TEXT=\\\"$${BOXES_PLUGIN_NAME}\\\"
 
-# Own library source code on which we depend
-DEPENDPATH += $$_PRO_FILE_PWD_/../base
+### # Own library source code on which we depend
+### DEPENDPATH += $$_PRO_FILE_PWD_/../base
 
 # Additional folders with header files
 INCLUDEPATH += "$$_PRO_FILE_PWD_/.."

@@ -1,0 +1,14 @@
+// output_selector3.box
+Simulation sim {
+  .iterations = 2
+  .steps = 25
+  Calendar calendar {
+  }
+  OutputText {
+    .ports = calendar[date]
+    OutputSelector {
+      .beginStep = 10
+      .period = 6
+    }
+  }
+}

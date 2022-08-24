@@ -8,7 +8,7 @@
 
 2. Check that the input folder contains the correct files in
 - demo
-- papers
+- models
 - scripts
 
 3. Check that UniSim3.pro contains the intended plug-ins.

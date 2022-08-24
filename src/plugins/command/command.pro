@@ -20,6 +20,8 @@ HEADERS +=  \
     edit.h \
     find.h \
     general.h \
+    get.h \
+    get_folders.h \
     go.h \
 #    graph.h \
     head.h \
@@ -58,6 +60,8 @@ SOURCES +=  \
 #    doc.cpp \
     edit.cpp \
     find.cpp \
+    get.cpp \
+    get_folders.cpp \
     general.cpp \
     go.cpp \
 #    graph.cpp \

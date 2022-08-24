@@ -26,7 +26,7 @@ public:
 private:
     // Inputs
     base::Path xAxis, ports;
-    QString layout, guideTitle, end, endCode, type, ggplot;
+    QString layout, guideTitle, end, endCode, type, ggplot, direction;
     int maxData, ncol, nrow, iteration, fontSize;
     double width, height;
     bool plotAsList;
@@ -37,6 +37,7 @@ private:
     // Methods
     QString nrowString() const;
     QString ncolString() const;
+    QString dirString() const;
     void appendGgplot(QTextStream &s);
     QString scriptForDefaultPlot(QStringList xLabels, QStringList yLabels) const;
     QString scriptForDensityPlot(QStringList yLabels) const;

@@ -1,4 +1,4 @@
-# BEGIN = TRUE
+BEGIN = TRUE
 
 library("colorspace")
 library("ggplot2")
@@ -107,6 +107,9 @@ open_plot_window = function(width=7, height=7) {
   }
 }
 
+# Millimeters from inches; used for output to graphics files
+mm = function(x) x/25.4
+
 read_output = function(file_path) {
 
   column_info = function(file_path) {
@@ -184,9 +187,9 @@ melt_xy = function(df, x, y) {
     stop("stopped")
   }
   # Produce columns: iteration step <y1> <y2> <y...> xVariable xValue
-  M = melt(convert_logical(df), measure.vars=x, value.name="xValue", variable.name="xVariable")
+  M = melt(convert_logical(df), id.vars=c(sim_columns(),y), measure.vars=x, value.name="xValue", variable.name="xVariable")
   # Produce columns: iteration step xValue xVariable Response ResponseValue
-  M = melt(M, id.vars=c(sim_columns,"xValue","xVariable"), measure.vars=y, value.name="ResponseValue", variable.name="Response")
+  M = melt(M, id.vars=c(sim_columns(),"xValue","xVariable"), measure.vars=y, value.name="ResponseValue", variable.name="Response")
   M[,iterationColumn] = factor(M[,iterationColumn])
   M
 }
@@ -209,7 +212,7 @@ Log10 = function(x) {
 # y = c("y1","y2")
 
 
-plot_one_x = function(df, x, y, ncol, nrow, layout) {
+plot_one_x = function(df, x, y, ncol, nrow, dir, layout) {
   # Produce columns: iteration <x> Variable Value
   # Note: length(x)==1, length(y)>=1
   M = melt_y(df, x, y)
@@ -245,7 +248,7 @@ plot_one_x = function(df, x, y, ncol, nrow, layout) {
       P + facet_grid(as.formula(form), scales="free_y") + xlab("") + ylab("")
     # If there is only one iteration and many variables then facet by Variable only
     } else if (!one_variable) { 
-      P + facet_wrap(~Variable, ncol=ncol, nrow=nrow, scales="free_y") + xlab(x) + ylab("")
+      P + facet_wrap(~Variable, ncol=ncol, nrow=nrow, dir=dir, scales="free_y") + xlab(x) + ylab("")
     # If there is only one iteration and only one Variable then produce a simple (x,y) plot
     # Note: x and y both have length 1
     } else {
@@ -266,14 +269,14 @@ plot_one_x = function(df, x, y, ncol, nrow, layout) {
     # Note: Each facet will be coloured by Variables (hence variables are merged in eacg facet)
     if (many_iterations & !one_variable) { 
       form = paste0("~", iterationColumn)
-      P + facet_wrap(as.formula(form), ncol=ncol, nrow=nrow)
+      P + facet_wrap(as.formula(form), ncol=ncol, nrow=nrow, dir=dir)
     } else {
       P
     }
   }
 }
 
-plot_many_x = function(df, x, y, ncol, nrow, layout) {
+plot_many_x = function(df, x, y, ncol, nrow, dir, layout) {
   # Produce columns: iteration step xValue xVariable Response ResponseValue
   # Note: length(x)>1, length(y)>=1
   M = melt_xy(df, x, y)
@@ -301,33 +304,33 @@ plot_many_x = function(df, x, y, ncol, nrow, layout) {
     P = P + facet_grid(Response~xVariable, scales="free") 
   # Otherwise, if only iteration merge Response ((coloured)) into each facet
   } else {
-    P = P + facet_wrap(~xVariable, scales="free") 
+    P = P + facet_wrap(~xVariable, scales="free", dir=dir) 
   }
   P
 }
 
-plot_facetted = function(df, x, y, ncol, nrow) {
+plot_facetted = function(df, x, y, ncol, nrow, dir) {
   if (length(x) == 1) {
-    plot_one_x( df, x, y, ncol, nrow, "facetted") 
+    plot_one_x( df, x, y, ncol, nrow, dir, "facetted") 
   } else {
-    plot_many_x(df, x, y, ncol, nrow, "facetted")
+    plot_many_x(df, x, y, ncol, nrow, dir, "facetted")
   }
 }
 
-plot_merged = function(df, x, y, ncol, nrow) {
+plot_merged = function(df, x, y, ncol, nrow, dir) {
   if (length(x) == 1) {
-    plot_one_x( df, x, y, ncol, nrow, "merged") 
+    plot_one_x( df, x, y, ncol, nrow, dir, "merged") 
   } else {
-    plot_many_x(df, x, y, ncol, nrow, "merged")
+    plot_many_x(df, x, y, ncol, nrow, dir, "merged")
   }
 }
 
-plot_density = function(df, ports, ncol, nrow) {
+plot_density = function(df, ports, ncol, nrow, dir) {
   M = melt(df[ports], value.name="Value", variable.name="Variable")
   ggplot(M, aes(x=Value, colour=Variable, fill=Variable)) +
     geom_density(alpha=0.3) +
     labs(y="") + 
-    facet_wrap(~Variable, scales="free", ncol=ncol, nrow=nrow) +
+    facet_wrap(~Variable, scales="free", ncol=ncol, nrow=nrow, dir=dir) +
     theme(
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
@@ -335,11 +338,11 @@ plot_density = function(df, ports, ncol, nrow) {
     )
 }
 
-plot_histogram = function(df, ports, bins, ncol, nrow) {
+plot_histogram = function(df, ports, bins, ncol, nrow, dir) {
   M = melt(df[ports], value.name="Value", variable.name="Variable")
   ggplot(M, aes(x=Value, colour=Variable, fill=Variable)) +
     geom_histogram(alpha=0.3, bins=bins) +
     labs(y="") + 
-    facet_wrap(~Variable, scales="free", ncol=ncol, nrow=nrow) +
+    facet_wrap(~Variable, scales="free", ncol=ncol, nrow=nrow, dir=dir) +
     theme(legend.position="none")    
 }

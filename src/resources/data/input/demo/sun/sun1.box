@@ -1,0 +1,22 @@
+// sun1.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/01/2022
+    .end   = 31/12/2022
+    .timeStep = 5
+    .timeUnit = "m"
+  }
+  Sun sun {
+  }
+  OutputR {
+    .width = 5
+    .height = 3
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = sun[solarConstant]
+      }
+    }
+  }
+}
+

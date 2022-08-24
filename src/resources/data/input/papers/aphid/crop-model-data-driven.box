@@ -1,0 +1,40 @@
+// crop-aphid-model.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/04/1995
+    .end   = 31/08/1995
+  }
+  Records weather {
+    .fileName = "validation/A95-weather-gs.txt"
+  } 
+  Box wheat{
+    CropGrowthStage cropGrowthStageModel {
+      .valueAtStart       = 20.0
+      .dayDegreesHalfways = 800.0
+      .slope              = 2.8
+      .dayDegrees = ./time[total]
+      CropIsGrowing isGrowing {
+        .temperature = weather[Tavg] 
+      }
+      DayDegrees time{
+        .T = weather[Tavg]
+        .T0 = 0
+        .isTicking = ../isGrowing[value]
+      }
+    }
+    Box cropGrowthStage {
+      // Pick growth stage either from the weather file or else from the growth stage model
+      &value = if exists(weather[GrowthStage]) then weather[GrowthStage] else ../cropGrowthStageModel[value]
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .width = 6
+      .height = 3.5
+      PlotR {
+        .ports = cropGrowthStage[value]
+      }
+    }
+  }
+}

@@ -8,7 +8,6 @@
 #include <base/publish.h>
 #include <base/resolved_references.h>
 #include <base/test_num.h>
-#include "layout_r.h"
 #include "page_r.h"
 #include "plot_r.h"
 
@@ -28,6 +27,7 @@ PageR::PageR(QString name, Box *parent)
     Input(title).help("Title shown on page");
     Input(ncol).equals(-1).help("No. of columns to arrange plots in");
     Input(nrow).equals(-1).help("No. of rows to arrange plots in");
+    Input(direction).equals("row").help("Fill in plots by 'row' or 'col'");
     Input(commonLegend).equals(false).help("Collate legends of blots into one common legend");
     Input(legendPosition).equals("bottom").help("If 'commonLegend' then place legend here");
     Input(width)     .imports("..[width]");
@@ -40,6 +40,14 @@ PageR::PageR(QString name, Box *parent)
 }
 
 void PageR::initialize() {
+    // Check direction
+    if (direction.toLower() == "row")
+        _byRow = "TRUE";
+    else if (direction.toLower() == "col")
+        _byRow = "FALSE";
+    else
+        ThrowException("'direction' must be either 'row' or 'col'").value(direction).context(this);
+
     // Find my plots
     _plots = findMany<PlotR*>("./*");
 
@@ -106,7 +114,13 @@ QString PageR::toScript() {
         s << "    align = \"hv\",\n";
     s << "    ...,\n"
       << "    nrow = " << dim("nrow") << ",\n"
-      << "    ncol = " << dim("ncol") << "\n  ))"
+      << "    ncol = " << dim("ncol");
+
+    if (dim("nrow")!="NULL" || dim("ncol")!="NULL")
+        s << ",\n"
+          << "    byrow = " << _byRow;
+
+    s << "\n  ))"
       << "\n}\n";
     return string;
 }

@@ -26,7 +26,7 @@ private:
     base::Path xAxis;
     double width, height, fontSize;
     int ncol, nrow, numPages;
-    QString title, legendPosition;
+    QString title, legendPosition, direction;
     bool plotAsList, popUp, commonLegend;
     QVector<QString> layouts;
     // Data
@@ -34,6 +34,7 @@ private:
     static int _commonPageNumber;
     int _myPageNumber;
     bool _unresolved, _doPopUp;
+    QString _byRow;
     // Methods
     QString dim(QString portName);
 };

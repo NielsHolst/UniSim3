@@ -15,7 +15,7 @@ cd \Users\au152367\Documents\QDev\UniSim3\ship\cmd\win
 rem Set up version
 set MAJOR=3
 set MINOR=0
-set SUB=0
+set SUB=2
 set VERSION=release
 echo Building version %MAJOR%.%MINOR%.%SUB% %VERSION%
 
@@ -31,7 +31,9 @@ set QTENV="C:\Qt\5.12.1\mingw73_64\bin\qtenv2.bat"
 if exist %QTENV% goto :ok_qt
 set QTENV="C:\Qt\5.9.2\mingw53_32\bin\qtenv2.bat"
 if exist %QTENV% goto :ok_qt
-C:\Qt\5.9.2\mingw53_32
+set QTENV="C:\Qt\6.3.1\mingw_64\bin\qtenv2.bat"
+if exist %QTENV% goto :ok_qt
+
 echo .
 echo Could not find %QTENV%
 echo .

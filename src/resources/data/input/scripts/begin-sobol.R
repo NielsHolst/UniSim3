@@ -4,21 +4,19 @@ colour_effects = c(colour_first_order, colour_total)
 S = NULL
 
 input_columns = function() {
-  3:(sobol_k+2)
+  1:sobol_k
 }
 
 input_names = function() {
-  s = colnames(sim)[input_columns()]
-  s = str_replace(s, "\\.end", "")
-  str_replace(s, "\\.value", "")
+  colnames(sim)[input_columns()]
 }
 
 output_column = function(ix_output) {
-  sobol_k + ix_output + 2
+  sobol_k + ix_output
 }
 
 output_names = function() {
-  colnames(sim)[output_column(1):ncol(sim)]
+  colnames(sim)[output_column(1):(ncol(sim)-2)]
 }
 
 rows = function(offset, nrows=NA) {
@@ -130,7 +128,7 @@ plot_against_sample_size = function() {
   }
 
   power2 = floor(log2(sobol_N))
-  from2 = max(power2-5, 3)
+  from2 = max(power2-5, 1)
   breaks = 2^(from2:power2)
   if (2^power2 < sobol_N)
     breaks = c(breaks, sobol_N)
@@ -264,13 +262,7 @@ plot_sobol_convergence = function() {
   plot_against_sample_size()
 }
 
-plot_sobol_indices = function(in_file="") {
-  # Read saved S
-  if (nchar(in_file) > 0) {
-    load(in_file)
-    S <<- S
-  # Compute S
-  } else {
+compute_sobol_indices = function() {
     n_outputs = length(output_names())
     print(paste0("Bootstrapping (n=", sobol_B, ")..."))
     B = adply(1:n_outputs, 1, sobol_bootstrap, n=sobol_B)
@@ -279,7 +271,19 @@ plot_sobol_indices = function(in_file="") {
     file_name_R = paste0(output_file_folder(), "/", output_file_base_name(), "-S.Rdata")
     print(paste("Writing S data frame to", file_name_R))
     save(S, file=file_name_R)
+    S
+}
+
+plot_sobol_indices = function(S=NULL) {
+  # Use argument S
+  if (!is.null(S)) {
+    S <<- S
+  # Compute S
+  } else {
+    S = compute_sobol_indices()
   }
+  print(nrow(S))
+  print(colnames(S))
   plots = dlply(subset(S, Input!="Sum"), .(Output), plot_effects)
   plots
 }

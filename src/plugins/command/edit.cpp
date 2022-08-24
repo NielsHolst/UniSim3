@@ -43,7 +43,7 @@ void edit::doExecute() {
 
     QString fileNamePath = env.inputFileNamePath(fileName),
             url = "file:///" + fileNamePath;
-    if (!QFileInfo(fileNamePath).exists())
+    if (!QFileInfo::exists(fileNamePath))
         ThrowException("Cannot find file").value(fileNamePath);
     bool ok = QDesktopServices::openUrl(QUrl(url));
     if (!ok)

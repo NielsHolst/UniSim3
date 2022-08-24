@@ -27,7 +27,7 @@ StageBase::StageBase(QString name, Box *parent)
     Input(zeroLimit).equals(1e-12).help("Cut contents to zero when total is less than this");
 
     Output(content).help("Total content inside the stage");
-    NamedOutput("value", content).help("Synonyme for 'content'");
+    NamedOutput("value", content).help("Synonym for 'content'");
     Output(inflowSum).help("Sum of current stage inflow (scalar)");
     Output(inflowTotal).help("Accumulated total stage inflow (scalar)");
     Output(phaseInflowSum).help("Sum of current phase inflow cohorts (scalar)");

@@ -17,9 +17,7 @@ public:
     void update();
 private:
     // Inputs
-    double offspringFromSusceptible,
-        offspringFromExposedApterous, offspringFromExposedAlate,
-        aphidDensity, cropGrowthStage;
+    double offspringTotal, aphidDensity, cropGrowthStage;
     // Outputs
     double alate, apterous, alateProportion;
 };
