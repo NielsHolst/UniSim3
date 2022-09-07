@@ -1,0 +1,94 @@
+// randomiser6.box
+Simulation sim {
+  .iterations = 1024
+  .silent = TRUE
+  Calendar calendar {
+    .begin = 01/05/2009
+    .end   = 30/09/2009
+  }
+  Records weather {
+    .fileName = "weather/flakkebjerg 2009.txt"
+  }
+  Box random {
+    RandomiserSobolSequence randomiser {
+      .doSensitivityAnalysis = TRUE
+      .bootstrapSize = 1000
+    }
+    RandomUniformInt k {
+      .min = 10
+      .max = 30
+    }
+    RandomUniform deltaT {
+      .min = -3.0
+      .max =  3.0
+    }
+  }
+  Box butterfly {
+    DayDegrees time {
+      .T0 = 5
+      .T  = weather[Tavg] + random/deltaT[value]
+    }
+    Stage egg {
+      .initial  = 100 
+      .duration = 140
+      .timeStep = ../time[step]
+      .k = random/k[value]
+    }
+    Stage larva {
+      .inflow   = ../egg[outflow]
+      .duration = 200
+      .timeStep = ../time[step]
+      .k = random/k[value]
+    }
+    Stage pupa {
+      .inflow   = ../larva[outflow]
+      .duration = 100
+      .timeStep = ../time[step]
+      .k = random/k[value]
+    }
+    Stage adult {
+      .inflow   = ../pupa[outflow]
+      .duration = 28
+      .timeStep = 1
+      .k = random/k[value]
+    }
+  }
+  Box max {
+    MaximumAt larva {
+      .track = butterfly/larva[value]
+    }
+    MaximumAt pupa {
+      .track = butterfly/pupa[value]
+    }
+    MaximumAt adult {
+      .track = butterfly/adult[value]
+    }
+  }
+  OutputR {
+    OutputSelector {
+      .final = TRUE
+    }
+    PageR {
+      .xAxis = random/*[value]
+      PlotR {
+        .ports = max/*[at]
+        .maxData = 1000
+        .ggplot = "geom_smooth(colour='yellow')"
+      }
+    }  
+    PageR {
+      .xAxis = random/*[value]
+      PlotR {
+        .ports = max/*[at]
+        .type = "SobolConvergence"
+      }
+    }
+    PageR {
+      .xAxis = random/*[value]
+      PlotR {
+        .ports = max/*[at]
+        .type = "SobolIndices"
+      }
+    }
+  }
+}

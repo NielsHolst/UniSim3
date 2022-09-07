@@ -18,7 +18,6 @@ public:
     void progress(int current, int total);
     void finished();
     QProgressBar* progressBar();
-    QWinTaskbarProgress* winProgressTaskbar();
     void finishProgress();
     void information(QString s);
     QString getInformation() const;

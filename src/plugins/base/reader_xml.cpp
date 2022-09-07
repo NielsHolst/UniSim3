@@ -93,10 +93,10 @@ void ReaderXml::setBoxAttributes() {
     // Box name is optional
     if (_reader.attributes().hasAttribute("name"))
         _builder->name( _reader.attributes().value("name").toString() );
-    // Check for unknown attributes
+    // Check for unknown attributes; ignore "source" attribute
     for (QXmlStreamAttribute attribute : _reader.attributes()) {
         QString name = attribute.name().toString();
-        if (name != "class" && name != "name")
+        if (name != "class" && name != "name" && name != "source")
             ThrowException("Unexpected class attribute").value(name).hint(currentInfo());
     }
 }

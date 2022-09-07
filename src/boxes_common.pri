@@ -8,7 +8,7 @@
 
 # AUTO-CONFIG-BEGIN
 CONFIG += release
-VERSION = 3.0.2
+VERSION = 3.0.4
 CONFIG += skip_target_version_ext
 # AUTO-CONFIG-END
 

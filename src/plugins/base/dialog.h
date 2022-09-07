@@ -19,7 +19,6 @@ public:
     Dialog(QObject *parent);
     void init();
     QProgressBar* progressBar();
-    QWinTaskbarProgress* winProgressTaskbar();
     void finishProgress();
     void information(QString s);
     QTextEdit* textEdit();

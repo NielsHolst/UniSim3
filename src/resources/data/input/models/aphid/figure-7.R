@@ -2,7 +2,7 @@
 library(mgcv)
 
 # Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0023.Rdata"
+sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -97,10 +97,24 @@ W = 174
 H = 80
 
 # Screen plot
+graphics.off()
 open_plot_window(mm(W),mm(H))
 print(make_plot())
 
-# Black and white for manuscript, also used for journal after labels have been added in PowerPoint
-png("output/fig-7-bw.png", width=W, height=H, units="mm", res=1200, type="cairo-png")
-print(make_plot())
-dev.off()
+# Write figures
+write_figure = function(file_type) {
+  file_name_path = paste0(output_folder, "/fig-7-bw.", file_type)
+  print(paste("Writing figure to", file_name_path))
+  if (file_type == "png")
+    png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
+  else if (file_type == "eps")
+    cairo_ps(file_name_path, width=mm(W), height=mm(H))
+  else
+    stop(paste0("Wrong file type: '", file_type, "'"))
+  print(make_plot())
+  dev.off()
+}
+
+if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
+# Figure for manuscript id also used for journal after labels have been added in PowerPoint
+write_figure("png")

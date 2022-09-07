@@ -1,0 +1,52 @@
+// randomiser7.box
+Simulation sim {
+  .iterations = 32
+  .steps = 1
+  .silent = TRUE
+  Box monteCarlo {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniform x {
+      .min = 20
+      .max = 40
+    }
+    RandomUniform y {
+      .min = 20
+      .max = 40
+    }
+  }
+  Box stratified {
+    RandomiserStratified randomiser {
+    }
+    RandomUniform x {
+      .min = 20
+      .max = 40
+    }
+    RandomUniform y {
+      .min = 20
+      .max = 40
+    }
+  }
+  Box sobolSequence {
+    RandomiserSobolSequence randomiser {
+    }
+    RandomUniform x {
+      .min = 20
+      .max = 40
+    }
+    RandomUniform y {
+      .min = 20
+      .max = 40
+    }
+  }
+  OutputR {
+    .scripts = "randomiser7.R"
+    OutputSelector {
+      .final = TRUE
+    }
+    OutputText {
+      .ports = sim/*/*[value]
+    }
+  }
+}
+

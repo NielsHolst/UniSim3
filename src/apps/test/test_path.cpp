@@ -1,6 +1,7 @@
 #include <base/box.h>
 #include <base/box_builder.h>
 #include <base/computation.h>
+#include <base/logger.h>
 #include <base/path.h>
 #include <base/port.h>
 #include "exception_expectation.h"
@@ -77,5 +78,40 @@ void TestPath::testFindClassName() {
         QCOMPARE(root->findMany<Port*>("Stage::*[k]"), Ports() << P);
     }
     UNEXPECTED_EXCEPTION;
+}
 
+void TestPath::testLookInChildrenNotSelf() {
+    bool excepted(false);
+    using Ports = QVector<Port*>;
+
+    Computation::changeStep(Computation::Step::Construct);
+    BoxBuilder builder;
+    try {
+        builder.
+            box("Simulation").name("S").
+                box().name("A").
+                    aux("x").equals(10).
+                    box().name("B").
+                        aux("x").equals(20).
+                    endbox().
+                    box().name("B").
+                        aux("x").equals(30).
+                    endbox().
+                endbox().
+            endbox();
+    }
+    UNEXPECTED_EXCEPTION;
+
+    auto root = std::unique_ptr<Box>( builder.root() );
+    try {
+        root->initializeFamily();
+    }
+    UNEXPECTED_EXCEPTION;
+
+    Box *A = root->findOne<Box*>("A");
+    Ports x = A->findMany<Port*>("./*[x]");
+    QCOMPARE(x.size(), 2);
+    QCOMPARE(x.at(0)->value<int>(), 20);
+    QCOMPARE(x.at(1)->value<int>(), 30);
+    base::log("testLookInChildrenNotSelf() Z");
 }

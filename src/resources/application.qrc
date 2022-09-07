@@ -43,10 +43,22 @@
     <file>data/input/demo/honeybee1.box</file>
     <file>data/input/demo/honeybee2.box</file>
     <file>data/input/demo/hump/hump1.box</file>
+    <file>data/input/demo/maximum_at/maximum_at1.box</file>
     <file>data/input/demo/output_selector/output_selector1.box</file>
     <file>data/input/demo/output_selector/output_selector2.box</file>
     <file>data/input/demo/output_selector/output_selector3.box</file>
     <file>data/input/demo/output_selector/output_selector4.box</file>
+    <file>data/input/demo/randomiser/randomiser1.box</file>
+    <file>data/input/demo/randomiser/randomiser2.box</file>
+    <file>data/input/demo/randomiser/randomiser3.box</file>
+    <file>data/input/demo/randomiser/randomiser4.box</file>
+    <file>data/input/demo/randomiser/randomiser4.R</file>
+    <file>data/input/demo/randomiser/randomiser5.box</file>
+    <file>data/input/demo/randomiser/randomiser5.R</file>
+    <file>data/input/demo/randomiser/randomiser6.box</file>
+    <file>data/input/demo/randomiser/randomiser7.box</file>
+    <file>data/input/demo/randomiser/randomiser7.R</file>
+    <file>data/input/demo/random_binomial/random_binomial1.box</file>
     <file>data/input/demo/records/records1.box</file>
     <file>data/input/demo/records/records2.box</file>
     <file>data/input/demo/records/records3.box</file>
@@ -63,85 +75,86 @@
     <file>data/input/demo/weather/flakkebjerg 2018.txt</file>
     <file>data/input/demo/weather/geneva 2009.txt</file>
     <file>data/input/demo/weather/ljubljana 2009.txt</file>
-    <file>data/input/papers/aphid/aphid-immigration.box</file>
-    <file>data/input/papers/aphid/aphid-juvenile-survival.box</file>
-    <file>data/input/papers/aphid/aphid-net-reproduction.box</file>
-    <file>data/input/papers/aphid/biocontrol-model-sa-restore.R</file>
-    <file>data/input/papers/aphid/biocontrol-model-sa.box</file>
-    <file>data/input/papers/aphid/biocontrol-model.box</file>
-    <file>data/input/papers/aphid/biocontrol.R</file>
-    <file>data/input/papers/aphid/crop-aphid-fungus-model.box</file>
-    <file>data/input/papers/aphid/crop-aphid-model-ua.box</file>
-    <file>data/input/papers/aphid/crop-aphid-model-ua.R</file>
-    <file>data/input/papers/aphid/crop-aphid-model.box</file>
-    <file>data/input/papers/aphid/crop-model-data-driven.box</file>
-    <file>data/input/papers/aphid/crop-model-weather-driven.box</file>
-    <file>data/input/papers/aphid/fig-10.R</file>
-    <file>data/input/papers/aphid/fig-8.R</file>
-    <file>data/input/papers/aphid/fig-9.R</file>
-    <file>data/input/papers/aphid/figure-10.R</file>
-    <file>data/input/papers/aphid/figure-2.box</file>
-    <file>data/input/papers/aphid/figure-2.R</file>
-    <file>data/input/papers/aphid/figure-3.R</file>
-    <file>data/input/papers/aphid/figure-4.R</file>
-    <file>data/input/papers/aphid/figure-5.R</file>
-    <file>data/input/papers/aphid/figure-6.R</file>
-    <file>data/input/papers/aphid/figure-7.R</file>
-    <file>data/input/papers/aphid/figure-8.R</file>
-    <file>data/input/papers/aphid/figure-9.R</file>
-    <file>data/input/papers/aphid/table-2.R</file>
-    <file>data/input/papers/aphid/ua.R</file>
-    <file>data/input/papers/aphid/validation/A95-weather-gs.txt</file>
-    <file>data/input/papers/aphid/validation/A95_aphids.Rdata</file>
-    <file>data/input/papers/aphid/validation/aphids-95.txt</file>
-    <file>data/input/papers/aphid/validation/K95-weather-gs.txt</file>
-    <file>data/input/papers/aphid/validation/K95_aphids.Rdata</file>
-    <file>data/input/papers/aphid/validation/Stages.Rdata</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2004.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2005.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2006.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2012.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2013.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2014.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2015.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2016.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2017.txt</file>
-    <file>data/input/papers/aphid/weather/Aarnes_2018.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2004.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2005.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2006.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2012.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2013.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2014.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2015.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2016.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2017.txt</file>
-    <file>data/input/papers/aphid/weather/Ilseng_2018.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2004.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2005.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2006.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2012.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2013.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2014.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2015.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2016.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2017.txt</file>
-    <file>data/input/papers/aphid/weather/Ramnes_2018.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2004.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2005.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2006.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2012.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2013.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2014.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2015.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2016.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2017.txt</file>
-    <file>data/input/papers/aphid/weather/Rygge_2018.txt</file>
+    <file>data/input/models/aphid/aphid-immigration.box</file>
+    <file>data/input/models/aphid/aphid-juvenile-survival.box</file>
+    <file>data/input/models/aphid/aphid-net-reproduction.box</file>
+    <file>data/input/models/aphid/biocontrol-model-sa-restore.R</file>
+    <file>data/input/models/aphid/biocontrol-model-sa.box</file>
+    <file>data/input/models/aphid/biocontrol-model.box</file>
+    <file>data/input/models/aphid/biocontrol.R</file>
+    <file>data/input/models/aphid/crop-aphid-fungus-model.box</file>
+    <file>data/input/models/aphid/crop-aphid-model-ua.box</file>
+    <file>data/input/models/aphid/crop-aphid-model-ua.R</file>
+    <file>data/input/models/aphid/crop-aphid-model.box</file>
+    <file>data/input/models/aphid/crop-model-data-driven.box</file>
+    <file>data/input/models/aphid/crop-model-weather-driven.box</file>
+    <file>data/input/models/aphid/fig-10.R</file>
+    <file>data/input/models/aphid/fig-8.R</file>
+    <file>data/input/models/aphid/fig-9.R</file>
+    <file>data/input/models/aphid/figure-10.R</file>
+    <file>data/input/models/aphid/figure-2.box</file>
+    <file>data/input/models/aphid/figure-2.R</file>
+    <file>data/input/models/aphid/figure-3.R</file>
+    <file>data/input/models/aphid/figure-4.R</file>
+    <file>data/input/models/aphid/figure-5.R</file>
+    <file>data/input/models/aphid/figure-6.R</file>
+    <file>data/input/models/aphid/figure-7.R</file>
+    <file>data/input/models/aphid/figure-8.R</file>
+    <file>data/input/models/aphid/figure-9.R</file>
+    <file>data/input/models/aphid/table-2.R</file>
+    <file>data/input/models/aphid/ua.R</file>
+    <file>data/input/models/aphid/validation/A95-weather-gs.txt</file>
+    <file>data/input/models/aphid/validation/A95_aphids.Rdata</file>
+    <file>data/input/models/aphid/validation/aphids-95.txt</file>
+    <file>data/input/models/aphid/validation/K95-weather-gs.txt</file>
+    <file>data/input/models/aphid/validation/K95_aphids.Rdata</file>
+    <file>data/input/models/aphid/validation/Stages.Rdata</file>
+    <file>data/input/models/aphid/weather/Aarnes_2004.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2005.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2006.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2012.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2013.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2014.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2015.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2016.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2017.txt</file>
+    <file>data/input/models/aphid/weather/Aarnes_2018.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2004.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2005.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2006.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2012.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2013.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2014.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2015.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2016.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2017.txt</file>
+    <file>data/input/models/aphid/weather/Ilseng_2018.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2004.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2005.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2006.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2012.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2013.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2014.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2015.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2016.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2017.txt</file>
+    <file>data/input/models/aphid/weather/Ramnes_2018.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2004.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2005.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2006.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2012.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2013.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2014.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2015.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2016.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2017.txt</file>
+    <file>data/input/models/aphid/weather/Rygge_2018.txt</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>
     <file>data/input/scripts/excel-to-vg.xsl</file>
     <file>data/input/scripts/install_packages.R</file>
+    <file>data/input/scripts/new 1.txt</file>
     <file>data/input/scripts/profile.R</file>
   </qresource>
 </RCC>

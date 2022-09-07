@@ -1,5 +1,5 @@
 # Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0023.Rdata"
+sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -91,20 +91,24 @@ W = 84
 H = 110
 
 # Screen plot
+graphics.off()
 open_plot_window(mm(W),mm(H))
 print(make_plot())
 
+# Write figures
+write_figure = function(file_type) {
+  file_name_path = paste0(output_folder, "/fig-9-bw.", file_type)
+  print(paste("Writing figure to", file_name_path))
+  if (file_type == "png")
+    png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
+  else if (file_type == "eps")
+    cairo_ps(file_name_path, width=mm(W), height=mm(H))
+  else
+    stop(paste0("Wrong file type: '", file_type, "'"))
+  print(make_plot())
+  dev.off()
+}
 
-# Black and white for manuscript
-file_name_path = paste0(output_folder, "/fig-9-bw.png")
-png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
-print(make_plot())
-dev.off()
-print(paste("Figure written to", file_name_path))
-
-# Black and white for journal
-file_name_path = paste0(output_folder, "/fig-9-bw.eps")
-cairo_ps(file_name_path, width=mm(W), height=mm(H))
-print(make_plot())
-dev.off()
-print(paste("Figure written to", file_name_path))
+if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
+write_figure("png")
+write_figure("eps")

@@ -34,7 +34,7 @@ private:
     static int _commonPageNumber;
     int _myPageNumber;
     bool _unresolved, _doPopUp;
-    QString _byRow;
+//    QString _byRow;
     // Methods
     QString dim(QString portName);
 };

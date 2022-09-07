@@ -1,0 +1,959 @@
+Simulation greenhouse { //1527
+  Calendar calendar { //30
+    .latitude = 55.31 // #12
+    .longitude = 10.32 // #13
+    .timeZone = 1.0 // #14
+    .begin = 2001/02/16T00:00:00 // #15
+    .end = null // #16
+    .timeStep = 30 // #17
+    .timeUnit = "s" // #18
+    Sun sun { //11
+      .latitude = calendar[latitude] // #0
+      .dayOfYear = calendar[dayOfYear] // #1
+      .time = calendar[time] // #2
+    }
+  }
+  vg::Sensor sensor { //53
+    .indoorsTemperatureIn = 15.7099 // #31
+    .indoorsRhIn = 78.1884 // #32
+    .indoorsCo2In = 430.638 // #33
+    .indoorsWindspeedIn = -999.0 // #34
+    .outdoorsTemperatureIn = 15.3216 // #35
+    .outdoorsRhIn = 0.0 // #36
+    .outdoorsCo2In = 415.0 // #37
+    .outdoorsGlobalRadiationIn = 67.4456 // #38
+    .outdoorsWindSpeedIn = 5.17892 // #39
+    .soilTemperatureIn = -999.0 // #40
+    .sinb = sun[sinb] // #41
+  }
+  vg::Outdoors outdoors { //104
+    .co2 = sensor[outdoorsCo2] // #92
+    .temperature = sensor[outdoorsTemperature] // #93
+    .rh = sensor[outdoorsRh] // #94
+    .radiation = sensor[outdoorsGlobalRadiation] // #95
+    .propPar = 0.45 // #96
+    .propUv = 0.07 // #97
+    .windSpeed = sensor[outdoorsWindSpeed] // #98
+    .skyTemperature = ./skyTemperatureEstimate[temperature] // #99
+    SkyTemperature skyTemperatureEstimate { //60
+      .intercept = 0.732 // #54
+      .slope = 0.00635 // #55
+      .airTemperature = sensor[outdoorsTemperature] // #56
+      .rh = sensor[indoorsRh] // #57
+    }
+    Box records { //61
+    }
+    Accumulator soilTemperature { //91
+      .initial = ./initial[value] // #85
+      .change = ./controller[controlVariable] // #86
+      .minValue = -1.79769e+308 // #87
+      .maxValue = 1.79769e+308 // #88
+      Hump initial { //69
+        .x = calendar[dayOfYear] // #62
+        .x0 = 70 // #63
+        .x1 = 365 // #64
+        .ymin = 0 // #65
+        .ymax = 16 // #66
+        .ditch = FALSE // #67
+      }
+      PidController controller { //84
+        .sensedValue = ..[value] // #70
+        .desiredValue = outdoors[temperature] // #71
+        .Kprop = 5e-05 // #72
+        .Kint = 0.0 // #73
+        .Kderiv = 0.0 // #74
+        .lookAhead = 0.0 // #75
+        .minimum = -1.79769e+308 // #76
+        .maximum = 1.79769e+308 // #77
+        .timeStep = calendar[timeStepSecs] // #78
+      }
+    }
+  }
+  Box construction { //548
+    vg::Geometry geometry { //123
+      .orientation = 90.0 // #105
+      .numSpans = 4 // #106
+      .spanWidth = 5.0 // #107
+      .length = 100.0 // #108
+      .height = 3.0 // #109
+      .roofPitch = 26.0 // #110
+      .reflection = 0.3 // #111
+    }
+    vg::Shelter shelter { //542
+      .screenAirExponent = 4.0 // #534
+      .Uair = 2.27 // #535
+      .screenUstateExponent = 32.0 // #536
+      .screenUventilationSlope = 2.0 // #537
+      .airTransmissivities = ./*/screens/airTransmissivity[value] // #538
+      .areas = ./*/area[value] // #539
+      .screenPerfection = 0.98 // #540
+      vg::ShelterFace roof1 { //168
+        vg::ShelterFaceArea area { //132
+          .roofArea = geometry[roofArea] // #124
+          .sideWallsArea = geometry[sideWallsArea] // #125
+          .endWallsArea = geometry[endWallsArea] // #126
+          .gablesArea = geometry[gablesArea] // #127
+          .groundArea = geometry[groundArea] // #128
+        }
+        vg::Cover cover { //154
+          .swReflectivityTop = 0.4 // #133
+          .swReflectivityBottom = 0.4 // #134
+          .swTransmissivityTop = 0.5 // #135
+          .swTransmissivityBottom = 0.5 // #136
+          .lwReflectivityTop = 0.7 // #137
+          .lwReflectivityBottom = 0.7 // #138
+          .lwTransmissivityTop = 0.2 // #139
+          .lwTransmissivityBottom = 0.2 // #140
+          .Utop = 6.5 // #141
+          .Ubottom = 6.5 // #142
+          .area = ../area[value] // #143
+          .heatCapacity = 8400.0 // #144
+          .windSpeed = outdoors[windSpeed] // #149
+          .haze = 1.0 // #150
+          .UwindMinimum = 2.8 // #151
+          .UwindSlope = 1.2 // #152
+          .UwindExponent = 0.8 // #153
+        }
+        vg::Screens screens { //160
+          vg::ScreensAirTransmissivity airTransmissivity { //159
+            .screenAirExponent = shelter[screenAirExponent] // #155
+            .states = ../*[state] // #156
+            .transmissivities = ../*[transmissivityAir] // #157
+          }
+        }
+        Vent vent { //167
+          .length = construction/geometry[length] // #161
+          .width = 1 // #162
+          .number = 1 // #163
+          .transmissivity = 1.0 // #164
+        }
+      }
+      vg::ShelterFace roof2 { //213
+        vg::ShelterFaceArea area { //177
+          .roofArea = geometry[roofArea] // #169
+          .sideWallsArea = geometry[sideWallsArea] // #170
+          .endWallsArea = geometry[endWallsArea] // #171
+          .gablesArea = geometry[gablesArea] // #172
+          .groundArea = geometry[groundArea] // #173
+        }
+        vg::Cover cover { //199
+          .swReflectivityTop = 0.4 // #178
+          .swReflectivityBottom = 0.4 // #179
+          .swTransmissivityTop = 0.5 // #180
+          .swTransmissivityBottom = 0.5 // #181
+          .lwReflectivityTop = 0.7 // #182
+          .lwReflectivityBottom = 0.7 // #183
+          .lwTransmissivityTop = 0.2 // #184
+          .lwTransmissivityBottom = 0.2 // #185
+          .Utop = 6.5 // #186
+          .Ubottom = 6.5 // #187
+          .area = ../area[value] // #188
+          .heatCapacity = 8400.0 // #189
+          .windSpeed = outdoors[windSpeed] // #194
+          .haze = 1.0 // #195
+          .UwindMinimum = 2.8 // #196
+          .UwindSlope = 1.2 // #197
+          .UwindExponent = 0.8 // #198
+        }
+        vg::Screens screens { //205
+          vg::ScreensAirTransmissivity airTransmissivity { //204
+            .screenAirExponent = shelter[screenAirExponent] // #200
+            .states = ../*[state] // #201
+            .transmissivities = ../*[transmissivityAir] // #202
+          }
+        }
+        Vent vent { //212
+          .length = construction/geometry[length] // #206
+          .width = 1 // #207
+          .number = 1 // #208
+          .transmissivity = 1.0 // #209
+        }
+      }
+      vg::ShelterFace side1 { //293
+        vg::ShelterFaceArea area { //222
+          .roofArea = geometry[roofArea] // #214
+          .sideWallsArea = geometry[sideWallsArea] // #215
+          .endWallsArea = geometry[endWallsArea] // #216
+          .gablesArea = geometry[gablesArea] // #217
+          .groundArea = geometry[groundArea] // #218
+        }
+        vg::Cover cover { //244
+          .swReflectivityTop = 0.9 // #223
+          .swReflectivityBottom = 0.9 // #224
+          .swTransmissivityTop = 0.0 // #225
+          .swTransmissivityBottom = 0.0 // #226
+          .lwReflectivityTop = 0.1 // #227
+          .lwReflectivityBottom = 0.1 // #228
+          .lwTransmissivityTop = 0.0 // #229
+          .lwTransmissivityBottom = 0.0 // #230
+          .Utop = 0.4 // #231
+          .Ubottom = 0.4 // #232
+          .area = ../area[value] // #233
+          .heatCapacity = 8400.0 // #234
+          .windSpeed = outdoors[windSpeed] // #239
+          .haze = 1.0 // #240
+          .UwindMinimum = 2.8 // #241
+          .UwindSlope = 1.2 // #242
+          .UwindExponent = 0.8 // #243
+        }
+        vg::Screens screens { //292
+          ScreenWall layer1 { //286
+            .swReflectivityTop = 0.0 // #245
+            .swReflectivityBottom = 0.7 // #246
+            .swTransmissivityTop = 0.28 // #247
+            .swTransmissivityBottom = 0.28 // #248
+            .lwReflectivityTop = 0.0 // #249
+            .lwReflectivityBottom = 0.0 // #250
+            .lwTransmissivityTop = 0.28 // #251
+            .lwTransmissivityBottom = 0.28 // #252
+            .Utop = 2.2 // #253
+            .Ubottom = 2.2 // #254
+            .heatCapacity = 2280.0 // #256
+            .haze = 1.0 // #261
+            .transmissivityAir = 0.0 // #262
+            .state = 0.0 // #263
+            .ventilation = indoors/ventilation[flux] // #264
+            .Uair = shelter[Uair] // #265
+            .UstateExponent = shelter[screenUstateExponent] // #266
+            .UventilationSlope = shelter[screenUventilationSlope] // #267
+            .faceArea = ../../area[value] // #285
+          }
+          vg::ScreensAirTransmissivity airTransmissivity { //291
+            .screenAirExponent = shelter[screenAirExponent] // #287
+            .states = ../*[state] // #288
+            .transmissivities = ../*[transmissivityAir] // #289
+          }
+        }
+      }
+      vg::ShelterFace side2 { //373
+        vg::ShelterFaceArea area { //302
+          .roofArea = geometry[roofArea] // #294
+          .sideWallsArea = geometry[sideWallsArea] // #295
+          .endWallsArea = geometry[endWallsArea] // #296
+          .gablesArea = geometry[gablesArea] // #297
+          .groundArea = geometry[groundArea] // #298
+        }
+        vg::Cover cover { //324
+          .swReflectivityTop = 0.4 // #303
+          .swReflectivityBottom = 0.4 // #304
+          .swTransmissivityTop = 0.5 // #305
+          .swTransmissivityBottom = 0.5 // #306
+          .lwReflectivityTop = 0.7 // #307
+          .lwReflectivityBottom = 0.7 // #308
+          .lwTransmissivityTop = 0.2 // #309
+          .lwTransmissivityBottom = 0.2 // #310
+          .Utop = 6.5 // #311
+          .Ubottom = 6.5 // #312
+          .area = ../area[value] // #313
+          .heatCapacity = 8400.0 // #314
+          .windSpeed = outdoors[windSpeed] // #319
+          .haze = 1.0 // #320
+          .UwindMinimum = 2.8 // #321
+          .UwindSlope = 1.2 // #322
+          .UwindExponent = 0.8 // #323
+        }
+        vg::Screens screens { //372
+          ScreenWall layer1 { //366
+            .swReflectivityTop = 0.0 // #325
+            .swReflectivityBottom = 0.7 // #326
+            .swTransmissivityTop = 0.28 // #327
+            .swTransmissivityBottom = 0.28 // #328
+            .lwReflectivityTop = 0.0 // #329
+            .lwReflectivityBottom = 0.0 // #330
+            .lwTransmissivityTop = 0.28 // #331
+            .lwTransmissivityBottom = 0.28 // #332
+            .Utop = 2.2 // #333
+            .Ubottom = 2.2 // #334
+            .heatCapacity = 2280.0 // #336
+            .haze = 1.0 // #341
+            .transmissivityAir = 0.0 // #342
+            .state = 0.0 // #343
+            .ventilation = indoors/ventilation[flux] // #344
+            .Uair = shelter[Uair] // #345
+            .UstateExponent = shelter[screenUstateExponent] // #346
+            .UventilationSlope = shelter[screenUventilationSlope] // #347
+            .faceArea = ../../area[value] // #365
+          }
+          vg::ScreensAirTransmissivity airTransmissivity { //371
+            .screenAirExponent = shelter[screenAirExponent] // #367
+            .states = ../*[state] // #368
+            .transmissivities = ../*[transmissivityAir] // #369
+          }
+        }
+      }
+      vg::ShelterFace end1 { //411
+        vg::ShelterFaceArea area { //382
+          .roofArea = geometry[roofArea] // #374
+          .sideWallsArea = geometry[sideWallsArea] // #375
+          .endWallsArea = geometry[endWallsArea] // #376
+          .gablesArea = geometry[gablesArea] // #377
+          .groundArea = geometry[groundArea] // #378
+        }
+        vg::Cover cover { //404
+          .swReflectivityTop = 0.9 // #383
+          .swReflectivityBottom = 0.9 // #384
+          .swTransmissivityTop = 0.0 // #385
+          .swTransmissivityBottom = 0.0 // #386
+          .lwReflectivityTop = 0.1 // #387
+          .lwReflectivityBottom = 0.1 // #388
+          .lwTransmissivityTop = 0.0 // #389
+          .lwTransmissivityBottom = 0.0 // #390
+          .Utop = 0.4 // #391
+          .Ubottom = 0.4 // #392
+          .area = ../area[value] // #393
+          .heatCapacity = 8400.0 // #394
+          .windSpeed = outdoors[windSpeed] // #399
+          .haze = 1.0 // #400
+          .UwindMinimum = 2.8 // #401
+          .UwindSlope = 1.2 // #402
+          .UwindExponent = 0.8 // #403
+        }
+        vg::Screens screens { //410
+          vg::ScreensAirTransmissivity airTransmissivity { //409
+            .screenAirExponent = shelter[screenAirExponent] // #405
+            .states = ../*[state] // #406
+            .transmissivities = ../*[transmissivityAir] // #407
+          }
+        }
+      }
+      vg::ShelterFace end2 { //533
+        vg::ShelterFaceArea area { //420
+          .roofArea = geometry[roofArea] // #412
+          .sideWallsArea = geometry[sideWallsArea] // #413
+          .endWallsArea = geometry[endWallsArea] // #414
+          .gablesArea = geometry[gablesArea] // #415
+          .groundArea = geometry[groundArea] // #416
+        }
+        vg::Cover cover { //442
+          .swReflectivityTop = 0.9 // #421
+          .swReflectivityBottom = 0.9 // #422
+          .swTransmissivityTop = 0.0 // #423
+          .swTransmissivityBottom = 0.0 // #424
+          .lwReflectivityTop = 0.1 // #425
+          .lwReflectivityBottom = 0.1 // #426
+          .lwTransmissivityTop = 0.0 // #427
+          .lwTransmissivityBottom = 0.0 // #428
+          .Utop = 0.4 // #429
+          .Ubottom = 0.4 // #430
+          .area = ../area[value] // #431
+          .heatCapacity = 8400.0 // #432
+          .windSpeed = outdoors[windSpeed] // #437
+          .haze = 1.0 // #438
+          .UwindMinimum = 2.8 // #439
+          .UwindSlope = 1.2 // #440
+          .UwindExponent = 0.8 // #441
+        }
+        vg::Screens screens { //532
+          ScreenWall layer1 { //484
+            .swReflectivityTop = 0.0 // #443
+            .swReflectivityBottom = 0.7 // #444
+            .swTransmissivityTop = 0.28 // #445
+            .swTransmissivityBottom = 0.28 // #446
+            .lwReflectivityTop = 0.0 // #447
+            .lwReflectivityBottom = 0.0 // #448
+            .lwTransmissivityTop = 0.28 // #449
+            .lwTransmissivityBottom = 0.28 // #450
+            .Utop = 2.2 // #451
+            .Ubottom = 2.2 // #452
+            .heatCapacity = 2280.0 // #454
+            .haze = 1.0 // #459
+            .transmissivityAir = 0.0 // #460
+            .state = 0.0 // #461
+            .ventilation = indoors/ventilation[flux] // #462
+            .Uair = shelter[Uair] // #463
+            .UstateExponent = shelter[screenUstateExponent] // #464
+            .UventilationSlope = shelter[screenUventilationSlope] // #465
+            .faceArea = ../../area[value] // #483
+          }
+          ScreenWall layer3 { //526
+            .swReflectivityTop = 8.67362e-18 // #485
+            .swReflectivityBottom = 0.99 // #486
+            .swTransmissivityTop = 0.01 // #487
+            .swTransmissivityBottom = 0.01 // #488
+            .lwReflectivityTop = 8.67362e-18 // #489
+            .lwReflectivityBottom = 8.67362e-18 // #490
+            .lwTransmissivityTop = 0.01 // #491
+            .lwTransmissivityBottom = 0.01 // #492
+            .Utop = 0.45 // #493
+            .Ubottom = 0.45 // #494
+            .heatCapacity = 2280.0 // #496
+            .haze = 1.0 // #501
+            .transmissivityAir = 0.0 // #502
+            .state = 0.0 // #503
+            .ventilation = indoors/ventilation[flux] // #504
+            .Uair = shelter[Uair] // #505
+            .UstateExponent = shelter[screenUstateExponent] // #506
+            .UventilationSlope = shelter[screenUventilationSlope] // #507
+            .faceArea = ../../area[value] // #525
+          }
+          vg::ScreensAirTransmissivity airTransmissivity { //531
+            .screenAirExponent = shelter[screenAirExponent] // #527
+            .states = ../*[state] // #528
+            .transmissivities = ../*[transmissivityAir] // #529
+          }
+        }
+      }
+    }
+    Box floor { //547
+      &reflectivity = 0.6 // #543
+      &Utop = 7.5 // #544
+      &Ubottom = 0.1 // #545
+      &heatCapacity = 42000.0 // #546
+    }
+  }
+  Actuators actuators { //715
+    ActuatorVentilation ventilation { //560
+      .minFlux = setpoints/crackVentilation[value] // #549
+      .windCoef = 50.0 // #550
+      .temperatureCoef = 14.0 // #551
+      .windSpeed = outdoors[windSpeed] // #552
+      .outdoorsTemperature = outdoors[temperature] // #553
+      .indoorsTemperature = sensor[indoorsTemperature] // #554
+      .effectiveVentArea = sum(shelter/*/vent[effectiveArea]) // #555
+      .groundArea = construction/geometry[groundArea] // #556
+    }
+    Box co2Injection { //562
+      &value = 0.0 // #561
+    }
+    ActuatorHeatPipes heating { //602
+      .propConvection = 0.5 // #593
+      .minTemperatures = ./pipes/*[minTemperature] // #594
+      .maxTemperatures = ./pipes/*[maxTemperature] // #595
+      .energyFluxes = ./pipes/*[energyFlux] // #596
+      Box pipes { //591
+        vg::PipeForced pipe { //576
+          .Tair = sensor[indoorsTemperature] // #563
+          .innerDiameter = 39.0 // #564
+          .waterVolume = 3.86092 // #565
+          .flowRate = 30.0 // #566
+          .minTemperature = 0.0 // #567
+          .maxTemperature = 100.0 // #568
+          .Tinflow = 16.6522 // #569
+          .k = 0.0008 // #570
+          .b = 1.1563 // #571
+          .knownToutflow = -999.0 // #572
+        }
+        vg::PipeForced pipe { //590
+          .Tair = sensor[indoorsTemperature] // #577
+          .innerDiameter = 39.0 // #578
+          .waterVolume = 2.89569 // #579
+          .flowRate = 30.0 // #580
+          .minTemperature = 0.0 // #581
+          .maxTemperature = 100.0 // #582
+          .Tinflow = 16.8817 // #583
+          .k = 0.0008 // #584
+          .b = 1.1563 // #585
+          .knownToutflow = -999.0 // #586
+        }
+      }
+    }
+    vg::GrowthLights growthLights { //714
+      .swTransmissivityTop = 1.0 // #662
+      .swTransmissivityBottom = 1.0 // #663
+      .lwTransmissivityTop = 1.0 // #666
+      .lwTransmissivityBottom = 1.0 // #667
+      .Utop = inf // #668
+      .Ubottom = inf // #669
+      .area = construction/geometry[groundArea] // #670
+      .maxTemperatureRateOfChange = 100.0 // #683
+      .timeStep = calendar[timeStepSecs] // #684
+      .lightsCurrentlyOn = ./Box::*[currentlyOn] // #706
+      .lightsParEmittedDown = ./Box::*[parEmittedDown] // #707
+      .lightsSwEmittedDown = ./Box::*[swEmittedDown] // #708
+      .lightsLwFluxDown = ./Box::*[lwFluxDown] // #709
+      .lightsLwFluxUp = ./Box::*[lwFluxDown] // #710
+      .lightsPowerUsage = ./Box::*[powerUsage] // #711
+      GrowthLight noLight { //659
+        .swTransmissivityTop = 1.0 // #605
+        .swTransmissivityBottom = 1.0 // #606
+        .lwTransmissivityTop = 1.0 // #609
+        .lwTransmissivityBottom = 1.0 // #610
+        .Utop = inf // #611
+        .Ubottom = inf // #612
+        .area = construction/geometry[groundArea] // #613
+        .maxTemperatureRateOfChange = 100.0 // #626
+        .timeStep = calendar[timeStepSecs] // #627
+        .parPhotonCoef = 1.6 // #652
+        .propLw = 0.1 // #653
+        .ageCorrectedEfficiency = 1.0 // #654
+      }
+    }
+  }
+  vg::EnergyBudget energyBudget { //1161
+    .greenhouseVolume = construction/geometry[volume] // #1143
+    .roomTemperature = indoors/temperature[value] // #1144
+    .pipeEnergyFluxConvection = actuators/heating[energyFluxConvection] // #1145
+    .cropCoverage = crop[coverage] // #1146
+    .withCrop = TRUE // #1147
+    .keepConstantScreenTemperature = FALSE // #1148
+    .outdoorsTemperature = outdoors[temperature] // #1149
+    .soilTemperature = outdoors[soilTemperature] // #1150
+    .timeStep = calendar[timeStepSecs] // #1151
+    .precision = 0.001 // #1152
+    .step = /.[step] // #1153
+    vg::HeatTransferSky sky { //765
+      .swTransmissivityTop = 0.0 // #718
+      .swTransmissivityBottom = 0.0 // #719
+      .lwTransmissivityTop = 0.0 // #722
+      .lwTransmissivityBottom = 0.0 // #723
+      .Utop = inf // #724
+      .Ubottom = inf // #725
+      .area = construction/geometry[coverArea] // #726
+      .maxTemperatureRateOfChange = 100.0 // #739
+      .timeStep = calendar[timeStepSecs] // #740
+      .irradiation = outdoors[radiation] // #762
+      .propPar = outdoors[propPar] // #763
+      .propUv = outdoors[propUv] // #764
+    }
+    vg::HeatTransferCover cover { //834
+      .swTransmissivityTop = 1.0 // #768
+      .swTransmissivityBottom = 1.0 // #769
+      .lwTransmissivityTop = 1.0 // #772
+      .lwTransmissivityBottom = 1.0 // #773
+      .Utop = inf // #774
+      .Ubottom = inf // #775
+      .condensationRate = waterBudget/condensationCover[vapourFlux] // #788
+      .maxTemperatureRateOfChange = 100.0 // #789
+      .timeStep = calendar[timeStepSecs] // #790
+      .swReflectivityTopShelter = shelter/*/cover[swReflectivityTop] // #812
+      .swReflectivityBottomShelter = shelter/*/cover[swReflectivityBottom] // #813
+      .swTransmissivityTopShelter = shelter/*/cover[swTransmissivityTop] // #814
+      .swTransmissivityBottomShelter = shelter/*/cover[swTransmissivityBottom] // #815
+      .swAbsorptivityTopShelter = shelter/*/cover[swAbsorptivityTop] // #816
+      .swAbsorptivityBottomShelter = shelter/*/cover[swAbsorptivityBottom] // #817
+      .lwReflectivityTopShelter = shelter/*/cover[lwReflectivityTop] // #818
+      .lwReflectivityBottomShelter = shelter/*/cover[lwReflectivityBottom] // #819
+      .lwTransmissivityTopShelter = shelter/*/cover[lwTransmissivityTop] // #820
+      .lwTransmissivityBottomShelter = shelter/*/cover[lwTransmissivityBottom] // #821
+      .lwAbsorptivityTopShelter = shelter/*/cover[lwAbsorptivityTop] // #822
+      .lwAbsorptivityBottomShelter = shelter/*/cover[lwAbsorptivityBottom] // #823
+      .UtopShelter = shelter/*/cover[Utop] // #824
+      .UbottomShelter = shelter/*/cover[Ubottom] // #825
+      .areaShelter = shelter/*/cover[area] // #826
+      .heatCapacityShelter = shelter/*/cover[heatCapacity] // #827
+      .groundArea = geometry[groundArea] // #828
+      .coverPerGroundArea = construction/geometry[coverPerGroundArea] // #829
+      .indoorsTemperature = indoors/temperature[value] // #830
+      .skyTemperature = outdoors[skyTemperature] // #832
+      .outdoorsTemperature = outdoors[temperature] // #833
+    }
+    vg::HeatTransferScreen1 screen1 { //902
+      .swTransmissivityTop = 1.0 // #837
+      .swTransmissivityBottom = 1.0 // #838
+      .lwTransmissivityTop = 1.0 // #841
+      .lwTransmissivityBottom = 1.0 // #842
+      .Utop = inf // #843
+      .Ubottom = inf // #844
+      .condensationRate = waterBudget/condensationScreens/screen1[vapourFlux] // #857
+      .maxTemperatureRateOfChange = 0.25 // #858
+      .timeStep = calendar[timeStepSecs] // #859
+      .swReflectivityTopShelter = shelter/*/screens/layer1[swReflectivityTopNet] // #881
+      .swReflectivityBottomShelter = shelter/*/screens/layer1[swReflectivityBottomNet] // #882
+      .swTransmissivityTopShelter = shelter/*/screens/layer1[swTransmissivityTopNet] // #883
+      .swTransmissivityBottomShelter = shelter/*/screens/layer1[swTransmissivityBottomNet] // #884
+      .swAbsorptivityTopShelter = shelter/*/screens/layer1[swAbsorptivityTopNet] // #885
+      .swAbsorptivityBottomShelter = shelter/*/screens/layer1[swAbsorptivityBottomNet] // #886
+      .lwReflectivityTopShelter = shelter/*/screens/layer1[lwReflectivityTopNet] // #887
+      .lwReflectivityBottomShelter = shelter/*/screens/layer1[lwReflectivityBottomNet] // #888
+      .lwTransmissivityTopShelter = shelter/*/screens/layer1[lwTransmissivityTopNet] // #889
+      .lwTransmissivityBottomShelter = shelter/*/screens/layer1[lwTransmissivityBottomNet] // #890
+      .lwAbsorptivityTopShelter = shelter/*/screens/layer1[lwAbsorptivityTopNet] // #891
+      .lwAbsorptivityBottomShelter = shelter/*/screens/layer1[lwAbsorptivityBottomNet] // #892
+      .UtopShelter = shelter/*/screens/layer1[UtopNet] // #893
+      .UbottomShelter = shelter/*/screens/layer1[UbottomNet] // #894
+      .areaShelter = shelter/*/screens/layer1[area] // #895
+      .heatCapacityShelter = shelter/*/screens/layer1[heatCapacity] // #896
+      .groundArea = geometry[groundArea] // #897
+      .coverPerGroundArea = construction/geometry[coverPerGroundArea] // #898
+      .indoorsTemperature = indoors/temperature[value] // #899
+      .coverArea = geometry[coverArea] // #901
+    }
+    vg::HeatTransferScreen3 screen3 { //970
+      .swTransmissivityTop = 1.0 // #905
+      .swTransmissivityBottom = 1.0 // #906
+      .lwTransmissivityTop = 1.0 // #909
+      .lwTransmissivityBottom = 1.0 // #910
+      .Utop = inf // #911
+      .Ubottom = inf // #912
+      .condensationRate = waterBudget/condensationScreens/screen3[vapourFlux] // #925
+      .maxTemperatureRateOfChange = 0.25 // #926
+      .timeStep = calendar[timeStepSecs] // #927
+      .swReflectivityTopShelter = shelter/*/screens/layer3[swReflectivityTopNet] // #949
+      .swReflectivityBottomShelter = shelter/*/screens/layer3[swReflectivityBottomNet] // #950
+      .swTransmissivityTopShelter = shelter/*/screens/layer3[swTransmissivityTopNet] // #951
+      .swTransmissivityBottomShelter = shelter/*/screens/layer3[swTransmissivityBottomNet] // #952
+      .swAbsorptivityTopShelter = shelter/*/screens/layer3[swAbsorptivityTopNet] // #953
+      .swAbsorptivityBottomShelter = shelter/*/screens/layer3[swAbsorptivityBottomNet] // #954
+      .lwReflectivityTopShelter = shelter/*/screens/layer3[lwReflectivityTopNet] // #955
+      .lwReflectivityBottomShelter = shelter/*/screens/layer3[lwReflectivityBottomNet] // #956
+      .lwTransmissivityTopShelter = shelter/*/screens/layer3[lwTransmissivityTopNet] // #957
+      .lwTransmissivityBottomShelter = shelter/*/screens/layer3[lwTransmissivityBottomNet] // #958
+      .lwAbsorptivityTopShelter = shelter/*/screens/layer3[lwAbsorptivityTopNet] // #959
+      .lwAbsorptivityBottomShelter = shelter/*/screens/layer3[lwAbsorptivityBottomNet] // #960
+      .UtopShelter = shelter/*/screens/layer3[UtopNet] // #961
+      .UbottomShelter = shelter/*/screens/layer3[UbottomNet] // #962
+      .areaShelter = shelter/*/screens/layer3[area] // #963
+      .heatCapacityShelter = shelter/*/screens/layer3[heatCapacity] // #964
+      .groundArea = geometry[groundArea] // #965
+      .coverPerGroundArea = construction/geometry[coverPerGroundArea] // #966
+      .indoorsTemperature = indoors/temperature[value] // #967
+      .coverArea = geometry[coverArea] // #969
+    }
+    vg::HeatTransferPipe pipe { //1018
+      .swTransmissivityTop = 1.0 // #973
+      .swTransmissivityBottom = 1.0 // #974
+      .lwTransmissivityTop = 1.0 // #977
+      .lwTransmissivityBottom = 1.0 // #978
+      .Utop = inf // #979
+      .Ubottom = inf // #980
+      .area = construction/geometry[groundArea] // #981
+      .maxTemperatureRateOfChange = 100.0 // #994
+      .timeStep = calendar[timeStepSecs] // #995
+      .energyFluxRadiation = actuators/heating[energyFluxRadiation] // #1017
+    }
+    vg::HeatTransferCrop crop { //1071
+      .swTransmissivityTop = 1.0 // #1021
+      .swTransmissivityBottom = 1.0 // #1022
+      .lwTransmissivityTop = 1.0 // #1025
+      .lwTransmissivityBottom = 1.0 // #1026
+      .Utop = inf // #1027
+      .Ubottom = inf // #1028
+      .area = construction/geometry[groundArea] // #1029
+      .maxTemperatureRateOfChange = 100.0 // #1042
+      .timeStep = calendar[timeStepSecs] // #1043
+      .lai = /crop[lai] // #1065
+      .swK = crop[k] // #1066
+      .swScatteringCoef = 0.2 // #1067
+      .lwK = 0.8 // #1068
+      .lwScatteringCoef = 0.05 // #1069
+      .leafTemperature = crop/temperature[value] // #1070
+    }
+    vg::HeatTransferFloor floor { //1118
+      .swReflectivityTop = construction/floor[reflectivity] // #1072
+      .swReflectivityBottom = construction/floor[reflectivity] // #1073
+      .swTransmissivityTop = 0.0 // #1074
+      .swTransmissivityBottom = 0.0 // #1075
+      .lwReflectivityTop = construction/floor[reflectivity] // #1076
+      .lwReflectivityBottom = construction/floor[reflectivity] // #1077
+      .lwTransmissivityTop = 0.0 // #1078
+      .lwTransmissivityBottom = 0.0 // #1079
+      .Utop = construction/floor[Utop] // #1080
+      .Ubottom = construction/floor[Ubottom] // #1081
+      .area = construction/geometry[groundArea] // #1082
+      .heatCapacity = construction/floor[heatCapacity] // #1083
+      .maxTemperatureRateOfChange = 100.0 // #1095
+      .timeStep = calendar[timeStepSecs] // #1096
+    }
+    Box indoors { //1142
+      vg::IndoorsVentilation ventilation { //1129
+        .fluxLeakageAlone = ./leakage[flux] // #1123
+        .fluxVentilationAlone = actuators/ventilation[flux] // #1124
+        .screensAirTransmissivity = shelter[screensAirTransmissivity] // #1125
+        vg::LeakageVentilation leakage { //1122
+          .leakage = 0.1 // #1119
+          .windSpeed = outdoors[windSpeed] // #1120
+        }
+      }
+      vg::IndoorsTemperature temperature { //1141
+        .initTemperature = 15.7099 // #1130
+        .timeStep = calendar[timeStepSecs] // #1132
+        .groundArea = geometry[groundArea] // #1133
+        .volume = geometry[volume] // #1134
+        .airInflux = indoors/ventilation[flux] // #1135
+        .outdoorsTemperature = outdoors[temperature] // #1136
+        .keepConstant = TRUE // #1137
+        .scanTemperatures = TRUE // #1138
+      }
+    }
+  }
+  vg::WaterBudget waterBudget { //1224
+    .conductance = ./*[conductance] // #1218
+    .vapourFlux = ./*[vapourFlux] // #1219
+    .gain = ./*[gain] // #1220
+    vg::VapourFluxVentilation ventilation { //1170
+      .timeStep = calendar[timeStepSecs] // #1165
+      .airInflux = indoors/ventilation[flux] // #1166
+      .averageHeight = geometry[averageHeight] // #1167
+      .indoorsAh = indoors/humidity[ah] // #1168
+      .outdoorsAh = outdoors[ah] // #1169
+    }
+    vg::VapourFluxTranspiration transpiration { //1174
+    }
+    vg::VapourFluxCondensationCover condensationCrop { //1183
+      .coverPerGroundArea = geometry[coverPerGroundArea] // #1178
+      .coverTemperature = energyBudget/cover[temperature] // #1179
+      .indoorsTemperature = indoors/temperature[value] // #1180
+      .indoorsAh = indoors/humidity[ah] // #1181
+    }
+    vg::VapourFluxCondensationCover condensationCover { //1192
+      .coverPerGroundArea = geometry[coverPerGroundArea] // #1187
+      .coverTemperature = energyBudget/cover[temperature] // #1188
+      .indoorsTemperature = indoors/temperature[value] // #1189
+      .indoorsAh = indoors/humidity[ah] // #1190
+    }
+    vg::VapourFluxCondensationScreens condensationScreens { //1217
+      .conductances = ./*[conductance] // #1214
+      .vapourFluxes = ./*[vapourFlux] // #1215
+      .gains = ./*[gain] // #1216
+      VapourFluxCondensationScreen1 screen1 { //1201
+        .groundArea = geometry[groundArea] // #1196
+        .screenAreas = shelter/*/screens/layer1[area] // #1197
+        .screenTemperature = energyBudget/screen1[temperature] // #1198
+        .indoorsTemperature = indoors/temperature[value] // #1199
+        .indoorsAh = indoors/humidity[ah] // #1200
+      }
+      VapourFluxCondensationScreen3 screen3 { //1210
+        .groundArea = geometry[groundArea] // #1205
+        .screenAreas = shelter/*/screens/layer3[area] // #1206
+        .screenTemperature = energyBudget/screen3[temperature] // #1207
+        .indoorsTemperature = indoors/temperature[value] // #1208
+        .indoorsAh = indoors/humidity[ah] // #1209
+      }
+    }
+  }
+  vg::Indoors indoors { //1258
+    ThresholdSignal co2 { //1237
+      .initialSignal = 2000.0 // #1225
+      .initialFlag = FALSE // #1226
+      .input = greenhouse[step] // #1232
+      .threshold = 49.5 // #1233
+      .flagAbove = TRUE // #1234
+      .signalFlagged = 430.638 // #1235
+      .signalUnflagged = 2000.0 // #1236
+    }
+    vg::IndoorsHumidity humidity { //1252
+      .initRh = 78.1884 // #1238
+      .conductance = waterBudget[conductanceSum] // #1239
+      .vapourFlux = waterBudget[vapourFluxSum] // #1240
+      .gain = waterBudget[gainSum] // #1241
+      .temperature = indoors/temperature[value] // #1242
+      .height = geometry[averageHeight] // #1243
+      .timeStep = calendar[timeStepSecs] // #1244
+      .keepConstant = TRUE // #1245
+    }
+    vg::IndoorsWindSpeed windSpeed { //1257
+      .ventilation = indoors/ventilation[flux] // #1253
+      .averageHeight = geometry[averageHeight] // #1254
+      .minimumValue = 0.1 // #1255
+    }
+  }
+  vg::Crop crop { //1504
+    .lai = 1.0 // #1493
+    .coverage = 0.95 // #1494
+    .k = 0.7 // #1495
+    .gammaStar = 55.47 // #1496
+    .Jmax = 146.52 // #1497
+    .lightRespiration = 0.74 // #1498
+    .ballBerryIntercept = 0.1 // #1499
+    .ballBerrySlope = 1.64 // #1500
+    .Vcmax = 71.61 // #1501
+    .alpha = 0.9125 // #1502
+    .trackPn = TRUE // #1503
+    vg::LeafWindSpeed leafWindSpeed { //1262
+      .indoorsWindSpeedMinimum = 0.025 // #1259
+      .indoorsWindSpeed = indoors/windSpeed[value] // #1260
+    }
+    vg::BoundaryLayerResistanceStanghellini boundaryLayerResistance { //1269
+      .leafDimension = 0.025 // #1263
+      .leafWindSpeed = ../leafWindSpeed[value] // #1264
+      .leafTemperature = ../temperature[value] // #1267
+      .indoorsTemperature = indoors/temperature[value] // #1268
+    }
+    vg::LeafTranspiration transpiration { //1281
+      .lai = ..[lai] // #1273
+      .cropCoverage = crop[coverage] // #1274
+      .indoorsAh = indoors/humidity[ah] // #1275
+      .radiationAbsorbed = energyBudget/crop[absorbed] // #1276
+      .leafTemperature = ../temperature[value] // #1277
+      .rsH2O = mean(../photosynthesis/*/stomatalResistance[rH2O]) // #1278
+      .rbH2O = ../boundaryLayerResistance[rH2O] // #1279
+    }
+    vg::LeafTemperature temperature { //1289
+      .indoorsTemperature = indoors/temperature[value] // #1282
+      .indoorsRh = indoors/humidity[rh] // #1283
+      .rsH2O = mean(../photosynthesis/*/stomatalResistance[rH2O]) // #1284
+      .rbH2O = ../boundaryLayerResistance[rH2O] // #1285
+      .radiationAbsorbed = energyBudget/crop[absorbed] // #1286
+      .lai = /crop[lai] // #1287
+    }
+    vg::CanopyPhotosynthesis photosynthesis { //1437
+      .lai = /crop[lai] // #1425
+      .leafAn = ./*/leafPhotosynthesis[An] // #1426
+      .leafAg = ./*/leafPhotosynthesis[Ag] // #1427
+      .growthRespiration = 0.3 // #1428
+      .trackPn = ..[trackPn] // #1429
+      Box top { //1334
+        IntercellularCo2 intercellularCo2 { //1296
+          .boundaryLayerResistance = crop/boundaryLayerResistance[rCo2] // #1290
+          .stomatalResistance = ../stomatalResistance[rCo2] // #1291
+          .indoorsCo2 = indoors/co2[value] // #1292
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1293
+        }
+        LeafParAbsorbed parAbsorbed { //1301
+          .parFlux = energyBudget[cropParFluxFromAbove] // #1297
+          .k = /crop[k] // #1298
+          .lai = /crop[lai] // #1299
+        }
+        LeafRespiration respiration { //1308
+          .leafTemperature = crop/temperature[value] // #1302
+          .canopyParAbsorbed = energyBudget/crop[parAbsorbed] // #1303
+          .RL = crop[lightRespiration] // #1304
+          .darknessThreshold = 5.0 // #1305
+          .Q10 = 1.92 // #1306
+        }
+        LeafPhotosynthesisAj Aj { //1319
+          .gammaStar = crop[gammaStar] // #1309
+          .Jmax = crop[Jmax] // #1310
+          .k = crop[k] // #1311
+          .leafTemperature = crop/temperature[value] // #1312
+          .intercellularCo2 = ../intercellularCo2[value] // #1313
+          .parAbsorbed = ../parAbsorbed[value] // #1314
+          .respiration = ../respiration[value] // #1315
+        }
+        StomatalResistanceBallBerry stomatalResistance { //1327
+          .g0 = crop[ballBerryIntercept] // #1322
+          .g1 = crop[ballBerrySlope] // #1323
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1324
+          .rh = indoors/humidity[rh] // #1325
+          .ca = indoors/co2[value] // #1326
+        }
+        LeafPhotosynthesis leafPhotosynthesis { //1333
+          .leafAj = ../Aj[value] // #1328
+          .leafAr = ../respiration[value] // #1329
+        }
+      }
+      Box mid { //1379
+        IntercellularCo2 intercellularCo2 { //1341
+          .boundaryLayerResistance = crop/boundaryLayerResistance[rCo2] // #1335
+          .stomatalResistance = ../stomatalResistance[rCo2] // #1336
+          .indoorsCo2 = indoors/co2[value] // #1337
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1338
+        }
+        LeafParAbsorbed parAbsorbed { //1346
+          .parFlux = energyBudget[cropParFluxFromAbove] // #1342
+          .k = /crop[k] // #1343
+          .lai = /crop[lai] // #1344
+        }
+        LeafRespiration respiration { //1353
+          .leafTemperature = crop/temperature[value] // #1347
+          .canopyParAbsorbed = energyBudget/crop[parAbsorbed] // #1348
+          .RL = crop[lightRespiration] // #1349
+          .darknessThreshold = 5.0 // #1350
+          .Q10 = 1.92 // #1351
+        }
+        LeafPhotosynthesisAj Aj { //1364
+          .gammaStar = crop[gammaStar] // #1354
+          .Jmax = crop[Jmax] // #1355
+          .k = crop[k] // #1356
+          .leafTemperature = crop/temperature[value] // #1357
+          .intercellularCo2 = ../intercellularCo2[value] // #1358
+          .parAbsorbed = ../parAbsorbed[value] // #1359
+          .respiration = ../respiration[value] // #1360
+        }
+        StomatalResistanceBallBerry stomatalResistance { //1372
+          .g0 = crop[ballBerryIntercept] // #1367
+          .g1 = crop[ballBerrySlope] // #1368
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1369
+          .rh = indoors/humidity[rh] // #1370
+          .ca = indoors/co2[value] // #1371
+        }
+        LeafPhotosynthesis leafPhotosynthesis { //1378
+          .leafAj = ../Aj[value] // #1373
+          .leafAr = ../respiration[value] // #1374
+        }
+      }
+      Box bottom { //1424
+        IntercellularCo2 intercellularCo2 { //1386
+          .boundaryLayerResistance = crop/boundaryLayerResistance[rCo2] // #1380
+          .stomatalResistance = ../stomatalResistance[rCo2] // #1381
+          .indoorsCo2 = indoors/co2[value] // #1382
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1383
+        }
+        LeafParAbsorbed parAbsorbed { //1391
+          .parFlux = energyBudget[cropParFluxFromAbove] // #1387
+          .k = /crop[k] // #1388
+          .lai = /crop[lai] // #1389
+        }
+        LeafRespiration respiration { //1398
+          .leafTemperature = crop/temperature[value] // #1392
+          .canopyParAbsorbed = energyBudget/crop[parAbsorbed] // #1393
+          .RL = crop[lightRespiration] // #1394
+          .darknessThreshold = 5.0 // #1395
+          .Q10 = 1.92 // #1396
+        }
+        LeafPhotosynthesisAj Aj { //1409
+          .gammaStar = crop[gammaStar] // #1399
+          .Jmax = crop[Jmax] // #1400
+          .k = crop[k] // #1401
+          .leafTemperature = crop/temperature[value] // #1402
+          .intercellularCo2 = ../intercellularCo2[value] // #1403
+          .parAbsorbed = ../parAbsorbed[value] // #1404
+          .respiration = ../respiration[value] // #1405
+        }
+        StomatalResistanceBallBerry stomatalResistance { //1417
+          .g0 = crop[ballBerryIntercept] // #1412
+          .g1 = crop[ballBerrySlope] // #1413
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1414
+          .rh = indoors/humidity[rh] // #1415
+          .ca = indoors/co2[value] // #1416
+        }
+        LeafPhotosynthesis leafPhotosynthesis { //1423
+          .leafAj = ../Aj[value] // #1418
+          .leafAr = ../respiration[value] // #1419
+        }
+      }
+    }
+    vg::BigLeafPhotosynthesis bigLeaf { //1492
+      .leafAn = ./leaf/leafPhotosynthesis[An] // #1483
+      .leafAg = ./leaf/leafPhotosynthesis[Ag] // #1484
+      .growthRespiration = 0.3 // #1485
+      Box leaf { //1482
+        IntercellularCo2 intercellularCo2 { //1444
+          .boundaryLayerResistance = crop/boundaryLayerResistance[rCo2] // #1438
+          .stomatalResistance = ../stomatalResistance[rCo2] // #1439
+          .indoorsCo2 = indoors/co2[value] // #1440
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1441
+        }
+        LeafParAbsorbed parAbsorbed { //1449
+          .parFlux = energyBudget[cropParFluxFromAbove] // #1445
+          .k = /crop[k] // #1446
+          .lai = /crop[lai] // #1447
+        }
+        LeafRespiration respiration { //1456
+          .leafTemperature = crop/temperature[value] // #1450
+          .canopyParAbsorbed = energyBudget/crop[parAbsorbed] // #1451
+          .RL = crop[lightRespiration] // #1452
+          .darknessThreshold = 5.0 // #1453
+          .Q10 = 1.92 // #1454
+        }
+        LeafPhotosynthesisAj Aj { //1467
+          .gammaStar = crop[gammaStar] // #1457
+          .Jmax = crop[Jmax] // #1458
+          .k = crop[k] // #1459
+          .leafTemperature = crop/temperature[value] // #1460
+          .intercellularCo2 = ../intercellularCo2[value] // #1461
+          .parAbsorbed = ../parAbsorbed[value] // #1462
+          .respiration = ../respiration[value] // #1463
+        }
+        StomatalResistanceBallBerry stomatalResistance { //1475
+          .g0 = crop[ballBerryIntercept] // #1470
+          .g1 = crop[ballBerrySlope] // #1471
+          .leafPhotosynthesis = ../leafPhotosynthesis[An] // #1472
+          .rh = indoors/humidity[rh] // #1473
+          .ca = indoors/co2[value] // #1474
+        }
+        LeafPhotosynthesis leafPhotosynthesis { //1481
+          .leafAj = ../Aj[value] // #1476
+          .leafAr = ../respiration[value] // #1477
+        }
+      }
+    }
+  }
+  vg::ParBudget parBudget { //1513
+    .sunPar = sky[parFluxDown] // #1505
+    .growthLightsPar = growthLights[parEmittedDown] // #1506
+    .indoorsTotalPar = energyBudget[cropParFluxFromAbove] // #1507
+    .Pn = crop/photosynthesis[Pn] // #1508
+    .cropCoverage = crop[coverage] // #1509
+  }
+}

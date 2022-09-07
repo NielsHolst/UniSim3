@@ -38,6 +38,7 @@ HEADERS +=  \
     layout_r.h \
     maker.h \
     maximum.h \
+    maximum_at.h \
     mean.h \
     message.h \
     minimum.h \
@@ -131,6 +132,7 @@ SOURCES +=  \
     layout_r.cpp \
     maker.cpp \
     maximum.cpp \
+    maximum_at.cpp \
     minimum.cpp \
     mean.cpp \
     message.cpp \

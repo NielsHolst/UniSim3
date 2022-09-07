@@ -227,7 +227,7 @@ sobol_bootstrap = function(ix_output, n) {
   M
 }
 
-sobol_statistics = function(B, num_digits=2) {
+sobol_statistics = function(B) {
   M = ddply(B, .(Input, Measure), summarize,
     EffectMean       = mean(Effect),
     EffectSE         = sum((EffectMean-Effect)^2),
@@ -235,10 +235,10 @@ sobol_statistics = function(B, num_digits=2) {
     HigherPercentile = quantile(Effect, 0.975),
     P = length(which(Effect<=0))/length(Effect)
   )
-  M$EffectMean = round(M$EffectMean, num_digits)
-  M$EffectSE = round(sqrt(M$EffectSE/(nrow(B)-1)), num_digits+1)
-  M$LowerPercentile = round(M$LowerPercentile, num_digits)
-  M$HigherPercentile = round(M$HigherPercentile, num_digits)
+  M$EffectMean = M$EffectMean
+  M$EffectSE = sqrt(M$EffectSE/(nrow(B)-1))
+  M$LowerPercentile = M$LowerPercentile
+  M$HigherPercentile = M$HigherPercentile
   M$Sig = "ns"
   M$Sig[M$P<=0.05]  = "*"
   M$Sig[M$P<=0.01]  = "**"

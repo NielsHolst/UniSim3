@@ -1,5 +1,5 @@
 # Load your S data
-S_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0023-S.Rdata"
+S_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000-S.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -33,7 +33,7 @@ bw = c("white", "grey", "black")
 grey_scale2  = c("lightgrey", "darkgrey")
 
 pick_response = function(response) {
-  s = subset(S, Output==response & !(Input %in% c("Sum", "k", "immunityCost")))
+  s = subset(S, Output==response & !(Input %in% c("Sum", "k", "cropHalfways", "cropAtStart")))
   s$Input = droplevels(s$Input)
 
   # Re-order on total effect then on input name 
@@ -112,10 +112,28 @@ W = 84
 H = 200
 
 # Screen plot
+graphics.off()
 open_plot_window(mm(W),mm(H))
 print(make_plot())
 
-# Black and white for manuscript, also used for journal after labels have been added in PowerPoint
+# Write figures
+write_figure = function(file_type) {
+  file_name_path = paste0(output_folder, "/fig-6-bw.", file_type)
+  print(paste("Writing figure to", file_name_path))
+  if (file_type == "png")
+    png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
+  else if (file_type == "eps")
+    cairo_ps(file_name_path, width=mm(W), height=mm(H))
+  else
+    stop(paste0("Wrong file type: '", file_type, "'"))
+  print(make_plot())
+  dev.off()
+}
+
+if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
+# Figure for manuscript id also used for journal after labels have been added in PowerPoint
+write_figure("png")
+
 file_name_path = paste0(output_folder, "/fig-6-bw.png")
 png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
 print(make_plot())

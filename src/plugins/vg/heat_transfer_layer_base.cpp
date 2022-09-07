@@ -22,10 +22,10 @@ HeatTransferLayerBase::HeatTransferLayerBase(QString name, Box *parent)
 {
     help("holds the radiative parameters of a layer, e.g., cover or screen");
     // All m2 are m2 ground
-    Input(parFluxDown).unit("umol/s/m2").help("PAR flux going down from bottom");
-    Input(parFluxUp).unit("umol/s/m2").help("PAR flux going up from top");
-    Input(swFluxDown).unit("W/m2").help("Short-wave flux going down from bottom");
-    Input(swFluxUp).unit("W/m2").help("Short-wave flux going up from top");
+    Input(parEmittedDown).unit("umol/s/m2").help("PAR emitted going down from bottom");
+    Input(parEmittedUp).unit("umol/s/m2").help("PAR emitted going up from top");
+    Input(swEmittedDown).unit("W/m2").help("Short-wave emitted going down from bottom");
+    Input(swEmittedUp).unit("W/m2").help("Short-wave emitted going up from top");
 
     Input(convectiveInflux).help("Energy influx by convection").unit("W/m2");
     Input(conductiveInflux).help("Energy influx by conduction").unit("W/m2");
@@ -43,8 +43,14 @@ HeatTransferLayerBase::HeatTransferLayerBase(QString name, Box *parent)
     Output(lwAbsorbedFromAbove).unit("W/m2").help("Long-wave flux absorbed from above");
     Output(lwAbsorbedFromBelow).unit("W/m2").help("Long-wave flux absorbed from below");
     Output(lwAbsorbed).unit("W/m2").help("Long-wave flux absorbed in total ");
+
+    Output(parFluxDown).unit("umol/s/m2").help("PAR flux going down from bottom");
+    Output(parFluxUp).unit("umol/s/m2").help("PAR flux going up from top");
+    Output(swFluxDown).unit("W/m2").help("Short-wave flux going down from bottom");
+    Output(swFluxUp).unit("W/m2").help("Short-wave flux going up from top");
     Output(lwFluxDown).unit("W/m2").help("Long-wave flux going down from bottom");
     Output(lwFluxUp).unit("W/m2").help("Long-wave flux going up from");
+
     Output(absorbed).unit("W/m2").help("All flux (short+long) absorbed in total");
     Output(latentHeat).unit("W/m2").help("Latent heat from water condensation");
     Output(temperature).unit("oC").help("Surface temperature (average)");

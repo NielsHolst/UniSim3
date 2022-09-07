@@ -19,8 +19,8 @@ public:
 protected:
     // Inputs
     double
-        parFluxDown, parFluxUp,
-        swFluxDown, swFluxUp,
+        parEmittedDown, parEmittedUp,
+        swEmittedDown, swEmittedUp,
         convectiveInflux, conductiveInflux,
         condensationRate,
         maxTemperatureRateOfChange, unusedInflux,
@@ -30,7 +30,11 @@ protected:
         parAbsorbedFromAbove, parAbsorbedFromBelow, parAbsorbed,
         swAbsorbedFromAbove, swAbsorbedFromBelow, swAbsorbed,
         lwAbsorbedFromAbove, lwAbsorbedFromBelow, lwAbsorbed,
+
+        parFluxDown, parFluxUp,
+        swFluxDown, swFluxUp,
         lwFluxDown, lwFluxUp,
+
         absorbed, latentHeat,
         temperature, temperatureTop, temperatureBottom;
     // Methods

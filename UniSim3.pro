@@ -1,10 +1,9 @@
 # Universal Simulator main project file
-#
 
 TEMPLATE = subdirs
 
 #
-# Modules required for source code release
+# Essential modules
 #
 
 SUBDIRS += unisim
@@ -24,13 +23,8 @@ command.subdir = src/plugins/command
 command.depends = base
 unisim.depends = command
 
-SUBDIRS += student
-student.subdir = src/plugins/student
-student.depends = base
-unisim.depends = student
-
 #
-# Modules required for end-user release
+# Simulation model modules
 #
 
 SUBDIRS += aphid
@@ -42,100 +36,60 @@ unisim.depends = aphid
 #cmbp.subdir = src/plugins/cmbp
 #cmbp.depends = base
 #unisim.depends = cmbp
-
+#
 #SUBDIRS += coffee
 #coffee.subdir = src/plugins/coffee
 #coffee.depends = base
 #unisim.depends = coffee
-
+#
 #SUBDIRS += MusselBed
 #MusselBed.subdir = src/plugins/MusselBed
 #MusselBed.depends = base
 #unisim.depends = MusselBed
-
+#
 #SUBDIRS += PestTox
 #PestTox.subdir = src/plugins/PestTox
 #PestTox.depends = base
 #unisim.depends = PestTox
 
-#SUBDIRS += saccharina
-#saccharina.subdir = src/plugins/saccharina
-#saccharina.depends = base
-#unisim.depends = saccharina
+SUBDIRS += saccharina
+saccharina.subdir = src/plugins/saccharina
+saccharina.depends = base
+unisim.depends = saccharina
 
-#SUBDIRS += vg
-#vg.subdir = src/plugins/vg
-#vg.depends = base
-#unisim.depends = vg
+SUBDIRS += vg
+vg.subdir = src/plugins/vg
+vg.depends = base
+unisim.depends = vg
 
 #
-# Modules under (re-)construction
+# InfoGrow modules
 #
 
-#SUBDIRS += apis
-#apis.subdir = src/plugins/apis
-#apis.depends = base
-#unisim.depends = apis
+#SUBDIRS += iglib
+#iglib.subdir = src/lib/iglib
+#iglib.depends = base
 
-#SUBDIRS += ave
-#ave.subdir = src/plugins/ave
-#ave.depends = base
-#unisim.depends = ave
+#SUBDIRS += igclient
+#igclient.subdir = src/apps/igclient
+#igclient.depends = iglib
+#igclient.depends = base
+#igclient.depends = boxes
+#igclient.depends = command
+#igclient.depends = vg
 
-#SUBDIRS += bmsb
-#bmsb.subdir = src/plugins/bmsb
-#bmsb.depends = base
-#unisim.depends = bmsb
-
-#SUBDIRS += conductance
-#conductance.subdir = src/plugins/conductance
-#conductance.depends = base
-#unisim.depends = conductance
-
-#SUBDIRS += cowpea
-#cowpea.subdir = src/plugins/cowpea
-#cowpea.depends = base
-#unisim.depends = cowpea
-
-#SUBDIRS += io
-#io.subdir = src/plugins/io
-#io.depends = base
-#unisim.depends = io
-
-#SUBDIRS += pinacate
-#pinacate.subdir = src/plugins/pinacate
-#pinacate.depends = base
-#unisim.depends = pinacate
-
-#SUBDIRS += pollnet
-#pollnet.subdir = src/plugins/pollnet
-#pollnet.depends = base
-#unisim.depends = pollnet
-
-#SUBDIRS += potato
-#potato.subdir = src/plugins/potato
-#potato.depends = base
-#unisim.depends = potato
-
-#SUBDIRS += resist
-#resist.subdir = src/plugins/resist
-#resist.depends = base
-#unisim.depends = resist
-
-#SUBDIRS += rvf
-#rvf.subdir = src/plugins/rvf
-#rvf.depends = base
-#unisim.depends = rvf
+#
+# Unit tests
+#
 
 #SUBDIRS += test
-#test.subdir = src/plugins/test
+#test.subdir = src/apps/test
 #test.depends = base
-#unisim.depends = test
 
-#SUBDIRS += xpest
-#xpest.subdir = src/plugins/xpest
-#xpest.depends = base
-#unisim.depends = xpest
+#SUBDIRS += test_boxes
+#test_boxes.subdir = src/plugins/test_boxes
+#test_boxes.depends = base
 
-
-
+#SUBDIRS += test_boxes2
+#test_boxes2.subdir = src/plugins/test_boxes2
+#test_boxes2.depends = base

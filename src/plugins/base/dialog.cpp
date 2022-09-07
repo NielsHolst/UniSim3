@@ -49,10 +49,6 @@ QProgressBar* Dialog::progressBar() {
     return _widget->progressBar();
 }
 
-QWinTaskbarProgress* Dialog::winProgressTaskbar() {
-    return _widget->winProgressTaskbar();
-}
-
 void Dialog::finishProgress() {
     _widget->finished();
 }

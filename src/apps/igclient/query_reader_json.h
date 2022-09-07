@@ -25,6 +25,13 @@ private:
     QJsonArray findArray(QJsonObject object, QString name) const;
     int findInt(QJsonObject object, QString name) const;
     double findDouble(QJsonObject object, QString name) const;
+
+    ig::Origin findOrigin(QJsonObject object, QString name) const;
+    ig::HeatPipeMaterial findHeatPipeMaterial(QJsonObject object, QString name) const;
+    ig::GrowthLightType findGrowthLightType(QJsonObject object, QString name) const;
+    ig::ScreenLayer findScreenLayer(QJsonObject object, QString name) const;
+    ig::ScreenPosition findScreenPosition(QJsonObject object, QString name) const;
+
     ig::Variable findVariable(QJsonObject object, QString name) const;
     ig::Variable findVariableFromValue(QJsonObject object, QString name) const;
     ig::CoverMaterial findCoverMaterial(QJsonObject object, QString name) const;
@@ -35,6 +42,7 @@ private:
     void parseTimeStampTformat(QJsonObject object);
     void parseGreenHouse(QJsonObject object);
     void parseCulture(QJsonObject object);
+    void parseCultureModel(QJsonObject object);
     void parseConstruction(QJsonObject object);
 
     void parseHeatPipes(QJsonArray objects);

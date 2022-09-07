@@ -44,16 +44,16 @@ void DialogBase::updateProgress(const ProgressInfo &info) {
             bar->setValue(value);
             bar->show();
         }
-        #ifdef Q_OS_WIN
-          #if QT_VERSION < 0x060000
-              QWinTaskbarProgress *taskbar = winProgressTaskbar();
-              if (taskbar) {
-                  taskbar->setMaximum(maximum);
-                  taskbar->setValue(value);
-                  taskbar->show();
-              }
-          #endif
-        #endif
+//        #ifdef Q_OS_WIN
+//          #if QT_VERSION < 0x060000
+//              QWinTaskbarProgress *taskbar = winProgressTaskbar();
+//              if (taskbar) {
+//                  taskbar->setMaximum(maximum);
+//                  taskbar->setValue(value);
+//                  taskbar->show();
+//              }
+//          #endif
+//        #endif
         qApp->processEvents();
         _nextShowProgress += 0.01;
     }

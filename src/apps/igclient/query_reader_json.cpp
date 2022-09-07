@@ -2,12 +2,14 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonParseError >
+#include <QRegularExpression>
 #include <base/convert.h>
 #include <base/exception.h>
 #include <base/test_num.h>
 #include "query_reader_json.h"
 
-const ig::Variable NullVariable = ig::Variable{0, ig::NotAvailable};
+#define PARSE_OBJECT(x) parse##x(findObject(object, #x))
+#define PARSE_ARRAY(x)  parse##x( findArray(object, #x))
 
 QueryReaderJson::QueryReaderJson(QObject *parent) : QObject(parent)
 {
@@ -58,11 +60,95 @@ QJsonArray QueryReaderJson::findArray(QJsonObject object, QString name) const {
 }
 
 int QueryReaderJson::findInt(QJsonObject object, QString name) const {
-    return findValue(object, name).toInt();
+    auto value = findValue(object, name);
+    if (!value.isDouble())
+        ThrowException("JSON value is not an int").hint(name);
+    return value.toInt();
 }
 
 double QueryReaderJson::findDouble(QJsonObject object, QString name) const {
-    return findValue(object, name).toDouble();
+    auto value = findValue(object, name);
+    if (!value.isDouble())
+        ThrowException("JSON value is not a double").hint(name);
+    return value.toDouble();
+}
+
+ig::Origin QueryReaderJson::findOrigin(QJsonObject object, QString name) const {
+    static QMap<QString, ig::Origin> lookup = {
+        {"Measured",     ig::Origin::Measured},
+        {"NotAvailable", ig::Origin::NotAvailable},
+        {"UserDefined",  ig::Origin::UserDefined}
+    };
+    auto value = findValue(object, name);
+    if (!value.isString())
+        ThrowException("JSON value is not a string").hint(name);
+    QString s = value.toString();
+    if (!lookup.contains(s))
+        ThrowException("Unknown origin").value(s).hint(name);
+    return lookup.value(s);
+}
+
+ig::HeatPipeMaterial QueryReaderJson::findHeatPipeMaterial(QJsonObject object, QString name) const {
+    static QMap<QString, ig::HeatPipeMaterial> lookup = {
+        {"Iron",      ig::HeatPipeMaterial::Iron},
+        {"Plastic",   ig::HeatPipeMaterial::Plastic},
+        {"Aluminium", ig::HeatPipeMaterial::Aluminium},
+        {"Copper",    ig::HeatPipeMaterial::Copper}
+    };
+    auto value = findValue(object, name);
+    if (!value.isString())
+        ThrowException("JSON value is not a string").hint(name);
+    QString s = value.toString();
+    if (!lookup.contains(s))
+        ThrowException("Unknown material").value(s).hint(name);
+    return lookup.value(s);
+}
+
+ig::GrowthLightType QueryReaderJson::findGrowthLightType(QJsonObject object, QString name) const {
+    static QMap<QString, ig::GrowthLightType> lookup = {
+        {"Hpsl", ig::GrowthLightType::Hpsl},
+        {"Led",  ig::GrowthLightType::Led}
+    };
+    auto value = findValue(object, name);
+    if (!value.isString())
+        ThrowException("JSON value is not a string").hint(name);
+    QString s = value.toString();
+    if (!lookup.contains(s))
+        ThrowException("Unknown growth light type").value(s).hint(name);
+    return lookup.value(s);
+}
+
+ig::ScreenLayer QueryReaderJson::findScreenLayer(QJsonObject object, QString name) const {
+    static QMap<QString, ig::ScreenLayer> lookup = {
+        {"Outer",  ig::ScreenLayer::Outer},
+        {"Mid",   ig::ScreenLayer::Mid},
+        {"Inner", ig::ScreenLayer::Inner}
+    };
+    auto value = findValue(object, name);
+    if (!value.isString())
+        ThrowException("JSON value is not a string").hint(name);
+    QString s = value.toString();
+    if (!lookup.contains(s))
+        ThrowException("Unknown screen layer").value(s).hint(name);
+    return lookup.value(s);
+}
+
+ig::ScreenPosition QueryReaderJson::findScreenPosition(QJsonObject object, QString name) const {
+    static QMap<QString, ig::ScreenPosition> lookup = {
+        {"Roof1", ig::ScreenPosition::Roof1},
+        {"Roof2", ig::ScreenPosition::Roof2},
+        {"Side1", ig::ScreenPosition::Side1},
+        {"Side2", ig::ScreenPosition::Side2},
+        {"End1",  ig::ScreenPosition::End1},
+        {"End2",  ig::ScreenPosition::End2}
+    };
+    auto value = findValue(object, name);
+    if (!value.isString())
+        ThrowException("JSON value is not a string").hint(name);
+    QString s = value.toString();
+    if (!lookup.contains(s))
+        ThrowException("Unknown screen position").value(s).hint(name);
+    return lookup.value(s);
 }
 
 ig::Variable QueryReaderJson::findVariable(QJsonObject object, QString name) const {
@@ -75,7 +161,7 @@ ig::Variable QueryReaderJson::findVariable(QJsonObject object, QString name) con
     }
     else {
         var.value = findDouble(varObject, "Value");
-        var.origin = static_cast<ig::Origin>(findInt(varObject, "Origin"));
+        var.origin = findOrigin(varObject, "Origin"); //static_cast<ig::Origin>(findInt(varObject, "Origin"));
     }
     return var;
 }
@@ -88,9 +174,6 @@ ig::Variable QueryReaderJson::findVariableFromValue(QJsonObject object, QString 
         var.value = s.toDouble();
     return var;
 }
-
-#define PARSE_OBJECT(x) parse##x(findObject(object, #x))
-#define PARSE_ARRAY(x)  parse##x( findArray(object, #x))
 
 void QueryReaderJson::parseQuery(QJsonObject object) {
     PARSE_OBJECT(TimeStamp);
@@ -119,7 +202,7 @@ void QueryReaderJson::parseTimeStampTformat(QJsonObject object) {
         ymdhms = findValue(object, "TimeStamp");
     // Example: "0001-01-01T00:00:00"
     QString s = ymdhms.toString();
-    QStringList ss = s.split(QRegExp("[T\\-\\:]"));
+    QStringList ss = s.split(QRegularExpression("[T\\-\\:]"));
     QList<int> numbers = base::convert<int, QList>(ss);
     if (numbers.size() != 6)
         ThrowException("Expected 6 integers in time stamp").value1(s).value2(numbers.size());
@@ -139,16 +222,20 @@ void QueryReaderJson::parseGreenHouse(QJsonObject object) {
 }
 
 void QueryReaderJson::parseCulture(QJsonObject object) {
-    _query.culture.lai      = findVariable(object, "lai");
-    _query.culture.coverage = findDouble(object, "coverage");
-    _query.culture.k        = findDouble(object, "k");
-    _query.culture.Jmax25   = findDouble(object, "Jmax25");
-    _query.culture.Vcmax25  = findDouble(object, "Vcmax25");
-    _query.culture.g0       = findDouble(object, "g0");
-    _query.culture.g1       = findDouble(object, "g1");
-    _query.culture.Gs25     = findDouble(object, "Gs25");
-    _query.culture.Rl25     = findDouble(object, "Rl25");
-    _query.culture.alpha    = findDouble(object, "Alpha");
+    _query.culture.lai      = findVariable(object, "LeafAreaIndex");
+    _query.culture.coverage = findDouble(object, "Coverage");
+    parseCultureModel( findObject(object, "CultureModel") );
+}
+
+void QueryReaderJson::parseCultureModel(QJsonObject object) {
+    _query.culture.cultureModel.k        = findDouble(object, "k");
+    _query.culture.cultureModel.Jmax25   = findDouble(object, "Jmax25");
+    _query.culture.cultureModel.Vcmax25  = findDouble(object, "Vcmax25");
+    _query.culture.cultureModel.g0       = findDouble(object, "g0");
+    _query.culture.cultureModel.g1       = findDouble(object, "g1");
+    _query.culture.cultureModel.Gs25     = findDouble(object, "Gs25");
+    _query.culture.cultureModel.Rl25     = findDouble(object, "Rl25");
+    _query.culture.cultureModel.alpha    = findDouble(object, "alpha");
 }
 
 void QueryReaderJson::parseConstruction(QJsonObject object) {
@@ -200,7 +287,7 @@ void QueryReaderJson::parseHeatPipes(QJsonArray objects) {
 
 void QueryReaderJson::parseHeatPipe(QJsonObject object) {
     ig::HeatPipe hp;
-    hp.material = static_cast<ig::HeatPipeMaterial>(findInt(object, "Material"));
+    hp.material = findHeatPipeMaterial(object, "Material");
     hp.b = findDouble(object, "b");
     hp.k = findDouble(object, "k");
     hp.innerDiameter = findDouble(object, "InnerDiameter");
@@ -240,7 +327,7 @@ void QueryReaderJson::parseGrowthLights(QJsonArray objects) {
 
 void QueryReaderJson::parseGrowthLight(QJsonObject object) {
     ig::GrowthLight gl;
-    gl.type = static_cast<ig::GrowthLightType>(findInt(object, "Type"));
+    gl.type = findGrowthLightType(object, "Type");
     gl.parEfficiency = findDouble(object, "ParEfficiency");
     gl.lampAndBallastPower = findDouble(object, "LampAndBallastPower");
     gl.lampPower = findDouble(object, "LampPower");
@@ -259,8 +346,8 @@ void QueryReaderJson::parseScreens(QJsonArray objects) {
 void QueryReaderJson::parseScreen(QJsonObject object) {
     ig::Screen screen;
     screen.material = parseScreenMaterial(findObject(object, "Material"));
-    screen.layer = static_cast<ig::ScreenLayer>(findInt(object, "Layer"));
-    screen.position = static_cast<ig::ScreenPosition>(findInt(object, "Position"));
+    screen.layer = findScreenLayer(object, "Layer");
+    screen.position = findScreenPosition(object, "Position");
     screen.effect = findVariable(object, "Effect");
     _screens.push_back(screen);
 }

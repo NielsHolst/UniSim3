@@ -26,10 +26,6 @@ QProgressBar* DialogStub::progressBar() {
     return nullptr;
 }
 
-QWinTaskbarProgress* DialogStub::winProgressTaskbar() {
-    return nullptr;
-}
-
 void DialogStub::finishProgress() {
 }
 

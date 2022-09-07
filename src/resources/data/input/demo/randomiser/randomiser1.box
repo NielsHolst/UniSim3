@@ -1,0 +1,26 @@
+// randomiser1.box
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniformInt k {
+      .min = 10
+      .max = 30
+    }
+    RandomNormal r {
+      .min = 10
+      .max = 30 
+    }
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = random/*[value]
+        .layout = "merged"
+        .ggplot = "geom_point(size=2)"
+      }
+    }
+  }
+}

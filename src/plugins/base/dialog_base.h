@@ -10,7 +10,6 @@
 #include <QStack>
 #include <QString>
 #include <QElapsedTimer>
-#include "win_taskbar_progress.h"
 
 class QProgressBar;
 class QTextEdit;
@@ -27,7 +26,6 @@ public:
 
     virtual void init() = 0;
     virtual QProgressBar* progressBar() = 0;
-    virtual QWinTaskbarProgress* winProgressTaskbar() = 0;
     virtual void finishProgress() = 0;
     virtual void information(QString s) = 0;
     virtual QTextEdit* textEdit();

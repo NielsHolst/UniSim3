@@ -40,6 +40,9 @@ void libr::doExecute() {
         code.replace("install.packages", "library");
 
     dialog().information(code);
+    QString message = (option=="l") ? "R code copied to clipboard! You may paste it into R." :
+                                      "Copy and paste into R for any library you are missing.";
+    environment().copyToClipboard(code, message);
 }
 
 QString libr::readRcode() {

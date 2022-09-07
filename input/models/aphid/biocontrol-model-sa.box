@@ -1,6 +1,6 @@
 // biocontrol-model-sa.box
 Simulation sim {
-  .iterations = 425984  // 832 (for demonstration) or 851968 (for analysis)
+  .iterations = 832  // 832 (for demonstration) or 1703936 (for analysis)
   .silent = TRUE
   .unattended = TRUE
   .stopIteration = !question[accepted]
@@ -347,15 +347,6 @@ Simulation sim {
     .prevalence = withFungus/diagnostics/prevalence[exposed]
     .cadaverPrevalence = withFungus/diagnostics/prevalence[cadavers]
   }
-  // PopUp {
-    // .when = "debrief"
-    // .title = "Congratulations! Your simulation has finally ended."
-    // .text = "Remember to fill the clipboard and paste it to R."
-    // .details = "1. Close this window.  2. Type 'clip' at the prompt. This fills the clipboard with your output.  3. In R, paste the clipboard contents. This will plot your output.  Note: R will take  5-10 minutes to finish."
-    // .icon = "information"
-    // .buttons = "OK"
-    // .show = question[accepted]
-  // }
   OutputR {
     .saveDataFrame = TRUE
     .clearPlots = TRUE

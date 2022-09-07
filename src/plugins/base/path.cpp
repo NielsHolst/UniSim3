@@ -5,7 +5,6 @@
 #include <QMap>
 #include "box.h"
 #include "boxscript_parser.h"
-//#include "dialog.h"
 #include "expression.h"
 #include "path.h"
 #include "port.h"
@@ -429,7 +428,7 @@ Path::Objects Path::Alternative::descendants(Objects candidates, QString classNa
 }
 
 Path::Object* Path::Alternative::parent(Object *p, QString className, QString objectName) {
-    auto parent = p->parent<Object*>();
+    auto parent = p->parent<Box*>();
     return (parent && match(parent, className, objectName)) ? parent : nullptr;
 }
 
@@ -445,7 +444,7 @@ Path::Objects Path::Alternative::parents(Objects candidates, QString className, 
 
 Path::Objects Path::Alternative::ancestors(Object *p, QString className, QString objectName) {
     Objects result;
-    auto q = dynamic_cast<Object*>(p->parent());
+    auto q = dynamic_cast<Box*>(p->parent());
     if (q) {
         if (match(q, className, objectName))
             result << q;
@@ -463,7 +462,7 @@ Path::Objects Path::Alternative::ancestors(Objects candidates, QString className
 
 Path::Objects Path::Alternative::children(Object *p, QString className, QString objectName) {
     Objects result;
-    auto children = p->children<Object*>();
+    auto children = p->children<Box*>();
     for (auto child : children) {
         if (match(child, className, objectName))
             result << child;
@@ -480,7 +479,7 @@ Path::Objects Path::Alternative::children(Objects candidates, QString className,
 
 Path::Objects Path::Alternative::siblings(Object *p, QString className, QString objectName) {
     Objects result;
-    auto children = p->children<Object*>();
+    auto children = p->children<Box*>();
     for (auto child : children) {
         if (child != p && match(child, className, objectName))
             result << child;
@@ -496,7 +495,7 @@ Path::Objects Path::Alternative::siblings(Objects candidates, QString className,
 }
 
 Path::Object* Path::Alternative::preceding(Object *p, QString className, QString objectName) {
-    auto children = p->children<Object*>();
+    auto children = p->children<Box*>();
     int i=0;
     while (children.at(i) != p) ++i;
     return (i>0 && match(children.at(i), className, objectName)) ? children[i] : nullptr;
@@ -513,7 +512,7 @@ Path::Objects Path::Alternative::preceding(Objects candidates, QString className
 }
 
 Path::Object* Path::Alternative::following(Object *p, QString className, QString objectName) {
-    auto children = p->children<Object*>();
+    auto children = p->children<Box*>();
     int i=0,
         n=children.size();
     while (children.at(i) != p) ++i;
@@ -635,8 +634,6 @@ bool Path::isValid(QString path) {
 }
 
 template<> QVector<base::Port*> Path::findMany(base::Node *anchor) const {
-//    QString anch = anchor ? anchor->fullName() : "NULL";
-//    dialog().information("findMany (" + anch + ")" + toString());
     QVector<base::Port*> result;
     for (auto candidate : matches(anchor)) {
         base::Port *port = dynamic_cast<base::Port*>(candidate);

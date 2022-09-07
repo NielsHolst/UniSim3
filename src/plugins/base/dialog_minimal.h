@@ -17,7 +17,6 @@ class DialogMinimal : public DialogQuiet
 public:
     DialogMinimal(QObject *parent);
     QProgressBar* progressBar();
-    QWinTaskbarProgress* winProgressTaskbar();
     void finishProgress();
 private:
     QProgressBar *_progressBar;

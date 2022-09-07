@@ -16,7 +16,10 @@ QT += widgets
 # What we are building
 TEMPLATE = lib
 TARGET = $$BOXES_PLUGIN_NAME$${SUFFIX}
-DESTDIR = "$$_PRO_FILE_PWD_/../../../bin"
+
+BIN_PATH = $$join(_PRO_FILE_PWD_, , , /../../../)
+BIN_PATH = $$join(BIN_PATH, , , $${BIN})
+DESTDIR = "$${BIN_PATH}"
 
 # Own library source code on which we depend
 DEPENDPATH += $$_PRO_FILE_PWD_/../base

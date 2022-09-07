@@ -14,12 +14,12 @@ namespace vg {
 
 PUBLISH(ParBudget)
 
-ParBudget::ParBudget(QString name, QObject *parent)
+ParBudget::ParBudget(QString name, Box *parent)
     : Box(name, parent)
 {
     help("defines all model outputs");
     Input(sunPar).imports("sky[parFluxDown]");
-    Input(growthLightsPar).imports("growthLights[parFluxDown]");
+    Input(growthLightsPar).imports("growthLights[parEmittedDown]");
     Input(indoorsTotalPar).imports("energyBudget[cropParFluxFromAbove]");
     Input(Pn).imports("crop/photosynthesis[Pn]");
     Input(cropCoverage).imports("crop[coverage]");

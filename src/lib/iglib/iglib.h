@@ -1,4 +1,4 @@
-// Version 2.3.62
+// Version 3.0.2 == 3.0.4
 // To use with iglib.dll, remember to define IGLIB_DLL as follows:
 // #define IGLIB_DLL dllimport
 
@@ -28,12 +28,10 @@ struct Greenhouse {
         direction;     // 0..360
 };
 
-enum CultureType {PotRose, PotChrysanthemum, Cucumber, Tomato, Lettuce, SweetPepper};
-struct Culture {
-    Variable lai;
+struct CultureModel {
     double
-        coverage,   // Proportion of greenhouse area that is cultivated (0..1)
-        k,          // Light extinction coefficient
+        // Light extinction coefficient
+        k,
         // Photosynthesis model parameters:
         Jmax25,
         Vcmax25,
@@ -42,6 +40,12 @@ struct Culture {
         Gs25,
         Rl25,
         alpha;
+};
+
+struct Culture {
+    Variable lai;
+    double coverage; // proportion of greenhouse area that is cultivated (0..1)
+    CultureModel cultureModel;
 };
 
 struct CoverMaterial {
@@ -148,7 +152,7 @@ struct ScreenMaterial {
         heatCapacity;           // J/m2/K
 };
 
-enum ScreenLayer {Inner, Mid, Outer};
+enum ScreenLayer {Outer, Mid, Inner};
 enum ScreenPosition {Roof1, Roof2, Side1, Side2, End1, End2};
 
 struct Screen {

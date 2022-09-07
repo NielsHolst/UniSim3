@@ -1,0 +1,26 @@
+// randomiser2.box
+Simulation sim {
+  .iterations = 4
+  .steps = 100
+  Box random {
+    RandomiserMonteCarlo randomiser {
+      .drawAtUpdate = TRUE
+    }
+    RandomUniformInt k {
+      .min = 10
+      .max = 30
+    }
+    RandomNormal r {
+      .min = 10
+      .max = 30 
+    }
+    OutputR {
+      PageR {
+        PlotR {
+          .ports = random/*[value]
+          .layout = "merged"
+        }
+      }
+    }
+  }
+}

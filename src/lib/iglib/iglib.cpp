@@ -9,13 +9,13 @@
 #include <base/box.h>
 #include <base/box_builder.h>
 #include <base/command.h>
+#include <base/computation.h>
 #include <base/convert.h>
 #include <base/data_frame.h>
 #include <base/dialog_quiet.h>
 #include <base/dialog_stub.h>
 #include <base/environment.h>
 #include <base/exception.h>
-#include <base/object_pool.h>
 #include <base/mega_factory.h>
 #include <base/phys_math.h>
 #include <base/test_num.h>
@@ -52,7 +52,6 @@ void init() {
     if (!_initialized) {
         // Create app objcet
         _app = new QCoreApplication(argc, &argv);
-        new base::ObjectPool(_app);
         // Configure dialog
         if (test)
             _dialog = new DialogStub(_app);
@@ -82,7 +81,7 @@ void buildCalendar(Box *parent, const Query &q) {
         port("latitude").equals(q.greenhouse.latitude).
         port("longitude").equals(q.greenhouse.longitude).
         port("timeZone").equals(q.timeStamp.timeZone).
-        port("initialDateTime").equals(dateTime).
+        port("begin").equals(dateTime).
         port("timeStep").equals(30).
         port("timeUnit").equals("s").
         box("Sun").name("sun").
@@ -128,93 +127,117 @@ void buildOutdoors(Box *parent) {
     endbox();
 }
 
-void buildScreen(Box *parent, const Screen *s) {
-    double effect = (s->effect.origin!=NotAvailable) ? s->effect.value/100. : 0.,
-           transmissivityLight = s->material.transmissivityLight,
-           emmisivityTop = s->material.emmisivityOuter,
-           emmisivityBottom = s->material.emmisivityInner,
-           transmissivityAir = s->material.transmissivityAir;
+void buildScreen(BoxBuilder &builder, QString className, const Screen *screen) {
+    static QMap<ScreenLayer, QString> layerNames =
+    {
+        {ScreenLayer::Outer, "layer1"},
+        {ScreenLayer::Mid,   "layer2"},
+        {ScreenLayer::Inner, "layer3"}
+    };
 
-    if (transmissivityLight > 1.) {
-        dialog().information("WARNING: screen transmissivityLight divided by 100 !!");
-        transmissivityLight /= 100.;
-    }
-    if (emmisivityTop > 1.) {
-        dialog().information("WARNING: screen emmisivityOuter divided by 100 !!");
-        emmisivityTop /= 100.;
-    }
-    if (emmisivityBottom > 1.) {
-        dialog().information("WARNING: screen emmisivityInner divided by 100 !!");
-        emmisivityBottom /= 100.;
-    }
-    if (transmissivityAir > 1.) {
-        dialog().information("WARNING: screen transmissivityLight divided by 100 !!");
-        transmissivityAir /= 100.;
-    }
+    double effect = (screen->effect.origin==NotAvailable) ? 0. : screen->effect.value,
+           heatCapacity = (screen->material.heatCapacity > 0.) ? screen->material.heatCapacity : 2280.;
 
-    bool isRoof = (s->position==Roof1 || s->position==Roof2);
-    QString screenClass = isRoof ? "vg::ScreenRoof" : "vg::ScreenWall";
-
-    double reflectivityTop    = 1. - emmisivityTop    - transmissivityLight,
-           reflectivityBottom = 1. - emmisivityBottom - transmissivityLight;
-    TestNum::snapToZero(reflectivityTop);
-    TestNum::snapTo(reflectivityTop, 1.);
-    TestNum::snapToZero(reflectivityBottom);
-    TestNum::snapTo(reflectivityBottom, 1.);
-
-    BoxBuilder builder(parent);
     builder.
-    box(screenClass).name("screen").
-        port("swReflectivityTop").equals(reflectivityTop).
-        port("swReflectivityBottom").equals(reflectivityBottom).
-        port("swTransmissivityTop").equals(transmissivityLight).
-        port("swTransmissivityBottom").equals(transmissivityLight).
-        port("lwReflectivityTop").equals(reflectivityTop).
-        port("lwReflectivityBottom").equals(reflectivityBottom).
-        port("lwTransmissivityTop").equals(transmissivityLight).
-        port("lwTransmissivityBottom").equals(transmissivityLight).
-        port("transmissivityAir").equals(transmissivityAir).
+    box(className).name(layerNames.value(screen->layer)).
+        port("swReflectivityTop")     .equals(1. - screen->material.emmisivityOuter - screen->material.transmissivityLight).
+        port("swReflectivityBottom")  .equals(1. - screen->material.emmisivityInner - screen->material.transmissivityLight).
+        port("swTransmissivityTop")   .equals(screen->material.transmissivityLight).
+        port("swTransmissivityBottom").equals(screen->material.transmissivityLight).
+
+        port("lwReflectivityTop")     .equals(1. - screen->material.emmisivityOuter - screen->material.transmissivityLight).
+        port("lwReflectivityBottom")  .equals(1. - screen->material.emmisivityOuter - screen->material.transmissivityLight).
+        port("lwTransmissivityTop")   .equals(screen->material.transmissivityLight).
+        port("lwTransmissivityBottom").equals(screen->material.transmissivityLight).
+        port("Utop")   .equals(screen->material.U).
+        port("Ubottom").equals(screen->material.U).
+        port("heatCapacity").equals(heatCapacity).
+        port("transmissivityAir").equals(screen->material.transmissivityAir).
         port("ventilation").equals(0.).
         port("state").equals(effect).
     endbox();
 }
 
 QString toString(ScreenPosition pos) {
-    switch(pos) {
-    case Roof1: return "roof1";
-    case Roof2: return "roof2";
-    case Side1: return "side1";
-    case Side2: return "side2";
-    case End1: return "end1";
-    case End2: return "end2";
-    }
-    return "";
+    static QMap<ScreenPosition, QString> lookup =
+    {
+        {ScreenPosition::Roof1, "roof1"},
+        {ScreenPosition::Roof2, "roof2"},
+        {ScreenPosition::Side1, "side1"},
+        {ScreenPosition::Side2, "side2"},
+        {ScreenPosition::End1,  "end1"},
+        {ScreenPosition::End2,  "end2"}
+    };
+    return lookup.value(pos);
 }
 
-void buildScreens(Box *parent, ScreenPosition pos, const Query &q) {
-    for (int i=0; i < q.screens.size; ++i) {
-        ScreenPosition screenPos = q.screens.array[i].position;
-        if (screenPos == pos)
-            buildScreen(parent, &q.screens.array[i]);
-    }
-}
-
-void buildShelterFace(Box *parent, ScreenPosition pos, const Query &q) {
+void buildShelterFace(BoxBuilder &builder, ScreenPosition pos, const Query &q) {
     QString faceName = toString(pos);
 
+    CoverMaterial cover;
+    switch (pos) {
+    case Roof1:
+        cover = q.construction.roof1; break;
+    case Roof2:
+        cover = q.construction.roof2; break;
+    case Side1:
+        cover = q.construction.side1; break;
+    case Side2:
+        cover = q.construction.side2; break;
+    case End1:
+        cover = q.construction.end1; break;
+    case End2:;
+        cover = q.construction.end2; break;
+    }
+
+    QMap<ScreenLayer, const Screen *> myScreens =
+    {
+        {ScreenLayer::Outer, nullptr},
+        {ScreenLayer::Mid  , nullptr},
+        {ScreenLayer::Inner, nullptr}
+    };
+    for (int i=0; i<q.screens.size; ++i) {
+        const Screen *screen = &(q.screens.array[i]);
+        if (screen->position == pos)
+            myScreens[screen->layer] = screen;
+    }
+
+    const double heatCapacity = 8400.;
+    double lwTransmissivity   = std::min(cover.transmissivity, 0.2);
+
     // Ignore cover parameters from IG user until they have been checked
-    BoxBuilder builder(parent);
     builder.
     box("vg::ShelterFace").name(faceName).
         box("vg::ShelterFaceArea").name("area").
         endbox().
         box("vg::Cover").name("cover").
+            port("swReflectivityTop")     .equals(1. - cover.absorptivity - cover.transmissivity).
+            port("swReflectivityBottom")  .equals(1. - cover.absorptivity - cover.transmissivity).
+            port("swTransmissivityTop")   .equals(cover.transmissivity).
+            port("swTransmissivityBottom").equals(cover.transmissivity).
+            port("lwReflectivityTop")     .equals(1. - cover.emissivity - lwTransmissivity).
+            port("lwReflectivityBottom")  .equals(1. - cover.emissivity - lwTransmissivity).
+            port("lwTransmissivityTop")   .equals(lwTransmissivity).
+            port("lwTransmissivityBottom").equals(lwTransmissivity).
+            port("Utop")   .equals(cover.U).
+            port("Ubottom").equals(cover.U).
+            port("heatCapacity").equals(heatCapacity).
         endbox().
-        box("vg::Screens").name("screens").
-        endbox().
-    endbox();
-    Box *screens = parent->findOne<Box*>(faceName + "/screens");
-    buildScreens(screens, pos, q);
+        box("vg::Screens").name("screens");
+
+    QString screenClass = (pos==ScreenPosition::Roof1 || pos==ScreenPosition::Roof2) ?
+                "ScreenRoof" : "ScreenWall";
+    QMapIterator<ScreenLayer, const Screen *> it(myScreens);
+    while (it.hasNext()) {
+        it.next();
+        const Screen *screen = it.value();
+        if (screen)
+            buildScreen(builder, screenClass, screen);
+    }
+
+        builder.
+        endbox(). // screens
+    endbox(); // ShelterFace
 }
 
 void buildConstruction(Box *parent, const Query &q) {
@@ -229,23 +252,24 @@ void buildConstruction(Box *parent, const Query &q) {
             port("roofPitch").equals(q.construction.roofInclination).
             port("reflection").equals(q.construction.internalShading).
         endbox().
-        box("vg::Shelter").name("shelter").
+        box("vg::Shelter").name("shelter");
+
+    buildShelterFace(builder, Roof1, q);
+    buildShelterFace(builder, Roof2, q);
+    buildShelterFace(builder, Side1, q);
+    buildShelterFace(builder, Side2, q);
+    buildShelterFace(builder, End1, q);
+    buildShelterFace(builder, End2, q);
+
+    builder.
         endbox().
         box().name("floor").
-            newPort("reflectivity").equals(0.6).
-            newPort("Utop").equals(7.5).
-            newPort("Ubottom").equals(0.1).
-            newPort("heatCapacity").equals(42000.).
+            aux("reflectivity").equals(0.6).
+            aux("Utop").equals(7.5).
+            aux("Ubottom").equals(0.1).
+            aux("heatCapacity").equals(42000.).
         endbox().
     endbox();
-
-    Box *shelter = parent->findOne<Box*>("shelter");
-    buildShelterFace(shelter, Roof1, q);
-    buildShelterFace(shelter, Roof2, q);
-    buildShelterFace(shelter, Side1, q);
-    buildShelterFace(shelter, Side2, q);
-    buildShelterFace(shelter, End1, q);
-    buildShelterFace(shelter, End2, q);
 }
 
 void buildPipe(Box *parent, const HeatPipe *pipe) {
@@ -296,7 +320,7 @@ void buildGrowthLights(Box *parent, GrowthLights lights, double coverage) {
     builder.
         box("vg::GrowthLights").name("growthLights").
         endbox();
-    Box *growthLights =  parent->findChild<Box*>("growthLights");
+    Box *growthLights =  parent->findOne<Box*>("./growthLights");
     for (int i=0; i < lights.size; ++i)
         buildGrowthLight(growthLights, &lights.array[i], coverage);
 }
@@ -318,10 +342,10 @@ void buildActuators(Box *parent, const Query &q) {
                 port("indoorsTemperature").imports("sensor[indoorsTemperature]").
             endbox().
             box().name("co2Injection").
-                newPort("value").equals(0.).
+                aux("value").equals(0.).
             endbox().
     endbox();
-    Box *actuators = parent->findChild<Box*>("actuators");
+    Box *actuators = parent->findOne<Box*>("./actuators");
     buildPipes(actuators, q.heatPipes);
     buildGrowthLights(actuators, q.growthLights, q.culture.coverage);
 }
@@ -357,9 +381,9 @@ void buildWaterBudget(Box *parent) {
     box("vg::WaterBudget").name("waterBudget").
 //        box().name("condensationScreens").
 //            box().name("screen").
-//                newPort("conductance").equals(0.).
-//                newPort("vapourFlux").equals(0.).
-//                newPort("gain").equals(0.).
+//                aux("conductance").equals(0.).
+//                aux("vapourFlux").equals(0.).
+//                aux("gain").equals(0.).
 //            endbox().
 //        endbox().
     endbox();
@@ -399,14 +423,14 @@ void buildCrop(Box *parent, const Query &q) {
     box("vg::Crop").name("crop").
         port("lai").equals(lai).
         port("coverage").equals(q.culture.coverage).
-        port("k").equals(q.culture.k).
-        port("gammaStar").equals(q.culture.Gs25).
-        port("Jmax").equals(q.culture.Jmax25).
-        port("lightRespiration").equals(q.culture.Rl25).
-        port("ballBerryIntercept").equals(q.culture.g0).
-        port("ballBerrySlope").equals(q.culture.g1).
-        port("Vcmax").equals(q.culture.Vcmax25).
-        port("alpha").equals(q.culture.alpha).
+        port("k").equals(q.culture.cultureModel.k).
+        port("gammaStar").equals(q.culture.cultureModel.Gs25).
+        port("Jmax").equals(q.culture.cultureModel.Jmax25).
+        port("lightRespiration").equals(q.culture.cultureModel.Rl25).
+        port("ballBerryIntercept").equals(q.culture.cultureModel.g0).
+        port("ballBerrySlope").equals(q.culture.cultureModel.g1).
+        port("Vcmax").equals(q.culture.cultureModel.Vcmax25).
+        port("alpha").equals(q.culture.cultureModel.alpha).
         port("trackPn").equals(true).
     endbox();
 }
@@ -420,22 +444,25 @@ void buildParBudget(Box *parent) {
 
 
 Box* build(const Query &q) {
-    init();
+    // Delete current model
+    Box::root(nullptr);
+
+    // Create a new model
     BoxBuilder builder;
     Box *sim(nullptr);
     environment().option("dontAutoCreateRecords", true);
     try {
         builder.
             box("Simulation").name("greenhouse").
-                port("steps").equals(59).
+                port("steps").equals(5).
             endbox();
-        sim = builder.content();
+        sim = builder.root();
         buildCalendar(sim, q);
         buildSensor(sim, q);
         buildOutdoors(sim);
         buildConstruction(sim, q);
         buildActuators(sim, q);
-        buildEnergyBudget(sim);
+        buildEnergyBudget(sim, q);
         buildEnergyBudgetIndoors(sim->findOne<Box*>("energyBudget"), q);
         buildWaterBudget(sim);
         buildIndoors(sim, q);
@@ -445,7 +472,10 @@ Box* build(const Query &q) {
     catch (Exception &ex) {
         std::cout << "EXCEPTION\n" << qPrintable(ex.what()) << "\n";
     }
-    environment().root(sim);
+    catch (const std::exception &ex) {
+        std::cout << "std::exception\n" << ex.what();
+    }
+    Box::root(sim);
     return sim;
 }
 
@@ -486,19 +516,10 @@ Response compute(const Query &q) {
 
     init();
 
-//    // TEST
-//    const QString filePath = "D:/Documents/QDev/UniSim2/output/ud.box";
-//    QFile file(filePath);
-//    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-//        ThrowException("Cannot open output file").value(filePath);
-//    QTextStream stream(&file);
-
-
     // Build model from root, (write script) and run
     Box *root(nullptr);
     try {
         root = build(q);
-//        root->toText(stream, "io");
         root->run();
     }
     catch (Exception &ex) {
@@ -506,6 +527,9 @@ Response compute(const Query &q) {
         cout << "\n\nERROR: " << _errorString << "\n";
         excepted = true;
     }
+
+    // Ready for next run
+    Computation::changeStep(Computation::Step::Ready);
 
     // Check for error
     if (excepted || root->port("hasError")->value<bool>()) {
@@ -516,28 +540,24 @@ Response compute(const Query &q) {
     }
 
     // Extract max. photosynthesis
-    auto cropCoverage = environment().root()->findOne<Box>("greenhouse/crop")->port("coverage")->value<double>();
-    auto *photosynthesis = environment().root()->findOne<Box>("crop/photosynthesis");
+    auto cropCoverage = root->findOne<Box*>("greenhouse/crop")->port("coverage")->value<double>();
+    auto *photosynthesis = root->findOne<Box*>("crop/photosynthesis");
     auto *trackedPn = photosynthesis->port("trackedPn")->valuePtr<QVector<double>>();
     double maxPn = vector_op::max(*trackedPn)/cropCoverage;
 
     // Extract response from model state
     try {
-        r.timeStamp = q.timeStamp;
-        r.indoorsCo2 = root->findOne<Box*>("indoors/co2")->port("value")->value<double>();
-        r.indoorsRh = root->findOne<Box*>("indoors/humidity")->port("rh")->value<double>();
-        r.indoorsTemperature = root->findOne<Box*>("indoors/temperature")->port("value")->value<double>();
-        r.indoorsPar = root->findOne<Box*>("energyBudget")->port("cropParFluxFromAbove")->value<double>();
-        snapToZero(r.indoorsPar);
-        r.heating = root->findOne<Box*>("actuators/heating")->port("energyFluxTotal")->value<double>();
-        snapToZero(r.heating);
-        r.photosynthesis = root->findOne<Box*>("crop/photosynthesis")->port("Pg")->value<double>();
-        snapToZero(r.photosynthesis);
-        r.growthLight = root->findOne<Box*>("actuators/growthLights")->port("powerUsage")->value<double>();
-        snapToZero(r.growthLight);
-        double E = r.heating + r.growthLight;
-        snapToZero(E);
-        r.costEfficiency = (E==0.) ? 0. : r.photosynthesis/E*1000./3600.;
+        r.timeStamp          = q.timeStamp;
+        r.indoorsPar         = snap( root->findOne<Box*>("parBudget")->port("indoorsTotalPar")->value<double>() );
+        r.sunPar             = snap( root->findOne<Box*>("parBudget")->port("indoorsSunPar")->value<double>() );
+        r.growthLightPar     = snap( root->findOne<Box*>("parBudget")->port("indoorsGrowthLightPar")->value<double>() );
+        r.growthLightPowerUse = snap( growthLightPower(q) );
+        r.heatingPowerUse    = snap( root->findOne<Box*>("actuators/heating")->port("energyFluxTotal")->value<double>() )/cropCoverage;
+        r.leafTemperature    = snap( root->findOne<Box*>("crop/temperature")->port("value")->value<double>() );
+        r.photosynthesis     = snap( root->findOne<Box*>("parBudget")->port("photosynthesis")->value<double>() );
+        r.maxPhotosynthesis  = snap(maxPn);
+        double E = r.heatingPowerUse + growthLightPower(q);
+        r.costEfficiency = (E==0.) ? 0. : snap( r.photosynthesis/E*1000./3600. );
     }
     catch (Exception &ex) {
         std::cout << ex.what().toStdString() << "\n";

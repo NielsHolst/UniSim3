@@ -1,0 +1,21 @@
+// maximum_at1.box
+Simulation sim {
+  .steps = 50
+  Hump hump {
+    .x = sim[step]
+    .x0 = 20
+    .x1 = 48
+    .ymax = 150
+  }
+  MaximumAt maxValue {
+    .track = hump[value]
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = hump[value] | maxValue[output::*]
+        .ggplot = "geom_vline(xintercept=34, colour='black', linetype='dashed')"
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@ namespace vg {
 class ParBudget : public base::Box
 {
 public:
-    ParBudget(QString name, QObject *parent);
+    ParBudget(QString name, Box *parent);
     void reset();
     void update();
 private:

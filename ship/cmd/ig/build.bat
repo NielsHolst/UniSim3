@@ -1,12 +1,14 @@
 echo on
-D:
-cd \Documents\QDev\UniSim2\ship\cmd\ig
+REM D:
+REM set PATH=D:\Documents\QDev\UniSim2\ship\cmd\ig\
+set PATH=C:\Users\au152367\Documents\QDev\UniSim3\ship\cmd\ig\
+
+cd %PATH%
+pause
 
 # Set version and target platform (32 or 64 bits)
-set VERSION=2.3.61
-set QT_PATH=C:\Qt\5.15.1\mingw81_32
-
-set PATH=D:\Documents\QDev\UniSim2\ship\cmd\ig\
+set VERSION=3.0.4
+set QT_PATH=C:\Qt\5.15.2\mingw81_32
 
 set IGLIB_BIN=iglib\bin
 set IGLIB_BIN_IMAGEFORMATS=iglib\bin\imageformats
@@ -33,12 +35,12 @@ echo = Copy iglib.h =
 copy ..\..\..\src\lib\iglib\iglib.h iglib
 
 echo = Copy UniSim plug-ins =
-copy ..\..\..\bin\plugins\*.dll %IGLIB_BIN_PLUGINS%
+copy ..\..\..\bin32\plugins\*.dll %IGLIB_BIN_PLUGINS%
 
 echo = Copy UniSim libraries =
-copy ..\..\..\bin\iglib.dll %IGLIB_BIN%
-copy ..\..\..\bin\libiglib.a %IGLIB_BIN%
-copy ..\..\..\bin\universal_simulator_base.dll %IGLIB_BIN%
+copy ..\..\..\bin32\iglib.dll %IGLIB_BIN%
+copy ..\..\..\bin32\libiglib.a %IGLIB_BIN%
+copy ..\..\..\bin32\universal_simulator_base.dll %IGLIB_BIN%
 
 echo = Copy Qt library folders =
 pushd %QT_PATH%

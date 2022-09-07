@@ -34,10 +34,6 @@ QProgressBar* DialogMinimal::progressBar() {
     return _progressBar;
 }
 
-QWinTaskbarProgress* DialogMinimal::winProgressTaskbar() {
-    return nullptr;
-}
-
 void DialogMinimal::finishProgress() {
     _progressDialog->close();
 }

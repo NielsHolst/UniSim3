@@ -21,8 +21,8 @@ private:
     // Inputs
     QVector<bool> lightsCurrentlyOn;
     QVector<double>
-        lightsParFluxDown,
-        lightsSwFluxDown,
+        lightsParEmittedDown,
+        lightsSwEmittedDown,
         lightsLwFluxDown,
         lightsLwFluxUp,
         lightsPowerUsage;

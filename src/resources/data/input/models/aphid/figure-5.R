@@ -1,5 +1,5 @@
 # Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0023.Rdata"
+sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -63,7 +63,7 @@ sim$Outcome = factor(sim$Outcome)
 
 sub_plot = function(x,y,ylab,ylim) {
   # Sub-sample 32^2*5 = 5,120 rows
-  sub_sample = stratify2d(sim[,x], sim[,y], 32, 5)
+  sub_sample = stratify2d(sim[,x], sim[,y], 29, 5)
   M = sim[sub_sample,]
   M$Outcome = reorder_levels(M$Outcome, 2:1)
 
@@ -93,22 +93,25 @@ W = 84
 H = 150
 
 # Screen plot
+graphics.off()
 open_plot_window(mm(W),mm(H))
 print(make_plot())
 
-# Black and white for manuscript
-file_name_path = paste0(output_folder, "/fig-5-bw.png")
-png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
-print(make_plot())
-dev.off()
-print(paste("Figure written to", file_name_path))
+# Write figures
+write_figure = function(file_type) {
+  file_name_path = paste0(output_folder, "/fig-5-bw.", file_type)
+  print(paste("Writing figure to", file_name_path))
+  if (file_type == "png")
+    png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
+  else if (file_type == "eps")
+    cairo_ps(file_name_path, width=mm(W), height=mm(H))
+  else
+    stop(paste0("Wrong file type: '", file_type, "'"))
+  print(make_plot())
+  dev.off()
+}
 
-# Black and white for journal
-file_name_path = paste0(output_folder, "/fig-5-bw.eps")
-cairo_ps(file_name_path, width=mm(W), height=mm(H))
-print(make_plot())
-dev.off()
-print(paste("Figure written to", file_name_path))
-
-
+if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
+write_figure("png")
+write_figure("eps")
 

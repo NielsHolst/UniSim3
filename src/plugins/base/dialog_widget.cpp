@@ -73,8 +73,11 @@ void DialogWidget::saveFont() {
 void DialogWidget::setFont(QString family, int pt) {
     // Construct font
     QString family2 = fontExists(family) ? family : preferredFamily();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QFont font = QFontDatabase::font(family2, QString(), pt);
-
+#else
+    QFont font = QFontDatabase().font(family2, QString(), pt);
+#endif
     // Set cursor to use font
     QTextCursor cursor = textCursor();
     QTextCharFormat format = cursor.charFormat();
@@ -102,7 +105,11 @@ void DialogWidget::restoreFont() {
 
     QTextCursor cursor = textCursor();
     QTextCharFormat format = cursor.charFormat();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     format.setFont(QFontDatabase::font(family, QString(), pt));
+#else
+    format.setFont(QFontDatabase().font(family, QString(), pt));
+#endif
     cursor.setCharFormat(format);
     setTextCursor(cursor);
 }
@@ -128,18 +135,18 @@ QString DialogWidget::preferredFamily() {
 }
 
 bool DialogWidget::fontExists(QString family) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     return QFontDatabase::font(family, QString(), 10).family() !=
            QGuiApplication::font().family();
+#else
+    return QFontDatabase().font(family, QString(), 10).family() !=
+           QGuiApplication::font().family();
+#endif
 }
 
 QProgressBar* DialogWidget::progressBar() {
     Q_ASSERT(_progressBar);
     return _progressBar;
-}
-
-QWinTaskbarProgress* DialogWidget::winProgressTaskbar() {
-    // Will be nullptr if not runnings on Windows
-    return _winProgressTaskbar;
 }
 
 const History* DialogWidget::history() const {
@@ -381,7 +388,11 @@ QTextCursor DialogWidget::getCursor() {
     QFont font = format.font();
     QString family = font.family();
     int pt = font.pointSize();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     format.setFont(QFontDatabase::font(family, QString(), pt));
+#else
+    format.setFont(QFontDatabase().font(family, QString(), pt));
+#endif
     cursor.setCharFormat(format);
     return cursor;
 }

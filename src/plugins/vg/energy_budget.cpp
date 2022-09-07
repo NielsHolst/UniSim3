@@ -73,8 +73,8 @@ QString EnergyBudget::toString(const HeatTransferLayerBase *layer) const {
         QString::number(layer->  lwReflectivityBottom, 'f', 2).rightJustified(5) +
         QString::number(layer->lwTransmissivityBottom, 'f', 2).rightJustified(5) +
         QString::number(layer->temperature, 'f', 1).rightJustified(5) +
-        QString::number(layer->swFluxDown,  'f', 1).rightJustified(6) +
-        QString::number(layer->swFluxUp  ,  'f', 1).rightJustified(6) +
+        QString::number(layer->swEmittedDown,  'f', 1).rightJustified(6) +
+        QString::number(layer->swEmittedUp  ,  'f', 1).rightJustified(6) +
         QString::number(layer->lwFluxDown,  'f', 0).rightJustified(6) +
         QString::number(layer->lwFluxUp  ,  'f', 0).rightJustified(6) +
         QString::number(layer->swAbsorbedFromAbove, 'f', 1).rightJustified(6) +
@@ -220,8 +220,8 @@ void EnergyBudget::distributeParRadiation() {
         a_[i] = stack.at(i)->swAbsorptivityBottom;
         r_[i] = stack.at(i)->swReflectivityBottom;
         t_[i] = stack.at(i)->swTransmissivityBottom;
-        I[i]  = stack.at(i)->parFluxDown;
-        I_[i] = stack.at(i)->parFluxUp;
+        I[i]  = stack.at(i)->parEmittedDown;
+        I_[i] = stack.at(i)->parEmittedUp;
     }
     iterPar = distributeRadiation(a, r, t, a_, r_, t_, I, I_, A, A_);
     for (int i=0; i<n; ++i) {
@@ -245,8 +245,8 @@ void EnergyBudget::distributeSwRadiation() {
         a_[i] = stack.at(i)->swAbsorptivityBottom;
         r_[i] = stack.at(i)->swReflectivityBottom;
         t_[i] = stack.at(i)->swTransmissivityBottom;
-        I[i]  = stack.at(i)->swFluxDown;
-        I_[i] = stack.at(i)->swFluxUp;
+        I[i]  = stack.at(i)->swEmittedDown;
+        I_[i] = stack.at(i)->swEmittedUp;
     }
     iterSw = distributeRadiation(a, r, t, a_, r_, t_, I, I_, A, A_);
     for (int i=0; i<n; ++i) {

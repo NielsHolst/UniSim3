@@ -48,8 +48,8 @@ void GrowthLight::update() {
     currentlyOn = on || ( currentlyOn && (periodOn < minPeriodOn) );
     if (currentlyOn) {
         periodOn += timeStep/60.;
-        parFluxDown = intensity*parPhotonCoef*ageCorrectedEfficiency;
-        swFluxDown  = intensity*(1. - propLw);
+        parEmittedDown = intensity*parPhotonCoef*ageCorrectedEfficiency;
+        swEmittedDown  = intensity*(1. - propLw);
         lwFluxDown  = intensity*propLw + 0.5*ballast;
         lwFluxUp    = 0.5*ballast;
         powerUsage  = intensity + ballast;
@@ -61,7 +61,7 @@ void GrowthLight::update() {
 void GrowthLight::noLight() {
     periodOn = 0.;
     currentlyOn = false;
-    parFluxDown = swFluxDown = lwFluxDown = lwFluxUp = powerUsage = 0.;
+    parEmittedDown = swEmittedDown = lwFluxDown = lwFluxUp = powerUsage = 0.;
 }
 
 } //namespace

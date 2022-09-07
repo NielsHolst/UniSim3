@@ -63,6 +63,7 @@ HEADERS +=  \
 #    food_web_box_base.h \
     history.h \
     interpolate.h \
+    logger.h \
     matrix.h \
     matrix2D.h \
     mega_factory.h \
@@ -135,6 +136,7 @@ SOURCES +=  \
     exception.cpp \
     expression.cpp \
     history.cpp \
+    logger.cpp \
     mega_factory.cpp \
     node.cpp \
     operate.cpp \

@@ -21,12 +21,12 @@ GrowthLights::GrowthLights(QString name, Box *parent)
 {
     help("sums power use and radiation from growth light");
     port("area")->imports("construction/geometry[groundArea]",CA);
-    Input(lightsCurrentlyOn).imports("./*[currentlyOn]",CA);
-    Input(lightsParFluxDown).imports("./*[parFluxDown]",CA);
-    Input(lightsSwFluxDown). imports("./*[swFluxDown]",CA);
-    Input(lightsLwFluxDown). imports("./*[lwFluxDown]",CA);
-    Input(lightsLwFluxUp).   imports("./*[lwFluxDown]",CA);
-    Input(lightsPowerUsage). imports("./*[powerUsage]",CA);
+    Input(lightsCurrentlyOn).imports("./Box::*[currentlyOn]",CA);
+    Input(lightsParEmittedDown).imports("./Box::*[parEmittedDown]",CA);
+    Input(lightsSwEmittedDown). imports("./Box::*[swEmittedDown]",CA);
+    Input(lightsLwFluxDown). imports("./Box::*[lwFluxDown]",CA);
+    Input(lightsLwFluxUp).   imports("./Box::*[lwFluxDown]",CA);
+    Input(lightsPowerUsage). imports("./Box::*[powerUsage]",CA);
     Output(currentlyOn).help("Is any growth light on?");
     Output(powerUsage).help("Sum of growth lights' power usages");
 }
@@ -42,11 +42,11 @@ void GrowthLights::update() {
     currentlyOn = false;
     for (bool on : lightsCurrentlyOn)
         currentlyOn = (currentlyOn || on);
-    parFluxDown = vector_op::sum(lightsParFluxDown);
-    swFluxDown  = vector_op::sum(lightsSwFluxDown);
-    lwFluxDown  = vector_op::sum(lightsLwFluxDown);
-    lwFluxUp    = vector_op::sum(lightsLwFluxUp);
-    powerUsage  = vector_op::sum(lightsPowerUsage);
+    parEmittedDown = vector_op::sum(lightsParEmittedDown);
+    swEmittedDown  = vector_op::sum(lightsSwEmittedDown);
+    lwFluxDown     = vector_op::sum(lightsLwFluxDown);
+    lwFluxUp       = vector_op::sum(lightsLwFluxUp);
+    powerUsage     = vector_op::sum(lightsPowerUsage);
 }
 
 } //namespace

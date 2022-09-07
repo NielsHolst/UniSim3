@@ -24,10 +24,6 @@ QProgressBar* DialogQuiet::progressBar() {
     return nullptr;
 }
 
-QWinTaskbarProgress* DialogQuiet::winProgressTaskbar() {
-    return nullptr;
-}
-
 void DialogQuiet::finishProgress() {
 }
 
