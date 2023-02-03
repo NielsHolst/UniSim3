@@ -43,6 +43,8 @@ private:
     void showPlugin();
     void showClass();
     void setColWidths();
+    QString escaped(QString s) const;
+    QString italics(QString s) const;
     QStringList portsHelp(base::PortType type);
     QString sideEffects();
 };

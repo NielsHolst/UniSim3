@@ -61,6 +61,15 @@ void Controllers::amend() {
             box().name("fixed2").
                 aux("value").imports("setpoints[screenFixed2]").
             endbox().
+            box("ScreenCombination").name("layer1").
+                port("code").imports("setpoints/elementary/screens/screenLayer1[value]").
+            endbox().
+            box("ScreenCombination").name("layer2").
+                port("code").imports("setpoints/elementary/screens/screenLayer2[value]").
+            endbox().
+            box("ScreenCombination").name("layer3").
+                port("code").imports("setpoints/elementary/screens/screenLayer3[value]").
+            endbox().
         endbox();
 
 //  Introduce this again later. Maybe use the signal to modulate the desiredValue for the co2Injection PID controller

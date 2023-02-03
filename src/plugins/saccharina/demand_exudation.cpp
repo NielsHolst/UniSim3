@@ -5,22 +5,24 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/publish.h>
+#include <base/vector_op.h>
 #include "demand_exudation.h"
 
 using namespace base;
+using vector_op::sum;
 
 namespace saccharina {
 
 PUBLISH(DemandExudation)
 
 DemandExudation::DemandExudation(QString name, Box *parent)
-    : Box(name, parent)
+    : Density(name, parent)
 {
-    help("calculates demand for exudation");
-    Input(relExudation).equals(0.23).unit("g C/g C").help("Relative exudation cost");
-    Input(demandGrowthC).imports("../growth[carbon]");
-    Input(demandCRes).imports("../reserves[carbon]");
-    Output(carbon).unit("g C/m").help("Carbon demand for exudation");
+    help("computes exudation");
+    Input(biomass).unit("g dw/m").help("Exuding biomass");
+    Input(eC).unit("g C/g dw/d").help("Carbon exudation rate");
+    Input(eN).unit("g N/g dw/d").help("Nitrogen exudation rate");
+    Input(eP).unit("g P/g dw/d").help("Phosphorus exudation rate");
 }
 
 void DemandExudation::reset() {
@@ -28,7 +30,9 @@ void DemandExudation::reset() {
 }
 
 void DemandExudation::update() {
-    carbon = relExudation*(demandGrowthC+demandCRes);
+    C = eC*biomass;
+    N = eN*biomass;
+    P = eP*biomass;
 }
 
 }

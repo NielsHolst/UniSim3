@@ -1,5 +1,5 @@
 # Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
+sim_data_file = "~/sites/ecolmod3/download/aphid-biocontrol-sim.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -76,10 +76,10 @@ make_plot = function(size1, size2) {
     geom_ribbon(ymin=0, aes(ymax=Density, fill=Success), colour="black", size=size1) +
     scale_discrete_manual("fill", values=grey_scale2) +
     annotate("segment", x=yieldThreshold, xend=yieldThreshold, y=0, yend=1.01*yend, size=size2) +
-    annotate("text",x=0.9, y=0.25, label="90%", size=3) +
-    annotate("text",x=2.5, y=0.50, label=thresholdLabel, size=3) +
-    annotate("segment", x=2.5, y=0.42, xend= 1.01*yieldThreshold, yend=1.16*yend, arrow=arr, size=size1) +
-    scale_x_continuous(limits=c(0,5)) +
+    annotate("text",x=2.5, y=0.05, label="90%", size=3) +
+    annotate("text",x=9.0, y=0.11, label=thresholdLabel, size=3) +
+    annotate("segment", x=9.0, y=0.095, xend= 1.01*yieldThreshold, yend=1.1*yend, arrow=arr, size=size1) +
+    scale_x_continuous(limits=c(0,12)) +
     labs(x=yield_lab, y=density_lab) +
     theme1 +
     theme(

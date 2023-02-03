@@ -9,6 +9,7 @@
 #define ACTUATORS_H
 
 #include <base/box.h>
+#include <base/box_builder.h>
 
 namespace vg {
 
@@ -17,6 +18,8 @@ class Actuators : public base::Box
 public:
     Actuators(QString name, Box *parent);
     void amend();
+private:
+    void addLayer(base::BoxBuilder &builder, int i);
 };
 } //namespace
 

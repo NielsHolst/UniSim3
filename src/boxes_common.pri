@@ -8,7 +8,7 @@
 
 # AUTO-CONFIG-BEGIN
 CONFIG += release
-VERSION = 3.0.4
+VERSION = 3.0.9
 CONFIG += skip_target_version_ext
 # AUTO-CONFIG-END
 
@@ -26,11 +26,12 @@ else {
 # What we are building
 CONFIG += c++17
 QT += core widgets
-contains(QT_ARCH, i386) {
-    BIN = bin32
-} else {
-    BIN = bin
-}
+#contains(QT_ARCH, i386) {
+#    BIN = bin32
+#} else {
+#    BIN = bin
+#}
+BIN = bin
 BIN_PATH = $$join(_PRO_FILE_PWD_, , , /../../../)
 BIN_PATH = $$join(BIN_PATH, , , $${BIN})
 BIN_PLUGINS_PATH = $$join(BIN_PATH, , , /plugins)

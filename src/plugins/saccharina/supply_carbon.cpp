@@ -5,45 +5,33 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/publish.h>
-#include <base/vector_op.h>
 #include "supply_carbon.h"
 
 using namespace base;
+using std::min;
 
 namespace saccharina {
 
 PUBLISH(SupplyCarbon)
 
 SupplyCarbon::SupplyCarbon(QString name, Box *parent)
-    : Box(name, parent)
+    : SupplyBase(name, parent)
 {
-    help("calculates supply of carbon");
-    Input(concN).imports("plant[concN]");
-    Input(k).equals(0.7).unit("-").help("Light extinction coefficient");
-    Input(lai).imports("geometry[lai]");
-    Input(crownZoneArea).imports("geometry[crownZoneArea]");
-    Input(a).equals(0.0251).unit("g C/mol PAR").help("Efficiency at zero [N]");
-    Input(b).equals(2.62).unit("-").help("Slope of efficiency on [N]");
-    Input(calib).equals(1.);
-//    Input(calib).equals(1.); //.help("Calibration multiplier on efficiency);
-    Input(E0).imports("env[E0]");
-    Input(demands).imports("demand/*[carbon]");
-    Output(Iabs).unit("mol PAR/m").help("Absorbed light");
-    Output(efficiency).unit("g C/mol PAR").help("Photosynthetic efficiency");
-    Output(demand).unit("g C/m").help("Total demand for carbon");
-    Output(value).unit("g C/m").help("Total supply of carbon");
+    help("computes photosynthetic supply of carbon");
+    Input(alpha).unit("g C/g dw/(mol PAR/m2)").help("Photosynthetic efficiency");
+    Input(k).help("Canopy light extinction coefficient");
+    Input(lai).unit("m2/m2").help("Leaf area index");
+    Input(czArea).unit("m2/m").help("Crown zone area");
+    Input(phiN).unit("[0;1]").help("Scaling for plant nitrogen concentration");
+    Input(Id).unit("mol PAR/m2/d").help("Solar PAR at plant canopy depth");
+    Output(Iabsorbed).unit("mol PAR/m2/d").help("Solar PAR absorbed");
+    Output(propIabsorbed).unit("[0;1]").help("Proportion of solar PAR absorbed");
 }
 
-void SupplyCarbon::reset() {
-   update();
-}
-
-void SupplyCarbon::update() {
-    Iabs = (1. - exp(-k*lai))*crownZoneArea*E0;
-    demand = vector_op::sum(demands);
-    efficiency = calib*(a + b*concN);
-    value = (demand > 0.) ? demand*(1. - exp(-efficiency*Iabs/demand)) : 0.;
+void SupplyCarbon::updateValue() {
+    Iabsorbed = czArea*Id*(1 - exp(-k*lai));
+    value = demand*(1. - exp(-alpha*phiN*Iabsorbed/demand));
+    propIabsorbed = (Id > 0.) ? Iabsorbed/Id : 0.;
 }
 
 }
-

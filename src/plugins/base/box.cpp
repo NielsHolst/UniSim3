@@ -9,7 +9,6 @@
 #include "environment.h"
 #include "exception.h"
 #include "mega_factory.h"
-#include "path.h"
 #include "port.h"
 #include "timer.h"
 

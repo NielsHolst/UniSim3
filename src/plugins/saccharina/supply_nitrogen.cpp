@@ -5,36 +5,26 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/publish.h>
-#include <base/vector_op.h>
 #include "supply_nitrogen.h"
 
 using namespace base;
+using std::min;
 
 namespace saccharina {
 
 PUBLISH(SupplyNitrogen)
 
 SupplyNitrogen::SupplyNitrogen(QString name, Box *parent)
-    : Box(name, parent)
+    : SupplyBase(name, parent)
 {
-    help("calculates supply of nitrogen");
-    Input(uptakeRate).equals(20e-6).unit("g N/microM/M2/d").help("Uptake rate of nitrogen");
-    Input(area).imports("geometry[area]");
-    Input(N).imports("env[N]");
-    Input(timeStep).imports("calendar[timeStepDays]");
-    Input(demands).imports("demand/*[nitrogen]");
-    Output(demand).unit("g N/m").help("Total demand for nitrogen");
-    Output(value).unit("g N/m").help("Total supply of nitrogen");
+    help("computes uptake supply of nitrogen");
+    Input(beta).unit("g N/g dw/molar N").help("Nitrogen uptake rate");
+    Input(area).unit("m2/m").help("Leaf area");
+    Input(waterN).unit("molar N").help("Water nitrogen concentration");
 }
 
-void SupplyNitrogen::reset() {
-   update();
-}
-
-void SupplyNitrogen::update() {
-    demand = vector_op::sum(demands);
-    value = (demand > 0.) ? demand*(1. - exp(-uptakeRate*area*N*timeStep/demand)) : 0.;
+void SupplyNitrogen::updateValue() {
+    value = (demand > 0.) ? demand*(1. - exp(-beta*area*waterN/demand)) : 0.;
 }
 
 }
-

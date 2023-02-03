@@ -19,7 +19,7 @@ CropIsGrowing::CropIsGrowing(QString name, Box *parent)
     help("computes if the crop has started to grow");
     Input(temperature).help("Daily average temperature").unit("oC");
     Input(T0).equals(5.).help("Threshold that triggers crop growth").unit("oC");
-    Output(value);
+    Output(value).help("Is the crop currently growing?");
 }
 
 void CropIsGrowing::reset() {

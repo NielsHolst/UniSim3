@@ -58,7 +58,7 @@ double ActuatorHeatPipes::getTemperature() const {
 
 void ActuatorHeatPipes::setTemperature(double value) {
     temperature = value;
-    port("temperature")->equals(value);
+//    port("temperature")->equals(value);
 }
 
 } //namespace

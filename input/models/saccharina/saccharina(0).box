@@ -1,0 +1,77 @@
+Simulation sim {
+  Calendar calendar {
+    .begin = 22/01/2020
+    .end   = 31/05/2020
+  }
+  Records env {
+    .fileName = "data/env-2019.txt"
+
+  }
+  Box init {
+    &biomass   = 7.2
+    &structure = 0.345
+    &storeC    = 0.539
+    &storeN    = 0.117
+  }
+  Plant plant {
+    PlantCompartment structure {
+      .concC = 0.21
+      .concN = 0.02
+      .dwTotalInit = init[biomass]*init[structure]
+    }
+    PlantCompartment storeC {
+      .concC = 0.47
+      .concN = 0.00
+      .dwTotalInit = init[biomass]*init[storeC]
+    }
+    PlantCompartment storeN {
+      .concC = 0.21
+      .concN = 0.37
+      .dwTotalInit = init[biomass]*init[storeN]
+    }
+  }
+  Box demand {
+    Growth growth {
+      .g = 0.01
+      ScalingTemperature phiT {
+        .T = env[T]
+      }
+      ScalingSalinity phiSal {
+        .S = env[S]
+      }
+    }
+    Store carbon {
+      .w = plant[wC]
+      .biomass = plant/storeC[dwTotal]
+    }
+    Store nitrogen {
+      .w = plant[wN]
+      .biomass = plant/storeN[dwTotal]
+    }
+    Maintenance maintenance {
+    }
+    BuildingCost cost {
+    }
+    Exudation exudation {
+    }
+  }
+  OutputR {
+    .clearPlots = TRUE
+    .width = 8
+    .height = 4
+    PageR {
+      .xAxis = calendar[date]
+      .ncol = 2
+      PlotR {
+        .nrow = 3
+        .ports = env[T]|env[E0]|env[N]|env[S]|env[P]
+      }
+      PlotR {
+        .nrow = 3
+        .ports = phiT[value] | phiSal[value] |
+                 demand/growth[value] | demand/carbon[value] | demand/nitrogen[value] |
+                 maintenance[value] | cost[value] | exudation[value]
+      }
+    }
+  }
+}

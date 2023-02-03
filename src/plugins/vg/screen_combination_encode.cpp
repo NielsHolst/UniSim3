@@ -25,7 +25,10 @@ ScreenCombinationEncode::ScreenCombinationEncode(QString name, Box *parent)
 }
 
 void ScreenCombinationEncode::reset() {
-    QStringList names = formula.split("+");
+    value = 0;
+    QStringList names = formula.split("+", Qt::SkipEmptyParts);
+    if (names.isEmpty())
+        return;
 
     auto nextLast = --names.end();
     for (auto pname = names.begin(); pname < nextLast; ++pname) {
@@ -33,8 +36,7 @@ void ScreenCombinationEncode::reset() {
             ThrowException("Duplicate screens are not allowed").value(formula).context(this);
     }
 
-    int value = 0;
-    for (QString name : names) {
+    for (const QString &name : names) {
         if      (name=="energy1") value += 100000;
         else if (name=="energy2") value +=  10000;
         else if (name=="shade1")  value +=   1000;

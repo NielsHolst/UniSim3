@@ -11,6 +11,7 @@
 #include "environment.h"
 #include "exception.h"
 
+
 namespace base {
 
 inline QString embrace(QString s) {
@@ -18,8 +19,7 @@ inline QString embrace(QString s) {
 }
 
 AltovaXml::AltovaXml(QObject *parent)
-    : QObject(parent),
-      _xsltFileName("excel-to-vg.xsl")
+    : QObject(parent)
 {
     QString folder = QApplication::applicationDirPath();
     _searchPath
@@ -34,11 +34,13 @@ void AltovaXml::run(QString inputFilePath,
     QProcess *process = new QProcess(this);
     QString message("XML translation failed");
     QStringList args = QStringList()
-        << "/xslt2" << xsltPath()
+        << "/xslt2" << xsltPath(xsltFileName(inputFilePath))
         << "/in" << inputFilePath
         << "/out" << outputFilePath;
 
     process->start(embrace(altovaPath()), args);
+
+    QMessageBox::information(nullptr, "test", embrace(altovaPath()) + "\n" + args.join("\n"));
 
     if (process->waitForStarted()) {
         if (!process->waitForFinished()) {
@@ -47,15 +49,35 @@ void AltovaXml::run(QString inputFilePath,
     }
 }
 
-QString AltovaXml::xsltPath() {
+QString AltovaXml::xsltFileName(QString inputFilePath) {
+    QFile file(inputFilePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        ThrowException("Cannot open XML input file").value(inputFilePath);
+
+    enum {Version2, Version3, NotFound} version = NotFound;
+    int i = 0;
+    while (++i<10 && version==NotFound) {
+        QString line =  file.readLine();
+        if (line.contains("<DVV_SETUP>"))
+            version = Version2;
+        else if (line.contains("<VG_SETUP>"))
+            version = Version3;
+    }
+    if (version == NotFound)
+        ThrowException("XML root must be names <DVV_SETUP> or <VG_SETUP>").value(inputFilePath);
+    return (version == Version2) ? "excel-to-vg.xsl" : "excel-to-vg-3.xsl";
+}
+
+QString AltovaXml::xsltPath(QString xsltFileName) {
     QDir dir = environment().resolveDir(Environment::Input);
-    QString filePath = dir.absoluteFilePath("scripts/"+_xsltFileName);
+    QString filePath = dir.absoluteFilePath("scripts/" + xsltFileName);
     if (!QFile::exists(filePath)) {
         QString message("Cannot find xslt script: %1");
         ThrowException(message.arg(filePath));
     }
     return filePath;
 }
+
 
 QString AltovaXml::altovaPath() {
     QStringList fullPaths;

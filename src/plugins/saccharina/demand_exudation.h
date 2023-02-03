@@ -6,11 +6,11 @@
 */
 #ifndef DEMAND_EXUDATION_H
 #define DEMAND_EXUDATION_H
-#include <base/box.h>
+#include "density.h"
 
 namespace saccharina {
 
-class DemandExudation : public base::Box
+class DemandExudation : public Density
 {
 public:
     DemandExudation(QString name, Box *parent);
@@ -18,9 +18,7 @@ public:
     void update();
 private:
     // Inputs
-    double relExudation, demandGrowthC, demandCRes;
-    // Outputs
-    double carbon;
+    double eC, eN, eP, biomass;
 };
 
 }

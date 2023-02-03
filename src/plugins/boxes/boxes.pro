@@ -12,6 +12,7 @@ QT += widgets
 
 HEADERS +=  \
     accumulator.h \
+    all_types.h \
     average.h \
     boxes_documentation.h \
     briere.h \
@@ -75,8 +76,11 @@ HEADERS +=  \
     random_uniform_int.h \
     ratio.h \
     records.h \
-    running_average.h \
+    running_base.h \
+    running_average_steps.h \
     running_average_timed.h \
+    running_sum_steps.h \
+    running_sum_timed.h \
     sandy.h \
     scenarios.h \
     select_file.h \
@@ -106,6 +110,7 @@ HEADERS +=  \
 	
 SOURCES +=  \
     accumulator.cpp \
+    all_types.cpp \
     average.cpp \
     boxes_documentation.cpp \
     briere.cpp \
@@ -167,8 +172,11 @@ SOURCES +=  \
     random_uniform_int.cpp \
     ratio.cpp \
     records.cpp \
-    running_average.cpp \
+    running_base.cpp \
+    running_average_steps.cpp \
     running_average_timed.cpp \
+    running_sum_steps.cpp \
+    running_sum_timed.cpp \
     sandy.cpp \
     scenarios.cpp \
     select_file.cpp \

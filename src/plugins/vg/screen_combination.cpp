@@ -12,16 +12,48 @@ using namespace base;
 
 namespace vg {
 
+QMap<int, int> ScreenCombination::_lookupScreenState;
+
 PUBLISH(ScreenCombination)
 
 ScreenCombination::ScreenCombination(QString name, Box *parent)
     : Box(name, parent)
 {
     help("combines states of screens");
-    Input(code).equals(-1).help("Six-digit code; if -1 then use formula instead");
-    Input(formula).help("Formula of the form, e.g., 'shade1+energy2'");
-    Input(screenControllersPath).equals("controllers/screens").help("Path to controllers");
+    Input(code).help("Six-digit code identifying screens");
+    Input(screenStates).imports(
+        "controllers/screens/energy1[value]|"
+        "controllers/screens/energy2[value]|"
+        "controllers/screens/shade1[value]|"
+        "controllers/screens/shade2[value]|"
+        "controllers/screens/fixed1[value]|"
+        "controllers/screens/fixed2[value]"
+    );
     Output(value).help("Combined setting").unit("[0;1]");
+}
+
+void ScreenCombination::initialize() {
+    QVector<Box*> screenControllers = findMany<Box*>(
+        "controllers/screens/energy1|"
+        "controllers/screens/energy2|"
+        "controllers/screens/shade1|"
+        "controllers/screens/shade2|"
+        "controllers/screens/fixed1|"
+        "controllers/screens/fixed2"
+    );
+
+    int n = screenControllers.size();
+    for (int i=0; i<n; ++i) {
+        QString name = screenControllers.at(i)->name();
+        if      (name=="energy1") _lookupScreenState[0] = i;
+        else if (name=="energy2") _lookupScreenState[1] = i;
+        else if (name== "shade1") _lookupScreenState[2] = i;
+        else if (name== "shade2") _lookupScreenState[3] = i;
+        else if (name== "fixed1") _lookupScreenState[4] = i;
+        else if (name== "fixed2") _lookupScreenState[5] = i;
+        else ThrowException("Unexpected name of screen controller").
+                value(name).context(this);
+    }
 }
 
 void ScreenCombination::reset() {
@@ -29,39 +61,19 @@ void ScreenCombination::reset() {
 }
 
 void ScreenCombination::update() {
-    // Avoid conflicting settings
-    if (code > 0 && !formula.isEmpty())
-        ThrowException("Set either code or formula not both").value(code).value(formula).context(this);
-
-    // Find screen states
-    if (formula != _oldFormula || code != _oldCode) {
-        QStringList activeScreens = (code > -1) ? decode() : formula.split("+");
-        _states.clear();
-        for (QString activeScreen : activeScreens) {
-            Box *controller = findOne<Box*>(screenControllersPath+ "/" + activeScreen);
-            _states << controller->port("value")->valuePtr<double>();
-        }
-        _oldFormula = formula;
-        _oldCode = code;
-    }
-    // Find max state
+    // Find max state among screens included in code
     value = 0.;
-    for (const double *state : _states) {
-        if (*state > value)
-            value = *state;
+    for (int digitPosition=5, codeCopy=code;
+         digitPosition>=0;
+         --digitPosition, codeCopy/=10)
+    {
+        const int digit = codeCopy%10;
+        if (digit==1) {
+            const double state = screenStates.at(_lookupScreenState.value(digitPosition) );
+            if (state > value)
+                value = state;
+        }
     }
-}
-
-QStringList ScreenCombination::decode() {
-    QStringList names = {"energy1", "energy2", "shade1", "shade2", "fixed1", "fixed2"},
-                active;
-    int i = code;
-    for (QString name : names) {
-        if (i%10 == 1)
-            active << name;
-        i /= 10;
-    }
-    return active;
 }
 
 } //namespace

@@ -7,6 +7,7 @@
 */
 #ifndef SCREEN_COMBINATION_H
 #define SCREEN_COMBINATION_H
+#include <QMap>
 #include <QVector>
 #include <base/box.h>
 
@@ -21,20 +22,17 @@ class ScreenCombination : public base::Box
 public: 
     ScreenCombination(QString name, Box *parent);
     // standard methods
+    void initialize();
     void reset();
     void update();
 private:
     // Inputs
-    QString formula, screenControllersPath;
     int code;
+    QVector<double> screenStates;
     // Outputs
     double value;
     // Data
-    QString _oldFormula;
-    int _oldCode;
-    QVector<const double*> _states;
-    // Methods
-    QStringList decode();
+    static QMap<int, int> _lookupScreenState;
 };
 
 } //namespace

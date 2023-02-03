@@ -24,6 +24,7 @@
     <file>data/input/demo/date_time_signal/date_time_signal2.box</file>
     <file>data/input/demo/date_time_signal/date_time_signal3.box</file>
     <file>data/input/demo/day_degrees/day_degrees1.box</file>
+    <file>data/input/demo/expressions/type-conversions.box</file>
     <file>data/input/demo/fixed_signal/fixed_signal1.box</file>
     <file>data/input/demo/func-resp/func-resp-energy-budget.box</file>
     <file>data/input/demo/func-resp/func-resp-energy-budget.R</file>
@@ -48,6 +49,7 @@
     <file>data/input/demo/output_selector/output_selector2.box</file>
     <file>data/input/demo/output_selector/output_selector3.box</file>
     <file>data/input/demo/output_selector/output_selector4.box</file>
+    <file>data/input/demo/port_types/null.box</file>
     <file>data/input/demo/randomiser/randomiser1.box</file>
     <file>data/input/demo/randomiser/randomiser2.box</file>
     <file>data/input/demo/randomiser/randomiser3.box</file>
@@ -88,13 +90,14 @@
     <file>data/input/models/aphid/crop-aphid-model.box</file>
     <file>data/input/models/aphid/crop-model-data-driven.box</file>
     <file>data/input/models/aphid/crop-model-weather-driven.box</file>
-    <file>data/input/models/aphid/fig-10.R</file>
-    <file>data/input/models/aphid/fig-8.R</file>
-    <file>data/input/models/aphid/fig-9.R</file>
+    <file>data/input/models/aphid/figure-10.box</file>
     <file>data/input/models/aphid/figure-10.R</file>
+    <file>data/input/models/aphid/figure-11.box</file>
+    <file>data/input/models/aphid/figure-11.R</file>
     <file>data/input/models/aphid/figure-2.box</file>
     <file>data/input/models/aphid/figure-2.R</file>
     <file>data/input/models/aphid/figure-3.R</file>
+    <file>data/input/models/aphid/figure-4(0).R</file>
     <file>data/input/models/aphid/figure-4.R</file>
     <file>data/input/models/aphid/figure-5.R</file>
     <file>data/input/models/aphid/figure-6.R</file>
@@ -105,9 +108,10 @@
     <file>data/input/models/aphid/ua.R</file>
     <file>data/input/models/aphid/validation/A95-weather-gs.txt</file>
     <file>data/input/models/aphid/validation/A95_aphids.Rdata</file>
-    <file>data/input/models/aphid/validation/aphids-95.txt</file>
+    <file>data/input/models/aphid/validation/A95_weather.Rdata</file>
     <file>data/input/models/aphid/validation/K95-weather-gs.txt</file>
     <file>data/input/models/aphid/validation/K95_aphids.Rdata</file>
+    <file>data/input/models/aphid/validation/K95_weather.Rdata</file>
     <file>data/input/models/aphid/validation/Stages.Rdata</file>
     <file>data/input/models/aphid/weather/Aarnes_2004.txt</file>
     <file>data/input/models/aphid/weather/Aarnes_2005.txt</file>
@@ -149,12 +153,66 @@
     <file>data/input/models/aphid/weather/Rygge_2016.txt</file>
     <file>data/input/models/aphid/weather/Rygge_2017.txt</file>
     <file>data/input/models/aphid/weather/Rygge_2018.txt</file>
+    <file>data/input/models/saccharina/allocate-structural.R</file>
+    <file>data/input/models/saccharina/allocation.R</file>
+    <file>data/input/models/saccharina/biomass-compartments.R</file>
+    <file>data/input/models/saccharina/data/env-2019.txt</file>
+    <file>data/input/models/saccharina/data/obs-2019(0).txt</file>
+    <file>data/input/models/saccharina/data/obs-2019-init.R</file>
+    <file>data/input/models/saccharina/data/obs-2019-soe3-top(0).txt</file>
+    <file>data/input/models/saccharina/data/obs-2019-soe3-top.txt</file>
+    <file>data/input/models/saccharina/data/obs-2019.txt</file>
+    <file>data/input/models/saccharina/data/obs-calibration-2019.txt</file>
+    <file>data/input/models/saccharina/data/P-uptake-rate-1.R</file>
+    <file>data/input/models/saccharina/data/P-uptake-rate-2.R</file>
+    <file>data/input/models/saccharina/equations(0).R</file>
+    <file>data/input/models/saccharina/equations.R</file>
+    <file>data/input/models/saccharina/estimate-area.R</file>
+    <file>data/input/models/saccharina/N-response.R</file>
+    <file>data/input/models/saccharina/obs-2019.txt</file>
+    <file>data/input/models/saccharina/old/plant-structure.R</file>
+    <file>data/input/models/saccharina/old/reserves-allocation.R</file>
+    <file>data/input/models/saccharina/old/reserves-demand.R</file>
+    <file>data/input/models/saccharina/P-response.R</file>
+    <file>data/input/models/saccharina/saccharina(0).box</file>
+    <file>data/input/models/saccharina/saccharina(1).box</file>
+    <file>data/input/models/saccharina/saccharina(2).box</file>
+    <file>data/input/models/saccharina/saccharina(3).box</file>
+    <file>data/input/models/saccharina/saccharina-at-optimum.R</file>
+    <file>data/input/models/saccharina/saccharina-calibration.box</file>
+    <file>data/input/models/saccharina/saccharina-calibration.R</file>
+    <file>data/input/models/saccharina/saccharina-compartments.R</file>
+    <file>data/input/models/saccharina/saccharina-growth-rate(0).R</file>
+    <file>data/input/models/saccharina/saccharina-growth-rate.R</file>
+    <file>data/input/models/saccharina/saccharina-verification-dark.box</file>
+    <file>data/input/models/saccharina/saccharina.box</file>
+    <file>data/input/models/saccharina/saccharina.R</file>
+    <file>data/input/models/saccharina/sal-response.R</file>
+    <file>data/input/models/saccharina/T-response.R</file>
+    <file>data/input/models/vg/0-energy-budget-functions(0).R</file>
+    <file>data/input/models/vg/0-energy-budget-functions.R</file>
+    <file>data/input/models/vg/1-energy-budget-sw.R</file>
+    <file>data/input/models/vg/2-energy-budget-lw.R</file>
+    <file>data/input/models/vg/3-energy-budget-U(0).R</file>
+    <file>data/input/models/vg/3-energy-budget-U.R</file>
+    <file>data/input/models/vg/4-energy-budget-complete.R</file>
+    <file>data/input/models/vg/5-energy-budget-scenario.R</file>
+    <file>data/input/models/vg/energy-budget(0).R</file>
+    <file>data/input/models/vg/energy-budget-conv.R</file>
+    <file>data/input/models/vg/energy-budget-lw(0).R</file>
+    <file>data/input/models/vg/energy-budget-lw(1).R</file>
+    <file>data/input/models/vg/greenhouse-geometry(0).R</file>
+    <file>data/input/models/vg/greenhouse-geometry.R</file>
+    <file>data/input/models/vg/greenhouse-ventilation.R</file>
+    <file>data/input/models/vg/heat-pipes.R</file>
+    <file>data/input/models/vg/plant-canopy-layer.R</file>
+    <file>data/input/models/vg/test-lw.R</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>
+    <file>data/input/scripts/excel-to-vg-3.xsl</file>
     <file>data/input/scripts/excel-to-vg.xsl</file>
     <file>data/input/scripts/install_packages.R</file>
-    <file>data/input/scripts/new 1.txt</file>
     <file>data/input/scripts/profile.R</file>
   </qresource>
 </RCC>

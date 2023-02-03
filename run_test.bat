@@ -6,5 +6,6 @@ if exist "%cur_dir%\bin32\testd.exe" (
 ) else (
   "%cur_dir%\bin32\test.exe"  > "%cur_dir%\output\ud.txt" 2> "%cur_dir%\output\ud2.txt"
 )
+cd %cur_dir%
 @echo Finished
 pause

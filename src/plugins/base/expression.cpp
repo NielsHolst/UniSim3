@@ -819,7 +819,7 @@ QString Expression::toString(const Element &element) {
     case Type::Conditional:     s = conditionalToString(get<Conditional>(element)); break;
     case Type::BoxPtrs       : s = "PortPointers"; break;
     }
-    return s +"{" + typeName(element) +"}";
+    return s; // +"{" + typeName(element) +"}";
 }
 
 QString conditionalToString(Expression::Conditional cond) {

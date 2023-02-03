@@ -687,6 +687,14 @@
       </Setpoint>
     </Climate>
   </Greenhouse>
+  <Status>
+    <LightSum>
+      <Period>3</Period>
+    </LightSum>
+    <TemperatureAvg>
+      <Period>5</Period>
+    </TemperatureAvg>
+  </Status>
   <Description>
     <DescriptionLong>missing</DescriptionLong>
     <ShortDesc>Test1</ShortDesc>

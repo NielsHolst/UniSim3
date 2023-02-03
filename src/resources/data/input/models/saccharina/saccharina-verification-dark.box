@@ -1,0 +1,215 @@
+Simulation sim {
+  // .steps = 1
+  Proportions proportions {
+    .concStructureC = 0.21
+    .concStructureN = 0.02
+    .concStoreC     = 0.47
+    .concStoreN     = 0.37
+    .concStoreP     = 0.33
+    .concWholeCmax  = 0.35
+    .concWholeNmax  = 0.05
+    .concWholePmax  = 0.009
+  }
+  Box init {
+    // Total plant biomass (g dw/m)
+    &biomass   = 1.5 
+    // Initial proportions
+    &structure = 0.69
+    &storeC    = 0.25
+    &storeN    = 0.05
+    &storeP    = 0.01
+  }
+  Calendar calendar {
+    .begin = 17/12/2019 - 1
+    .end   = 03/06/2020
+  }
+  Records env {
+    .fileName = "data/env-2019.txt"
+
+  }
+  Box biomass {
+    PlantCompartment structure {
+      .concC = proportions[concStructureC]
+      .concN = proportions[concStructureN]
+      .dwInit = init[biomass]*init[structure]
+      .dwIncrement = allocation[supplyStructure]
+    }
+    PlantCompartment storeC {
+      .concC = proportions[concStoreC]
+      .dwInit = init[biomass]*init[storeC]
+      .dwIncrement = allocation[supplyStoreC]
+    }
+    PlantCompartment storeN {
+      .concN = proportions[concStoreN]
+      .dwInit = init[biomass]*init[storeN]
+      .dwIncrement = allocation[supplyStoreN]
+    }
+    PlantCompartment storeP {
+      .concP = proportions[concStoreP]
+      .dwInit = init[biomass]*init[storeP]
+      .dwIncrement = allocation[supplyStoreP]
+    }
+    Plant whole {
+    }
+  }
+  Area area {
+    .ca = 0.211
+    .ea = 0.716
+    .cw = 0.0358
+    .ew = 0.531
+    .cz = 2.0
+    .biomass = biomass/structure[dw]
+  }
+  Box demand {
+    DemandStructure structure {
+      .g = 0.05
+      .concC   = biomass/structure[concC]
+      .concN   = biomass/structure[concN]
+      .biomass = biomass/structure[dw]
+      .phiT    = ./phiT[value]
+      .phiSal  = ./phiSal[value]
+      ScalingTemperature phiT {
+        .T = env[T]
+      }
+      ScalingSalinity phiSal {
+        .S = env[S]
+      }
+    }
+    DemandStore storeC {
+      .element       = "C"
+      .concentration = proportions[concStoreC] 
+      .idealStore    = proportions[idealStoreC] 
+      .dwStore       = biomass/storeC[dw]
+      .dwWhole       = biomass/whole[dw]
+    }
+    DemandStore storeN {
+      .element       = "N"
+      .concentration = proportions[concStoreN] 
+      .idealStore    = proportions[idealStoreN] 
+      .dwStore       = biomass/storeN[dw]
+      .dwWhole       = biomass/whole[dw]
+    }
+    DemandStore storeP {
+      .element       = "P"
+      .concentration = proportions[concStoreP] 
+      .idealStore    = proportions[idealStoreP] 
+      .dwStore       = biomass/storeP[dw]
+      .dwWhole       = biomass/whole[dw]
+    }
+    DemandMaintenance maintenance {
+      .biomass = biomass/whole[dw]
+      .T = env[T]
+    }
+    DemandExudation exudation {
+      .biomass = biomass/whole[dw]
+      .eC = 0.02
+      .eN = 0.02
+      .eP = 0.001
+    }
+    DemandBuilding cost {
+      .lambdaS = 0.120
+      .lambdaC = 0.056
+      .lambdaN = 0.164
+      .demandStructure = ../structure[dw]
+      .demandStoreC    = ../storeC[C]
+      .demandStoreN    = ../storeN[N]
+    }
+  }
+  Box demandTotal {
+    &C  = sum(demand/*[C])
+    &N  = sum(demand/*[N])
+    &P  = sum(demand/*[P])
+  }
+  Box supply {
+    SupplyCarbon carbon {
+      .alpha = 2.69
+      .k     = 0.7
+      .phiN = ./scalingNitrogen[value]
+      .lai  = area[index]
+      .czArea = area[crownZone]
+      .Id = 0 // Complete darkness always!
+      .demand = demandTotal[C]
+      ScalingNitrogen scalingNitrogen {
+        .concN = biomass/whole[concN]
+        .concNmin = 0.005
+        .concNopt = 0.020
+      }
+    }
+    SupplyNitrogen nitrogen {
+      .beta  = 0.27
+      .area = area[leaf]
+      .waterN = env[N]
+      .demand = demandTotal[N]
+    }
+    SupplyPhosphorus phosphorus {
+      .gamma = 0.3
+      .area = area[leaf]
+      .waterP = env[P]
+      .demand = demandTotal[P]
+    }
+  }
+  Allocation allocation {
+    .dwStructure = biomass/structure[dw]
+    .dwC = biomass/storeC[dw]
+    .dwN = biomass/storeN[dw]
+    .dwP = biomass/storeP[dw]
+    .UC = supply/carbon[value]
+    .UN = supply/nitrogen[value]
+    .UP = supply/phosphorus[value]
+    .CC = biomass/storeC[C]
+    .NN = biomass/storeN[N]
+    .PP = biomass/storeP[P]
+    .DMC = demand/maintenance[C]
+    .DEC = demand/exudation[C]
+    .DEN = demand/exudation[N]
+    .DEP = demand/exudation[P]
+    .DSC = demand/structure[C]
+    .DSN = demand/structure[N]
+    .DCC = demand/storeC[C]
+    .DNN = demand/storeN[N]
+    .DPP = demand/storeP[P]
+  }
+  OutputR output {
+    .clearPlots = TRUE
+    &obs = "annotate('point', colour=blue, size=3, 
+            x=as.POSIXct(dmy(c('17-12-2019', '22-01-2020', '27-02-2020', '26-03-2020', '28-04-2020', '03-06-2020'))),"
+    &Id = env[E0]
+    PageR {
+      .xAxis = calendar[date]
+      .width = 10
+      .height = 3
+      .ncol = 2
+      PlotR {
+        .ports = biomass/*[dw]
+        .ggplot = "labs(x='', y='Plant biomass')"
+      }
+      PlotR {
+        .ports = area[leaf]
+        .ggplot = "labs(x='', y='Leaf area')"
+      }
+    }
+    PageR {
+      .xAxis = calendar[date]
+      .width = 5
+      .height = 5
+      .ncol = 1
+      PlotR {
+        .ports = whole[concC]
+        .ggplot = "geom_hline(yintercept=c(0.35), colour=brown) + labs(x='') +" +
+                  output[obs] + "y = c(NA, 0.250, 0.252, 0.296, 0.364, 0.351))"  
+      }
+      PlotR {
+        .ports = whole[concN]
+        .ggplot = "geom_hline(yintercept=c(0.005, 0.02, 0.05), colour=brown) + labs(x='') +" + 
+                  output[obs] + "y = c(NA, 0.0495,0.0523,0.0335,0.0136,0.0111))"  
+      }
+      PlotR {
+        .ports = whole[concP]
+        .ggplot = "geom_hline(yintercept=c(0.009), colour=brown) + labs(x='') +" + 
+                  output[obs] + "y = c(NA,0.00880,0.00601,0.00294,0.00119,0.00132))"  
+      }
+    }
+  }
+}
+
+

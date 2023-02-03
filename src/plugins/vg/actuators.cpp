@@ -21,8 +21,32 @@ Actuators::Actuators(QString name, Box *parent)
 }
 
 void Actuators::amend() {
+    BoxBuilder builder(this);
+    if (!findMaybeOne<Box*>("./screens")) {
+        builder.
+            box().name("screens");
+            addLayer(builder, 1);
+            addLayer(builder, 2);
+            addLayer(builder, 3);
+        builder.
+            endbox();
+    }
 }
 
+void Actuators::addLayer(base::BoxBuilder &builder, int i) {
+    QString layer = "layer" + QString::number(i);
+    builder.
+        box("Accumulator").name(layer).
+            port("change").imports("./pid[controlVariable]").
+            port("minValue").equals(0.).
+            port("maxValue").imports("setpoints[maxScreen]").
+            box("PidController").name("pid").
+                port("desiredValue").imports("controllers/screens/" + layer + "[value]").
+                port("sensedValue").imports("..[value]").
+                port("Kprop").equals(0.05).
+            endbox().
+        endbox();
+}
 
 } //namespace
 

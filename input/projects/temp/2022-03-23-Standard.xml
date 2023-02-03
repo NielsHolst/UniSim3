@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<box xmlns:ecolmod="http://www.ecolmod.org" class="Simulation" name="greenhouse">
+	<port name="steps" ref="./period[steps]"/>
+	<port name="unattended" value="TRUE"/>
+	<!-- *** SimulationPeriod *** -->
+	<box class="SimulationPeriod" name="period">
+		<port name="beginDate" externalName="None" source="/DVV_SETUP/StartTime" value="01-01-2022"/>
+		<port name="endDate" externalName="None" source="/DVV_SETUP/StopTime" value="10-01-2022"/>
+		<port name="beginTime" externalName="None" source="Fixed" value="00:00:00"/>
+		<port name="endTime" externalName="None" source="Fixed" value="00:00:00"/>
+		<port name="timeStep" externalName="None" source="/DVV_SETUP/TimeStep" value="3"/>
+		<port name="timeUnit" value="m" externalName="None" source="Fixed"/>
+	</box>
+	<!-- *** Calendar *** -->
+	<box class="Calendar" name="calendar">
+		<port name="initialDateTime" ref="../period[beginDateTime]"/>
+		<port name="timeStep" ref="../period[timeStep]"/>
+		<port name="timeUnit" ref="../period[timeUnit]"/>
+		<port name="latitude" externalName="None" source="/DVV_SETUP/Latitude" value="55.4038"/>
+		<port name="longitude" externalName="None" source="/DVV_SETUP/Longitude" value="10.4024"/>
+	</box>
+	<!-- *** Outdoors *** -->
+	<box class="vg::Outdoors" name="outdoors">
+		<box class="Records" name="records">
+			<port name="fileName" externalName="None" source="/DVV_SETUP/Weather/File" value="C:\Documents\QDev\UniSim2\input\projects\vg\input\DNK_Dry.txt"/>
+		</box>
+	</box>
+	<!-- *** Construction *** -->
+	<box name="construction">
+		<box class="vg::Geometry" name="geometry">
+			<port name="orientation" externalName="Orientation" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0"/>
+			<port name="numSpans" externalName="NumberOfSpans" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="25"/>
+			<port name="spanWidth" externalName="SpanSize" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="4"/>
+			<port name="length" externalName="Length" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="100"/>
+			<port name="height" externalName="TrempelHeight" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="6"/>
+			<port name="roofPitch" externalName="RoofPitch" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="26"/>
+			<port name="reflection" externalName="GreenhouseReductionFactorLight" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.1"/>
+		</box>
+		<box class="vg::Shelter" name="shelter">
+			<port name="screenAirExponent" externalName="screenAirExponent" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="6"/>
+			<port name="Uair" externalName="screenUair" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="2.27"/>
+			<port name="screenUstateExponent" externalName="screenUstateExponent" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="32"/>
+			<port name="screenUventilationSlope" externalName="screenUventilationSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.5"/>
+			<port name="screenPerfection" externalName="screenPerfection" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.95"/>
+			<box class="vg::ShelterFace" name="roof1">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swReflectivityBottom" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swTransmissivityTop" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="swTransmissivityBottom" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="lwReflectivityTop" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwReflectivityBottom" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwTransmissivityTop" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="lwTransmissivityBottom" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="UwindMinimum" externalName="PaneUValue" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="6.5"/>
+					<port name="UwindSlope" externalName="UwindSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+					<port name="UwindExponent" externalName="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenRoof" name="layer1">
+						<port name="swTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="swReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="Utop" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="Ubottom" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="transmissivityAir" externalName="Porosity" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.3"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+				<box class="vg::Vent" name="vent">
+					<port name="length" externalName="Length" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="3"/>
+					<port name="width" externalName="Width" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="1"/>
+					<port name="number" externalName="Number" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="200"/>
+					<port name="transmissivity" externalName="VentTransmissivity" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="1"/>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="roof2">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swReflectivityBottom" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swTransmissivityTop" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="swTransmissivityBottom" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="lwReflectivityTop" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwReflectivityBottom" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwTransmissivityTop" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="lwTransmissivityBottom" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="UwindMinimum" externalName="PaneUValue" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="6.5"/>
+					<port name="UwindSlope" externalName="UwindSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+					<port name="UwindExponent" externalName="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenRoof" name="layer1">
+						<port name="swTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="swReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="Utop" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="Ubottom" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="transmissivityAir" externalName="Porosity" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.3"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+				<box class="vg::Vent" name="vent">
+					<port name="length" externalName="Length" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="3"/>
+					<port name="width" externalName="Width" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="1"/>
+					<port name="number" externalName="Number" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="200"/>
+					<port name="transmissivity" externalName="VentTransmissivity" source="/DVV_SETUP/Greenhouse/Vents/Vent/Constants/Parameters/Value" value="1"/>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="side1">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swReflectivityBottom" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swTransmissivityTop" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="swTransmissivityBottom" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="lwReflectivityTop" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwReflectivityBottom" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwTransmissivityTop" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="lwTransmissivityBottom" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="UwindMinimum" externalName="PaneUValue" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="6.5"/>
+					<port name="UwindSlope" externalName="UwindSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+					<port name="UwindExponent" externalName="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="swReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="Utop" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="Ubottom" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="transmissivityAir" externalName="Porosity" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.3"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="side2">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swReflectivityBottom" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swTransmissivityTop" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="swTransmissivityBottom" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="lwReflectivityTop" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwReflectivityBottom" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwTransmissivityTop" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="lwTransmissivityBottom" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="UwindMinimum" externalName="PaneUValue" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="6.5"/>
+					<port name="UwindSlope" externalName="UwindSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+					<port name="UwindExponent" externalName="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="swReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="Utop" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="Ubottom" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="transmissivityAir" externalName="Porosity" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.3"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="end1">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swReflectivityBottom" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swTransmissivityTop" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="swTransmissivityBottom" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="lwReflectivityTop" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwReflectivityBottom" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwTransmissivityTop" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="lwTransmissivityBottom" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="UwindMinimum" externalName="PaneUValue" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="6.5"/>
+					<port name="UwindSlope" externalName="UwindSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+					<port name="UwindExponent" externalName="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="swReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="Utop" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="Ubottom" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="transmissivityAir" externalName="Porosity" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.3"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+			<box class="vg::ShelterFace" name="end2">
+				<box class="vg::ShelterFaceArea" name="area"/>
+				<box class="vg::Cover" name="cover">
+					<port name="swReflectivityTop" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swReflectivityBottom" externalName="PaneReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.1"/>
+					<port name="swTransmissivityTop" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="swTransmissivityBottom" externalName="PaneTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.89"/>
+					<port name="lwReflectivityTop" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwReflectivityBottom" externalName="PaneLwReflection" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.0"/>
+					<port name="lwTransmissivityTop" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="lwTransmissivityBottom" externalName="PaneLwTransmission" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="0.9"/>
+					<port name="UwindMinimum" externalName="PaneUValue" source="/DVV_SETUP/Greenhouse/Panes/Pane/Constants/Parameters/Value" value="6.5"/>
+					<port name="UwindSlope" externalName="UwindSlope" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+					<port name="UwindExponent" externalName="UwindExponent" source="Fixed" value="0.8"/>
+				</box>
+				<box class="vg::Screens" name="screens">
+					<box class="vg::ScreenWall" name="layer1">
+						<port name="swTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="swReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="swReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwTransmissivityTop" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwTransmissivityBottom" externalName="Transmission" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.25"/>
+						<port name="lwReflectivityTop" externalName="ReflectionOutwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="lwReflectivityBottom" externalName="ReflectionInwards" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.73"/>
+						<port name="Utop" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="Ubottom" externalName="U" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.0"/>
+						<port name="transmissivityAir" externalName="Porosity" source="/DVV_SETUP/Greenhouse/Screens/Screen/Constants/Parameters/Value" value="0.3"/>
+						<port name="state" ref="actuators/screens/layer1[value]"/>
+					</box>
+				</box>
+			</box>
+		</box>
+		<box name="floor">
+			<newPort name="reflectivity" externalName="floor-reflectance" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.1"/>
+			<newPort name="Utop" externalName="floor-Uindoors" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="7.5"/>
+			<newPort name="Ubottom" externalName="floor-Usoil" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.1"/>
+			<newPort name="heatCapacity" externalName="floor-heatCapacity" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="10000"/>
+		</box>
+	</box>
+	<!-- *** Setpoints *** -->
+	<box class="vg::Setpoints" name="setpoints">
+		<box name="elementary">
+			<box class="PrioritySignal" name="heatingTemperatureNormalRh">
+				<port name="initialSignal" value="20"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="19.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+				<box class="DateTimeSignal">
+					<port name="beginDate" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromDay" value="01-01-2021"/>
+					<port name="endDate" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToDay" value="31-12-2021"/>
+					<port name="beginTime" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromTime" value="06:00"/>
+					<port name="endTime" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToTime" value="20:00"/>
+					<port name="signalInside" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/Value" value="21.0"/>
+				</box>
+				<box class="DateTimeSignal">
+					<port name="beginDate" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromDay" value="01-01-2021"/>
+					<port name="endDate" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToDay" value="31-12-2021"/>
+					<port name="beginTime" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromTime" value="20:00"/>
+					<port name="endTime" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToTime" value="23:59"/>
+					<port name="signalInside" externalName="HeatingTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/Value" value="19.0"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="heatingTemperatureHighRhMargin">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="MaxHeatAddHighRH" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="2.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="heatingTemperatureLowRhMargin">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="MaxHeatAddLowRH" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="minPipeTemperature1">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="minPipeTemperature1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+					<newPort name="flagIsUp" value="FALSE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="minPipeTemperature2">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="minPipeTemperature2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+					<newPort name="flagIsUp" value="FALSE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMax">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="MaxRelHmd" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="75.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMaxBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="rhMaxBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMin">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="MinRelHmd" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="40.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="rhMinBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="rhMinBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="2.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="ventilationTemperatureMargin">
+				<port name="initialSignal" value="5"/>
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="VentTemp" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="2.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="crackVentilationNormalTemperature">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="crackVentilation" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.05"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="crackVentilationTemperatureMin">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="crackVentilationTemperatureMin" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="-5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="crackVentilationTemperatureMinBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="crackVentilationTemperatureMinBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="1.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenCrackAtHighRh">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="crackScreenHighHumidity" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.05"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenCrackAtHighTemperature">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="crackScreenHighTemperature" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.05"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenCrackAtHighTemperatureBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="crackScreenHighTemperatureBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2Capacity">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="CO2Capacity" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="50.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2Setpoint">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="CO2Setpoint" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="900.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2VentilationThreshold">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="CO2VentilationThreshold" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.1"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="co2VentilationBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="CO2VentilationBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.2"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="chalk">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="ShadingAgentReduction" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+					<newPort name="flagIsUp" value="FALSE"/>
+				</box>
+			</box>
+			<box name="growthLights">
+				<box name="growthLight1">
+					<box class="PrioritySignal" name="thresholdLow">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightOn1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="40.0"/>
+							<newPort name="flagIsUp" value="TRUE"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="thresholdHigh">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightOff1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="600.0"/>
+							<newPort name="flagIsUp" value="TRUE"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="setting">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+							<newPort name="flagIsUp" value="FALSE"/>
+						</box>
+						<box class="DateTimeSignal">
+							<port name="beginDate" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromDay" value="01-01-2021"/>
+							<port name="endDate" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToDay" value="31-12-2021"/>
+							<port name="beginTime" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromTime" value="06:00"/>
+							<port name="endTime" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToTime" value="20:00"/>
+							<port name="signalInside" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/Value" value="1.0"/>
+						</box>
+						<box class="DateTimeSignal">
+							<port name="beginDate" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromDay" value="01-01-2021"/>
+							<port name="endDate" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToDay" value="31-12-2021"/>
+							<port name="beginTime" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/FromTime" value="20:00"/>
+							<port name="endTime" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/ToTime" value="23:59"/>
+							<port name="signalInside" externalName="AssLightActive1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/ModSetpoint/ModSetpoint/Value" value="0.0"/>
+						</box>
+					</box>
+				</box>
+				<box name="growthLight2">
+					<box class="PrioritySignal" name="thresholdLow">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightOn2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="40.0"/>
+							<newPort name="flagIsUp" value="TRUE"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="thresholdHigh">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightOff2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="600.0"/>
+							<newPort name="flagIsUp" value="TRUE"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="setting">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightActive2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+							<newPort name="flagIsUp" value="FALSE"/>
+						</box>
+					</box>
+				</box>
+				<box name="growthLight3">
+					<box class="PrioritySignal" name="thresholdLow">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightOn3" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="40.0"/>
+							<newPort name="flagIsUp" value="TRUE"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="thresholdHigh">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightOff3" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="600.0"/>
+							<newPort name="flagIsUp" value="TRUE"/>
+						</box>
+					</box>
+					<box class="PrioritySignal" name="setting">
+						<port name="reverseOrder" value="TRUE"/>
+						<box name="default">
+							<newPort name="signal" externalName="AssLightActive3" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+							<newPort name="flagIsUp" value="FALSE"/>
+						</box>
+					</box>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenEnergyThreshold1">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenEnergyThreshold1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenEnergyThreshold2">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenEnergyThreshold2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenEnergyThresholdBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenEnergyThresholdBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="5.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenShadeThreshold1">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenShadeThreshold1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="500.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenShadeThreshold2">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenShadeThreshold2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="500.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenShadeThresholdBand">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenShadeThresholdBand" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="50.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenFixed1">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenFixed1" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+					<newPort name="flagIsUp" value="FALSE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="screenFixed2">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="screenFixed2" source="/DVV_SETUP/Greenhouse/Climate/Setpoint/Constants/Parameters/Value" value="0.0"/>
+					<newPort name="flagIsUp" value="FALSE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="heatExchangersOn">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="HeatExchangersOn" source="Missing" value="0.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="heatPumpsOn">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="HeatPumpsOn" source="Missing" value="0.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="humidifiersOn">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="FogsOn" source="Missing" value="0.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+			<box class="PrioritySignal" name="padAndFansOn">
+				<port name="reverseOrder" value="TRUE"/>
+				<box name="default">
+					<newPort name="signal" externalName="PadAndFansOn" source="Missing" value="0.0"/>
+					<newPort name="flagIsUp" value="TRUE"/>
+				</box>
+			</box>
+		</box>
+	</box>
+	<!-- *** Controllers *** -->
+	<box class="vg::Controllers" name="controllers">
+		<box name="co2Injection">
+			<newPort name="value" ref="./controller[controlVariable]"/>
+			<box class="PidController" name="controller">
+				<port name="sensedValue" ref="indoors/co2[value]"/>
+				<port name="desiredValue" ref="setpoints[co2Setpoint]"/>
+				<port name="Kprop" value="0.05"/>
+				<port name="lookAhead" value="10"/>
+			</box>
+		</box>
+	</box>
+	<!-- *** Actuators *** -->
+	<box class="vg::Actuators" name="actuators">
+		<box name="heatPumps">
+			<box class="Sum" name="condensationRate">
+				<port name="values" ref="../heatPump[condensationRate]"/>
+			</box>
+			<box class="Sum" name="powerUseCooling">
+				<port name="values" ref="../heatPump[powerUseCooling]"/>
+			</box>
+			<box class="Sum" name="powerUserParasitic">
+				<port name="values" ref="../heatPump[powerUserParasitic]"/>
+			</box>
+			<box class="Sum" name="powerUse">
+				<port name="values" ref="../heatPump[powerUse]"/>
+			</box>
+			<box class="Sum" name="heat">
+				<port name="values" ref="../heatPump[heat]"/>
+			</box>
+		</box>
+		<box class="ActuatorHeatPipes" name="heating">
+			<port name="propConvection" externalName="HeatPipeConvection" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.6"/>
+			<box name="pipes">
+				<box class="vg::Pipe" name="pipe1">
+					<port name="density" externalName="PipeLengthPerSqm" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="2"/>
+					<port name="diameter" externalName="InnerDiameter" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="52"/>
+					<port name="flowRate" externalName="heatPipeFlowRate" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="10"/>
+					<port name="minTemperature" ref="setpoints/elementary/minPipeTemperature1[value]"/>
+					<port name="maxTemperature" externalName="CommonFlowTemperature" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="85"/>
+				</box>
+				<box class="vg::Pipe" name="pipe2">
+					<port name="density" externalName="PipeLengthPerSqm" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="2"/>
+					<port name="diameter" externalName="InnerDiameter" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="52"/>
+					<port name="flowRate" externalName="heatPipeFlowRate" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="10"/>
+					<port name="minTemperature" ref="setpoints/elementary/minPipeTemperature2[value]"/>
+					<port name="maxTemperature" externalName="CommonFlowTemperature" source="/DVV_SETUP/Greenhouse/Heatpipes/Heatpipe/Constants/Parameters/Value" value="85"/>
+				</box>
+			</box>
+		</box>
+		<box name="heatExchangers">
+			<box class="Sum" name="condensationRate">
+				<port name="values" ref="../heatExchanger[condensationRate]"/>
+			</box>
+			<box class="Sum" name="powerUseCooling">
+				<port name="values" ref="../heatExchanger[powerUseCooling]"/>
+			</box>
+			<box class="Sum" name="powerUserParasitic">
+				<port name="values" ref="../heatExchanger[powerUserParasitic]"/>
+			</box>
+			<box class="Sum" name="powerUse">
+				<port name="values" ref="../heatExchanger[powerUse]"/>
+			</box>
+		</box>
+		<box name="humidifiers">
+			<box class="Sum" name="coolingPower">
+				<port name="values" ref="../humidifier[coolingPower]"/>
+			</box>
+			<box class="Sum" name="vapourFlux">
+				<port name="values" ref="../humidifier[vapourFlux]"/>
+			</box>
+		</box>
+		<box name="padAndFans">
+			<box class="Sum" name="coolingPower">
+				<port name="values" ref="../padAndFan[coolingPower]"/>
+			</box>
+			<box class="Sum" name="vapourFlux">
+				<port name="values" ref="../padAndFan[vapourFlux]"/>
+			</box>
+		</box>
+		<box class="ActuatorVentilation" name="ventilation"/>
+		<box class="Accumulator" name="co2Injection">
+			<port name="initial" value="0"/>
+			<port name="change" ref="controllers/co2Injection[value]"/>
+			<port name="minValue" value="0"/>
+			<port name="maxValue" ref="setpoints[co2Capacity]"/>
+		</box>
+		<box name="screens">
+			<box class="Accumulator" name="layer1">
+				<port name="change" ref="./controller[controlVariable]"/>
+				<port name="minValue" value="0"/>
+				<port name="maxValue" ref="setpoints[maxScreen]"/>
+				<box class="ScreenCombination" name="desiredValue">
+					<port name="formula" externalName="screenActive1" value="shade1+energy1"/>
+				</box>
+				<box class="PidController" name="controller">
+					<port name="desiredValue" ref="../desiredValue[value]"/>
+					<port name="sensedValue" ref="..[value]"/>
+					<port name="Kprop" value="0.05"/>
+				</box>
+			</box>
+			<box class="Accumulator" name="layer2">
+				<port name="change" ref="./controller[controlVariable]"/>
+				<port name="minValue" value="0"/>
+				<port name="maxValue" ref="setpoints[maxScreen]"/>
+				<box class="ScreenCombination" name="desiredValue">
+					<port name="formula" externalName="screenActive2" value=""/>
+				</box>
+				<box class="PidController" name="controller">
+					<port name="desiredValue" ref="../desiredValue[value]"/>
+					<port name="sensedValue" ref="..[value]"/>
+					<port name="Kprop" value="0.05"/>
+				</box>
+			</box>
+			<box class="Accumulator" name="layer3">
+				<port name="change" ref="./controller[controlVariable]"/>
+				<port name="minValue" value="0"/>
+				<port name="maxValue" ref="setpoints[maxScreen]"/>
+				<box class="ScreenCombination" name="desiredValue">
+					<port name="formula" externalName="screenActive3" value=""/>
+				</box>
+				<box class="PidController" name="controller">
+					<port name="desiredValue" ref="../desiredValue[value]"/>
+					<port name="sensedValue" ref="..[value]"/>
+					<port name="Kprop" value="0.05"/>
+				</box>
+			</box>
+		</box>
+		<box class="GrowthLights" name="growthLights">
+			<box class="vg::GrowthLight" name="growthLight1">
+				<port name="on" ref="controllers/growthLights/growthLight1[flagIsUp]"/>
+				<port name="intensity" externalName="LightCapacityPerSqm" source="/DVV_SETUP/Greenhouse/Lamps/Lamp/Constants/Parameters/Value" value="50"/>
+				<port name="parPhotonCoef" externalName="MicromolParPerWatt" source="/DVV_SETUP/Greenhouse/Lamps/Lamp/Constants/Parameters/Value" value="1.787"/>
+				<port name="ageCorrectedEfficiency" externalName="ageCorrectedEfficiency" source="/DVV_SETUP/Greenhouse/Lamps/Lamp/Constants/Parameters/Value" value="1"/>
+			</box>
+		</box>
+	</box>
+	<!-- *** Climate variables *** -->
+	<box class="vg::EnergyBudgetOptimiser" name="energyBudgetOptimiser">
+		<port name="hasHeatSink" externalName="HasHeatSink" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="1"/>
+		<box class="vg::EnergyBudget" name="energyBudget"/>
+		<box name="indoors">
+			<box class="vg::IndoorsVentilation" name="ventilation">
+				<box class="vg::LeakageVentilation" name="leakage">
+					<port name="leakage" externalName="leakage" source="/DVV_SETUP/Greenhouse/Constants/Parameters/Value" value="0.001"/>
+				</box>
+			</box>
+			<box class="vg::IndoorsTemperature" name="temperature"/>
+		</box>
+	</box>
+	<box class="WaterBudget" name="waterBudget"/>
+	<box class="Indoors" name="indoors"/>
+	<!-- *** Crop *** -->
+	<box class="vg::Crop" name="crop">
+		<port name="lai" externalName="LAI" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="1"/>
+		<port name="coverage" externalName="propAreaCultured" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="0.95"/>
+		<port name="k" externalName="k" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="0.7"/>
+		<port name="gammaStar" externalName="gammaStar" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="48.95"/>
+		<port name="Jmax" externalName="Jmax" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="115.67"/>
+		<port name="lightRespiration" externalName="lightRespiration" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="0.29"/>
+		<port name="ballBerryIntercept" externalName="BallBerryIntercept" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="0.106"/>
+		<port name="ballBerrySlope" externalName="BallBerrySlope" source="/DVV_SETUP/Greenhouse/Crop/Parameters/Value" value="1.64"/>
+	</box>
+	<!-- *** Budget *** -->
+	<box class="vg::Budget" name="budget"/>
+	<!-- *** Output *** -->
+	<box class="OutputR" name="output">
+		<box class="vg::Outputs" name="p"/>
+		<box class="PageR">
+			<port name="xAxis" value="calendar[dateTime]"/>
+			<box class="PlotR">
+				<port name="ncol" value="4"/>
+				<port name="ports" value="output/p[*]"/>
+			</box>
+		</box>
+		<box class="OutputText" name="text">
+			<port name="skipFormats" value="TRUE"/>
+			<port name="useLocalDecimalChar" value="TRUE"/>
+			<port name="skipInitialRows" value="480"/>
+			<port name="averageN" value="20"/>
+		</box>
+	</box>
+</box>

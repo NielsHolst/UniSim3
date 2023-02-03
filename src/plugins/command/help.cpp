@@ -228,13 +228,21 @@ inline QString inBrackets(QString s) {
     return (s.isEmpty() || s[0]!='[') ? "["+s+"]" : s;
 }
 
-inline QString escaped(QString s, bool isComputed) {
-    s = s.replace("<", "&#60;");
-    s = s.replace(">", "&#62;");
-    s = s.replace(":", "&#58;");
-    s = s.replace("|", "&#124;");
-    s = s.replace("*", "\\*");
-    return isComputed ? "*"+s+"*" : s;
+QString help::escaped(QString s) const {
+    if (_useMarkdown) {
+        s = s.replace("<", "&#60;");
+        s = s.replace(">", "&#62;");
+        s = s.replace(":", "&#58;");
+        s = s.replace("|", "&#124;");
+        s = s.replace("*", "\\*");
+        s = s.replace("-", "&minus;");
+        s = s.replace("oC", "&#8451;");
+    }
+    return s;
+}
+
+QString help::italics(QString s) const{
+    return _useMarkdown ? "*" + s + "*" : s;
 }
 
 void help::setColWidths() {
@@ -255,17 +263,16 @@ void help::setColWidths() {
 
 QStringList help::portsHelp(PortType type) {
     QStringList list;
-    QString leftArrow = _useMarkdown ? "" : "<- ";
     for (const Port *port : _box->portsInOrder()) {
         if (port->type() == type) {
+            bool isComputed = !port->unparsedExpression().isEmpty();
             QString item;
             item = _useMarkdown ? "|" : ".";
             item +=       port->objectName().leftJustified(_colWidthName) +
                     "|" + port->value().typeName().leftJustified(_colWidthType) + "|";
 
-            bool isComputed = !port->unparsedExpression().isEmpty();
             if (isComputed && _useMarkdown) {
-                item += "*computed*";
+                item += italics("computed");
             }
             else {
                 QString value =  showValue(port) ? port->value().asString() : "";
@@ -274,19 +281,19 @@ QStringList help::portsHelp(PortType type) {
 
             if (_colWidthUnit > 0) {
                 QString unit = " " + inBrackets(port->unit()).leftJustified(_colWidthUnit);
-                if (_useMarkdown) {
-                    unit = unit.replace("-", "&minus;");
-                    unit = unit.replace("oC", "&#8451;");
-                }
-                item += unit;
+                item += escaped(unit) + "|";
             }
 
-            QString help = port->help();
-            if (help.isEmpty() && !port->unparsedExpression().isEmpty())
-                help = leftArrow + port->unparsedExpression();
-
-            item += "|";
-            item += _useMarkdown ? escaped(help, isComputed) : help;
+            QString portHelp = escaped(port->help());
+            if (isComputed) {
+                QString eq = _useMarkdown ? "= " : " = ";
+                item += italics(eq + escaped(port->unparsedExpression()));
+                if (!portHelp.isEmpty())
+                    item += " (" + portHelp + ")";
+            }
+            else {
+                item += portHelp;
+            }
             if (_useMarkdown)
                 item += "|";
             list << item;

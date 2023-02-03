@@ -1,0 +1,25 @@
+// null.box
+Simulation sim {
+  .steps = 5
+  Box A {
+    &a = B[a] + 1
+  }
+  Box B {
+    &a = C[a] + 1
+  }
+  Box C {
+    &a = D[a] + 1 
+  }
+  Box D {
+    &a = E[a] + 1
+  }
+  Box E {
+    &a = F[a] + 1
+  }
+  Box F {
+    &a = 10
+  }
+  OutputText {
+    .ports = *[a]
+  }
+}

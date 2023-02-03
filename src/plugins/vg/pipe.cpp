@@ -39,6 +39,8 @@ Pipe::Pipe(QString name, Box *parent)
     Input(groundArea).imports("geometry[groundArea]",CA).unit("m2");
     Input(numSpans).imports("geometry[numSpans]",CA);
 
+    Output(test);
+    Output(inflowTemperature0);
     Output(emissivity).help("Emissivity of pipe").unit("[0;1]");
     Output(length).help("Total pipe length").unit("m");
     Output(volume).help("Total pipe water volume").unit("m3");
@@ -69,12 +71,21 @@ void Pipe::reset() {
 void Pipe::update() {
     if (TestNum::eq(flowRate, -999)) flowRate = 5.;
     transitTime = 1000.*volumePerSpan/flowRate;
-    inflowTemperature = minmax(indoorsTemperature, inflowTemperature, maxTemperature);
-    double x = _k*(b-1.)*transitTime + pow(inflowTemperature-indoorsTemperature, 1-b);
-    temperatureDrop = inflowTemperature - indoorsTemperature - pow(x, 1./(1.-b));
-    outflowTemperature = inflowTemperature - temperatureDrop;
-    double E = CpWater*volumePerSpan*temperatureDrop*1000.;
-    energyFlux = numSpans*E/groundArea/transitTime;
+    inflowTemperature0 = inflowTemperature;
+    inflowTemperature = minmax(minTemperature, inflowTemperature, maxTemperature);
+    double dT = inflowTemperature - indoorsTemperature;
+    test = dT;
+    if (dT > 0.) {
+        double x = _k*(b-1.)*transitTime + pow(dT, 1-b);
+        temperatureDrop = dT - pow(x, 1./(1.-b));
+        outflowTemperature = inflowTemperature - temperatureDrop;
+        double E = CpWater*volumePerSpan*temperatureDrop*1000.;
+        energyFlux = numSpans*E/groundArea/transitTime;
+    }
+    else {
+        temperatureDrop = energyFlux = 0.;
+        outflowTemperature = inflowTemperature;
+    }
 }
 
 void Pipe::parseMaterial() {

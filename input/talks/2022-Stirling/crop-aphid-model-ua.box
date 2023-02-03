@@ -1,0 +1,166 @@
+// crop-aphid-model-ua.box
+Simulation sim {
+  .iterations = 30
+  .silent = TRUE
+  SelectFile weatherFiles {
+    .folder = "weather"
+    .filter = "*.txt"
+    .showFileNames = FALSE
+  }
+  Box random {
+    RandomiserStratified randomiser {
+    }
+    RandomUniformInt k {
+      .min = 15
+      .max = 30
+    }
+    RandomUniformInt fileNumber {
+      .min = 1
+      .max = weatherFiles[numFiles]
+    }
+    RandomNormal cropAtStart {
+      .min = 10
+      .max = 30 
+    }
+    RandomNormal cropHalfways {
+      .min = 750 
+      .max = 850 
+    }
+  }
+  Box param {
+    &juvenileApterousDuration = 172
+    &juvenileAlateDuration = 195 
+    &adultDuration = 300
+    &fecundityDuration = 100
+    &fecundity_k = 1
+  }
+  Calendar calendar {
+    .begin = 01/04/2000
+    .end   = 31/08/2000
+  }
+  Records weather {
+    .fileName =  ./files[fileNamePath]   
+    .ignoreYear = TRUE
+    SelectFile files {
+      .folder = "weather"
+      .filter = "*.txt"
+      .selectFileNumber = random/fileNumber[value]
+      .showFileNames = FALSE
+    }
+  } 
+  Box wheat{
+    CropGrowthStage cropGrowthStageModel {
+      .valueAtStart       = random/cropAtStart[value]
+      .dayDegreesHalfways = random/cropHalfways[value]
+      .slope              = 2.8
+      .dayDegrees = ./time[total]
+      CropIsGrowing isGrowing {
+        .temperature = weather[Tavg] 
+      }
+      DayDegrees time{
+        .T = weather[Tavg]
+        .T0 = 0
+        .isTicking = ../isGrowing[value]
+      }
+    }
+    Box cropGrowthStage {
+      &value = if exists(weather[GrowthStage]) then weather[GrowthStage] else ../cropGrowthStageModel[value]
+    }
+  }
+  Box aphid {
+    DayDegrees time{
+      .T = weather[Tavg]
+      .T0 = 3 
+      .Topt = 18 
+      .Tmax = 30 
+    }  
+    Box density {
+      &nymphs      = sum(../susceptible/nymph/*[content])
+      &adults      = sum(../susceptible/adult/*[content])
+      &total       = .[nymphs] + .[adults]
+    }
+    AphidImmigration immigration {
+      .cropGrowthStage = cropGrowthStage[value]
+      .toCropGrowthStage = 69
+      .immigrationRate = 0.02
+      .propExposedImmigrants = 0
+      .k = random/k[value]
+    }
+    AphidNetReproduction netReproduction {
+      .Tmin = 3 
+      .Topt = 16.1 
+      .Tmax = 30
+      .R0opt = 51.6
+      .temperature = weather[Tavg]
+      .cropGrowthStage = cropGrowthStage[value]
+      .optimumCropGrowthStageMin = 59
+      .optimumCropGrowthStageMax   = 73
+      .optimumCropFactor = 1.6
+      .aphidDensity = ../density[total]
+      .aphidDensityThreshold = 40 
+      .alateFactor = 0.67
+    }
+    AphidOffspring offspring {
+      .offspringTotal = sum(../*/adult/*/fecundity[outflow]) 
+      .aphidDensity = ../density[total]
+      .cropGrowthStage = cropGrowthStage[value]
+    }
+    AphidJuvenileSurvival survival{
+      .cropGrowthStage = cropGrowthStage[value]
+      .temperature = weather[Tavg]
+    }
+    Box susceptible {
+      Box nymph {
+        Stage apterous {
+          .inflow       = ancestors::*/offspring[apterous]
+          .timeStep     = ancestors::*/time[step]
+          .growthFactor = ancestors::*/survival[value]
+          .k = random/k[value]
+          .duration = param[juvenileApterousDuration]
+        }
+        Stage alate {
+          .inflow = ancestors::*/offspring[alate]
+          .timeStep = ancestors::*/time[step]
+          .k = random/k[value]
+          .duration = param[juvenileAlateDuration]
+          .growthFactor = ancestors::*/survival[value]
+        }
+      }
+      Box adult {
+        Stage apterous {
+          .inflow = ancestors::*/nymph/apterous[outflow]
+          .timeStep = ancestors::*/time[step]
+          .duration = param[adultDuration]
+          .k = random/k[value]
+          Stage fecundity {
+            .inflow = ancestors::*/nymph/apterous[outflow]
+            .timeStep = ancestors::*/time[step]
+            .duration = param[fecundityDuration]
+            .k = param[fecundity_k]
+            .growthFactor = ancestors::*/netReproduction[apterous]
+          }
+        }
+        Stage alate {
+          .inflow = ancestors::*/immigration[susceptible]
+          .timeStep = ancestors::*/time[step]
+          .duration = param[adultDuration]
+          .k = random/k[value]
+          Stage fecundity {
+            .inflow = ancestors::*/immigration[susceptible]
+            .timeStep = ancestors::*/time[step]
+            .duration = param[fecundityDuration]
+            .k = param[fecundity_k]
+            .growthFactor = ancestors::*/netReproduction[alate]
+          }
+        }
+      }
+    } // susceptible
+  } // aphid
+  OutputR {
+    .clearPlots = TRUE
+    .scripts = "crop-aphid-model-ua.R"
+    OutputText {
+      .ports = calendar[date] | cropGrowthStage[value] | susceptible/*/*[value] | offspring[output::*] 
+    }
+  }
+}

@@ -442,6 +442,13 @@ void buildParBudget(Box *parent) {
     endbox();
 }
 
+void buildSetpoints(Box *parent) {
+    BoxBuilder builder(parent);
+    builder.
+    box().name("setpoints").
+        aux("maxValue").equals(1.).
+    endbox();
+}
 
 Box* build(const Query &q) {
     // Delete current model
@@ -550,7 +557,7 @@ Response compute(const Query &q) {
         r.timeStamp          = q.timeStamp;
         r.indoorsPar         = snap( root->findOne<Box*>("parBudget")->port("indoorsTotalPar")->value<double>() );
         r.sunPar             = snap( root->findOne<Box*>("parBudget")->port("indoorsSunPar")->value<double>() );
-        r.growthLightPar     = snap( root->findOne<Box*>("parBudget")->port("indoorsGrowthLightPar")->value<double>() );
+        r.growthLightPar     = snap( root->findOne<Box*>("parBudget")->port("indoorsGrowthLightsPar")->value<double>() );
         r.growthLightPowerUse = snap( growthLightPower(q) );
         r.heatingPowerUse    = snap( root->findOne<Box*>("actuators/heating")->port("energyFluxTotal")->value<double>() )/cropCoverage;
         r.leafTemperature    = snap( root->findOne<Box*>("crop/temperature")->port("value")->value<double>() );

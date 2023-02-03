@@ -1,6 +1,6 @@
 // biocontrol-model-sa.box
 Simulation sim {
-  .iterations = 832  // 832 (for demonstration) or 1703936 (for analysis)
+  .iterations = 1703936 // 832 (for demonstration) or 1703936 (for analysis)
   .silent = TRUE
   .unattended = TRUE
   .stopIteration = !question[accepted]
@@ -18,7 +18,7 @@ Simulation sim {
   Box random {
     RandomiserSobolSequence randomiser {
       .doSensitivityAnalysis = TRUE
-      .bootstrapSize = 10000
+      .bootstrapSize = 10000 // 100 (for demonstration) or 10000 (for analysis)
     }
     RandomUniformInt k {
       .min = 15
@@ -61,8 +61,8 @@ Simulation sim {
       .max = 3
     }
     RandomNormal transmissionEfficiency {
-      .min = 0.05
-      .max = 0.5 
+      .min = 0.1
+      .max = 4.0 
     }
   }
   Box param {

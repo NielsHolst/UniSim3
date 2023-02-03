@@ -1,3 +1,5 @@
+print(paste("Yield improvement was", round(tail(sim$yieldImprovement,1),2), "%-points"))
+
 bw = c("white", "grey", "black")
 colours = c(green, blue, violet)
 

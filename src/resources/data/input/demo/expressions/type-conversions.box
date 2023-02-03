@@ -1,0 +1,17 @@
+// null.box
+Simulation sim {
+  .steps = 0
+  AllTypes all {
+    .bool = 7
+    .int  = .[bool]
+    .double = .[int]
+    .string = .[double]
+    .date = 5/11/2022 + 1.5
+    .time = 23:00 + 2.50
+    .datetime = 5/11/2022T14:00 + 1.5
+    .baredate = 3/12 - 2
+    .path = .[bool] | .[date]
+    .vec_bool = c(-8, 0, 1.2, 0.0)
+    .vec_int = c(TRUE, FALSE, 8.7, 3.1, -2.7)
+  }
+}

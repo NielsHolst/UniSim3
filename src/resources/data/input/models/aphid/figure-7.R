@@ -1,8 +1,5 @@
-# Load library for gam regressions
-library(mgcv)
-
 # Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
+sim_data_file = "~/sites/ecolmod3/download/aphid-biocontrol-sim.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -31,69 +28,109 @@ theme1 = theme_classic() + theme(
   plot.margin = margin(10,10,10,10)
 )
 
-meltxy = function(df, xvars, yvars) {
-  M = df[,c("iteration", xvars,yvars)]
-  M = melt(M, measure.vars=xvars, value.name="xValue", variable.name="xVariable")
-  M = melt(M, id.vars=c("iteration","xValue","xVariable"), measure.vars=yvars, value.name="ResponseValue", variable.name="Response")
-  M
-}
-xvars = c("lethalTime","transmissionEfficiency","cropAtStart","sporulationOn","propExposedImmigrants","timeAcceleration","cadaverDuration")
-yvars = c("yieldImprovement","maxPrevalence","maxCadaverPrevalence")
-M = meltxy(sim, xvars, yvars)
+# Common yield threshold
+yieldThreshold   = unname(quantile(sim$yieldImprovement,0.90))
+thresholdLabel = paste0(round(yieldThreshold,1), "%-points")
+print(paste("90% fractile of yield improvement =", thresholdLabel))
 
-my_scale = function(x) {
-  xmin = max(0,min(x))
-  xmax = max(x)
-  (x-xmin)/(xmax -xmin)
-}
+# Weather file names 1 to 40
+file_names = c(
+  "Aarnes_2004.txt",
+  "Aarnes_2005.txt",
+  "Aarnes_2006.txt",
+  "Aarnes_2012.txt",
+  "Aarnes_2013.txt",
+  "Aarnes_2014.txt",
+  "Aarnes_2015.txt",
+  "Aarnes_2016.txt",
+  "Aarnes_2017.txt",
+  "Aarnes_2018.txt",
+  "Ilseng_2004.txt",
+  "Ilseng_2005.txt",
+  "Ilseng_2006.txt",
+  "Ilseng_2012.txt",
+  "Ilseng_2013.txt",
+  "Ilseng_2014.txt",
+  "Ilseng_2015.txt",
+  "Ilseng_2016.txt",
+  "Ilseng_2017.txt",
+  "Ilseng_2018.txt",
+  "Ramnes_2004.txt",
+  "Ramnes_2005.txt",
+  "Ramnes_2006.txt",
+  "Ramnes_2012.txt",
+  "Ramnes_2013.txt",
+  "Ramnes_2014.txt",
+  "Ramnes_2015.txt",
+  "Ramnes_2016.txt",
+  "Ramnes_2017.txt",
+  "Ramnes_2018.txt",
+  "Rygge_2004.txt",
+  "Rygge_2005.txt",
+  "Rygge_2006.txt",
+  "Rygge_2012.txt",
+  "Rygge_2013.txt",
+  "Rygge_2014.txt",
+  "Rygge_2015.txt",
+  "Rygge_2016.txt",
+  "Rygge_2017.txt",
+  "Rygge_2018.txt"
+)
 
-f = function(m) {
-  m$xValueScaled = my_scale(m$xValue)
-  model = gam(ResponseValue ~ s(xValueScaled, bs="cs"), data=m)
-  M = data.frame(
-    xValueScaled = (0:100)/100
+# Load files names into a data frame
+f = function(x) {
+  data.frame( 
+    Location = x[1],
+    Year = substr(x[2],3,4)
   )
-  M$ResponseValue = predict(model,M)
-  M
 }
-g = function(m) {
-  M = m
-  M$ResponseValueScaled = my_scale(M$ResponseValue)
-  M
-}
+M = ldply(str_split(file_names, "_"), f)
+FileNames = cbind(fileNumber=1:40, M)
 
-M = ddply(M, .(xVariable,Response), f)
-ddply(M, .(Response), summarize, Min=min(ResponseValue), Max=max(ResponseValue))
-M = ddply(M, .(Response), g)
-ddply(M, .(Response), summarize, Min=min(ResponseValueScaled), Max=max(ResponseValueScaled))
+M = sim
 
-levels(M$Response) = c("Yield\nimprovement\n","Peak exposed\nprevalence\n","Peak cadaver\nprevalence\n")
-levels(M$xVariable) = c("Lethal\ntime", "Transmiss.\nefficiency", "Initial\n crop stage", "Sporulation\nthreshold", "Exposed\nimmigrants","Time\nacceleration","Cadaver\nduration")
+M$Biocontrol = "Unsuccessful"
+M$Biocontrol[M$yieldImprovement>yieldThreshold] = "Successful"
+M$Biocontrol = factor(M$Biocontrol)
 
-M$Response = reorder_levels(M$Response, c(2,3,1)) 
-M$xVariable = reorder_levels(M$xVariable, c(4,2,1,3,5,7,6))
+Counts = as.data.frame.matrix(t(table(M$Biocontrol, M$fileNumber)))
+Counts$fileNumber = 1:40
+Counts = merge(Counts, FileNames, by="fileNumber")
+Counts$Success = 100*with(Counts, Successful/(Successful+Unsuccessful))
+# Check: Average==10?
+100*sum(Counts[,2])/sum(Counts[,2:3]) 
+
+breaks = quantile(Counts$Success, c(0.25, 0.75))
+breaks
+Counts$Group = 2
+Counts$Group[Counts$Success <= breaks[1]] = 1
+Counts$Group[Counts$Success >  breaks[2]] = 3
+Counts$Group = factor(Counts$Group)
+
+Counts$Label = round(Counts$Success,0)
+Counts$Year = factor(Counts$Year)
+levels(Counts$Year) = 2000 + c(4:6, 12:18)
+
+grey_scale3  = c("white", "grey94", "darkgrey")
 
 make_plot = function() {
-  ggplot(M, aes(xValueScaled, ResponseValueScaled)) +
-    geom_line(size=0.6) +
-    geom_area(alpha=0.2, fill="black") +
-    labs(x="",y="") +
-    xlim(0,1) +
-    ylim(0,1) +
-    facet_grid(Response~xVariable, switch="both") +
+
+  ggplot(Counts, aes(Location, Year)) +
+    geom_tile(aes(fill=Group), colour="black") +
+    geom_text(aes(label=Label), size=3) +
+    scale_fill_manual(values = grey_scale3) +
+    labs(x="", y="") +
     theme1 +
     theme(
-      strip.background = element_blank(),
-      strip.text.y.left = element_text(angle=0),
       axis.line = element_blank(),
-      axis.text = element_blank(),
       axis.ticks = element_blank(),
-      panel.grid = element_blank(),
-      plot.margin = margin(10,10,10,0)
-    )
+      legend.position = "none"
+    )  
+  
 }
 
-W = 174
+# Dimensions
+W = 84
 H = 80
 
 # Screen plot
@@ -116,5 +153,6 @@ write_figure = function(file_type) {
 }
 
 if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
-# Figure for manuscript id also used for journal after labels have been added in PowerPoint
 write_figure("png")
+write_figure("eps")
+

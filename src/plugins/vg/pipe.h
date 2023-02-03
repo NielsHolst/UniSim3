@@ -27,7 +27,7 @@ private:
         inflowTemperature, indoorsTemperature, groundArea;
     int numSpans;
     // Outputs
-    double emissivity,
+    double emissivity, test, inflowTemperature0,
         length, volume, lengthPerSpan, volumePerSpan, transitTime,
         outflowTemperature, temperatureDrop, energyFlux;
     // Methods

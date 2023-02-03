@@ -16,6 +16,7 @@ namespace vg {
 PUBLISH(Setpoints)
 
 #define ELEMENT(x) Input(x).imports("elementary/" #x "[value]", CA)
+#define SCREEN(x)  Input(x).imports("elementary/screens/" #x "[value]", CA)
 #define LIGHT(x,v,i) Input(x##i).imports("elementary/growthLights/growthLight" #i "/" #v "[value]", CA)
 
 Setpoints::Setpoints(QString name, Box *parent)
@@ -41,14 +42,14 @@ Setpoints::Setpoints(QString name, Box *parent)
     ELEMENT(co2VentilationThreshold).unit("[0;1]").help("CO2 injection rate falls below capacity at ventilation above this threshold");
     ELEMENT(co2VentilationBand).unit("[0;1]").help("CO2 injection rate falls to zero above this band");
     ELEMENT(chalk).unit("").help("");
-    ELEMENT(screenEnergyThreshold1).unit("").help("");
-    ELEMENT(screenEnergyThreshold2).unit("").help("");
-    ELEMENT(screenEnergyThresholdBand).unit("").help("");
-    ELEMENT(screenShadeThreshold1).unit("").help("");
-    ELEMENT(screenShadeThreshold2).unit("").help("");
-    ELEMENT(screenShadeThresholdBand).unit("").help("");
-    ELEMENT(screenFixed1).unit("").help("");
-    ELEMENT(screenFixed2).unit("").help("");
+    SCREEN(screenEnergyThreshold1);
+    SCREEN(screenEnergyThreshold2);
+    SCREEN(screenEnergyThresholdBand);
+    SCREEN(screenShadeThreshold1);
+    SCREEN(screenShadeThreshold2);
+    SCREEN(screenShadeThresholdBand);
+    SCREEN(screenFixed1);
+    SCREEN(screenFixed2);
     LIGHT(growthLightSetting, setting, 1);
     LIGHT(growthLightSetting, setting, 2);
     LIGHT(growthLightSetting, setting, 3);

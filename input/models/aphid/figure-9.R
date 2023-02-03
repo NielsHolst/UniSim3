@@ -1,114 +1,116 @@
-# Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
-
-# Load standard script
-source("~/QDev/UniSim3/input/scripts/begin.R")
-
-# Output folder
+# Universal Simulator input and output folder
+input_folder  = "~/QDev/UniSim3/input"
 output_folder = "~/QDev/UniSim3/output"
 
+
 # Here goes
-load(sim_data_file)
-dim(sim)
 
-# Common theme
-theme1 = theme_classic() + theme(
-  axis.title = element_text(size=9),
-  axis.title.y = element_text(margin = margin(r=4, unit="points")),
-  axis.title.y.right = element_text(margin = margin(l=5, unit="points")),
-  axis.text  = element_text(size=8, colour="black"),
-  legend.title = element_text(size=8),
-  legend.text  = element_text(size=8),
-  legend.key.height = unit(12, "points"),
-  legend.key.width = unit(12, "points"),
-  legend.position = "bottom",
-  legend.direction = "vertical",
-  legend.spacing.y = unit(2, "points"),
-  legend.box.spacing = unit(0, "points"),
-  plot.margin = margin(10,10,10,10)
-)
+# Load standard script
+source(paste0(input_folder, "/scripts/begin.R"))
 
-# Common scales
-bw = c("white", "grey", "black")
-grey_scale2  = c("lightgrey", "darkgrey")
-
-# Common yield threshold
-yieldThreshold   = unname(quantile(sim$yieldImprovement,0.90))
-thresholdLabel = paste0(round(yieldThreshold,1), "%-points")
-print(paste("90% fractile of yield improvement =", thresholdLabel))
-
-M = sim
-M$Biocontrol = "Unsuccesful"
-M$Biocontrol[M$yieldImprovement>yieldThreshold] = "Successful"
-M$Biocontrol = factor(M$Biocontrol)
-M$Biocontrol = reorder_levels(M$Biocontrol, c(2:1))
+# Load validation data
+load(paste0(input_folder, "/models/aphid/validation/Stages.Rdata"))
+load(paste0(input_folder, "/models/aphid/validation/A95_weather.Rdata"))
+load(paste0(input_folder, "/models/aphid/validation/K95_weather.Rdata"))
+load(paste0(input_folder, "/models/aphid/validation/A95_aphids.Rdata"))
+load(paste0(input_folder, "/models/aphid/validation/K95_aphids.Rdata"))
 
 
-make_plot = function() {
-  ggarrange(
-    ggplot(M, aes(percentageCadaversGs43, fill=Biocontrol)) +
-      scale_fill_manual(values=grey_scale2) +
-      geom_density(alpha=0.8, size=0.3) +
-      xlim(0,5) +
-      labs(x="Cadaver prevalence (%) in GS 43", y="") + 
-      theme1 +
-      theme(
-        legend.position = "none",
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank()
-      )
-    ,
-    ggplot(M, aes(percentageCadaversGs61, fill=Biocontrol)) +
-      scale_fill_manual(values=grey_scale2) +
-      geom_density(alpha=0.8, size=0.3) +
-      xlim(0,10) +
-      labs(x="Cadaver prevalence (%) in GS 61", y="Probability density") +
-      theme1 +
-      theme(
-        legend.position = "none",
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank()
-      )
-    ,
-    ggplot(M, aes(percentageCadaversGs73, fill=Biocontrol)) +
-      scale_fill_manual(values=grey_scale2) +
-      geom_density(alpha=0.8, size=0.3) +
-      xlim(0,80) +
-      labs(x="Cadaver prevalence (%) in GS 73", y="") + 
-      theme1 +
-      theme(
-        legend.position = "none",
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank()
-      )
-    ,
-    ncol=1, align="hv"
+show_a95 = function(title) {
+  aphids = with(A95_aphids, Nymphs + AdultApterous)
+  
+  M = data.frame(
+    Date        = A95_aphids$Date,
+    Susceptible = with(A95_aphids, aphids*(100-Prevalence)/100),
+    Exposed     = with(A95_aphids, aphids*Prevalence/100),
+    Cadavers    = A95_aphids$Cadavers,
+    Syrphids    = A95_aphids$Syrphids
   )
+  
+  M = melt(M, id.vars="Date")
+  ggplot(M, aes(Date, value, colour=variable)) +
+    geom_line() +
+    geom_point() +
+    scale_colour_manual(values=c(red, blue, green, pink), name="") +
+    geom_vline(aes(xintercept=Date), data=subset(Stages, Field=="A95"), colour=brown, alpha=0.5, size=1) +
+    labs(title=title, x="", y="Individuals per tiller") +
+    facet_wrap(~variable, ncol=1, scales="free_y") +
+    theme_bw(base_size=text_size) +
+    theme(legend.position="none")
 }
 
-# Dimensions
-W = 84
-H = 110
+show_k95 = function(title) {
+  M = data.frame(
+    Date     = K95_aphids$Date,
+    Aphids   = with(K95_aphids, Nymphs + AdultApterous + AdultAlate),
+    Cadavers = K95_aphids$Cadavers,
+    Syrphids = K95_aphids$Syrphids
+  )
+  M = melt(M, id.vars="Date")
+
+  ggplot(M, aes(Date, value, colour=variable)) +
+    geom_line() +
+    geom_point() +
+    scale_colour_manual(values=c(violet, green, pink), name="") +
+    geom_vline(aes(xintercept=Date), data=subset(Stages, Field=="K95"), colour=brown, alpha=0.5, size=1) +
+    labs(title=title, x="", y="Individuals per tiller") +
+    facet_wrap(~variable, ncol=1, scales="free_y") +
+    theme_bw(base_size=text_size) +
+    theme(legend.position="none")
+}
+
+show_weather =  function(field) {
+  Range = data.frame(
+    Field = factor(rep(c("A95","A95","K95","K95"), 2)),
+    Date  = rep(c(min(A95_weather$Date), max(A95_weather$Date), min(K95_weather$Date), max(K95_weather$Date)), 2),
+    variable = c(rep("Tavg",4), rep("RHmax",4)),
+    value = c(rep(c(min(weather$Tavg), max(weather$Tavg)), 2), rep(c(min(weather$RHmax), max(weather$RHmax)), 2))
+  )
+  Range$variable = reorder_levels(factor(Range$variable), 2:1)
+  Range
+
+  W = subset(weather, Field==field)
+  W = melt(W, id.vars=c("Field","Date"))
+  ggplot(W, aes(Date, value, colour=variable)) +
+    geom_blank(data=subset(Range, Field==field)) +
+    geom_line() +
+    geom_vline(aes(xintercept=Date), data=subset(Stages, Field==field), colour=brown, alpha=0.5, size=1) +
+    labs(x ="", y=" ") +
+    facet_wrap(~variable, ncol=1, scales="free_y") +
+    theme_bw(base_size=text_size) +
+    theme(legend.position="none")
+}
+
+# Create plot
+text_size = 8
+A95_weather = subset(A95_weather, Date>=min(A95_aphids$Date) & Date<=max(A95_aphids$Date))
+K95_weather = subset(K95_weather, Date>=min(K95_aphids$Date) & Date<=max(K95_aphids$Date))
+
+weather = rbind(
+  A95_weather,
+  K95_weather
+)
+
+P = ggarrange(
+  ggarrange(
+    show_a95("Ågerup"),
+    show_k95("Kalø"),
+    ncol = 2
+  ),
+  ggarrange(
+    show_weather("A95"),
+    show_weather("K95"),
+    ncol = 2,
+    align = "hv"
+  )
+  ,
+  ncol = 1, heights = c(2,1)
+)
 
 # Screen plot
 graphics.off()
-open_plot_window(mm(W),mm(H))
-print(make_plot())
+P
 
-# Write figures
-write_figure = function(file_type) {
-  file_name_path = paste0(output_folder, "/fig-9-bw.", file_type)
-  print(paste("Writing figure to", file_name_path))
-  if (file_type == "png")
-    png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
-  else if (file_type == "eps")
-    cairo_ps(file_name_path, width=mm(W), height=mm(H))
-  else
-    stop(paste0("Wrong file type: '", file_type, "'"))
-  print(make_plot())
-  dev.off()
-}
-
+# Write figure
 if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
-write_figure("png")
-write_figure("eps")
+ggsave(paste0(output_folder, "/fig-9-colour.png"), P, width=15, height=16, units="cm")

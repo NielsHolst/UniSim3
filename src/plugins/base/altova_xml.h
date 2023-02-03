@@ -22,7 +22,8 @@ private:
     QString _xsltFileName;
     QStringList _searchPath;
     // Methods
-    QString xsltPath();
+    QString xsltFileName(QString inputFilePath);
+    QString xsltPath(QString xsltFileName);
     QString altovaPath();
 };
 

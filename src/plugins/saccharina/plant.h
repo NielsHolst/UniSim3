@@ -6,28 +6,29 @@
 */
 #ifndef PLANT_H
 #define PLANT_H
-#include <base/box.h>
+#include "density.h"
 
 namespace saccharina {
 
-class Plant : public base::Box
+class Plant : public Density
 {
 public:
     Plant(QString name, Box *parent);
+    void initialize();
     void reset();
     void update();
 private:
-    // Primary state variables
-    double biomassStruct, biomassCRes, biomassNRes;
     // Inputs
     double
-        initBiomassStruct, initBiomassCRes, initBiomassNRes,
-        supplyReservesC, supplyReservesN,
-        propCStruct, propNStruct, propCRes, propNRes,
-        optCConc, optNConc;
+        wSC, wSN,
+        wCC, wNN, wPP;
+    QVector<double> dws;
     // Outputs
-    double biomassTotal, massCStruct, massNStruct, massCRes, massNRes,
-        concC, concN;
+    double
+        growthRate,
+        concC, concN, concP;
+    // Data
+    double prevDw;
 };
 
 }

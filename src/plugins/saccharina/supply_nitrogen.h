@@ -6,22 +6,19 @@
 */
 #ifndef SUPPLY_NITROGEN_H
 #define SUPPLY_NITROGEN_H
-#include <base/box.h>
+#include "supply_base.h"
 
 namespace saccharina {
 
-class SupplyNitrogen : public base::Box
+class SupplyNitrogen : public SupplyBase
 {
 public:
     SupplyNitrogen(QString name, Box *parent);
-    void reset();
-    void update();
 private:
     // Inputs
-    double uptakeRate, area, N, timeStep;
-    QVector<double> demands;
-    // Outputs
-    double demand, value;
+    double beta, area, waterN;
+    // Methods
+    void updateValue();
 };
 
 }

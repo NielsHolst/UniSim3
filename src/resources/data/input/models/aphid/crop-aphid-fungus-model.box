@@ -58,7 +58,7 @@ Simulation sim {
         &total       = .[nymphs] + .[adults]
         &susceptible = sum(../susceptible/*/*[content])
         &exposed     = sum(../exposed/*/*[content])
-        &cadavers    = ../exposed/succumbed[count]
+        &cadavers    = sum(../infectious/cadavers[content])
       }
       AphidImmigration immigration {
         .cropGrowthStage = cropGrowthStage[value]

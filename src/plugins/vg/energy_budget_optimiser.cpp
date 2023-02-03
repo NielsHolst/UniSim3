@@ -238,7 +238,7 @@ void EnergyBudgetOptimiser::tooCold() {
 void EnergyBudgetOptimiser::updateDependents() {
     indoorsTemperature->setTemperature(_currentIndoorsTemperature);
     actuatorHeatPipes->updateFamily();
-//    energyBudget->evaluatePorts();
+//    energyBudget->evaluateorts();
     energyBudget->updateFamily();
 //    indoorsTemperature->evaluatePorts();
     indoorsTemperature->updateFamily();

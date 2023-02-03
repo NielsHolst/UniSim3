@@ -5,7 +5,7 @@
 	<!-- *** Calendar *** -->
 	<box class="Calendar" name="calendar">
 		<port name="begin" source="/VG_SETUP/Description/StartTime" computes="01.01.2022 - 1"/>
-		<port name="end" source="/VG_SETUP/Description/StopTime" value="03.01.2022T24:00:00"/>
+		<port name="end" source="/VG_SETUP/Description/StopTime" value="07.01.2022T24:00:00"/>
 		<port name="timeStep" source="/VG_SETUP/Description/TimeStep" value="3"/>
 		<port name="timeUnit" value="m" source="Fixed"/>
 		<port name="latitude" source="/VG_SETUP/Description/Latitude" value="55.4038"/>
@@ -603,131 +603,130 @@
 					</box>
 				</box>
 			</box>
-			<box class="PrioritySignal" name="screenEnergyThreshold1">
-				<port name="initialSignal" value="5"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="00:00"/>
-					<port name="signalInside" value="5"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenEnergyThreshold2">
-				<port name="initialSignal" value="5"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="00:00"/>
-					<port name="signalInside" value="5"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenEnergyThresholdBand">
-				<port name="initialSignal" value="0"/>
-				<port name="reverseOrder" value="TRUE"/>
-			</box>
-			<box class="PrioritySignal" name="screenShadeThreshold1">
-				<port name="initialSignal" value="500"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="00:00"/>
-					<port name="signalInside" value="500"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenShadeThreshold2">
-				<port name="initialSignal" value="500"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="00:00"/>
-					<port name="signalInside" value="500"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenShadeThresholdBand">
-				<port name="initialSignal" value="50"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="00:00"/>
-					<port name="signalInside" value="50"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenFixed1">
-				<port name="initialSignal" value="0"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="00:00"/>
-					<port name="signalInside" value="0"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenFixed2">
-				<port name="initialSignal" value="0"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="00:00"/>
-					<port name="signalInside" value="0"/>
-				</box>
-			</box>
-			<box class="PrioritySignal" name="screenActive1">
-				<port name="initialSignal" value="0"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
-					<port name="signalInside" value="./encode[value]"/>
-					<box name="encode" source="ScreenCombinationCode">
-						<port name="code" value="shade1+energy1"/>
+			<box name="screens">
+				<box class="PrioritySignal" name="screenEnergyThreshold1">
+					<port name="initialSignal" value="5"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold1" value="00:00"/>
+						<port name="signalInside" value="5"/>
 					</box>
 				</box>
-				<box class="Box" name="encode"/>
-			</box>
-			<box class="PrioritySignal" name="screenActive2">
-				<port name="initialSignal" value="0"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
-					<port name="signalInside" value="./encode[value]"/>
-					<box name="encode" source="ScreenCombinationCode">
-						<port name="code" value=""/>
+				<box class="PrioritySignal" name="screenEnergyThreshold2">
+					<port name="initialSignal" value="5"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenEnergyThreshold2" value="00:00"/>
+						<port name="signalInside" value="5"/>
 					</box>
 				</box>
-				<box class="Box" name="encode"/>
-			</box>
-			<box class="PrioritySignal" name="screenActive3">
-				<port name="initialSignal" value="0"/>
-				<port name="reverseOrder" value="TRUE"/>
-				<box class="DateTimeSignal">
-					<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="01/01"/>
-					<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="31/12"/>
-					<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
-					<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
-					<port name="signalInside" value="./encode[value]"/>
-					<box name="encode" source="ScreenCombinationCode">
-						<port name="code" value=""/>
+				<box class="PrioritySignal" name="screenEnergyThresholdBand">
+					<port name="initialSignal" value="0"/>
+					<port name="reverseOrder" value="TRUE"/>
+				</box>
+				<box class="PrioritySignal" name="screenShadeThreshold1">
+					<port name="initialSignal" value="500"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold1" value="00:00"/>
+						<port name="signalInside" value="500"/>
 					</box>
 				</box>
-				<box class="Box" name="encode"/>
+				<box class="PrioritySignal" name="screenShadeThreshold2">
+					<port name="initialSignal" value="500"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThreshold2" value="00:00"/>
+						<port name="signalInside" value="500"/>
+					</box>
+				</box>
+				<box class="PrioritySignal" name="screenShadeThresholdBand">
+					<port name="initialSignal" value="50"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenShadeThresholdBand" value="00:00"/>
+						<port name="signalInside" value="50"/>
+					</box>
+				</box>
+				<box class="PrioritySignal" name="screenFixed1">
+					<port name="initialSignal" value="0"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed1" value="00:00"/>
+						<port name="signalInside" value="0"/>
+					</box>
+				</box>
+				<box class="PrioritySignal" name="screenFixed2">
+					<port name="initialSignal" value="0"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenFixed2" value="00:00"/>
+						<port name="signalInside" value="0"/>
+					</box>
+				</box>
+				<box class="PrioritySignal" name="screenLayer1">
+					<port name="initialSignal" value="0"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
+						<port name="signalInside" ref="./code[value]"/>
+						<box name="code" class="ScreenCombinationEncode">
+							<port name="formula" value="shade1+energy1"/>
+						</box>
+					</box>
+				</box>
+				<box class="PrioritySignal" name="screenLayer2">
+					<port name="initialSignal" value="0"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
+						<port name="signalInside" ref="./code[value]"/>
+						<box name="code" class="ScreenCombinationEncode">
+							<port name="formula" value=""/>
+						</box>
+					</box>
+				</box>
+				<box class="PrioritySignal" name="screenLayer3">
+					<port name="initialSignal" value="0"/>
+					<port name="reverseOrder" value="TRUE"/>
+					<box class="DateTimeSignal">
+						<port name="beginDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="01/01"/>
+						<port name="endDate" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="31/12"/>
+						<port name="beginTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
+						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
+						<port name="signalInside" ref="./code[value]"/>
+						<box name="code" class="ScreenCombinationEncode">
+							<port name="formula" value=""/>
+						</box>
+					</box>
+				</box>
 			</box>
 			<box class="PrioritySignal" name="heatExchangersOn">
 				<port name="initialSignal" value="0"/>
@@ -940,10 +939,8 @@
 			</box>
 		</box>
 		<box class="OutputSelector" name="selector">
-			<port name="skipFormats" value="TRUE"/>
 			<port name="useLocalDecimalChar" value="TRUE"/>
-			<port name="dateTime" source="/VG_SETUP/Description/StartTime" value="01.01.2022"/>
-			<port name="period" value="20"/>
+			<port name="beginDateTime" source="/VG_SETUP/Description/StartTime" value="01.01.2022"/>
 		</box>
 	</box>
 </box>

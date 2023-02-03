@@ -24,7 +24,7 @@ ParBudget::ParBudget(QString name, Box *parent)
     Input(Pn).imports("crop/photosynthesis[Pn]");
     Input(cropCoverage).imports("crop[coverage]");
     Output(indoorsSunPar).help("Sun contribution to total PAR");
-    Output(indoorsGrowthLightPar).help("Growth light contribution to total PAR");
+    Output(indoorsGrowthLightsPar).help("Growth light contribution to total PAR");
     Output(photosynthesis).unit("g dry mass/cultivated m2/h").help("Net crop growth rate");
 }
 
@@ -39,10 +39,10 @@ void ParBudget::update() {
         // Sun proportion of ideal total
         double propSun = sunPar/cropTotalPar;
         indoorsSunPar         = propSun     *indoorsTotalPar;
-        indoorsGrowthLightPar = (1.-propSun)*indoorsTotalPar;
+        indoorsGrowthLightsPar = (1.-propSun)*indoorsTotalPar;
     }
     else {
-        indoorsSunPar = indoorsGrowthLightPar = 0.;
+        indoorsSunPar = indoorsGrowthLightsPar = 0.;
     }
     // Crop growth rate scaled to cultivated area
     photosynthesis = Pn/cropCoverage;

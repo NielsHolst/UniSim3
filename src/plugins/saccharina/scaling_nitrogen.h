@@ -18,7 +18,7 @@ public:
     void update();
 private:
     // Inputs
-    double minValue, concN, optNConc;
+    double concNmin, concNopt, concN;
     // Outputs
     double value;
 };

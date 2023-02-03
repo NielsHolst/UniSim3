@@ -20,8 +20,8 @@ const QString path =
 const QString fileName =
 //"2022-09-06-116";
 //"2022-08-30-ver-2-3-63";
-"2022-09-07-ver-3-0-3";
-
+//"2022-09-07-ver-3-0-3";
+"2022-11-18-par";
 
 void writeBoxScript() {
     QString filePath = path + "/" + fileName + ".box";

@@ -4,30 +4,15 @@
 */
 #ifndef RUNNING_AVERAGE_TIMED_H
 #define RUNNING_AVERAGE_TIMED_H
-#include <QVector>
-#include <base/box.h>
+#include "running_sum_timed.h"
 
 namespace boxes {
 
-class RunningAverageTimed : public base::Box
+class RunningAverageTimed : public RunningSumTimed
 {
 public: 
     RunningAverageTimed(QString name, Box *parent);
-    void reset();
     void update();
-private:
-    // Input
-    double input, initial;
-    double timeWindow, timeStepSecs;
-    QString timeUnit;
-
-    // Output
-    double value;
-    int count;
-    // Data
-    QVector<double> buffer;
-    double sum;
-    int pos;
 };
 
 } //namespace

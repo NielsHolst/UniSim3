@@ -6,26 +6,23 @@
 */
 #ifndef SUPPLY_CARBON_H
 #define SUPPLY_CARBON_H
-#include <base/box.h>
+#include "supply_base.h"
 
 namespace saccharina {
 
-class SupplyCarbon : public base::Box
+class SupplyCarbon : public SupplyBase
 {
 public:
     SupplyCarbon(QString name, Box *parent);
-    void reset();
-    void update();
 private:
     // Inputs
-    double
-        concN,
-        k, lai, crownZoneArea,
-        a, b, calib,
-        E0;
-    QVector<double> demands;
+    double alpha, k,
+        lai, czArea, phiN, Id;
     // Outputs
-    double Iabs, efficiency, demand, value;
+    double
+        Iabsorbed, propIabsorbed;
+    // Methods
+    void updateValue();
 };
 
 }

@@ -18,7 +18,7 @@ public:
     void update();
 private:
     // Inputs
-    double T, T0, Topt1, Topt2, Tmax;
+    double T, Tmin, Topt1, Topt2, Tmax;
     // Outputs
     double value;
 };

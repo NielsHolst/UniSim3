@@ -16,10 +16,10 @@ PUBLISH(ScalingNitrogen)
 ScalingNitrogen::ScalingNitrogen(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("scales photosynthesis by plant nitrogen");
-    Input(minValue).equals(0.5).unit("[0;1]").help("Minimum scaling value");
-    Input(concN).imports("plant[concN]");
-    Input(optNConc).imports("plant[optNConc]");
+    help("scales photosynthesis by plant nitrogen concentration");
+    Input(concN).unit("g N/g dw").help("Plant nitrogen concentration");
+    Input(concNmin).unit("g N/g dw").help("Minimum plant nitrogen concentration for growth");
+    Input(concNopt).unit("g N/g dw").help("Optimal plant nitrogen concentration for growth");
     Output(value).unit("[0;1]").help("Scaling factor");
 }
 
@@ -28,7 +28,12 @@ void ScalingNitrogen::reset() {
 }
 
 void ScalingNitrogen::update() {
-    value = minValue + (1. - minValue)*concN/optNConc;
+    if (concN < concNmin)
+        value = 0.;
+    else if (concN < concNopt)
+        value = (concN - concNmin)/(concNopt - concNmin);
+    else
+        value = 1.;
 }
 
 }

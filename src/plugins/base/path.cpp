@@ -595,14 +595,16 @@ const Path::Objects &Path::matches(base::Node *anchor) const {
     // Path must have a parent or an anchor
     base::Node *nodeAnchor = anchor ? anchor : dynamic_cast<base::Node*>(_parent);
     if (!nodeAnchor)
-        ThrowException("Path must have a parent or an anchor").value(toString());
+        ThrowException("Path must have a parent or an anchor").value(toString())
+                .value2(_parent->fullName());
 
     // The anchor must be a Box; if not use its parent
     base::Box *boxAnchor = dynamic_cast<Box*>(nodeAnchor);
     if (!boxAnchor)
         boxAnchor = nodeAnchor->parent<Box*>();
     if (!boxAnchor)
-        ThrowException("Path must be anchored to a box").value(toString());
+        ThrowException("Path must be anchored to a box").value(toString())
+                                                        .value2(_parent->fullName());
 
     // Collect matches
     for (auto &alternative : _alternatives) {

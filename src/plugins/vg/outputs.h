@@ -18,12 +18,11 @@ class Outputs : public base::Box
 public:
     Outputs(QString name, Box *parent);
     void amend();
-    void reset();
-    void update();
+//    void reset();
+//    void update();
 private:
-    // Inputs
-    bool onlyNumbers;
-    double sunPar, growthLightsPar, cropCoverage;
+//    // Inputs
+//    double sunPar, growthLightsPar, cropCoverage;
     // Outputs
     double
         skyT,
@@ -107,7 +106,9 @@ private:
         totalHeatSink,
         totalGrowthLightEnergy,
         totalParAbsorbed,
-        totalCo2;
+        totalCo2,
+        lightSum,
+        temperatureAvg;
     int thermostateUpdates;
     QString thermostatState, thermostatAction, thermostatSolution;
 };

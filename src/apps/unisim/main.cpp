@@ -103,6 +103,9 @@ void writeErrorToOutputFile(QString errorMessage, QStringList args) {
 int runWithoutDialog(int argc, char *argv[]) {
     DialogMinimal *dialog = new DialogMinimal(qApp);
     QStringList args = extractArguments(argc, argv);
+//    QStringList args = {"run",
+//                        "D:/Documents/QDev/UniSim3/input/projects/vg/2022-10-05-NyXML.xml",
+//                        "D:/Documents/QDev/UniSim3/output/vg.txt"};
     try {
         environment().checkInstallation();
 
@@ -127,8 +130,8 @@ int runWithoutDialog(int argc, char *argv[]) {
         Box *sim = Box::root();
         if (!sim)
             ThrowException("No XML script loaded");
-        Box *outputText = sim->findOne<Box*>("output/text");
-        QString outputFilePath = outputText->port("filePath")->value<QString>();
+        Box *writer = sim->findOne<Box*>("outputWriter");
+        QString outputFilePath = writer->port("filePath")->value<QString>();
         copyFile(outputFilePath, destinationFilePath(args));
     }
     catch (Exception &ex){

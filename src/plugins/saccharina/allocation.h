@@ -6,6 +6,7 @@
 */
 #ifndef ALLOCATION_H
 #define ALLOCATION_H
+#include <QMap>
 #include <base/box.h>
 
 namespace saccharina {
@@ -16,50 +17,78 @@ public:
     Allocation(QString name, Box *parent);
     void reset();
     void update();
-private:
+protected:
     // Inputs
     double
-    massCStruct,
-    massNStruct,
-    massCRes,
-    massNRes,
-    propCStruct,
-    propNStruct,
-    propCRes,
-    propNRes,
-    optCConc,
-    optNConc,
-    supplyC,
-    supplyN,
-    demandRespirationC,
-    demandGrowthC,
-    demandGrowthN,
-    demandReservesC,
-    demandReservesN,
-    demandCostC,
-    costStruct,
-    costCRes,
-    costNRes;
+        dwStructure, dwC, dwN, dwP,
+        UC, UN, UP,
+        CC, NN, PP,
+        DMC,
+        DEC, DEN, DEP,
+        DSC, DSN,
+        DNN, DCC, DPP,
+        lambdaS, lambdaC, lambdaN,
+        concSC, concSN, concCC, concNN, concPP,
+        idealStructure, idealStoreC, idealStoreN, idealStoreP;
+
     // Outputs
     double
-    supplyRespirationC,
-    supplyGrowthC,
-    supplyGrowthN,
-    supplyReservesC,
-    supplyReservesN,
-    M0C, M1C, M2C, M3C, M4C,
-    M0N, M1N, M2N, M3N,
-    structuralLossC,
-    structuralLossRate,
-    structuralBiomassGain,
-    sdGrowthC, sdGrowthN,
-    sdReservesC, sdReservesN;
-    int reservesIter;
+        takenStoreC1,
+        takenStructure1,
+
+        SEC, SEN, SEP,
+        sdExudationC,
+        sdExudationN,
+        sdExudationP,
+        takenStoreC2,
+        takenStoreN2,
+        takenStoreP2,
+
+        SSC, SSN,
+        supplyStructure3,
+        sdStructure,
+        takenStoreC3,
+        takenStoreN3,
+
+        SNN,
+        supplyStoreN4,
+        sdStoreN,
+        takenStoreC4,
+
+        SCC,
+        supplyStoreC5,
+        sdStoreC,
+
+        SPP,
+        supplyStoreP6,
+        sdStoreP,
+
+        supplyStructure,
+        supplyStoreC,
+        supplyStoreN,
+        supplyStoreP,
+        buildingCost;
+
+
+    bool negativeGrowth;
+
+    // Data
+    enum class Source{UptakenC, UptakenN, UptakenP, StoreCC, StoreNN, StorePP};
+    using Sources  = QVector<Source>;
+    using Supplies = QMap<Source, double*>;
+    Supplies supplies;
+    enum class Limitation{Climited, Nlimited, NoDemands};
+
     // Methods
-    void zeroOut();
-    double biomass(double supplyReservesC, double supplyReservesN) const;
-    double concC(double supplyReservesC, double supplyReservesNGuess) const;
-    double concN(double supplyReservesCGuess, double supplyReservesNGuess) const;
+    void maintenance();
+    void exudation();
+    void structuralGrowth();
+    void storeN();
+    void storeC();
+    void storeP();
+    double take(double demand, Sources sources);
+    double askFor(double demand, Sources sources, bool doTake=false) const;
+    Limitation limitation(double demandC, double demandN, double supplyCdw, double supplyNdw) const;
 };
 
 }

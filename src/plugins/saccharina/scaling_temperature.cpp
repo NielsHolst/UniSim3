@@ -18,10 +18,10 @@ ScalingTemperature::ScalingTemperature(QString name, Box *parent)
 {
     help("scales growth demand and photosynthesis by temperature");
     Input(T).unit("oC").help("Current temperature");
-    Input(T0).unit("oC").help("Minimum temperature");
-    Input(Topt1).unit("oC").help("Lower temperature optimum");
-    Input(Topt2).unit("oC").help("Higher temperature optimum");
-    Input(Tmax).unit("oC").help("Maximum temperature");
+    Input(Tmin). equals(-2).unit("oC").help("Minimum temperature");
+    Input(Topt1).equals( 5).unit("oC").help("Lower temperature optimum");
+    Input(Topt2).equals(15).unit("oC").help("Higher temperature optimum");
+    Input(Tmax). equals(24).unit("oC").help("Maximum temperature");
     Output(value).unit("[0;1]").help("Scaling factor");
 }
 
@@ -31,10 +31,10 @@ void ScalingTemperature::reset() {
 
 void ScalingTemperature::update() {
     // Note: Inequalities rule out division by zero
-    if (T < T0)
+    if (T < Tmin)
         value = 0.;
     else if (T < Topt1)
-        value = (T-T0)/(Topt1-T0);
+        value = (T-Tmin)/(Topt1-Tmin);
     else if (T < Topt2)
         value = 1.;
     else if (T < Tmax)

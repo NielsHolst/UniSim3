@@ -5,7 +5,7 @@
 	<!-- *** Calendar *** -->
 	<box class="Calendar" name="calendar">
 		<port name="begin" source="/VG_SETUP/Description/StartTime" computes="01.01.2022 - 1"/>
-		<port name="end" source="/VG_SETUP/Description/StopTime" value="31.12.2022"/>
+		<port name="end" source="/VG_SETUP/Description/StopTime" value="10.01.2022"/>
 		<port name="timeStep" source="/VG_SETUP/Description/TimeStep" value="3"/>
 		<port name="timeUnit" value="m" source="Fixed"/>
 		<port name="latitude" source="/VG_SETUP/Description/Latitude" value="55.4038"/>

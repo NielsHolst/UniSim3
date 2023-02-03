@@ -85,8 +85,10 @@ QStringList readTailLines(QFile &file, int n) {
         buffer.push_back( QString(file.readLine()).trimmed() );
 
     QStringList lines;
-    for (auto it = buffer.begin(); it != buffer.end(); ++it)
-        lines << *it;
+    for (auto it = buffer.begin(); it != buffer.end(); ++it) {
+        if (!it->isEmpty())
+            lines << *it;
+    }
     return lines;
 }
 

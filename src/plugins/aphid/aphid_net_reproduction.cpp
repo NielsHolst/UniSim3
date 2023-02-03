@@ -32,8 +32,8 @@ AphidNetReproduction::AphidNetReproduction(QString name, Box *parent)
     Input(aphidDensity).help("Aphid density").unit("per tiller");
     Input(aphidDensityThreshold).help("Density threshold when net reproduction is zero").unit("per tiller");
     Input(immunityCost).help("Relative reduction in reproduction when exposed").unit("[0;1]");
-    Output(apterous).help("Net reproduction for apterous aphids").unit("per capita");
-    Output(alate).help("Net reproduction for alate aphids").unit("per capita");
+    Output(apterous).help("Net reproduction for susceptible apterous aphids").unit("per capita");
+    Output(alate).help("Net reproduction for susceptible alate aphids").unit("per capita");
     Output(apterousExposed).help("Net reproduction for infected apterous aphids").unit("per capita");
     Output(alateExposed).help("Net reproduction for infected alate aphids").unit("per capita");
 } 

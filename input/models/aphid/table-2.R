@@ -1,5 +1,5 @@
 # Load your S data
-S_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000-S.Rdata"
+S_data_file = "~/sites/ecolmod3/download/aphid-biocontrol-S.Rdata"
 
 # Output folder
 output_folder = "~/QDev/UniSim3/output"
@@ -24,6 +24,7 @@ f = function(s) {
   )
 }
 M = ddply(S_sum, .(Output), f)
+M
 
 # Write table
 if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)

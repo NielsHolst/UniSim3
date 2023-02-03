@@ -34,8 +34,8 @@ Sun::Sun(QString name, Box *parent)
     Output(sunset).help("Time of sunset").unit("h:m:s");
     Output(solarConstant).help("The irradiation at the top of the atmosphere").unit("W/m2");
     Output(angot).help("The irradiation on Earth surface under optimal atmospheric conditions").unit("W/m2");
-    Output(isDay).help("Tells of it's between sunrise and sunset").unit("bool");
-    Output(isNight).help("Tells of it's between sunset and sunrise").unit("bool");
+    Output(isDay).help("Tells if it's between sunrise and sunset").unit("bool");
+    Output(isNight).help("Tells if it's between sunset and sunrise").unit("bool");
 }
 
 void Sun::reset() {

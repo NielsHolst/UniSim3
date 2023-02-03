@@ -1,4 +1,4 @@
-// biocontrol-model.box
+// figure-2.box
 Simulation sim {
   .iterations = 1
   SelectFile weatherFiles {
@@ -50,8 +50,8 @@ Simulation sim {
       .max = 3
     }
     RandomNormal transmissionEfficiency {
-      .min = 0.05
-      .max = 0.5 
+      .min = 0.1
+      .max = 4.0 
     }
   }
   Box param {
@@ -117,7 +117,7 @@ Simulation sim {
         &total       = .[nymphs] + .[adults]
         &susceptible = sum(../susceptible/*/*[content])
         &exposed     = sum(../exposed/*/*[content])
-        &cadavers    = ../exposed/succumbed[count]
+        &cadavers    = sum(../infectious/cadavers[content])
       }
       AphidImmigration immigration {
         .cropGrowthStage = cropGrowthStage[value]
@@ -345,7 +345,7 @@ Simulation sim {
       .ports = calendar[date] | cropGrowthStage[value] | outputs[*] | 
         withFungus/aphidDensity[susceptible] | withFungus/aphidDensity[exposed] | withFungus/aphidDensity[cadavers] |
         biocontrol[maxPrevalence] |
-        biocontrol[maxCadaverPrevalence] | biocontrol[yieldDifference] |
+        biocontrol[maxCadaverPrevalence] | biocontrol[yieldImprovement] |
         biocontrol[prevalence] | biocontrol[cadaverPrevalence]
 
     }

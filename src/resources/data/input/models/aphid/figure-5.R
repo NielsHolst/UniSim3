@@ -1,5 +1,5 @@
-# Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
+# Load your S data
+S_data_file = "~/sites/ecolmod3/download/aphid-biocontrol-S.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -8,89 +8,108 @@ source("~/QDev/UniSim3/input/scripts/begin.R")
 output_folder = "~/QDev/UniSim3/output"
 
 # Here goes
-load(sim_data_file)
-dim(sim)
+load(S_data_file)
+dim(S)
 
-# Common yield threshold
-yieldThreshold   = unname(quantile(sim$yieldImprovement,0.90))
-thresholdLabel = paste0(round(yieldThreshold,1), "%-points")
-print(paste("90% fractile of yield improvement =", thresholdLabel))
+# Common theme
+theme1 = theme_classic() + theme(
+  axis.title = element_text(size=9),
+  axis.title.y = element_text(margin = margin(r=4, unit="points")),
+  axis.title.y.right = element_text(margin = margin(l=5, unit="points")),
+  axis.text  = element_text(size=8, colour="black"),
+  legend.title = element_text(size=8),
+  legend.text  = element_text(size=8),
+  legend.key.height = unit(12, "points"),
+  legend.key.width = unit(12, "points"),
+  legend.position = "bottom",
+  legend.direction = "vertical",
+  legend.spacing.y = unit(2, "points"),
+  legend.box.spacing = unit(0, "points"),
+  plot.margin = margin(10,10,10,10)
+)
 
-# Two-dimensional stratified sampling
-# Example: stratify2d(x, y, 32, 5) will stratify x and y both into 32 strata, 
-# providing 32^2=1024 quadrants from which 5 numbers will be picked from each,
-# resulting in 5120 rows
-stratify2d = function(x,y,num_strata,sample_size) {
-  sample_rows = function(m) {
-    n = nrow(m)
-    if (sample_size>n) stop(paste("Sample size", sample_size, "is larger than group size", n))
-    m[sample(1:n, sample_size),]
-  }
+# Common scales
+bw = c("white", "grey", "black")
+grey_scale2  = c("lightgrey", "darkgrey")
 
-  N = length(x)
-  
-  M = data.frame(
-    index = 1:N,
-    x = x,
-    y = y
+pick_response = function(response) {
+  s = subset(S, Output==response & !(Input %in% c("Sum", "k", "cropHalfways", "cropAtStart")))
+  s$Input = droplevels(s$Input)
+
+  # Re-order on total effect then on input name 
+  M = subset(s, Measure=="Total")
+  n = nrow(M)
+  M$Input = as.character(M$Input)
+  M = M[order(M$Input),]
+  M$EffectMean[M$LowerPercentile<0.001] = 0
+  M = M[order(M$EffectMean, decreasing=TRUE),]
+  M$NewOrder = 1:n
+  M = M[c("Input", "NewOrder")]
+  N = data.frame(
+    Input = as.character(levels(s$Input)),
+    PrevOrder = 1:n
   )
-  M = M[order(M$x),]
-
-  cuts = c(0, round(N*(1:num_strata)/num_strata,0))
-  cuts
-
-  W = {}
-  for (i in 1:num_strata) {
-    interval = (cuts[i]+1):cuts[i+1]
-    m = M[interval,]
-    interval_ordered = order(m$y)
-    m_ordered = m[interval_ordered,]
-    group_size = N/num_strata^2
-    m_ordered$group = floor(0:(nrow(m_ordered)-1)/group_size)
-    W = rbind(W, ddply(m_ordered, .(group), sample_rows))
-  }
-  W$index
+  M = join(M,N,by="Input")
+  prev_order = M$PrevOrder
+  s$Input = reorder_levels(s$Input, prev_order)
+  s$Input = reorder_levels(s$Input, n:1)
+  
+  # Show error bars above zero
+  s$LowerPercentile[s$LowerPercentile<0] = 0
+  s
 }
 
-prevalence_lab = "Peak exposed prevalence (%)"
-cadaver_lab = "Peak cadaver prevalence (%)"
-
-successful =  "More successful biocontrol"
-unsuccessful = "Less successful biocontrol"
-sim$Outcome = unsuccessful
-sim$Outcome[sim$yieldImprovement > yieldThreshold] = successful
-sim$Outcome = factor(sim$Outcome)
-
-sub_plot = function(x,y,ylab,ylim) {
-  # Sub-sample 32^2*5 = 5,120 rows
-  sub_sample = stratify2d(sim[,x], sim[,y], 29, 5)
-  M = sim[sub_sample,]
-  M$Outcome = reorder_levels(M$Outcome, 2:1)
-
-  ggplot(M, aes_string(x,y)) +
-    geom_point(alpha=1, shape=16, size=0.3) +
-    scale_x_continuous(breaks = 5*(0:20), name="Crop growth stage") +
-    scale_y_continuous(limits=ylim,       name=ylab) +
-    facet_wrap(~Outcome, ncol=1, scales="free_y") +
-    theme_classic() +
+sub_plot = function(response, top_margin=10) {
+  s = pick_response(response)
+  
+  # Show y-axis labels
+  M = data.frame(
+    Response = rev(levels(s$Input))
+  )
+  colnames(M) = response
+  
+  # Now plot
+  col_width = 0.7
+  dodge = position_dodge(width = col_width)
+  ggplot(s, aes(x=Input, y=EffectMean, fill=Measure)) +
+    geom_col(position=dodge, width=col_width) +
+    geom_errorbar(aes(ymin=LowerPercentile, ymax=HigherPercentile), 
+                  size=0.3, width=0, colour="black",
+                  position=dodge) +
+    scale_fill_manual(values=grey_scale2) +
+    guides(colour = guide_legend(reverse=T), fill = guide_legend(reverse=T)) +
+    scale_y_continuous(limits=c(0,NA), expand=c(0,0)) +
+    labs(x="", y="") +
+    coord_flip() +
+    theme1 +
     theme(
-      strip.background = element_rect(colour=NA, fill="#D0D0D0"),
-      legend.position = "none"
-    )
+      legend.position = "none",
+      axis.ticks.y = element_blank(),
+      axis.text.y = element_blank(),
+      plot.margin = margin(top_margin,10,10,20)    
+    ) 
 }
 
 make_plot = function() {
   ggarrange(
-    sub_plot("maxPrevalenceGS", "maxPrevalence", prevalence_lab,  c(NA,NA)),
-    sub_plot("maxCadaverPrevalenceGS", "maxCadaverPrevalence", cadaver_lab,  c(0,100)),
-    ncol=1, align="hv", labels="auto"
+    sub_plot("maxPrevalence", 20),
+    sub_plot("maxCadaverPrevalence"),
+    sub_plot("yieldImprovement"),
+    ncol=1, align="hv", labels="auto", label.y=1.02
   )
 }
 
+make_table = function() {
+  rbind(
+    pick_response("maxPrevalence"),
+    pick_response("maxCadaverPrevalence"),
+    pick_response("yieldImprovement")
+  )
+}
 
 # Dimensions
 W = 84
-H = 150
+H = 200
 
 # Screen plot
 graphics.off()
@@ -99,7 +118,7 @@ print(make_plot())
 
 # Write figures
 write_figure = function(file_type) {
-  file_name_path = paste0(output_folder, "/fig-5-bw.", file_type)
+  file_name_path = paste0(output_folder, "/fig-6-bw.", file_type)
   print(paste("Writing figure to", file_name_path))
   if (file_type == "png")
     png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
@@ -112,6 +131,18 @@ write_figure = function(file_type) {
 }
 
 if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
+# Figure for manuscript id also used for journal after labels have been added in PowerPoint
 write_figure("png")
-write_figure("eps")
+
+file_name_path = paste0(output_folder, "/fig-5-bw.png")
+png(file_name_path, width=W, height=H, units="mm", res=1200, type="cairo-png")
+print(make_plot())
+dev.off()
+print(paste("Figure written to", file_name_path))
+
+# Write table with figure data
+file_name_path = paste0(output_folder, "/fig-6-bw-table.txt")
+write.table(make_table(), file_name_path, quote=FALSE, sep="\t", row.names=FALSE)
+
+
 

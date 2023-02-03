@@ -1,5 +1,5 @@
 # Load your sim data
-sim_data_file = "~/sites/ecolmod3/code/biocontrol-model-sa_0000.Rdata"
+sim_data_file = "~/sites/ecolmod3/download/aphid-biocontrol-sim.Rdata"
 
 # Load standard script
 source("~/QDev/UniSim3/input/scripts/begin.R")
@@ -37,69 +37,48 @@ yieldThreshold   = unname(quantile(sim$yieldImprovement,0.90))
 thresholdLabel = paste0(round(yieldThreshold,1), "%-points")
 print(paste("90% fractile of yield improvement =", thresholdLabel))
 
-density_lab = "Probability density\n"
-prevalence_lab = "Peak exposed prevalence (%)"
-cadaver_lab = "Peak cadaver prevalence (%)"
+M = sim
+M$Biocontrol = "Unsuccesful"
+M$Biocontrol[M$yieldImprovement>yieldThreshold] = "Successful"
+M$Biocontrol = factor(M$Biocontrol)
+M$Biocontrol = reorder_levels(M$Biocontrol, c(2:1))
 
-successful =  "More successful"
-unsuccessful = "Less successful"
-sim$Outcome = unsuccessful
-sim$Outcome[sim$yieldImprovement > yieldThreshold] = successful
-sim$Outcome = factor(sim$Outcome)
-
-make_density = function(col) {
-  dens = density(sim[sim$Outcome==successful, col])
-  M1 = data.frame(
-    Outcome = successful,
-    MaxPrevalence = dens$x, 
-    Density = dens$y
-  )
-  dens = density(sim[sim$Outcome==unsuccessful, col])
-  M2 = data.frame(
-    Outcome = unsuccessful,
-    MaxPrevalence = dens$x, 
-    Density = dens$y
-  )
-  rbind(M1, M2)
-}
 
 make_plot = function() {
-  a = 0.8
-  
-  M1 = make_density("maxPrevalence")
-  max(M1$Density)
-  M1$Density[M1$Density > 0.12] = 0.12
-  M2 = make_density("maxCadaverPrevalence")
-  
   ggarrange(
-    ggplot(M1,aes(MaxPrevalence)) +
-      geom_ribbon(ymin=0, aes(ymax=Density, fill=Outcome), colour="black", alpha=a, size=0.3) +
-      scale_discrete_manual(c("colour", "fill"), values=grey_scale2, name="Yield\nimprovement") +
-      scale_x_continuous(breaks=25*(0:4), limits=c(0,100)) +
-      labs(x=prevalence_lab, y=density_lab) +
+    ggplot(M, aes(percentageCadaversGs43, fill=Biocontrol)) +
+      scale_fill_manual(values=grey_scale2) +
+      geom_density(alpha=0.8, size=0.3) +
+      xlim(0,4) +
+      labs(x="Cadaver prevalence (%) in GS 43", y="") + 
       theme1 +
       theme(
         legend.position = "none"
       )
     ,
-    ggplot(M2,aes(MaxPrevalence)) +
-      geom_ribbon(ymin=0, aes(ymax=Density, fill=Outcome), colour="black", alpha=a, size=0.3) +
-      scale_discrete_manual(c("colour", "fill"), values=grey_scale2, name="Yield\nimprovement") +
-      scale_x_continuous(breaks=25*(0:4), limits=c(0,100)) +
-      labs(x=cadaver_lab, y=density_lab) +
+    ggplot(M, aes(percentageCadaversGs61, fill=Biocontrol)) +
+      scale_fill_manual(values=grey_scale2) +
+      geom_density(alpha=0.8, size=0.3) +
+      xlim(0,80) +
+      labs(x="Cadaver prevalence (%) in GS 61", y="Probability density") +
       theme1 +
       theme(
         legend.position = "none"
       )
     ,
-    ncol=1, align="hv", labels="auto"
+    ggplot(M, aes(percentageCadaversGs73, fill=Biocontrol)) +
+      scale_fill_manual(values=grey_scale2) +
+      geom_density(alpha=0.8, size=0.3) +
+      xlim(0,80) +
+      labs(x="Cadaver prevalence (%) in GS 73", y="") + 
+      theme1 +
+      theme(
+        legend.position = "none"
+      )
+    ,
+    ncol=1, align="hv"
   )
 }
-
-quantile(sim$maxPrevalence[sim$Outcome==unsuccessful], c(0.5, 0.95, 0.99))
-quantile(sim$maxPrevalence[sim$Outcome==successful],   c(0.5, 0.95, 0.99))
-quantile(sim$maxCadaverPrevalence[sim$Outcome==unsuccessful], c(0.5, 0.95, 0.99))
-quantile(sim$maxCadaverPrevalence[sim$Outcome==successful],   c(0.5, 0.95, 0.99))
 
 # Dimensions
 W = 84
@@ -127,5 +106,3 @@ write_figure = function(file_type) {
 if (!dir.exists(output_folder)) dir.create(output_folder, recursive=TRUE)
 write_figure("png")
 write_figure("eps")
-
-

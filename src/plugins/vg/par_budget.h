@@ -23,7 +23,7 @@ private:
     // Inputs
     double sunPar, growthLightsPar, indoorsTotalPar, Pn, cropCoverage;
     // Outputs
-    double indoorsGrowthLightPar, indoorsSunPar, photosynthesis;
+    double indoorsGrowthLightsPar, indoorsSunPar, photosynthesis;
 };
 
 } //namespace

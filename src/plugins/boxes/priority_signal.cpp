@@ -30,7 +30,7 @@ bool PrioritySignal::computeFlag() {
 
 double PrioritySignal::computeSignal(bool flag) {
     if (!flag)
-        return port("initialSignal")->value<bool>();
+        return port("initialSignal")->value<double>();
     for (auto[flag,signal] = std::pair(myFlags.begin(), mySignals.begin());
          flag!=myFlags.end(); ++flag, ++signal) {
         if (*flag)
