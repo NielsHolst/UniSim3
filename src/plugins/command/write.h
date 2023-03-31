@@ -5,6 +5,7 @@
 #ifndef WRITE_H
 #define WRITE_H
 #include <base/command.h>
+#include "write_options.h"
 
 namespace command {
 
@@ -15,10 +16,12 @@ public:
 private:
     // Methods
     void doExecute();
+    void extractOptions();
     void writeFile();
     void edit();
     // Data
     QString _filePath;
+    WriteOptionSet _options;
 };
 
 }

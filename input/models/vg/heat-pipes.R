@@ -1,66 +1,39 @@
 rm(list=ls(all=TRUE))
-library(ggplot2)
-library(ggpubr)
-library(plyr)
-library(reshape2)
+graphics.off()
+
 source("~/QDev/UniSim3/input/scripts/begin.R")
 
-pipe_density  = 2   # m/m2
-pipe_diameter = 30  # mm
-area          = 10000 # m2
-pipe_length   = pipe_density*area # m
-pipe_volume   = pi/4*(pipe_diameter/1000)^2*pipe_length # m3
-pipe_volume
+v = 3.0/60
 
-transit_time  = function(flow_rate) {
-  # flow_rate    : m3/h
-  # transit_time : min
-  pipe_volume/flow_rate*60
+y = function(yin0, yout, t) {
+  yout - (yout-yin0)*exp(-v*t)
 }
-transit_time(20)
 
-k     = 1.7e-4*37
-b     = 1.25
-Tair  = 20
-k
+x = 0:60
 
 M = expand.grid(
-  FlowRate = c(5, 10),
-  T0       = 30:80
+  Time = x,
+  Yin0 = c(15,25)
 )
-M = mutate(M,
-  TransitTime = transit_time(FlowRate),
-  DT_pipe = (k*(b-1)*TransitTime + (T0 - Tair)^(1-b))^(1/(1-b)),
-  E_pipe  = 4184*DT_pipe*pipe_volume/area/TransitTime*1000
-)
-# scale2 = 4184*pipe_volume/area/TransitTime*1000
-# M = melt(M, id.vars=c("FlowRate", "TransitTime", "T0"))
+M$Yin = with(M, y(Yin0, 20, Time))
+M$Yin0 = factor(M$Yin0)
 
-windows(4, 5.5)
-ggarrange(
-  ggplot(M, aes(T0, DT_pipe, colour=factor(FlowRate))) +
-    scale_colour_manual(values=c(blue, red)) +
-    guides(color = guide_legend(reverse = TRUE)) + 
-    ylim(0, NA) +
-    labs(x="",
-         y="Drop in pipe temperature (oC)",
-         colour="Flow rate\n(m3/h)") +
-    geom_line()
-  ,
-  ggplot(M, aes(T0, E_pipe, colour=factor(FlowRate))) +
-    scale_colour_manual(values=c(blue, red)) +
-    guides(color = guide_legend(reverse = TRUE)) + 
-    ylim(0, NA) +
-    labs(x="Pipe inlet temperature (oC)",
-         y="Energy emitted (W/m2)",
-         colour="Flow rate\n(m3/h)") +
-    geom_line()
-  ,
-  ncol = 1,
-  align = "v",
-  common.legend = TRUE,
-  legend="right"
-)
+windows(4,3)
+ggplot(M, aes(Time, Yin, colour=Yin0)) +
+  geom_line(size=1) +
+  geom_hline(yintercept=20, size=1) +
+  scale_x_continuous(breaks=15*(0:4)) +
+  labs(x="Minutes", y="Indoors temperature") +
+  theme_bw() +
+  theme(
+    legend.position="none",
+    axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)))
+  )
 
-               
+DT = y(c(15,25), 20, 2) - c(15,25)
+DT
+Cair = 1020*1.19
+Cair
+DT*Cair/120*3.938
+
 

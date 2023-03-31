@@ -68,12 +68,14 @@ HEADERS +=  \
     matrix2D.h \
     mega_factory.h \
     minimise.h \
+    monitor.h \
     node.h \
     organisation.h \
     operate.h \
     operator.h \
     path.h \
     port.h \
+    port_status.h \
     port_type.h \
     product.h \
     product_base.h \
@@ -145,6 +147,7 @@ SOURCES +=  \
     physiological_time.cpp \
     phys_math.cpp \
     port.cpp \
+    port_status.cpp \
     port_type.cpp \
     reader_base.cpp \
     reader_boxscript.cpp \

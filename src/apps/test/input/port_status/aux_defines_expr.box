@@ -1,0 +1,10 @@
+Simulation sim {
+  Box a {
+    &new = 2*sim[steps]
+  }
+  OutputR {
+  }
+  OutputSelector {
+  }
+}
+

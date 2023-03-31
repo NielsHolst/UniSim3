@@ -1,4 +1,3 @@
-rm(list=ls(all=TRUE))
 library(plyr)
 
 n = 25

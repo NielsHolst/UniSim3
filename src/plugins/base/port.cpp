@@ -16,6 +16,7 @@ namespace base {
 Port::Port(QString name, PortType type, Node *parent)
     : Node(name, parent),
       _type(type),
+      _status(PortStatus::Unknown),
       _hasBeenRedefined(false),
       _acceptNull(false),
       _isConstant(false),
@@ -54,6 +55,11 @@ Port& Port::help(QString value) {
     return *this;
 }
 
+Port& Port::status(PortStatus value) {
+    _status = value;
+    return *this;
+}
+
 void Port::outputName(QString name) {
     _outputName = name.replace("/", ".");
 }
@@ -88,7 +94,10 @@ void Port::define() {
                 value(Computation::toString(step)).context(this);
 
     // Register re-definition
-    _hasBeenRedefined = (step > Computation::Step::Construct);
+//    _hasBeenRedefined = (step > Computation::Step::Amend);
+//    _hasBeenRedefined = (step > Computation::Step::Construct);
+//    _hasBeenRedefined = !box->inConstructor();
+    _status = PortStatus::Redefined;
 
     // Set me as parent of the expression and of any paths in the expression
     _expression.setParent(this);
@@ -125,14 +134,34 @@ void Port::define() {
         touch();
 }
 
+void Port::asConstant(const Port *port) {
+    _isConstant = port->isConstant();
+}
+
+void Port::setDefaultStatus() {
+    switch (_status) {
+    case PortStatus::Unknown:
+        _status = PortStatus::TypeDefault;
+        break;
+    case PortStatus::Redefined:
+        _status = PortStatus::ConstructionDefault;
+        break;
+    case PortStatus::TypeDefault:
+    case PortStatus::ConstructionDefault:
+        ThrowException("Invalid status prior to setting default status").value(convert<QString>(_status)).context(this);
+    }
+}
+
 Port& Port::equals(const Value &value) {
     _expression.clear();
     _expression.push(value);
+    _unparsedExpression = _expression.originalAsString();
     define();
     return *this;
 }
 
 Port& Port::equals(const Expression &expression) {
+    _unparsedExpression = expression.originalAsString();
     _expression = expression;
     define();
     return *this;
@@ -236,6 +265,10 @@ QString Port::unit() const {
 
 QString Port::help() const {
     return _help;
+}
+
+PortStatus Port::status() const {
+    return _status;
 }
 
 QString Port::importPath() const {

@@ -90,8 +90,8 @@ isEmpty(BOOST_PATH) {
     BOOST_PATH = $$_PRO_FILE_PWD_/../../../../boost
 }
 INCLUDEPATH += $${BOOST_PATH}
-#message("Using boost libraries found in")
-#message($${BOOST_PATH})
+message("Using boost libraries found in")
+message($${BOOST_PATH})
 
 # Own libraries that we use, except 'base' does not use itself
 !equals(BOXES_PLUGIN_NAME, "base") {

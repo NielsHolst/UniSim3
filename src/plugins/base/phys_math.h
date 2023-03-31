@@ -32,7 +32,7 @@ constexpr double
     CpAirVol = CpAir*RhoAir,    //!< Volume-specific heat capacity of air (J/m3/K)
     CpWaterVol = CpWater*1000,  //!< Volume-specific heat capacity of water (J/m3/K)
     RhoCo2 = 1.98,              //!< Density of CO2 at T0 (kg/m3)
-    LHe = 2454e3,               //!< Latent heat of vaporisation of water (J/kg)
+    LHe = 2454e3,               //!< Latent heat of vaporisation of water (J/kg) at 20 oC
     Psychr = CpAir*P0/LHe/Mwa;  //!< Psychrometric constant (Pa/K)
 
 const double xGauss3[3] = {0.1127, 0.5, 0.8873},

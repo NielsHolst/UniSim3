@@ -21,7 +21,7 @@ bool Box::_debugOn = false;
 Box::Box(QString name, Box *parent)
     : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _timer(this)
 {
-    help("has no documented functionality");
+    help("is a container of boxes and ports");
     setClassName("base", "Box");
     if (!_latest || parent)
         _latest = this;
@@ -351,50 +351,6 @@ void Box::debug(bool on) {
 
 bool Box::debug() {
     return _debugOn;
-}
-
-void Box::toText(QTextStream &text, QString options, int indentation) const {
-    if (options.isEmpty())
-        options = "ioa";
-    bool writeOverriddenInputs = options.contains("I"),
-         writeAllInputs        = options.contains("i") && !writeOverriddenInputs,
-         writeOutputs          = options.contains("o"),
-         writeAux              = options.contains("a");
-
-    QString fill;
-    fill.fill(' ', indentation);
-
-    text << fill << className() << " " << objectName() << " { //" << order() << "\n";
-
-    for (Port *port : _portsInOrder) {
-        bool doWrite;
-        switch (port->type()) {
-        case PortType::Input:
-            doWrite = writeAllInputs || (writeOverriddenInputs && port->isValueOverridden());
-            break;
-        case PortType::Output:
-            doWrite = writeOutputs;
-            break;
-        case PortType::Auxiliary:
-            doWrite = writeAux;
-            break;
-        }
-        if (doWrite)
-            port->toText(text, indentation+2);
-    }
-
-    Box *me = const_cast<Box*>(this);
-    for (Box *box : me->findMany<Box*>("./*"))
-        box->toText(text, options, indentation+2);
-
-    text << fill << "}\n";
-}
-
-QString Box::toText(QString options) const {
-    QString s;
-    QTextStream text(&s);
-    toText(text, options, 0);
-    return s;
 }
 
 }

@@ -13,6 +13,7 @@
 #include <base/exception.h>
 #include <base/publish.h>
 #include "write.h"
+#include "write_output.h"
 
 using std::unique_ptr;
 using namespace base;
@@ -27,11 +28,17 @@ write::write(QString name, Box *parent)
 {
 }
 
-
 void write::doExecute() {
+    _args.removeAt(0);
+    extractOptions();
     writeFile();
-    if (_args.contains("edit"))
+    if (_options.contains(WriteOption::Edit))
         edit();
+}
+
+void write::extractOptions() {
+    QString ops = _args.join("");
+    _options = convert<WriteOptionSet>(ops);
 }
 
 void write::writeFile() {
@@ -42,7 +49,8 @@ void write::writeFile() {
         QFile file;
         environment().openOutputFile(file, ".box");
         QTextStream text(&file);
-        text << root->toText("I");
+        WriteOutput output(root, _options);
+        text << output.toString();
 
         _filePath = environment().outputFilePath(".box");
         QString info("Box script written to '%1'");

@@ -29,6 +29,7 @@ HEADERS +=  \
     test_convert_time.h \
     test_convert_vector.h \
     test_date_time_signal.h \
+    test_energy_budget_2.h \
     test_expression.h \
     test_expression_parser.h \
     test_flags.h \
@@ -39,12 +40,15 @@ HEADERS +=  \
     test_operate.h \
     test_output_selector.h \
     test_path.h \
+    test_phys_math.h \
+    test_port_status.h \
     test_reader_boxscript_x3.h \
     test_references.h \
     test_simulation.h \
     test_unique_names.h \
     test_value.h \
     test_value_collection.h \
+    ../../plugins/vg/energy_budget_2.h \
 
 SOURCES +=  \
     main.cpp \
@@ -62,6 +66,7 @@ SOURCES +=  \
     test_convert_time.cpp \
     test_convert_vector.cpp \
     test_date_time_signal.cpp \
+    test_energy_budget_2.cpp \
     test_expression.cpp \
     test_expression_parser.cpp \
     test_flags.cpp \
@@ -72,9 +77,12 @@ SOURCES +=  \
     test_operate.cpp \
     test_output_selector.cpp \
     test_path.cpp \
+    test_port_status.cpp \
+    test_phys_math.cpp \
     test_reader_boxscript_x3.cpp \
     test_references.cpp \
     test_simulation.cpp \
     test_unique_names.cpp \
     test_value.cpp \
     test_value_collection.cpp \
+    ../../plugins/vg/energy_budget_2.cpp \

@@ -61,8 +61,7 @@ void TestExpressionParser::testOperation() {
         e = boxscript::parser::parseExpression(port, "7 + 17.5");
     }
     UNEXPECTED_EXCEPTION;
-    QString s = e.stackAsString();
-    QCOMPARE(e.stackAsString(), "7{int} 17.5{double} +{Operator}");
+    QCOMPARE(e.stackAsString(true), "7{int} 17.5{double} +{Operator}");
 }
 
 void TestExpressionParser::testPathWithPort() {

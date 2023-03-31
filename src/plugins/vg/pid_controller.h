@@ -28,8 +28,8 @@ private:
     double controlVariable,
         error, integral, derivative, eta;
     // Data
-    double dt, prevSensedValue;
-    int tick;
+    double _dt, _prevSensedValue;
+    int _tick;
     // Methods
     void updateControlVariable();
 };

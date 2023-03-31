@@ -1,8 +1,4 @@
 # Prelude
-setwd("~/QDev/UniSim3/input/models/vg")
-source("0-energy-budget-functions.R")
-
-# Retrieve short-wave energy budget
 source("1-energy-budget-sw.R")
 
 # Constants
@@ -21,16 +17,20 @@ budget_lw = function() {
     Heating,0,0,1,0,0,1,NA,NA
     Floor,0.6,0.4,0,0,0,1,12,42000"
   )
+  M$E  = 0
+  M$E_ = 0
+  M$F  = 0
+  M$F_ = 0
+  M$A  = 0
+  M$A_ = 0
   M$C[is.na(M$C)] = Inf
   M = update_lw_emission(M)
-  M = update_driving(M)
+  M = update_driving_radiation(M)
   M
 }
 
 # Update long-wave emission by Boltzman's Law
 update_lw_emission = function(budget) {
-  budget$E  = 0
-  budget$E_ = 0
   ix = !is.na(budget$T)
   budget$E [ix] = sigma*budget$a_[ix]*(budget$T[ix] + T0)**4
   budget$E_[ix] = sigma*budget$a [ix]*(budget$T[ix] + T0)**4
@@ -38,7 +38,7 @@ update_lw_emission = function(budget) {
 }
 
 # Update driving variables
-update_driving = function(budget) {
+update_driving_radiation = function(budget) {
   # Short-wave absorption (computed earlier)
   budget$A     = final_sw$A
   budget$A_    = final_sw$A_
@@ -52,7 +52,7 @@ update_driving = function(budget) {
 }
 
 # Update temperature from net radiation absorption
-update_temperature = function(budget, dt) {
+update_temperature_by_radiation = function(budget, dt) {
   dT        = with(budget, (A + A_ - E - E_)/C*dt)
   budget$T  = budget$T + dT
   budget$A  = 
@@ -60,58 +60,67 @@ update_temperature = function(budget, dt) {
   budget
 }
 
-# Distribute long-wave radiation over a total time step ('dt') 
-# divided into 'num_sub_steps minor' time steps
-distribute_lw = function(rad, dt, num_sub_steps) {
+# Distribute long-wave radiation over time step ('dt') divided into 'n' smaller time steps
+distribute_lw = function(rad, dt, n) {
   max_dT = function(budget1, budget2) {
     max(abs(budget1$T - budget2$T), na.rm=TRUE)
   }
-  sub_dt = dt/num_sub_steps
-  rad$SE = 0
-  rad$SA = 0
+  sub_dt = dt/n
   R4 = rad 
   dT_step = NULL
-  for (i in 1:num_sub_steps) {
-    R1 = distribute_rad_iteratively(R4, FALSE)
-    R1$SE = R1$SE + (R1$E + R1$E_)*sub_dt
-    R1$SA = R1$SA + (R1$A + R1$A_)*sub_dt
-    R2 = update_temperature(R1,sub_dt)
+  for (i in 1:n) {
+    R1 = distribute_radiation(R4)
+    sumNetA = R1$A + R1$A_ - R1$E - R1$E_
+    R1$SumNetA = if (i==1) sumNetA else R1$SumNetA + sumNetA 
+    R2 = update_temperature_by_radiation(R1,sub_dt)
     R3 = update_lw_emission(R2)
-    R4 = update_driving(R3)
+    R4 = update_driving_radiation(R3)
     dT_step = c(dT_step, max_dT(R1, R2))
   }
-  list(R2[,c(1,8,14,15)], dT_step)
+  list(R2, dT_step)
 }
+
+r1 = function(x) round(x,1) 
 
 #
 # Main
 #
 
-# Update once down and up
-R0 = budget_lw()
-R1 = R0
-R1$F  = R1$E
-R1$F_ = R1$E_
-R2 = distribute_rad_down(R1)
-R3 = distribute_rad_up  (R2)
-# Update iteratively
-R6 = distribute_rad_iteratively(R1)
-# Show calculation steps
-round_budget(list(R0, R1, R2, R3, R6))
+# Update once
+R1 = budget_lw()
+R2 = distribute_radiation(R1)
+R3 = update_temperature_by_radiation(R2,180/6)
+R4 = update_lw_emission(R3)
+R5 = update_driving_radiation(R4)
 
-# Check temperature steps not too large
+# Check step 2 
+paste("Absorbed before  :", r1(sum(R1$A) + sum(R1$A_)))
+paste("Longwave emission:", r1(sum(R1$E) + sum(R1$E_)))
+paste("Longwave after   :", r1(sum(R1$A) + sum(R1$A_) + sum(R1$E) + sum(R1$E_)), "==" , r1(sum(R2$A) + sum(R2$A_)))
+
+# Show calculation steps
+llply(list(R1, R2, R3, R4, R5), round_lay)
+
+# Find number of minor time steps (n)
 dt = 180
-dT = distribute_lw(R0, dt, 1)[[2]]
+dT = distribute_lw(R1, dt, 1)[[2]]
 # Round temperature step up and choose number of substeps to achieve max dT of 0.5 oC
-num_sub_steps = ceiling(2*dT)
-num_sub_steps
+n = ceiling(dT/0.5)
+n
 
 # Update in minor time steps
-final      = distribute_lw(R0, dt, num_sub_steps)[[1]]
-final$NetJ = with(final, SA-SE) 
-final$dT   = final$NetJ/R0$C
-final$T0   = R0$T
-final$Tchk = with(final[[1]], T - dT)
-round_rad(final)
-sum(final$NetJ)/dt
+final = distribute_lw(R1, dt, n)[[1]]
+final$SumNetA = final$SumNetA*dt/n
+round_lay(final)
+round_lay(final[,-ncol(final)])
+
+ix = c(2,3,7)
+absorbed237           = (final$T[ix] - R1$T[ix])*final$C[ix]
+emitted_light_heating = (sum(R1$E[c(4,6)]) + sum(R1$E_[c(4,6)]))*dt
+
+list(
+  Absorbed237   = absorbed237, 
+  Totalbalance = sum(absorbed237) + final$SumNetA[1] + final$SumNetA[5] - emitted_light_heating
+)
+
 

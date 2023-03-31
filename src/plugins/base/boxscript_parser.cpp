@@ -48,7 +48,16 @@ Result parse(std::string source, std::string fileNamePath) {
 Expression parseExpression(Port *parent, QString s) {
     Computation::pushStep(Computation::Step::Scratch);
     BoxBuilder builder;
-    auto ast = parse("Box{\n  &x=" + s.toStdString() + "\n}");
+    Result ast;
+    try {
+        ast = parse("Box{\n  &x=" + s.toStdString() + "\n}");
+    }
+    catch (const base::Exception &ex) {
+//        QString hint = ex.what();
+//        auto i = hint.indexOf("Expecting");
+//        hint = hint.mid(i);
+        ThrowException("Ill-formed expression").value(s).context(parent);
+    }
     ast->root.build(&builder);
     auto root = std::unique_ptr<Box>( builder.root() );
     Expression e = root->port("x")->expression();

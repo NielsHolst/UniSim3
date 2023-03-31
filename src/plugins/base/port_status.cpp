@@ -1,0 +1,22 @@
+/* Copyright 2005-2021 by Niels Holst, Aarhus University [niels.holst at agro.au.dk].
+** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
+** See: www.gnu.org/licenses/lgpl.html
+*/
+#include "port_status.h"
+
+namespace base {
+
+template<> QString convert(PortStatus status) {
+    static QMap<PortStatus, QString> map =
+    {
+        {PortStatus::Unknown,             "unknown"},
+        {PortStatus::TypeDefault,         "type-default"},
+        {PortStatus::ConstructionDefault, "construction-default"},
+        {PortStatus::Redefined,           "redefined"}
+    };
+    return map.value(status);
+}
+
+
+}
+

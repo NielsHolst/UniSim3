@@ -776,12 +776,12 @@ QString Expression::typeName(const Element& el) {
     return s;
 }
 
-QString Expression::originalAsString() const {
-    return toString(_isClosed ? original() : stack());
+QString Expression::originalAsString(bool showType) const {
+    return toString(_isClosed ? original() : stack(), "", showType);
 }
 
-QString Expression::stackAsString() const {
-    return toString(stack());
+QString Expression::stackAsString(bool showType) const {
+    return toString(stack(), " ", showType);
 }
 
 const QVector<Port*> &Expression::importPorts() const {
@@ -795,14 +795,14 @@ QStringList Expression::importPortNames() const {
     return names;
 }
 
-QString Expression::toString(const Stack &stack) {
+QString Expression::toString(const Stack &stack, QString separator, bool showType) {
     QStringList str;
     for (auto &element : stack)
-        str << toString(element);
-    return str.join(" ");
+        str << toString(element, showType);
+    return str.join(separator);
 }
 
-QString Expression::toString(const Element &element) {
+QString Expression::toString(const Element &element, bool showType) {
     Expression::FunctionCall func;
     QString s;
     switch (type(element)) {
@@ -819,7 +819,9 @@ QString Expression::toString(const Element &element) {
     case Type::Conditional:     s = conditionalToString(get<Conditional>(element)); break;
     case Type::BoxPtrs       : s = "PortPointers"; break;
     }
-    return s; // +"{" + typeName(element) +"}";
+    if (showType)
+        s += "{" + typeName(element) + "}";
+    return s;
 }
 
 QString conditionalToString(Expression::Conditional cond) {

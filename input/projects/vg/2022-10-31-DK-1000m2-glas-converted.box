@@ -1,0 +1,1173 @@
+Simulation greenhouse{
+  .steps = 2200
+  .unattended = TRUE
+  Calendar calendar{
+    .latitude = 55.4038
+    .longitude = 10.4024
+    .begin = 2022/01/01-1
+    .end = 2022/01/11T00:00:00
+    .timeStep = 1
+    .timeUnit = "m"
+    Sun sun{
+    }
+  }
+  vg::Outdoors outdoors{
+    Records records{
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+    }
+    SkyTemperature skyTemperatureEstimate{
+    }
+    Accumulator soilTemperature{
+      .initial = ./initial[value]
+      .change = ./controller[controlVariable]
+      Hump initial{
+        .x = calendar[dayOfYear]
+        .x0 = 70
+        .x1 = 365
+        .ymin = 0
+        .ymax = 16
+      }
+      PidController controller{
+        .sensedValue = ..[value]
+        .desiredValue = outdoors[temperature]
+        .Kprop = 5e-05
+      }
+    }
+  }
+  Box construction{
+    vg::Geometry geometry{
+      .orientation = 0
+      .numSpans = 25
+      .spanWidth = 4
+      .length = 100
+      .height = 4
+      .roofPitch = 26
+      .reflection = 0.1
+    }
+    vg::Shelter shelter{
+      .screenAirExponent = 6
+      .Uair = 2.27
+      .screenUstateExponent = 32
+      .screenUventilationSlope = 0.5
+      .screenPerfection = 0.95
+      vg::ShelterFace roof1{
+        vg::ShelterFaceArea area{
+        }
+        vg::Cover cover{
+          .swReflectivityTop = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityTop = 0.8
+          .swTransmissivityBottom = 0.8
+          .lwReflectivityTop = 0.15
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityTop = 0.2
+          .lwTransmissivityBottom = 0.2
+          .UwindMinimum = 6.5
+          .UwindSlope = 1.2
+          .UwindExponent = 0.8
+        }
+        vg::Screens screens{
+          vg::ScreenRoof layer1{
+            .swReflectivityTop = 0
+            .swReflectivityBottom = 0.99
+            .swTransmissivityTop = 0.01
+            .swTransmissivityBottom = 0.01
+            .lwReflectivityTop = 0
+            .lwReflectivityBottom = 0.99
+            .lwTransmissivityTop = 0.01
+            .lwTransmissivityBottom = 0.01
+            .Utop = 70
+            .Ubottom = 70
+            .transmissivityAir = 0.02
+            .state = actuators/screens/layer1[value]
+          }
+          vg::ScreensAirTransmissivity airTransmissivity{
+          }
+        }
+        vg::Vent vent{
+          .length = 3
+          .width = 1
+          .number = 200
+          .transmissivity = 1
+        }
+      }
+      vg::ShelterFace roof2{
+        vg::ShelterFaceArea area{
+        }
+        vg::Cover cover{
+          .swReflectivityTop = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityTop = 0.8
+          .swTransmissivityBottom = 0.8
+          .lwReflectivityTop = 0.15
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityTop = 0.2
+          .lwTransmissivityBottom = 0.2
+          .UwindMinimum = 6.5
+          .UwindSlope = 1.2
+          .UwindExponent = 0.8
+        }
+        vg::Screens screens{
+          vg::ScreenRoof layer1{
+            .swReflectivityTop = 0.9
+            .swReflectivityBottom = 0.9
+            .swTransmissivityTop = 0.1
+            .swTransmissivityBottom = 0.1
+            .lwReflectivityTop = 0.9
+            .lwReflectivityBottom = 0.9
+            .lwTransmissivityTop = 0.1
+            .lwTransmissivityBottom = 0.1
+            .Utop = 0
+            .Ubottom = 0
+            .transmissivityAir = 0.2
+            .state = actuators/screens/layer1[value]
+          }
+          vg::ScreensAirTransmissivity airTransmissivity{
+          }
+        }
+        vg::Vent vent{
+          .length = 3
+          .width = 1
+          .number = 200
+          .transmissivity = 1
+        }
+      }
+      vg::ShelterFace side1{
+        vg::ShelterFaceArea area{
+        }
+        vg::Cover cover{
+          .swReflectivityTop = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityTop = 0.8
+          .swTransmissivityBottom = 0.8
+          .lwReflectivityTop = 0.15
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityTop = 0.2
+          .lwTransmissivityBottom = 0.2
+          .UwindMinimum = 6.5
+          .UwindSlope = 1.2
+          .UwindExponent = 0.8
+        }
+        vg::Screens screens{
+          vg::ScreenWall layer1{
+            .swReflectivityTop = 0.9
+            .swReflectivityBottom = 0.9
+            .swTransmissivityTop = 0.1
+            .swTransmissivityBottom = 0.1
+            .lwReflectivityTop = 0.9
+            .lwReflectivityBottom = 0.9
+            .lwTransmissivityTop = 0.1
+            .lwTransmissivityBottom = 0.1
+            .Utop = 0
+            .Ubottom = 0
+            .transmissivityAir = 0.2
+            .state = actuators/screens/layer1[value]
+          }
+          vg::ScreensAirTransmissivity airTransmissivity{
+          }
+        }
+      }
+      vg::ShelterFace side2{
+        vg::ShelterFaceArea area{
+        }
+        vg::Cover cover{
+          .swReflectivityTop = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityTop = 0.8
+          .swTransmissivityBottom = 0.8
+          .lwReflectivityTop = 0.15
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityTop = 0.2
+          .lwTransmissivityBottom = 0.2
+          .UwindMinimum = 6.5
+          .UwindSlope = 1.2
+          .UwindExponent = 0.8
+        }
+        vg::Screens screens{
+          vg::ScreenWall layer1{
+            .swReflectivityTop = 0.9
+            .swReflectivityBottom = 0.9
+            .swTransmissivityTop = 0.1
+            .swTransmissivityBottom = 0.1
+            .lwReflectivityTop = 0.9
+            .lwReflectivityBottom = 0.9
+            .lwTransmissivityTop = 0.1
+            .lwTransmissivityBottom = 0.1
+            .Utop = 0
+            .Ubottom = 0
+            .transmissivityAir = 0.2
+            .state = actuators/screens/layer1[value]
+          }
+          vg::ScreensAirTransmissivity airTransmissivity{
+          }
+        }
+      }
+      vg::ShelterFace end1{
+        vg::ShelterFaceArea area{
+        }
+        vg::Cover cover{
+          .swReflectivityTop = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityTop = 0.8
+          .swTransmissivityBottom = 0.8
+          .lwReflectivityTop = 0.15
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityTop = 0.2
+          .lwTransmissivityBottom = 0.2
+          .UwindMinimum = 6.5
+          .UwindSlope = 1.2
+          .UwindExponent = 0.8
+        }
+        vg::Screens screens{
+          vg::ScreenWall layer1{
+            .swReflectivityTop = 0.9
+            .swReflectivityBottom = 0.9
+            .swTransmissivityTop = 0.1
+            .swTransmissivityBottom = 0.1
+            .lwReflectivityTop = 0.9
+            .lwReflectivityBottom = 0.9
+            .lwTransmissivityTop = 0.1
+            .lwTransmissivityBottom = 0.1
+            .Utop = 0
+            .Ubottom = 0
+            .transmissivityAir = 0.2
+            .state = actuators/screens/layer1[value]
+          }
+          vg::ScreensAirTransmissivity airTransmissivity{
+          }
+        }
+      }
+      vg::ShelterFace end2{
+        vg::ShelterFaceArea area{
+        }
+        vg::Cover cover{
+          .swReflectivityTop = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityTop = 0.8
+          .swTransmissivityBottom = 0.8
+          .lwReflectivityTop = 0.15
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityTop = 0.2
+          .lwTransmissivityBottom = 0.2
+          .UwindMinimum = 6.5
+          .UwindSlope = 1.2
+          .UwindExponent = 0.8
+        }
+        vg::Screens screens{
+          vg::ScreenWall layer1{
+            .swReflectivityTop = 0
+            .swReflectivityBottom = 0.99
+            .swTransmissivityTop = 0.01
+            .swTransmissivityBottom = 0.01
+            .lwReflectivityTop = 0
+            .lwReflectivityBottom = 0.99
+            .lwTransmissivityTop = 0.01
+            .lwTransmissivityBottom = 0.01
+            .Utop = 70
+            .Ubottom = 70
+            .transmissivityAir = 0.02
+            .state = actuators/screens/layer1[value]
+          }
+          vg::ScreensAirTransmissivity airTransmissivity{
+          }
+        }
+      }
+    }
+    Box floor{
+      &reflectivity = 0.4
+      &Utop = 7.5
+      &Ubottom = 0.1
+      &heatCapacity = 42000
+    }
+  }
+  Box status{
+    RunningSumTimed lightSum{
+      .input = energyBudget[cropParFluxFromAbove]
+      .timeWindow = 10
+      .timeUnit = "d"
+    }
+    RunningAverageTimed temperatureAvg{
+      .initial = 20
+      .input = indoors/temperature[value]
+      .timeWindow = 20
+      .timeUnit = "d"
+    }
+  }
+  vg::Setpoints setpoints{
+    Box elementary{
+      PrioritySignal screenCrackAtHighRh{
+        .initialSignal = 0.05
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0.05
+        }
+      }
+      PrioritySignal padAndFansOn{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+      }
+      PrioritySignal humidifiersOn{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+      }
+      PrioritySignal heatPumpsOn{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+      }
+      PrioritySignal heatExchangersOn{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+      }
+      Box screens{
+        PrioritySignal screenEnergyThreshold1{
+          .initialSignal = 5
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5
+          }
+        }
+        PrioritySignal screenEnergyThreshold2{
+          .initialSignal = 5
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5
+          }
+        }
+        PrioritySignal screenEnergyThresholdBand{
+          .initialSignal = 0
+          .reverseOrder = TRUE
+        }
+        PrioritySignal screenShadeThreshold1{
+          .initialSignal = 500
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 500
+          }
+        }
+        PrioritySignal screenShadeThreshold2{
+          .initialSignal = 500
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 500
+          }
+        }
+        PrioritySignal screenShadeThresholdBand{
+          .initialSignal = 50
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 50
+          }
+        }
+        PrioritySignal screenFixed1{
+          .initialSignal = 0
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0
+          }
+        }
+        PrioritySignal screenFixed2{
+          .initialSignal = 0
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0
+          }
+        }
+        PrioritySignal screenLayer1{
+          .initialSignal = 0
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = ./code[value]
+            ScreenCombinationEncode code{
+              .formula = "shade1+energy1"
+            }
+          }
+        }
+        PrioritySignal screenLayer2{
+          .initialSignal = 0
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = ./code[value]
+            ScreenCombinationEncode code{
+              .formula = ""
+            }
+          }
+        }
+        PrioritySignal screenLayer3{
+          .initialSignal = 0
+          .reverseOrder = TRUE
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = ./code[value]
+            ScreenCombinationEncode code{
+              .formula = ""
+            }
+          }
+        }
+      }
+      Box growthLights{
+        Box growthLight1{
+          PrioritySignal thresholdLow{
+            .initialSignal = 40
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 40
+            }
+          }
+          PrioritySignal thresholdHigh{
+            .initialSignal = 600
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 600
+            }
+          }
+          PrioritySignal setting{
+            .initialSignal = 0
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 06:00:00
+              .endTime = 18:00:00
+              .signalInside = 1
+            }
+          }
+        }
+        Box growthLight2{
+          PrioritySignal thresholdLow{
+            .initialSignal = 40
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 40
+            }
+          }
+          PrioritySignal thresholdHigh{
+            .initialSignal = 600
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 600
+            }
+          }
+          PrioritySignal setting{
+            .initialSignal = 0
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0
+            }
+          }
+        }
+        Box growthLight3{
+          PrioritySignal thresholdLow{
+            .initialSignal = 40
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 40
+            }
+          }
+          PrioritySignal thresholdHigh{
+            .initialSignal = 600
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 600
+            }
+          }
+          PrioritySignal setting{
+            .initialSignal = 0
+            .reverseOrder = TRUE
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0
+            }
+          }
+        }
+      }
+      PrioritySignal chalk{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0
+        }
+      }
+      PrioritySignal co2VentilationBand{
+        .initialSignal = 0.2
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0.2
+        }
+      }
+      PrioritySignal co2VentilationThreshold{
+        .initialSignal = 0.1
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0.1
+        }
+      }
+      PrioritySignal co2Setpoint{
+        .initialSignal = 900
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 900
+        }
+      }
+      PrioritySignal co2Capacity{
+        .initialSignal = 50
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 50
+        }
+      }
+      PrioritySignal screenCrackAtHighTemperatureBand{
+        .initialSignal = 5
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 5
+        }
+      }
+      PrioritySignal screenCrackAtHighTemperature{
+        .initialSignal = 0.05
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0.05
+        }
+      }
+      PrioritySignal heatingTemperatureNormalRh{
+        .initialSignal = 20
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 20
+        }
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 06:00:00
+          .endTime = 18:00:00
+          .signalInside = 24
+        }
+      }
+      PrioritySignal crackVentilationTemperatureMinBand{
+        .initialSignal = 1
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 1
+        }
+      }
+      PrioritySignal crackVentilationTemperatureMin{
+        .initialSignal = -5
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = -5
+        }
+      }
+      PrioritySignal crackVentilationNormalTemperature{
+        .initialSignal = 0.05
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0.05
+        }
+      }
+      PrioritySignal ventilationTemperatureMargin{
+        .initialSignal = 5
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 5
+        }
+      }
+      PrioritySignal rhMinBand{
+        .initialSignal = 2
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 2
+        }
+      }
+      PrioritySignal rhMin{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+      }
+      PrioritySignal rhMaxBand{
+        .initialSignal = 5
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 5
+        }
+      }
+      PrioritySignal rhMax{
+        .initialSignal = 90
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 90
+        }
+      }
+      PrioritySignal minPipeTemperature2{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0
+        }
+      }
+      PrioritySignal minPipeTemperature1{
+        .initialSignal = 0
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0
+        }
+      }
+      PrioritySignal heatingTemperatureLowRhMargin{
+        .initialSignal = 5
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 5
+        }
+      }
+      PrioritySignal heatingTemperatureHighRhMargin{
+        .initialSignal = 2
+        .reverseOrder = TRUE
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 2
+        }
+      }
+    }
+    RunningAverageTimed avgRh{
+      .initial = indoors/humidity[rh]
+      .input = indoors/humidity[rh]
+      .timeWindow = 20.0
+      .timeUnit = "m"
+    }
+    ProportionalSignal heatingTemperatureHighRhIncrement{
+      .input = ../avgRh[value]
+      .threshold = ..[rhMax]
+      .thresholdBand = ..[rhMaxBand]
+      .minSignal = 0.0
+      .maxSignal = ..[heatingTemperatureHighRhMargin]
+      .increasingSignal = TRUE
+    }
+    ProportionalSignal heatingTemperatureLowRhIncrement{
+      .input = ../avgRh[value]
+      .threshold = ..[rhMin]
+      .thresholdBand = ..[rhMinBand]
+      .minSignal = 0.0
+      .maxSignal = ..[heatingTemperatureLowRhMargin]
+      .increasingSignal = FALSE
+    }
+    SetpointHeating heatingTemperature{
+    }
+    SetpointVentilation ventilationTemperature{
+    }
+    ProportionalSignal crackVentilation{
+      .input = indoors/humidity[rh]
+      .threshold = setpoints[rhMax]
+      .thresholdBand = setpoints[rhMaxBand]
+      .minSignal = 0
+      .maxSignal = ./maxCrackDepOnTemperature[value]
+      .increasingSignal = TRUE
+      ProportionalSignal maxCrackDepOnTemperature{
+        .input = outdoors[temperature]
+        .threshold = ../..[crackVentilationTemperatureMin]
+        .thresholdBand = ../..[crackVentilationTemperatureMinBand]
+        .minSignal = 0
+        .maxSignal = ../..[crackVentilationNormalTemperature]
+        .increasingSignal = TRUE
+      }
+    }
+    Maximum screenCrack{
+      .values = ./*[value]
+      ProportionalSignal atHighRh{
+        .input = indoors/humidity[rh]
+        .threshold = ../..[rhMax]
+        .thresholdBand = ../..[rhMaxBand]
+        .minSignal = 0.0
+        .maxSignal = ../..[screenCrackAtHighRh]
+        .increasingSignal = TRUE
+      }
+      ProportionalSignal atHighTemperature{
+        .input = indoors/temperature[value]
+        .threshold = ../../ventilationTemperature[value]
+        .thresholdBand = ../..[screenCrackAtHighTemperatureBand]
+        .minSignal = 0.0
+        .maxSignal = ../..[screenCrackAtHighTemperature]
+        .increasingSignal = TRUE
+      }
+    }
+  }
+  vg::Controllers controllers{
+    Box co2Injection{
+      &value = ./controller[controlVariable]
+      PidController controller{
+        .sensedValue = indoors/co2[value]
+        .desiredValue = setpoints[co2Setpoint]
+        .Kprop = 0.05
+        .lookAhead = 10
+      }
+    }
+    Box screens{
+      ProportionalSignal energy1{
+        .input = outdoors[radiation]
+        .threshold = setpoints[screenEnergyThreshold1]
+        .thresholdBand = setpoints[screenEnergyThresholdBand]
+        .maxSignal = setpoints[maxScreen]
+        .increasingSignal = FALSE
+      }
+      ProportionalSignal energy2{
+        .input = outdoors[radiation]
+        .threshold = setpoints[screenEnergyThreshold2]
+        .thresholdBand = setpoints[screenEnergyThresholdBand]
+        .maxSignal = setpoints[maxScreen]
+        .increasingSignal = FALSE
+      }
+      ProportionalSignal shade1{
+        .input = outdoors[radiation]
+        .threshold = setpoints[screenShadeThreshold1]
+        .thresholdBand = setpoints[screenShadeThresholdBand]
+        .maxSignal = setpoints[maxScreen]
+        .increasingSignal = TRUE
+      }
+      ProportionalSignal shade2{
+        .input = outdoors[radiation]
+        .threshold = setpoints[screenShadeThreshold2]
+        .thresholdBand = setpoints[screenShadeThresholdBand]
+        .maxSignal = setpoints[maxScreen]
+        .increasingSignal = TRUE
+      }
+      Box fixed1{
+        &value = setpoints[screenFixed1]
+      }
+      Box fixed2{
+        &value = setpoints[screenFixed2]
+      }
+      ScreenCombination layer1{
+        .code = setpoints/elementary/screens/screenLayer1[value]
+      }
+      ScreenCombination layer2{
+        .code = setpoints/elementary/screens/screenLayer2[value]
+      }
+      ScreenCombination layer3{
+        .code = setpoints/elementary/screens/screenLayer3[value]
+      }
+    }
+    Box growthLights{
+      GrowthLightController growthLight1{
+        .setting = setpoints[growthLightSetting1]
+        .lightThresholdLow = setpoints[growthLightThresholdLow1]
+        .lightThresholdHigh = setpoints[growthLightThresholdHigh1]
+      }
+      GrowthLightController growthLight2{
+        .setting = setpoints[growthLightSetting2]
+        .lightThresholdLow = setpoints[growthLightThresholdLow2]
+        .lightThresholdHigh = setpoints[growthLightThresholdHigh2]
+      }
+      GrowthLightController growthLight3{
+        .setting = setpoints[growthLightSetting3]
+        .lightThresholdLow = setpoints[growthLightThresholdLow3]
+        .lightThresholdHigh = setpoints[growthLightThresholdHigh3]
+      }
+    }
+  }
+  vg::Actuators actuators{
+    GrowthLights growthLights{
+      vg::GrowthLight growthLight1{
+        .on = controllers/growthLights/growthLight1[flagIsUp]
+        .intensity = 100
+        .parPhotonCoef = 2.5
+        .ageCorrectedEfficiency = 1
+      }
+    }
+    ActuatorHeatPipes heating{
+      .propConvection = 0.85
+      Box pipes{
+        vg::Pipe pipe1{
+          .density = 2
+          .diameter = 60
+          .flowRate = 10
+        }
+        vg::Pipe pipe2{
+          .density = 2
+          .diameter = 60
+          .flowRate = 10
+        }
+      }
+    }
+    ActuatorVentilation ventilation{
+    }
+    Box heatExchangers{
+    }
+    Box heatPumps{
+    }
+    Box humidifiers{
+      vg::ActuatorHumidifier humidifier1{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier2{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier4{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier5{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier6{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier7{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier8{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+      vg::ActuatorHumidifier humidifier3{
+        .efficiency = 1
+        .maxHumidification = 50
+        .maxPowerUserParasitic = 10
+      }
+    }
+    Box padAndFans{
+    }
+    Accumulator co2Injection{
+      .initial = 0
+      .change = controllers/co2Injection[value]
+      .minValue = 0
+      .maxValue = setpoints[co2Capacity]
+    }
+    Box screens{
+      Accumulator layer1{
+        .change = ./pid[controlVariable]
+        .minValue = 0.0
+        .maxValue = setpoints[maxScreen]
+        PidController pid{
+          .sensedValue = ..[value]
+          .desiredValue = controllers/screens/layer1[value]
+          .Kprop = 0.05
+        }
+      }
+      Accumulator layer2{
+        .change = ./pid[controlVariable]
+        .minValue = 0.0
+        .maxValue = setpoints[maxScreen]
+        PidController pid{
+          .sensedValue = ..[value]
+          .desiredValue = controllers/screens/layer2[value]
+          .Kprop = 0.05
+        }
+      }
+      Accumulator layer3{
+        .change = ./pid[controlVariable]
+        .minValue = 0.0
+        .maxValue = setpoints[maxScreen]
+        PidController pid{
+          .sensedValue = ..[value]
+          .desiredValue = controllers/screens/layer3[value]
+          .Kprop = 0.05
+        }
+      }
+    }
+  }
+  vg::EnergyBudgetOptimiser energyBudgetOptimiser{
+    .hasHeatSink = 0
+    vg::EnergyBudget energyBudget{
+      vg::HeatTransferSky sky{
+      }
+      vg::HeatTransferCover cover{
+      }
+      vg::HeatTransferScreen1 screen1{
+      }
+      vg::HeatTransferPipe pipe{
+      }
+      vg::HeatTransferCrop crop{
+      }
+      vg::HeatTransferFloor floor{
+      }
+    }
+    Box indoors{
+      vg::IndoorsVentilation ventilation{
+        vg::LeakageVentilation leakage{
+          .leakage = 0.1
+        }
+      }
+      vg::IndoorsTemperature temperature{
+      }
+    }
+  }
+  WaterBudget waterBudget{
+    vg::VapourFluxVentilation ventilation{
+    }
+    vg::VapourFluxTranspiration transpiration{
+    }
+    vg::VapourFluxCondensationCover condensationCrop{
+    }
+    vg::VapourFluxCondensationCover condensationCover{
+    }
+    vg::VapourFluxCondensationScreens condensationScreens{
+      VapourFluxCondensationScreen1 screen1{
+      }
+    }
+  }
+  Indoors indoors{
+    vg::IndoorsHumidity humidity{
+    }
+    vg::IndoorsCo2 co2{
+    }
+    vg::IndoorsWindSpeed windSpeed{
+    }
+  }
+  vg::Crop crop{
+    .lai = 1
+    .coverage = 0.95
+    .gammaStar = 55.47
+    .Jmax = 145.52
+    .lightRespiration = 0.74
+    .ballBerryIntercept = 0.1
+    .ballBerrySlope = 1.64
+    vg::LeafWindSpeed leafWindSpeed{
+    }
+    vg::BoundaryLayerResistanceStanghellini boundaryLayerResistance{
+    }
+    vg::LeafTranspiration transpiration{
+    }
+    vg::LeafTemperature temperature{
+    }
+    vg::CanopyPhotosynthesis photosynthesis{
+      Box top{
+        IntercellularCo2 intercellularCo2{
+        }
+        LeafParAbsorbed parAbsorbed{
+        }
+        LeafRespiration respiration{
+        }
+        LeafPhotosynthesisAj Aj{
+        }
+        StomatalResistanceBallBerry stomatalResistance{
+        }
+        LeafPhotosynthesis leafPhotosynthesis{
+        }
+      }
+      Box mid{
+        IntercellularCo2 intercellularCo2{
+        }
+        LeafParAbsorbed parAbsorbed{
+        }
+        LeafRespiration respiration{
+        }
+        LeafPhotosynthesisAj Aj{
+        }
+        StomatalResistanceBallBerry stomatalResistance{
+        }
+        LeafPhotosynthesis leafPhotosynthesis{
+        }
+      }
+      Box bottom{
+        IntercellularCo2 intercellularCo2{
+        }
+        LeafParAbsorbed parAbsorbed{
+        }
+        LeafRespiration respiration{
+        }
+        LeafPhotosynthesisAj Aj{
+        }
+        StomatalResistanceBallBerry stomatalResistance{
+        }
+        LeafPhotosynthesis leafPhotosynthesis{
+        }
+      }
+    }
+    vg::BigLeafPhotosynthesis bigLeaf{
+      Box leaf{
+        IntercellularCo2 intercellularCo2{
+        }
+        LeafParAbsorbed parAbsorbed{
+        }
+        LeafRespiration respiration{
+        }
+        LeafPhotosynthesisAj Aj{
+        }
+        StomatalResistanceBallBerry stomatalResistance{
+        }
+        LeafPhotosynthesis leafPhotosynthesis{
+        }
+      }
+    }
+  }
+  vg::Budget budget{
+  }
+  OutputR output{
+    vg::Outputs ports{
+      ParBudget parBudget{
+      }
+    }
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = output/children::ports[output::*]|controllers/children::co2Injection[*]|controllers/children::co2Injection/children::*[*]|actuators/children::co2Injection[*]
+        .ncol = 4
+      }
+    }
+    OutputSelector selector{
+      .useLocalDecimalChar = TRUE
+      .skipFormats = FALSE
+    }
+  }
+  OutputWriter outputWriter{
+  }
+}

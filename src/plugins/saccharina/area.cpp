@@ -37,7 +37,7 @@ void Area::update() {
     if (biomass > 0.) {
         leaf      = ca*pow(biomass, ea);
         crownZoneWidth    = cw*pow(biomass, ew);
-        crownZone = cz = crownZoneWidth;
+        crownZone = cz*crownZoneWidth;
         index     = leaf/crownZone;
     }
     else {

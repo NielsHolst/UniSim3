@@ -3,6 +3,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include "exception.h"
+#include "test_num.h"
 #include "vector_op.h"
 
 #define CHECK_SIZE(func, X) \
@@ -75,7 +76,6 @@ void inverse(Vec &v, const Vec &x, Node *context_) {
     }
 }
 
-
 //
 // Binary
 //
@@ -147,6 +147,17 @@ void product(Vec &v, const Vec &x, const Scalar &y) {
     const double *sender = x.data();
     while (i++ < n)
         *receiver++ = *sender++ * y;
+}
+
+bool eq(const Vec &x, const Vec &y, double feps, Node *context_) {
+    int i = 0, n = x.size();
+    CHECK_SIZE("eq", y);
+    const double *sender1 = x.data();
+    const double *sender2 = y.data();
+    bool equal = true;
+    while (i++ < n && equal)
+        equal = TestNum::eq(*sender1++, *sender2++, feps);
+    return equal;
 }
 
 //

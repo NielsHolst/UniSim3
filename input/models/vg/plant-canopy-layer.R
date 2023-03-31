@@ -1,10 +1,3 @@
-rm(list=ls(all=TRUE))
-library(ggplot2)
-library(plyr)
-library(reshape2)
-
-source("~/QDev/UniSim3/input/scripts/begin.R")
-
 sigma = 0.2
 rho_h = (1 - sqrt(1-sigma))/(1 + sqrt(1-sigma))
 rho_h
@@ -33,9 +26,27 @@ M$transmissivity = with(M, tau  (k, Lai))
 M = melt(M, id.vars=c("k","Lai"), variable.name="Parameter", value.name="Value")
 M$klab = paste("k =", M$k)
 
+windows(7,3)
 ggplot(M, aes(Lai, Value, fill=Parameter)) +
   geom_area(alpha=0.3) +
   scale_fill_manual(values=c(blue, green, red), name="") +
   labs(x="LAI", y="") + 
   facet_wrap(~klab, nrow=1)
+
+round(
+  c(
+    alpha(0.65, 1.9),
+    rho(  0.65, 1.9),
+    tau(  0.65, 1.9)
+  )
+  , 2
+)
   
+round(
+  c(
+    alpha(1, 1.9),
+    rho(  1, 1.9),
+    tau(  1, 1.9)
+  )
+  , 2
+)

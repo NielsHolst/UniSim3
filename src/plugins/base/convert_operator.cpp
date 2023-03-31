@@ -17,7 +17,7 @@ template<> QString convert(Operator op) {
     case Operator::NotEqual:      return "!=";
     case Operator::And:           return "&&";
     case Operator::Or:            return "||";
-    case Operator::Negate:        return "--";
+    case Operator::Negate:        return "-";
     case Operator::Not:           return "!";
     case Operator::Comma:         return ",";
     }

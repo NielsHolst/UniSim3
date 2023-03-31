@@ -35,6 +35,7 @@ HEADERS +=  \
     diffuse_irradiation_base.h \
     diffuse_irradiation_RE.h \
     energy_budget.h \
+    energy_budget_2.h \
     energy_budget_optimiser.h \
     geometry.h \
     growth_light_controller.h \
@@ -138,6 +139,7 @@ SOURCES += \
     diffuse_irradiation_base.cpp \
     diffuse_irradiation_RE.cpp \
     energy_budget.cpp \
+    energy_budget_2.cpp \
     energy_budget_optimiser.cpp \
     geometry.cpp \
     growth_light_controller.cpp \

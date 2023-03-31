@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <box xmlns:ecolmod="http://www.ecolmod.org" class="Simulation" name="greenhouse">
-	<!-- <port name="steps" value="10000"/> -->
+	<port name="steps" value="2200"/>
 	<port name="unattended" value="TRUE"/>
 	<!-- *** Calendar *** -->
 	<box class="Calendar" name="calendar">
 		<port name="begin" source="/VG_SETUP/Description/StartTime" computes="01.01.2022 - 1"/>
-		<port name="end" source="/VG_SETUP/Description/StopTime" value="31.12.2022T24:00:00"/>
+		<port name="end" source="/VG_SETUP/Description/StopTime" value="10.01.2022T24:00:00"/>
 		<port name="timeStep" source="/VG_SETUP/Description/TimeStep" value="1"/>
-		<port name="timeUnit" value="m" source="Fixed"/>
+		<port name="timeUnit" value='"m"' source="Fixed"/>
 		<port name="latitude" source="/VG_SETUP/Description/Latitude" value="55.4038"/>
 		<port name="longitude" source="/VG_SETUP/Description/Longitude" value="10.4024"/>
 		<box class="Sun" name="sun"/>
@@ -15,7 +15,7 @@
 	<!-- *** Outdoors *** -->
 	<box class="vg::Outdoors" name="outdoors">
 		<box class="Records" name="records">
-			<port name="fileName" source="/VG_SETUP/Description/WeatherFile" value="DNK_Odense.txt"/>
+			<port name="fileName" source="/VG_SETUP/Description/WeatherFile" value='"DNK_Odense.txt"'/>
 			<port name="cycle" value="TRUE"/>
 		</box>
 	</box>
@@ -252,13 +252,13 @@
 	<box name="status">
 		<box class="RunningSumTimed" name="lightSum">
 			<port name="input" ref="energyBudget[cropParFluxFromAbove]"/>
-			<port name="timeUnit" value="d"/>
+			<port name="timeUnit" value='"d"'/>
 			<port name="timeWindow" source="/VG_SETUP/Status/LightSum" value="10"/>
 		</box>
 		<box class="RunningAverageTimed" name="temperatureAvg">
 			<port name="initial" value="20"/>
 			<port name="input" ref="indoors/temperature[value]"/>
-			<port name="timeUnit" value="d"/>
+			<port name="timeUnit" value='"d"'/>
 			<port name="timeWindow" source="/VG_SETUP/Status/TemperatureAvg" value="20"/>
 		</box>
 	</box>
@@ -696,7 +696,7 @@
 						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive1" value="00:00"/>
 						<port name="signalInside" ref="./code[value]"/>
 						<box name="code" class="ScreenCombinationEncode">
-							<port name="formula" value="shade1+energy1"/>
+							<port name="formula" value='"shade1+energy1"'/>
 						</box>
 					</box>
 				</box>
@@ -710,7 +710,7 @@
 						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive2" value="00:00"/>
 						<port name="signalInside" ref="./code[value]"/>
 						<box name="code" class="ScreenCombinationEncode">
-							<port name="formula" value=""/>
+							<port name="formula" value='""'/>
 						</box>
 					</box>
 				</box>
@@ -724,7 +724,7 @@
 						<port name="endTime" source="/VG_SETUP/Greenhouse/Climate/Setpoint/screenActive3" value="00:00"/>
 						<port name="signalInside" ref="./code[value]"/>
 						<box name="code" class="ScreenCombinationEncode">
-							<port name="formula" value=""/>
+							<port name="formula" value='""'/>
 						</box>
 					</box>
 				</box>
@@ -871,7 +871,7 @@
 			<port name="xAxis" value="calendar[dateTime]"/>
 			<box class="PlotR">
 				<port name="ncol" value="4"/>
-				<port name="ports" value="output/ports[output::*]"/>
+				<port name="ports" value="output/ports[output::*] | controllers/co2Injection[*] | controllers/co2Injection/*[*] | actuators/co2Injection[*]"/>
 			</box>
 		</box>
 		<box class="OutputSelector" name="selector">

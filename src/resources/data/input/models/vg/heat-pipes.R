@@ -1,9 +1,3 @@
-rm(list=ls(all=TRUE))
-library(ggplot2)
-library(plyr)
-library(reshape2)
-source("~/QDev/UniSim3/input/scripts/begin.R")
-
 pipe_density  = 2   # m/m2
 pipe_diameter = 30  # mm
 area          = 10000 # m2

@@ -35,8 +35,8 @@ void TestBox::testClone() {
     QCOMPARE(root->findOne<Port*>(     "A/B/D[inflow]")->value<double>(), 1000.);
     QCOMPARE(root->findOne<Port*>("Aclone/B/D[inflow]")->value<double>(), 1000.);
 
-    QCOMPARE(root->findOne<Port*>(     "A/B/D[k]")->expression().originalAsString(), QString("..[b]{Path}"));
-    QCOMPARE(root->findOne<Port*>("Aclone/B/D[k]")->expression().originalAsString(), QString("..[b]{Path}"));
+    QCOMPARE(root->findOne<Port*>(     "A/B/D[k]")->expression().originalAsString(true), QString("..[b]{Path}"));
+    QCOMPARE(root->findOne<Port*>("Aclone/B/D[k]")->expression().originalAsString(true), QString("..[b]{Path}"));
 
     QCOMPARE(root->findOne<Port*>(     "A[a]")->value<int>(), 13);
     QCOMPARE(root->findOne<Port*>("Aclone[a]")->value<int>(), 13);
@@ -44,7 +44,7 @@ void TestBox::testClone() {
     QCOMPARE(root->findOne<Port*>(     "A/B[b]")->value<int>(), 14);
     QCOMPARE(root->findOne<Port*>("Aclone/B[b]")->value<int>(), 14);
 
-    QCOMPARE(root->findOne<Port*>(     "A/C[c]")->expression().originalAsString(), QString("D[k]{Path}"));
-    QCOMPARE(root->findOne<Port*>("Aclone/C[c]")->expression().originalAsString(), QString("D[k]{Path}"));
+    QCOMPARE(root->findOne<Port*>(     "A/C[c]")->expression().originalAsString(true), QString("D[k]{Path}"));
+    QCOMPARE(root->findOne<Port*>("Aclone/C[c]")->expression().originalAsString(true), QString("D[k]{Path}"));
 
 }

@@ -34,12 +34,12 @@ void TestExpression::testToPostfix() {
     expr.push(Operator::Multiply);
     expr.push(2);
 
-    QCOMPARE(expr.originalAsString(), "17.5{double} +{Operator} 123{int} *{Operator} 2{int}");
+    QCOMPARE(expr.originalAsString(true), "17.5{double}+{Operator}123{int}*{Operator}2{int}");
     try {
         expr.close();
     }
     UNEXPECTED_EXCEPTION;
-    QCOMPARE(expr.stackAsString(), "17.5{double} 123{int} 2{int} *{Operator} +{Operator}");
+    QCOMPARE(expr.stackAsString(true), "17.5{double} 123{int} 2{int} *{Operator} +{Operator}");
 
     expr.clear();
     expr.push(17.5);
@@ -48,12 +48,12 @@ void TestExpression::testToPostfix() {
     expr.push(Operator::Add);
     expr.push(2);
 
-    QCOMPARE(expr.originalAsString(), "17.5{double} *{Operator} 123{int} +{Operator} 2{int}");
+    QCOMPARE(expr.originalAsString(true), "17.5{double}*{Operator}123{int}+{Operator}2{int}");
     try {
         expr.close();
     }
     UNEXPECTED_EXCEPTION;
-    QCOMPARE(expr.stackAsString(), "17.5{double} 123{int} *{Operator} 2{int} +{Operator}");
+    QCOMPARE(expr.stackAsString(true), "17.5{double} 123{int} *{Operator} 2{int} +{Operator}");
 
 
 
@@ -105,7 +105,7 @@ void TestExpression::testAddition() {
     e.push(Operator::Multiply);
     e.push(2);
     e.close();
-    QCOMPARE(e.stackAsString(), "8{int} 9{int} 2{int} *{Operator} +{Operator}");
+    QCOMPARE(e.stackAsString(true), "8{int} 9{int} 2{int} *{Operator} +{Operator}");
 
     Value result;
     try {
@@ -130,9 +130,9 @@ void TestExpression::testResultType() {
     e.push(9.5);
     e.push(Operator::Multiply);
     e.push(2);
-    QCOMPARE(e.stackAsString(), "8{int} +{Operator} 9.5{double} *{Operator} 2{int}");
+    QCOMPARE(e.stackAsString(true), "8{int} +{Operator} 9.5{double} *{Operator} 2{int}");
     e.close();
-    QCOMPARE(e.stackAsString(), "8{int} 9.5{double} 2{int} *{Operator} +{Operator}");
+    QCOMPARE(e.stackAsString(true), "8{int} 9.5{double} 2{int} *{Operator} +{Operator}");
 
     Value result;
     try {
@@ -159,7 +159,7 @@ void TestExpression::testNegation() {
     e.push(Operator::Multiply);
     e.push(2);
     e.close();
-    QCOMPARE(e.stackAsString(), "8{int} --{Operator} 9{int} 2{int} *{Operator} +{Operator}");
+    QCOMPARE(e.stackAsString(true), "8{int} -{Operator} 9{int} 2{int} *{Operator} +{Operator}");
 
     Value result;
     try {
@@ -187,7 +187,7 @@ void TestExpression::testExponentiation() {
     e.push(Operator::Multiply);
     e.push(4);
     e.close();
-    QCOMPARE(e.stackAsString(), "8{int} 9{int} 2{int} ^{Operator} 4{int} *{Operator} +{Operator}");
+    QCOMPARE(e.stackAsString(true), "8{int} 9{int} 2{int} ^{Operator} 4{int} *{Operator} +{Operator}");
 
     Value result;
     try {
@@ -225,7 +225,7 @@ void TestExpression::testFunctionCall() {
         e.close();
     }
     UNEXPECTED_EXCEPTION;
-    QCOMPARE(e.stackAsString(),
+    QCOMPARE(e.stackAsString(true),
         "8{int} 2{int} 3{int} *{Operator} +{Operator} ,{Operator} "
         "13{int} ,{Operator} 14{int} ,{Operator} sum[3]{FunctionCall} 100{int} -{Operator}");
 
@@ -256,7 +256,7 @@ void TestExpression::testParentheses() {
         e.close();
     }
     UNEXPECTED_EXCEPTION;
-    QCOMPARE(e.stackAsString(),
+    QCOMPARE(e.stackAsString(true),
         "3{int} 4{int} +{Operator}");
 
     Value result = e.evaluate();

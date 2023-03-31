@@ -80,57 +80,15 @@ Outputs::Outputs(QString name, Box *parent)
     Output(lightUseEfficiency).imports("/budget[lightUseEfficiency]");
     Output(lightSum).imports("status/lightSum[value]");
     Output(temperatureAvg).imports("status/temperatureAvg[value]");
-
-
-//    Output(vapourFluxTranspiration).imports("waterBudget/transpiration[vapourFlux]");
-//    Output(vapourFluxCondensationCrop).imports("waterBudget/condensationCrop[vapourFlux]");
-//    Output(vapourFluxCondensationCover).imports("waterBudget/condensationCover[vapourFlux]");
-//    Output(vapourFluxCondensationdScreens).imports("waterBudget/condensationScreens[vapourFlux]");
-//    Output(vapourFluxVentilation).imports("waterBudget/ventilation[vapourFlux]");
-
-
-//    Output(totalIrradiation).imports("budget[skyIrradiation]");
-//    Output(totalSkyAbsorbed).imports("budget[skyRadiationAbsorbed]");
-//    Output(totalSkySwAbsorbed).imports("budget[skySwRadiationAbsorbed]");
-//    Output(totalSkyLwAbsorbed).imports("budget[skyLwRadiationAbsorbed]");
-//    Output(totalVentilationEnergy).imports("budget[ventilationEnergy]");
-//    Output(totalConvectionEnergy).imports("budget[convectionEnergy]");
-//    Output(totalSoilEnergy).imports("budget[soilEnergy]");
-//    Output(totalHeatingEnergy).imports("budget[heatingEnergy]");
-//    Output(totalHeatSink).imports("budget[heatSinkEnergy]").acceptNull();
-//    Output(totalGrowthLightEnergy).imports("budget[growthLightEnergy]");
-//    Output(totalParAbsorbed).imports("budget[parAbsorbedTotal]");
-//    Output(totalCo2).imports("budget[co2Total]");
-
-//        Output(thermostatState).imports("energyBudgetOptimiser[state]");
-//        Output(thermostatAction).imports("energyBudgetOptimiser[action]");
-//        Output(thermostatSolution).imports("energyBudgetOptimiser[solution]");
 }
 
 void Outputs::amend() {
     BoxBuilder builder(this);
-    builder.
-        box("ParBudget").name("parBudget").
-        endbox();
+    if (!findMaybeOne<Box*>("./parBudget"))
+        builder.
+            box("ParBudget").name("parBudget").
+            endbox();
 }
-
-//void Outputs::reset() {
-//    update();
-//}
-
-//void Outputs::update() {
-//    // Total par hitting the crop (ideally)
-//    double cropTotalPar = sunPar + growthLightsPar/cropCoverage;
-//    if (cropTotalPar > 1e-6) {
-//        // Sun proportion of ideal total
-//        double propSun = sunPar/cropTotalPar;
-//        indoorsSunPar          = propSun     *indoorsTotalPar;
-//        indoorsGrowthLightsPar = (1.-propSun)*indoorsTotalPar;
-//    }
-//    else {
-//        indoorsSunPar = indoorsGrowthLightsPar = 0.;
-//    }
-//}
 
 
 } //namespace

@@ -62,7 +62,5 @@ void TestMaker::testNames() {
     UNEXPECTED_EXCEPTION;
     QVERIFY2(!root->port("hasError")->value<bool>(), str(root->port("errorMsg")->value<QString>()));
 
-    std::cout << qPrintable(root->toText("ioa")) << std::endl;
-
     QCOMPARE(Node::names(root->findMany<Box*>("system/*")), QStringList() << "X" << "Y" << "Z");
 }

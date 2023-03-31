@@ -11,6 +11,9 @@ private slots:
     void testInvCumNormal();
     void testInferNormal();
     void testInvNormalRange();
+
+    void testSvp();
+    void testSvpSlope();
 };
 
 DECLARE_TEST(TestPhysMath)

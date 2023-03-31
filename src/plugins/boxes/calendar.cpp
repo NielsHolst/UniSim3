@@ -50,13 +50,17 @@ Calendar::Calendar(QString name, Box *parent)
 void Calendar::initialize() {
     // Some classes may need the outputs already in their initialize step
     reset();
+    //    port("timeStepSecs")->asConstant(port("timeStep"));
+    //    port("timeStepDays")->asConstant(port("timeStep"));
 }
 
 void Calendar::reset() {
+    // Set up time step
     if (timeStep < 1)
         ThrowException("Time step ('timeStep') must be larger than zero").value(timeStep);
     timeStepSecs = timeStep * Time::toSeconds(timeUnit);
     timeStepDays = timeStep * Time::toDays(timeUnit);
+
     dateTime = begin;
     if (end.isValid()) {
         if (begin >= end)

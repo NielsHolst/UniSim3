@@ -219,7 +219,7 @@ void Allocation::storeN() {
 }
 
 void Allocation::storeC() {
-    double withCost = 1. + lambdaC;
+    double withCost = 1. + lambdaC/concCC;
     SCC = take(DCC*withCost, {Source::UptakenC})/withCost;
     supplyStoreC5 = SCC/concCC;
     sdStoreN = sd(SCC, DCC);

@@ -31,7 +31,7 @@ unisim.depends = command
 #aphid.subdir = src/plugins/aphid
 #aphid.depends = base
 #unisim.depends = aphid
-#
+
 #SUBDIRS += cmbp
 #cmbp.subdir = src/plugins/cmbp
 #cmbp.depends = base
@@ -82,14 +82,14 @@ unisim.depends = vg
 # Unit tests
 #
 
-#SUBDIRS += test
-#test.subdir = src/apps/test
-#test.depends = base
+SUBDIRS += test
+test.subdir = src/apps/test
+test.depends = base
 
-#SUBDIRS += test_boxes
-#test_boxes.subdir = src/plugins/test_boxes
-#test_boxes.depends = base
+SUBDIRS += test_boxes
+test_boxes.subdir = src/plugins/test_boxes
+test_boxes.depends = base
 
-#SUBDIRS += test_boxes2
-#test_boxes2.subdir = src/plugins/test_boxes2
-#test_boxes2.depends = base
+SUBDIRS += test_boxes2
+test_boxes2.subdir = src/plugins/test_boxes2
+test_boxes2.depends = base

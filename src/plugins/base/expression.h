@@ -78,12 +78,12 @@ public:
     static Type type(const Element& el) { int i=el.index(); return static_cast<Type>(i); }
     static QString typeName(const Element& el);
 
-    QString originalAsString() const;
-    QString stackAsString() const;
+    QString originalAsString(bool showType = false) const;
+    QString stackAsString(bool showType = false) const;
     const QVector<Port*> &importPorts() const;
     QStringList importPortNames() const;
-    static QString toString(const Stack &stack);
-    static QString toString(const Element &element);
+    static QString toString(const Stack &stack, QString separator, bool showType = false);
+    static QString toString(const Element &element, bool showType = false);
 private:
     // Data
     Port *_parent;

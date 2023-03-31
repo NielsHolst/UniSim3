@@ -87,7 +87,6 @@ public:
     void startTimer(QString name);
     void stopTimer(QString name);
 
-    QString toText(QString options = "") const;
     QString profileReport();
 private:
     // Data
@@ -104,7 +103,6 @@ private:
     void createTimers();
     void addPort(QMap<QString,Port*> &ports, Port *port);
     void clearPorts();
-    void toText(QTextStream &text, QString options, int indentation) const;
     Timer::Report collectTimerReport();
 };
 

@@ -99,8 +99,7 @@ double ssh(double temperature) {
     \return saturated water vapour pressure (Pa)
  */
 double svp(double temperature) {
-    double T = temperature + T0;
-    return 133.32*exp((1.0887*T - 276.4)/(0.0583*T - 2.1938));
+    return 610.8*exp(17.27*temperature/(temperature+237.3));
 }
 
 //! Compute slope of saturated water vapour pressure curve on temperature
@@ -108,11 +107,7 @@ double svp(double temperature) {
     \return saturated water vapour pressure slope, dsvp/dT (Pa/K)
  */
 double svpSlope(double temperature) {
-    double T = temperature + T0,
-        a = 1.088/(0.0583*T - 2.1938),
-        b = (1.0887*T - 276.4) / p2(0.0583*T - 2.1938),
-        c = (1.0887*T - 276.4) / (0.0583*T - 2.1938);
-    return 133.32*(a +  b*0.0583)*exp(c);
+    return 4098*svp(temperature)/p2(temperature+237.3);
 }
 
 // Relative measures of water vapour

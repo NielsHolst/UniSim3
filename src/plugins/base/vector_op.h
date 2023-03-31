@@ -32,6 +32,7 @@ void difference(Vec &v, const Vec &x, const Scalar &y);
 void difference(Vec &v, const Scalar &x, const Vec &y);
 void product(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
 void product(Vec &v, const Vec &x, const Scalar &y);
+bool eq(const Vec &x, const Vec &y, double feps = 1e-6, base::Node *context=nullptr);
 
 // Summary
 double sum(const Vec &x);

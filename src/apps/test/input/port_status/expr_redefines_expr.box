@@ -1,0 +1,7 @@
+Simulation sim {
+  .steps = 3*7*2
+  OutputR {
+  }
+  OutputSelector {
+  }
+}

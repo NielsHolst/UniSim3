@@ -1,5 +1,5 @@
 #ifndef TEST_BITSET_H
-#define TEST_BISET_H
+#define TEST_BITSET_H
 #include "autotest.h"
 
 class TestBitset : public QObject

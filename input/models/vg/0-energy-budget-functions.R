@@ -1,10 +1,13 @@
-rm(list=ls(all=TRUE))
+# Prelude
+# rm(list=ls(all=TRUE))
+# graphics.off()
 library(plyr)
+library(reshape2)
 
 distribute_rad_down = function(rad) {
   n = nrow(rad)
   for (i in 1:(n-1)) {
-    # Correct absorption and transmission of this layer and layer radelow
+    # Correct absorption and transmission of this layer and layer below
     # for reflections ad infinitum between the two layers
     k   = 1 - rad$r[i+1]*rad$r_[i]
     ah  = rad$a[i+1]/k
@@ -68,7 +71,7 @@ distribute_rad_up = function(rad) {
   rad
 }
 
-distribute_rad_iteratively = function(rad, verbose=TRUE) {
+distribute_radiation = function(rad, verbose=TRUE) {
   iter = 0
   precision = 1e-6
   R1 = rad
@@ -80,26 +83,47 @@ distribute_rad_iteratively = function(rad, verbose=TRUE) {
     R1 = distribute_rad_up  (R0)
   }
   if (verbose) print(paste(iter, "iterations needed"))
-  m = ncol(R1)
-  R1[,1:(m-2)]
+  R1
 }
 
-round_rad = function(x) {
-  M = cbind(x[,1], round(x[,-1],2))
-  colnames(M)[1] = colnames(x)[1]
+round_lay = function(x, include_rad_par=TRUE, include_F=FALSE) {
+  if (!include_F) {
+	ix = which(colnames(x)=="F" | colnames(x)=="F_")
+	x = x[,-ix]
+  }
+  layer   = x[,1]
+  rad_par = x[,2:7]
+  rest    = x[,8:ncol(x)] 
+  if (include_rad_par) {
+	M = cbind(layer, round(rad_par,2), round(rest,1))
+    colnames(M) = colnames(x)
+  } else {
+	M = cbind(layer, round(rest,1))
+	colnames(M) = colnames(x)[c(1, 8:ncol(x))]
+  }
+  M
+}
+
+round_vol = function(x) {
+  volume  = x[,1]
+  rest    = x[,2:ncol(x)]
+  M = cbind(volume, round(rest, 1))
+  colnames(M) = colnames(x)
+  M
+}
+
+round_water = function(x) {
+  volume  = x[,1]
+  rest    = x[,2:ncol(x)]*1000 # from kg to g
+  M = cbind(volume, round(rest, 3))
+  colnames(M) = colnames(x)
   M
 }
 
 round_budget = function(x) {
-  n = length(x)
-  L = vector(mode="list", length=n)
-  for (i in 1:length(x)) {
-    if (class(x[[i]]) == "data.frame") {
-      L[[i]] = round_rad(x[[i]])
-    } else {
-      L[[i]] = x[[i]]
-    }
-  }
-  names(L) = names(x)
-  L
+  R = list(
+    Layers  = round_lay(x$Layers, FALSE), 
+    Volumes = round_vol(x$Volumes)
+  )
+  if ("Water" %in% names(x)) c(R, list(Water = round_water(x$Water))) else R
 }

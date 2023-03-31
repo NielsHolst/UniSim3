@@ -23,7 +23,7 @@ GrowthLight::GrowthLight(QString name, Box *parent)
     Input(on).help("Is light currently switched on?").unit("bool");
     Input(ballast).help("Power used by lamp ballast").unit("W/m2");
     Input(intensity).help("Power of installed lamps per greenhouse area").unit("W/m2");
-    Input(parPhotonCoef).equals(1.6).help("Number of PAR photons per spent lamp energy").unit("micromole/J");
+    Input(parPhotonCoef).equals(1.6).help("Number of PAR photons per spent lamp energy").unit("micromole PAR/J");
     Input(propLw).equals(0.1).help("Proportion of power emitted as long-wave radiation").unit("[0;1]");
     Input(ageCorrectedEfficiency).equals(1.).help("Proportion of intensity actually emitted").unit("[0;1]");
     Input(minPeriodOn).help("Minimum period that light stays on").unit("m");

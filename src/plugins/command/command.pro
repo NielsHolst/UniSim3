@@ -49,6 +49,8 @@ HEADERS +=  \
 #    update.h \
     what.h \
     write.h \
+    write_options.h \
+    write_output.h \
     quit.h
 	
 SOURCES +=  \
@@ -90,6 +92,8 @@ SOURCES +=  \
 #    update.cpp \
     what.cpp \
     write.cpp \
+    write_options.cpp \
+    write_output.cpp \
     quit.cpp
 
 

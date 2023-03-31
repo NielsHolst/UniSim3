@@ -1,0 +1,10 @@
+Simulation sim {
+  Box a {
+    &new = 17
+  }
+  OutputR {
+  }
+  OutputSelector {
+  }
+}
+

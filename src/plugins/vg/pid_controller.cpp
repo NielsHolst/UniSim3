@@ -46,21 +46,22 @@ PidController::PidController(QString name, Box *parent)
 }
 
 void PidController::reset() {
-    dt = timeStep/60.;  // from secs to minutes
+    _dt = timeStep/60.;  // from secs to minutes
+    _tick = 0;
 }
 
 void PidController::update() {
     updateControlVariable();
-    prevSensedValue = sensedValue;
+    _prevSensedValue = sensedValue;
 }
 
 void PidController::updateControlVariable() {
     // Compute errors
-    derivative = (error == 0. || tick++ < 2) ? 0. : (sensedValue-prevSensedValue)/dt;
+    derivative = (error == 0. || _tick++ < 2) ? 0. : (sensedValue-_prevSensedValue)/_dt;
     error = desiredValue - (sensedValue + derivative*lookAhead);
-    integral += error*dt;
+    integral += error*_dt;
     // Compute control response
-    controlVariable = Kprop*error + Kint*integral + Kderiv*derivative*dt;
+    controlVariable = Kprop*error + Kint*integral + Kderiv*derivative*_dt;
     controlVariable = qBound(minimum, controlVariable, maximum);
     // Compute estimated time of arrival
     eta = (derivative == 0.) ? 0. : error/derivative;;

@@ -62,7 +62,9 @@ inline QTime  operator+(double x, const QTime &time) { return time + x; }
 
 inline QDateTime operator+(const QDateTime &dt, int x) { return dt.addDays( x); }
 inline QDateTime operator-(const QDateTime &dt, int x) { return dt.addDays(-x); }
+#if QT_VERSION < QT_VERSION_CHECK(6, 4, 0)
 inline double    operator-(const QDateTime &a, const QDateTime &b) { return b.secsTo(a)/3600./24.; }
+#endif
 inline QDateTime operator+(int x, const QDateTime &dt) { return dt + x; }
 
 inline QDateTime operator+(const QDateTime &dt, double x) {
@@ -658,7 +660,12 @@ Value subtract(const Value &a, const Value &b) {
         SWITCH_B
         case Type::Int     : return Value(a.as<QDateTime>() - b.as<int>());
         case Type::Double  : return Value(a.as<QDateTime>() - b.as<double>());
-        case Type::DateTime: return Value(a.as<QDateTime>() - b.as<QDateTime>());
+        case Type::DateTime:
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+            return Value((a.as<QDateTime>() - b.as<QDateTime>()).count()/1000./3600./24.);
+        #else
+            return Value(a.as<QDateTime>() - b.as<QDateTime>());
+        #endif
         default            : ;
         }
         break;

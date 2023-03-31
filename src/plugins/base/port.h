@@ -18,6 +18,7 @@
 #include "node.h"
 #include "path.h"
 #include "port_type.h"
+#include "port_status.h"
 #include "value.h"
 #include "success.h"
 
@@ -28,6 +29,7 @@ class Box;
 class Port : public Node {
 private:
     PortType _type;         // Purpose of the port
+    PortStatus _status;     // Status of port value
     bool
         _hasBeenRedefined,  // Has the default value been overridden in the BoxScript?
         _clearAtReset,      // Is value set to T() at reset()? Defaults to true for output and aux ports
@@ -56,6 +58,7 @@ public:
     Port& acceptNull();
     Port& unit(QString value);
     Port& help(QString value);
+    Port& status(PortStatus value);
     void outputName(QString name);
 
     // Define port
@@ -68,6 +71,8 @@ public:
     Port& imports(QString pathToPort, Caller caller=Caller());
     Port& computes(QString expression);
     void define();
+    void asConstant(const Port *port);
+    void setDefaultStatus();
 
     // Change value
     void clear();
@@ -79,6 +84,7 @@ public:
     PortType type() const;
     QString unit() const;
     QString help() const;
+    PortStatus status() const;
     QString importPath() const;
     QString unparsedExpression() const;
     int size() const;

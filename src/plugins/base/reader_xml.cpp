@@ -94,7 +94,7 @@ void ReaderXml::setBoxAttributes() {
     if (_reader.attributes().hasAttribute("name"))
         _builder->name( _reader.attributes().value("name").toString() );
     // Check for unknown attributes; ignore "source" attribute
-    for (QXmlStreamAttribute attribute : _reader.attributes()) {
+    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
         QString name = attribute.name().toString();
         if (name != "class" && name != "name" && name != "source")
             ThrowException("Unexpected class attribute").value(name).hint(currentInfo());
@@ -103,7 +103,7 @@ void ReaderXml::setBoxAttributes() {
 
 void ReaderXml::setPortAttributes(bool isAux) {
     bool nameSet{false};
-    for (QXmlStreamAttribute attribute : _reader.attributes()) {
+    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
         QString name = attribute.name().toString(),
                 value = _reader.attributes().value(name).toString();
         if (name == "name"){
@@ -114,7 +114,8 @@ void ReaderXml::setPortAttributes(bool isAux) {
             nameSet = true;
         }
         else if (name == "value")
-            _builder->equals(value);
+            _builder->computes(value);
+//            _builder->equals(value);
         else if (name == "ref")
             _builder->imports(value);
         else if (name == "computes")
