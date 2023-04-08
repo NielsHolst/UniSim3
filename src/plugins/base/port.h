@@ -31,7 +31,6 @@ private:
     PortType _type;         // Purpose of the port
     PortStatus _status;     // Status of port value
     bool
-        _hasBeenRedefined,  // Has the default value been overridden in the BoxScript?
         _clearAtReset,      // Is value set to T() at reset()? Defaults to true for output and aux ports
         _acceptNull,        // Accept evaluation yielding Null?
         _isConstant;        // Does the value remain fixed following its first evaluation?
@@ -65,14 +64,15 @@ public:
     template <class T> Port& initialize(T *variable);
     template <class T> Port& initialize(T  variable);
     Port& initialize(Value value);
+    void setDefaultStatus();
     template <class T> Port& equals(T fixedValue);
     Port& equals(const Value &value);
     Port& equals(const Expression &expression);
     Port& imports(QString pathToPort, Caller caller=Caller());
     Port& computes(QString expression);
     void define();
-    void asConstant(const Port *port);
-    void setDefaultStatus();
+    void setConstness(bool isConstant);
+    void updateConstness();
 
     // Change value
     void clear();
@@ -88,7 +88,6 @@ public:
     QString importPath() const;
     QString unparsedExpression() const;
     int size() const;
-    bool isValueOverridden() const;
     bool isConstant() const;
     QString outputName() const;
     QVector<const Port*> importPortsAll() const;
@@ -113,7 +112,10 @@ private:
     enum class Subset{All, Leaves};
     void registerExport(Port *importer);
     QVector<const Port*> collectImports(Subset subset) const;
-    void collectImports(QSet<const Port*> &currentCollection, Subset subset) const;
+    void collectImports(
+        const QSet<const Port *> &alreadyVisited,
+        QSet<const Port*> &currentCollection,
+        Port::Subset subset) const;
 };
 
 template <class T> Port& Port::initialize(T *variable) {

@@ -1,0 +1,7 @@
+Simulation sim {
+  .iterations = 3*7*2
+  OutputR {
+  }
+  OutputSelector {
+  }
+}

@@ -1,0 +1,13 @@
+Simulation sim {
+  &b = 2*sim[steps]
+  Box box {
+    &a = 117
+    &b = 2*sim[steps]
+    &c = 2*sim[step]
+  }
+  OutputR {
+  }
+  OutputSelector {
+  }
+}
+

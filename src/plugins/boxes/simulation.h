@@ -35,6 +35,7 @@ private:
     QString errorMsg;
     // Methods
     void show(QElapsedTimer time);
+    void updateConstness();
 };
 
 }

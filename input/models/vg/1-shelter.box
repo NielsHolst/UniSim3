@@ -1,0 +1,52 @@
+Simulation greenhouse{
+  Calendar calendar{
+    .latitude = 55.4038
+    .longitude = 10.4024
+    .begin = 2022/01/01-1
+    .end = 2022/01/31
+    .timeStep = 15
+    .timeUnit = "m"
+    Sun sun{
+    }
+  }
+  vg::Outdoors outdoors{
+    Records records{
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+    }
+    SkyTemperature skyTemperatureEstimate{
+    }
+    SoilTemperature soilTemperature{
+      .avgOutdoorsTemperature = 1.2
+    }
+  }
+  Box construction{
+    vg::Geometry geometry{
+      .numSpans = 25
+      .spanWidth = 4
+      .length = 100
+      .height = 3.5
+      .roofPitch = 26
+    }
+    Shelter shelter {
+    }
+  }
+  Box setpoints {
+    Box heatingTemperature {
+      &value = 20.
+    }
+  }
+  Box indoors {
+    Box temperature {
+      &value = 20.
+    }
+  }
+  OutputR output {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = outdoors[temperature] | outdoors[soilTemperature]
+      }
+    }
+  }
+}

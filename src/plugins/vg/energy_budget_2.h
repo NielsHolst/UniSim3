@@ -10,21 +10,6 @@
 
 namespace vg {
 
-struct Layer {
-    QString name;
-    const double *a , *r , *t ,
-                 *a_, *r_, *t_,
-                 *C;
-    double T,
-           E, E_, F, F_, A, A_,
-           U, U_, H, H_;
-    double netRadiation() const {
-        return A + A_ - E - E_;
-    }
-    static QString columnLabels();
-};
-std::ostream& operator<<(std::ostream& os, const Layer& x);
-
 struct Volume {
     QString name;
     const double *C;
@@ -41,6 +26,20 @@ struct Water {
 std::ostream& operator<<(std::ostream& os, const Water& x);
 
 struct Budget {
+    struct Layer {
+        QString name;
+        const double *a , *r , *t ,
+                     *a_, *r_, *t_,
+                     *C;
+        double T,
+               E, E_, F, F_, A, A_,
+               U, U_, H, H_;
+        double netRadiation() const {
+            return A + A_ - E - E_;
+        }
+        static QString columnLabels();
+    };
+
     void transferEmission();
     void distributeRadDown();
     void distributeRadUp();
@@ -68,6 +67,7 @@ struct Budget {
     QVector<Water> waters;
     int iterations;
 };
+std::ostream& operator<<(std::ostream& os, const Budget::Layer& x);
 std::ostream& operator<<(std::ostream& os, const Budget& x);
 
 } //namespace

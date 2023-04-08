@@ -68,6 +68,9 @@ public:
     void cleanupFamily();
     void debriefFamily();
 
+    void updateConstness();
+    void updateConstnessFamily();
+
     bool isInitialized() const;
 
     const QVector<Port*> &portsInOrder();

@@ -25,12 +25,12 @@ template<> ListOption convert(char c) {
     case 'i': o = ListOption::Inputs; break;
     case 'o': o = ListOption::Outputs; break;
     case 'a': o = ListOption::Auxiliary; break;
-    case 's': o = ListOption::Short; break;
     case 'm': o = ListOption::Imports; break;
     case 'x': o = ListOption::Exports; break;
     case 'b': o = ListOption::Boxes; break;
     case 'r': o = ListOption::Recurse; break;
     case 'e': o = ListOption::Exclusively; break;
+    case 'v': o = ListOption::Verbose; break;
     default: ThrowException("Unknown list option")
                 .value(c).hint("Valid options: psiomxbre");
     }

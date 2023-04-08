@@ -5,23 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
+#ifndef U_WIND_H
+#define U_WIND_H
 #include <base/box.h>
-#include "heat_transfer_layer_parameters.h"
 
 namespace vg {
 
-class Cover : public HeatTransferLayerParameters
+class UWind : public base::Box
 {
-public:
-    Cover(QString name, Box *parent);
+public: 
+    UWind(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Inputs
+    double
+        UwindMinimum, UwindSlope, UwindExponent, windSpeed;
+    // Outputs
+    double value;
 };
+
 } //namespace
-
-
 #endif

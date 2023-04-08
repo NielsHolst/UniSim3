@@ -41,6 +41,7 @@ HEADERS +=  \
     test_output_selector.h \
     test_path.h \
     test_phys_math.h \
+    test_port_const.h \
     test_port_status.h \
     test_reader_boxscript_x3.h \
     test_references.h \
@@ -77,6 +78,7 @@ SOURCES +=  \
     test_operate.cpp \
     test_output_selector.cpp \
     test_path.cpp \
+    test_port_const.cpp \
     test_port_status.cpp \
     test_phys_math.cpp \
     test_reader_boxscript_x3.cpp \

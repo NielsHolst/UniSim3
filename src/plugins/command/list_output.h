@@ -10,6 +10,7 @@
 namespace base {
     class Box;
     class Port;
+    class Value;
 }
 
 namespace command {
@@ -25,7 +26,7 @@ private:
     QString _s;
     bool _listInputs, _listOutputs, _listAux,
          _listImports, _listExports,
-         _listShort,
+         _listShort, _listVerbose,
          _recurse;
     // Methods
     bool hasRun();
@@ -34,7 +35,7 @@ private:
     void listImports(QVector<base::Port*> ports, int level);
     void listExports(QVector<base::Port*> ports, int level);
     QString prefixString(base::Port *port);
-    QString assignmentString(base::Port *port);
+    QString verboseInfo(base::Port *port, QString fill);
 };
 
 }

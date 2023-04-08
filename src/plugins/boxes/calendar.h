@@ -33,6 +33,7 @@ private:
     QDate date;
     QTime time;
     QDateTime dateTime;
+    bool atMidnight;
     int dayOfYear, totalTime, totalTimeSteps;
     double timeStepSecs, timeStepDays, totalDays;
     base::BareDate bareDate;

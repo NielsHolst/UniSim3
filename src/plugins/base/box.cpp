@@ -266,6 +266,17 @@ void Box::debriefFamily() {
     _timer.stop("debrief");
 }
 
+void Box::updateConstness() {
+    for (Port *port : children<Port*>())
+        port->updateConstness();
+}
+
+void Box::updateConstnessFamily() {
+    for (auto box : children<Box*>())
+        box->updateConstness();
+    updateConstness();
+}
+
 bool Box::isInitialized() const {
     return _initialized;
 }

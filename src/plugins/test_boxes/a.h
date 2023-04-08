@@ -10,6 +10,7 @@ class A : public base::Box
 public:
     A(QString name, base::Box *parent);
 private:
+    // Inputs
     bool pbool;
     int pint;
     double pdouble;

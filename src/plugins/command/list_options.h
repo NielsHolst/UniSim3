@@ -14,12 +14,12 @@ enum class ListOption{
     Inputs,
     Outputs,
     Auxiliary,
-    Short,
     Imports,
     Exports,
     Boxes,
     Recurse,
-    Exclusively
+    Exclusively,
+    Verbose
 };
 
 typedef QSet<ListOption> ListOptionSet;

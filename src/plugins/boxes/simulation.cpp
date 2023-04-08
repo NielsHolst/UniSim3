@@ -83,6 +83,7 @@ void Simulation::run() {
             Computation::changeStep(Computation::Step::Reset);
             resetFamily();
             ResolvedReferences::check();
+            updateConstnessFamily();
             Computation::changeStep(Computation::Step::Update);
 
             step = 0;

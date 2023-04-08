@@ -21,36 +21,99 @@ PUBLISH(Shelter)
 Shelter::Shelter(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models the greenhouse shelter");
-    Input(screenAirExponent).equals(4.).unit("-").help("Exponent for screen air transmissivity vs. state");
-    Input(Uair).equals(2.27).unit("W/K/m2 screen").help("U-value for air fully enclosed between two screens or screens/cover");
-    Input(screenUstateExponent).equals(32.).unit("-").help("Exponent for screen U vs. state");
-    Input(screenUventilationSlope).equals(2.).unit("-").help("Exponent for screen U vs. ventilation");
-    Input(airTransmissivities).imports("./*/screens/airTransmissivity[value]", CA).
-            help("Air transmissivity through screens for each shelter face");
-    Input(areas).imports("./*/area[value]", CA).help("Area of each shelter face");
-    Input(screenPerfection).equals(0.98).unit("[0;1]").help("How perfect are the screens covering the shelter when fully drawn?");
-    Output(screensAirTransmissivity).help("Total net transmissivity of screens").unit("[0;1]");
+    help("holds parameters of the greenhouse shelter");
 }
 
 void Shelter::amend() {
     BoxBuilder builder(this);
-    amendShelter(builder, "roof1");
-    amendShelter(builder, "roof2");
-    amendShelter(builder, "side1");
-    amendShelter(builder, "side2");
-    amendShelter(builder, "end1");
-    amendShelter(builder, "end2");
+    int numChildren = children().size();
+    bool hasDefaultCover     = findMaybeOne<Box*>("./Cover::cover"),
+         hasDefaultScreen    = findMaybeOne<Box*>("./Screen::screen"),
+         hasDefaultCoverUtop = findMaybeOne<Box*>("./coverUtop");
+    if (numChildren<4) {
+        if (!hasDefaultCover) {
+            builder.
+            box().name("cover").
+                aux("swReflectivityTop").     equals(0.1).
+                aux("swTransmissivityTop").   equals(0.8).
+                aux("swReflectivityBottom").  equals(0.1).
+                aux("swTransmissivityBottom").equals(0.8).
+                aux("lwReflectivityTop").     equals(0.15).
+                aux("lwTransmissivityTop").   equals(0.20).
+                aux("lwReflectivityBottom").  equals(0.15).
+                aux("lwTransmissivityBottom").equals(0.20).
+                aux("Ubottom").               equals(1.2).
+                aux("heatCapacity").          equals(8400.).
+            endbox();
+        }
+        if (!hasDefaultScreen) {
+            builder.
+            box().name("screen").
+                aux("swReflectivityTop").     equals(0.93).
+                aux("swTransmissivityTop").   equals(0.0).
+                aux("swReflectivityBottom").  equals(0.43).
+                aux("swTransmissivityBottom").equals(0.0).
+                aux("lwReflectivityTop").     equals(0.93).
+                aux("lwTransmissivityTop").   equals(0.0).
+                aux("lwReflectivityBottom").  equals(0.43).
+                aux("lwTransmissivityBottom").equals(0.0).
+                aux("Utop").                  equals(1.2).
+                aux("Ubottom").               equals(1.2).
+                aux("heatCapacity").          equals(80.).
+            endbox();
+        }
+        if (!hasDefaultCoverUtop) {
+            builder.
+            box("UWind").name("coverUtop").
+            endbox();
+        }
+    }
+    if (!findMaybeOne<Box*>("./roof1"))
+        createFace(builder, "roof1");
+    if (!findMaybeOne<Box*>("./roof2"))
+        createFace(builder, "roof3");
+    if (!findMaybeOne<Box*>("./side1"))
+        createFace(builder, "side1");
+    if (!findMaybeOne<Box*>("./side2"))
+        createFace(builder, "side2");
+    if (!findMaybeOne<Box*>("./end1"))
+        createFace(builder, "end1");
+    if (!findMaybeOne<Box*>("./end2"))
+        createFace(builder, "end2");
 }
 
-void Shelter::amendShelter(BoxBuilder &builder, QString shelterName) {
-    if (!findMaybeOne<Box*>("./" + shelterName))
-        builder.box("ShelterFace").name(shelterName).endbox();
+void Shelter::createFace(BoxBuilder &builder, QString faceName) {
+    builder.
+        box("Box").name(faceName).
+            box("Layer").name("cover").
+                port("swReflectivityTop").     imports("../../cover[swReflectivityTop]").
+                port("swTransmissivityTop").   imports("../../cover[swTransmissivityTop]").
+                port("swReflectivityBottom").  imports("../../cover[swReflectivityBottom]").
+                port("swTransmissivityBottom").imports("../../cover[swTransmissivityBottom]").
+                port("lwReflectivityTop").     imports("../../cover[lwReflectivityTop]").
+                port("lwTransmissivityTop").   imports("../../cover[lwTransmissivityTop]").
+                port("lwReflectivityBottom").  imports("../../cover[lwReflectivityBottom]").
+                port("lwTransmissivityBottom").imports("../../cover[lwTransmissivityBottom]").
+                port("Utop").                  imports("../../coverUtop[value]").
+                port("Ubottom").               imports("../../cover[Ubottom]").
+                port("heatCapacity").          imports("../../cover[heatCapacity]").
+            endbox().
+            box("Layer").name("screen").
+                port("swReflectivityTop").     imports("../../screen[swReflectivityTop]").
+                port("swTransmissivityTop").   imports("../../screen[swTransmissivityTop]").
+                port("swReflectivityBottom").  imports("../../screen[swReflectivityBottom]").
+                port("swTransmissivityBottom").imports("../../screen[swTransmissivityBottom]").
+                port("lwReflectivityTop").     imports("../../screen[lwReflectivityTop]").
+                port("lwTransmissivityTop").   imports("../../screen[lwTransmissivityTop]").
+                port("lwReflectivityBottom").  imports("../../screen[lwReflectivityBottom]").
+                port("lwTransmissivityBottom").imports("../../screen[lwTransmissivityBottom]").
+                port("Utop").                  imports("../../screen[Utop]").
+                port("Ubottom").               imports("../../screen[Ubottom]").
+                port("heatCapacity").          imports("../../screen[heatCapacity]").
+            endbox().
+        endbox();
 }
 
-void Shelter::update() {
-    screensAirTransmissivity = airTransmissivities.isEmpty() ? 0. : vector_op::weightedAverage(airTransmissivities, areas, this);
-}
 
 } //namespace
 

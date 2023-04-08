@@ -7,7 +7,6 @@
 */
 #ifndef SHELTER_H
 #define SHELTER_H
-#include <QVector>
 #include "base/box.h"
 
 namespace base {
@@ -21,16 +20,10 @@ class Shelter : public base::Box
 public:
     Shelter(QString name, Box *parent);
     void amend();
-    void update();
 private:
-    // Inputs
-    double screenAirExponent, Uair, screenUstateExponent, screenUventilationSlope, screenPerfection;
-    QVector<double> airTransmissivities, areas;
-    // Outputs
-    double screensAirTransmissivity;
-    // Methods
-    void amendShelter(base::BoxBuilder &builder, QString shelterName);
+    void createFace(base::BoxBuilder &builder, QString faceName);
 };
+
 } //namespace
 
 

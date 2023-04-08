@@ -38,6 +38,7 @@ Calendar::Calendar(QString name, Box *parent)
     Output(date).help("Current date");
     Output(time).help("Current time of the day");
     Output(dateTime).help("Current date and time");
+    Output(atMidnight).unit("bool").help("Just past midnight?");
     Output(timeStepSecs).help("Time step duration").unit("s");
     Output(timeStepDays).help("Time step duration").unit("d");
     Output(totalTimeSteps).help("Total number of time steps since calendar was reset");
@@ -60,6 +61,8 @@ void Calendar::reset() {
         ThrowException("Time step ('timeStep') must be larger than zero").value(timeStep);
     timeStepSecs = timeStep * Time::toSeconds(timeUnit);
     timeStepDays = timeStep * Time::toDays(timeUnit);
+    port("timeStepSecs")->setConstness(true);
+    port("timeStepDays")->setConstness(true);
 
     dateTime = begin;
     if (end.isValid()) {
@@ -74,12 +77,15 @@ void Calendar::reset() {
         steps = 1;
     }
     totalTimeSteps = 0;
+    atMidnight = (dateTime.time() == QTime(0,0,0));
     updateDerived();
 }
 
 void Calendar::update() {
     ++totalTimeSteps;
+    QDate curDate = dateTime.date();
     dateTime = dateTime + Time::Period(timeStep, timeUnit);
+    atMidnight = (curDate != dateTime.date());
     updateDerived();
 }
 

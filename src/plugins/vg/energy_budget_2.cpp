@@ -12,7 +12,7 @@ using namespace phys_math;
 
 namespace vg {
 
-QString Layer::columnLabels() {
+QString Budget::Layer::columnLabels() {
     stringstream str;
     str << setw(8) << "Layer"
         << setw(5) << "a"
@@ -35,7 +35,7 @@ QString Layer::columnLabels() {
     return QString::fromStdString(str.str());
 }
 
-std::ostream& operator<<(ostream& os, const Layer& x) {
+std::ostream& operator<<(ostream& os, const Budget::Layer& x) {
     os << fixed
        << setw(8) << x.name.toStdString()
        << setprecision(2)
@@ -104,7 +104,7 @@ std::ostream& operator<<(std::ostream& os, const Water& x) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Budget& x) {
-    os << Layer::columnLabels().toStdString() << endl;
+    os << Budget::Layer::columnLabels().toStdString() << endl;
     for (auto it=x.layers.begin(); it!=x.layers.end(); ++it)
         os << *it << endl;
     os << endl << Volume::columnLabels().toStdString() << endl;

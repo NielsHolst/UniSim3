@@ -1,0 +1,9 @@
+Simulation sim {
+  Sum sum {
+  }
+  OutputR {
+  }
+  OutputSelector {
+  }
+}
+

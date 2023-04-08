@@ -97,8 +97,6 @@ QString WriteOutput::assignmentString(Port *port) {
 
 QString WriteOutput::flags(Port *port) {
     QString s = "// " + convert<QString>(port->status());
-    if (port->isValueOverridden())
-        s += " overridden";
     if (port->isConstant())
         s += " const";
     if (!s.isEmpty())

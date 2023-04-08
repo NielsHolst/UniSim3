@@ -26,8 +26,8 @@ struct LocalLayer {
            a_, r_, t_,
            T, C,
            E, E_, F, F_, A, A_, U, U_, H, H_;
-    vg::Layer asLayer() {
-        vg::Layer l;
+    vg::Budget::Layer asLayer() {
+        vg::Budget::Layer l;
         l.name = name;
         l.a    = &a;
         l.r    = &r;

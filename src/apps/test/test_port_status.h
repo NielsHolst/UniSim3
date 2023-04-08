@@ -13,6 +13,7 @@ private slots:
     void testExprRedefinesValue();
     void testValueRedefinesExpr();
     void testValueRedefinesValue();
+    void testValueRedefinesDefault();
 };
 
 DECLARE_TEST(TestPortStatus)

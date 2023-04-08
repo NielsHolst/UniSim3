@@ -5,23 +5,33 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
+#ifndef SOIL_TEMPERATURE_H
+#define SOIL_TEMPERATURE_H
 #include <base/box.h>
-#include "heat_transfer_layer_parameters.h"
+#include <base/circular_buffer.h>
 
 namespace vg {
 
-class Cover : public HeatTransferLayerParameters
+class SoilTemperature : public base::Box
 {
-public:
-    Cover(QString name, Box *parent);
+public: 
+    SoilTemperature(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Inputs
+    double
+        setpointHeating, avgOutdoorsTemperature,
+        indoorsTemperature, outdoorsTemperature,
+        minValue, maxValue;
+    bool atMidnight;
+    // Outputs
+    double value;
+    // Data
+    base::CircularBuffer<double> _buf;
+    double _dailySum;
+    int _steps;
 };
+
 } //namespace
-
-
 #endif

@@ -8,6 +8,7 @@
 #include <base/dialog.h>
 #include <base/port.h>
 #include <base/port_type.h>
+#include <base/value.h>
 #include "list_output.h"
 
 using namespace base;
@@ -28,8 +29,8 @@ ListOutput::ListOutput(QVector<Box*> boxes, ListOptionSet options)
 
     _listImports = _options.contains(ListOption::Imports);
     _listExports = _options.contains(ListOption::Exports);
-    _listShort   = _options.contains(ListOption::Short);
     _recurse     = _options.contains(ListOption::Recurse);
+    _listVerbose = _options.contains(ListOption::Verbose);
 
     if (_listImports ||_listExports) {
         if (hasRun())
@@ -121,7 +122,18 @@ void ListOutput::toString(base::Port *port, int level) {
     QString fill = QString().fill(' ', 2*level);
 
     _s += fill + prefixString(port) + port->objectName() +
-          " = " + assignmentString(port) + "\n";
+          " = " + port->value().asString();
+    if (!port->unit().isEmpty())
+        _s += " " + port->unit();
+    if (port->isConstant())
+        _s += " const";
+    if (port->expression().stack().size() == 1 &&
+        Expression::type(port->expression().stack().at(0)) != Expression::Type::Value)
+        _s += " <- " + port->unparsedExpression();
+    _s += "\n";
+
+    if (_listVerbose)
+        _s += verboseInfo(port, QString().fill(' ', 2*(level+1)));
 
     if (_listImports) {
         for (Port *import : port->importPorts())
@@ -140,16 +152,32 @@ QString ListOutput::prefixString(base::Port *port) {
         {PortType::Output   , ">"},
         {PortType::Auxiliary, "&"}
     };
-    return _listShort ? "" : prefix.value(port->type());
+    return prefix.value(port->type());
 }
 
-QString ListOutput::assignmentString(base::Port *port) {
-    QString s = port->value().asString();
-    if (!_listShort) {
-        s += port->unit().isEmpty() ? "" : (" " + port->unit());
-        s += port->isConstant() ? " const" : "";
-        s += port->unparsedExpression().isEmpty() ? "" : (" <- " + port->unparsedExpression());
-    }
+QString ListOutput::verboseInfo(base::Port *port, QString fill) {
+    const Expression
+        &expression(port->expression());
+    const Expression::Stack
+        &stack(   expression.stack() ),
+        &original(expression.original() );
+    QString s =
+        fill + "order        : " + QString::number(port->order()) + "\n" +
+        fill + "port type    : " + portTypeToString(port->type()) + "\n" +
+        fill + "status       : " + convert<QString>(port->status()) + "\n" +
+        fill + "unparsed expr: " + "\"" + port->unparsedExpression() + "\"\n" +
+        fill + "value type   : " + port->value().typeName() + "\n" +
+        fill + "value size   : " + QString::number(port->value().size()) + "\n" +
+        fill + "expr size    : " + QString::number(expression.size()) + "\n" +
+        fill + "expr const   : " + (expression.isConstant() ? "yes\n" : "no\n") +
+        fill + "port exports : " + Node::fullNames(port->exportPorts()).join("  \n") + "\n" +
+        fill + "port imports : " + Node::fullNames(port->importPorts()).join("  \n") + "\n" +
+        fill + "port imp leav: " + Node::fullNames(port->importPortsLeaves()).join("  \n") + "\n" +
+        fill + "expr imports : " + expression.importPortNames().join("  \n") + "\n" +
+        fill + "orig as str  : " + expression.originalAsString() + "\n" +
+        fill + "stack as str : " + expression.stackAsString() + "\n" +
+        fill + "original     : " + Expression::toString(original, " ", true) + "\n" +
+        fill + "stack        : " + Expression::toString(stack, " ", true) + "\n";
     return s;
 }
 

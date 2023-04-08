@@ -63,6 +63,7 @@ HEADERS +=  \
     indoors_ventilation.h \
     indoors_wind_speed.h \
     intercellular_co2.h \
+    layer.h \
     leaf_par_absorbed.h \
     leaf_photosynthesis.h \
     leaf_photosynthesis_aj.h \
@@ -93,10 +94,12 @@ HEADERS +=  \
     shelter_face.h \
     shelter_face_area.h \
     sky_temperature.h \
+    soil_temperature.h \
     stomatal_resistance_ball_berry.h \
     stomatal_resistance_ball_berry_opti_full.h \
     stomatal_resistance_base.h \
     total_radiation_from_par.h \
+    u_wind.h \
     vapour_flux_base.h \
     vapour_flux_condensation_cover.h \
     vapour_flux_condensation_crop.h \
@@ -167,6 +170,7 @@ SOURCES += \
     indoors_ventilation.cpp \
     indoors_wind_speed.cpp \
     intercellular_co2.cpp \
+    layer.cpp \
     leaf_par_absorbed.cpp \
     leaf_photosynthesis.cpp \
     leaf_photosynthesis_aj.cpp \
@@ -197,10 +201,12 @@ SOURCES += \
     shelter_face.cpp \
     shelter_face_area.cpp \
     sky_temperature.cpp \
+    soil_temperature.cpp \
     stomatal_resistance_ball_berry.cpp \
     stomatal_resistance_ball_berry_opti_full.cpp \
     stomatal_resistance_base.cpp \
     total_radiation_from_par.cpp \
+    u_wind.cpp \
     vapour_flux_base.cpp \
     vapour_flux_condensation_cover.cpp \
     vapour_flux_condensation_crop.cpp \

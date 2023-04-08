@@ -17,7 +17,6 @@ Port::Port(QString name, PortType type, Node *parent)
     : Node(name, parent),
       _type(type),
       _status(PortStatus::Unknown),
-      _hasBeenRedefined(false),
       _acceptNull(false),
       _isConstant(false),
       _unparsedExpression(""),
@@ -94,10 +93,10 @@ void Port::define() {
                 value(Computation::toString(step)).context(this);
 
     // Register re-definition
-//    _hasBeenRedefined = (step > Computation::Step::Amend);
-//    _hasBeenRedefined = (step > Computation::Step::Construct);
-//    _hasBeenRedefined = !box->inConstructor();
     _status = PortStatus::Redefined;
+
+    // Reconsider whether it is constant
+    _isConstant = false;
 
     // Set me as parent of the expression and of any paths in the expression
     _expression.setParent(this);
@@ -134,14 +133,11 @@ void Port::define() {
         touch();
 }
 
-void Port::asConstant(const Port *port) {
-    _isConstant = port->isConstant();
-}
-
 void Port::setDefaultStatus() {
     switch (_status) {
     case PortStatus::Unknown:
         _status = PortStatus::TypeDefault;
+        _isConstant = (_type==PortType::Input && _status==PortStatus::TypeDefault);
         break;
     case PortStatus::Redefined:
         _status = PortStatus::ConstructionDefault;
@@ -184,6 +180,25 @@ Port& Port::computes(QString expression) {
     return equals(e);
 }
 
+void Port::setConstness(bool isConstant) {
+    _isConstant = isConstant;
+}
+
+void Port::updateConstness() {
+    // If a port is const or it's an output, there is nothing to do ,
+    // an output will keep its constness (which is nearly always false)
+    if (_isConstant || _type==PortType::Output)
+        return;
+    // If any imported port is non-const, neither is this one
+    auto imports = importPortsLeaves();
+    for (auto imported : imports) {
+        if (!imported->isConstant())
+            return;
+    }
+    // All imports were constant; upgrade this to be constant
+    _isConstant = true;
+}
+
 //
 // Change value
 //
@@ -218,15 +233,6 @@ void Port::evaluate() {
         // in the C++ code; the expression's type will be converted to the value's types
         // For aux ports, all references have now been resolved and the value's type thereby fixed
         Value evaluation = _expression.evaluate();
-//        if (name() == "plotTypes") {
-//        QString s1 = _value.typeName(),
-//                s2 = _value.asString(),
-//                s3 = evaluation.typeName(),
-//                s4 = evaluation.asString(),
-//                s5 = _expression.originalAsString();
-//        }
-//        Port *p = boxParent()->findMaybeOne<Port*>("scenarios[iterations]");
-//        int iter = p ? p->value<int>() : 0;
         bool vectorError = evaluation.isVector() && !_value.isVector(),
              nullError   = evaluation.isNull() && !_acceptNull && ResolvedReferences::fixed();
         if (vectorError || nullError) {
@@ -295,10 +301,6 @@ int Port::size() const {
     return _value.size();
 }
 
-bool Port::isValueOverridden() const {
-    return _hasBeenRedefined;
-}
-
 bool Port::isConstant() const {
     return _isConstant;
 }
@@ -316,23 +318,40 @@ QVector<const Port*> Port::importPortsLeaves() const {
 }
 
 QVector<const Port*> Port::collectImports(Subset subset) const {
-    QSet<const Port*> currentCollection;
-    collectImports(currentCollection, subset);
+    // Collect all imports in a set
+    QSet<const Port*> imported;
+    collectImports(QSet<const Port*>(), imported, subset);
 
-    QVector<const Port*> result(currentCollection.begin(), currentCollection.end());
+    // Exclude self from set
+    imported.remove(this);
+
+    // Turn into a vector and sort by order
+    QVector<const Port*> result(imported.begin(), imported.end());
     std::sort(result.begin(), result.end(),
               [](const Port *a, const Port *b) { return a->order() < b->order(); });
-
     return result;
 }
 
-void Port::collectImports(QSet<const Port*> &currentCollection,
-                          Port::Subset subset) const {
-    bool isLeaf = importPorts().isEmpty();
+void Port::collectImports(
+        const QSet<const Port *> &alreadyVisited,
+        QSet<const Port*> &currentCollection,
+        Port::Subset subset) const
+{
+    QVector<Port*> imported = importPorts();
+    bool isLeaf = imported.isEmpty();
+    int id = order();
     if (subset==Subset::All || isLeaf)
         currentCollection << this;
-    for (auto port : importPorts())
-        port->collectImports(currentCollection, subset);
+    for (Port *port : imported) {
+        if (!alreadyVisited.contains(this)) {
+            QSet<const Port *> alreadyVisitedPlus = alreadyVisited;
+            alreadyVisitedPlus += this;
+            port->collectImports(
+                alreadyVisitedPlus,
+                currentCollection,
+                subset);
+        }
+    }
 }
 
 QVector<Port*> Port::importPorts() const {
