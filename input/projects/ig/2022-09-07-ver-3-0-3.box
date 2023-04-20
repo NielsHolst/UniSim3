@@ -1,4 +1,4 @@
-Simulation greenhouse { //1529
+Simulation greenhouse { //1535
   Calendar calendar { //30
     .latitude = 55.31{double} // #12
     .longitude = 10.32{double} // #13
@@ -950,11 +950,16 @@ Simulation greenhouse { //1529
       }
     }
   }
-  vg::ParBudget parBudget { //1515
+  vg::ParBudget parBudget { //1521
     .sunPar = 138.702{double} // #1507
     .growthLightsPar = 0.0{double} // #1508
-    .indoorsTotalPar = 64.8755{double} // #1509
-    .Pn = -0.0276408{double} // #1510
-    .cropCoverage = 0.95{double} // #1511
+    .Pn = -0.0276408{double} // #1509
+    .cropCoverage = 0.95{double} // #1510
+    .constructionReflection = 0.3{double} // #1511
+    .faceAreas = 1091.87{double} 1091.87{double} 300.0{double} 300.0{double} 60.0{double} 60.0{double} c[6]{FunctionCall} // #1512
+    .faceReflections = 0.4{double} 0.4{double} 0.9{double} 0.4{double} 0.9{double} 0.9{double} c[6]{FunctionCall} // #1513
+    .faceLayer1Reflections = 0.0{double} 0.0{double} 0.0{double} c[3]{FunctionCall} // #1514
+    .faceLayer2Reflections = null{null} // #1515
+    .faceLayer3Reflections = 8.67362e-18{double} // #1516
   }
 }

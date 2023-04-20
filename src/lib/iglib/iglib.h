@@ -1,4 +1,4 @@
-// Version 3.0.2 == 3.0.4
+// Version 3.0.5 == 3.0.2
 // To use with iglib.dll, remember to define IGLIB_DLL as follows:
 // #define IGLIB_DLL dllimport
 
