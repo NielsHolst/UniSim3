@@ -14,8 +14,8 @@ using namespace ig;
 using namespace std;
 
 const QString path =
-  "C:/Users/au152367/Documents/QDev/UniSim3/input/projects/ig";
-//               "D:/Documents/QDev/UniSim3/input/projects/ig";
+  "C:/Mydocuments/QDev/UniSim3/input/projects/ig";
+//   D:/Documents/QDev/UniSim3/input/projects/ig";
 
 const QString fileName =
 //"2022-09-06-116";
