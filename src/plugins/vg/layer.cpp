@@ -11,6 +11,7 @@
 #include <base/test_num.h>
 #include "layer.h"
 
+#define CHK(x) checkRange(x, #x)
 
 using namespace base;
 using namespace phys_math;
@@ -36,7 +37,6 @@ Layer::Layer(QString name, Box *parent)
 
     Input(Utop).equals(infinity()).unit("W/K/m2 layer").help("Heat transfer coefficient at the top");
     Input(Ubottom).equals(infinity()).unit("W/K/m2 layer").help("Heat transfer coefficient at the bottom");
-
     Input(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 layer");
 
     Output(swAbsorptivityTop).unit("[0;1]").help("Short-wave absorptivity at the top");
@@ -45,7 +45,13 @@ Layer::Layer(QString name, Box *parent)
     Output(lwAbsorptivityBottom).unit("[0;1]").help("Long-wave absorptivity at the bottom");
 }
 
-#define CHK(x) checkRange(x, #x)
+void Layer::reset() {
+    updateAbsorptivities();
+}
+
+void Layer::update() {
+    updateAbsorptivities();
+}
 
 void Layer::updateAbsorptivities() {
     swAbsorptivityTop = 1. - swReflectivityTop - swTransmissivityTop;

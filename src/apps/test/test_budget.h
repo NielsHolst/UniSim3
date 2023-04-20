@@ -1,5 +1,5 @@
-#ifndef TEST_ENERGY_BUDGET_2_H
-#define TEST_ENERGY_BUDGET_2_H
+#ifndef TEST_BUDGET_H
+#define TEST_BUDGET_H
 #include "autotest.h"
 
 class TestEnergyBudget2 : public QObject

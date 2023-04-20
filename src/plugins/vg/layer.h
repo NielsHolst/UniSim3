@@ -11,11 +11,12 @@
 
 namespace vg {
 
-class Layer : public base::Box
+class Layer : virtual public base::Box
 {
 public:
     Layer(QString name, Box *parent);
-    void updateAbsorptivities();
+    void reset();
+    void update();
 protected:
     // Inputs
     double
@@ -29,8 +30,9 @@ protected:
     double
         swAbsorptivityTop, swAbsorptivityBottom,
         lwAbsorptivityTop, lwAbsorptivityBottom;
-private:
+protected:
     // Methods
+    void updateAbsorptivities();
     void checkRange(double x, QString name) const;
 };
 

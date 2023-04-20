@@ -28,48 +28,48 @@ void Controllers::amend() {
         builder.
         box().name("screens").
             box("ProportionalSignal").name("energy1").
+                port("input")        .imports("outdoors[radiation]").
+                port("threshold")    .imports("setpoints/screens[energyThreshold1]").
+                port("thresholdBand").imports("setpoints/screens[energyThresholdBand]").
+                port("maxSignal")       .equals(1).
                 port("increasingSignal").equals(false).
-                port("maxSignal").imports("setpoints[maxScreen]").
-                port("input").imports("outdoors[radiation]").
-                port("threshold").imports("setpoints[screenEnergyThreshold1]").
-                port("thresholdBand").imports("setpoints[screenEnergyThresholdBand]").
             endbox().
             box("ProportionalSignal").name("energy2").
+                port("input")        .imports("outdoors[radiation]").
+                port("threshold")    .imports("setpoints/screens[energyThreshold2]").
+                port("thresholdBand").imports("setpoints/screens[energyThresholdBand]").
+                port("maxSignal")       .equals(1).
                 port("increasingSignal").equals(false).
-                port("maxSignal").imports("setpoints[maxScreen]").
-                port("input").imports("outdoors[radiation]").
-                port("threshold").imports("setpoints[screenEnergyThreshold2]").
-                port("thresholdBand").imports("setpoints[screenEnergyThresholdBand]").
             endbox().
             box("ProportionalSignal").name("shade1").
+                port("input")        .imports("outdoors[radiation]").
+                port("threshold")    .imports("setpoints/screens[shadeThreshold1]").
+                port("thresholdBand").imports("setpoints/screens[shadeThresholdBand]").
+                port("maxSignal")       .equals(1).
                 port("increasingSignal").equals(true).
-                port("maxSignal").imports("setpoints[maxScreen]").
-                port("input").imports("outdoors[radiation]").
-                port("threshold").imports("setpoints[screenShadeThreshold1]").
-                port("thresholdBand").imports("setpoints[screenShadeThresholdBand]").
             endbox().
             box("ProportionalSignal").name("shade2").
+                port("input")        .imports("outdoors[radiation]").
+                port("threshold")    .imports("setpoints/screens[shadeThreshold2]").
+                port("thresholdBand").imports("setpoints/screens[shadeThresholdBand]").
+                port("maxSignal")       .equals(1).
                 port("increasingSignal").equals(true).
-                port("maxSignal").imports("setpoints[maxScreen]").
-                port("input").imports("outdoors[radiation]").
-                port("threshold").imports("setpoints[screenShadeThreshold2]").
-                port("thresholdBand").imports("setpoints[screenShadeThresholdBand]").
             endbox().
             box().name("fixed1").
-                aux("value").imports("setpoints[screenFixed1]").
+                aux("value").imports("setpoints/screens[fixed1]").
             endbox().
             box().name("fixed2").
-                aux("value").imports("setpoints[screenFixed2]").
+                aux("value").imports("setpoints/screens[fixed2]").
             endbox().
-            box("ScreenCombination").name("layer1").
-                port("code").imports("setpoints/elementary/screens/screenLayer1[value]").
-            endbox().
-            box("ScreenCombination").name("layer2").
-                port("code").imports("setpoints/elementary/screens/screenLayer2[value]").
-            endbox().
-            box("ScreenCombination").name("layer3").
-                port("code").imports("setpoints/elementary/screens/screenLayer3[value]").
-            endbox().
+//            box("ScreenCombination").name("layer1").
+//                port("code").imports("setpoints/screens/screenLayer1[value]").
+//            endbox().
+//            box("ScreenCombination").name("layer2").
+//                port("code").imports("setpoints/screens/screenLayer2[value]").
+//            endbox().
+//            box("ScreenCombination").name("layer3").
+//                port("code").imports("setpoints/screens/screenLayer3[value]").
+//            endbox().
         endbox();
 
 //  Introduce this again later. Maybe use the signal to modulate the desiredValue for the co2Injection PID controller
@@ -84,25 +84,26 @@ void Controllers::amend() {
 //            port("increasingSignal").equals(false).
 //        endbox();
 
-    if (!findMaybeOne<Box*>("./growthLights"))
-        builder.
-        box().name("growthLights").
-            box("GrowthLightController").name("growthLight1").
-                port("setting").imports("setpoints[growthLightSetting1]").
-                port("lightThresholdLow").imports("setpoints[growthLightThresholdLow1]").
-                port("lightThresholdHigh").imports("setpoints[growthLightThresholdHigh1]").
-            endbox().
-            box("GrowthLightController").name("growthLight2").
-                port("setting").imports("setpoints[growthLightSetting2]").
-                port("lightThresholdLow").imports("setpoints[growthLightThresholdLow2]").
-                port("lightThresholdHigh").imports("setpoints[growthLightThresholdHigh2]").
-            endbox().
-            box("GrowthLightController").name("growthLight3").
-                port("setting").imports("setpoints[growthLightSetting3]").
-                port("lightThresholdLow").imports("setpoints[growthLightThresholdLow3]").
-                port("lightThresholdHigh").imports("setpoints[growthLightThresholdHigh3]").
-            endbox().
-        endbox();
+    // Temporarily 11 April 2023
+//    if (!findMaybeOne<Box*>("./growthLights"))
+//        builder.
+//        box().name("growthLights").
+//            box("GrowthLightController").name("growthLight1").
+//                port("setting").imports("setpoints[growthLightSetting1]").
+//                port("lightThresholdLow").imports("setpoints[growthLightThresholdLow1]").
+//                port("lightThresholdHigh").imports("setpoints[growthLightThresholdHigh1]").
+//            endbox().
+//            box("GrowthLightController").name("growthLight2").
+//                port("setting").imports("setpoints[growthLightSetting2]").
+//                port("lightThresholdLow").imports("setpoints[growthLightThresholdLow2]").
+//                port("lightThresholdHigh").imports("setpoints[growthLightThresholdHigh2]").
+//            endbox().
+//            box("GrowthLightController").name("growthLight3").
+//                port("setting").imports("setpoints[growthLightSetting3]").
+//                port("lightThresholdLow").imports("setpoints[growthLightThresholdLow3]").
+//                port("lightThresholdHigh").imports("setpoints[growthLightThresholdHigh3]").
+//            endbox().
+//        endbox();
 
 }
 

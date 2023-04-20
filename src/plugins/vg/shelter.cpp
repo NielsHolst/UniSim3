@@ -71,7 +71,7 @@ void Shelter::amend() {
     if (!findMaybeOne<Box*>("./roof1"))
         createFace(builder, "roof1");
     if (!findMaybeOne<Box*>("./roof2"))
-        createFace(builder, "roof3");
+        createFace(builder, "roof2");
     if (!findMaybeOne<Box*>("./side1"))
         createFace(builder, "side1");
     if (!findMaybeOne<Box*>("./side2"))

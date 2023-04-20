@@ -7,13 +7,7 @@
 */
 #ifndef SCREEN_COMBINATION_H
 #define SCREEN_COMBINATION_H
-#include <QMap>
-#include <QVector>
 #include <base/box.h>
-
-namespace base {
-    class Port;
-}
 
 namespace vg {
 
@@ -21,18 +15,12 @@ class ScreenCombination : public base::Box
 {
 public: 
     ScreenCombination(QString name, Box *parent);
-    // standard methods
     void initialize();
-    void reset();
-    void update();
 private:
     // Inputs
-    int code;
-    QVector<double> screenStates;
+    QString formula;
     // Outputs
-    double value;
-    // Data
-    static QMap<int, int> _lookupScreenState;
+    QVector<QString> value;
 };
 
 } //namespace

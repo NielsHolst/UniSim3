@@ -17,40 +17,58 @@ namespace vg {
 PUBLISH(GrowthLightController)
 
 GrowthLightController::GrowthLightController(QString name, Box *parent)
-    : BaseSignal(name, parent), _isOn(false)
+    : Box(name, parent), isOn(false)
 {
     help("control lights on/off according to setting");
     Input(setting).help("Setting; 0=off, 1=sunlight-controlled, 10=on").unit("0|1|10");
     Input(lightThresholdLow).help("If controlled then light is switched on below this sunlight threshold").unit("W/m2");
     Input(lightThresholdHigh).help("If controlled then light is switched off above this sunlight threshold").unit("W/m2");
-    Input(lightOutdoors).imports("outdoors[radiation]").unit("W/m2");
+    Input(minPeriodOn).help("Minimum period that light stays on").unit("min");
+    Input(timeStepSecs).imports("calendar[timeStepSecs]");
+    Input(outdoorsLight).imports("outdoors[radiation]").unit("W/m2");
+    Output(isOn).unit("bool").help("Is light on?");
+    Output(periodOn).help("Time since last time light went on").unit("min");
 }
 
-bool GrowthLightController::computeFlag() {
+void GrowthLightController::reset() {
+    isOn = false;
+}
+
+void GrowthLightController::update() {
+    // Switch light or off according to settingh and outdoors light
+    bool nowOn = isOn;
     if (setting == 0) {
-        _isOn = false;
+        isOn = false;
     }
     else if (setting == 10) {
-        _isOn = true;
+        isOn = true;
     }
     else if (setting == 1) {
-        if (_isOn) {
-            bool switchOff = (lightOutdoors > lightThresholdHigh);
-            _isOn = !switchOff;
+        if (isOn) {
+            bool switchOff = (outdoorsLight > lightThresholdHigh);
+            isOn = !switchOff;
         }
         else {
-            bool switchOn = (lightOutdoors < lightThresholdLow);
-            _isOn = switchOn;
+            bool switchOn = (outdoorsLight < lightThresholdLow);
+            isOn = switchOn;
         }
     }
     else {
         ThrowException("Illegal setting").value(setting).hint(port("setting")->help()).context(this);
     }
-    return _isOn;
-}
 
-double GrowthLightController::computeSignal(bool flag) {
-    return flag ? 1. : 0.;
+    // Observe minimum on-time
+    bool justedSwitchedOn   = !nowOn && isOn,
+         attemptedSwitchOff = nowOn && !isOn;
+    if (justedSwitchedOn) {
+        periodOn = 0;
+    }
+    else {
+        periodOn +=  timeStepSecs/60.;
+        // Overrule switch-off
+        if (attemptedSwitchOff && (periodOn < minPeriodOn))
+            isOn = true;
+    }
 }
 
 } //namespace

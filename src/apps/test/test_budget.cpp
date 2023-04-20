@@ -3,8 +3,8 @@
 #include <base/computation.h>
 #include <base/phys_math.h>
 #include <base/vector_op.h>
-#include <vg/energy_budget_2.h>
-#include "test_energy_budget_2.h"
+#include <vg/budget.h>
+#include "test_budget.h"
 
 using namespace base;
 using namespace phys_math;
@@ -54,8 +54,8 @@ struct LocalLayer {
 struct LocalVolume {
     QString name;
     double T, C, H, V;
-    vg::Volume asVolume() {
-        vg::Volume v;
+    vg::Budget::Volume asVolume() {
+        vg::Budget::Volume v;
         v.T = T;
         v.C = &C;
         v.H = H;
@@ -99,7 +99,7 @@ vg::Budget lwBudget(bool plantZeroU=false) {
         outdoors{"Outdoors", 10, inf(),   0,  0},
         indoors {"Indoors" , 25,  4780, 110,  0},
         soil    {"Soil"    ,  6, inf(),   0,  0};
-    static vg::Water
+    static vg::Budget::Water
         outdoorsW{"Outdoors", 60, 0, 0, 0},
         indoorsW {"Indoors" , 90, 0, 0, 0};
     vg::Budget lw;

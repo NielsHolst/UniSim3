@@ -1,24 +1,29 @@
-/* Copyright 2005-2021 by
-** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and
-** Oliver Koerner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and
-** Jesper M. Aaslyng, Danish Technological Instutute [jeaa at teknologisk.dk].
+/* Copyright 2005-2021 by Niels Holst, Aarhus University [niels.holst at agro.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #ifndef SHELTER_FACE_H
 #define SHELTER_FACE_H
+#include <base/convert.h>
 
-#include "base/box.h"
+namespace base {
+    class Box;
+}
 
 namespace vg {
 
-class ShelterFace : public base::Box
-{
-public:
-    ShelterFace(QString name, Box *parent);
-    void amend();
+enum class ShelterFace {
+    Roof1, Roof2,
+    Side1, Side2,
+    End1, End2
 };
-} //namespace
 
+QString toString(ShelterFace face);
+ShelterFace toShelterFace(QString name, base::Box *context=nullptr);
+QStringList shelterFaceNames();
+bool isShelterFaceName(QString name);
+
+}
 
 #endif
+

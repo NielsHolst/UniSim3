@@ -20,7 +20,8 @@ OutputSelector::OutputSelector(QString name, Box *parent)
     Input(beginStep).equals(0).help("Output is written when this step is reached").unit("int");
     Input(beginDateTime).equals(QDateTime()).help("Output is written when this time point is reached (optional)").unit("DateTime");
     Input(step).imports("/.[step]");
-    Input(dateTime).computes("if exists(Calendar::*[dateTime]) then Calendar::*[dateTime] else .[beginDateTime]");
+//    Input(dateTime).computes("if exists(Calendar::*[dateTime]) then Calendar::*[dateTime] else .[beginDateTime]");
+    Input(dateTime).imports("Calendar::*[dateTime]");
     Input(period).equals(1).help("If >1: A row of output will be produced with this period").unit("int>0");
     Input(final).equals(false).help("Overrules 'period'").unit("bool");
     Input(useLocalDecimalChar).equals(false).help("Use local decimal character in output?").unit("bool");
@@ -30,6 +31,10 @@ OutputSelector::OutputSelector(QString name, Box *parent)
 }
 
 void OutputSelector::initialize() {
+    if (!findMaybeOne<Port*>("Calendar::*[dateTime]")) {
+        dateTime = beginDateTime;
+        port("dateTime")->setConstness(true);
+    }
     updateSkipping();
     isActive = false;
 }

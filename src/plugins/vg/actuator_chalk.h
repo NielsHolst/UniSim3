@@ -5,24 +5,24 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef CHALK_H
-#define CHALK_H
+#ifndef ACTUATOR_CHALK_H
+#define ACTUATOR_CHALK_H
 #include <base/box.h>
 
 
 namespace vg {
 
-class Chalk : public base::Box
+class ActuatorChalk : public base::Box
 {
 public: 
-    Chalk(QString name, Box *parent);
+    ActuatorChalk(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Inputs
-    double setpoint, maxReflectance;
+    double state, swReflectivity, lwReflectivity;
     // Outputs
-    double value;
+    double swReflectivityValue, lwReflectivityValue;
 };
 
 } //namespace

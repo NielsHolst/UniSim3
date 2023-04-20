@@ -10,7 +10,7 @@
 #include <base/port.h>
 #include <base/publish.h>
 #include <base/test_num.h>
-#include "actuator_heat_pipes.h"
+#include "actuator_heat_pipe.h"
 #include "actuator_ventilation.h"
 #include "energy_budget_optimiser.h"
 #include "indoors_temperature.h"

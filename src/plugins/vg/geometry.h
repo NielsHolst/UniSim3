@@ -16,14 +16,15 @@ class Geometry : public base::Box
 {
 public:
     Geometry(QString name, Box *parent);
+    void initialize();
     void reset();
 private:
     // Input
     double orientation, spanWidth, length, height, roofPitch, reflection;
     int numSpans;
     // Output
-    double width, groundArea,
-        roofHeight, roofArea, sideWallsArea, endWallsArea, gablesArea,
+    double groundArea,
+        roofArea, sideArea, endArea,
         coverArea, coverPerGroundArea,
         volume, averageHeight;
 };

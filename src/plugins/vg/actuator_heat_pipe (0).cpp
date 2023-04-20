@@ -7,21 +7,16 @@
 */
 #include <base/publish.h>
 #include <base/vector_op.h>
-#include "actuator_heat_pipes.h"
-
-#include <base/dialog.h>
-//#define LOG1(x) dialog().information(QString("ActuatorHeatPipes ") + #x + " " + QString::number(x));
-
-#define LOG1(x)
+#include "actuator_heat_pipe.h"
 
 using namespace base;
 using namespace vector_op;
 
 namespace vg {
 
-PUBLISH(ActuatorHeatPipes)
+PUBLISH(ActuatorHeatPipe)
 
-ActuatorHeatPipes::ActuatorHeatPipes(QString name, Box *parent)
+ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
 	: Box(name, parent)
 {
     help("computes energy flux from heat pipes");
@@ -37,28 +32,25 @@ ActuatorHeatPipes::ActuatorHeatPipes(QString name, Box *parent)
     Output(energyFluxTotal).help("Energy flux total").unit("W/m2");
 }
 
-void ActuatorHeatPipes::reset() {
+void ActuatorHeatPipe::reset() {
     minTemperature = min(minTemperatures);
     maxTemperature = max(maxTemperatures);
     temperature = minTemperature;
     update();
 }
 
-void ActuatorHeatPipes::update() {
-    LOG1(temperature);
+void ActuatorHeatPipe::update() {
     energyFluxTotal = sum(energyFluxes);
     energyFluxConvection = propConvection*energyFluxTotal;
     energyFluxRadiation = energyFluxTotal - energyFluxConvection;
-    LOG1(energyFluxTotal);
 }
 
-double ActuatorHeatPipes::getTemperature() const {
+double ActuatorHeatPipe::getTemperature() const {
     return temperature;
 }
 
-void ActuatorHeatPipes::setTemperature(double value) {
+void ActuatorHeatPipe::setTemperature(double value) {
     temperature = value;
-//    port("temperature")->equals(value);
 }
 
 } //namespace

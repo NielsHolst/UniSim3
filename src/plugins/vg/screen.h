@@ -7,40 +7,21 @@
 */
 #ifndef SCREEN_H
 #define SCREEN_H
-#include "heat_transfer_layer_parameters.h"
-#include <base/box.h>
+#include "layer.h"
+#include "layer_adjusted.h"
 
 namespace vg {
 
-class Screen : public HeatTransferLayerParameters
+class Screen : public Layer, public LayerAdjusted
 {
 public:
     Screen(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
-    friend class Screens;
-
-    // Inputs
-    double haze, transmissivityAir, state,
-        ventilation,
-        Uair, UstateExponent, UventilationSlope;
-    // Outputs
-    double
-        swReflectivityTopNet, swReflectivityBottomNet,
-        swTransmissivityTopNet, swTransmissivityBottomNet,
-        lwReflectivityTopNet, lwReflectivityBottomNet,
-        lwTransmissivityTopNet, lwTransmissivityBottomNet,
-        swAbsorptivityTopNet, swAbsorptivityBottomNet,
-        lwAbsorptivityTopNet, lwAbsorptivityBottomNet,
-        emissivityTopNet, emissivityBottomNet,
-        UtopNet, UbottomNet,
-        maxArea;
-//        heatCapacity;
-    // Methods
-    void updateByState(double state);
-    void updateU();
-    virtual double computeMaxArea() = 0;
+    // Additional inputs
+    double state, coverPerGroundArea;
+    // No additional outputs
 };
 
 } //namespace

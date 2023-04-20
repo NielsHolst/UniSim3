@@ -5,27 +5,31 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef ACTUATOR_HEAT_PIPES_H
-#define ACTUATOR_HEAT_PIPES_H
+#ifndef ACTUATOR_GROWTH_LIGHT_H
+#define ACTUATOR_GROWTH_LIGHT_H
 
 #include <base/box.h>
 
 namespace vg {
 
-class ActuatorHeatPipes : public base::Box
-{
+class ActuatorGrowthLight : public base::Box {
 public:
-    ActuatorHeatPipes(QString name, Box *parent);
+    ActuatorGrowthLight(QString name, base::Box *parent);
     void reset();
     void update();
-    double getTemperature() const;
-    void setTemperature(double value);
 private:
     // Inputs
-    double temperature, propConvection;
-    QVector<double> minTemperatures, maxTemperatures, energyFluxes;
+    double ballast, power, parPhotonCoef, propLw,
+        efficiency;
+    bool isOn;
     // Outputs
-    double minTemperature, maxTemperature, energyFluxConvection, energyFluxRadiation, energyFluxTotal;
+    double
+        swEmissionBottom,
+        lwEmissionBottom, lwEmissionTop,
+        parEmissionBottom,
+        powerUsage;
+    // Methods
+    void noLight();
 };
 } //namespace
 

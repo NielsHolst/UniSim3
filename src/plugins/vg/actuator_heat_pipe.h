@@ -5,39 +5,29 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef PIPE_H
-#define PIPE_H
+#ifndef ACTUATOR_HEAT_PIPE_H
+#define ACTUATOR_HEAT_PIPE_H
 
 #include <QMap>
 #include <base/box.h>
 
 namespace vg {
 
-class Pipe : public base::Box
+class ActuatorHeatPipe : public base::Box
 {
 public:
-    Pipe(QString name, Box *parent);
+    ActuatorHeatPipe(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Inputs
-    QString material;
-    double density, diameter, flowRate, minTemperature, maxTemperature,
-        b, k,
+    double volume, flowRate, minTemperature, maxTemperature,
+        k, b, propLw,
         inflowTemperature, indoorsTemperature, groundArea;
-    int numSpans;
     // Outputs
-    double emissivity, test, inflowTemperature0,
-        length, volume, lengthPerSpan, volumePerSpan, transitTime,
-        outflowTemperature, temperatureDrop, energyFlux;
-    // Methods
-    void parseMaterial();
-    // Data
-    double _k;
-    struct MaterialInputs {
-        double emissivity;
-    };
-    QMap<QString, MaterialInputs> materialInputs;
+    double transitTime,
+        outflowTemperature, temperatureDrop,
+        energyFlux;
 };
 
 } //namespace
