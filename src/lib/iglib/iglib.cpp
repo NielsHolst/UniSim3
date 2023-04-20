@@ -97,6 +97,7 @@ void buildSensor(Box *parent, const Query &q) {
         port("indoorsRhIn").equals(value(q.indoors.rh)).
         port("indoorsCo2In").equals(value(q.indoors.co2)).
         port("indoorsWindspeedIn").equals(-999.).
+        port("indoorsLightIntensityIn").equals(value(q.indoors.lightIntensity)).
         port("outdoorsTemperatureIn").equals(value(q.outdoors.temperature)).
         port("outdoorsRhIn").equals(value(q.outdoors.rh)).
         port("outdoorsCo2In").equals(value(q.outdoors.co2)).

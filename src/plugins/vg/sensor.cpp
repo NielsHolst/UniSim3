@@ -26,6 +26,7 @@ Sensor::Sensor(QString name, Box *parent)
     Input(indoorsCo2In).equals(missing);
     Input(indoorsWindspeedIn).equals(missing);
     Input(outdoorsTemperatureIn).equals(missing);
+    Input(indoorsLightIntensityIn).equals(missing);
     Input(outdoorsRhIn).equals(missing);
     Input(outdoorsCo2In).equals(missing);
     Input(outdoorsGlobalRadiationIn).equals(missing);
@@ -37,6 +38,7 @@ Sensor::Sensor(QString name, Box *parent)
     Output(indoorsAh);
     Output(indoorsCo2);
     Output(indoorsWindspeed);
+    Output(indoorsLightIntensity);
     Output(outdoorsTemperature);
     Output(outdoorsRh);
     Output(outdoorsCo2);
@@ -56,6 +58,8 @@ void Sensor::update() {
     indoorsAh = phys_math::ahFromRh(indoorsTemperature, indoorsRh);
     indoorsCo2 = isMissing(indoorsCo2In) ? 800. : indoorsCo2In;
     indoorsWindspeed = isMissing(indoorsWindspeedIn) ? 0.1 : indoorsWindspeedIn;
+    if (!isMissing(indoorsLightIntensityIn))
+        indoorsLightIntensity = indoorsLightIntensityIn;
     // Outdoors
     outdoorsTemperature = isMissing(outdoorsTemperatureIn) ? indoorsTemperature : outdoorsTemperatureIn;
     outdoorsRh = (outdoorsRhIn<=0.) ? indoorsRh : outdoorsRhIn;

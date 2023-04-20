@@ -25,6 +25,7 @@ private:
     double value;
     // Data
     double _xGauss;
+    base::Box *_sensor;
 };
 } //namespace
 

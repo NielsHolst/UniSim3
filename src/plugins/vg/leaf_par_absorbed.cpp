@@ -29,6 +29,7 @@ LeafParAbsorbed::LeafParAbsorbed(QString name, Box *parent)
 }
 
 void LeafParAbsorbed::initialize() {
+    _sensor = findMaybeOne<Box*>("sensor");
     Box *parent = findOne<Box*>("..");
     QString layerName = parent->name();
     if (layerName == "top")
@@ -44,6 +45,12 @@ void LeafParAbsorbed::initialize() {
 }
 
 void LeafParAbsorbed::update() {
+    // HACK
+    if (_sensor) {
+        double sensedLight = _sensor->port("indoorsLightIntensity")->value<double>();
+        if (sensedLight > 0.)
+            parFlux = sensedLight/2.3;
+    }
     value = parFlux*(1. - k*exp(-k*_xGauss*lai));
 }
 
