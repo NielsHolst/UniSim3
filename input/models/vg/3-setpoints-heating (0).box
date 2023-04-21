@@ -1,0 +1,105 @@
+Simulation sim {
+  Box par {
+    &beginDate = 2022/01/01
+  }
+  Calendar calendar{
+    .latitude  = 55.4
+    .longitude = 10.4
+    .begin = par[beginDate] - 1
+    .end   = 2022/12/31
+    .timeStep = 15
+    .timeUnit = "m"
+  }
+  vg::Outdoors outdoors{
+    Records records{
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+    }
+    SkyTemperature skyTemperatureEstimate{
+    }
+    SoilTemperature soilTemperature{
+      .initial = 1.2
+    }
+  }
+  Box construction{
+    vg::Geometry geometry{
+      .numSpans = 25
+      .spanWidth = 4
+      .length = 100
+      .height = 3.5
+      .roofPitch = 26
+    }
+    Shelter shelter {
+    }
+  }
+  Box setpoints {
+    PrioritySignal rhMax{
+      .reverseOrder = TRUE
+      DateTimeSignal {
+        .beginDate = 1/1
+        .endDate = 31/12
+        .signalInside = 90
+      }
+      DateTimeSignal {
+        .beginDate = 1/5
+        .endDate = 31/8
+        .signalInside = 80
+      }
+    }
+    PrioritySignal rhMaxBand{
+      .reverseOrder = TRUE
+      DateTimeSignal {
+        .beginDate = 1/1
+        .endDate = 31/12
+        .beginTime = 00:00:00
+        .endTime = 00:00:00
+        .signalInside = 5
+      }
+    }
+    PrioritySignal heating {
+      .reverseOrder = TRUE
+      DateTimeSignal {
+        .beginDate = 1/1
+        .endDate = 31/12
+        .signalInside = 22
+      }
+      DateTimeSignal {
+        .beginDate = 1/4
+        .endDate = 30/9
+        .signalInside = 20
+      }
+    }
+    ProportionalSignal heatingAdjusted {
+    
+    }
+  }
+  Box actuators {
+    Box pipes {
+      ActuatorHeatPipes circuit1 {
+        .pipeVolume = 14.14 
+        .flowRate = 5.0
+        .k = 0.00629
+        .b = 1.25
+        .propLw = 0.5
+      }
+      ActuatorHeatPipes circuit2 {
+        .pipeVolume = 14.14 
+        .flowRate = 10.0
+        .k = 0.00629
+        .b = 1.25
+        .propLw = 0.5
+      }
+    }
+  }
+  OutputR output {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = rhMax[value]
+      }
+    }
+    OutputSelector {
+      .beginDateTime = par[beginDate]
+    }
+  }
+}
