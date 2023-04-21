@@ -53,77 +53,68 @@ Simulation sim {
         Screen energy {
           .swReflectivityTop      = 0.93
           .swTransmissivityTop    = 0.0
-          .swReflectivityBottom   = 0.43
-          .swTransmissivityBottom = 0.0
-          .lwReflectivityTop      = 0.93
-          .lwTransmissivityTop    = 0.0
-          .lwReflectivityBottom   = 0.43
-          .lwTransmissivityBottom = 0.0
+          :
           .Utop                   = 1.2
           .Ubottom                = 1.2
           .heatCapacity           = 80
-          .state = controllers/screens/energy[value]
+          .state = actuators/screens/energy[value]
         }
-        Screen shade {
+        Screen shade1 {
           .swReflectivityTop      = 0.70
           .swTransmissivityTop    = 0.20
-          .swReflectivityBottom   = 0.70
-          .swTransmissivityBottom = 0.20
-          .lwReflectivityTop      = 0.70
-          .lwTransmissivityTop    = 0.20
-          .lwReflectivityBottom   = 0.70
-          .lwTransmissivityBottom = 0.20
+          :
           .Utop                   = 1.2
           .Ubottom                = 1.2
           .heatCapacity           = 80.
-          .state = controllers/screens/shade[value]
+          .state = actuators/screens/shade[value]
+        }
+        Screen shade2 {
+          .swReflectivityTop      = 0.80
+          .swTransmissivityTop    = 0.10
+          :
+          .Utop                   = 1.1
+          .Ubottom                = 1.1
+          .heatCapacity           = 120.
+          .state = actuators/screens/shade[value]
         }
         Screen blackout {
-          .swReflectivityTop      = 0.0
+          .swReflectivityTop      = 0.05
           .swTransmissivityTop    = 0.0
-          .swReflectivityBottom   = 0.0
-          .swTransmissivityBottom = 0.0
-          .lwReflectivityTop      = 0.0
-          .lwTransmissivityTop    = 0.0
-          .lwReflectivityBottom   = 0.0
-          .lwTransmissivityBottom = 0.0
+          :
           .Utop                   = 1.2
           .Ubottom                = 1.2
           .heatCapacity           = 200.
-          .state = ./state[value]
-          Maximum state {
-            .values = controllers/screens/blackout[value] | controllers/screens/energy[value]
-          }
+          .state = actuators/screens/blackout[value]
         }
       }
       Box faces {
         Box roof1 {
           &cover = "glass"
-          &screens = "energy+shade+blackout"
+          &screens = "energy+shade1+blackout"
         }
         Box roof2 {
           &cover = "glass"
-          &screens = "energy+shade+blackout"
+          &screens = "energy+shade1+blackout"
         }
         Box side1 {
           &cover = "glass"
-          &screens = "blackout"
+          &screens = "none+shade2+blackout"
         }
         Box side2 {
           &cover = "glass"
-          &screens = "blackout"
+          &screens = "none+none+blackout"
         }
         Box end1 {
           &cover = "glass"
-          &screens = ""
+          &screens = "none+none+blackout"
         }
         Box end2 {
           &cover = "glass"
-          &screens = ""
+          &screens = "energy+none+blackout"
         }
       }
     }
-  }
+  } 
   Box setpoints {
     Box rhMax {
       PrioritySignal threshold {
@@ -159,15 +150,12 @@ Simulation sim {
           .signalInside = 22
         }
       }
-      PrioritySignal offset {
+      PrioritySignal humidityOffset {
         DateTimeSignal {
           .beginDate = 1/1
           .endDate = 31/12
           .signalInside = 2
         }
-      }
-      Sum current {
-        .values = ../base[value] | ../offset[value]
       }
     }
     Box ventilation {
@@ -185,13 +173,9 @@ Simulation sim {
           .signalInside = -1.5
         }
       }
-      Sum current {
-        .values = setpoints/heating/current[value] | ../baseOffset[value] | ../humidityOffset[value]
-      }
     }
-
-    Box crackVentilation {
-      PrioritySignal base {
+    Box ventilationCrack {
+      PrioritySignal size {
         DateTimeSignal {
           .beginDate = 1/1
           .endDate = 31/12
@@ -215,16 +199,7 @@ Simulation sim {
         }
       }
       
-      PrioritySignal humidityOffset {
-        DateTimeSignal {
-          .beginDate = 1/1
-          .endDate = 31/12
-          .signalInside = -1.5
-        }
-      }
     }
-    
-    
     Box screens {
       Box energy {
         PrioritySignal threshold {
@@ -245,6 +220,16 @@ Simulation sim {
       Box shade {
         PrioritySignal threshold {
           DateTimeSignal {
+            .beginDate = 1/12
+            .endDate = 31/1
+            .signalInside = 300
+          }
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 15/3
+            .signalInside = 400
+          }
+          DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
             .signalInside = 500
@@ -261,9 +246,17 @@ Simulation sim {
       Box blackout {
         PrioritySignal threshold {
           DateTimeSignal {
+            .beginDate = 1/4
+            .endDate = 15/6
+            .beginTime = 04:00
+            .endTime   = 12:00
+            .signalInside = 2
+            .signalOutside = 9999
+          }
+          DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
-            .signalInside = 0
+            .signalInside = 9999
           }
         }
         PrioritySignal band {
@@ -379,6 +372,43 @@ Simulation sim {
         .increasingSignal = TRUE
       }
     }
+    Sum heating {
+      .values = setpoints/heating/base[value] | 
+                ./humidityOffset[value]
+      ProportionalSignal humidityOffset {
+        .input         = indoors[rh]
+        .threshold     = setpoints/rhMax/threshold[value]
+        .thresholdBand = setpoints/rhMax/band[value]
+        .maxSignal     = setpoints/heating/humidityOffset[value]
+        .increasingSignal = TRUE
+      }
+    }
+    Sum ventilation {
+      .values = controller/heating[value] | 
+                setpoints/ventilation/baseOffset[value] | 
+                ./humidityOffset[value]
+      ProportionalSignal humidityOffset {
+        .input         = indoors[rh]
+        .threshold     = setpoints/rhMax/threshold[value]
+        .thresholdBand = setpoints/rhMax/band[value]
+        .maxSignal     = setpoints/ventilation/humidityOffset[value]
+        .increasingSignal = TRUE
+      }
+    }
+    ProportionalSignal ventilationCrack {
+      .input         = indoors[rh]
+      .threshold     = setpoints/rhMax/threshold[value]
+      .thresholdBand = setpoints/rhMax/band[value]
+      .maxSignal     = ./temperatureLimited[value]
+      .increasingSignal = TRUE
+      ProportionalSignal temperatureLimited {
+        .input         = outdoors[temperature]
+        .threshold     = setpoints/ventilationCrack/temperature/threshold[value]
+        .thresholdBand = setpoints/ventilationCrack/temperature/band[value]
+        .maxSignal     = setpoints/ventilationCrack/size[value]
+        .increasingSignal = TRUE
+      }
+    }
     Box screens {
       ProportionalSignal energy {
         .input         = outdoors[radiation]
@@ -426,10 +456,13 @@ Simulation sim {
   Box actuators {
     Box screens {
       ActuatorScreen energy {
+        .lagPeriod = 10
       }
       ActuatorScreen shade {
+        .lagPeriod = 10
       }
       ActuatorScreen blackout {
+        .lagPeriod = 10
       }
     }
     Box growthLights {
@@ -478,22 +511,6 @@ Simulation sim {
   // }
   OutputR output {
     .clearPlots = TRUE
-    // PageR {
-      // .xAxis = outdoors[radiation]
-      // PlotR {
-        // .ports = controllers/screens/energy[signal] | controllers/screens/shade[signal] | controllers/screens/blackout[signal]
-      // }
-    // }
-    // PageR {
-      // .xAxis = controllers/screens/energy[signal]
-      // PlotR {
-        // .ports = shelter/screens/energy[swReflectivityTopAdj] | 
-                 // shelter/screens/energy[swTransmissivityTopAdj] |
-                 // shelter/screens/energy[swAbsorptivityTopAdj] |
-                 // shelter/screens/energy[UtopAdj] | 
-                 // shelter/screens/energy[heatCapacityAdj]
-      // }
-    // }
     PageR {
       .xAxis = calendar[dateTime]
       PlotR {
