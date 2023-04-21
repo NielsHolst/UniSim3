@@ -21,13 +21,13 @@ public:
 private:
     // Inputs
     double
-        setpointHeating, avgOutdoorsTemperature,
-        indoorsTemperature, outdoorsTemperature,
-        minValue, maxValue;
+        outdoorsTemperature,
+        initial, min, max;
     bool atMidnight;
     // Outputs
     double value;
     // Data
+    const int _bufSize = 7;
     base::CircularBuffer<double> _buf;
     double _dailySum;
     int _steps;

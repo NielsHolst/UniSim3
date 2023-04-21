@@ -20,22 +20,19 @@ SoilTemperature::SoilTemperature(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models soil temperature under the greenhouse");
-    Input(setpointHeating).imports("setpoints/heatingTemperature[value]");
-    Input(indoorsTemperature).imports("indoors/temperature[value]");
+    Input(initial).equals(5.).unit("oC").help("Initial soil temperature");
+    Input(min).equals(2.).unit("oC").help("Minimum soil temperature");
+    Input(max).equals(40.).unit("oC").help("Maximum soil temperature");
     Input(outdoorsTemperature).imports("outdoors[temperature]");
     Input(atMidnight).imports("calendar[atMidnight]");
-    Input(avgOutdoorsTemperature).equals(5.).unit("oC").help("Average temperature of month before simulation start");
-    Input(minValue).equals(2.).unit("oC").help("Minimum soil temperature");
-    Input(maxValue).equals(40.).unit("oC").help("Maximum soil temperature");
     Output(value).unit("oC").help("Soil temperature");
 }
 
 void SoilTemperature::reset() {
-    // Fill buffer with 30 default values
-    value = (setpointHeating + avgOutdoorsTemperature)/2.;
-    value = avgOutdoorsTemperature;
-    _buf.resize(7);
-    for (int i=0; i<7; ++i)
+    // Fill buffer with initial values
+    value = initial;
+    _buf.resize(_bufSize);
+    for (int i=0; i<_bufSize; ++i)
         _buf.push(value);
     // Start day anew
     _dailySum = 0.;
@@ -47,15 +44,15 @@ void SoilTemperature::update() {
     if (atMidnight && _steps > 0) {
         // Push daily average
         _buf.push(_dailySum/_steps);
-        // Report 30-days average
-        value = minmax(minValue, _buf.average(), maxValue);
+        // Report buffer average
+        value = minmax(min, _buf.average(), max);
         // Start day anew
         _dailySum = 0;
         _steps = 0;
 
     }
-    // Always update daily sum
-    _dailySum += outdoorsTemperature; // + indoorsTemperature;
+    // Update daily sum
+    _dailySum += outdoorsTemperature;
     ++_steps;
 }
 

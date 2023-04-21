@@ -22,41 +22,44 @@ Geometry::Geometry(QString name, Box *parent)
 	: Box(name, parent)
 {
     help("defines the greenhouse geometry");
-    Input(orientation).equals(90.).help("Compass direction of greenhouse long axis").unit("[0;360]");
-    Input(numSpans).equals(1).help("Number of spans").unit("-");
+    Input(numSpans).equals(1).help("Number of spans");
     Input(spanWidth).equals(40.).help("Width of a span").unit("m");
     Input(length).equals(100.).help("Length of side wall").unit("m");
     Input(height).equals(2.5).help("Wall height").unit("m");
     Input(roofPitch).equals(26.).help("Pitch (slope) of roof").unit("[0;180]");
-    Input(reflection).equals(0.1).help("Outer reflection of greenhouse construction (excl. cover").unit("[0;1]");
 
-    Output(width).help("Total width of greenhouse across spans").unit("m");
-    Output(groundArea).help("Total area covered by greenhouse").unit("m2");
+    Output(sideArea).help("Total area of side walls").unit("m2");
+    Output(endArea).help("Total area of end face").unit("m2");
     Output(roofArea).help("Total area of greenhouse roof").unit("m2");
-    Output(sideWallsArea).help("Total area of side walls").unit("m2");
-    Output(endWallsArea).help("Total area of end walls").unit("m2");
-    Output(gablesArea).help("Total area of gables").unit("m2");
     Output(coverArea).help("Total area of greenhouse cover").unit("m2");
-    Output(coverPerGroundArea).help("Area to ground cover ratio").unit("m2/m2");
+    Output(groundArea).help("Total area covered by greenhouse").unit("m2");
     Output(volume).help("Total greenhouse volume").unit("m3");
+    Output(coverPerGroundArea).help("Area to ground cover ratio").unit("m2/m2");
     Output(averageHeight).help("Average height of total volume").unit("m");
-    Output(roofHeight).help("Height of roof above wall height").unit("m");
+}
+
+void Geometry::initialize() {
+    reset();
 }
 
 void Geometry::reset() {
-    roofHeight = sin(roofPitch*PI/180.)*spanWidth/2.;
-    double roofWidth = hypot(roofHeight, spanWidth/2.);
-    width = numSpans*spanWidth;
-    groundArea = width*length;
-    roofArea = 2*numSpans*roofWidth*length;
-    sideWallsArea = 2*length*height;
-    endWallsArea = 2*width*height;
-    gablesArea = numSpans*roofHeight*spanWidth;
-    coverArea = sideWallsArea + endWallsArea + gablesArea + roofArea;
+    // Compute all outputs
+    double sinPitch    = sin(roofPitch*PI/180.),
+           oneSideArea = length*height,
+           oneEndArea  = spanWidth*height + spanWidth*spanWidth/4*sinPitch,
+           oneRoofArea = spanWidth*length/2*sqrt(1+sinPitch*sinPitch);
+    sideArea = 2*oneSideArea;
+    endArea  = 2*oneEndArea*numSpans;
+    roofArea = 2*oneRoofArea*numSpans;
+    coverArea = sideArea + endArea + roofArea;
+    groundArea = spanWidth*length*numSpans;
+    volume = oneEndArea*length*numSpans;
     coverPerGroundArea = coverArea/groundArea;
-    double roofVolume  = length*gablesArea/2.;
-    volume = groundArea*height + roofVolume;
     averageHeight = volume/groundArea;
+
+    // Set all outputs const
+    for (auto output : findMany<Port*>(".[output::*]"))
+        output->setConstness(true);
 }
 
 } //namespace

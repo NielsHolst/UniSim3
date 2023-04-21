@@ -9,12 +9,15 @@ BOXES_PLUGIN_NAME = vg
 include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 
 HEADERS +=  \
+    actuator_chalk.h \
+    actuator_growth_light.h \
     actuators.h \
     actuator_heat_exchanger.h \
+    actuator_heat_pipe.h \
     actuator_heat_pump.h \
-    actuator_heat_pipes.h \
     actuator_humidifier.h \
     actuator_pad_and_fan.h \
+    actuator_screen.h \
     actuator_ventilation.h \
     ah_from_rh.h \
     any_flag.h \
@@ -26,8 +29,8 @@ HEADERS +=  \
     boundary_layer_resistance_stanghellini.h \
     boundary_layer_resistance_monteith_unsworth.h \
     budget.h \
+    budget_solver.h \
     canopy_photosynthesis.h \
-    chalk.h \
     controllers.h \
     controller_ventilation_combined.h \
     cover.h \
@@ -35,11 +38,10 @@ HEADERS +=  \
     diffuse_irradiation_base.h \
     diffuse_irradiation_RE.h \
     energy_budget.h \
-    energy_budget_2.h \
-    energy_budget_optimiser.h \
+    extract_layers.h \
+#    energy_budget_optimiser.h \
     geometry.h \
     growth_light_controller.h \
-    growth_light.h \
     growth_lights.h \
     heat_buffer.h \
     heat_sink.h \
@@ -64,6 +66,7 @@ HEADERS +=  \
     indoors_wind_speed.h \
     intercellular_co2.h \
     layer.h \
+    layer_adjusted.h \
     leaf_par_absorbed.h \
     leaf_photosynthesis.h \
     leaf_photosynthesis_aj.h \
@@ -76,16 +79,9 @@ HEADERS +=  \
     outputs.h \
     par_budget.h \
     pid_controller.h \
-    pipe.h \
     pipe_forced.h \
-#    random_jmax.h \
     screen.h \
-    screen_roof.h \
-    screen_wall.h \
     screen_combination.h \
-    screen_combination_encode.h \
-    screens.h \
-    screens_air_transmissivity.h \
     sensor.h \
     setpoints.h \
     setpoint_heating.h \
@@ -116,12 +112,15 @@ HEADERS +=  \
     water_budget.h
 
 SOURCES += \
+    actuator_chalk.cpp \
+    actuator_growth_light.cpp \
     actuators.cpp \
     actuator_heat_exchanger.cpp \
+    actuator_heat_pipe.cpp \
     actuator_heat_pump.cpp \
-    actuator_heat_pipes.cpp \
     actuator_humidifier.cpp \
     actuator_pad_and_fan.cpp \
+    actuator_screen.cpp \
     actuator_ventilation.cpp \
     ah_from_rh.cpp \
     any_flag.cpp \
@@ -133,8 +132,8 @@ SOURCES += \
     boundary_layer_resistance_stanghellini.cpp \
     boundary_layer_resistance_monteith_unsworth.cpp \
     budget.cpp \
+    budget_solver.cpp \
     canopy_photosynthesis.cpp \
-    chalk.cpp \
     controllers.cpp \
     controller_ventilation_combined.cpp \
     cover.cpp \
@@ -142,11 +141,9 @@ SOURCES += \
     diffuse_irradiation_base.cpp \
     diffuse_irradiation_RE.cpp \
     energy_budget.cpp \
-    energy_budget_2.cpp \
-    energy_budget_optimiser.cpp \
+    extract_layers.cpp \
     geometry.cpp \
     growth_light_controller.cpp \
-    growth_light.cpp \
     growth_lights.cpp \
     heat_buffer.cpp \
     heat_sink.cpp \
@@ -171,6 +168,7 @@ SOURCES += \
     indoors_wind_speed.cpp \
     intercellular_co2.cpp \
     layer.cpp \
+    layer_adjusted.cpp \
     leaf_par_absorbed.cpp \
     leaf_photosynthesis.cpp \
     leaf_photosynthesis_aj.cpp \
@@ -183,16 +181,9 @@ SOURCES += \
     outputs.cpp \
     par_budget.cpp  \
     pid_controller.cpp \
-    pipe.cpp \
     pipe_forced.cpp \
-#    random_jmax.cpp \
     screen.cpp \
-    screen_roof.cpp \
-    screen_wall.cpp \
     screen_combination.cpp \
-    screen_combination_encode.cpp \
-    screens.cpp \
-    screens_air_transmissivity.cpp \
     sensor.cpp \
     setpoints.cpp \
     setpoint_heating.cpp \

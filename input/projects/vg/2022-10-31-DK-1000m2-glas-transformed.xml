@@ -22,13 +22,13 @@
 	<!-- *** Construction *** -->
 	<box name="construction">
 		<box class="vg::Geometry" name="geometry">
-			<port name="orientation" source="/VG_SETUP/Greenhouse/Orientation" value="0"/>
+			<!-- <port name="orientation" source="/VG_SETUP/Greenhouse/Orientation" value="0"/> -->
 			<port name="numSpans" source="/VG_SETUP/Greenhouse/NumberOfSpans" value="25"/>
 			<port name="spanWidth" source="/VG_SETUP/Greenhouse/SpanSize" value="4"/>
 			<port name="length" source="/VG_SETUP/Greenhouse/Length" value="100"/>
 			<port name="height" source="/VG_SETUP/Greenhouse/TrempelHeight" value="4"/>
 			<port name="roofPitch" source="/VG_SETUP/Greenhouse/RoofPitch" value="26"/>
-			<port name="reflection" source="/VG_SETUP/Greenhouse/GreenhouseReductionFactorLight" value="0.1"/>
+			<!-- <port name="reflection" source="/VG_SETUP/Greenhouse/GreenhouseReductionFactorLight" value="0.1"/> -->
 		</box>
 		<box class="vg::Shelter" name="shelter">
 			<port name="screenAirExponent" source="/VG_SETUP/Greenhouse/screenAirExponent" value="6"/>

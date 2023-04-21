@@ -1,39 +1,68 @@
-rm(list=ls(all=TRUE))
-graphics.off()
+pipe_density  = 2   # m/m2
+pipe_diameter = 30  # mm
+area          = 10000 # m2
+pipe_length   = pipe_density*area # m
+pipe_volume   = pi/4*(pipe_diameter/1000)^2*pipe_length # m3
+pipe_volume
 
-source("~/QDev/UniSim3/input/scripts/begin.R")
-
-v = 3.0/60
-
-y = function(yin0, yout, t) {
-  yout - (yout-yin0)*exp(-v*t)
+transit_time  = function(flow_rate) {
+  # flow_rate    : m3/h
+  # transit_time : min
+  pipe_volume/flow_rate*60
 }
+transit_time(20)
 
-x = 0:60
+k     = 0.0063
+b     = 1.25
+Tair  = 20
 
 M = expand.grid(
-  Time = x,
-  Yin0 = c(15,25)
+  FlowRate = c(10, 20),
+  T0       = 30:80
 )
-M$Yin = with(M, y(Yin0, 20, Time))
-M$Yin0 = factor(M$Yin0)
+M = mutate(M,
+  TransitTime = transit_time(FlowRate),
+  DT_pipe = (k*(b-1)*TransitTime + (T0 - Tair)^(1-b))^(1/(1-b)),
+  E_pipe  = 4184*DT_pipe*pipe_volume/area/TransitTime*1000/60
+)
 
-windows(4,3)
-ggplot(M, aes(Time, Yin, colour=Yin0)) +
-  geom_line(size=1) +
-  geom_hline(yintercept=20, size=1) +
-  scale_x_continuous(breaks=15*(0:4)) +
-  labs(x="Minutes", y="Indoors temperature") +
-  theme_bw() +
-  theme(
-    legend.position="none",
-    axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)))
-  )
+4184*30*pipe_volume/area/transit_time(20)*1000/60
 
-DT = y(c(15,25), 20, 2) - c(15,25)
-DT
-Cair = 1020*1.19
-Cair
-DT*Cair/120*3.938
 
+pipe_volume/transit_time(20)
+
+windows(5,6)
+ggarrange(
+  ggplot(M, aes(T0, DT_pipe, colour=factor(FlowRate))) +
+    scale_colour_manual(values=c(blue, red)) +
+    guides(color = guide_legend(reverse = TRUE)) + 
+    ylim(0, NA) +
+    labs(x=NULL,
+         y="Drop in pipe temperature (oC)",
+         colour="Flow rate\n(m3/h)") +
+    geom_line(linewidth=1) +
+    theme(
+      axis.title.x = element_text(margin = margin(t=8)),
+      axis.title.y = element_text(margin = margin(r=8))
+    )
+
+  ,
+  ggplot(M, aes(T0, E_pipe, colour=factor(FlowRate))) +
+    scale_colour_manual(values=c(blue, red)) +
+    guides(color = guide_legend(reverse = TRUE)) + 
+    ylim(0, NA) +
+    labs(x="Pipe inlet temperature (oC)",
+         y="Energy emitted (W/m2)",
+         colour="Flow rate\n(m3/h)") +
+    geom_line(linewidth=1) +
+    theme(
+      axis.title.x = element_text(margin = margin(t=8)),
+      axis.title.y = element_text(margin = margin(r=8))
+    )
+    ,
+    ncol = 1,
+    align = "hv",
+    common.legend = TRUE,
+    legend = "right"
+)
 

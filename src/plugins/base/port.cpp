@@ -88,7 +88,7 @@ void Port::define() {
 
     // Check that (re-) definition is legal in this step;
     // From Initialization and onwards, only re-definition to a constant expression is valid
-    if (step >= Computation::Step::Initialize) // && !_expression.isConstant())
+    if (step >= Computation::Step::Initialize && !_expression.isConstant())
         ThrowException("Change of port definition only allowed until amend step").
                 value(Computation::toString(step)).context(this);
 
@@ -339,7 +339,7 @@ void Port::collectImports(
 {
     QVector<Port*> imported = importPorts();
     bool isLeaf = imported.isEmpty();
-    int id = order();
+//    int id = order();
     if (subset==Subset::All || isLeaf)
         currentCollection << this;
     for (Port *port : imported) {

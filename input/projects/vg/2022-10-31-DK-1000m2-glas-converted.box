@@ -893,21 +893,24 @@ Simulation greenhouse{
         .code = setpoints/elementary/screens/screenLayer3[value]
       }
     }
-    Box growthLights{
-      GrowthLightController growthLight1{
+    Box growthLights {
+      GrowthLightController growthLight1 {
         .setting = setpoints[growthLightSetting1]
         .lightThresholdLow = setpoints[growthLightThresholdLow1]
         .lightThresholdHigh = setpoints[growthLightThresholdHigh1]
+        .minPeriodOn = 5.
       }
-      GrowthLightController growthLight2{
+      GrowthLightController growthLight2 {
         .setting = setpoints[growthLightSetting2]
         .lightThresholdLow = setpoints[growthLightThresholdLow2]
         .lightThresholdHigh = setpoints[growthLightThresholdHigh2]
+        .minPeriodOn = 30.
       }
-      GrowthLightController growthLight3{
+      GrowthLightController growthLight3 {
         .setting = setpoints[growthLightSetting3]
         .lightThresholdLow = setpoints[growthLightThresholdLow3]
         .lightThresholdHigh = setpoints[growthLightThresholdHigh3]
+        .minPeriodOn = 30.
       }
     }
   }

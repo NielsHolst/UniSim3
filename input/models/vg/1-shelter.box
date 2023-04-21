@@ -1,13 +1,11 @@
 Simulation greenhouse{
   Calendar calendar{
-    .latitude = 55.4038
-    .longitude = 10.4024
+    .latitude  = 55.4
+    .longitude = 10.4
     .begin = 2022/01/01-1
-    .end = 2022/01/31
+    .end   = 2022/12/31
     .timeStep = 15
     .timeUnit = "m"
-    Sun sun{
-    }
   }
   vg::Outdoors outdoors{
     Records records{
@@ -17,7 +15,7 @@ Simulation greenhouse{
     SkyTemperature skyTemperatureEstimate{
     }
     SoilTemperature soilTemperature{
-      .avgOutdoorsTemperature = 1.2
+      .initial = 1.2
     }
   }
   Box construction{
@@ -29,16 +27,6 @@ Simulation greenhouse{
       .roofPitch = 26
     }
     Shelter shelter {
-    }
-  }
-  Box setpoints {
-    Box heatingTemperature {
-      &value = 20.
-    }
-  }
-  Box indoors {
-    Box temperature {
-      &value = 20.
     }
   }
   OutputR output {

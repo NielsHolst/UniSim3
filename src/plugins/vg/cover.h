@@ -7,20 +7,24 @@
 */
 #ifndef COVER_H
 #define COVER_H
-#include <base/box.h>
-#include "heat_transfer_layer_parameters.h"
+#include "layer.h"
+#include "layer_adjusted.h"
 
 namespace vg {
 
-class Cover : public HeatTransferLayerParameters
+class Cover : public Layer, public LayerAdjusted
 {
 public:
     Cover(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
-    // Inputs
+    // Additional inputs
+    double swReflectivityChalk, lwReflectivityChalk,
+        coverPerGroundArea;
+    // No additional outputs
 };
+
 } //namespace
 
 

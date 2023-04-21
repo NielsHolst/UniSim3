@@ -18,13 +18,13 @@ d     = 37
 Tair  = 20
 
 M = expand.grid(
-  FlowRate = c(5, 10),
+  FlowRate = c(10, 20),
   T0       = 30:80
 )
 M = mutate(M,
   TransitTime = transit_time(FlowRate),
   DT_pipe = (k*d*(b-1)*TransitTime + (T0 - Tair)^(1-b))^(1/(1-b)),
-  E_pipe  = 4184*DT_pipe*pipe_volume/area/TransitTime*1000
+  E_pipe  = 4184*DT_pipe*pipe_volume/area/TransitTime*1000/60
 )
 M = melt(M, id.vars=c("FlowRate", "TransitTime", "T0"))
 

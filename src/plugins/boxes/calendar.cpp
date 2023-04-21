@@ -64,7 +64,7 @@ void Calendar::reset() {
     port("timeStepSecs")->setConstness(true);
     port("timeStepDays")->setConstness(true);
 
-    dateTime = begin;
+    // Set up steps
     if (end.isValid()) {
         if (begin >= end)
             ThrowException("Begin date must be before end data").
@@ -76,6 +76,9 @@ void Calendar::reset() {
     else {
         steps = 1;
     }
+    port("steps")->setConstness(true);
+
+    dateTime = begin;
     totalTimeSteps = 0;
     atMidnight = (dateTime.time() == QTime(0,0,0));
     updateDerived();
