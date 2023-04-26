@@ -1,4 +1,4 @@
-Simulation greenhouse { //1535
+Simulation greenhouse { //1538
   Calendar calendar { //30
     .latitude = 55.31{double} // #12
     .longitude = 10.32{double} // #13
@@ -19,7 +19,7 @@ Simulation greenhouse { //1535
     .indoorsCo2In = 430.638{double} // #33
     .indoorsWindspeedIn = -999.0{double} // #34
     .outdoorsTemperatureIn = 15.3216{double} // #35
-    .indoorsLightIntensityIn = 4.38429{double} // #36
+    .indoorsLightIntensityIn = 43.8429{double} // #36
     .outdoorsRhIn = 0.0{double} // #37
     .outdoorsCo2In = 415.0{double} // #38
     .outdoorsGlobalRadiationIn = 67.4456{double} // #39
@@ -627,7 +627,7 @@ Simulation greenhouse { //1535
       .swScatteringCoef = 0.2{double} // #1069
       .lwK = 0.8{double} // #1070
       .lwScatteringCoef = 0.05{double} // #1071
-      .leafTemperature = 16.7742{double} // #1072
+      .leafTemperature = 16.7735{double} // #1072
     }
     vg::HeatTransferFloor floor { //1120
       .swReflectivityTop = 0.6{double} // #1074
@@ -668,9 +668,9 @@ Simulation greenhouse { //1535
     }
   }
   vg::WaterBudget waterBudget { //1226
-    .conductance = 0.000127602{double} 0.00329672{double} 0.0{double} 0.0{double} 0.0{double} c[5]{FunctionCall} // #1220
-    .vapourFlux = -3.12496e-08{double} 0.000163664{double} 0.0{double} 0.0{double} 0.0{double} c[5]{FunctionCall} // #1221
-    .gain = 1.31222e-06{double} 0.000198374{double} 0.0{double} 0.0{double} 0.0{double} c[5]{FunctionCall} // #1222
+    .conductance = 0.000127602{double} 0.003297{double} 0.0{double} 0.0{double} 0.0{double} c[5]{FunctionCall} // #1220
+    .vapourFlux = -3.12496e-08{double} 0.000163668{double} 0.0{double} 0.0{double} 0.0{double} c[5]{FunctionCall} // #1221
+    .gain = 1.31222e-06{double} 0.000198381{double} 0.0{double} 0.0{double} 0.0{double} c[5]{FunctionCall} // #1222
     vg::VapourFluxVentilation ventilation { //1172
       .timeStep = 30.0{double} // #1167
       .airInflux = 0.129473{double} // #1168
@@ -724,9 +724,9 @@ Simulation greenhouse { //1535
     }
     vg::IndoorsHumidity humidity { //1254
       .initRh = 78.1884{double} // #1240
-      .conductance = 0.00337804{double} // #1241
-      .vapourFlux = 0.00016361{double} // #1242
-      .gain = 0.000199176{double} // #1243
+      .conductance = 0.00337832{double} // #1241
+      .vapourFlux = 0.000163615{double} // #1242
+      .gain = 0.000199184{double} // #1243
       .temperature = 10.7099{double} // #1244
       .height = 3.54796{double} // #1245
       .timeStep = 30.0{double} // #1246
@@ -757,15 +757,15 @@ Simulation greenhouse { //1535
     vg::BoundaryLayerResistanceStanghellini boundaryLayerResistance { //1271
       .leafDimension = 0.025{double} // #1265
       .leafWindSpeed = 0.1{double} // #1266
-      .leafTemperature = 16.7742{double} // #1269
+      .leafTemperature = 16.7735{double} // #1269
       .indoorsTemperature = 10.7099{double} // #1270
     }
     vg::LeafTranspiration transpiration { //1283
       .lai = 1.0{double} // #1275
       .cropCoverage = 0.95{double} // #1276
       .indoorsAh = 0.0105286{double} // #1277
-      .radiationAbsorbed = 492.02{double} // #1278
-      .leafTemperature = 16.7742{double} // #1279
+      .radiationAbsorbed = 492.018{double} // #1278
+      .leafTemperature = 16.7735{double} // #1279
       .rsH2O = mean[1]{FunctionCall} ../children::photosynthesis/children::*/children::stomatalResistance[rH2O]{Path} ,{Operator} end{FunctionCallEnd} // #1280
       .rbH2O = 151.12{double} // #1281
     }
@@ -774,21 +774,21 @@ Simulation greenhouse { //1535
       .indoorsRh = 100.0{double} // #1285
       .rsH2O = mean[1]{FunctionCall} ../children::photosynthesis/children::*/children::stomatalResistance[rH2O]{Path} ,{Operator} end{FunctionCallEnd} // #1286
       .rbH2O = 151.12{double} // #1287
-      .radiationAbsorbed = 492.02{double} // #1288
+      .radiationAbsorbed = 492.018{double} // #1288
       .lai = 1.0{double} // #1289
     }
     vg::CanopyPhotosynthesis photosynthesis { //1439
       .lai = 1.0{double} // #1427
-      .leafAn = -0.106934{double} -0.161834{double} -0.0967687{double} c[3]{FunctionCall} // #1428
-      .leafAg = 0.0132725{double} 0.0304617{double} 0.0234375{double} c[3]{FunctionCall} // #1429
+      .leafAn = 0.180398{double} 0.492705{double} 0.404065{double} c[3]{FunctionCall} // #1428
+      .leafAg = 0.300599{double} 0.684991{double} 0.524266{double} c[3]{FunctionCall} // #1429
       .growthRespiration = 0.3{double} // #1430
       .trackPn = TRUE{bool} // #1431
       Box top { //1336
         IntercellularCo2 intercellularCo2 { //1298
           .boundaryLayerResistance = 207.035{double} // #1292
-          .stomatalResistance = 16.0165{double} // #1293
+          .stomatalResistance = 15.9787{double} // #1293
           .indoorsCo2 = 2000.0{double} // #1294
-          .leafPhotosynthesis = -0.106934{double} // #1295
+          .leafPhotosynthesis = 0.180398{double} // #1295
         }
         LeafParAbsorbed parAbsorbed { //1303
           .parFlux = 64.8755{double} // #1299
@@ -796,7 +796,7 @@ Simulation greenhouse { //1535
           .lai = 1.0{double} // #1301
         }
         LeafRespiration respiration { //1310
-          .leafTemperature = 16.7742{double} // #1304
+          .leafTemperature = 16.7735{double} // #1304
           .canopyParAbsorbed = 40.4483{double} // #1305
           .RL = 0.74{double} // #1306
           .darknessThreshold = 5.0{double} // #1307
@@ -806,29 +806,29 @@ Simulation greenhouse { //1535
           .gammaStar = 55.47{double} // #1311
           .Jmax = 146.52{double} // #1312
           .k = 0.7{double} // #1313
-          .leafTemperature = 16.7742{double} // #1314
-          .intercellularCo2 = 2001.86{double} // #1315
-          .parAbsorbed = 0.673085{double} // #1316
-          .respiration = 0.432708{double} // #1317
+          .leafTemperature = 16.7735{double} // #1314
+          .intercellularCo2 = 1997.59{double} // #1315
+          .parAbsorbed = 15.481{double} // #1316
+          .respiration = 0.432688{double} // #1317
         }
         StomatalResistanceBallBerry stomatalResistance { //1329
           .g0 = 0.1{double} // #1324
           .g1 = 1.64{double} // #1325
-          .leafPhotosynthesis = -0.106934{double} // #1326
+          .leafPhotosynthesis = 0.180398{double} // #1326
           .rh = 100.0{double} // #1327
           .ca = 2000.0{double} // #1328
         }
         LeafPhotosynthesis leafPhotosynthesis { //1335
-          .leafAj = -0.384931{double} // #1330
-          .leafAr = 0.432708{double} // #1331
+          .leafAj = 0.649381{double} // #1330
+          .leafAr = 0.432688{double} // #1331
         }
       }
       Box mid { //1381
         IntercellularCo2 intercellularCo2 { //1343
           .boundaryLayerResistance = 207.035{double} // #1337
-          .stomatalResistance = 16.0252{double} // #1338
+          .stomatalResistance = 15.9393{double} // #1338
           .indoorsCo2 = 2000.0{double} // #1339
-          .leafPhotosynthesis = -0.161834{double} // #1340
+          .leafPhotosynthesis = 0.492705{double} // #1340
         }
         LeafParAbsorbed parAbsorbed { //1348
           .parFlux = 64.8755{double} // #1344
@@ -836,7 +836,7 @@ Simulation greenhouse { //1535
           .lai = 1.0{double} // #1346
         }
         LeafRespiration respiration { //1355
-          .leafTemperature = 16.7742{double} // #1349
+          .leafTemperature = 16.7735{double} // #1349
           .canopyParAbsorbed = 40.4483{double} // #1350
           .RL = 0.74{double} // #1351
           .darknessThreshold = 5.0{double} // #1352
@@ -846,29 +846,29 @@ Simulation greenhouse { //1535
           .gammaStar = 55.47{double} // #1356
           .Jmax = 146.52{double} // #1357
           .k = 0.7{double} // #1358
-          .leafTemperature = 16.7742{double} // #1359
-          .intercellularCo2 = 2002.85{double} // #1360
-          .parAbsorbed = 0.965913{double} // #1361
-          .respiration = 0.432708{double} // #1362
+          .leafTemperature = 16.7735{double} // #1359
+          .intercellularCo2 = 1993.12{double} // #1360
+          .parAbsorbed = 22.216{double} // #1361
+          .respiration = 0.432688{double} // #1362
         }
         StomatalResistanceBallBerry stomatalResistance { //1374
           .g0 = 0.1{double} // #1369
           .g1 = 1.64{double} // #1370
-          .leafPhotosynthesis = -0.161834{double} // #1371
+          .leafPhotosynthesis = 0.492705{double} // #1371
           .rh = 100.0{double} // #1372
           .ca = 2000.0{double} // #1373
         }
         LeafPhotosynthesis leafPhotosynthesis { //1380
-          .leafAj = -0.364162{double} // #1375
-          .leafAr = 0.432708{double} // #1376
+          .leafAj = 1.1087{double} // #1375
+          .leafAr = 0.432688{double} // #1376
         }
       }
       Box bottom { //1426
         IntercellularCo2 intercellularCo2 { //1388
           .boundaryLayerResistance = 207.035{double} // #1382
-          .stomatalResistance = 16.0151{double} // #1383
+          .stomatalResistance = 15.9494{double} // #1383
           .indoorsCo2 = 2000.0{double} // #1384
-          .leafPhotosynthesis = -0.0967687{double} // #1385
+          .leafPhotosynthesis = 0.404065{double} // #1385
         }
         LeafParAbsorbed parAbsorbed { //1393
           .parFlux = 64.8755{double} // #1389
@@ -876,7 +876,7 @@ Simulation greenhouse { //1535
           .lai = 1.0{double} // #1391
         }
         LeafRespiration respiration { //1400
-          .leafTemperature = 16.7742{double} // #1394
+          .leafTemperature = 16.7735{double} // #1394
           .canopyParAbsorbed = 40.4483{double} // #1395
           .RL = 0.74{double} // #1396
           .darknessThreshold = 5.0{double} // #1397
@@ -886,34 +886,34 @@ Simulation greenhouse { //1535
           .gammaStar = 55.47{double} // #1401
           .Jmax = 146.52{double} // #1402
           .k = 0.7{double} // #1403
-          .leafTemperature = 16.7742{double} // #1404
-          .intercellularCo2 = 2001.71{double} // #1405
-          .parAbsorbed = 1.1892{double} // #1406
-          .respiration = 0.432708{double} // #1407
+          .leafTemperature = 16.7735{double} // #1404
+          .intercellularCo2 = 1994.27{double} // #1405
+          .parAbsorbed = 27.3517{double} // #1406
+          .respiration = 0.432688{double} // #1407
         }
         StomatalResistanceBallBerry stomatalResistance { //1419
           .g0 = 0.1{double} // #1414
           .g1 = 1.64{double} // #1415
-          .leafPhotosynthesis = -0.0967687{double} // #1416
+          .leafPhotosynthesis = 0.404065{double} // #1416
           .rh = 100.0{double} // #1417
           .ca = 2000.0{double} // #1418
         }
         LeafPhotosynthesis leafPhotosynthesis { //1425
-          .leafAj = -0.348339{double} // #1420
-          .leafAr = 0.432708{double} // #1421
+          .leafAj = 1.45452{double} // #1420
+          .leafAr = 0.432688{double} // #1421
         }
       }
     }
     vg::BigLeafPhotosynthesis bigLeaf { //1494
-      .leafAn = -0.344468{double} // #1485
-      .leafAg = 0.0882396{double} // #1486
+      .leafAn = 1.53669{double} // #1485
+      .leafAg = 1.96938{double} // #1486
       .growthRespiration = 0.3{double} // #1487
       Box leaf { //1484
         IntercellularCo2 intercellularCo2 { //1446
           .boundaryLayerResistance = 207.035{double} // #1440
-          .stomatalResistance = 16.0541{double} // #1441
+          .stomatalResistance = 15.8087{double} // #1441
           .indoorsCo2 = 2000.0{double} // #1442
-          .leafPhotosynthesis = -0.344468{double} // #1443
+          .leafPhotosynthesis = 1.53669{double} // #1443
         }
         LeafParAbsorbed parAbsorbed { //1451
           .parFlux = 64.8755{double} // #1447
@@ -921,7 +921,7 @@ Simulation greenhouse { //1535
           .lai = 1.0{double} // #1449
         }
         LeafRespiration respiration { //1458
-          .leafTemperature = 16.7742{double} // #1452
+          .leafTemperature = 16.7735{double} // #1452
           .canopyParAbsorbed = 40.4483{double} // #1453
           .RL = 0.74{double} // #1454
           .darknessThreshold = 5.0{double} // #1455
@@ -931,29 +931,29 @@ Simulation greenhouse { //1535
           .gammaStar = 55.47{double} // #1459
           .Jmax = 146.52{double} // #1460
           .k = 0.7{double} // #1461
-          .leafTemperature = 16.7742{double} // #1462
-          .intercellularCo2 = 2006.12{double} // #1463
-          .parAbsorbed = 1.24359{double} // #1464
-          .respiration = 0.432708{double} // #1465
+          .leafTemperature = 16.7735{double} // #1462
+          .intercellularCo2 = 1978.28{double} // #1463
+          .parAbsorbed = 28.6027{double} // #1464
+          .respiration = 0.432688{double} // #1465
         }
         StomatalResistanceBallBerry stomatalResistance { //1477
           .g0 = 0.1{double} // #1472
           .g1 = 1.64{double} // #1473
-          .leafPhotosynthesis = -0.344468{double} // #1474
+          .leafPhotosynthesis = 1.53669{double} // #1474
           .rh = 100.0{double} // #1475
           .ca = 2000.0{double} // #1476
         }
         LeafPhotosynthesis leafPhotosynthesis { //1483
-          .leafAj = -0.344468{double} // #1478
-          .leafAr = 0.432708{double} // #1479
+          .leafAj = 1.53669{double} // #1478
+          .leafAr = 0.432688{double} // #1479
         }
       }
     }
   }
-  vg::ParBudget parBudget { //1521
+  vg::ParBudget parBudget { //1524
     .sunPar = 138.702{double} // #1507
     .growthLightsPar = 0.0{double} // #1508
-    .Pn = -0.0276408{double} // #1509
+    .Pn = 0.0814524{double} // #1509
     .cropCoverage = 0.95{double} // #1510
     .constructionReflection = 0.3{double} // #1511
     .faceAreas = 1091.87{double} 1091.87{double} 300.0{double} 300.0{double} 60.0{double} 60.0{double} c[6]{FunctionCall} // #1512
@@ -961,5 +961,8 @@ Simulation greenhouse { //1535
     .faceLayer1Reflections = 0.0{double} 0.0{double} 0.0{double} c[3]{FunctionCall} // #1514
     .faceLayer2Reflections = null{null} // #1515
     .faceLayer3Reflections = 8.67362e-18{double} // #1516
+    .faceLayer1Areas = 300.0{double} 300.0{double} 60.0{double} c[3]{FunctionCall} // #1517
+    .faceLayer2Areas = null{null} // #1518
+    .faceLayer3Areas = 60.0{double} // #1519
   }
 }

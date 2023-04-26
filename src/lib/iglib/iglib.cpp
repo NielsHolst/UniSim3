@@ -546,13 +546,22 @@ Response compute(const Query &q) {
     auto *trackedPn = photosynthesis->port("trackedPn")->valuePtr<QVector<double>>();
     double maxPn = vector_op::max(*trackedPn)/cropCoverage;
 
+    // HACK
+    Box *sensor = root->findOne<Box*>("sensor");
+    double indoorsTotalPar = sensor ? sensor->port("indoorsLightIntensity")->value<double>() : 0.;
+
     // Extract response from model state
     try {
         r.timeStamp          = q.timeStamp;
-        r.indoorsPar         = snap( root->findOne<Box*>("parBudget")->port("indoorsTotalPar")->value<double>() );
-        r.sunPar             = snap( root->findOne<Box*>("parBudget")->port("indoorsSunPar")->value<double>() );
+
+        // HACK
+        r.indoorsPar         = snap( indoorsTotalPar );
+//        r.sunPar             = snap( root->findOne<Box*>("parBudget")->port("indoorsSunPar")->value<double>() );
+//        r.indoorsPar         = snap( root->findOne<Box*>("parBudget")->port("indoorsTotalPar")->value<double>() );
         r.growthLightPar     = snap( root->findOne<Box*>("parBudget")->port("indoorsGrowthLightPar")->value<double>() );
         r.growthLightPowerUse = snap( growthLightPower(q) );
+        r.sunPar             = snap( indoorsTotalPar - r.growthLightPar );
+
         r.heatingPowerUse    = snap( root->findOne<Box*>("actuators/heating")->port("energyFluxTotal")->value<double>() )/cropCoverage;
         r.leafTemperature    = snap( root->findOne<Box*>("crop/temperature")->port("value")->value<double>() );
         r.photosynthesis     = snap( root->findOne<Box*>("parBudget")->port("photosynthesis")->value<double>() );

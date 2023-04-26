@@ -7,7 +7,7 @@ cd %PATH%
 pause
 
 # Set version and target platform (32 or 64 bits)
-set VERSION=3.0.5
+set VERSION=3.0.6
 set QT_PATH=C:\Qt\5.15.2\mingw81_32
 
 set IGLIB_BIN=iglib\bin

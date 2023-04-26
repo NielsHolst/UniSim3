@@ -49,7 +49,7 @@ void LeafParAbsorbed::update() {
     if (_sensor) {
         double sensedLight = _sensor->port("indoorsLightIntensity")->value<double>();
         if (sensedLight > 0.)
-            parFlux = sensedLight/2.3;
+            parFlux = sensedLight;
     }
     value = parFlux*(1. - k*exp(-k*_xGauss*lai));
 }

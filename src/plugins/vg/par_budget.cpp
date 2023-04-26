@@ -9,6 +9,8 @@
 #include <base/vector_op.h>
 #include "par_budget.h"
 
+#include <iostream>
+
 using namespace base;
 using namespace vector_op;
 
@@ -96,6 +98,13 @@ void ParBudget::update() {
     indoorsSunPar = (1. - totalReflection)*sunPar;
     indoorsGrowthLightPar = growthLightsPar;
     indoorsTotalPar = indoorsSunPar + indoorsGrowthLightPar;
+
+    // HACK
+    if (_sensor) {
+        indoorsTotalPar = _sensor->port("indoorsLightIntensity")->value<double>();
+        indoorsSunPar = std::max(indoorsTotalPar - indoorsGrowthLightPar, 0.);
+        std::cout << "ParBudget::update() " << indoorsTotalPar;
+    }
 
     // Crop growth rate scaled to cultivated area
     photosynthesis = Pn/cropCoverage;
