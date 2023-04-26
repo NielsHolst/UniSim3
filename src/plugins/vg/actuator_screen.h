@@ -23,6 +23,7 @@ public:
 private:
     // Inputs
     QVector<QString> shelterFaceScreens;
+    QVector<double> shelterFaceWeights;
     double roofArea, sideArea, endArea, coverArea, groundArea;
     // Outputs
     // Data

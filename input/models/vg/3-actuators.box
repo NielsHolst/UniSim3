@@ -91,26 +91,32 @@ Simulation sim {
         Box roof1 {
           &cover = "glass"
           &screens = "energy+shade1+blackout"
+          &weight = 1
         }
         Box roof2 {
           &cover = "glass"
           &screens = "energy+shade1+blackout"
+          &weight = 1
         }
         Box side1 {
           &cover = "glass"
           &screens = "none+shade2+blackout"
+          &weight = 1
         }
         Box side2 {
           &cover = "glass"
           &screens = "none+none+blackout"
+          &weight = 0.5
         }
         Box end1 {
           &cover = "glass"
           &screens = "none+none+blackout"
+          &weight = 0.2
         }
         Box end2 {
           &cover = "glass"
           &screens = "energy+none+blackout"
+          &weight = 0.2
         }
       }
     }
@@ -270,13 +276,25 @@ Simulation sim {
     }
     Box growthLights {
       Box bank1 {
-        PrioritySignal setting {
+        PrioritySignal mode {
           DateTimeSignal {
-            .beginDate = 1/1
-            .endDate = 31/12
-            .beginTime = 01:00:00
-            .endTime = 18:00:00
+            .beginDate = 01/11
+            .endDate   = 30/11
+            .beginTime = 06:00:00
+            .endTime   = 10:00:00
+            .signalInside = 10
+          }
+          DateTimeSignal {
+            .beginDate = 01/10
+            .endDate   = 31/12
+            .beginTime = 06:00:00
+            .endTime   = 18:00:00
             .signalInside = 1
+          }
+          DateTimeSignal {
+            .beginDate = 1/10
+            .endDate   = 31/12
+            .signalInside = 0
           }
         }
         Box thresholds {
@@ -297,52 +315,18 @@ Simulation sim {
         }
       }
       Box bank2 {
-        PrioritySignal setting {
+        PrioritySignal mode {
+          DateTimeSignal {
+            .beginDate =  1/10
+            .endDate   = 31/01
+            .beginTime = 04:00
+            .endTime   = 08:00
+            .signalInside = 10
+          }
           DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
             .signalInside = 0
-          }
-        }
-        Box thresholds {
-          PrioritySignal low{
-            DateTimeSignal {
-              .beginDate = 1/1
-              .endDate = 31/12
-              .signalInside = 40
-            }
-          }
-          PrioritySignal high{
-            DateTimeSignal {
-              .beginDate = 1/1
-              .endDate = 31/12
-              .signalInside = 600
-            }
-          }
-        }
-      }
-      Box bank3 {
-        PrioritySignal setting {
-          DateTimeSignal {
-            .beginDate = 1/1
-            .endDate = 31/12
-            .signalInside = 0
-          }
-        }
-        Box thresholds {
-          PrioritySignal low{
-            DateTimeSignal {
-              .beginDate = 1/1
-              .endDate = 31/12
-              .signalInside = 40
-            }
-          }
-          PrioritySignal high{
-            DateTimeSignal {
-              .beginDate = 1/1
-              .endDate = 31/12
-              .signalInside = 600
-            }
           }
         }
       }
@@ -353,7 +337,43 @@ Simulation sim {
         .endDate = 15/4
         .signalInside = 1
       }
+      DateTimeSignal {
+        .beginDate = 1/1
+        .endDate = 31/12
+        .signalInside = 0
+      }
     }
+    Box co2 {
+      PrioritySignal concentration {
+        DateTimeSignal {
+          .beginDate = 15/6
+          .endDate = 31/08
+          .signalInside = 1200
+        }
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .signalInside = 900
+        }
+      }
+      Box ventilation {
+        PrioritySignal threshold {
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .signalInside = 0.2
+          }
+        }
+        PrioritySignal band {
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .signalInside = 0.1
+          }
+        }
+      }
+    }
+
   }
   Controllers controllers {
     Box crackVentilation {
@@ -434,23 +454,27 @@ Simulation sim {
     }
     Box growthLights {
       GrowthLightController bank1 {
-        .setting            = setpoints/growthLights/bank1/setting[value]
-        .lightThresholdLow  = setpoints/growthLights/bank1/thresholds/low[value]
-        .lightThresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
-        .minPeriodOn        = 5.
+        .mode          = setpoints/growthLights/bank1/mode[value]
+        .input		 = outdoors[radiation]
+        .thresholdLow  = setpoints/growthLights/bank1/thresholds/low[value]
+        .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
+        .minPeriodOn   = 5.
       }
       GrowthLightController bank2 {
-        .setting            = setpoints/growthLights/bank2/setting[value]
-        .lightThresholdLow  = setpoints/growthLights/bank2/thresholds/low[value]
-        .lightThresholdHigh = setpoints/growthLights/bank2/thresholds/high[value]
-        .minPeriodOn        = 30.
+        .mode            = setpoints/growthLights/bank2/mode[value]
+        .minPeriodOn     = 30.
       }
-      GrowthLightController bank3 {
-        .setting            = setpoints/growthLights/bank3/setting[value]
-        .lightThresholdLow  = setpoints/growthLights/bank3/thresholds/low[value]
-        .lightThresholdHigh = setpoints/growthLights/bank3/thresholds/high[value]
-        .minPeriodOn        = 30.
-      }
+    }
+    Box chalk {
+      &value = controllers/chalk[value]
+    }
+  }
+  Box co2 {
+    &change = ./controller[controlVariable]
+    PidController controller{
+      .sensedValue = indoors/co2[value]
+      .desiredValue = setpoints/co2[value]
+      .Kprop = 0.05
     }
   }
   Box actuators {
@@ -467,16 +491,16 @@ Simulation sim {
     }
     Box growthLights {
       ActuatorGrowthLight bank1 {
-        .isOn    = controllers/growthLights/bank1[isOn]
+        .isOn = controllers/growthLights/bank1[isOn]
         .power = 100.
+        .parPhotonCoef = 1.6
+        .efficiency = 1.0
+        .propLw = 0.1
+        .ballast = 0.0
       }
       ActuatorGrowthLight bank2 {
         .isOn    = controllers/growthLights/bank2[isOn]
         .power = 80.
-      }
-      ActuatorGrowthLight bank3 {
-        .isOn    = controllers/growthLights/bank3[isOn]
-        .power = 50.
       }
     }
     Box heatPipes {
@@ -500,6 +524,7 @@ Simulation sim {
       }
     }
     ActuatorChalk chalk {
+      .state = controllers/chalk[value]
       .swReflectivity = 0.2
       .lwReflectivity = 0.1
     }

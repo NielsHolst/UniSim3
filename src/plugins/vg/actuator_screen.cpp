@@ -22,6 +22,7 @@ ActuatorScreen::ActuatorScreen(QString name, Box *parent)
 {
     help("models the screens in layer 1, 2 or 3");
     Input(shelterFaceScreens).imports("shelter/faces/*[screens]");
+    Input(shelterFaceWeights).imports("shelter/faces/*[weight]");
     Input(roofArea).imports("construction/geometry[roofArea]");
     Input(sideArea).imports("construction/geometry[sideArea]");
     Input(endArea).imports("construction/geometry[endArea]");

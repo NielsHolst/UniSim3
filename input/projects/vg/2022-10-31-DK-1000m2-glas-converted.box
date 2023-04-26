@@ -839,13 +839,12 @@ Simulation greenhouse{
     }
   }
   vg::Controllers controllers{
-    Box co2Injection{
-      &value = ./controller[controlVariable]
+    Box co2{
+      &change = ./controller[controlVariable]
       PidController controller{
         .sensedValue = indoors/co2[value]
-        .desiredValue = setpoints[co2Setpoint]
+        .desiredValue = setpoints/co2[value]
         .Kprop = 0.05
-        .lookAhead = 10
       }
     }
     Box screens{
@@ -988,7 +987,7 @@ Simulation greenhouse{
     }
     Box padAndFans{
     }
-    Accumulator co2Injection{
+    Accumulator co2{
       .initial = 0
       .change = controllers/co2Injection[value]
       .minValue = 0
