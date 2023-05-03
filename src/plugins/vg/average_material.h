@@ -1,27 +1,31 @@
-/* Copyright 2005-2021 by
+/* Copyright 2005-201 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and
 ** Oliver Koerner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and
 ** Jesper M. Aaslyng, Danish Technological Instutute [jeaa at teknologisk.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
+#ifndef AVERAGE_MATERIAL_H
+#define AVERAGE_MATERIAL_H
 #include "layer.h"
 #include "layer_adjusted.h"
 
 namespace vg {
 
-class Cover : public Layer, public LayerAdjusted
+class AverageMaterial : public Layer, public LayerAdjusted
 {
 public:
-    Cover(QString name, Box *parent);
+    AverageMaterial(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Additional inputs
-    double swReflectivityChalk, lwReflectivityChalk;
+    QVector<double>
+        myAreas, myWeights,
+        allAreas, allWeights;
     // No additional outputs
+    // Data
+    double _propWeightArea, _propArea;
 };
 
 } //namespace

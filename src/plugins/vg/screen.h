@@ -16,11 +16,11 @@ class Screen : public Layer, public LayerAdjusted
 {
 public:
     Screen(QString name, Box *parent);
-    void reset() override;
-    void update() override;
+    void reset();
+    void update();
 private:
     // Additional inputs
-    double state, coverPerGroundArea;
+    double state;
     // No additional outputs
 };
 

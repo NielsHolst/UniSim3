@@ -26,10 +26,10 @@ Screen::Screen(QString name, Box *parent)
 {
     help("models a screen layer as influenced by its state");
     Input(state).help("Proportion drawn (0=fully withdrawn; 1=fully drawn").unit("[0;1]");
-    Input(coverPerGroundArea).imports("geometry[coverPerGroundArea]");
 }
 
 void Screen::reset() {
+    checkInputs();
     state = 0.;
     update();
 }
@@ -40,38 +40,26 @@ void Screen::update() {
     if ((state < 0.) || (state > 1.))
         ThrowException("Screen state out of [0;1] bounds").value(state).context(this);
 
-    swReflectivityTopAdj    = state*swReflectivityTop;
-    swReflectivityBottomAdj = state*swReflectivityBottom;
-    swAbsorptivityTopAdj    = state*(1. - swReflectivityTop    - swTransmissivityTop);
-    swAbsorptivityBottomAdj = state*(1. - swReflectivityBottom - swTransmissivityBottom);
+    swAbsorptivityTopAdj      = state*swAbsorptivityTop;
+    swReflectivityTopAdj      = state*swReflectivityTop;
+    swTransmissivityTopAdj    = 1. - swAbsorptivityTopAdj - swReflectivityTopAdj;
 
-    lwReflectivityTopAdj    = state*lwReflectivityTop;
-    lwReflectivityBottomAdj = state*lwReflectivityBottom;
-    lwAbsorptivityTopAdj    = state*(1. - lwReflectivityTop    - lwTransmissivityTop);
-    lwAbsorptivityBottomAdj = state*(1. - lwReflectivityBottom - lwTransmissivityBottom);
+    swAbsorptivityBottomAdj   = state*swAbsorptivityBottom;
+    swReflectivityBottomAdj   = state*swReflectivityBottom;
+    swTransmissivityBottomAdj = 1. - swAbsorptivityBottomAdj - swReflectivityBottomAdj;
 
-    swTransmissivityTopAdj     = 1. - swReflectivityTopAdj    - swAbsorptivityTopAdj;
-    swTransmissivityBottomAdj  = 1. - swReflectivityBottomAdj - swAbsorptivityBottomAdj;
+    lwAbsorptivityTopAdj      = state*lwAbsorptivityTop;
+    lwReflectivityTopAdj      = state*lwReflectivityTop;
+    lwTransmissivityTopAdj    = 1. - lwAbsorptivityTopAdj - lwReflectivityTopAdj;
 
-    lwTransmissivityTopAdj     = 1. - lwReflectivityTopAdj    - lwAbsorptivityTopAdj;
-    lwTransmissivityBottomAdj  = 1. - lwReflectivityBottomAdj - lwAbsorptivityBottomAdj;
+    lwAbsorptivityBottomAdj   = state*lwAbsorptivityBottom;
+    lwReflectivityBottomAdj   = state*lwReflectivityBottom;
+    lwTransmissivityBottomAdj = 1. - lwAbsorptivityBottomAdj - lwReflectivityBottomAdj;
 
-    double swTop = swReflectivityTopAdj + swAbsorptivityTopAdj + swTransmissivityTopAdj,
-           lwTop = lwReflectivityTopAdj + lwAbsorptivityTopAdj + lwTransmissivityTopAdj,
-           swBottom = swReflectivityBottomAdj + swAbsorptivityBottomAdj + swTransmissivityBottomAdj,
-           lwBottom = lwReflectivityBottomAdj + lwAbsorptivityBottomAdj + lwTransmissivityBottomAdj;
-    if (ne(swTop, 1.))
-        ThrowException("Radiation parameters must sum to 1").value(swTop).hint("swTop").context(this);
-    if (ne(lwTop, 1.))
-        ThrowException("Radiation parameters must sum to 1").value(lwTop).hint("lwTop").context(this);
-    if (ne(swBottom, 1.))
-        ThrowException("Radiation parameters must sum to 1").value(swBottom).hint("swTop").context(this);
-    if (ne(lwBottom, 1.))
-        ThrowException("Radiation parameters must sum to 1").value(lwBottom).hint("lwTop").context(this);
-
-    UtopAdj         = state*coverPerGroundArea*Utop;
-    UbottomAdj      = state*coverPerGroundArea*Ubottom;
-    heatCapacityAdj = state*coverPerGroundArea*heatCapacity;
+    UtopAdj         = state*Utop;
+    UbottomAdj      = state*Ubottom;
+    heatCapacityAdj = state*heatCapacity;
+    checkOutputs();
 }
 
 } //namespace

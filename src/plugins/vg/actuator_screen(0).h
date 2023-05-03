@@ -17,17 +17,24 @@ class ActuatorScreen : public LayerAdjusted
 {
 public: 
     ActuatorScreen(QString name, Box *parent);
+    void initialize();
     void reset();
     void update();
 private:
     // Inputs
-    double lagPeriod, desiredState, timeStepSecs;
+    QVector<QString> shelterFaceScreens;
+    QVector<double> shelterFaceWeights;
+    double roofArea, sideArea, endArea, coverArea, groundArea;
     // Outputs
-    double state;
     // Data
-    double _deltaStateMax;
+    static QMap<ShelterFace, double> _areas;
+    base::Box *_screen;
+    QVector<ShelterFace> _allShelterFaces, _shelterFacesWithScreen;
+    // Methods
+    double weighted(QString parameter, double faceArea) {
+        return _screen->port(parameter)->value<double>()*faceArea;
+    }
 };
 
 } //namespace
-
 #endif

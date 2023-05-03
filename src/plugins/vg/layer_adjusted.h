@@ -15,6 +15,7 @@ class LayerAdjusted : virtual public base::Box
 {
 public:
     LayerAdjusted(QString name, Box *parent);
+    void update();
 protected:
     // Outputs
     double
@@ -26,6 +27,10 @@ protected:
         lwAbsorptivityTopAdj, lwAbsorptivityBottomAdj,
         UtopAdj, UbottomAdj,
         heatCapacityAdj;
+    // Methods
+    void checkOutputs();
+    void checkOutput(QString name, double value);
+    void checkOutputSum(QString name, double value);
 };
 
 } //namespace

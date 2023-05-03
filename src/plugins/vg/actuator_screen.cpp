@@ -5,7 +5,6 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#include <base/exception.h>
 #include <base/publish.h>
 #include "actuator_screen.h"
 
@@ -15,121 +14,31 @@ namespace vg {
 
 PUBLISH(ActuatorScreen)
 
-QMap<ShelterFace, double> ActuatorScreen::_areas;
 
 ActuatorScreen::ActuatorScreen(QString name, Box *parent)
     : Box(name, parent), LayerAdjusted(name, parent)
 {
-    help("models the screens in layer 1, 2 or 3");
-    Input(shelterFaceScreens).imports("shelter/faces/*[screens]");
-    Input(shelterFaceWeights).imports("shelter/faces/*[weight]");
-    Input(roofArea).imports("construction/geometry[roofArea]");
-    Input(sideArea).imports("construction/geometry[sideArea]");
-    Input(endArea).imports("construction/geometry[endArea]");
-    Input(coverArea).imports("construction/geometry[coverArea]");
-
-}
-
-void ActuatorScreen::initialize() {
-    // Set areas of shelter faces
-    _areas[ShelterFace::Roof1] =
-    _areas[ShelterFace::Roof2] = roofArea/2.;
-    _areas[ShelterFace::Side1] =
-    _areas[ShelterFace::Side2] = sideArea/2.;
-    _areas[ShelterFace::End1]  =
-    _areas[ShelterFace::End2]  = endArea/2. ;
-
-    // Create a list of the shelter faces in the order they are defined
-    QVector<Box*> shelterFaces = findMany<Box*>("shelter/faces/*");
-    auto m = shelterFaces.size();
-    if (m != 6)
-        ThrowException("Shelter must hold 6 faces").value(m).context(this);
-    for (Box *shelterFace : shelterFaces) {
-        QString name = shelterFace->objectName();
-        _allShelterFaces << toShelterFace(name, this);
-    }
-
-    // Find box with my screen
-    const QString screenName = objectName();
-    _screen = findOne<Box*>("shelter/screens/" + screenName);
-
-    // Decode screen formulas and collect a list of the shelter faces where my screen is present
-    auto n = shelterFaceScreens.size();
-    if (n != 6)
-        ThrowException("A screen formula must be specified for each shelter face").value(n).context(this);
-    for (int i=0; i<6; ++i) {
-        QStringList screensOnShelterFace = shelterFaceScreens.at(i).split("+");
-        if (screensOnShelterFace.contains(screenName))
-            _shelterFacesWithScreen << _allShelterFaces.at(i);
-    }
+    help("models the state of a screen layer");
+    Input(lagPeriod).equals(5.).unit("min").help("Time to draw the screen completely");
+    Input(desiredState).unit("[0;1]").help("State desired by screen controller");
+    Input(timeStepSecs).imports("calendar[timeStepSecs]");
+    Output(state).unit("[0;1]").help("Proportion of the screen drawn");
 }
 
 void ActuatorScreen::reset() {
-    update();
+    state = 0.;
+    _deltaStateMax = std::max(60*lagPeriod/timeStepSecs, 1.);
 }
 
-#define ADD_WEIGHTED(X) X += weighted(#X, faceArea)
+inline int sign(double x) {
+    return (x < -1.) ? -1 : 0;
+}
 
 void ActuatorScreen::update() {
-    // Weigh each of my screen's parameters with the area of the faces where it is present
-    swReflectivityTopAdj =
-    swReflectivityBottomAdj =
-    swTransmissivityTopAdj =
-    swTransmissivityBottomAdj =
-    lwReflectivityTopAdj =
-    lwReflectivityBottomAdj =
-    lwTransmissivityTopAdj =
-    lwTransmissivityBottomAdj =
-    swAbsorptivityTopAdj =
-    swAbsorptivityBottomAdj =
-    lwAbsorptivityTopAdj =
-    lwAbsorptivityBottomAdj =
-    UtopAdj =
-    UbottomAdj =
-    heatCapacityAdj = 0;
-    for (ShelterFace face : _allShelterFaces) {
-        const double faceArea = _areas.value(face);
-        if (_shelterFacesWithScreen.contains(face)) {
-            ADD_WEIGHTED(swReflectivityTopAdj);
-            ADD_WEIGHTED(swReflectivityBottomAdj);
-            ADD_WEIGHTED(swTransmissivityTopAdj);
-            ADD_WEIGHTED(swTransmissivityBottomAdj);
-            ADD_WEIGHTED(lwReflectivityTopAdj);
-            ADD_WEIGHTED(lwReflectivityBottomAdj);
-            ADD_WEIGHTED(lwTransmissivityTopAdj);
-            ADD_WEIGHTED(lwTransmissivityBottomAdj);
-            ADD_WEIGHTED(swAbsorptivityTopAdj);
-            ADD_WEIGHTED(swAbsorptivityBottomAdj);
-            ADD_WEIGHTED(lwAbsorptivityTopAdj);
-            ADD_WEIGHTED(lwAbsorptivityBottomAdj);
-            ADD_WEIGHTED(UtopAdj);
-            ADD_WEIGHTED(UbottomAdj);
-            ADD_WEIGHTED(heatCapacityAdj);
-        }
-        else {
-            swTransmissivityTopAdj    += faceArea;
-            lwTransmissivityTopAdj    += faceArea;
-            swTransmissivityBottomAdj += faceArea;
-            lwTransmissivityBottomAdj += faceArea;
-        }
-    }
-    // For radiative parameters use the weighted average
-    swReflectivityTopAdj /= coverArea;
-    swReflectivityBottomAdj /= coverArea;
-    swTransmissivityTopAdj /= coverArea;
-    swTransmissivityBottomAdj /= coverArea;
-    lwReflectivityTopAdj /= coverArea;
-    lwReflectivityBottomAdj /= coverArea;
-    lwTransmissivityTopAdj /= coverArea;
-    lwTransmissivityBottomAdj /= coverArea;
-    swAbsorptivityTopAdj /= coverArea;
-    swAbsorptivityBottomAdj /= coverArea;
-    lwAbsorptivityTopAdj /= coverArea;
-    lwAbsorptivityBottomAdj /= coverArea;
-    // For others convert to per ground area
-    UtopAdj /= groundArea;
-    UbottomAdj /= groundArea;
-    heatCapacityAdj /= groundArea;
+    double delta = desiredState - state;
+    if (fabs(delta) > _deltaStateMax)
+        delta = sign(delta)*_deltaStateMax;
+    state += delta;
 }
 
 } //namespace

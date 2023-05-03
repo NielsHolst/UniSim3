@@ -22,6 +22,10 @@ HEADERS +=  \
     ah_from_rh.h \
     any_flag.h \
     arrhenius.h \
+    average_cover.h \
+    average_cover_or_screen.h \
+    average_material.h \
+    average_screen.h \
     big_leaf_photosynthesis.h \
     boundary_layer_resistance_base.h \
     boundary_layer_resistance_jones_a.h \
@@ -38,7 +42,7 @@ HEADERS +=  \
     diffuse_irradiation_base.h \
     diffuse_irradiation_RE.h \
     energy_budget.h \
-    extract_layers.h \
+#    extract_layers.h \
 #    energy_budget_optimiser.h \
     geometry.h \
     growth_light_controller.h \
@@ -47,16 +51,16 @@ HEADERS +=  \
     heat_sink.h \
     heat_transfer_layer_base.h \
     heat_transfer_layer_parameters.h \
-    heat_transfer_cover.h \
-    heat_transfer_crop.h \
-    heat_transfer_floor.h \
-    heat_transfer_pipe.h \
-    heat_transfer_screen_base.h \
-    heat_transfer_screen1.h \
-    heat_transfer_screen2.h \
-    heat_transfer_screen3.h \
-    heat_transfer_shelter.h \
-    heat_transfer_sky.h \
+#    heat_transfer_cover.h \
+#    heat_transfer_crop.h \
+#    heat_transfer_floor.h \
+#    heat_transfer_pipe.h \
+#    heat_transfer_screen_base.h \
+#    heat_transfer_screen1.h \
+#    heat_transfer_screen2.h \
+#    heat_transfer_screen3.h \
+#    heat_transfer_shelter.h \
+#    heat_transfer_sky.h \
     ig_indoors_humidity.h \
     indoors.h \
     indoors_co2.h \
@@ -125,6 +129,10 @@ SOURCES += \
     ah_from_rh.cpp \
     any_flag.cpp \
     arrhenius.cpp \
+    average_cover.cpp \
+    average_cover_or_screen.cpp \
+    average_material.cpp \
+    average_screen.cpp \
     big_leaf_photosynthesis.cpp \
     boundary_layer_resistance_base.cpp \
     boundary_layer_resistance_jones_a.cpp \
@@ -141,7 +149,7 @@ SOURCES += \
     diffuse_irradiation_base.cpp \
     diffuse_irradiation_RE.cpp \
     energy_budget.cpp \
-    extract_layers.cpp \
+#    extract_layers.cpp \
     geometry.cpp \
     growth_light_controller.cpp \
     growth_lights.cpp \
@@ -149,16 +157,16 @@ SOURCES += \
     heat_sink.cpp \
     heat_transfer_layer_base.cpp \
     heat_transfer_layer_parameters.cpp \
-    heat_transfer_cover.cpp \
-    heat_transfer_crop.cpp \
-    heat_transfer_floor.cpp \
-    heat_transfer_pipe.cpp \
-    heat_transfer_screen_base.cpp \
-    heat_transfer_screen1.cpp \
-    heat_transfer_screen2.cpp \
-    heat_transfer_screen3.cpp \
-    heat_transfer_shelter.cpp \
-    heat_transfer_sky.cpp \
+#    heat_transfer_cover.cpp \
+#    heat_transfer_crop.cpp \
+#    heat_transfer_floor.cpp \
+#    heat_transfer_pipe.cpp \
+#    heat_transfer_screen_base.cpp \
+#    heat_transfer_screen1.cpp \
+#    heat_transfer_screen2.cpp \
+#    heat_transfer_screen3.cpp \
+#    heat_transfer_shelter.cpp \
+#    heat_transfer_sky.cpp \
     ig_indoors_humidity.cpp \
     indoors.cpp \
     indoors_co2.cpp \

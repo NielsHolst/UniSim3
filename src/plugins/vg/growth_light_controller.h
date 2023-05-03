@@ -19,8 +19,8 @@ public:
     void update();
 private:
     // Inputs
-    int setting;
-    double lightThresholdLow, lightThresholdHigh, outdoorsLight,
+    int mode;
+    double thresholdLow, thresholdHigh, input,
         minPeriodOn, timeStepSecs;
     // Outputs
     bool isOn;

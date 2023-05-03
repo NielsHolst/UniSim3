@@ -5,28 +5,31 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef SHELTER_H
-#define SHELTER_H
-#include "base/box.h"
+#ifndef AVERAGE_SCREEN_H
+#define AVERAGE_SCREEN_H
+#include "average_cover_or_screen.h"
 
 namespace base {
-    class BoxBuilder;
+ class BoxBuilder;
 }
 
 namespace vg {
 
-class Shelter : public base::Box
+class AverageScreen : public AverageCoverOrScreen
 {
-public:
-    Shelter(QString name, Box *parent);
+public: 
+    AverageScreen(QString name, Box *parent);
     void amend();
 private:
     // Data
     QVector<Box*> _faces;
+    // Methods
+    QStringList collectFacesByMaterial(QString material);
+    QString pathToMaterialPorts(QString material, QString portName) const;
 
+    int getNumberFromName() const;
+    void buildAverageMaterialNone(base::BoxBuilder &builder);
 };
 
 } //namespace
-
-
 #endif

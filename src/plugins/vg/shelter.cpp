@@ -25,95 +25,48 @@ Shelter::Shelter(QString name, Box *parent)
 }
 
 void Shelter::amend() {
-    BoxBuilder builder(this);
-    int numChildren = children().size();
-    bool hasDefaultCover     = findMaybeOne<Box*>("./Cover::cover"),
-         hasDefaultScreen    = findMaybeOne<Box*>("./Screen::screen"),
-         hasDefaultCoverUtop = findMaybeOne<Box*>("./coverUtop");
-    if (numChildren<4) {
-        if (!hasDefaultCover) {
-            builder.
-            box().name("cover").
-                aux("swReflectivityTop").     equals(0.1).
-                aux("swTransmissivityTop").   equals(0.8).
-                aux("swReflectivityBottom").  equals(0.1).
-                aux("swTransmissivityBottom").equals(0.8).
-                aux("lwReflectivityTop").     equals(0.15).
-                aux("lwTransmissivityTop").   equals(0.20).
-                aux("lwReflectivityBottom").  equals(0.15).
-                aux("lwTransmissivityBottom").equals(0.20).
-                aux("Ubottom").               equals(1.2).
-                aux("heatCapacity").          equals(8400.).
-            endbox();
-        }
-        if (!hasDefaultScreen) {
-            builder.
-            box().name("screen").
-                aux("swReflectivityTop").     equals(0.93).
-                aux("swTransmissivityTop").   equals(0.0).
-                aux("swReflectivityBottom").  equals(0.43).
-                aux("swTransmissivityBottom").equals(0.0).
-                aux("lwReflectivityTop").     equals(0.93).
-                aux("lwTransmissivityTop").   equals(0.0).
-                aux("lwReflectivityBottom").  equals(0.43).
-                aux("lwTransmissivityBottom").equals(0.0).
-                aux("Utop").                  equals(1.2).
-                aux("Ubottom").               equals(1.2).
-                aux("heatCapacity").          equals(80.).
-            endbox();
-        }
-        if (!hasDefaultCoverUtop) {
-            builder.
-            box("UWind").name("coverUtop").
-            endbox();
-        }
+    // Find faces
+    _faces = findMany<Box*>("./faces/*");
+    if (_faces.size() != 6)
+        ThrowException("Shelter must have 6 faces").value(_faces.size()).context(this);
+
+    // Collect screens referred to
+    int numLayers = 0;
+    QVector<QStringList> screenNamesByFace;
+    for (Box *face : _faces) {
+        Port *port = face->peakPort("screens");
+        if (!port)
+            ThrowException("Face must have a port called 'screens'").
+            value(face->fullName()).context(this);
+        QStringList screenNames = port->value<QString>().split("+");
+        if (numLayers == 0)
+            numLayers = screenNames.size();
+        else if (numLayers != screenNames.size())
+            ThrowException("All faces must have the same number of screen layers").
+            value(numLayers).value2(screenNames.size()).hint(port->fullName()).context(this);
+        screenNamesByFace << screenNames;
     }
-    if (!findMaybeOne<Box*>("./roof1"))
-        createFace(builder, "roof1");
-    if (!findMaybeOne<Box*>("./roof2"))
-        createFace(builder, "roof2");
-    if (!findMaybeOne<Box*>("./side1"))
-        createFace(builder, "side1");
-    if (!findMaybeOne<Box*>("./side2"))
-        createFace(builder, "side2");
-    if (!findMaybeOne<Box*>("./end1"))
-        createFace(builder, "end1");
-    if (!findMaybeOne<Box*>("./end2"))
-        createFace(builder, "end2");
-}
 
-void Shelter::createFace(BoxBuilder &builder, QString faceName) {
+
+    BoxBuilder builder(this);
     builder.
-        box("Box").name(faceName).
-            box("Layer").name("cover").
-                port("swReflectivityTop").     imports("../../cover[swReflectivityTop]").
-                port("swTransmissivityTop").   imports("../../cover[swTransmissivityTop]").
-                port("swReflectivityBottom").  imports("../../cover[swReflectivityBottom]").
-                port("swTransmissivityBottom").imports("../../cover[swTransmissivityBottom]").
-                port("lwReflectivityTop").     imports("../../cover[lwReflectivityTop]").
-                port("lwTransmissivityTop").   imports("../../cover[lwTransmissivityTop]").
-                port("lwReflectivityBottom").  imports("../../cover[lwReflectivityBottom]").
-                port("lwTransmissivityBottom").imports("../../cover[lwTransmissivityBottom]").
-                port("Utop").                  imports("../../coverUtop[value]").
-                port("Ubottom").               imports("../../cover[Ubottom]").
-                port("heatCapacity").          imports("../../cover[heatCapacity]").
-            endbox().
-            box("Layer").name("screen").
-                port("swReflectivityTop").     imports("../../screen[swReflectivityTop]").
-                port("swTransmissivityTop").   imports("../../screen[swTransmissivityTop]").
-                port("swReflectivityBottom").  imports("../../screen[swReflectivityBottom]").
-                port("swTransmissivityBottom").imports("../../screen[swTransmissivityBottom]").
-                port("lwReflectivityTop").     imports("../../screen[lwReflectivityTop]").
-                port("lwTransmissivityTop").   imports("../../screen[lwTransmissivityTop]").
-                port("lwReflectivityBottom").  imports("../../screen[lwReflectivityBottom]").
-                port("lwTransmissivityBottom").imports("../../screen[lwTransmissivityBottom]").
-                port("Utop").                  imports("../../screen[Utop]").
-                port("Ubottom").               imports("../../screen[Ubottom]").
-                port("heatCapacity").          imports("../../screen[heatCapacity]").
-            endbox().
-        endbox();
+    box().name("layers").
+        box("AverageCover").name("cover").
+        endbox().
+        box().name("screens");
+            for (int layer=0; layer<numLayers; ++layer) {
+                QSet<QString> materials;
+                for (const QStringList &screenNames : screenNamesByFace) {
+                    materials << screenNames.at(layer);
+                }
+                builder.
+                box("AverageScreen").name("screen" + QString::number(layer+1)).
+                endbox();
+            }
+        builder.
+        endbox(). // end screens
+    endbox(); // end layers
 }
-
 
 } //namespace
 

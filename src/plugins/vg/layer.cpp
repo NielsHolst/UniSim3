@@ -6,16 +6,15 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/exception.h>
-#include <base/phys_math.h>
 #include <base/publish.h>
 #include <base/test_num.h>
 #include "layer.h"
 
-#define CHK(x) checkRange(x, #x)
-
 using namespace base;
-using namespace phys_math;
 using namespace TestNum;
+
+#define CHECK_INPUT(X) checkInput(#X, X)
+#define CHECK_INPUT_SUM(X) checkInputSum(#X, X)
 
 namespace vg {
 
@@ -25,63 +24,62 @@ Layer::Layer(QString name, Box *parent)
     : Box(name, parent)
 {
     help("holds radiative and heat parameters of a layer");
+    Input(swAbsorptivityTop).unit("[0;1]").help("Short-wave absorptivity at the top");
     Input(swReflectivityTop).unit("[0;1]").help("Short-wave reflectivity at the top");
-    Input(swReflectivityBottom).unit("[0;1]").help("Short-wave reflectivity at the bottom");
     Input(swTransmissivityTop).equals(1.).unit("[0;1]").help("Short-wave transmissivity at the top");
+
+    Input(swAbsorptivityBottom).unit("[0;1]").help("Short-wave absorptivity at the bottom");
+    Input(swReflectivityBottom).unit("[0;1]").help("Short-wave reflectivity at the bottom");
     Input(swTransmissivityBottom).equals(1.).unit("[0;1]").help("Short-wave transmissivity at the bottom");
 
+    Input(lwAbsorptivityTop).unit("[0;1]").help("Long-wave absorptivity at the top");
     Input(lwReflectivityTop).unit("[0;1]").help("Long-wave reflectivity at the top");
-    Input(lwReflectivityBottom).unit("[0;1]").help("Long-wave reflectivity at the bottom");
     Input(lwTransmissivityTop).equals(1.).unit("[0;1]").help("Long-wave transmissivity at the top");
+
+    Input(lwAbsorptivityBottom).unit("[0;1]").help("Long-wave absorptivity at the bottom");
+    Input(lwReflectivityBottom).unit("[0;1]").help("Long-wave reflectivity at the bottom");
     Input(lwTransmissivityBottom).equals(1.).unit("[0;1]").help("Long-wave transmissivity at the bottom");
 
-    Input(Utop).equals(infinity()).unit("W/K/m2 layer").help("Heat transfer coefficient at the top");
-    Input(Ubottom).equals(infinity()).unit("W/K/m2 layer").help("Heat transfer coefficient at the bottom");
+    Input(Utop).unit("W/K/m2 layer").help("Heat transfer coefficient at the top");
+    Input(Ubottom).unit("W/K/m2 layer").help("Heat transfer coefficient at the bottom");
     Input(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 layer");
-
-    Output(swAbsorptivityTop).unit("[0;1]").help("Short-wave absorptivity at the top");
-    Output(swAbsorptivityBottom).unit("[0;1]").help("Short-wave absorptivity at the bottom");
-    Output(lwAbsorptivityTop).unit("[0;1]").help("Long-wave absorptivity at the top");
-    Output(lwAbsorptivityBottom).unit("[0;1]").help("Long-wave absorptivity at the bottom");
-}
-
-void Layer::reset() {
-    updateAbsorptivities();
 }
 
 void Layer::update() {
-    updateAbsorptivities();
+    checkInputs();
 }
 
-void Layer::updateAbsorptivities() {
-    swAbsorptivityTop = 1. - swReflectivityTop - swTransmissivityTop;
-    swAbsorptivityBottom  = 1. - swReflectivityBottom  - swTransmissivityBottom;
-    lwAbsorptivityTop = 1. - lwReflectivityTop - lwTransmissivityTop;
-    lwAbsorptivityBottom  = 1. - lwReflectivityBottom  - lwTransmissivityBottom;
+void Layer::checkInputs() {
+    CHECK_INPUT(swAbsorptivityTop);
+    CHECK_INPUT(swReflectivityTop);
+    CHECK_INPUT(swTransmissivityTop);
 
-    snapTo(swAbsorptivityTop, 0.); snapTo(swAbsorptivityTop, 1.);
-    snapTo(swAbsorptivityBottom , 0.); snapTo(swAbsorptivityBottom , 1.);
-    snapTo(lwAbsorptivityTop, 0.); snapTo(lwAbsorptivityTop, 1.);
-    snapTo(lwAbsorptivityBottom , 0.); snapTo(lwAbsorptivityBottom , 1.);
+    CHECK_INPUT(swAbsorptivityBottom);
+    CHECK_INPUT(swReflectivityBottom);
+    CHECK_INPUT(swTransmissivityBottom);
 
-    CHK(swReflectivityTop);
-    CHK(swReflectivityBottom);
-    CHK(swTransmissivityTop);
-    CHK(swTransmissivityBottom);
-    CHK(lwReflectivityTop);
-    CHK(lwReflectivityBottom);
-    CHK(lwTransmissivityTop);
-    CHK(lwTransmissivityBottom);
-    CHK(swAbsorptivityTop);
-    CHK(swAbsorptivityBottom);
-    CHK(lwAbsorptivityTop);
-    CHK(lwAbsorptivityBottom);
+    CHECK_INPUT(lwAbsorptivityTop);
+    CHECK_INPUT(lwReflectivityTop);
+    CHECK_INPUT(lwTransmissivityTop);
+
+    CHECK_INPUT(lwAbsorptivityBottom);
+    CHECK_INPUT(lwReflectivityBottom);
+    CHECK_INPUT(lwTransmissivityBottom);
+
+    CHECK_INPUT_SUM(swReflectivityTop+swTransmissivityTop+swAbsorptivityTop);
+    CHECK_INPUT_SUM(lwReflectivityTop+lwTransmissivityTop+lwAbsorptivityTop);
+    CHECK_INPUT_SUM(swReflectivityBottom+swTransmissivityBottom+swAbsorptivityBottom);
+    CHECK_INPUT_SUM(lwReflectivityBottom+lwTransmissivityBottom+lwAbsorptivityBottom);
 }
 
-void Layer::checkRange(double x, QString name) const {
-    if (TestNum::ltZero(x) || TestNum::gt(x, 1.))
-        ThrowException("Radiative parameter must be inside [0;1]").
-                value(name).value2(x).context(this);
+void Layer::checkInput(QString name, double value) {
+    if (ltZero(value) || gt(value, 1.))
+        ThrowException("Radiative parameter out of bounds").value(value).hint(name).context(this);
+}
+
+void Layer::checkInputSum(QString name, double value) {
+    if (ne(value, 1.))
+        ThrowException("Radiative parameters out of bounds").value(value).hint(name).context(this);
 }
 
 } //namespace

@@ -5,26 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
-#include "layer.h"
-#include "layer_adjusted.h"
+#ifndef AVERAGE_COVER_H
+#define AVERAGE_COVER_H
+#include "average_cover_or_screen.h"
 
 namespace vg {
 
-class Cover : public Layer, public LayerAdjusted
+class AverageCover : public AverageCoverOrScreen
 {
 public:
-    Cover(QString name, Box *parent);
-    void reset();
-    void update();
+    AverageCover(QString name, Box *parent);
+    void amend();
 private:
-    // Additional inputs
-    double swReflectivityChalk, lwReflectivityChalk;
-    // No additional outputs
+    // Data
+    QVector<Box*> _faces;
+    // Methods
+    QStringList collectFacesByMaterial(QString material);
+    QString pathToMaterialPorts(QString material, QString portName) const;
 };
 
 } //namespace
-
 
 #endif

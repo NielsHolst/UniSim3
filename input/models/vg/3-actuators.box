@@ -20,6 +20,8 @@ Simulation sim {
     SoilTemperature soilTemperature{
       .initial = 1.2
     }
+    Layer sky {
+    }
   }
   Box construction{
     vg::Geometry geometry{
@@ -29,19 +31,50 @@ Simulation sim {
       .height = 3.5
       .roofPitch = 26
     }
-    Box shelter {
+    Shelter shelter {
       UWind Utop {
       }
       Box covers {
         Cover glass {
           .swReflectivityTop      = 0.1
           .swTransmissivityTop    = 0.8
+          .swAbsorptivityTop      = 0.1
+          
           .swReflectivityBottom   = 0.1
           .swTransmissivityBottom = 0.8
+          .swAbsorptivityBottom   = 0.1
+          
           .lwReflectivityTop      = 0.15
           .lwTransmissivityTop    = 0.20
+          .lwAbsorptivityTop      = 0.65
+          
           .lwReflectivityBottom   = 0.15
           .lwTransmissivityBottom = 0.20
+          .lwAbsorptivityBottom   = 0.65
+          
+          .Utop                   = ../../Utop[value]
+          .Ubottom                = 1.2
+          .heatCapacity           = 8400
+          .swReflectivityChalk    = actuators/chalk[swReflectivity]
+          .lwReflectivityChalk    = actuators/chalk[lwReflectivity]
+        }
+        Cover oldGlass {
+          .swReflectivityTop      = 0.1
+          .swTransmissivityTop    = 0.6
+          .swAbsorptivityTop      = 0.3
+          
+          .swReflectivityBottom   = 0.1
+          .swTransmissivityBottom = 0.6
+          .swAbsorptivityBottom   = 0.3
+          
+          .lwReflectivityTop      = 0.15
+          .lwTransmissivityTop    = 0.20
+          .lwAbsorptivityTop      = 0.65
+          
+          .lwReflectivityBottom   = 0.15
+          .lwTransmissivityBottom = 0.20
+          .lwAbsorptivityBottom   = 0.65
+
           .Utop                   = ../../Utop[value]
           .Ubottom                = 1.2
           .heatCapacity           = 8400
@@ -53,72 +86,136 @@ Simulation sim {
         Screen energy {
           .swReflectivityTop      = 0.93
           .swTransmissivityTop    = 0.0
-          :
+          .swAbsorptivityTop      = 0.07
+
+          .swReflectivityBottom   = 0.43
+          .swTransmissivityBottom = 0.0
+          .swAbsorptivityBottom   = 0.57
+
+          .lwReflectivityTop      = 0.93
+          .lwTransmissivityTop    = 0.0
+          .lwAbsorptivityTop      = 0.07
+
+          .lwReflectivityBottom   = 0.43
+          .lwTransmissivityBottom = 0.0
+          .lwAbsorptivityBottom   = 0.57
+
           .Utop                   = 1.2
           .Ubottom                = 1.2
           .heatCapacity           = 80
-          .state = actuators/screens/energy[value]
+          .state = actuators/screens/energy[state]
         }
         Screen shade1 {
           .swReflectivityTop      = 0.70
           .swTransmissivityTop    = 0.20
-          :
+          .swAbsorptivityTop      = 0.10
+
+          .swReflectivityBottom   = 0.70
+          .swTransmissivityBottom = 0.20
+          .swAbsorptivityBottom   = 0.10
+
+          .lwReflectivityTop      = 0.70
+          .lwTransmissivityTop    = 0.20
+          .lwAbsorptivityTop      = 0.10
+
+          .lwReflectivityBottom   = 0.70
+          .lwTransmissivityBottom = 0.20
+          .lwAbsorptivityBottom   = 0.10
+
           .Utop                   = 1.2
           .Ubottom                = 1.2
           .heatCapacity           = 80.
-          .state = actuators/screens/shade[value]
+          .state = actuators/screens/shade[state]
         }
         Screen shade2 {
           .swReflectivityTop      = 0.80
           .swTransmissivityTop    = 0.10
-          :
+          .swAbsorptivityTop      = 0.10
+
+          .swReflectivityBottom   = 0.80
+          .swTransmissivityBottom = 0.10
+          .swAbsorptivityBottom   = 0.10
+
+          .lwReflectivityTop      = 0.80
+          .lwTransmissivityTop    = 0.10
+          .lwAbsorptivityTop      = 0.10
+
+          .lwReflectivityBottom   = 0.80
+          .lwTransmissivityBottom = 0.10
+          .lwAbsorptivityBottom   = 0.10
+
           .Utop                   = 1.1
           .Ubottom                = 1.1
           .heatCapacity           = 120.
-          .state = actuators/screens/shade[value]
+          .state = actuators/screens/shade[state]
         }
         Screen blackout {
           .swReflectivityTop      = 0.05
           .swTransmissivityTop    = 0.0
-          :
+          .swAbsorptivityTop      = 0.95
+
+          .swReflectivityBottom   = 0.05
+          .swTransmissivityBottom = 0.0
+          .swAbsorptivityBottom   = 0.95
+
+          .lwReflectivityTop      = 0.02
+          .lwTransmissivityTop    = 0.0
+          .lwAbsorptivityTop      = 0.98
+
+          .lwReflectivityBottom   = 0.02
+          .lwTransmissivityBottom = 0.0
+          .lwAbsorptivityBottom   = 0.98
+
           .Utop                   = 1.2
           .Ubottom                = 1.2
           .heatCapacity           = 200.
-          .state = actuators/screens/blackout[value]
+          .state = actuators/screens/blackout[state]
         }
       }
       Box faces {
         Box roof1 {
           &cover = "glass"
           &screens = "energy+shade1+blackout"
+          &area = construction/geometry[roofArea]/2
           &weight = 1
         }
         Box roof2 {
           &cover = "glass"
           &screens = "energy+shade1+blackout"
+          &area = construction/geometry[roofArea]/2
           &weight = 1
         }
         Box side1 {
           &cover = "glass"
           &screens = "none+shade2+blackout"
+          &area = construction/geometry[sideArea]/2
           &weight = 1
         }
         Box side2 {
-          &cover = "glass"
+          &cover = "oldGlass"
           &screens = "none+none+blackout"
+          &area = construction/geometry[sideArea]/2
           &weight = 0.5
         }
         Box end1 {
-          &cover = "glass"
+          &cover = "oldGlass"
           &screens = "none+none+blackout"
+          &area = construction/geometry[endArea]/2
           &weight = 0.2
         }
         Box end2 {
           &cover = "glass"
           &screens = "energy+none+blackout"
+          &area = construction/geometry[endArea]/2
           &weight = 0.2
         }
       }
+      // Box layers {
+        // AverageCover cover {}
+        // Screen screen1 {}
+        // Screen screen2 {}
+        // Screen screen3 {}
+      // }
     }
   } 
   Box setpoints {
@@ -376,22 +473,6 @@ Simulation sim {
 
   }
   Controllers controllers {
-    Box crackVentilation {
-      ProportionalSignal temperatureDependent {
-        .input         = outdoors[temperature]
-        .threshold     = setpoints/crackVentilation/temperature/threshold[value]
-        .thresholdBand = setpoints/crackVentilation/temperature/band[value]
-        .maxSignal     = setpoints/crackVentilation/base[value]
-        .increasingSignal = TRUE
-      }
-      ProportionalSignal current {
-        .input         = indoors[rh]
-        .threshold     = setpoints/rhMax/threshold[value]
-        .thresholdBand = setpoints/rhMax/band[value]
-        .maxSignal     = ../temperatureDependent[value]
-        .increasingSignal = TRUE
-      }
-    }
     Sum heating {
       .values = setpoints/heating/base[value] | 
                 ./humidityOffset[value]
@@ -455,14 +536,14 @@ Simulation sim {
     Box growthLights {
       GrowthLightController bank1 {
         .mode          = setpoints/growthLights/bank1/mode[value]
-        .input		 = outdoors[radiation]
+        .input         = outdoors[radiation]
         .thresholdLow  = setpoints/growthLights/bank1/thresholds/low[value]
         .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
         .minPeriodOn   = 5.
       }
       GrowthLightController bank2 {
-        .mode            = setpoints/growthLights/bank2/mode[value]
-        .minPeriodOn     = 30.
+        .mode          = setpoints/growthLights/bank2/mode[value]
+        .minPeriodOn   = 30.
       }
     }
     Box chalk {
@@ -472,21 +553,24 @@ Simulation sim {
   Box co2 {
     &change = ./controller[controlVariable]
     PidController controller{
-      .sensedValue = indoors/co2[value]
-      .desiredValue = setpoints/co2[value]
+      .sensedValue = indoors[co2]
+      .desiredValue = setpoints/co2/concentration[value]
       .Kprop = 0.05
     }
   }
   Box actuators {
     Box screens {
       ActuatorScreen energy {
-        .lagPeriod = 10
+        .desiredState = controllers/screens/energy[value]
+        .lagPeriod = 10.
       }
       ActuatorScreen shade {
-        .lagPeriod = 10
+        .desiredState = controllers/screens/shade[value]
+        .lagPeriod = 10.
       }
       ActuatorScreen blackout {
-        .lagPeriod = 10
+        .desiredState = controllers/screens/blackout[value]
+        .lagPeriod = 10.
       }
     }
     Box growthLights {
@@ -531,6 +615,7 @@ Simulation sim {
   }
   Box indoors {
     &rh = 70.0
+    &co2 = 600.0
   }
   // BudgetSolver solver {
   // }

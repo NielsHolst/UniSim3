@@ -15,25 +15,22 @@ class Layer : virtual public base::Box
 {
 public:
     Layer(QString name, Box *parent);
-    void reset();
     void update();
 protected:
     // Inputs
     double
+        swAbsorptivityTop, swAbsorptivityBottom,
         swReflectivityTop, swReflectivityBottom,
         swTransmissivityTop, swTransmissivityBottom,
+        lwAbsorptivityTop, lwAbsorptivityBottom,
         lwReflectivityTop, lwReflectivityBottom,
         lwTransmissivityTop, lwTransmissivityBottom,
         Utop, Ubottom,
         heatCapacity;
-    // Outputs
-    double
-        swAbsorptivityTop, swAbsorptivityBottom,
-        lwAbsorptivityTop, lwAbsorptivityBottom;
-protected:
     // Methods
-    void updateAbsorptivities();
-    void checkRange(double x, QString name) const;
+    void checkInputs();
+    void checkInput(QString name, double value);
+    void checkInputSum(QString name, double value);
 };
 
 } //namespace

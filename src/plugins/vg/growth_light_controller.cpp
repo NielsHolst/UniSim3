@@ -20,12 +20,12 @@ GrowthLightController::GrowthLightController(QString name, Box *parent)
     : Box(name, parent), isOn(false)
 {
     help("control lights on/off according to setting");
-    Input(setting).help("Setting; 0=off, 1=sunlight-controlled, 10=on").unit("0|1|10");
-    Input(lightThresholdLow).help("If controlled then light is switched on below this sunlight threshold").unit("W/m2");
-    Input(lightThresholdHigh).help("If controlled then light is switched off above this sunlight threshold").unit("W/m2");
+    Input(mode).help("Control mode can be 0=off, 1=threshold-controlled, 10=on").unit("0|1|10");
+    Input(input).help("Current value of threshold variable");
+    Input(thresholdLow). help("If threshold-controlled the light is switched on below this threshold").unit("W/m2");
+    Input(thresholdHigh).help("If threshold-controlled the light is switched off above this threshold").unit("W/m2");
     Input(minPeriodOn).help("Minimum period that light stays on").unit("min");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");
-    Input(outdoorsLight).imports("outdoors[radiation]").unit("W/m2");
     Output(isOn).unit("bool").help("Is light on?");
     Output(periodOn).help("Time since last time light went on").unit("min");
 }
@@ -35,26 +35,26 @@ void GrowthLightController::reset() {
 }
 
 void GrowthLightController::update() {
-    // Switch light or off according to settingh and outdoors light
+    // Switch light or off according to mode and input
     bool nowOn = isOn;
-    if (setting == 0) {
+    if (mode == 0) {
         isOn = false;
     }
-    else if (setting == 10) {
+    else if (mode == 10) {
         isOn = true;
     }
-    else if (setting == 1) {
+    else if (mode == 1) {
         if (isOn) {
-            bool switchOff = (outdoorsLight > lightThresholdHigh);
+            bool switchOff = (input > thresholdHigh);
             isOn = !switchOff;
         }
         else {
-            bool switchOn = (outdoorsLight < lightThresholdLow);
+            bool switchOn = (input < thresholdLow);
             isOn = switchOn;
         }
     }
     else {
-        ThrowException("Illegal setting").value(setting).hint(port("setting")->help()).context(this);
+        ThrowException("Illegal setting").value(mode).hint(port("setting")->help()).context(this);
     }
 
     // Observe minimum on-time

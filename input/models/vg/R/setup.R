@@ -1,5 +1,5 @@
 # Prelude
-setwd("~/QDev/UniSim3/input/models/vg")
+setwd("~/QDev/UniSim3/input/models/vg/R")
 library(ggplot2)
 library(ggpubr)
 library(plyr)
