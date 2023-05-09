@@ -5,31 +5,19 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef GROWTH_LIGHTS_H
-#define GROWTH_LIGHTS_H
-
-#include <base/box.h>
+#ifndef FLOOR_H
+#define FLOOR_H
+#include "layer.h"
+#include "layer_adjusted.h"
 
 namespace vg {
 
-class GrowthLights : public base::Box {
+class Floor : public Layer, public LayerAdjusted
+{
 public:
-    GrowthLights(QString name, base::Box *parent);
+    Floor(QString name, Box *parent);
     void reset();
     void update();
-private:
-    // Inputs
-    QVector<double>
-        swEmissionBottomLights,
-        lwEmissionBottomLights, lwEmissionTopLights,
-        parEmissionBottomLights,
-        powerUsageLights;
-    // Outputs
-    double
-        swEmissionBottom,
-        lwEmissionBottom, lwEmissionTop,
-        parEmissionBottom,
-        powerUsage;
 };
 
 } //namespace

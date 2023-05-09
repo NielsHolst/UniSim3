@@ -2,405 +2,273 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#include <iomanip>
-#include <sstream>
-#include <base/phys_math.h>
+#include <base/box_builder.h>
+#include <base/publish.h>
+#include "average_cover.h"
+#include "average_screen.h"
 #include "budget.h"
+#include "budget_layer.h"
+#include "floor.h"
+#include "layer_adjusted.h"
+#include "plant.h"
+#include "sky.h"
 
-using namespace std;
-using namespace phys_math;
+using namespace base;
 
 namespace vg {
 
-Budget::Layer::Layer(QString pname,
-    const double *pa,
-    const double *pr,
-    const double *pt,
-    const double *pa_,
-    const double *pr_,
-    const double *pt_,
-    const double *pC)
-    : name(pname), a(pa), r(pr), t(pt), a_(pa_), r_(pr_), t_(pt_), C(pC)
+PUBLISH(Budget)
+
+Budget::Budget(QString name, base::Box *parent)
+    : Box(name, parent)
 {
 }
 
-QString Budget::Layer::columnLabels() {
-    stringstream str;
-    str << setw(8) << "Layer"
-        << setw(5) << "a"
-        << setw(5) << "r"
-        << setw(5) << "t"
-        << setw(5) << "a_"
-        << setw(5) << "r_"
-        << setw(5) << "t_"
-        << setw(6) << "T"
-        << setw(6) << "E"
-        << setw(6) << "E_"
-        << setw(6) << "F"
-        << setw(6) << "F_"
-        << setw(6) << "A"
-        << setw(6) << "A_"
-        << setw(6) << "U"
-        << setw(6) << "U_"
-        << setw(6) << "H"
-        << setw(6) << "H_";
-    return QString::fromStdString(str.str());
-}
+void Budget::amend() {
+    // Find layers
+    sky       = findOne<Sky*>("/sky");
+    cover     = findOne<AverageCover*>("shelter/layers/cover");
+    screens   = findMany<AverageScreen*>("shelter/layers/screens/*");
+    lights    = findMany<Box*>("actuators/growthLights/*");
+    heatPipes = findMany<Box*>("actuators/heatPipes/*");
+    plant     = findMaybeOne<Plant*>("/plant");
+    floor     = findOne<Floor*>("/floor");
 
-std::ostream& operator<<(ostream& os, const Budget::Layer &x) {
-    os << fixed
-       << setw(8) << x.name.toStdString()
-       << setprecision(2)
-       << setw(5) << *x.a
-       << setw(5) << *x.r
-       << setw(5) << *x.t
-       << setw(5) << *x.a_
-       << setw(5) << *x.r_
-       << setw(5) << *x.t_
-       << setprecision(1)
-       << setw(6) << x.T
-       << setw(6) << x.E
-       << setw(6) << x.E_
-       << setw(6) << x.F
-       << setw(6) << x.F_
-       << setw(6) << x.A
-       << setw(6) << x.A_
-       << setw(6) << x.U
-       << setw(6) << x.U_
-       << setw(6) << x.H
-       << setw(6) << x.H_;
-    return os;
-}
+    // Build layers as children
+    BoxBuilder builder(this);
+    builder.
+        box("BudgetLayer").name("sky").
+            port("updateLwFromTemperature").equals(false).
+            port("swEmissionBottom").imports("outdoors[radiation]").
+            port("lwEmissionBottom").imports("/sky[lwEmission]").
+            port("parEmissionBottom").imports("outdoors[par]").
+        endbox().
+        box("BudgetLayer").name("cover").
+        endbox();
+    QStringList screenNames;
+    for (AverageScreen *screen : screens) {
+        builder.
+            box("BudgetLayer").name(screen->objectName()).
+            endbox();
+        screenNames << screen->objectName();
+    }
+    if (lights.size() > 0) {
+        builder.
+            box("BudgetLayer").name("growthLights").
+                port("updateLwFromTemperature").equals(false).
+                port("swEmissionBottom").imports("actuators/growthLights[swEmissionBottom]").
+                port("lwEmissionBottom").imports("actuators/growthLights[lwEmissionBottom]").
+                port("lwEmissionTop").imports("actuators/growthLights[lwEmissionTop]").
+                port("parEmissionBottom").imports("actuators/growthLights[parEmissionBottom]").
+            endbox();
+    }
+    if (heatPipes.size() > 0) {
+        builder.
+            box("BudgetLayer").name("heatPipes").
+                port("updateLwFromTemperature").equals(false).
+                port("lwEmissionBottom").imports("actuators/growthLights[lwEmissionBottom]").
+                port("lwEmissionTop").imports("actuators/growthLights[lwEmissionTop]").
+                port("convectiveFlux").imports("actuators/growthLights[convectiveFlux]").
+            endbox();
+    }
+    if (plant) {
+        builder.
+            box("BudgetLayer").name("plant").
+            endbox();
+    }
+    builder.
+        box("BudgetLayer").name("floor").
+        endbox();
 
-QString Budget::Volume::columnLabels() {
-    stringstream str;
-    str << setw(8) << "Layer"
-        << setw(6) << "T"
-        << setw(7) << "C"
-        << setw(6) << "H"
-        << setw(6) << "V";
-    return QString::fromStdString(str.str());
-}
 
-std::ostream& operator<<(std::ostream& os, const Budget::Volume& x) {
-    os << fixed
-       << setw(8) << x.name.toStdString()
-       << setprecision(1)
-       << setw(6) << x.T
-       << setw(7) << *x.C
-       << setw(6) << x.H
-       << setw(6) << x.V;
-    return os;
-}
+    // Attach sky
+    BudgetLayer *budgetLayerSky = findOne<BudgetLayer*>("./sky");
+    budgetLayerSky->attach(sky);
+    layers << budgetLayerSky;
 
-QString Budget::Water::columnLabels() {
-    stringstream str;
-    str << setw(8) << "Layer"
-        << setw(7) << "RH"
-        << setw(12) << "Tr"
-        << setw(12) << "Cn"
-        << setw(12) << "Mv";
-    return QString::fromStdString(str.str());
-}
+    // Attach cover
+    BudgetLayer *budgetLayerCover = findOne<BudgetLayer*>("./cover");
+    budgetLayerCover->attach(cover);
+    layers << budgetLayerCover;
 
-std::ostream& operator<<(std::ostream& os, const Budget::Water& x) {
-    os << fixed
-       << setw(8) << x.name.toStdString()
-       << setprecision(2)
-       << setw(7) << x.RH
-       << setprecision(8)
-       << setw(12) << x.Tr
-       << setw(12) << x.Cn
-       << setw(12) << x.Mv;
-    return os;
-}
+    // Attach screens
+    int i = 0;
+    for (const QString &screenName : screenNames) {
+        BudgetLayer *budgetLayerScreen = findOne<BudgetLayer*>("./"+screenName);
+        budgetLayerScreen->attach(screens[i++]);
+        layers << budgetLayerScreen;
+    }
 
-std::ostream& operator<<(std::ostream& os, const Budget& x) {
-    os << Budget::Layer::columnLabels().toStdString() << endl;
-    for (auto it=x.layers.begin(); it!=x.layers.end(); ++it)
-        os << *it << endl;
-    os << endl << Budget::Volume::columnLabels().toStdString() << endl;
-    for (auto it=x.volumes.begin(); it!=x.volumes.end(); ++it)
-        os << *it << endl;
-    os << endl << Budget::Water::columnLabels().toStdString() << endl;
-    for (auto it=x.waters.begin(); it!=x.waters.end(); ++it)
-        os << *it << endl;
-    return os;
-}
+    // Attach plant
+    BudgetLayer *budgetLayerPlant = findOne<BudgetLayer*>("./plant");
+    budgetLayerPlant->attach(plant);
+    layers << budgetLayerPlant;
 
-void Budget::transferEmission() {
-    for (auto it=layers.begin(); it!=layers.end(); ++it) {
-        it->F  = it->E;
-        it->F_ = it->E_;
+    // Attach floor
+    BudgetLayer *budgetLayerFloor = findOne<BudgetLayer*>("./floor");
+    budgetLayerFloor->attach(floor);
+    layers << budgetLayerFloor;
+
+    // Set pointers to parameters and states
+    for (BudgetLayer *layer : layers) {
+        swPar.a   << &layer->attachedLayer->swAbsorptivityTopAdj;
+        swPar.a_  << &layer->attachedLayer->swAbsorptivityBottomAdj;
+        swPar.r   << &layer->attachedLayer->swReflectivityTopAdj;
+        swPar.r_  << &layer->attachedLayer->swReflectivityBottomAdj;
+        swPar.t   << &layer->attachedLayer->swTransmissivityTopAdj;
+        swPar.t_  << &layer->attachedLayer->swTransmissivityBottomAdj;
+
+        lwPar.a   << &layer->attachedLayer->lwAbsorptivityTopAdj;
+        lwPar.a_  << &layer->attachedLayer->lwAbsorptivityBottomAdj;
+        lwPar.r   << &layer->attachedLayer->lwReflectivityTopAdj;
+        lwPar.r_  << &layer->attachedLayer->lwReflectivityBottomAdj;
+        lwPar.t   << &layer->attachedLayer->lwTransmissivityTopAdj;
+        lwPar.t_  << &layer->attachedLayer->lwTransmissivityBottomAdj;
+
+        swState.E  << &layer->swEmissionBottom;
+        swState.E_ << &layer->swEmissionTop;
+        swState.F  <<  layer->swFlowBottom;
+        swState.F_ <<  layer->swFlowTop;
+        swState.A  <<  layer->swAbsorbedBottom;
+        swState.A_ <<  layer->swAbsorbedTop;
+
+        lwState.E  << &layer->lwEmissionBottom;
+        lwState.E_ << &layer->lwEmissionTop;
+        lwState.F  <<  layer->lwFlowBottom;
+        lwState.F_ <<  layer->lwFlowTop;
+        lwState.A  <<  layer->lwAbsorbedBottom;
+        lwState.A_ <<  layer->lwAbsorbedTop;
+
+        parState.E  << &layer->parEmissionBottom;
+        parState.E_ << &layer->parEmissionTop;
+        parState.F  <<  layer->parFlowBottom;
+        parState.F_ <<  layer->parFlowTop;
+        parState.A  <<  layer->parAbsorbedBottom;
+        parState.A_ <<  layer->parAbsorbedTop;
     }
 }
 
-void Budget::distributeRadDown() {
-    auto cur = layers.begin();
-    for (auto next = cur+1; next != layers.end(); ++cur, ++next) {
-        // Correct absorption and transmission of this layer and layer below
-        // for reflections ad infinitum between the two layers
-        double
-            k = 1. - (*next->r) * (*cur->r_),
-            ah  = (*next->a)/k,
-            th  = (*next->t)/k,
-            ah_ = (*cur->a_)/k * (*next->r),
-            th_ = (*cur->t_)/k * (*next->r),
-            // Absorbed by layer below
-            absorbed     = ah  * cur->F,
-            // Transmitted through layer below
-            transmitted  = th  * cur->F,
-            // Absorbed by this layer by reflection from below
-            absorbed_    = ah_ * cur->F,
-            // Transmitted through this layer by reflection from below
-            transmitted_ = th_ * cur->F;
-        // Update layer below
-        next->A += absorbed;
-        next->F += transmitted;
-        // Update this layer
-        cur->A_ += absorbed_;
-        cur->F_ += transmitted_;
-        // Downwards flow from this layer has been spent
-        cur->F = 0;
-    }
-}
-
-void Budget::distributeRadUp() {
-    auto cur = layers.end() - 1;
-    for (auto next = cur-1; cur != layers.begin(); --cur, --next) {
-        // Correct absorption and transmission of this layer and layer above
-        // for reflections ad infinitum between the two layers
-        double
-            k = 1. - (*next->r_) * (*cur->r),
-            ah_ = (*next->a_)/k,
-            th_ = (*next->t_)/k,
-            ah  = (*cur->a)/k * (*next->r_),
-            th  = (*cur->t)/k * (*next->r_),
-            // Absorbed by layer above
-            absorbed_    = ah_ * cur->F_,
-            // Transmitted through layer above
-            transmitted_ = th_ * cur->F_,
-            // Absorbed by this layer by reflection from above
-            absorbed     = ah  * cur->F_,
-            // Transmitted through this layer by reflection from above
-            transmitted  = th  * cur->F_;
-        // Update layer above
-        next->A_ += absorbed_;
-        next->F_ += transmitted_;
-        // Update this layer
-        cur->A   += absorbed;
-        cur->F   += transmitted;
-        // Upwards flow from this layer has been spent
-        cur->F_ = 0;
-    }
-}
-
-void Budget::distributeRadiation() {
-    const double precision = 1e-6;
-    iterations = 0;
-    double residual;
-    transferEmission();
-        do {
-        ++iterations;
-        distributeRadDown();
-        distributeRadUp();
-        residual = 0.;
-        for (auto it=layers.begin(); it!=layers.end(); ++it)
-            residual += it->F + it->F_;
-    } while (residual > precision);
+void Budget::update() {
+    updateLwEmission();
+    transferEmissionsToFlows();
+    distributeRadiation(swState,  swPar);
+    distributeRadiation(lwState,  lwPar);
+    distributeRadiation(parState, swPar);
 }
 
 void Budget::updateLwEmission() {
-    for (auto it=layers.begin(); it!=layers.end(); ++it) {
-        if (it->name != "Light" && it->name != "Heating") {
-            it->E  = Sigma*(*it->a_)*p4(it->T + T0);
-            it->E_ = Sigma*(*it->a )*p4(it->T + T0);
-        }
+    for (BudgetLayer *layer : layers)
+        layer->updateLwEmission();
+}
+
+void Budget::transferEmissionsToFlows() {
+    for (BudgetLayer *layer : layers)
+        layer->transferEmissionsToFlows();
+}
+
+void Budget::distributeRadDown(State &s, const Parameters &p) {
+    int n = s.E.size();
+    for (int i=0; i<n-1; ++i) {
+        int j = i+1;
+        const double
+                &cur_a_(*p.a_.at(i)),
+                &cur_r_(*p.r_.at(i)),
+                &cur_t_(*p.t_.at(i)),
+                &nxt_a (*p.a.at(j)),
+                &nxt_r (*p.r.at(j)),
+                &nxt_t (*p.t.at(j)),
+                &cur_F (s.F[i]);
+        double
+                &cur_A_(s.A_[i]),
+                &cur_F_(s.F_[i]),
+                &nxt_F (s.F[j]),
+                &nxt_A (s.A[j]);
+        // Correct absorption and transmission of this layer and layer below
+        // for reflections ad infinitum between the two layers
+        double
+            k = 1. - nxt_r*cur_r_,
+            ah  = nxt_a/k,
+            th  = nxt_t/k,
+            ah_ = cur_a_/k * nxt_r,
+            th_ = cur_t_/k * nxt_r,
+            // Absorbed by layer below
+            absorbed     = ah  * cur_F,
+            // Transmitted through layer below
+            transmitted  = th  * cur_F,
+            // Absorbed by this layer by reflection from below
+            absorbed_    = ah_ * cur_F,
+            // Transmitted through this layer by reflection from below
+            transmitted_ = th_ * cur_F;
+        // Update layer below
+        nxt_A += absorbed;
+        nxt_F += transmitted;
+        // Update this layer
+        cur_A_ += absorbed_;
+        cur_F_ += transmitted_;
+        // Downwards flow from this layer has been spent
+        s.F[i] = 0;
     }
 }
 
-void Budget::transferAbsorption(const Budget &b) {
-    auto itb = b.layers.begin();
-    for (auto it=layers.begin(); it!=layers.end(); ++it, ++itb) {
-        it->A  = itb->A;
-        it->A_ = itb->A_;
+void Budget::distributeRadUp(State &s, const Parameters &p) {
+    int n = s.E.size();
+    for (int i=n-1; i>0; --i) {
+        int j = i-1;
+        const double
+                &cur_a(*p.a.at(i)),
+                &cur_r(*p.r.at(i)),
+                &cur_t(*p.t.at(i)),
+                &nxt_a_(*p.a_.at(j)),
+                &nxt_r_(*p.r_.at(j)),
+                &nxt_t_ (*p.t_.at(j)),
+                &cur_F_ (s.F_[i]);
+        double
+                &cur_A (s.A[i]),
+                &cur_F (s.F[i]),
+                &nxt_F_(s.F_[j]),
+                &nxt_A_(s.A_[j]);
+        // Correct absorption and transmission of this layer and layer above
+        // for reflections ad infinitum between the two layers
+        double
+            k = 1. - nxt_r_*cur_r,
+            ah_ = nxt_a_/k,
+            th_ = nxt_t_/k,
+            ah  = cur_a/k * nxt_r_,
+            th  = cur_t/k * nxt_r_,
+            // Absorbed by layer above
+            absorbed_    = ah_ * cur_F_,
+            // Transmitted through layer above
+            transmitted_ = th_ * cur_F_,
+            // Absorbed by this layer by reflection from above
+            absorbed     = ah  * cur_F_,
+            // Transmitted through this layer by reflection from above
+            transmitted  = th  * cur_F_;
+        // Update layer above
+        nxt_A_ += absorbed_;
+        nxt_F_ += transmitted_;
+        // Update this layer
+        cur_A   += absorbed;
+        cur_F   += transmitted;
+        // Upwards flow from this layer has been spent
+        s.F_[i] = 0;
     }
 }
 
-void Budget::transferConvection(const Budget &b) {
-    auto itl = b.layers.begin();
-    for (auto it=layers.begin(); it!=layers.end(); ++it, ++itl) {
-        it->H  = itl->H;
-        it->H_ = itl->H_;
-    }
-    auto itv = b.volumes.begin();
-    for (auto it=volumes.begin(); it!=volumes.end(); ++it, ++itv) {
-        it->H  = itv->H;
-    }
+void Budget::distributeRadiation(State &s, const Parameters &p) {
+    const double precision = 1e-3;
+    iterations = 0;
+    double residual;
+//    transferEmission();
+    do {
+        ++iterations;
+        distributeRadDown(s, p);
+        distributeRadUp(s, p);
+        residual = 0.;
+        int n = s.F.size();
+        for (int i=0; i<n; ++i)
+            residual += s.F.at(i) + s.F_.at(i);
+    } while (residual > precision);
 }
 
-namespace {
-    double delta_vent(double yin0, double yout, double v, double dt) {
-      return (yout-yin0)*(1 -exp(-v/3600*dt));
-    }
-    double dE_in(double Tin0, double Tout, double v, double dt) {
-      return delta_vent(Tin0, Tout, v, dt)*4780/dt;
-    }
+
 }
-
-void Budget::updateAdvectionHeat(double ventilationRate, double sub_dt) {
-    Volume
-        &outdoors(volumes[0]),
-        &indoors (volumes[1]);
-    double flux = dE_in(indoors.T, outdoors.T, ventilationRate, sub_dt);
-    outdoors.V = -flux;
-    indoors.V  =  flux;
-}
-
-void Budget::updateAdvectionHumidity(double ventilationRate, double sub_dt) {
-    Volume
-        &outdoorsV(volumes[0]),
-        &indoorsV (volumes[1]);
-    Water
-        &outdoorsW(waters[0]),
-        &indoorsW (waters[1]);
-    // Compute absolute humidity flux
-    double indoorsAh  = ahFromRh(indoorsV.T,  indoorsW.RH),
-           outdoorsAh = ahFromRh(outdoorsV.T, outdoorsW.RH),
-           fluxAh = dE_in(indoorsAh, outdoorsAh, ventilationRate, sub_dt);
-    // Update water flux
-    outdoorsW.Mv = -fluxAh;
-    indoorsW.Mv  =  fluxAh;
-    // Update relative humidity
-    indoorsW.RH = rhFromAh(indoorsV.T, indoorsAh + fluxAh);
-}
-
-void Budget::updateTemperatureByRadiation(double sub_dt) {
-    for (auto it=layers.begin(); it!=layers.end(); ++it) {
-        it->T += it->netRadiation() / (*it->C) * sub_dt;
-        it->A  =
-        it->A_ = 0.;
-    }
-}
-
-void Budget::updateTemperature(double sub_dt) {
-    for (auto it=layers.begin(); it!=layers.end(); ++it) {
-        if (it->name == "Plant") {
-            updatePlantTemperature();
-        }
-        else {
-            const double heatFlux = it->netRadiation() + it->H + it->H_;
-            it->T += heatFlux / (*it->C) * sub_dt;
-        }
-        it->A  =
-        it->A_ = 0.;
-    }
-    Volume &indoors( volumes[1]);
-    indoors.T += (indoors.H + indoors.V) / (*indoors.C) * sub_dt;
-}
-
-double Budget::ri(double RH, double CO2) {
-    const double g0 = 0.1, g1 = 1.64, Pn = 2;
-    return 1./(g0 + g1*RH/100*Pn/CO2);
-}
-
-double Budget::Tplant (double Arad, double Tin, double rh, double ri, double re) {
-  const double Lai = 1.9;
-  double
-    a = (ri+re)/2/Lai/RhoAir/CpAir*Arad - 1/Psychr*(svp(Tin) - vpFromRh(Tin, rh)),
-    b = 1 + svpSlope(Tin)/Psychr + ri/re;
-  return Tin + a/b;
-}
-
-double Budget::transpiration(double Arad, double Tin, double rh, double ri, double re) {
-    const double Lai = 1.9;
-  double
-      a = svpSlope(Tin)/Psychr*Arad + 2*Lai*RhoAir*CpAir/Psychr/re*(svp(Tin) - vpFromRh(Tin, rh)),
-      b = LHe*(1 + svpSlope(Tin)/Psychr + ri/re);
-  return a/b;
-}
-
-double Budget::glassCondensationRate() {
-    const double g = 2e-3;
-    Layer
-        &glass(layers[1]);
-    Volume
-        &indoorsV(volumes[1]);
-    Water
-        &indoorsW(waters[1]);
-    // At glass
-    double
-        glassSah  = sah(glass.T),
-        indoorsAh = ahFromRh(indoorsV.T, indoorsW.RH);
-    return std::max(g*(indoorsAh - glassSah), 0.);
-}
-
-void Budget::updatePlantTemperature(double co2) {
-    Layer &plant(layers[4]);
-    Volume &indoorsV(volumes[1]);
-    Water &indoorsW(waters[1]);
-    plant.T = Tplant(plant.netRadiation(), indoorsV.T, indoorsW.RH, ri(indoorsW.RH, co2), 218);
-}
-
-QVector<double> Budget::A() const {
-    QVector<double> Avalues;
-    for (auto it=layers.begin(); it!=layers.end(); ++it)
-        Avalues << it->A;
-    return Avalues;
-}
-
-QVector<double> Budget::A_() const {
-    QVector<double> A_values;
-    for (auto it=layers.begin(); it!=layers.end(); ++it)
-        A_values << it->A_;
-    return A_values;
-}
-
-QVector<double> Budget::T() const {
-    QVector<double> Tvalues;
-    for (auto it=layers.begin(); it!=layers.end(); ++it)
-        Tvalues << it->T;
-    return Tvalues;
-}
-
-QVector<double> Budget::Tv() const {
-    QVector<double> Tvalues;
-    for (auto it=volumes.begin(); it!=volumes.end(); ++it)
-        Tvalues << it->T;
-    return Tvalues;
-}
-
-void Budget::updateConvection() {
-    Volume
-        &outdoors(volumes[0]),
-        &indoors( volumes[1]),
-        &soil   ( volumes[2]);
-    for (auto it = layers.begin() + 2; it!=layers.end()-1; ++it) {
-        if (it->U  > 0.)
-            indoors.H -= it->H  += it->U *(indoors.T - it->T);
-        if (it->U_ > 0.)
-            indoors.H -= it->H_ += it->U_*(indoors.T - it->T);
-    }
-    Layer
-        &glass(layers[1]),
-        &floor(layers[6]);
-    outdoors.H -= glass.H  = glass.U  *(outdoors.T - glass.T);
-    indoors.H  -= glass.H_ = glass.U_ *(indoors.T  - glass.T);
-    indoors.H  -= floor.H  = floor.U  *(indoors.T  - floor.T);
-    soil.H     -= floor.H_ = floor.U_ *(soil.T     - floor.T);
-}
-
-void Budget::updateHumidity(double ventilationRate, double co2, double sub_dt) {
-    Layer
-        &plant(layers[4]);
-    Volume
-        &indoorsV(volumes[1]);
-    Water
-        &indoorsW (waters[1]);
-    indoorsW.Tr = transpiration(plant.netRadiation(), indoorsV.T, indoorsW.RH, ri(indoorsW.RH, co2), 218);
-    indoorsW.Cn = glassCondensationRate();
-    updateAdvectionHumidity(ventilationRate, sub_dt);
-}
-
-} //namespace
-

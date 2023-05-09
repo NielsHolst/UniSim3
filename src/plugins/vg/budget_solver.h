@@ -25,17 +25,15 @@ private:
     // Inputs
     // Outputs
     // Data
-    Budget sw, lw;
-    Box *roof1, *roof2, *side1, *side2, *end1, *end2,
-        *geometry,
-        *cover;
-    QMap<QString, base::Box*> coverTypes;
-    double roof12Area, side12Area, end12Area, coverArea;
-    // Methods
+//    Budget sw, lw;
+//    Box *roof1, *roof2, *side1, *side2, *end1, *end2,
+//        *geometry,
+//        *cover;
+//    QMap<QString, base::Box*> coverTypes;
+//    double roof12Area, side12Area, end12Area, coverArea;
+//    // Methods
     void findShelterFaces();
     void findCoverTypes();
-    double weightedCoverValue(QString portName) const;
-    base::Port& updateCoverPort(QString portName);
 };
 
 } //namespace

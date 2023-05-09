@@ -24,7 +24,7 @@ HEADERS +=  \
     test_box_builder.h \
     test_box_cases.h \
     test_boxscript_x3.h \
-    test_budget.h \
+#    test_budget.h \
     test_convert_date.h \
     test_convert_date_time.h \
     test_convert_time.h \
@@ -48,8 +48,8 @@ HEADERS +=  \
     test_simulation.h \
     test_unique_names.h \
     test_value.h \
-    test_value_collection.h \
-    ../../plugins/vg/budget.h \
+    test_value_collection.h
+#    ../../plugins/vg/budget.h \
 
 SOURCES +=  \
     main.cpp \
@@ -62,7 +62,7 @@ SOURCES +=  \
     test_box_builder.cpp \
     test_box_cases.cpp \
     test_boxscript_x3.cpp \
-    test_budget.cpp \
+#    test_budget.cpp \
     test_convert_date.cpp \
     test_convert_date_time.cpp \
     test_convert_time.cpp \
@@ -87,4 +87,4 @@ SOURCES +=  \
     test_unique_names.cpp \
     test_value.cpp \
     test_value_collection.cpp \
-    ../../plugins/vg/budget.cpp \
+#    ../../plugins/vg/budget.cpp

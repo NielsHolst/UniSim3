@@ -22,8 +22,6 @@ Outdoors::Outdoors(QString name, Box *parent)
 	: Box(name, parent)
 {
     help("delivers readings of outdoors weather");
-    QString Tsky = "if exists(./records[Tsky]) then ./records[Tsky] else skyTemperatureEstimate[temperature]";
-
     Input(co2).equals(400.).help("Outdoors CO2 concentration").unit("ppm");
     Input(temperature).imports("./records[Tair]").help("Outdoors ambient temperature").unit("oC");
     Input(rh).imports("./records[Rhair]").help("Outdoors ambient relative humidity").unit("[0;100]");
@@ -31,7 +29,6 @@ Outdoors::Outdoors(QString name, Box *parent)
     Input(propPar).equals(0.45).help("Proportion of PAR in radiation").unit("[0;1]");
     Input(propUv).equals(0.07).help("Proportion of UV in radiation").unit("[0;1]");
     Input(windSpeed).imports("./records[Windspeed]").help("Outdoors wind speed").unit("m/s");
-    Input(skyTemperature).computes(Tsky).help("Sky temperature").unit("oC");
     Output(par).help("Sunlight PAR").unit("mymol PAR/m2/s");
     Output(ah).help("Absolute humidity").unit("kg/m3");
     Output(sh).help("Specific humidity").unit("kg/kg");
@@ -44,28 +41,6 @@ void Outdoors::amend() {
         builder.
         box("Records").name("records").
             port("fileName").equals("input/sel_dk.txt").
-        endbox();
-    if (!findMaybeOne<Box*>("./skyTemperatureEstimate"))
-        builder.
-        box("SkyTemperature").name("skyTemperatureEstimate").
-        endbox();
-    if (!findMaybeOne<Box*>("./soilTemperature"))
-        builder.
-        box("Accumulator").name("soilTemperature").
-            port("initial").imports("./initial[value]").
-            port("change").imports("./controller[controlVariable]").
-            box("Hump").name("initial").
-                port("x").imports("calendar[dayOfYear]").
-                port("x0").equals(70).
-                port("x1").equals(365).
-                port("ymin").equals(0).
-                port("ymax").equals(16).
-            endbox().
-            box("PidController").name("controller").
-                port("sensedValue").imports("..[value]").
-                port("desiredValue").imports("outdoors[temperature]",CA).
-                port("Kprop").equals(0.5e-4).
-            endbox().
         endbox();
 }
 

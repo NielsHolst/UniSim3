@@ -33,7 +33,7 @@ HEADERS +=  \
     boundary_layer_resistance_stanghellini.h \
     boundary_layer_resistance_monteith_unsworth.h \
     budget.h \
-    budget_solver.h \
+    budget_layer.h \
     canopy_photosynthesis.h \
     controllers.h \
     controller_ventilation_combined.h \
@@ -42,8 +42,7 @@ HEADERS +=  \
     diffuse_irradiation_base.h \
     diffuse_irradiation_RE.h \
     energy_budget.h \
-#    extract_layers.h \
-#    energy_budget_optimiser.h \
+    floor.h \
     geometry.h \
     growth_light_controller.h \
     growth_lights.h \
@@ -51,16 +50,7 @@ HEADERS +=  \
     heat_sink.h \
     heat_transfer_layer_base.h \
     heat_transfer_layer_parameters.h \
-#    heat_transfer_cover.h \
-#    heat_transfer_crop.h \
-#    heat_transfer_floor.h \
-#    heat_transfer_pipe.h \
-#    heat_transfer_screen_base.h \
-#    heat_transfer_screen1.h \
-#    heat_transfer_screen2.h \
-#    heat_transfer_screen3.h \
-#    heat_transfer_shelter.h \
-#    heat_transfer_sky.h \
+    heat_pipes.h \
     ig_indoors_humidity.h \
     indoors.h \
     indoors_co2.h \
@@ -71,19 +61,13 @@ HEADERS +=  \
     intercellular_co2.h \
     layer.h \
     layer_adjusted.h \
-    leaf_par_absorbed.h \
-    leaf_photosynthesis.h \
-    leaf_photosynthesis_aj.h \
-    leaf_respiration.h \
-    leaf_temperature.h \
-    leaf_transpiration.h \
-    leaf_wind_speed.h \
     leakage_ventilation.h \
     outdoors.h \
     outputs.h \
     par_budget.h \
     pid_controller.h \
     pipe_forced.h \
+    plant.h \
     screen.h \
     screen_combination.h \
     sensor.h \
@@ -93,7 +77,7 @@ HEADERS +=  \
     shelter.h \
     shelter_face.h \
     shelter_face_area.h \
-    sky_temperature.h \
+    sky.h \
     soil_temperature.h \
     stomatal_resistance_ball_berry.h \
     stomatal_resistance_ball_berry_opti_full.h \
@@ -140,7 +124,7 @@ SOURCES += \
     boundary_layer_resistance_stanghellini.cpp \
     boundary_layer_resistance_monteith_unsworth.cpp \
     budget.cpp \
-    budget_solver.cpp \
+    budget_layer.cpp \
     canopy_photosynthesis.cpp \
     controllers.cpp \
     controller_ventilation_combined.cpp \
@@ -149,24 +133,15 @@ SOURCES += \
     diffuse_irradiation_base.cpp \
     diffuse_irradiation_RE.cpp \
     energy_budget.cpp \
-#    extract_layers.cpp \
+    floor.cpp \
     geometry.cpp \
     growth_light_controller.cpp \
     growth_lights.cpp \
     heat_buffer.cpp \
+    heat_pipes.cpp \
     heat_sink.cpp \
     heat_transfer_layer_base.cpp \
     heat_transfer_layer_parameters.cpp \
-#    heat_transfer_cover.cpp \
-#    heat_transfer_crop.cpp \
-#    heat_transfer_floor.cpp \
-#    heat_transfer_pipe.cpp \
-#    heat_transfer_screen_base.cpp \
-#    heat_transfer_screen1.cpp \
-#    heat_transfer_screen2.cpp \
-#    heat_transfer_screen3.cpp \
-#    heat_transfer_shelter.cpp \
-#    heat_transfer_sky.cpp \
     ig_indoors_humidity.cpp \
     indoors.cpp \
     indoors_co2.cpp \
@@ -177,19 +152,13 @@ SOURCES += \
     intercellular_co2.cpp \
     layer.cpp \
     layer_adjusted.cpp \
-    leaf_par_absorbed.cpp \
-    leaf_photosynthesis.cpp \
-    leaf_photosynthesis_aj.cpp \
-    leaf_respiration.cpp \
-    leaf_temperature.cpp \
-    leaf_transpiration.cpp \
-    leaf_wind_speed.cpp \
     leakage_ventilation.cpp \
     outdoors.cpp \
     outputs.cpp \
     par_budget.cpp  \
     pid_controller.cpp \
     pipe_forced.cpp \
+    plant.cpp \
     screen.cpp \
     screen_combination.cpp \
     sensor.cpp \
@@ -199,7 +168,7 @@ SOURCES += \
     shelter.cpp \
     shelter_face.cpp \
     shelter_face_area.cpp \
-    sky_temperature.cpp \
+    sky.cpp \
     soil_temperature.cpp \
     stomatal_resistance_ball_berry.cpp \
     stomatal_resistance_ball_berry_opti_full.cpp \

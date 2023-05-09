@@ -27,7 +27,7 @@ class Box : public Node
 {
 public:
     Box(QString name, Box *parent);
-    ~Box();
+    virtual ~Box();
     void addPort(Port *port);
 
     Port* peakPort(QString name);

@@ -5,29 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef ACTUATOR_HEAT_PIPE_H
-#define ACTUATOR_HEAT_PIPE_H
+#ifndef HEAT_PIPES_H
+#define HEAT_PIPES_H
 
-#include <QMap>
 #include <base/box.h>
 
 namespace vg {
 
-class ActuatorHeatPipe : public base::Box
-{
+class HeatPipes : public base::Box {
 public:
-    ActuatorHeatPipe(QString name, Box *parent);
+    HeatPipes(QString name, base::Box *parent);
     void reset();
     void update();
 private:
     // Inputs
-    double volume, flowRate, minTemperature, maxTemperature,
-        k, b, propLw,
-        inflowTemperature, indoorsTemperature, groundArea;
+    QVector<double>
+        lwEmissionTopPipes, lwEmissionBottomPipes,
+        convectiveFluxTopPipes, convectiveFluxBottomPipes;
     // Outputs
-    double transitTime,
-        outflowTemperature, temperatureDrop,
-        energyFlux,
+    double
         lwEmissionTop, lwEmissionBottom,
         convectiveFluxTop, convectiveFluxBottom;
 };

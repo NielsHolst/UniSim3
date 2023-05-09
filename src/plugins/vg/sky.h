@@ -5,24 +5,24 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef SKY_TEMPERATURE_H
-#define SKY_TEMPERATURE_H
+#ifndef SKY_H
+#define SKY_H
 
-#include <base/box.h>
+#include "layer_adjusted.h"
 
 namespace vg {
 
-class SkyTemperature : public base::Box
+class Sky : public LayerAdjusted
 {
 public:
-    SkyTemperature(QString name, Box *parent);
+    Sky(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Inputs
-    double slope, intercept, airTemperature, rh;
+    double slope, intercept, airTemperature, rh, Tsky;
     // Output
-    double temperature, emissivity;
+    double temperature, lwEmission;
 };
 } //namespace
 

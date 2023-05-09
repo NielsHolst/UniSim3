@@ -97,6 +97,7 @@ void buildSensor(Box *parent, const Query &q) {
         port("indoorsRhIn").equals(value(q.indoors.rh)).
         port("indoorsCo2In").equals(value(q.indoors.co2)).
         port("indoorsWindspeedIn").equals(-999.).
+        port("indoorsLightIntensityIn").equals(value(q.indoors.lightIntensity)).
         port("outdoorsTemperatureIn").equals(value(q.outdoors.temperature)).
         port("outdoorsRhIn").equals(value(q.outdoors.rh)).
         port("outdoorsCo2In").equals(value(q.outdoors.co2)).
@@ -161,13 +162,17 @@ void buildScreen(BoxBuilder &builder, QString className, const Screen *screen) {
 QString toString(ScreenPosition pos) {
     static QMap<ScreenPosition, QString> lookup =
     {
-        {ScreenPosition::Roof1, "roof1"},
-        {ScreenPosition::Roof2, "roof2"},
-        {ScreenPosition::Side1, "side1"},
-        {ScreenPosition::Side2, "side2"},
-        {ScreenPosition::End1,  "end1"},
-        {ScreenPosition::End2,  "end2"}
+        {ScreenPosition::Roof1,    "roof1"},
+        {ScreenPosition::Roof2,    "roof2"},
+        {ScreenPosition::Side1,    "side1"},
+        {ScreenPosition::Side2,    "side2"},
+        {ScreenPosition::End1,     "end1"},
+        {ScreenPosition::End2,     "end2"}
     };
+    if (pos == ScreenPosition::FlatRoof)
+        ThrowException("Unexpected position").value("ScreenPosition::FlatRoof");
+    if (pos == ScreenPosition::WholeRoof)
+        ThrowException("Unexpected position").value("ScreenPosition::WholeRoof");
     return lookup.value(pos);
 }
 
@@ -176,6 +181,10 @@ void buildShelterFace(BoxBuilder &builder, ScreenPosition pos, const Query &q) {
 
     CoverMaterial cover;
     switch (pos) {
+    case FlatRoof:
+        ThrowException("Unexpected position").value("ScreenPosition::FlatRoof"); break;
+    case WholeRoof:
+        ThrowException("Unexpected position").value("ScreenPosition::WholeRoof"); break;
     case Roof1:
         cover = q.construction.roof1; break;
     case Roof2:
@@ -198,7 +207,14 @@ void buildShelterFace(BoxBuilder &builder, ScreenPosition pos, const Query &q) {
     };
     for (int i=0; i<q.screens.size; ++i) {
         const Screen *screen = &(q.screens.array[i]);
-        if (screen->position == pos)
+        bool isScreenAtMyPosition =
+            (screen->position == pos)
+            ||
+            ( (screen->position == ig::ScreenPosition::FlatRoof || screen->position == ig::ScreenPosition::WholeRoof)
+              &&
+              (pos == ig::ScreenPosition::Roof1 || pos == ig::ScreenPosition::Roof2)
+            );
+        if (isScreenAtMyPosition)
             myScreens[screen->layer] = screen;
     }
 
@@ -442,13 +458,6 @@ void buildParBudget(Box *parent) {
     endbox();
 }
 
-void buildSetpoints(Box *parent) {
-    BoxBuilder builder(parent);
-    builder.
-    box().name("setpoints").
-        aux("maxValue").equals(1.).
-    endbox();
-}
 
 Box* build(const Query &q) {
     // Delete current model
@@ -557,7 +566,7 @@ Response compute(const Query &q) {
         r.timeStamp          = q.timeStamp;
         r.indoorsPar         = snap( root->findOne<Box*>("parBudget")->port("indoorsTotalPar")->value<double>() );
         r.sunPar             = snap( root->findOne<Box*>("parBudget")->port("indoorsSunPar")->value<double>() );
-        r.growthLightPar     = snap( root->findOne<Box*>("parBudget")->port("indoorsGrowthLightsPar")->value<double>() );
+        r.growthLightPar     = snap( root->findOne<Box*>("parBudget")->port("indoorsGrowthLightPar")->value<double>() );
         r.growthLightPowerUse = snap( growthLightPower(q) );
         r.heatingPowerUse    = snap( root->findOne<Box*>("actuators/heating")->port("energyFluxTotal")->value<double>() )/cropCoverage;
         r.leafTemperature    = snap( root->findOne<Box*>("crop/temperature")->port("value")->value<double>() );

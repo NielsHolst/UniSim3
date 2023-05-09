@@ -31,6 +31,9 @@ protected:
     void checkOutputs();
     void checkOutput(QString name, double value);
     void checkOutputSum(QString name, double value);
+    // Friends
+    friend class Budget;
+    friend class BudgetLayer;
 };
 
 } //namespace

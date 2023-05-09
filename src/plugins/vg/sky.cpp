@@ -7,41 +7,49 @@
 */
 #include <base/phys_math.h>
 #include <base/publish.h>
-#include "sky_temperature.h"
+#include "sky.h"
 
 using namespace base;
 using namespace phys_math;
 
 namespace vg {
 	
-PUBLISH(SkyTemperature)
+PUBLISH(Sky)
 
-SkyTemperature::SkyTemperature(QString name, Box *parent)
-	: Box(name, parent)
+Sky::Sky(QString name, Box *parent)
+    : Box(name, parent),
+      LayerAdjusted(name, parent)
 {
     help("computes sky temperature from temperature and RH");
+    QString maybeTsky = "if exists(outdoors[Tsky]) then outdoors[Tsky] else -273.0";
+
     Input(intercept).equals(0.732).help("Emissivity intercept on dew point temperature").unit("[0;1]");
     Input(slope).equals(0.00635).help("Emissivity slope on dew point temperature").unit("/K");
     Input(airTemperature).imports("outdoors[temperature]",CA).unit("oC");
     Input(rh).imports("outdoors[rh]",CA).unit("[0;100]");
+    Input(Tsky).computes(maybeTsky).unit("oC").help("Sky temperature taken from records otherwise computed");
     Output(temperature).help("Sky temperature").unit("oC");
-    Output(emissivity).help("Sky emmisivity").unit("[0;1]");
 }
 
-void SkyTemperature::reset() {
-    airTemperature = 0.;
-    rh = 60.;
+void Sky::reset() {
     update();
 }
 
-void SkyTemperature::update() {
-    double dewTemp = Tdew(airTemperature, rh);
-    emissivity = intercept + slope*dewTemp;
-    if (emissivity>1) emissivity = 1;
-    temperature = pow(emissivity*p4(dewTemp+T0), 0.25) - T0;
-//    QString s("%1 \n%2 \n%3 \n%4 \n%5 \n%6 \n%7");
-//    s = s.arg(intercept).arg(slope).arg(airTemperature).arg(rh).arg(temperature).arg(emissivity).arg(dewTemp);
-//    dialog().information("\nSkyTemperature::update()\n" + s);
+void Sky::update() {
+    double dewTemp = Tdew(airTemperature, rh),
+           emissivity = std::min(intercept + slope*dewTemp, 1.0);
+    temperature = (Tsky > -273.) ? Tsky : pow(emissivity*p4K(dewTemp), 0.25) - T0;
+    lwEmission = Sigma*emissivity*p4K(temperature);
+
+    swAbsorptivityTopAdj =
+    lwAbsorptivityTopAdj =
+    swAbsorptivityBottomAdj =
+    lwAbsorptivityBottomAdj = emissivity;
+    swReflectivityTopAdj =
+    lwReflectivityTopAdj =
+    swReflectivityBottomAdj =
+    lwReflectivityBottomAdj = 1. - emissivity;
+    checkOutputs();
 }
 
 } //namespace
@@ -49,7 +57,7 @@ void SkyTemperature::update() {
 /*
 'Chen1'
 B. Chen, J. Maloney, D. Clark, W. N. Mei & J. Kasher (?)
-%Measuerements of night sky emissivity in determining radiant cooling from
+%Measurements of night sky emissivity in determining radiant cooling from
 cool storage roofs and roof ponds.
 University of Nebraska at Omaha, Engineering 236, Omaha, Nebraska 68182
 eSky=0.736+0.00577*Tdew

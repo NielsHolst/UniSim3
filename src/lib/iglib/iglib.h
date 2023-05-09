@@ -1,4 +1,4 @@
-// Version 3.0.2 == 3.0.4
+// Version 3.0.7 [breaking 3.0.6]
 // To use with iglib.dll, remember to define IGLIB_DLL as follows:
 // #define IGLIB_DLL dllimport
 
@@ -153,7 +153,7 @@ struct ScreenMaterial {
 };
 
 enum ScreenLayer {Outer, Mid, Inner};
-enum ScreenPosition {Roof1, Roof2, Side1, Side2, End1, End2};
+enum ScreenPosition {FlatRoof, WholeRoof, Roof1, Roof2, Side1, Side2, End1, End2};
 
 struct Screen {
     ScreenMaterial material;
