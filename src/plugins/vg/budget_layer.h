@@ -16,15 +16,14 @@ class LayerAdjusted ;
 class BudgetLayer : public base::Box {
 public:
     BudgetLayer(QString name, base::Box *parent);
-    ~BudgetLayer();
     void attach(const LayerAdjusted *layer);
     void reset();
     void update();
-    void updateLwEmission();
-    void transferEmissionsToFlows();
+    virtual void updateLwEmission();
 private:
     // Inputs
-    bool updateLwFromTemperature;
+    double
+        initTemperature;
     // Outputs
     double
         temperature,
@@ -45,17 +44,8 @@ private:
 
     // Data
     const LayerAdjusted *attachedLayer;
-
-    struct Parameters {
-        const double &a, &r, &t, &a_, &r_, &t_;
-    };
-    const Parameters *psw, *plw, &sw, &lw;
-
-    struct State {
-        double &E, &E_, &F, &F_, &A, &A_;
-    };
-    State swS, lwS, parS;
-
+    const double *emissivityTop, *emissivityBottom;
+    bool lwEmissionTopUpdatedExternally, lwEmissionBottomUpdatedExternally;
     // Friends
     friend class Budget;
 };

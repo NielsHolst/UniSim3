@@ -22,6 +22,9 @@ PUBLISH(Budget)
 Budget::Budget(QString name, base::Box *parent)
     : Box(name, parent)
 {
+    help("resolves energy and water budgets across layers and volumes");
+    Input(precision).equals(1e-3).unit("W/m2|mumol/m2/s").help("Precision of numerical solution");
+    Output(iterations).unit("int").help("Number of iterations taken to reach solution");
 }
 
 void Budget::amend() {
@@ -38,9 +41,8 @@ void Budget::amend() {
     BoxBuilder builder(this);
     builder.
         box("BudgetLayer").name("sky").
-            port("updateLwFromTemperature").equals(false).
+            port("temperature").imports("/sky[temperature]").
             port("swEmissionBottom").imports("outdoors[radiation]").
-            port("lwEmissionBottom").imports("/sky[lwEmission]").
             port("parEmissionBottom").imports("outdoors[par]").
         endbox().
         box("BudgetLayer").name("cover").
@@ -55,7 +57,6 @@ void Budget::amend() {
     if (lights.size() > 0) {
         builder.
             box("BudgetLayer").name("growthLights").
-                port("updateLwFromTemperature").equals(false).
                 port("swEmissionBottom").imports("actuators/growthLights[swEmissionBottom]").
                 port("lwEmissionBottom").imports("actuators/growthLights[lwEmissionBottom]").
                 port("lwEmissionTop").imports("actuators/growthLights[lwEmissionTop]").
@@ -65,15 +66,17 @@ void Budget::amend() {
     if (heatPipes.size() > 0) {
         builder.
             box("BudgetLayer").name("heatPipes").
-                port("updateLwFromTemperature").equals(false).
-                port("lwEmissionBottom").imports("actuators/growthLights[lwEmissionBottom]").
-                port("lwEmissionTop").imports("actuators/growthLights[lwEmissionTop]").
-                port("convectiveFlux").imports("actuators/growthLights[convectiveFlux]").
+                port("lwEmissionTop")   .imports("actuators/heatPipes[lwEmissionTop]").
+                port("lwEmissionBottom").imports("actuators/heatPipes[lwEmissionBottom]").
+                port("convectiveFluxTop")   .imports("actuators/heatPipes[convectiveFluxBottom]").
+                port("convectiveFluxBottom").imports("actuators/heatPipes[convectiveFluxBottom]").
             endbox();
     }
     if (plant) {
         builder.
             box("BudgetLayer").name("plant").
+                port("initTemperature").imports("/plant[temperature]").
+                port("temperature").imports("/plant[temperature]").
             endbox();
     }
     builder.
@@ -111,19 +114,19 @@ void Budget::amend() {
 
     // Set pointers to parameters and states
     for (BudgetLayer *layer : layers) {
-        swPar.a   << &layer->attachedLayer->swAbsorptivityTopAdj;
-        swPar.a_  << &layer->attachedLayer->swAbsorptivityBottomAdj;
-        swPar.r   << &layer->attachedLayer->swReflectivityTopAdj;
-        swPar.r_  << &layer->attachedLayer->swReflectivityBottomAdj;
-        swPar.t   << &layer->attachedLayer->swTransmissivityTopAdj;
-        swPar.t_  << &layer->attachedLayer->swTransmissivityBottomAdj;
+        swParam.a   << &layer->attachedLayer->swAbsorptivityTopAdj;
+        swParam.a_  << &layer->attachedLayer->swAbsorptivityBottomAdj;
+        swParam.r   << &layer->attachedLayer->swReflectivityTopAdj;
+        swParam.r_  << &layer->attachedLayer->swReflectivityBottomAdj;
+        swParam.t   << &layer->attachedLayer->swTransmissivityTopAdj;
+        swParam.t_  << &layer->attachedLayer->swTransmissivityBottomAdj;
 
-        lwPar.a   << &layer->attachedLayer->lwAbsorptivityTopAdj;
-        lwPar.a_  << &layer->attachedLayer->lwAbsorptivityBottomAdj;
-        lwPar.r   << &layer->attachedLayer->lwReflectivityTopAdj;
-        lwPar.r_  << &layer->attachedLayer->lwReflectivityBottomAdj;
-        lwPar.t   << &layer->attachedLayer->lwTransmissivityTopAdj;
-        lwPar.t_  << &layer->attachedLayer->lwTransmissivityBottomAdj;
+        lwParam.a   << &layer->attachedLayer->lwAbsorptivityTopAdj;
+        lwParam.a_  << &layer->attachedLayer->lwAbsorptivityBottomAdj;
+        lwParam.r   << &layer->attachedLayer->lwReflectivityTopAdj;
+        lwParam.r_  << &layer->attachedLayer->lwReflectivityBottomAdj;
+        lwParam.t   << &layer->attachedLayer->lwTransmissivityTopAdj;
+        lwParam.t_  << &layer->attachedLayer->lwTransmissivityBottomAdj;
 
         swState.E  << &layer->swEmissionBottom;
         swState.E_ << &layer->swEmissionTop;
@@ -148,12 +151,15 @@ void Budget::amend() {
     }
 }
 
+void Budget::reset() {
+    update();
+}
+
 void Budget::update() {
-    updateLwEmission();
     transferEmissionsToFlows();
-    distributeRadiation(swState,  swPar);
-    distributeRadiation(lwState,  lwPar);
-    distributeRadiation(parState, swPar);
+    distributeRadiation(parState, swParam);
+    distributeRadiation(swState,  swParam);
+    distributeRadiation(lwState,  lwParam);
 }
 
 void Budget::updateLwEmission() {
@@ -162,8 +168,15 @@ void Budget::updateLwEmission() {
 }
 
 void Budget::transferEmissionsToFlows() {
-    for (BudgetLayer *layer : layers)
-        layer->transferEmissionsToFlows();
+    int n = swState.E.size();
+    for (int i=0; i<n; ++i) {
+        swState.F[i]   = *swState.E.at(i);
+        swState.F_[i]  = *swState.E_.at(i);
+        lwState.F[i]   = *lwState.E.at(i);
+        lwState.F_[i]  = *lwState.E_.at(i);
+        parState.F[i]  = *parState.E.at(i);
+        parState.F_[i] = *parState.E_.at(i);
+    }
 }
 
 void Budget::distributeRadDown(State &s, const Parameters &p) {
@@ -171,18 +184,18 @@ void Budget::distributeRadDown(State &s, const Parameters &p) {
     for (int i=0; i<n-1; ++i) {
         int j = i+1;
         const double
-                &cur_a_(*p.a_.at(i)),
-                &cur_r_(*p.r_.at(i)),
-                &cur_t_(*p.t_.at(i)),
-                &nxt_a (*p.a.at(j)),
-                &nxt_r (*p.r.at(j)),
-                &nxt_t (*p.t.at(j)),
-                &cur_F (s.F[i]);
+            &cur_a_(*p.a_.at(i)),
+            &cur_r_(*p.r_.at(i)),
+            &cur_t_(*p.t_.at(i)),
+            &nxt_a (*p.a.at(j)),
+            &nxt_r (*p.r.at(j)),
+            &nxt_t (*p.t.at(j)),
+            &cur_F (s.F[i]);
         double
-                &cur_A_(s.A_[i]),
-                &cur_F_(s.F_[i]),
-                &nxt_F (s.F[j]),
-                &nxt_A (s.A[j]);
+            &cur_A_(s.A_[i]),
+            &cur_F_(s.F_[i]),
+            &nxt_F (s.F[j]),
+            &nxt_A (s.A[j]);
         // Correct absorption and transmission of this layer and layer below
         // for reflections ad infinitum between the two layers
         double
@@ -215,18 +228,18 @@ void Budget::distributeRadUp(State &s, const Parameters &p) {
     for (int i=n-1; i>0; --i) {
         int j = i-1;
         const double
-                &cur_a(*p.a.at(i)),
-                &cur_r(*p.r.at(i)),
-                &cur_t(*p.t.at(i)),
-                &nxt_a_(*p.a_.at(j)),
-                &nxt_r_(*p.r_.at(j)),
-                &nxt_t_ (*p.t_.at(j)),
-                &cur_F_ (s.F_[i]);
+            &cur_a(*p.a.at(i)),
+            &cur_r(*p.r.at(i)),
+            &cur_t(*p.t.at(i)),
+            &nxt_a_(*p.a_.at(j)),
+            &nxt_r_(*p.r_.at(j)),
+            &nxt_t_ (*p.t_.at(j)),
+            &cur_F_ (s.F_[i]);
         double
-                &cur_A (s.A[i]),
-                &cur_F (s.F[i]),
-                &nxt_F_(s.F_[j]),
-                &nxt_A_(s.A_[j]);
+            &cur_A (s.A[i]),
+            &cur_F (s.F[i]),
+            &nxt_F_(s.F_[j]),
+            &nxt_A_(s.A_[j]);
         // Correct absorption and transmission of this layer and layer above
         // for reflections ad infinitum between the two layers
         double
@@ -255,7 +268,6 @@ void Budget::distributeRadUp(State &s, const Parameters &p) {
 }
 
 void Budget::distributeRadiation(State &s, const Parameters &p) {
-    const double precision = 1e-3;
     iterations = 0;
     double residual;
 //    transferEmission();
