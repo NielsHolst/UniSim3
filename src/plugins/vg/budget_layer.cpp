@@ -8,6 +8,7 @@
 #include <base/phys_math.h>
 #include <base/publish.h>
 #include "budget_layer.h"
+#include "budget_volume.h"
 #include "layer_adjusted.h"
 
 using namespace base;
@@ -21,6 +22,7 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     : Box(name, parent)
 {
     Input(initTemperature).equals(20.).unit("oC").help("Initial temperature");
+    Input(timeStep).imports("calendar[timeStepSecs]");
     Output(temperature);
     Output(swEmissionTop);
     Output(swEmissionBottom);
@@ -40,25 +42,51 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(parFlowBottom);
     Output(parAbsorbedTop);
     Output(parAbsorbedBottom);
-    Output(convectiveFluxTop);
-    Output(convectiveFluxBottom);
+    Output(convectionTop);
+    Output(convectionBottom);
+    Output(deltaTemperature).unit("oC").help("Change in temperature");
 }
 
-void BudgetLayer::attach(const LayerAdjusted *layer)
+void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom)
 {
+    // Attach layer parameters
     attachedLayer = layer;
-    emissivityTop = &attachedLayer->lwAbsorptivityTopAdj;
+    emissivityTop    = &attachedLayer->lwAbsorptivityTopAdj;
     emissivityBottom = &attachedLayer->lwAbsorptivityBottomAdj;
+    heatCapacity     = &attachedLayer->heatCapacityAdj;
+    // Attach volumes
+    volumeTop = top;
+    volumeBottom = bottom;
+    if (top)
+        top->addLayer(this);
+    if (bottom)
+        bottom->addLayer(this);
 }
 
 void BudgetLayer::reset() {
-    lwEmissionTopUpdatedExternally = (port("lwEmissionTop")->status() == PortStatus::Redefined);
+    temperature = initTemperature;
+    lwEmissionTopUpdatedExternally    = (port("lwEmissionTop")->status()    == PortStatus::Redefined);
     lwEmissionBottomUpdatedExternally = (port("lwEmissionBottom")->status() == PortStatus::Redefined);
+    convectionTopUpdatedExternally    = (port("convectionTop")->status()    == PortStatus::Redefined);
+    convectionBottomUpdatedExternally = (port("convectionBottom")->status() == PortStatus::Redefined);
     update();
 }
 
 void BudgetLayer::update() {
     updateLwEmission();
+}
+
+double BudgetLayer::deltaT() {
+    if (*heatCapacity > 0.) {
+        const double netAbsorbed = swAbsorbedTop + swAbsorbedBottom +
+                lwAbsorbedTop + lwAbsorbedBottom -
+                lwEmissionTop - lwEmissionBottom +
+                convectionTop + convectionBottom;
+        return deltaTemperature = netAbsorbed*timeStep/(*heatCapacity);
+    }
+    else {
+        return deltaTemperature = 0.;
+    }
 }
 
 void BudgetLayer::updateLwEmission() {

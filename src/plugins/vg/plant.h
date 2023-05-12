@@ -33,15 +33,17 @@ private:
 
         timeStep,
         indoorsTemperature, indoorsRh, indoorsCo2,
-        absorbedTop, absorbedBottom,
+        swAbsorbedTop, swAbsorbedBottom,
+        lwAbsorbedTop, lwAbsorbedBottom,
         parAbsorbedTop, parAbsorbedBottom;
     // Output
     double temperature, transpiration,
         leafAm, leafAc, leafAj, leafRd,
         Pn, Rd;
     // Data
-    double _rhoh, _vp, _svp, _svpSlope, _ri,
-        incidentPar_, VcmaxAdj_, JmaxAdj_;
+    double rhoh_, vp_, svp_, svpSlope_, ri_,
+        absorbedTotal_, incidentPar_,
+        VcmaxAdj_, JmaxAdj_;
 
     // Methods
     void updateRadiative();

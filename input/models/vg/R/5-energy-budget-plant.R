@@ -77,6 +77,17 @@ Tplant = function(Arad, rh, Tin=25, ri=9.5, re=200) {
   Tin + a/b
 }
 
+Arad=0
+ri=10
+re=200
+lai=1
+Lai=1
+
+Tin = 20
+rh = 70
+vp(rh, Tin)
+svp(Tin)
+
 transpiration = function(Arad, rh, Tin=25) {
   co2 = 900
   re = 218

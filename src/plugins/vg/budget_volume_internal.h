@@ -5,26 +5,21 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef SKY_H
-#define SKY_H
-
-#include "layer_adjusted.h"
+#ifndef BUDGET_VOLUME_INTERNAL_H
+#define BUDGET_VOLUME_INTERNAL_H
+#include "budget_volume.h"
 
 namespace vg {
 
-class Sky : public LayerAdjusted
-{
+class BudgetVolumeInternal : public BudgetVolume {
 public:
-    Sky(QString name, Box *parent);
-    void reset();
+    BudgetVolumeInternal(QString name, base::Box *parent);
     void update();
 private:
-    // Inputs
-    double slope, intercept, airTemperature, rh, Tsky;
-    // Output
-    double temperature;
+    // Friends
+    friend class Budget;
 };
-} //namespace
 
+}
 
 #endif

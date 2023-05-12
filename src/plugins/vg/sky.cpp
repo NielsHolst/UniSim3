@@ -39,7 +39,6 @@ void Sky::update() {
     double dewTemp = Tdew(airTemperature, rh),
            emissivity = std::min(intercept + slope*dewTemp, 1.0);
     temperature = (Tsky > -273.) ? Tsky : pow(emissivity*p4K(dewTemp), 0.25) - T0;
-    lwEmission = Sigma*emissivity*p4K(temperature);
 
     swAbsorptivityTopAdj =
     lwAbsorptivityTopAdj =

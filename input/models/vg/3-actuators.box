@@ -7,7 +7,7 @@ Simulation sim {
     .longitude = 10.4
     .begin = global[beginDate] - 1
     .end   = 2022/08/02
-    .timeStep = 15
+    .timeStep = 1
     .timeUnit = "m"
   }
   vg::Outdoors outdoors{
@@ -20,27 +20,6 @@ Simulation sim {
     }
   }
   Sky sky {
-  }
-  Floor floor {
-    .swReflectivityTop      = 0.4
-    .swTransmissivityTop    = 0.0
-    .swAbsorptivityTop      = 0.6
-    
-    .swReflectivityBottom   = 0.4
-    .swTransmissivityBottom = 0.0
-    .swAbsorptivityBottom   = 0.6
-    
-    .lwReflectivityTop      = 0.4
-    .lwTransmissivityTop    = 0.0
-    .lwAbsorptivityTop      = 0.6
-    
-    .lwReflectivityBottom   = 0.4
-    .lwTransmissivityBottom = 0.0
-    .lwAbsorptivityBottom   = 0.6
-    
-    .Utop                   = 1.2
-    .Ubottom                = 0.1
-    .heatCapacity           = 42000
   }
   Box construction{
     vg::Geometry geometry{
@@ -633,6 +612,19 @@ Simulation sim {
   }
   vg::Plant plant {
   }
+  Floor floor {
+    .swReflectivityTop      = 0.4
+    .swTransmissivityTop    = 0.0
+    .swAbsorptivityTop      = 0.6
+        
+    .lwReflectivityTop      = 0.4
+    .lwTransmissivityTop    = 0.0
+    .lwAbsorptivityTop      = 0.6
+    
+    .Utop                   = 1.2
+    .Ubottom                = 0.1
+    .heatCapacity           = 42000
+  }tt
   Budget budget {
   }
   OutputR output {
@@ -640,7 +632,10 @@ Simulation sim {
     PageR {
       .xAxis = calendar[dateTime]
       PlotR {
-        .ports = controllers/screens/*[signal] | actuators/growthLights/bank1[parEmissionBottom] | bank1/setting[signal]
+        .ports = budget/*[temperature] 
+      }
+      PlotR {
+        .ports = budget/*[deltaTemperature] 
       }
     }
     OutputSelector {

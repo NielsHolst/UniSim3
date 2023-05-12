@@ -5,6 +5,7 @@
 namespace vg {
 
 class BudgetLayer;
+class BudgetVolume;
 class Sky;
 class LayerAdjusted;
 class AverageCover;
@@ -18,8 +19,11 @@ private:
     double precision;
     // Output
     int iterations;
-    // Data
+    // Volumes
+    BudgetVolume *outdoorsVol, *indoorsVol, *soilVol;
+    // Layers
     QVector<BudgetLayer*> layers;
+    int numLayers;
     Sky *sky;
     AverageCover *cover;
     QVector<AverageScreen*> screens;
@@ -27,28 +31,35 @@ private:
                   heatPipes;
     Plant *plant;
     Floor *floor;
-
+    // State
     struct State {
-        QVector<double *> E, E_;
-        QVector<double  > F, F_, A, A_;
+        QVector<double *> E, E_, F, F_, A, A_;
+        void init();
     };
+    State swState, lwState, parState;
+    // Parameters
     struct Parameters {
         QVector<const double *> a, a_, r, r_, t, t_;
     };
-
-    State swState, lwState, parState;
     Parameters swParam, lwParam;
-
+    // Data
+    QVector<double> deltaT;
+    // Methods
+    void addVolumes();
+    void addLayers();
+    void addState();
+    void addParameters();
 public:
     Budget(QString name, base::Box *parent);
     void amend();
     void reset();
     void update();
     void updateLwEmission();
-    void transferEmissionsToFlows();
+    void resetState();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);
+    void updateDeltaT();
 };
 
 }

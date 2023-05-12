@@ -52,8 +52,10 @@ Plant::Plant(QString name, Box *parent)
     Input(indoorsTemperature).imports("indoors[temperature]");
     Input(indoorsRh).imports("indoors[rh]");
     Input(indoorsCo2).imports("indoors[co2]");
-    Input(absorbedTop).imports("budget/plant[absorbedTop]");
-    Input(absorbedBottom).imports("budget/plant[absorbedBottom]");
+    Input(swAbsorbedTop).imports("budget/plant[swAbsorbedTop]");
+    Input(swAbsorbedBottom).imports("budget/plant[swAbsorbedBottom]");
+    Input(lwAbsorbedTop).imports("budget/plant[lwAbsorbedTop]");
+    Input(lwAbsorbedBottom).imports("budget/plant[lwAbsorbedBottom]");
     Input(parAbsorbedTop).imports("budget/plant[parAbsorbedTop]");
     Input(parAbsorbedBottom).imports("budget/plant[parAbsorbedBottom]");
 
@@ -68,21 +70,23 @@ Plant::Plant(QString name, Box *parent)
 }
 
 void Plant::reset() {
-    _rhoh = (1 - sqrt(1-sigma))/(1 + sqrt(1-sigma));
+    rhoh_ = (1 - sqrt(1-sigma))/(1 + sqrt(1-sigma));
+    updateRadiative();
     update();
 }
 
 void Plant::update() {
-    _svp         = svp(indoorsTemperature);
-    _vp          = vpFromRh(indoorsTemperature, indoorsRh);
-    _svpSlope    = svpSlope(indoorsTemperature);
-    _ri          = ri();
-    incidentPar_ = (parAbsorbedTop + parAbsorbedBottom)/lai/swAbsorptivityTopAdj/timeStep;
-    updateRadiative();
+    svp_         = svp(indoorsTemperature);
+    vp_          = vpFromRh(indoorsTemperature, indoorsRh);
+    svpSlope_    = svpSlope(indoorsTemperature);
+    ri_          = ri();
+    absorbedTotal_ = swAbsorbedTop + swAbsorbedBottom + lwAbsorbedTop + lwAbsorbedBottom;
+    incidentPar_   = (parAbsorbedTop + parAbsorbedBottom)/lai/swAbsorptivityTopAdj/timeStep;
     updateTemperature();
     updateTranspiration();
     updateLeafPhotosynthesis();
     updateCanopyPhotosynthesis();
+    updateRadiative();
 }
 
 void Plant::updateRadiative() {
@@ -105,17 +109,15 @@ void Plant::updateRadiative() {
 
 void Plant::updateTemperature() {
     double
-        Arad = absorbedTop + absorbedBottom,
-        a = (_ri+re)/2./lai/RhoAir/CpAir*Arad - 1./Psychr*(_svp - _vp),
-        b = 1. + _svpSlope/Psychr + _ri/re;
-    temperature = a/b;
+        a = (ri_+re)/2./lai/RhoAir/CpAir*absorbedTotal_ - 1./Psychr*(svp_ - vp_),
+        b = 1. + svpSlope_/Psychr + ri_/re;
+    temperature = indoorsTemperature + a/b;
 }
 
 void Plant::updateTranspiration() {
     double
-        Arad = absorbedTop + absorbedBottom,
-        a = _svpSlope/Psychr*Arad + 2.*lai*RhoAir*CpAir/Psychr/re*(_svp - _vp),
-        b = LHe*(1. + _svpSlope/Psychr + _ri/re);
+        a = svpSlope_/Psychr*absorbedTotal_ + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
+        b = LHe*(1. + svpSlope_/Psychr + ri_/re);
     transpiration = a/b;
 }
 
@@ -125,7 +127,7 @@ void Plant::updateLeafPhotosynthesis() {
     JmaxAdj_  = Jmax *TJmax();
 
     double
-        &GS(_ri),
+        &GS(ri_),
         &GB(re),
         // Added: Total conductance
         GT = GS*GB/(GS + GB),
@@ -170,7 +172,7 @@ double Plant::ri() const {
 }
 
 double Plant::reflectivity(double k) const {
-    return (exp(-k*lai) - exp(k*lai)) / (_rhoh*exp(-k*lai) - exp(k*lai)/_rhoh);
+    return (exp(-k*lai) - exp(k*lai)) / (rhoh_*exp(-k*lai) - exp(k*lai)/rhoh_);
 }
 
 double Plant::absorptivity(double k) const {

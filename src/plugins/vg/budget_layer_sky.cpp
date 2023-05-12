@@ -5,26 +5,26 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef SKY_H
-#define SKY_H
+#include <base/phys_math.h>
+#include <base/publish.h>
+#include "budget_layer_sky.h"
 
-#include "layer_adjusted.h"
+using namespace base;
+using namespace phys_math;
 
 namespace vg {
 
-class Sky : public LayerAdjusted
+PUBLISH(BudgetLayerSky)
+
+BudgetLayerSky::BudgetLayerSky(QString name, base::Box *parent)
+    : BudgetLayer(name, parent)
 {
-public:
-    Sky(QString name, Box *parent);
-    void reset();
-    void update();
-private:
-    // Inputs
-    double slope, intercept, airTemperature, rh, Tsky;
-    // Output
-    double temperature;
-};
-} //namespace
+}
 
+void BudgetLayerSky::updateLwEmission() {
+    lwEmissionTop    = 0.;
+    lwEmissionBottom = Sigma*(*emissivityTop)*p4K(temperature);
+}
 
-#endif
+}
+

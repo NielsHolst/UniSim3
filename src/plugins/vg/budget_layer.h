@@ -11,25 +11,25 @@
 
 namespace vg {
 
-class LayerAdjusted ;
+class BudgetVolume;
+class LayerAdjusted;
 
 class BudgetLayer : public base::Box {
 public:
     BudgetLayer(QString name, base::Box *parent);
-    void attach(const LayerAdjusted *layer);
-    void reset();
-    void update();
+    void attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom);
+    void reset() final;
+    void update() final;
+    double deltaT();
     virtual void updateLwEmission();
 private:
     // Inputs
     double
-        initTemperature;
+        initTemperature, timeStep;
     // Outputs
     double
-        temperature,
-
         swEmissionTop, swEmissionBottom,
-        lwEmissionTop, lwEmissionBottom,
+        // (lw is protected)
         parEmissionTop, parEmissionBottom,
 
         swFlowTop, swFlowBottom,
@@ -40,12 +40,20 @@ private:
         lwAbsorbedTop, lwAbsorbedBottom,
         parAbsorbedTop, parAbsorbedBottom,
 
-        convectiveFluxTop, convectiveFluxBottom;
-
+        convectionTop, convectionBottom,
+        deltaTemperature;
+protected:
+    // Outputs
+    double temperature, lwEmissionTop, lwEmissionBottom;
+    // Data
+    const double *emissivityTop, *emissivityBottom, *heatCapacity;
+private:
     // Data
     const LayerAdjusted *attachedLayer;
-    const double *emissivityTop, *emissivityBottom;
-    bool lwEmissionTopUpdatedExternally, lwEmissionBottomUpdatedExternally;
+    const BudgetVolume *volumeTop, *volumeBottom;
+    bool
+        lwEmissionTopUpdatedExternally, lwEmissionBottomUpdatedExternally,
+        convectionTopUpdatedExternally, convectionBottomUpdatedExternally;
     // Friends
     friend class Budget;
 };

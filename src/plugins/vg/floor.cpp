@@ -48,6 +48,8 @@ void Floor::reset() {
 }
 
 void Floor::update() {
+    // Nothing to do
+    // Needed as a final override of update()
 }
 
 } //namespace
