@@ -1,5 +1,5 @@
 Simulation sim {
-  // .steps = 700
+  .steps = 960
   Box global {
     &beginDate = 2022/08/01
   }
@@ -478,8 +478,7 @@ Simulation sim {
       }
     }
     Sum ventilation {
-      .values = controller/heating[value] | 
-                setpoints/ventilation/baseOffset[value] | 
+      .values = setpoints/ventilation/baseOffset[value] | 
                 ./humidityOffset[value]
       ProportionalSignal humidityOffset {
         .input         = indoors[rh]
@@ -596,6 +595,9 @@ Simulation sim {
         .indoorsTemperature = 20.0
       }
     }
+    Box ventilation {
+      &value = controllers/ventilation[value]
+    }
     ActuatorChalk chalk {
       .state = controllers/chalk[value]
       .swReflectivity = 0.2
@@ -603,8 +605,6 @@ Simulation sim {
     }
   }
   Box indoors {
-    &temperature = 20.0
-    &rh = 70.0
     &co2 = 600.0
   }
   vg::Plant plant {
@@ -646,7 +646,9 @@ Simulation sim {
                  budget/screen2[temperature] 
       }
       PlotR {
-        .ports = budget[radIterations] | budget[subSteps] | budget[maxDeltaT] | indoorsVol[temperature]| indoorsVol[heatInflux]
+        .ports = budget[radIterations] | budget[subSteps] | budget[maxDeltaT] | budget[advectionDeltaT] |
+                 indoors[temperature]| indoors[heatInflux] |
+                 actuators/ventilation[value]
       }
     // OutputSelector {
       // .beginDateTime = global[beginDate]

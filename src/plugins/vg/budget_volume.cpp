@@ -17,7 +17,7 @@ BudgetVolume::BudgetVolume(QString name, base::Box *parent)
     : Box(name, parent)
 {
     Input(initTemperature).equals(20.).unit("oC").help("Initial temperature");
-    Input(initRh).equals(20.).unit("%").equals(60.).help("Initial relative humidity");
+    Input(initRh).equals(70.).unit("%").equals(60.).help("Initial relative humidity");
     Output(temperature).unit("oC").help("Temperature");
     Output(rh).unit("%").help("Relative humidity");
     Output(heatInflux).unit("W/m2").help("Total convective/conductive heat influx");

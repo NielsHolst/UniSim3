@@ -32,9 +32,12 @@ Budget::Budget(QString name, base::Box *parent)
     Input(tempPrecision).equals(0.5).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("geometry[averageHeight]");
+    Input(outdoorsTemperature).imports("outdoors[temperature]");
+    Input(ventilation).imports("actuators/ventilation[value]");
     Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step among layers");
+    Output(advectionDeltaT).unit("K").help("Change in indoors temperature caused by ventilation");
 }
 
 void Budget::amend() {
@@ -54,7 +57,7 @@ void Budget::addVolumes() {
             port("initRh").imports("/outdoors[rh]").
             port("rh").imports("/outdoors[rh]").
         endbox().
-        box("BudgetVolumeInternal").name("indoorsVol").
+        box("BudgetVolumeInternal").name("indoors").
             port("initTemperature").equals(20.).
             port("initRh").equals(70).
         endbox().
@@ -65,7 +68,7 @@ void Budget::addVolumes() {
 
     // Find volumes
     volumes << (outdoorsVol = findOne<BudgetVolume*>("./outdoorsVol"));
-    volumes << (indoorsVol  = findOne<BudgetVolume*>("./indoorsVol"));
+    volumes << (indoorsVol  = findOne<BudgetVolume*>("./indoors"));
     volumes << (soilVol     = findOne<BudgetVolume*>("./soilVol"));
 
 
@@ -382,7 +385,8 @@ void Budget::updateDeltaT(double timeStep) {
         if (fabs(deltaT) > fabs(maxDeltaT))
             maxDeltaT = fabs(deltaT);
     }
-    indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity;
+    advectionDeltaT = (outdoorsTemperature - indoorsVol->temperature)*(1. - exp(-ventilation/3600.*timeStep));
+    indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity + advectionDeltaT;
     if (fabs(indoorsDeltaT) > fabs(maxDeltaT))
         maxDeltaT = fabs(indoorsDeltaT);
 }

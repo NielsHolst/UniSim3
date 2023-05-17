@@ -18,10 +18,13 @@ class Floor;
 class Budget : public base::Box {
 private:
     // Input
-    double radPrecision, tempPrecision, timeStep, averageHeight;
+    double
+        radPrecision, tempPrecision,
+        timeStep, averageHeight,
+        ventilation, outdoorsTemperature;
     // Output
     int radIterations, subSteps;
-    double maxDeltaT;
+    double maxDeltaT, advectionDeltaT;
     // Volumes
     QVector<BudgetVolume*> volumes;
     BudgetVolume *outdoorsVol, *indoorsVol, *soilVol;
