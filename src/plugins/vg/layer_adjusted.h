@@ -28,6 +28,7 @@ protected:
         UtopAdj, UbottomAdj,
         heatCapacityAdj;
     // Methods
+    void makeTransparent();
     void checkOutputs();
     void checkOutput(QString name, double value);
     void checkOutputSum(QString name, double value);

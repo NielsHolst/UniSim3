@@ -7,12 +7,14 @@
 */
 #include <base/phys_math.h>
 #include <base/publish.h>
+#include <base/test_num.h>
 #include "budget_layer.h"
 #include "budget_volume.h"
 #include "layer_adjusted.h"
 
 using namespace base;
 using namespace phys_math;
+using TestNum::eqZero;
 
 namespace vg {
 
@@ -22,7 +24,6 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     : Box(name, parent)
 {
     Input(initTemperature).equals(20.).unit("oC").help("Initial temperature");
-    Input(timeStep).imports("calendar[timeStepSecs]");
     Output(temperature);
     Output(swEmissionTop);
     Output(swEmissionBottom);
@@ -44,16 +45,20 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(parAbsorbedBottom);
     Output(convectionTop);
     Output(convectionBottom);
-    Output(deltaTemperature).unit("oC").help("Change in temperature");
+    Output(radiationDeltaT).unit("oC").help("Change in temperature due to net radiation");
+    Output(convectionDeltaT).unit("oC").help("Change in temperature due to net convection/conduction");
+    Output(totalDeltaT).unit("oC").help("Total change in temperature");
 }
 
 void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom)
 {
     // Attach layer parameters
     attachedLayer = layer;
-    emissivityTop    = &attachedLayer->lwAbsorptivityTopAdj;
-    emissivityBottom = &attachedLayer->lwAbsorptivityBottomAdj;
-    heatCapacity     = &attachedLayer->heatCapacityAdj;
+    emissivityTop    = attachedLayer->port("lwAbsorptivityTopAdj")->valuePtr<double>();
+    emissivityBottom = attachedLayer->port("lwAbsorptivityBottomAdj")->valuePtr<double>();
+    UtopAdj          = attachedLayer->port("UtopAdj")->valuePtr<double>();
+    UbottomAdj       = attachedLayer->port("UbottomAdj")->valuePtr<double>();
+    heatCapacity     = attachedLayer->port("heatCapacityAdj")->valuePtr<double>();
     // Attach volumes
     volumeTop = top;
     volumeBottom = bottom;
@@ -61,6 +66,8 @@ void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVo
         top->addLayer(this);
     if (bottom)
         bottom->addLayer(this);
+    temperatureVolumeTop    = top    ? top   ->port("temperature")->valuePtr<double>() : nullptr;
+    temperatureVolumeBottom = bottom ? bottom->port("temperature")->valuePtr<double>() : nullptr;
 }
 
 void BudgetLayer::reset() {
@@ -69,6 +76,10 @@ void BudgetLayer::reset() {
     lwEmissionBottomUpdatedExternally = (port("lwEmissionBottom")->status() == PortStatus::Redefined);
     convectionTopUpdatedExternally    = (port("convectionTop")->status()    == PortStatus::Redefined);
     convectionBottomUpdatedExternally = (port("convectionBottom")->status() == PortStatus::Redefined);
+    if (convectionTopUpdatedExternally && !temperatureVolumeTop)
+        ThrowException("Volume on top is missing").context(this);
+    if (convectionBottomUpdatedExternally && !temperatureVolumeBottom)
+        ThrowException("Volume below is missing").context(this);
     update();
 }
 
@@ -76,17 +87,28 @@ void BudgetLayer::update() {
     updateLwEmission();
 }
 
-double BudgetLayer::deltaT() {
-    if (*heatCapacity > 0.) {
-        const double netAbsorbed = swAbsorbedTop + swAbsorbedBottom +
+double BudgetLayer::updateDeltaT(double timeStep) {
+    if (eqZero(*heatCapacity)) {
+        radiationDeltaT =
+        convectionDeltaT =
+        totalDeltaT = 0.;
+    }
+    else {
+        // Change by radiation
+        const double radAbsorbed = swAbsorbedTop + swAbsorbedBottom +
                 lwAbsorbedTop + lwAbsorbedBottom -
                 lwEmissionTop - lwEmissionBottom +
                 convectionTop + convectionBottom;
-        return deltaTemperature = netAbsorbed*timeStep/(*heatCapacity);
+        radiationDeltaT = radAbsorbed*timeStep/(*heatCapacity);
+
+        // Change by convection
+        const double convAbsorbed = convectionTop + convectionBottom;
+        convectionDeltaT = convAbsorbed*timeStep/(*heatCapacity);
+
+        // Change total
+        totalDeltaT = radiationDeltaT + convectionDeltaT;
     }
-    else {
-        return deltaTemperature = 0.;
-    }
+    return totalDeltaT;
 }
 
 void BudgetLayer::updateLwEmission() {
@@ -94,6 +116,20 @@ void BudgetLayer::updateLwEmission() {
         lwEmissionTop    = Sigma*(*emissivityTop)*p4K(temperature);
     if (!lwEmissionBottomUpdatedExternally)
         lwEmissionBottom = Sigma*(*emissivityBottom)*p4K(temperature);
+}
+
+void BudgetLayer::updateConvection() {
+    // Flux is positive if volume is warmer than layer
+    if (!convectionTopUpdatedExternally) {
+        convectionTop    = eqZero(*UtopAdj) ? 0. : ((*temperatureVolumeTop)    - temperature)/(*UtopAdj);
+        if (volumeTop)
+            volumeTop->addHeatInflux(-convectionTop);
+    }
+    if (!convectionBottomUpdatedExternally) {
+        convectionBottom = eqZero(*UbottomAdj) ? 0. : ((*temperatureVolumeBottom) - temperature)/(*UbottomAdj);
+        if (volumeBottom)
+            volumeBottom->addHeatInflux(-convectionBottom);
+    }
 }
 
 }

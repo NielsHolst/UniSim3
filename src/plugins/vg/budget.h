@@ -10,25 +10,30 @@ class Sky;
 class LayerAdjusted;
 class AverageCover;
 class AverageScreen;
+class GrowthLights;
 class Plant;
+class HeatPipes;
 class Floor;
 
 class Budget : public base::Box {
 private:
     // Input
-    double precision;
+    double radPrecision, tempPrecision, timeStep, averageHeight;
     // Output
-    int iterations;
+    int radIterations, subSteps;
+    double maxDeltaT;
     // Volumes
+    QVector<BudgetVolume*> volumes;
     BudgetVolume *outdoorsVol, *indoorsVol, *soilVol;
+    double indoorsHeatCapacity, indoorsDeltaT;
     // Layers
     QVector<BudgetLayer*> layers;
     int numLayers;
     Sky *sky;
     AverageCover *cover;
     QVector<AverageScreen*> screens;
-    QVector<Box*> lights,
-                  heatPipes;
+    GrowthLights *growthLights;
+    HeatPipes *heatPipes;
     Plant *plant;
     Floor *floor;
     // State
@@ -42,8 +47,6 @@ private:
         QVector<const double *> a, a_, r, r_, t, t_;
     };
     Parameters swParam, lwParam;
-    // Data
-    QVector<double> deltaT;
     // Methods
     void addVolumes();
     void addLayers();
@@ -54,12 +57,16 @@ public:
     void amend();
     void reset();
     void update();
+private:
+    void updateSubStep(double subTimeStep);
     void updateLwEmission();
     void resetState();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);
-    void updateDeltaT();
+    void updateConvection();
+    void updateDeltaT(double timeStep);
+    void applyDeltaT();
 };
 
 }

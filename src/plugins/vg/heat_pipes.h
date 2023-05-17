@@ -8,11 +8,11 @@
 #ifndef HEAT_PIPES_H
 #define HEAT_PIPES_H
 
-#include <base/box.h>
+#include "layer_adjusted.h"
 
 namespace vg {
 
-class HeatPipes : public base::Box {
+class HeatPipes : public LayerAdjusted {
 public:
     HeatPipes(QString name, base::Box *parent);
     void reset();
@@ -21,11 +21,11 @@ private:
     // Inputs
     QVector<double>
         lwEmissionTopPipes, lwEmissionBottomPipes,
-        convectiveFluxTopPipes, convectiveFluxBottomPipes;
+        convectionTopPipes, convectionBottomPipes;
     // Outputs
     double
         lwEmissionTop, lwEmissionBottom,
-        convectiveFluxTop, convectiveFluxBottom;
+        convectionTop, convectionBottom;
 };
 
 } //namespace

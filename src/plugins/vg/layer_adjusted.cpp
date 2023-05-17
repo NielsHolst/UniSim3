@@ -49,6 +49,18 @@ void LayerAdjusted::update() {
     checkOutputs();
 }
 
+void LayerAdjusted::makeTransparent() {
+    swReflectivityTopAdj   = swReflectivityBottomAdj   = 0.;
+    swTransmissivityTopAdj = swTransmissivityBottomAdj = 1.;
+    lwReflectivityTopAdj   = lwReflectivityBottomAdj   = 0.;
+    lwTransmissivityTopAdj = lwTransmissivityBottomAdj = 1.;
+    swAbsorptivityTopAdj   = swAbsorptivityBottomAdj   = 0.;
+    lwAbsorptivityTopAdj   = lwAbsorptivityBottomAdj   = 0.;
+    UtopAdj = UbottomAdj =
+    heatCapacityAdj = 0.;
+
+}
+
 void LayerAdjusted::checkOutputs() {
     CHECK_OUTPUT(swAbsorptivityTopAdj);
     CHECK_OUTPUT(swReflectivityTopAdj);

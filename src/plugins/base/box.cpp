@@ -17,6 +17,9 @@ namespace base {
 std::unique_ptr<Box> Box::_root;
 Box *Box::_latest  = nullptr;
 bool Box::_debugOn = false;
+bool Box::_diagnoseOn = false;
+double Box::_diagnoseMin = std::numeric_limits<double>::lowest();
+double Box::_diagnoseMax = std::numeric_limits<double>::max();
 
 Box::Box(QString name, Box *parent)
     : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _timer(this)
@@ -307,6 +310,18 @@ void Box::verifyPorts() {
         for (Port *port : _portsInOrder)
             port->verifyValue();
     }
+    if (_diagnoseOn) {
+        for (Port *port : _portsInOrder) {
+            port->verifyValue();
+            if (port->value().type() == Value::Type::Double) {
+                double val = port->value<double>();
+                // Lowest and max values are always OK; assumed to be intentional
+                if ((val > std::numeric_limits<double>::lowest() && val < _diagnoseMin) ||
+                    (val > _diagnoseMax && val < std::numeric_limits<double>::max()))
+                    ThrowException("Diagnose port outside valid range").value(val).value2(port->fullName()).context(this);
+            }
+        }
+    }
 }
 
 void Box::registerPorts() {
@@ -362,6 +377,20 @@ void Box::debug(bool on) {
 
 bool Box::debug() {
     return _debugOn;
+}
+
+bool Box::diagnose() {
+    return _diagnoseOn;
+}
+
+void Box::diagnose(double minValue, double maxValue, QString) {
+    _diagnoseOn = true;
+    _diagnoseMin = minValue;
+    _diagnoseMax = maxValue;
+}
+
+void Box::diagnoseOff() {
+    _diagnoseOn = false;
 }
 
 }

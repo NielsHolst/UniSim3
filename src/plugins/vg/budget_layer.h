@@ -20,12 +20,13 @@ public:
     void attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom);
     void reset() final;
     void update() final;
-    double deltaT();
+    void updateConvection();
     virtual void updateLwEmission();
+    double updateDeltaT(double timeStep);
 private:
     // Inputs
     double
-        initTemperature, timeStep;
+        initTemperature;
     // Outputs
     double
         swEmissionTop, swEmissionBottom,
@@ -41,16 +42,19 @@ private:
         parAbsorbedTop, parAbsorbedBottom,
 
         convectionTop, convectionBottom,
-        deltaTemperature;
+        radiationDeltaT, convectionDeltaT, totalDeltaT;
 protected:
     // Outputs
     double temperature, lwEmissionTop, lwEmissionBottom;
     // Data
-    const double *emissivityTop, *emissivityBottom, *heatCapacity;
+    const double *emissivityTop, *emissivityBottom,
+        *UtopAdj, *UbottomAdj,
+        *heatCapacity,
+        *temperatureVolumeTop, *temperatureVolumeBottom;
 private:
     // Data
     const LayerAdjusted *attachedLayer;
-    const BudgetVolume *volumeTop, *volumeBottom;
+    BudgetVolume *volumeTop, *volumeBottom;
     bool
         lwEmissionTopUpdatedExternally, lwEmissionBottomUpdatedExternally,
         convectionTopUpdatedExternally, convectionBottomUpdatedExternally;

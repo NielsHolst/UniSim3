@@ -20,7 +20,8 @@ M = mutate(M,
   A_gh    = n*L*w,
   V_gh    = n*L*A_end_,
   cover_per_ground = A_cover/A_gh,
-  avg_height = V_gh/A_gh
+  avg_height = V_gh/A_gh,
+  C_gh = 1.19*1020*avg_height
 )
 
 round(t(M), 3)

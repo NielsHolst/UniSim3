@@ -18,6 +18,7 @@ public:
     BudgetVolume(QString name, base::Box *parent);
     void reset() final;
     void addLayer(const BudgetLayer *layer);
+    void addHeatInflux(double flux);
 private:
     // Inputs
     double

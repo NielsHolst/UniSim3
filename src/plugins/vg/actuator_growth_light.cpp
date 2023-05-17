@@ -22,14 +22,21 @@ ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
     help("models power use and radiation from growth light");
     Input(isOn).help("Is light currently switched on?").unit("bool");
     Input(power).help("Power of installed lamps per greenhouse area").unit("W/m2");
+    Input(ballast).help("Power used by lamp ballast").unit("W/m2");
     Input(parPhotonCoef).equals(1.6).help("Number of PAR photons per spent lamp energy").unit("micromole PAR/J");
     Input(efficiency).equals(1.).help("Proportion of intensity actually emitted").unit("[0;1]");
+    Input(propSw).equals(0.5).help("Proportion of power emitted as short-wave radiation").unit("[0;1]");
     Input(propLw).equals(0.1).help("Proportion of power emitted as long-wave radiation").unit("[0;1]");
-    Input(ballast).help("Power used by lamp ballast").unit("W/m2");
+    Input(propConv).equals(0.4).help("Proportion of power emitted as convective heat").unit("[0;1]");
+    Input(propBallastLw).equals(0.7).help("Proportion of ballast emitted as long-wave radiation").unit("[0;1]");
+    Input(propBallastConv).equals(0.3).help("Proportion of ballast emitted as convective heat").unit("[0;1]");
+
+    Output(parEmissionBottom).help("PAR emission downwards").unit("micromole PAR/m2/s");
     Output(swEmissionBottom).help("Short-wave emission downwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
-    Output(parEmissionBottom).help("PAR emission downwards").unit("micromole PAR/m2/s");
+    Output(convectionBottom).help("Convective heat downwards").unit("W/m2");
+    Output(convectionTop).   help("Convective heat upwards").unit("W/m2");
     Output(powerUsage).help("Current power usage").unit("W/m2");
 }
 
@@ -39,13 +46,12 @@ void ActuatorGrowthLight::reset() {
 
 void ActuatorGrowthLight::update() {
     if (isOn) {
-        double sw            = power*(1. - propLw),
-               swDegradation = sw*(1. - efficiency),
-               lw            = power*propLw + ballast + swDegradation;
-        parEmissionBottom = power*parPhotonCoef*efficiency;
-        swEmissionBottom  = sw - swDegradation;
-        lwEmissionTop     = lw/2.;
-        lwEmissionBottom  = lw/2.;
+        parEmissionBottom = parPhotonCoef*efficiency*power;
+        swEmissionBottom  = propSw*power;
+        lwEmissionTop     =
+        lwEmissionBottom  = (propLw*power + propBallastLw*ballast)/2.;
+        convectionTop     =
+        convectionBottom  = (propConv*power + propBallastConv*ballast)/2.;
         powerUsage        = power + ballast;
     }
     else
@@ -53,10 +59,12 @@ void ActuatorGrowthLight::update() {
 }
 
 void ActuatorGrowthLight::noLight() {
+    parEmissionBottom =
     swEmissionBottom =
     lwEmissionBottom =
     lwEmissionTop =
-    parEmissionBottom =
+    convectionBottom =
+    convectionTop =
     powerUsage = 0.;
 
 }

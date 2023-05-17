@@ -16,6 +16,7 @@ HEADERS +=  \
     clip.h \
     command_documentation.h \
     debug.h \
+    diagnose.h \
 #    doc.h \
     edit.h \
     find.h \
@@ -60,6 +61,7 @@ SOURCES +=  \
     command_documentation.cpp \
     debug.cpp \
 #    doc.cpp \
+    diagnose.cpp \
     edit.cpp \
     find.cpp \
     get.cpp \

@@ -1,4 +1,5 @@
 Simulation sim {
+  // .steps = 700
   Box global {
     &beginDate = 2022/08/01
   }
@@ -7,8 +8,8 @@ Simulation sim {
     .longitude = 10.4
     .begin = global[beginDate] - 1
     .end   = 2022/08/02
-    .timeStep = 1
-    .timeUnit = "m"
+    .timeStep = 20
+    .timeUnit = "s"
   }
   vg::Outdoors outdoors{
     Records records{
@@ -569,10 +570,6 @@ Simulation sim {
       ActuatorGrowthLight bank1 {
         .isOn = controllers/growthLights/bank1[isOn]
         .power = 100.
-        .parPhotonCoef = 1.6
-        .efficiency = 1.0
-        .propLw = 0.1
-        .ballast = 0.0
       }
       ActuatorGrowthLight bank2 {
         .isOn    = controllers/growthLights/bank2[isOn]
@@ -624,22 +621,35 @@ Simulation sim {
     .Utop                   = 1.2
     .Ubottom                = 0.1
     .heatCapacity           = 42000
-  }tt
+  }
   Budget budget {
+    .radPrecision = 0.1
+    .tempPrecision = 0.5
   }
   OutputR output {
-    .clearPlots = TRUE
+    .clearPlots = FALSE
     PageR {
       .xAxis = calendar[dateTime]
+      .nrow = 1
       PlotR {
-        .ports = budget/*[temperature] 
+        .ports = budget/screen1[radiationDeltaT] | 
+                 budget/screen1[convectionDeltaT] | 
+                 budget/screen1[convectionTop] |
+                 budget/screen1[convectionBottom] |
+                 budget/screen1[temperature] 
       }
       PlotR {
-        .ports = budget/*[deltaTemperature] 
+        .ports = budget/screen2[radiationDeltaT] | 
+                 budget/screen2[convectionDeltaT] | 
+                 budget/screen2[convectionTop] |
+                 budget/screen2[convectionBottom] |
+                 budget/screen2[temperature] 
       }
-    }
-    OutputSelector {
-      .beginDateTime = global[beginDate]
+      PlotR {
+        .ports = budget[radIterations] | budget[subSteps] | budget[maxDeltaT] | indoorsVol[temperature]| indoorsVol[heatInflux]
+      }
+    // OutputSelector {
+      // .beginDateTime = global[beginDate]
     }
   }
 }

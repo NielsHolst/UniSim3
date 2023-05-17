@@ -17,28 +17,30 @@ namespace vg {
 PUBLISH(HeatPipes)
 
 HeatPipes::HeatPipes(QString name, Box *parent)
-    : Box(name, parent)
+    : Box(name, parent),
+      LayerAdjusted(name, parent)
 {
     help("sums power use and radiation from growth light");
-    Input(lwEmissionTopPipes).imports("./*[lwEmissionTop]");
+    Input(lwEmissionTopPipes)   .imports("./*[lwEmissionTop]");
     Input(lwEmissionBottomPipes).imports("./*[lwEmissionBottom]");
-    Input(convectiveFluxTopPipes).imports("./*[parEmissionBottom]");
-    Input(convectiveFluxBottomPipes).imports("./*[parEmissionBottom]");
-    Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
+    Input(convectionTopPipes)   .imports("./*[convectionTop]");
+    Input(convectionBottomPipes).imports("./*[convectionBottom]");
+    Output(lwEmissionTop)   .help("Long-wave emission upwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
-    Output(convectiveFluxTop).help("Convective heat flux upwards").unit("W/m2");
-    Output(convectiveFluxBottom).help("Convective heat flux downwards").unit("W/m2");
+    Output(convectionTop)   .help("Convective heat flux upwards").unit("W/m2");
+    Output(convectionBottom).help("Convective heat flux downwards").unit("W/m2");
 }
 
 void HeatPipes::reset() {
+    makeTransparent();
     update();
 }
 
 void HeatPipes::update() {
     lwEmissionTop     = sum(lwEmissionTopPipes);
     lwEmissionBottom  = sum(lwEmissionBottomPipes);
-    convectiveFluxTop    = sum(convectiveFluxTopPipes);
-    convectiveFluxBottom = sum(convectiveFluxBottomPipes);
+    convectionTop    = sum(convectionTopPipes);
+    convectionBottom = sum(convectionBottomPipes);
 }
 
 } //namespace

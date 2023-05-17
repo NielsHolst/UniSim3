@@ -56,9 +56,9 @@ void Screen::update() {
     lwReflectivityBottomAdj   = state*lwReflectivityBottom;
     lwTransmissivityBottomAdj = 1. - lwAbsorptivityBottomAdj - lwReflectivityBottomAdj;
 
-    UtopAdj         = state*Utop;
-    UbottomAdj      = state*Ubottom;
-    heatCapacityAdj = state*heatCapacity;
+    UtopAdj         = Utop;
+    UbottomAdj      = Ubottom;
+    heatCapacityAdj = heatCapacity;
     checkOutputs();
 }
 

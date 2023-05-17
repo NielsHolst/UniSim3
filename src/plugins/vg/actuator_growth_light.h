@@ -19,14 +19,18 @@ public:
     void update();
 private:
     // Inputs
-    double ballast, power, parPhotonCoef, propLw,
-        efficiency;
     bool isOn;
+    double ballast, power,
+        parPhotonCoef, efficiency,
+        propSw, propLw, propConv,
+        propBallastLw, propBallastConv;
+        ;
     // Outputs
     double
+        parEmissionBottom,
         swEmissionBottom,
         lwEmissionBottom, lwEmissionTop,
-        parEmissionBottom,
+        convectionBottom, convectionTop,
         powerUsage;
     // Methods
     void noLight();

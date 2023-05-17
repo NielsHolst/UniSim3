@@ -33,5 +33,9 @@ void BudgetVolume::addLayer(const BudgetLayer *layer) {
     layers << layer;
 }
 
+void BudgetVolume::addHeatInflux(double flux) {
+    heatInflux += flux;
+}
+
 }
 

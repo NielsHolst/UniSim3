@@ -29,7 +29,7 @@ private:
         outflowTemperature, temperatureDrop,
         energyFlux,
         lwEmissionTop, lwEmissionBottom,
-        convectiveFluxTop, convectiveFluxBottom;
+        convectionTop, convectionBottom;
 };
 
 } //namespace

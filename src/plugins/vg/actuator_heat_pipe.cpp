@@ -42,8 +42,8 @@ ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
     Output(energyFlux).help("Energy flux").unit("W/m2");
     Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
-    Output(convectiveFluxTop).help("Convective heat flux upwards").unit("W/m2");
-    Output(convectiveFluxBottom).help("Convective heat flux downwards").unit("W/m2");
+    Output(convectionTop).help("Convective heat flux upwards").unit("W/m2");
+    Output(convectionBottom).help("Convective heat flux downwards").unit("W/m2");
 }
 
 void ActuatorHeatPipe::reset() {
@@ -65,7 +65,7 @@ void ActuatorHeatPipe::update() {
         outflowTemperature = inflowTemperature;
     }
     lwEmissionTop = lwEmissionBottom = propLw*energyFlux/2.;
-    convectiveFluxTop = convectiveFluxBottom =  (1. - propLw)*energyFlux/2.;
+    convectionTop = convectionBottom =  (1. - propLw)*energyFlux/2.;
 }
 
 }

@@ -17,30 +17,38 @@ namespace vg {
 PUBLISH(GrowthLights)
 
 GrowthLights::GrowthLights(QString name, Box *parent)
-    : Box(name, parent)
+    : Box(name, parent),
+      LayerAdjusted(name, parent)
 {
     help("sums power use and radiation from growth light");
+    Input(parEmissionBottomLights).imports("./*[parEmissionBottom]");
     Input(swEmissionBottomLights).imports("./*[swEmissionBottom]");
     Input(lwEmissionBottomLights).imports("./*[lwEmissionBottom]");
-    Input(lwEmissionTopLights).imports("./*[lwEmissionTop]");
-    Input(parEmissionBottomLights).imports("./*[parEmissionBottom]");
+    Input(lwEmissionTopLights)   .imports("./*[lwEmissionTop]");
+    Input(convectionBottomLights).imports("./*[convectionBottom]");
+    Input(convectionTopLights)   .imports("./*[convectionTop]");
     Input(powerUsageLights).imports("./*[powerUsage]");
+    Output(parEmissionBottom).help("PAR emission downwards").unit("micromole PAR/m2/s");
     Output(swEmissionBottom).help("Short-wave emission downwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
-    Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
-    Output(parEmissionBottom).help("PAR emission downwards").unit("micromole PAR/m2/s");
+    Output(lwEmissionTop)   .help("Long-wave emission upwards").unit("W/m2");
+    Output(convectionBottom).help("Convective heat downwards").unit("W/m2");
+    Output(convectionTop)   .help("Convective heat upwards").unit("W/m2");
     Output(powerUsage).help("Current power usage").unit("W/m2");
 }
 
 void GrowthLights::reset() {
+    makeTransparent();
     update();
 }
 
 void GrowthLights::update() {
+    parEmissionBottom = sum(parEmissionBottomLights);
     swEmissionBottom  = sum(swEmissionBottomLights);
     lwEmissionBottom  = sum(lwEmissionBottomLights);
     lwEmissionTop     = sum(lwEmissionTopLights);
-    parEmissionBottom = sum(parEmissionBottomLights);
+    convectionBottom  = sum(convectionBottomLights);
+    convectionTop     = sum(convectionTopLights);
     powerUsage        = sum(powerUsageLights);
 }
 

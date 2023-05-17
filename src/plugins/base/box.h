@@ -85,6 +85,9 @@ public:
 
     static bool debug();
     static void debug(bool on);
+    static bool diagnose();
+    static void diagnose(double minValue, double maxValue, QString path);
+    static void diagnoseOff();
 
     void createTimer(QString name);
     void startTimer(QString name);
@@ -100,7 +103,8 @@ private:
     Timer _timer;
     static std::unique_ptr<Box> _root;
     static Box *_latest;
-    static bool _debugOn;
+    static bool _debugOn, _diagnoseOn;
+    static double _diagnoseMin, _diagnoseMax;
     // Methods
     Box *latestRoot();
     void createTimers();

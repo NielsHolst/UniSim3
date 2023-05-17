@@ -3,6 +3,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/box_builder.h>
+#include <base/phys_math.h>
 #include <base/publish.h>
 #include "average_cover.h"
 #include "average_screen.h"
@@ -10,11 +11,14 @@
 #include "budget_layer.h"
 #include "budget_volume.h"
 #include "floor.h"
+#include "growth_lights.h"
+#include "heat_pipes.h"
 #include "layer_adjusted.h"
 #include "plant.h"
 #include "sky.h"
 
 using namespace base;
+using namespace phys_math;
 
 namespace vg {
 
@@ -24,50 +28,58 @@ Budget::Budget(QString name, base::Box *parent)
     : Box(name, parent)
 {
     help("resolves energy and water budgets across layers and volumes");
-    Input(precision).equals(1e-3).unit("W/m2|mumol/m2/s").help("Precision of numerical solution");
-    Output(iterations).unit("int").help("Number of iterations taken to reach solution");
+    Input(radPrecision).equals(1e-3).unit("W/m2|mumol/m2/s").help("Precision of numerical solution to radiation budget");
+    Input(tempPrecision).equals(0.5).unit("K").help("Max. allowed temperature change in a sub-step among layers");
+    Input(timeStep).imports("calendar[timeStepSecs]");
+    Input(averageHeight).imports("geometry[averageHeight]");
+    Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
+    Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
+    Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step among layers");
 }
 
 void Budget::amend() {
-
-
+    addVolumes();
+    addLayers();
+    addState();
+    addParameters();
 }
 
 void Budget::addVolumes() {
     // Add volumes as children
     BoxBuilder builder(this);
     builder.
-        box("BudgetVolumeExternal").name("outdoors").
-            port("initTemperature").imports("outdoors[temperature]").
-            port("temperature").imports("outdoors[temperature]").
-            port("initRh").imports("outdoors[rh]").
-            port("rh").imports("outdoors[rh]").
+        box("BudgetVolumeExternal").name("outdoorsVol").
+            port("initTemperature").imports("/outdoors[temperature]").
+            port("temperature").imports("/outdoors[temperature]").
+            port("initRh").imports("/outdoors[rh]").
+            port("rh").imports("/outdoors[rh]").
         endbox().
-        box("BudgetVolumeInternal").name("indoors").
+        box("BudgetVolumeInternal").name("indoorsVol").
             port("initTemperature").equals(20.).
             port("initRh").equals(70).
         endbox().
-        box("BudgetVolumeExternal").name("soil").
+        box("BudgetVolumeExternal").name("soilVol").
             port("initTemperature").imports("soilTemperature[value]").
             port("temperature").imports("soilTemperature[value]").
         endbox();
 
     // Find volumes
-    outdoorsVol = findOne<BudgetVolume*>("./outdoors");
-    indoorsVol  = findOne<BudgetVolume*>("./indoors");
-    soilVol     = findOne<BudgetVolume*>("./soil");
+    volumes << (outdoorsVol = findOne<BudgetVolume*>("./outdoorsVol"));
+    volumes << (indoorsVol  = findOne<BudgetVolume*>("./indoorsVol"));
+    volumes << (soilVol     = findOne<BudgetVolume*>("./soilVol"));
+
 
 }
 
 void Budget::addLayers() {
     // Find layers
-    sky       = findOne<Sky*>("/sky");
-    cover     = findOne<AverageCover*>("shelter/layers/cover");
-    screens   = findMany<AverageScreen*>("shelter/layers/screens/*");
-    lights    = findMany<Box*>("actuators/growthLights/*");
-    heatPipes = findMany<Box*>("actuators/heatPipes/*");
-    plant     = findMaybeOne<Plant*>("/plant");
-    floor     = findOne<Floor*>("/floor");
+    sky          = findOne<Sky*>("/sky");
+    cover        = findOne<AverageCover*>("shelter/layers/cover");
+    screens      = findMany<AverageScreen*>("shelter/layers/screens/*");
+    growthLights = findMaybeOne<GrowthLights*>("actuators/growthLights");
+    heatPipes    = findMaybeOne<HeatPipes*>("actuators/heatPipes");
+    plant        = findMaybeOne<Plant*>("/plant");
+    floor        = findOne<Floor*>("/floor");
 
     // Build layers as children
     BoxBuilder builder(this);
@@ -86,24 +98,24 @@ void Budget::addLayers() {
             endbox();
         screenNames << screen->objectName();
     }
-    if (lights.size() > 0) {
+    if (growthLights) {
         builder.
             box("BudgetLayer").name("growthLights").
-                port("swEmissionBottom").imports("actuators/growthLights[swEmissionBottom]").
-                port("lwEmissionTop").imports("actuators/growthLights[lwEmissionTop]").
-                port("lwEmissionBottom").imports("actuators/growthLights[lwEmissionBottom]").
-                port("convectionTop").imports("actuators/growthLights[lwEmissionTop]").
-                port("convectionBottom").imports("actuators/growthLights[lwEmissionBottom]").
                 port("parEmissionBottom").imports("actuators/growthLights[parEmissionBottom]").
+                port("swEmissionBottom") .imports("actuators/growthLights[swEmissionBottom]").
+                port("lwEmissionTop")    .imports("actuators/growthLights[lwEmissionTop]").
+                port("lwEmissionBottom") .imports("actuators/growthLights[lwEmissionBottom]").
+                port("convectionTop")    .imports("actuators/growthLights[convectionTop]").
+                port("convectionBottom") .imports("actuators/growthLights[convectionBottom]").
             endbox();
     }
-    if (heatPipes.size() > 0) {
+    if (heatPipes) {
         builder.
             box("BudgetLayer").name("heatPipes").
                 port("lwEmissionTop")   .imports("actuators/heatPipes[lwEmissionTop]").
                 port("lwEmissionBottom").imports("actuators/heatPipes[lwEmissionBottom]").
-                port("convectiveFluxTop")   .imports("actuators/heatPipes[convectiveFluxBottom]").
-                port("convectiveFluxBottom").imports("actuators/heatPipes[convectiveFluxBottom]").
+                port("convectionTop")   .imports("actuators/heatPipes[convectionTop]").
+                port("convectionBottom").imports("actuators/heatPipes[convectionBottom]").
             endbox();
     }
     if (plant) {
@@ -136,10 +148,20 @@ void Budget::addLayers() {
         layers << budgetLayerScreen;
     }
 
+    // Attach growth lights
+    BudgetLayer *budgetLayerGrowthLights = findOne<BudgetLayer*>("./growthLights");
+    budgetLayerGrowthLights->attach(growthLights, indoorsVol, indoorsVol);
+    layers << budgetLayerGrowthLights;
+
     // Attach plant
     BudgetLayer *budgetLayerPlant = findOne<BudgetLayer*>("./plant");
     budgetLayerPlant->attach(plant, indoorsVol, indoorsVol);
     layers << budgetLayerPlant;
+
+    // Attach heat pipes
+    BudgetLayer *budgetLayerHeatPipes = findOne<BudgetLayer*>("./heatPipes");
+    budgetLayerHeatPipes->attach(heatPipes, indoorsVol, indoorsVol);
+    layers << budgetLayerHeatPipes;
 
     // Attach floor
     BudgetLayer *budgetLayerFloor = findOne<BudgetLayer*>("./floor");
@@ -196,11 +218,30 @@ void Budget::addParameters() {
 }
 
 void Budget::reset() {
-    deltaT.fill(0., numLayers);
+    indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
     update();
 }
 
 void Budget::update() {
+    maxDeltaT = 0.;
+    updateSubStep(timeStep);
+    if (maxDeltaT < tempPrecision) {
+        subSteps = 1;
+        applyDeltaT();
+    }
+    else {
+        subSteps = static_cast<int>(ceil(maxDeltaT/tempPrecision));
+        maxDeltaT = 0.;
+        for (int i=0; i<subSteps; ++i) {
+            updateSubStep(timeStep/subSteps);
+            applyDeltaT();
+        }
+
+    }
+}
+
+void Budget::updateSubStep(double subTimeStep) {
+    // Update radiation budget
     updateLwEmission();
     swState.init();
     lwState.init();
@@ -208,12 +249,22 @@ void Budget::update() {
     distributeRadiation(parState, swParam);
     distributeRadiation(swState,  swParam);
     distributeRadiation(lwState,  lwParam);
-    updateDeltaT();
+    // Update convection/conduction budget
+    updateConvection();
+    // Update prospective change in temperature
+    updateDeltaT(subTimeStep);
 }
 
 void Budget::updateLwEmission() {
     for (BudgetLayer *layer : layers)
         layer->updateLwEmission();
+}
+
+void Budget::updateConvection() {
+    for (BudgetVolume *volume : volumes)
+        volume->heatInflux = 0.;
+    for (BudgetLayer *layer : layers)
+        layer->updateConvection();
 }
 
 void Budget::State::init() {
@@ -302,7 +353,7 @@ void Budget::distributeRadUp(State &s, const Parameters &p) {
             // Transmitted through this layer by reflection from above
             transmitted  = th  * cur_F_;
         // Update layer above
-        nxt_A_ += absorbed_;
+        nxt_A_ += absorbed_;        
         nxt_F_ += transmitted_;
         // Update this layer
         cur_A   += absorbed;
@@ -313,22 +364,34 @@ void Budget::distributeRadUp(State &s, const Parameters &p) {
 }
 
 void Budget::distributeRadiation(State &s, const Parameters &p) {
-    iterations = 0;
+    radIterations = 0;
     double residual;
     do {
-        ++iterations;
+        ++radIterations;
         distributeRadDown(s, p);
         distributeRadUp(s, p);
         residual = 0.;
         for (int i=0; i<numLayers; ++i)
             residual += *s.F.at(i) + *s.F_.at(i);
-    } while (residual > precision);
+    } while (residual > radPrecision);
 }
 
-void Budget::updateDeltaT() {
-    int i = 0;
-    for (BudgetLayer *layer : layers)
-        deltaT[i++] = layer->deltaT();
+void Budget::updateDeltaT(double timeStep) {
+    for (BudgetLayer *layer : layers) {
+        double deltaT = layer->updateDeltaT(timeStep);
+        if (fabs(deltaT) > fabs(maxDeltaT))
+            maxDeltaT = fabs(deltaT);
+    }
+    indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity;
+    if (fabs(indoorsDeltaT) > fabs(maxDeltaT))
+        maxDeltaT = fabs(indoorsDeltaT);
 }
+
+void Budget::applyDeltaT() {
+    for (BudgetLayer *layer : layers)
+        layer->temperature += layer->totalDeltaT;
+    indoorsVol->temperature += indoorsDeltaT;
+}
+
 
 }
