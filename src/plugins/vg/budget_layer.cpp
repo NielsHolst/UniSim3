@@ -83,9 +83,10 @@ void BudgetLayer::reset() {
     update();
 }
 
-void BudgetLayer::update() {
-    updateLwEmission();
-}
+//void BudgetLayer::update() {
+//    updateLwEmission();
+//    updateConvection();
+//}
 
 double BudgetLayer::updateDeltaT(double timeStep) {
     if (eqZero(*heatCapacity)) {
@@ -122,14 +123,21 @@ void BudgetLayer::updateConvection() {
     // Flux is positive if volume is warmer than layer
     if (!convectionTopUpdatedExternally) {
         convectionTop    = eqZero(*UtopAdj) ? 0. : ((*temperatureVolumeTop)    - temperature)/(*UtopAdj);
-        if (volumeTop)
-            volumeTop->addHeatInflux(-convectionTop);
     }
     if (!convectionBottomUpdatedExternally) {
         convectionBottom = eqZero(*UbottomAdj) ? 0. : ((*temperatureVolumeBottom) - temperature)/(*UbottomAdj);
-        if (volumeBottom)
-            volumeBottom->addHeatInflux(-convectionBottom);
     }
+
+//    QString s = objectName() +
+//            " " + QString::number(convectionTop) +
+//            " " + QString::number(convectionBottom);
+//    log(s);
+
+    // Transfer fluxes to neighbouring volumes
+    if (volumeBottom)
+        volumeBottom->addHeatInflux(-convectionBottom);
+    if (volumeTop)
+        volumeTop->addHeatInflux(-convectionTop);
 }
 
 }

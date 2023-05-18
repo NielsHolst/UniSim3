@@ -14,7 +14,7 @@ namespace base {
 
 void log(QString s) {
 //    QString fileNamePath = environment().filePath(Environment::Folder::Output, "/unisim_log.txt");
-    QString fileNamePath = "C:/Users/au152367/Documents/QDev/UniSim3/output/unisim_log.txt";
+    QString fileNamePath = "C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt";
     std::cout << qPrintable("Logging to: " + fileNamePath) << "\n";
 
     QString timeStamp = QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss.zzz");

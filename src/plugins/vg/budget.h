@@ -4,33 +4,41 @@
 
 namespace vg {
 
-class BudgetLayer;
-class BudgetVolume;
-class Sky;
-class LayerAdjusted;
+class ActuatorVentilation;
 class AverageCover;
 class AverageScreen;
-class GrowthLights;
-class Plant;
-class HeatPipes;
+class BudgetLayer;
+class BudgetVolume;
 class Floor;
+class GrowthLights;
+class HeatPipes;
+class LayerAdjusted;
+class Plant;
+class Sky;
 
 class Budget : public base::Box {
 private:
     // Input
     double
-        radPrecision, tempPrecision,
+        radPrecision, tempPrecision, thresholdPrecision,
         timeStep, averageHeight,
-        ventilation, outdoorsTemperature;
+        outdoorsTemperature, outdoorsRh,
+        transpirationRate,
+        ventilationThreshold, heatingThreshold,
+        deltaVentilationControl, deltaHeatingControl;
+    QVector<bool> heatPipesOn;
+    bool ventilationOn;
     // Output
-    int radIterations, subSteps;
-    double maxDeltaT, advectionDeltaT;
+    int radIterations, subSteps, controlCode;
+    double maxDeltaT, advectionDeltaT,
+        transpirationDeltaAh, advectionDeltaAh;
     // Volumes
     QVector<BudgetVolume*> volumes;
     BudgetVolume *outdoorsVol, *indoorsVol, *soilVol;
     double indoorsHeatCapacity, indoorsDeltaT;
     // Layers
     QVector<BudgetLayer*> layers;
+    BudgetLayer *budgetLayerHeatPipes;
     int numLayers;
     Sky *sky;
     AverageCover *cover;
@@ -45,11 +53,16 @@ private:
         void init();
     };
     State swState, lwState, parState;
+    enum class Control{CarryOn, OnSetpointVentilation, OnSetpointHeating, GreenhouseTooHot, GreenhouseTooCold, NeedlessHeating, NeedlessCooling};
+    Control control;
     // Parameters
     struct Parameters {
         QVector<const double *> a, a_, r, r_, t, t_;
     };
     Parameters swParam, lwParam;
+    // Actuators
+    ActuatorVentilation *actuatorVentilation;
+    const double *ventilationRate;
     // Methods
     void addVolumes();
     void addLayers();
@@ -58,18 +71,28 @@ private:
 public:
     Budget(QString name, base::Box *parent);
     void amend();
+    void initialize();
     void reset();
     void update();
 private:
     void updateSubStep(double subTimeStep);
     void updateLwEmission();
+    void updateLayersAndVolumes();
     void resetState();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);
     void updateConvection();
     void updateDeltaT(double timeStep);
+    void updateDeltaAh(double timeStep);
     void applyDeltaT();
+    void applyDeltaAh();
+    void saveForRollBack();
+    void rollBack();
+    void diagnoseControl();
+    void exertControl();
+    void tooHot();
+    void tooCold();
 };
 
 }

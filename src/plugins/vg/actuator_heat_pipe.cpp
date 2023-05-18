@@ -16,6 +16,7 @@
 using namespace base;
 using namespace phys_math;
 using namespace std;
+using namespace TestNum;
 
 namespace vg {
 	
@@ -32,12 +33,13 @@ ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
     Input(propLw).equals(0.5).help("Proportion of energy emitted as long-wave radiation").unit("[0;1]");
     Input(minTemperature).equals(20.).help("Minimum inflow temperature").unit("oC");
     Input(maxTemperature).equals(80.).help("Maximum inflow temperature").unit("oC");
-    Input(inflowTemperature).unit("oC");
+    Input(desiredTemperature).help("Desired inflow temperature").unit("oC");
     Input(indoorsTemperature).imports("indoors/temperature[value]",CA).unit("oC");
     Input(groundArea).imports("geometry[groundArea]",CA).unit("m2");
 
-    Output(transitTime).help("Average transit time of water").unit("min");
+    Output(inflowTemperature).help("Water temperature at entry").unit("oC");
     Output(outflowTemperature).help("Water temperature at exit").unit("oC");
+    Output(transitTime).help("Average transit time of water").unit("min");
     Output(temperatureDrop).help("Drop in water temperature from entry to exit").unit("oC");
     Output(energyFlux).help("Energy flux").unit("W/m2");
     Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
@@ -47,12 +49,13 @@ ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
 }
 
 void ActuatorHeatPipe::reset() {
+    desiredTemperature = minTemperature;
     update();
 }
 
 void ActuatorHeatPipe::update() {
     transitTime = volume/flowRate*60.;
-    inflowTemperature = minmax(minTemperature, inflowTemperature, maxTemperature);
+    inflowTemperature = minmax(minTemperature, desiredTemperature, maxTemperature);
     double dT = inflowTemperature - indoorsTemperature;
     if (dT > 0.) {
         double x = k*(b-1.)*transitTime + pow(dT, 1-b);
@@ -65,7 +68,16 @@ void ActuatorHeatPipe::update() {
         outflowTemperature = inflowTemperature;
     }
     lwEmissionTop = lwEmissionBottom = propLw*energyFlux/2.;
-    convectionTop = convectionBottom =  (1. - propLw)*energyFlux/2.;
+    // Convection flux is negative because pipes are loosing energy
+    convectionTop = convectionBottom =  -(1. - propLw)*energyFlux/2.;
+    isHeating = gt(inflowTemperature, minTemperature);
+}
+
+void ActuatorHeatPipe::increase(double delta) {
+    if (le(desiredTemperature, minTemperature))
+        desiredTemperature = minTemperature + delta;
+    else
+        desiredTemperature += delta;
 }
 
 }

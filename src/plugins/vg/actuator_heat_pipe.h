@@ -19,17 +19,19 @@ public:
     ActuatorHeatPipe(QString name, Box *parent);
     void reset();
     void update();
+    void increase(double delta);
 private:
     // Inputs
     double volume, flowRate, minTemperature, maxTemperature,
         k, b, propLw,
-        inflowTemperature, indoorsTemperature, groundArea;
+        desiredTemperature, indoorsTemperature, groundArea;
     // Outputs
     double transitTime,
-        outflowTemperature, temperatureDrop,
+        inflowTemperature, outflowTemperature, temperatureDrop,
         energyFlux,
         lwEmissionTop, lwEmissionBottom,
         convectionTop, convectionBottom;
+    bool isHeating;
 };
 
 } //namespace

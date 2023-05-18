@@ -18,16 +18,22 @@ public:
     ActuatorVentilation(QString name, Box *parent);
     void reset();
     void update();
-    double getFlux() const;
-    void setFlux(double newFlux);
+    void increase(double delta);
 private:
     // Inputs
-    double minFlux, maxFlux,
+    double
+        desiredValue,
         windCoef, temperatureCoef,
+        leakage, crackVentilation,
         windSpeed, outdoorsTemperature, indoorsTemperature,
-        effectiveVentArea, groundArea;
+        ventAreaRatio;
     // Output
-    double flux, relative;
+    double value, relative;
+    // Data
+    double _minValue, _maxValue;
+    bool isVentilating;
+    // Methods
+    void updateOutput();
 };
 } //namespace
 

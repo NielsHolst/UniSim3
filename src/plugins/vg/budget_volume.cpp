@@ -23,14 +23,14 @@ BudgetVolume::BudgetVolume(QString name, base::Box *parent)
     Output(heatInflux).unit("W/m2").help("Total convective/conductive heat influx");
 }
 
+void BudgetVolume::addLayer(const BudgetLayer *layer) {
+    layers << layer;
+}
+
 void BudgetVolume::reset() {
     temperature = initTemperature;
     rh = initRh;
     update();
-}
-
-void BudgetVolume::addLayer(const BudgetLayer *layer) {
-    layers << layer;
 }
 
 void BudgetVolume::addHeatInflux(double flux) {

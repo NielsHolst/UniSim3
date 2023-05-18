@@ -7,6 +7,7 @@
 */
 #include <base/publish.h>
 #include <base/vector_op.h>
+#include "actuator_heat_pipe.h"
 #include "heat_pipes.h"
 
 using namespace base;
@@ -32,6 +33,7 @@ HeatPipes::HeatPipes(QString name, Box *parent)
 }
 
 void HeatPipes::reset() {
+    _heatPipes = findMany<ActuatorHeatPipe*>("./*");
     makeTransparent();
     update();
 }
@@ -41,6 +43,12 @@ void HeatPipes::update() {
     lwEmissionBottom  = sum(lwEmissionBottomPipes);
     convectionTop    = sum(convectionTopPipes);
     convectionBottom = sum(convectionBottomPipes);
+}
+
+void HeatPipes::increase(double delta) {
+    for (ActuatorHeatPipe *heatPipe : _heatPipes)
+        heatPipe->increase(delta);
+    updateFamily();
 }
 
 } //namespace

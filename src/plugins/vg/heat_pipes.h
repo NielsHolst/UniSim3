@@ -12,11 +12,14 @@
 
 namespace vg {
 
+class ActuatorHeatPipe;
+
 class HeatPipes : public LayerAdjusted {
 public:
     HeatPipes(QString name, base::Box *parent);
     void reset();
     void update();
+    void increase(double delta);
 private:
     // Inputs
     QVector<double>
@@ -26,6 +29,8 @@ private:
     double
         lwEmissionTop, lwEmissionBottom,
         convectionTop, convectionBottom;
+    // Data
+    QVector<ActuatorHeatPipe*> _heatPipes;
 };
 
 } //namespace

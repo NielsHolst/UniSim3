@@ -20,7 +20,7 @@ LeakageVentilation::LeakageVentilation(QString name, Box *parent)
     help("computes air flux by leakage");
     Input(leakage).equals(1).help("Infiltration rate at a wind speed of 4 m/s").unit("/h");
     Input(windSpeed).imports("outdoors[windSpeed]", CA);
-    Output(flux).help("Air flux by leakage").unit("/h");
+    Output(value).help("Air flux by leakage").unit("/h");
 }
 
 void LeakageVentilation::reset() {
@@ -28,7 +28,7 @@ void LeakageVentilation::reset() {
 }
 
 void LeakageVentilation::update() {
-    flux = leakage*windSpeed/4.;
+    value = leakage*windSpeed/4.;
 }
 
 } //namespace

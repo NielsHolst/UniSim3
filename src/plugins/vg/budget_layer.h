@@ -19,7 +19,6 @@ public:
     BudgetLayer(QString name, base::Box *parent);
     void attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom);
     void reset() final;
-    void update() final;
     void updateConvection();
     virtual void updateLwEmission();
     double updateDeltaT(double timeStep);
@@ -43,6 +42,8 @@ private:
 
         convectionTop, convectionBottom,
         radiationDeltaT, convectionDeltaT, totalDeltaT;
+    // Data
+    double rollBackTemperature;
 protected:
     // Outputs
     double temperature, lwEmissionTop, lwEmissionBottom;

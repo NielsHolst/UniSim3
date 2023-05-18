@@ -1,5 +1,5 @@
 Simulation sim {
-  .steps = 960
+  // .steps = 960
   Box global {
     &beginDate = 2022/08/01
   }
@@ -8,7 +8,7 @@ Simulation sim {
     .longitude = 10.4
     .begin = global[beginDate] - 1
     .end   = 2022/08/02
-    .timeStep = 20
+    .timeStep = 90
     .timeUnit = "s"
   }
   vg::Outdoors outdoors{
@@ -29,6 +29,8 @@ Simulation sim {
       .length = 100
       .height = 3.5
       .roofPitch = 26
+    }
+    LeakageVentilation leakage {
     }
     Shelter shelter {
       UWind Utop {
@@ -255,22 +257,15 @@ Simulation sim {
       }
     }
     Box ventilation {
-      PrioritySignal baseOffset {
+      PrioritySignal offset {
         DateTimeSignal {
           .beginDate = 1/1
           .endDate = 31/12
           .signalInside = 2
         }
       }
-      PrioritySignal humidityOffset {
-        DateTimeSignal {
-          .beginDate = 1/1
-          .endDate = 31/12
-          .signalInside = -1.5
-        }
-      }
     }
-    Box ventilationCrack {
+    Box crackVentilation {
       PrioritySignal size {
         DateTimeSignal {
           .beginDate = 1/1
@@ -467,8 +462,7 @@ Simulation sim {
   }
   Controllers controllers {
     Sum heating {
-      .values = setpoints/heating/base[value] | 
-                ./humidityOffset[value]
+      .values = setpoints/heating/base[value] | ./humidityOffset[value]
       ProportionalSignal humidityOffset {
         .input         = indoors[rh]
         .threshold     = setpoints/rhMax/threshold[value]
@@ -478,17 +472,9 @@ Simulation sim {
       }
     }
     Sum ventilation {
-      .values = setpoints/ventilation/baseOffset[value] | 
-                ./humidityOffset[value]
-      ProportionalSignal humidityOffset {
-        .input         = indoors[rh]
-        .threshold     = setpoints/rhMax/threshold[value]
-        .thresholdBand = setpoints/rhMax/band[value]
-        .maxSignal     = setpoints/ventilation/humidityOffset[value]
-        .increasingSignal = TRUE
-      }
+      .values = controllers/heating[value] | setpoints/ventilation/offset[value]
     }
-    ProportionalSignal ventilationCrack {
+    ProportionalSignal crackVentilation {
       .input         = indoors[rh]
       .threshold     = setpoints/rhMax/threshold[value]
       .thresholdBand = setpoints/rhMax/band[value]
@@ -496,9 +482,9 @@ Simulation sim {
       .increasingSignal = TRUE
       ProportionalSignal temperatureLimited {
         .input         = outdoors[temperature]
-        .threshold     = setpoints/ventilationCrack/temperature/threshold[value]
-        .thresholdBand = setpoints/ventilationCrack/temperature/band[value]
-        .maxSignal     = setpoints/ventilationCrack/size[value]
+        .threshold     = setpoints/crackVentilation/temperature/threshold[value]
+        .thresholdBand = setpoints/crackVentilation/temperature/band[value]
+        .maxSignal     = setpoints/crackVentilation/size[value]
         .increasingSignal = TRUE
       }
     }
@@ -595,8 +581,7 @@ Simulation sim {
         .indoorsTemperature = 20.0
       }
     }
-    Box ventilation {
-      &value = controllers/ventilation[value]
+    ActuatorVentilation ventilation {
     }
     ActuatorChalk chalk {
       .state = controllers/chalk[value]
@@ -649,6 +634,11 @@ Simulation sim {
         .ports = budget[radIterations] | budget[subSteps] | budget[maxDeltaT] | budget[advectionDeltaT] |
                  indoors[temperature]| indoors[heatInflux] |
                  actuators/ventilation[value]
+      }
+      PlotR {
+        .ports = budget[transpirationDeltaAh] | budget[advectionDeltaAh] | budget[controlCode] | 
+                 budget[ventilationThreshold] | budget[heatingThreshold] |
+                 indoors[rh] | outdoors[rh]
       }
     // OutputSelector {
       // .beginDateTime = global[beginDate]

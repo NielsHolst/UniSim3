@@ -26,7 +26,7 @@ private:
     co2, soilTemperature;
 
     // Outputs
-    double par, ah, sh;
+    double par;
 
 };
 } //namespace

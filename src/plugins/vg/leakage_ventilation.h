@@ -22,7 +22,7 @@ private:
     // Inputs
     double leakage, windSpeed;
     // Output
-    double flux;
+    double value;
 };
 } //namespace
 

@@ -29,6 +29,7 @@ private:
         heatInflux;
     // Data
     QVector<const BudgetLayer *> layers;
+    double rollBackTemperature, rollBackRh;
     // Friends
     friend class Budget;
 };
