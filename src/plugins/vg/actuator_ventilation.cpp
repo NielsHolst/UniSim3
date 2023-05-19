@@ -32,7 +32,10 @@ ActuatorVentilation::ActuatorVentilation(QString name, Box *parent)
     Input(outdoorsTemperature).imports("outdoors[temperature]", CA);
     Input(indoorsTemperature).imports("indoors[temperature]", CA);
     Output(value).help("Ventilation air flux, including leakage").unit("/h");
+    Output(minValue).help("Minimum possible air flux, including leakage").unit("/h");
+    Output(maxValue).help("Maximum possible air flux, including leakage").unit("/h");
     Output(relative).unit("[0;1]").help("Ventilation relative to maximum possible");
+    Output(isVentilating).unit("bool").help("Are vents more open than crack?");
 }
 
 void ActuatorVentilation::reset() {
@@ -45,23 +48,21 @@ void ActuatorVentilation::update() {
     double maxFluxWind = ventAreaRatio*windCoef*windSpeed,
            maxFluxTemp = ventAreaRatio*temperatureCoef*std::max(indoorsTemperature - outdoorsTemperature, 0.);
     // Use vector addition
-    _minValue = sqrt(p2(crackVentilation) + p2(leakage)),
-    _maxValue = sqrt(p2(maxFluxWind) + p2(maxFluxTemp) + p2(leakage));
+    minValue = sqrt(p2(crackVentilation) + p2(leakage)),
+    maxValue = sqrt(p2(maxFluxWind) + p2(maxFluxTemp) + p2(leakage));
+    maxValue = std::max(minValue, maxValue);
     updateOutput();
 }
 
 void ActuatorVentilation::increase(double delta) {
-    if (le(desiredValue,_minValue))
-        desiredValue = _minValue + delta;
-    else
-        desiredValue += delta;
+    desiredValue = value + delta;
     updateOutput();
 }
 
 void ActuatorVentilation::updateOutput() {
-    value = minmax(_minValue, desiredValue, _maxValue);
-    relative = (_maxValue == 0.) ? 0. : value/_maxValue;
-    isVentilating = gt(value, _minValue);
+    value = minmax(minValue, desiredValue, maxValue);
+    relative = (maxValue == 0.) ? 0. : (value-leakage)/(maxValue-leakage);
+    isVentilating = gt(value, minValue);
 }
 
 } //namespace

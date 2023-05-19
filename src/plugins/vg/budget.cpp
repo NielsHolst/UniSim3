@@ -48,9 +48,9 @@ Budget::Budget(QString name, base::Box *parent)
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step among layers");
     Output(advectionDeltaT).unit("K").help("Change in indoors temperature caused by ventilation");
-    Output(transpirationDeltaAh).unit("kg/m2 ground").help("Amount of transpired water");
-    Output(advectionDeltaAh).unit("kg/m2 ground").help("Amount of water lost by ventilation");
+    Output(indoorsDeltaAh).unit("kg/m3").help("Change in indoors absolute humidity");
     Output(controlCode).unit("int").help("Code for the control option needed");
+    Output(actionCode).unit("int").help("Code for the control action taken");
 }
 
 void Budget::amend() {
@@ -247,6 +247,8 @@ void Budget::initialize() {
 }
 
 void Budget::reset() {
+    control = Control::CarryOn;
+    action = Action::CarryOn;
 }
 
 void Budget::update() {
@@ -424,12 +426,19 @@ void Budget::updateDeltaT(double timeStep) {
         maxDeltaT = fabs(indoorsDeltaT);
 }
 
+namespace {
+    double integrate(double x, double y0, double k, double v, double z) {
+        return exp(-v*x)*( y0 + (k/v + z)*(exp(v*x)-1.) );
+    }
+}
 void Budget::updateDeltaAh(double timeStep) {
-    double indoorsAh  = ahFromRh(indoorsVol->temperature,  indoorsVol->rh),
-           outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh);
+    indoorsAh         = ahFromRh(indoorsVol->temperature,  indoorsVol->rh);
+    double outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh),
+           transp     = transpirationRate/averageHeight,
+           v          = (*ventilationRate)/3600.;
 
-    advectionDeltaAh     = (outdoorsAh - indoorsAh)*(1. - exp(-(*ventilationRate)/3600.*timeStep));
-    transpirationDeltaAh = transpirationRate*averageHeight*timeStep;
+    double indoorsAhIntegrated = integrate(timeStep, indoorsAh, transp, v, outdoorsAh);
+    indoorsDeltaAh = indoorsAhIntegrated - indoorsAh;
 }
 
 void Budget::applyDeltaT() {
@@ -439,9 +448,7 @@ void Budget::applyDeltaT() {
 }
 
 void Budget::applyDeltaAh() {
-    double indoorsAh  = ahFromRh(indoorsVol->temperature,  indoorsVol->rh) +
-                        advectionDeltaAh + transpirationDeltaAh;
-    indoorsVol->rh = rhFromAh(indoorsVol->temperature, indoorsAh);
+    indoorsVol->rh = rhFromAh(indoorsVol->temperature, indoorsAh + indoorsDeltaAh);
 }
 
 void Budget::saveForRollBack() {
@@ -490,33 +497,62 @@ void Budget::exertControl() {
     diagnoseControl();
     switch (control) {
     case Control::GreenhouseTooHot:
-    case Control::NeedlessHeating:
-        tooHot();
+        if (any(heatPipesOn))
+            decreaseHeating();
+        else
+            increaseVentilation();
         break;
     case Control::GreenhouseTooCold:
-    case Control::NeedlessCooling:
-        tooCold();
+        if (ventilationOn)
+            decreaseVentilation();
+        else
+            increaseHeating();
         break;
+    case Control::NeedlessHeating:
+        decreaseHeating();
+        break;
+    case Control::NeedlessCooling:
     case Control::OnSetpointVentilation:
     case Control::OnSetpointHeating:
     case Control::CarryOn:
+        action = Action::CarryOn;
         break;
     }
+    actionCode = static_cast<int>(action);
 }
 
-void Budget::tooHot() {
+void Budget::increaseVentilation() {
     rollBack();
     actuatorVentilation->increase(deltaVentilationControl*timeStep/60.);
     updateLayersAndVolumes();
+    action = Action::IncreaseVentilation;
 }
 
-void Budget::tooCold() {
+void Budget::decreaseVentilation() {
+    rollBack();
+    actuatorVentilation->increase(-deltaVentilationControl*timeStep/60.);
+    updateLayersAndVolumes();
+    action = Action::DecreaseVentilation;
+}
+
+void Budget::increaseHeating() {
     if (heatPipes) {
         rollBack();
         heatPipes->increase(deltaHeatingControl*timeStep/60.);
         budgetLayerHeatPipes->evaluatePorts();
         updateLayersAndVolumes();
     }
+    action = Action::IncreaseHeating;
+}
+
+void Budget::decreaseHeating() {
+    if (heatPipes) {
+        rollBack();
+        heatPipes->increase(-deltaHeatingControl*timeStep/60.);
+        budgetLayerHeatPipes->evaluatePorts();
+        updateLayersAndVolumes();
+    }
+    action = Action::DecreaseHeating;
 }
 
 

@@ -1,5 +1,5 @@
 Simulation sim {
-  // .steps = 960
+  .steps = 1035
   Box global {
     &beginDate = 2022/08/01
   }
@@ -270,7 +270,7 @@ Simulation sim {
         DateTimeSignal {
           .beginDate = 1/1
           .endDate = 31/12
-          .signalInside = 0.5
+          .signalInside = 40.0
         }
       }
       Box temperature {
@@ -564,7 +564,7 @@ Simulation sim {
     HeatPipes heatPipes {
       ActuatorHeatPipe circuit1 {
         .volume = 14.14 
-        .flowRate = 10.0
+        .flowRate = 40.0
         .k = 0.0063
         .b = 1.25
         .propLw = 0.5
@@ -616,29 +616,39 @@ Simulation sim {
     PageR {
       .xAxis = calendar[dateTime]
       .nrow = 1
+      // PlotR {
+        // .ports = budget/screen1[radiationDeltaT] | 
+                 // budget/screen1[convectionDeltaT] | 
+                 // budget/screen1[convectionTop] |
+                 // budget/screen1[convectionBottom] |
+                 // budget/screen1[temperature] 
+      // }
+      // PlotR {
+        // .ports = budget/screen2[radiationDeltaT] | 
+                 // budget/screen2[convectionDeltaT] | 
+                 // budget/screen2[convectionTop] |
+                 // budget/screen2[convectionBottom] |
+                 // budget/screen2[temperature] 
+      // }
       PlotR {
-        .ports = budget/screen1[radiationDeltaT] | 
-                 budget/screen1[convectionDeltaT] | 
-                 budget/screen1[convectionTop] |
-                 budget/screen1[convectionBottom] |
-                 budget/screen1[temperature] 
-      }
-      PlotR {
-        .ports = budget/screen2[radiationDeltaT] | 
-                 budget/screen2[convectionDeltaT] | 
-                 budget/screen2[convectionTop] |
-                 budget/screen2[convectionBottom] |
-                 budget/screen2[temperature] 
+        .ports = actuators/ventilation[isVentilating] | 
+                 actuators/ventilation[desiredValue] |
+                 actuators/ventilation[minValue] |
+                 actuators/ventilation[maxValue] |
+                 actuators/ventilation[leakage] |
+                 actuators/ventilation[value] |
+                 actuators/ventilation[relative] |
+                 actuators/ventilation[crackVentilation] |
+                 heatPipes/*[isHeating]
       }
       PlotR {
         .ports = budget[radIterations] | budget[subSteps] | budget[maxDeltaT] | budget[advectionDeltaT] |
-                 indoors[temperature]| indoors[heatInflux] |
-                 actuators/ventilation[value]
+                 indoors[temperature]| indoors[heatInflux] | heatPipes/*[inflowTemperature]
       }
       PlotR {
-        .ports = budget[transpirationDeltaAh] | budget[advectionDeltaAh] | budget[controlCode] | 
+        .ports = budget[indoorsDeltaAh] | budget[controlCode] | budget[actionCode] |
                  budget[ventilationThreshold] | budget[heatingThreshold] |
-                 indoors[rh] | outdoors[rh]
+                 indoors[rh] | outdoors[rh] | outdoors[radiation] | outdoors[temperature]
       }
     // OutputSelector {
       // .beginDateTime = global[beginDate]

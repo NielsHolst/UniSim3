@@ -23,7 +23,7 @@ void log(QString s) {
     file.setFileName(fileNamePath);
     file.open(QIODevice::Text|QIODevice::Append);
     QTextStream str(&file);
-    str << qPrintable(timeStamp + " " + s) << "\n";
+    str << qPrintable(timeStamp + "\t" + s) << "\n";
     file.close();
 }
 

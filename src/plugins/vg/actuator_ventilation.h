@@ -28,9 +28,7 @@ private:
         windSpeed, outdoorsTemperature, indoorsTemperature,
         ventAreaRatio;
     // Output
-    double value, relative;
-    // Data
-    double _minValue, _maxValue;
+    double value, relative, minValue, maxValue;
     bool isVentilating;
     // Methods
     void updateOutput();

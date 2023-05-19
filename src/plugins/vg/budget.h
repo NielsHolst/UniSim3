@@ -29,9 +29,9 @@ private:
     QVector<bool> heatPipesOn;
     bool ventilationOn;
     // Output
-    int radIterations, subSteps, controlCode;
+    int radIterations, subSteps, controlCode, actionCode;
     double maxDeltaT, advectionDeltaT,
-        transpirationDeltaAh, advectionDeltaAh;
+        indoorsDeltaAh;
     // Volumes
     QVector<BudgetVolume*> volumes;
     BudgetVolume *outdoorsVol, *indoorsVol, *soilVol;
@@ -55,6 +55,10 @@ private:
     State swState, lwState, parState;
     enum class Control{CarryOn, OnSetpointVentilation, OnSetpointHeating, GreenhouseTooHot, GreenhouseTooCold, NeedlessHeating, NeedlessCooling};
     Control control;
+    enum class Action{CarryOn, IncreaseVentilation, DecreaseVentilation, IncreaseHeating, DecreaseHeating};
+    Action action;
+    // Data
+    double indoorsAh;
     // Parameters
     struct Parameters {
         QVector<const double *> a, a_, r, r_, t, t_;
@@ -91,8 +95,10 @@ private:
     void rollBack();
     void diagnoseControl();
     void exertControl();
-    void tooHot();
-    void tooCold();
+    void increaseVentilation();
+    void decreaseVentilation();
+    void increaseHeating();
+    void decreaseHeating();
 };
 
 }

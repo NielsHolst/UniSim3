@@ -46,6 +46,7 @@ ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(convectionTop).help("Convective heat flux upwards").unit("W/m2");
     Output(convectionBottom).help("Convective heat flux downwards").unit("W/m2");
+    Output(isHeating).help("Is heat pipe inflow above minimum temperature?").unit("bool");
 }
 
 void ActuatorHeatPipe::reset() {
@@ -74,10 +75,7 @@ void ActuatorHeatPipe::update() {
 }
 
 void ActuatorHeatPipe::increase(double delta) {
-    if (le(desiredTemperature, minTemperature))
-        desiredTemperature = minTemperature + delta;
-    else
-        desiredTemperature += delta;
+    desiredTemperature = inflowTemperature + delta;
 }
 
 }
