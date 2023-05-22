@@ -38,16 +38,17 @@ void Sky::reset() {
 void Sky::update() {
     double dewTemp = Tdew(airTemperature, rh),
            emissivity = std::min(intercept + slope*dewTemp, 1.0);
-    temperature = (Tsky > -273.) ? Tsky : pow(emissivity*p4K(dewTemp), 0.25) - T0;
+    temperature = (Tsky > -273.) ? Tsky :
+                  pow(emissivity, 0.25)*(airTemperature + T0) - T0;
 
     swAbsorptivityTopAdj =
     lwAbsorptivityTopAdj =
     swAbsorptivityBottomAdj =
     lwAbsorptivityBottomAdj = emissivity;
-    swReflectivityTopAdj =
-    lwReflectivityTopAdj =
-    swReflectivityBottomAdj =
-    lwReflectivityBottomAdj = 1. - emissivity;
+    swTransmissivityTopAdj =
+    lwTransmissivityTopAdj =
+    swTransmissivityBottomAdj =
+    lwTransmissivityBottomAdj = 1. - emissivity;
     checkOutputs();
 }
 

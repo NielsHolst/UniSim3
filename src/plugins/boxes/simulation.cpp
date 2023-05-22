@@ -89,6 +89,9 @@ void Simulation::run() {
             step = 0;
             while (!stopStep && step < steps) {
                 ++step;
+                if (Box::debug())
+                    dialog().information("iteration: " + QString::number(iteration) +
+                                         "step     : " + QString::number(step));
                 show(time);
                 updateFamily();
                 ResolvedReferences::check();

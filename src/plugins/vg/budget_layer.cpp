@@ -48,6 +48,7 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(radiationDeltaT).unit("oC").help("Change in temperature due to net radiation");
     Output(convectionDeltaT).unit("oC").help("Change in temperature due to net convection/conduction");
     Output(totalDeltaT).unit("oC").help("Total change in temperature");
+    Output(condensation).unit("kg/m2").help("Condensation (top+bottom)");
 }
 
 void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom)
@@ -59,6 +60,8 @@ void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVo
     UtopAdj          = attachedLayer->port("UtopAdj")->valuePtr<double>();
     UbottomAdj       = attachedLayer->port("UbottomAdj")->valuePtr<double>();
     heatCapacity     = attachedLayer->port("heatCapacityAdj")->valuePtr<double>();
+    screenEffectiveArea = attachedLayer->peakPort("effectiveArea") ?
+                       attachedLayer->port("effectiveArea")->valuePtr<double>() : nullptr;
     // Attach volumes
     volumeTop = top;
     volumeBottom = bottom;
@@ -83,10 +86,12 @@ void BudgetLayer::reset() {
     update();
 }
 
-//void BudgetLayer::update() {
-//    updateLwEmission();
-//    updateConvection();
-//}
+
+void BudgetLayer::updateNetRadiation() {
+    netRadiation =   swAbsorbedTop + swAbsorbedBottom
+                   + lwAbsorbedTop + lwAbsorbedBottom
+                   - lwEmissionTop - lwEmissionBottom;
+}
 
 double BudgetLayer::updateDeltaT(double timeStep) {
     if (eqZero(*heatCapacity)) {
@@ -96,11 +101,7 @@ double BudgetLayer::updateDeltaT(double timeStep) {
     }
     else {
         // Change by radiation
-        const double radAbsorbed = swAbsorbedTop + swAbsorbedBottom +
-                lwAbsorbedTop + lwAbsorbedBottom -
-                lwEmissionTop - lwEmissionBottom +
-                convectionTop + convectionBottom;
-        radiationDeltaT = radAbsorbed*timeStep/(*heatCapacity);
+        radiationDeltaT = netRadiation*timeStep/(*heatCapacity);
 
         // Change by convection
         const double convAbsorbed = convectionTop + convectionBottom;
@@ -122,22 +123,21 @@ void BudgetLayer::updateLwEmission() {
 void BudgetLayer::updateConvection() {
     // Flux is positive if volume is warmer than layer
     if (!convectionTopUpdatedExternally) {
-        convectionTop    = eqZero(*UtopAdj) ? 0. : ((*temperatureVolumeTop)    - temperature)/(*UtopAdj);
+        convectionTop    = eqZero(*UtopAdj) ? 0. : ((*temperatureVolumeTop)    - temperature)*(*UtopAdj);
     }
     if (!convectionBottomUpdatedExternally) {
-        convectionBottom = eqZero(*UbottomAdj) ? 0. : ((*temperatureVolumeBottom) - temperature)/(*UbottomAdj);
+        convectionBottom = eqZero(*UbottomAdj) ? 0. : ((*temperatureVolumeBottom) - temperature)*(*UbottomAdj);
     }
-
-//    QString s = objectName() +
-//            " " + QString::number(convectionTop) +
-//            " " + QString::number(convectionBottom);
-//    log(s);
 
     // Transfer fluxes to neighbouring volumes
     if (volumeBottom)
         volumeBottom->addHeatInflux(-convectionBottom);
     if (volumeTop)
         volumeTop->addHeatInflux(-convectionTop);
+}
+
+double BudgetLayer::updateCondensation() {
+    return 0.;
 }
 
 }

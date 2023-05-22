@@ -7,33 +7,29 @@
 */
 #include <base/phys_math.h>
 #include <base/publish.h>
-#include "budget_layer_floor.h"
+#include "budget_layer_cover.h"
 
 using namespace base;
 using namespace phys_math;
 
 namespace vg {
 
-PUBLISH(BudgetLayerFloor)
+PUBLISH(BudgetLayerCover)
 
-BudgetLayerFloor::BudgetLayerFloor(QString name, base::Box *parent)
+BudgetLayerCover::BudgetLayerCover(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
+    Input(coverPerGroundArea).imports("geometry[coverPerGroundArea]");
     Input(indoorsRh).imports("indoors[rh]");
 }
 
-void BudgetLayerFloor::updateLwEmission() {
-    lwEmissionTop    = Sigma*(*emissivityTop)*p4K(temperature);
-    lwEmissionBottom = 0.;
-}
-
-double BudgetLayerFloor::updateCondensation() {
-    // Condensation on top of floor
-    // Top volume is indoors
+double BudgetLayerCover::updateCondensation() {
+    // Condensation on inside of cover
+    // Bottom volume is indoors
     const double
-        indoorsAh = ahFromRh(*temperatureVolumeTop, indoorsRh),
-        floorSah  = sah(temperature);
-    condensation = 2e-3*std::max(indoorsAh - floorSah, 0.);
+        indoorsAh = ahFromRh(*temperatureVolumeBottom, indoorsRh),
+        coverSah  = sah(temperature);
+    condensation = 2e-3*coverPerGroundArea*std::max(indoorsAh - coverSah, 0.);
     return condensation;
 }
 

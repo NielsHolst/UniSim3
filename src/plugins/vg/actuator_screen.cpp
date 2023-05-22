@@ -16,7 +16,7 @@ PUBLISH(ActuatorScreen)
 
 
 ActuatorScreen::ActuatorScreen(QString name, Box *parent)
-    : Box(name, parent), LayerAdjusted(name, parent)
+    : Box(name, parent)
 {
     help("models the state of a screen layer");
     Input(lagPeriod).equals(5.).unit("min").help("Time to draw the screen completely");

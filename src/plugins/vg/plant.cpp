@@ -48,16 +48,9 @@ Plant::Plant(QString name, Box *parent)
     Input(delsC).equals(629.26).help("Temperature response of Vcmax");
     Input(Q10  ).equals(1.92).help("Temperature response of respiration");
 
-    Input(timeStep).imports("calendar[timeStepSecs]");
     Input(indoorsTemperature).imports("indoors[temperature]");
     Input(indoorsRh).imports("indoors[rh]");
     Input(indoorsCo2).imports("indoors[co2]");
-    Input(swAbsorbedTop).imports("budget/plant[swAbsorbedTop]");
-    Input(swAbsorbedBottom).imports("budget/plant[swAbsorbedBottom]");
-    Input(lwAbsorbedTop).imports("budget/plant[lwAbsorbedTop]");
-    Input(lwAbsorbedBottom).imports("budget/plant[lwAbsorbedBottom]");
-    Input(parAbsorbedTop).imports("budget/plant[parAbsorbedTop]");
-    Input(parAbsorbedBottom).imports("budget/plant[parAbsorbedBottom]");
 
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
@@ -70,23 +63,26 @@ Plant::Plant(QString name, Box *parent)
 }
 
 void Plant::reset() {
+    temperature = 20.;
     rhoh_ = (1 - sqrt(1-sigma))/(1 + sqrt(1-sigma));
     updateRadiative();
-    update();
 }
 
 void Plant::update() {
-    svp_         = svp(indoorsTemperature);
-    vp_          = vpFromRh(indoorsTemperature, indoorsRh);
-    svpSlope_    = svpSlope(indoorsTemperature);
-    ri_          = ri();
-    absorbedTotal_ = swAbsorbedTop + swAbsorbedBottom + lwAbsorbedTop + lwAbsorbedBottom;
-    incidentPar_   = (parAbsorbedTop + parAbsorbedBottom)/lai/swAbsorptivityTopAdj/timeStep;
+    updateRadiative();
+}
+
+void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
+    netRadiation_ = netRadiation;
+    incidentPar_  = parAbsorbed/lai/swAbsorptivityTopAdj;
+    svp_          = svp(indoorsTemperature);
+    vp_           = vpFromRh(indoorsTemperature, indoorsRh);
+    svpSlope_     = svpSlope(indoorsTemperature);
+    ri_           = ri();
     updateTemperature();
     updateTranspiration();
     updateLeafPhotosynthesis();
     updateCanopyPhotosynthesis();
-    updateRadiative();
 }
 
 void Plant::updateRadiative() {
@@ -109,14 +105,14 @@ void Plant::updateRadiative() {
 
 void Plant::updateTemperature() {
     double
-        a = (ri_+re)/2./lai/RhoAir/CpAir*absorbedTotal_ - 1./Psychr*(svp_ - vp_),
+        a = (ri_+re)/2./lai/RhoAir/CpAir*netRadiation_ - 1./Psychr*(svp_ - vp_),
         b = 1. + svpSlope_/Psychr + ri_/re;
     temperature = indoorsTemperature + a/b;
 }
 
 void Plant::updateTranspiration() {
     double
-        a = svpSlope_/Psychr*absorbedTotal_ + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
+        a = svpSlope_/Psychr*netRadiation_ + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
         b = LHe*(1. + svpSlope_/Psychr + ri_/re);
     transpiration = a/b;
 }

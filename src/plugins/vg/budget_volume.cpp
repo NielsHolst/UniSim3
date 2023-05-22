@@ -17,9 +17,11 @@ BudgetVolume::BudgetVolume(QString name, base::Box *parent)
     : Box(name, parent)
 {
     Input(initTemperature).equals(20.).unit("oC").help("Initial temperature");
-    Input(initRh).equals(70.).unit("%").equals(60.).help("Initial relative humidity");
+    Input(initRh).equals(70.).unit("%").help("Initial relative humidity");
+    Input(initCo2).equals(400.).unit("ppm").help("Initial CO2 concentration");
     Output(temperature).unit("oC").help("Temperature");
     Output(rh).unit("%").help("Relative humidity");
+    Output(co2).unit("ppm").help("CO2 concentration");
     Output(heatInflux).unit("W/m2").help("Total convective/conductive heat influx");
 }
 
@@ -30,6 +32,7 @@ void BudgetVolume::addLayer(const BudgetLayer *layer) {
 void BudgetVolume::reset() {
     temperature = initTemperature;
     rh = initRh;
+    co2 = initCo2;
     update();
 }
 

@@ -20,9 +20,15 @@ class AverageScreen : public AverageCoverOrScreen
 public: 
     AverageScreen(QString name, Box *parent);
     void amend();
+    void reset();
+    void update();
 private:
+    // Output
+    double effectiveArea;
     // Data
     QVector<Box*> _faces;
+    QVector<double> _areas;
+    QVector<const double *> _states;
     // Methods
     QStringList collectFacesByMaterial(QString material);
     QString pathToMaterialPorts(QString material, QString portName) const;

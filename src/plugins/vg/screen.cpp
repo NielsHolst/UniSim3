@@ -59,6 +59,7 @@ void Screen::update() {
     UtopAdj         = Utop;
     UbottomAdj      = Ubottom;
     heatCapacityAdj = heatCapacity;
+
     checkOutputs();
 }
 

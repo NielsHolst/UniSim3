@@ -5,23 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef BUDGET_LAYER_FLOOR_H
-#define BUDGET_LAYER_FLOOR_H
-#include "budget_layer.h"
+#include <base/publish.h>
+#include "budget_layer_plant.h"
+
+using namespace base;
 
 namespace vg {
 
-class BudgetLayerFloor : public BudgetLayer {
-public:
-    BudgetLayerFloor(QString name, base::Box *parent);
-    void updateLwEmission();
-    double updateCondensation();
-private:
-    double indoorsRh;
-    // Friends
-    friend class Budget;
-};
+PUBLISH(BudgetLayerPlant)
+
+BudgetLayerPlant::BudgetLayerPlant(QString name, base::Box *parent)
+    : BudgetLayer(name, parent)
+{
+    Output(netRadiation).unit("J/m2 ground").help("Net radiation balance (sw+lw)");
+}
+
+double BudgetLayerPlant::updateDeltaT(double) {
+    netRadiation = calcNetRadiation();
+    return 0.;
+}
 
 }
 
-#endif

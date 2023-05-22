@@ -5,6 +5,7 @@
 #include <base/box_builder.h>
 #include <base/phys_math.h>
 #include <base/publish.h>
+#include <base/test_num.h>
 #include "actuator_ventilation.h"
 #include "average_cover.h"
 #include "average_screen.h"
@@ -20,6 +21,15 @@
 
 using namespace base;
 using namespace phys_math;
+using namespace TestNum;
+
+namespace {
+    double integrate(double x, double y0, double k, double v, double z) {
+        return eqZero(v) ?
+               y0 + k*x :
+               exp(-v*x)*( y0 + (k/v + z)*(exp(v*x)-1.) );
+    }
+}
 
 namespace vg {
 
@@ -36,8 +46,12 @@ Budget::Budget(QString name, base::Box *parent)
     Input(averageHeight).imports("geometry[averageHeight]");
     Input(outdoorsTemperature).imports("outdoors[temperature]");
     Input(outdoorsRh).imports("outdoors[rh]");
+    Input(outdoorsCo2).imports("outdoors[co2]");
     Input(transpirationRate).imports("plant[transpiration]");
-    Input(ventilationThreshold).imports("controllers/ventilation[value]");
+    Input(Pn).imports("plant[Pn]");
+    Input(co2Injection).imports("actuators/co2[value]");
+    Input(ventilationThreshold).imports("controllers/ventilation/temperatureThreshold[value]");
+    Input(ventilationCostThreshold).imports("controllers/ventilation/maxHeatingCost[value]");
     Input(heatingThreshold).imports("controllers/heating[value]");
     Input(heatPipesOn).imports("heatPipes/*[isHeating]");
     Input(ventilationOn).imports("actuators/ventilation[isVentilating]");
@@ -48,7 +62,6 @@ Budget::Budget(QString name, base::Box *parent)
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step among layers");
     Output(advectionDeltaT).unit("K").help("Change in indoors temperature caused by ventilation");
-    Output(indoorsDeltaAh).unit("kg/m3").help("Change in indoors absolute humidity");
     Output(controlCode).unit("int").help("Code for the control option needed");
     Output(actionCode).unit("int").help("Code for the control action taken");
 }
@@ -103,12 +116,12 @@ void Budget::addLayers() {
             port("swEmissionBottom").imports("outdoors[radiation]").
             port("parEmissionBottom").imports("outdoors[par]").
         endbox().
-        box("BudgetLayer").name("cover").
+        box("BudgetLayerCover").name("cover").
         endbox();
     QStringList screenNames;
     for (AverageScreen *screen : screens) {
         builder.
-            box("BudgetLayer").name(screen->objectName()).
+            box("BudgetLayerScreen").name(screen->objectName()).
             endbox();
         screenNames << screen->objectName();
     }
@@ -150,7 +163,7 @@ void Budget::addLayers() {
     layers << budgetLayerSky;
 
     // Attach cover
-    BudgetLayer *budgetLayerCover = findOne<BudgetLayer*>("./cover");
+    budgetLayerCover = findOne<BudgetLayer*>("./cover");
     budgetLayerCover->attach(cover, outdoorsVol, indoorsVol);
     layers << budgetLayerCover;
 
@@ -171,7 +184,7 @@ void Budget::addLayers() {
 
     // Attach plant
     if (plant) {
-        BudgetLayer *budgetLayerPlant = findOne<BudgetLayer*>("./plant");
+        budgetLayerPlant = findOne<BudgetLayer*>("./plant");
         budgetLayerPlant->attach(plant, indoorsVol, indoorsVol);
         layers << budgetLayerPlant;
     }
@@ -253,42 +266,59 @@ void Budget::reset() {
 
 void Budget::update() {
     updateLayersAndVolumes();
+    updateCo2();
     exertControl();
 }
 
 void Budget::updateLayersAndVolumes() {
     saveForRollBack();
     maxDeltaT = 0.;
-    updateSubStep(timeStep);
+    updateSubStep(timeStep, UpdateOption::IncludeSwPar);
     if (maxDeltaT < tempPrecision) {
         subSteps = 1;
+        plant->updateByRadiation(budgetLayerPlant->netRadiation,
+                                 budgetLayerPlant->parAbsorbedTop +
+                                 budgetLayerPlant->parAbsorbedBottom);
         applyDeltaT();
-        applyDeltaAh();
+        updateWaterBalance(timeStep);
     }
     else {
+        QVector<double> T, netRad;
+        for (auto *layer : layers) {
+            T << layer->temperature;
+            netRad << layer->netRadiation;
+        }
         subSteps = static_cast<int>(ceil(maxDeltaT/tempPrecision));
         maxDeltaT = 0.;
         for (int i=0; i<subSteps; ++i) {
-            updateSubStep(timeStep/subSteps);
+            updateSubStep(timeStep/subSteps, UpdateOption::ExcludeSwPar);
+            plant->updateByRadiation(budgetLayerPlant->netRadiation,
+                                     budgetLayerPlant->parAbsorbedTop +
+                                     budgetLayerPlant->parAbsorbedBottom);
             applyDeltaT();
-            applyDeltaAh();
+            updateWaterBalance(timeStep/subSteps);
         }
     }
 }
 
-void Budget::updateSubStep(double subTimeStep) {
+void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     // Update radiation budget
     updateLwEmission();
-    swState.init();
+    if (option == UpdateOption::IncludeSwPar) {
+        swState.init();
+        parState.init();
+    }
     lwState.init();
-    parState.init();
-    distributeRadiation(parState, swParam);
-    distributeRadiation(swState,  swParam);
+
+    if (option == UpdateOption::IncludeSwPar) {
+        distributeRadiation(swState,  swParam);
+        distributeRadiation(parState, swParam);
+    }
     distributeRadiation(lwState,  lwParam);
+
+    updateNetRadiation();
     // Update convection/conduction budget
     updateConvection();
-    // Update water balance
-    updateDeltaAh(subTimeStep);
     // Update prospective change in temperature
     updateDeltaT(subTimeStep);
 }
@@ -298,11 +328,51 @@ void Budget::updateLwEmission() {
         layer->updateLwEmission();
 }
 
+void Budget::updateNetRadiation() {
+    for (BudgetLayer *layer : layers)
+        layer->updateNetRadiation();
+}
+
 void Budget::updateConvection() {
     for (BudgetVolume *volume : volumes)
         volume->heatInflux = 0.;
     for (BudgetLayer *layer : layers)
         layer->updateConvection();
+}
+
+void Budget::updateWaterBalance(double timeStep) {
+    double condensation = 0.;
+    for (BudgetLayer *layer : layers)
+        condensation += layer->updateCondensation();
+
+    double indoorsAh = ahFromRh(indoorsVol->temperature,  indoorsVol->rh);
+    const double
+       outdoorsAh    = ahFromRh(outdoorsTemperature, outdoorsRh),
+       transpiration = transpirationRate/averageHeight,
+       flux          = transpiration - condensation,
+       v             = (*ventilationRate)/3600.;
+
+    indoorsAh = integrate(timeStep, indoorsAh, flux, v, outdoorsAh);
+    indoorsVol->rh = rhFromAh(indoorsVol->temperature, indoorsAh);
+}
+
+
+void Budget::updateCo2() {
+    double
+        indoorsCo2  = 1.829e-3*indoorsVol->co2,
+        outdoorsCo2 = 1.829e-3*Budget::outdoorsCo2,
+        injection   = co2Injection/averageHeight/3600.,
+        fixation    = Pn*44.01e-6/averageHeight,
+        c           = injection - fixation,
+        v           = (*ventilationRate)/3600.;
+
+    if (eqZero(v)) {
+        indoorsCo2 += c*timeStep;
+    }
+    else {
+        indoorsCo2 = integrate(timeStep, indoorsCo2, c, v, outdoorsCo2);
+    }
+    indoorsVol->co2 = indoorsCo2/1.829e-3;
 }
 
 void Budget::State::init() {
@@ -312,6 +382,7 @@ void Budget::State::init() {
         *A_[i] = 0.;
         *F[i]  = *E.at(i);
         *F_[i] = *E_.at(i);
+
     }
 }
 
@@ -408,8 +479,9 @@ void Budget::distributeRadiation(State &s, const Parameters &p) {
         ++radIterations;
         distributeRadDown(s, p);
         distributeRadUp(s, p);
-        residual = 0.;
-        for (int i=0; i<numLayers; ++i)
+        // Don't include upwards radiation (F_) from sky layer in residual
+        residual = *s.F.at(0);
+        for (int i=1; i<numLayers; ++i)
             residual += *s.F.at(i) + *s.F_.at(i);
     } while (residual > radPrecision);
 }
@@ -426,29 +498,10 @@ void Budget::updateDeltaT(double timeStep) {
         maxDeltaT = fabs(indoorsDeltaT);
 }
 
-namespace {
-    double integrate(double x, double y0, double k, double v, double z) {
-        return exp(-v*x)*( y0 + (k/v + z)*(exp(v*x)-1.) );
-    }
-}
-void Budget::updateDeltaAh(double timeStep) {
-    indoorsAh         = ahFromRh(indoorsVol->temperature,  indoorsVol->rh);
-    double outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh),
-           transp     = transpirationRate/averageHeight,
-           v          = (*ventilationRate)/3600.;
-
-    double indoorsAhIntegrated = integrate(timeStep, indoorsAh, transp, v, outdoorsAh);
-    indoorsDeltaAh = indoorsAhIntegrated - indoorsAh;
-}
-
 void Budget::applyDeltaT() {
     for (BudgetLayer *layer : layers)
         layer->temperature += layer->totalDeltaT;
     indoorsVol->temperature += indoorsDeltaT;
-}
-
-void Budget::applyDeltaAh() {
-    indoorsVol->rh = rhFromAh(indoorsVol->temperature, indoorsAh + indoorsDeltaAh);
 }
 
 void Budget::saveForRollBack() {
@@ -490,6 +543,7 @@ void Budget::diagnoseControl() {
     else if (ventilationOn)
         control = Control::NeedlessCooling;
     else control = Control::CarryOn;
+    greenhouseTooHumid = (ventilationCostThreshold > 0.);
     controlCode = static_cast<int>(control);
 }
 
@@ -503,7 +557,7 @@ void Budget::exertControl() {
             increaseVentilation();
         break;
     case Control::GreenhouseTooCold:
-        if (ventilationOn)
+        if (ventilationOn && !greenhouseTooHumid)
             decreaseVentilation();
         else
             increaseHeating();
@@ -512,6 +566,9 @@ void Budget::exertControl() {
         decreaseHeating();
         break;
     case Control::NeedlessCooling:
+        if (!greenhouseTooHumid)
+            decreaseVentilation();
+        break;
     case Control::OnSetpointVentilation:
     case Control::OnSetpointHeating:
     case Control::CarryOn:
@@ -540,6 +597,7 @@ void Budget::increaseHeating() {
         rollBack();
         heatPipes->increase(deltaHeatingControl*timeStep/60.);
         budgetLayerHeatPipes->evaluatePorts();
+        extraVentilation();
         updateLayersAndVolumes();
     }
     action = Action::IncreaseHeating;
@@ -550,10 +608,16 @@ void Budget::decreaseHeating() {
         rollBack();
         heatPipes->increase(-deltaHeatingControl*timeStep/60.);
         budgetLayerHeatPipes->evaluatePorts();
+        extraVentilation();
         updateLayersAndVolumes();
     }
     action = Action::DecreaseHeating;
 }
 
+void Budget::extraVentilation() {
+    if (greenhouseTooHumid) {
+        actuatorVentilation->increase(deltaVentilationControl*timeStep/60.);
+    }
+}
 
 }

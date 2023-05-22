@@ -22,10 +22,10 @@ public:
 private:
     // Inputs
     double
-        initTemperature, initRh;
+        initTemperature, initRh, initCo2;
     // Outputs
     double
-        temperature, rh,
+        temperature, rh, co2,
         heatInflux;
     // Data
     QVector<const BudgetLayer *> layers;

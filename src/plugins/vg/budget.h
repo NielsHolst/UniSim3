@@ -22,23 +22,28 @@ private:
     double
         radPrecision, tempPrecision, thresholdPrecision,
         timeStep, averageHeight,
-        outdoorsTemperature, outdoorsRh,
-        transpirationRate,
-        ventilationThreshold, heatingThreshold,
+        outdoorsTemperature, outdoorsRh, outdoorsCo2,
+        transpirationRate, Pn, co2Injection,
+        ventilationThreshold, ventilationCostThreshold, heatingThreshold,
         deltaVentilationControl, deltaHeatingControl;
     QVector<bool> heatPipesOn;
     bool ventilationOn;
+
     // Output
     int radIterations, subSteps, controlCode, actionCode;
-    double maxDeltaT, advectionDeltaT,
-        indoorsDeltaAh;
+    double maxDeltaT, advectionDeltaT;
+
     // Volumes
     QVector<BudgetVolume*> volumes;
     BudgetVolume *outdoorsVol, *indoorsVol, *soilVol;
     double indoorsHeatCapacity, indoorsDeltaT;
+
     // Layers
     QVector<BudgetLayer*> layers;
-    BudgetLayer *budgetLayerHeatPipes;
+    BudgetLayer
+        *budgetLayerCover,
+        *budgetLayerPlant,
+        *budgetLayerHeatPipes;
     int numLayers;
     Sky *sky;
     AverageCover *cover;
@@ -47,6 +52,7 @@ private:
     HeatPipes *heatPipes;
     Plant *plant;
     Floor *floor;
+
     // State
     struct State {
         QVector<double *> E, E_, F, F_, A, A_;
@@ -55,19 +61,22 @@ private:
     State swState, lwState, parState;
     enum class Control{CarryOn, OnSetpointVentilation, OnSetpointHeating, GreenhouseTooHot, GreenhouseTooCold, NeedlessHeating, NeedlessCooling};
     Control control;
+    bool greenhouseTooHumid;
     enum class Action{CarryOn, IncreaseVentilation, DecreaseVentilation, IncreaseHeating, DecreaseHeating};
     Action action;
-    // Data
-    double indoorsAh;
+
     // Parameters
     struct Parameters {
         QVector<const double *> a, a_, r, r_, t, t_;
     };
     Parameters swParam, lwParam;
+
     // Actuators
     ActuatorVentilation *actuatorVentilation;
     const double *ventilationRate;
+
     // Methods
+    enum class UpdateOption{IncludeSwPar, ExcludeSwPar};
     void addVolumes();
     void addLayers();
     void addState();
@@ -79,18 +88,19 @@ public:
     void reset();
     void update();
 private:
-    void updateSubStep(double subTimeStep);
+    void updateSubStep(double subTimeStep, UpdateOption option);
     void updateLwEmission();
+    void updateNetRadiation();
+    void updateWaterBalance(double subTimeStep);
     void updateLayersAndVolumes();
+    void updateCo2();
     void resetState();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);
     void updateConvection();
     void updateDeltaT(double timeStep);
-    void updateDeltaAh(double timeStep);
     void applyDeltaT();
-    void applyDeltaAh();
     void saveForRollBack();
     void rollBack();
     void diagnoseControl();
@@ -99,6 +109,7 @@ private:
     void decreaseVentilation();
     void increaseHeating();
     void decreaseHeating();
+    void extraVentilation();
 };
 
 }

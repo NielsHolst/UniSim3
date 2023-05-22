@@ -383,7 +383,7 @@ bool Box::diagnose() {
     return _diagnoseOn;
 }
 
-void Box::diagnose(double minValue, double maxValue, QString) {
+void Box::diagnose(double minValue, double maxValue) {
     _diagnoseOn = true;
     _diagnoseMin = minValue;
     _diagnoseMax = maxValue;

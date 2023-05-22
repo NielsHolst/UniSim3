@@ -23,6 +23,7 @@ AverageScreen::AverageScreen(QString name, Box *parent)
       AverageCoverOrScreen(name, parent)
 {
     help("computes average screen radiation and heat parameters");
+    Input(effectiveArea).unit("m2").help("Total area of screens drawn");
 }
 
 void AverageScreen::amend() {
@@ -65,6 +66,35 @@ void AverageScreen::amend() {
             buildAverageMaterial(builder, material);
     }
     builder.endbox(); //end materials
+}
+
+void AverageScreen::reset() {
+    // Collect the six areas and states
+    // Done here since we need updated area values
+    static double zero = 0.;
+    _areas.clear();
+    _states.clear();
+    for (Box *face : _faces) {
+        QStringList screenNames = face->port("screens")->value<QString>().split("+");
+        int layerNumber = getNumberFromName();
+        QString material = screenNames.at(layerNumber-1);
+        if (material == "none") {
+            _areas << 0.;
+            _states << &zero;
+        }
+        else {
+            _areas << face->port("area")->value<double>();
+            _states << findOne<Box*>("shelter/screens/"+ material)->port("state")->valuePtr<double>();
+        }
+    }
+    update();
+}
+
+void AverageScreen::update() {
+    AverageCoverOrScreen::update();
+    effectiveArea = 0.;
+    for (int i=0; i<6; ++i)
+        effectiveArea += _areas.at(i)*(*_states.at(i));
 }
 
 int AverageScreen::getNumberFromName() const {

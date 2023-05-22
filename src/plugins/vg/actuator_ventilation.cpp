@@ -26,7 +26,6 @@ ActuatorVentilation::ActuatorVentilation(QString name, Box *parent)
     Input(ventAreaRatio).equals(0.40).unit("int").help("Total vent area in proportion to groundarea");
     Input(windCoef).equals(50.).help("Proportionality of air flux with windspeed").unit("/h/(m/s)");
     Input(temperatureCoef).equals(14.).help("Proportionality of air flux with temperature diffence").unit("/h/K");
-    Input(crackVentilation).imports("controllers/crackVentilation[value]", CA).help("Minimum air flux through vents").unit("/h");
     Input(windSpeed).imports("outdoors[windSpeed]", CA);
     Input(leakage).imports("construction/leakage[value]", CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]", CA);
@@ -48,7 +47,7 @@ void ActuatorVentilation::update() {
     double maxFluxWind = ventAreaRatio*windCoef*windSpeed,
            maxFluxTemp = ventAreaRatio*temperatureCoef*std::max(indoorsTemperature - outdoorsTemperature, 0.);
     // Use vector addition
-    minValue = sqrt(p2(crackVentilation) + p2(leakage)),
+    minValue = leakage,
     maxValue = sqrt(p2(maxFluxWind) + p2(maxFluxTemp) + p2(leakage));
     maxValue = std::max(minValue, maxValue);
     updateOutput();

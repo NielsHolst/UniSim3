@@ -22,18 +22,21 @@ diagnose::diagnose(QString name, Box *parent)
 }
 
 void diagnose::doExecute() {
-    if (_args.size() != 3 && _args.size() != 4)
-        ThrowException("Command 'debug' takes two or three arguments");
+    bool noArguments  = (_args.size() == 1),
+         hasArguments = (_args.size() == 3);
+    if (!noArguments && !hasArguments)
+        ThrowException("Command 'debug' optionally takes two arguments");
 
-    bool ok1, ok2;
-    double minValue = QString(_args[1]).toDouble(&ok1),
-           maxValue = QString(_args[2]).toDouble(&ok2);
-    if (!ok1 || !ok2)
-        ThrowException("Provide min and max value as arguments");
+    double minValue = -1e6, maxValue = 1e6;
+    if (hasArguments) {
+        bool ok1, ok2;
+        minValue = QString(_args[1]).toDouble(&ok1),
+        maxValue = QString(_args[2]).toDouble(&ok2);
+        if (!ok1 || !ok2)
+            ThrowException("Provide min and max value as arguments");
+    }
 
-    QString path = (_args.size() == 3) ? "" : _args[3];
-
-    Box::diagnose(minValue, maxValue, path);
+    Box::diagnose(minValue, maxValue);
     Command::submit(QStringList() << "run");
     Box::diagnoseOff();
 }

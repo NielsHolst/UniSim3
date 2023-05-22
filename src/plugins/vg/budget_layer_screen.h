@@ -5,19 +5,18 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef BUDGET_LAYER_FLOOR_H
-#define BUDGET_LAYER_FLOOR_H
+#ifndef BUDGET_LAYER_SCREEN_H
+#define BUDGET_LAYER_SCREEN_H
 #include "budget_layer.h"
 
 namespace vg {
 
-class BudgetLayerFloor : public BudgetLayer {
+class BudgetLayerScreen : public BudgetLayer {
 public:
-    BudgetLayerFloor(QString name, base::Box *parent);
-    void updateLwEmission();
+    BudgetLayerScreen(QString name, base::Box *parent);
     double updateCondensation();
 private:
-    double indoorsRh;
+    double groundArea, indoorsRh;
     // Friends
     friend class Budget;
 };

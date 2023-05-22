@@ -43,7 +43,6 @@ void Floor::reset() {
     UtopAdj         = Utop;
     UbottomAdj      = Ubottom;
     heatCapacityAdj = heatCapacity;
-
     checkOutputs();
 }
 

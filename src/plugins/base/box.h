@@ -86,7 +86,7 @@ public:
     static bool debug();
     static void debug(bool on);
     static bool diagnose();
-    static void diagnose(double minValue, double maxValue, QString path);
+    static void diagnose(double minValue, double maxValue);
     static void diagnoseOff();
 
     void createTimer(QString name);

@@ -24,7 +24,7 @@ private:
     double
         desiredValue,
         windCoef, temperatureCoef,
-        leakage, crackVentilation,
+        leakage,
         windSpeed, outdoorsTemperature, indoorsTemperature,
         ventAreaRatio;
     // Output

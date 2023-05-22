@@ -19,8 +19,8 @@ class AverageCoverOrScreen : public LayerAdjusted
 {
 public:
     AverageCoverOrScreen(QString name, Box *parent);
-    void reset() final;
-    void update() final ;
+    void reset();
+    void update();
 private:
     // Inputs
     QVector<double>

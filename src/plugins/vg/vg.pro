@@ -34,7 +34,9 @@ HEADERS +=  \
     boundary_layer_resistance_monteith_unsworth.h \
     budget.h \
     budget_layer.h \
+    budget_layer_cover.h \
     budget_layer_floor.h \
+    budget_layer_screen.h \
     budget_layer_sky.h \
     budget_volume.h \
     budget_volume_external.h \
@@ -130,7 +132,9 @@ SOURCES += \
     boundary_layer_resistance_monteith_unsworth.cpp \
     budget.cpp \
     budget_layer.cpp \
+    budget_layer_cover.cpp \
     budget_layer_floor.cpp \
+    budget_layer_screen.cpp \
     budget_layer_sky.cpp \
     budget_volume.cpp \
     budget_volume_external.cpp \

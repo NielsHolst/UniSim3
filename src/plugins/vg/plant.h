@@ -18,6 +18,7 @@ public:
     Plant(QString name, Box *parent);
     void reset();
     void update();
+    void updateByRadiation(double netRadiation, double parAbsorbed);
 private:
     // Inputs
     double k_sw, k_lw, sigma,
@@ -31,17 +32,15 @@ private:
         EaVC, EdVC, delsC,
         Q10,
 
-        timeStep,
-        indoorsTemperature, indoorsRh, indoorsCo2,
-        swAbsorbedTop, swAbsorbedBottom,
-        lwAbsorbedTop, lwAbsorbedBottom,
-        parAbsorbedTop, parAbsorbedBottom;
+        indoorsTemperature, indoorsRh, indoorsCo2;
     // Output
     double temperature, transpiration,
         leafAm, leafAc, leafAj, leafRd,
         Pn, Rd;
     // Data
-    double rhoh_, vp_, svp_, svpSlope_, ri_,
+    double
+        netRadiation_,
+        rhoh_, vp_, svp_, svpSlope_, ri_,
         absorbedTotal_, incidentPar_,
         VcmaxAdj_, JmaxAdj_;
 

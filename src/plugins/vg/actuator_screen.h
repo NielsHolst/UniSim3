@@ -8,12 +8,11 @@
 #ifndef ACTUATOR_SCREEN_H
 #define ACTUATOR_SCREEN_H
 #include <base/box.h>
-#include "layer_adjusted.h"
 #include "shelter_face.h"
 
 namespace vg {
 
-class ActuatorScreen : public LayerAdjusted
+class ActuatorScreen : public base::Box
 {
 public: 
     ActuatorScreen(QString name, Box *parent);

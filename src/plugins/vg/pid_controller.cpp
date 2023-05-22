@@ -59,7 +59,8 @@ void PidController::updateControlVariable() {
     // Compute errors
     derivative = (error == 0. || _tick++ < 2) ? 0. : (sensedValue-_prevSensedValue)/_dt;
     error = desiredValue - (sensedValue + derivative*lookAhead);
-    integral += error*_dt;
+    if (Kint > 0.)
+        integral += error*_dt;
     // Compute control response
     controlVariable = Kprop*error + Kint*integral + Kderiv*derivative*_dt;
     controlVariable = qBound(minimum, controlVariable, maximum);

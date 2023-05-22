@@ -5,19 +5,19 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef BUDGET_LAYER_FLOOR_H
-#define BUDGET_LAYER_FLOOR_H
+#ifndef BUDGET_LAYER_COVER_H
+#define BUDGET_LAYER_COVER_H
 #include "budget_layer.h"
 
 namespace vg {
 
-class BudgetLayerFloor : public BudgetLayer {
+class BudgetLayerCover : public BudgetLayer {
 public:
-    BudgetLayerFloor(QString name, base::Box *parent);
-    void updateLwEmission();
+    BudgetLayerCover(QString name, base::Box *parent);
     double updateCondensation();
 private:
-    double indoorsRh;
+    // Input
+    double coverPerGroundArea, indoorsRh;
     // Friends
     friend class Budget;
 };

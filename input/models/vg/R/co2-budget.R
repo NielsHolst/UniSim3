@@ -33,4 +33,22 @@ ggplot(M, aes(x, M$CO2, colour=factor(k))) +
     axis.title.x = element_text(margin = margin(t=8)),
     axis.title.y = element_text(margin = margin(r=9))
   )
-  
+
+# Case
+indoors_ppm  = 4782
+indoorsCo2  = 1.829e-3*indoors_ppm
+outdoorsCo2 = 1.829e-3*400
+co2Injection = 0
+averageHeight = 3.938
+injection   = co2Injection/averageHeight/3600
+Pn = -0.2626
+fixation    = Pn*44.01e-6/averageHeight
+c           = injection - fixation
+ventilationRate = 0.8
+v           = ventilationRate/3600
+
+indoorsCo2
+new_indoorsCo2 = y(90, indoorsCo2, c, v, outdoorsCo2)
+new_indoorsCo2
+new_indoors_ppm = new_indoorsCo2/1.829e-3
+new_indoors_ppm
