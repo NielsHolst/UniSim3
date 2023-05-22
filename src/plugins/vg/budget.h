@@ -21,7 +21,7 @@ private:
     // Input
     double
         radPrecision, tempPrecision, thresholdPrecision,
-        timeStep, averageHeight,
+        timeStep, averageHeight, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
         transpirationRate, Pn, co2Injection,
         ventilationThreshold, ventilationCostThreshold, heatingThreshold,
@@ -31,7 +31,8 @@ private:
 
     // Output
     int radIterations, subSteps, controlCode, actionCode;
-    double maxDeltaT, advectionDeltaT;
+    double maxDeltaT, advectionDeltaT,
+        condensation, transpiration, ventedWater, latentHeatBalance;
 
     // Volumes
     QVector<BudgetVolume*> volumes;
@@ -92,6 +93,7 @@ private:
     void updateLwEmission();
     void updateNetRadiation();
     void updateWaterBalance(double subTimeStep);
+    void applyLatentHeat();
     void updateLayersAndVolumes();
     void updateCo2();
     void resetState();

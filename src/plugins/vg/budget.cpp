@@ -44,6 +44,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(thresholdPrecision).equals(0.1).unit("K").help("Precision of temperature thresholds for climate control");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("geometry[averageHeight]");
+    Input(coverPerGroundArea).imports("geometry[coverPerGroundArea]");
     Input(outdoorsTemperature).imports("outdoors[temperature]");
     Input(outdoorsRh).imports("outdoors[rh]");
     Input(outdoorsCo2).imports("outdoors[co2]");
@@ -64,6 +65,10 @@ Budget::Budget(QString name, base::Box *parent)
     Output(advectionDeltaT).unit("K").help("Change in indoors temperature caused by ventilation");
     Output(controlCode).unit("int").help("Code for the control option needed");
     Output(actionCode).unit("int").help("Code for the control action taken");
+    Output(transpiration).unit("kg/m2").help("Plant transpiration");
+    Output(condensation).unit("kg/m2").help("Condensation on cover");
+    Output(ventedWater).unit("kg/m2").help("Water loss by ventilation");
+    Output(latentHeatBalance).unit("W/m2").help("Latent heat of water balance");
 }
 
 void Budget::amend() {
@@ -279,8 +284,9 @@ void Budget::updateLayersAndVolumes() {
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
                                  budgetLayerPlant->parAbsorbedBottom);
-        applyDeltaT();
         updateWaterBalance(timeStep);
+        applyDeltaT();
+        applyLatentHeat();
     }
     else {
         QVector<double> T, netRad;
@@ -295,8 +301,9 @@ void Budget::updateLayersAndVolumes() {
             plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                      budgetLayerPlant->parAbsorbedTop +
                                      budgetLayerPlant->parAbsorbedBottom);
-            applyDeltaT();
             updateWaterBalance(timeStep/subSteps);
+            applyDeltaT();
+            applyLatentHeat();
         }
     }
 }
@@ -340,20 +347,72 @@ void Budget::updateConvection() {
         layer->updateConvection();
 }
 
-void Budget::updateWaterBalance(double timeStep) {
-    double condensation = 0.;
-    for (BudgetLayer *layer : layers)
-        condensation += layer->updateCondensation();
+namespace {
+struct WaterIntegration {
+    double
+        indoorsAh,
+        deltaAH,
+        transpiration,
+        condensation,
+        ventilation;
+};
 
-    double indoorsAh = ahFromRh(indoorsVol->temperature,  indoorsVol->rh);
+WaterIntegration waterIntegration(
+        double x,  // time step
+        double y0, // indoors ah
+        double T,  // transpiration
+        double cn, // condensation rate
+        double C,  // sah of cover
+        double v,  // ventilation rate
+        double V)  // outdoors ah
+{
+    if (y0 < C)
+        cn = 0.;
     const double
-       outdoorsAh    = ahFromRh(outdoorsTemperature, outdoorsRh),
-       transpiration = transpirationRate/averageHeight,
-       flux          = transpiration - condensation,
-       v             = (*ventilationRate)/3600.;
+        indoorsAh0    = y0,
+        indoorsAh1    = (-exp(x*(-(cn + v)))*(cn*C - y0*(cn + v) + T + v*V) + cn*C + T + v*V)/(cn + v),
+        avgAh         = (indoorsAh0 + indoorsAh1)/2,
+        transpiration = T*x,
+        condensation  = std::max(cn*(avgAh - C)*x, 0.),
+        ventilation   = v*(avgAh-V)*x;
 
-    indoorsAh = integrate(timeStep, indoorsAh, flux, v, outdoorsAh);
-    indoorsVol->rh = rhFromAh(indoorsVol->temperature, indoorsAh);
+    return WaterIntegration{
+        indoorsAh1,
+        indoorsAh1 - indoorsAh0,
+        transpiration,
+        condensation,
+        ventilation
+    };
+}
+
+}
+
+void Budget::updateWaterBalance(double timeStep) {
+    const double
+       indoorsAh  = ahFromRh(indoorsVol->temperature,  indoorsVol->rh),
+       outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh),
+       coverSah   = sah(budgetLayerCover->temperature),
+       v          = (*ventilationRate)/3600.;
+
+    WaterIntegration w = waterIntegration(
+        timeStep,
+        indoorsAh,
+        transpirationRate,
+        2e-3*coverPerGroundArea,
+        coverSah,
+        v,
+        outdoorsAh
+    );
+
+    transpiration     =  w.transpiration*averageHeight;
+    condensation      = -w.condensation*averageHeight;
+    ventedWater       = -w.ventilation*averageHeight;
+    latentHeatBalance = -LHe*condensation;
+    indoorsVol->rh    = rhFromAh(indoorsVol->temperature, w.indoorsAh);
+}
+
+void Budget::applyLatentHeat() {
+    budgetLayerCover->temperature += latentHeatBalance/(*budgetLayerCover->heatCapacity);
 }
 
 

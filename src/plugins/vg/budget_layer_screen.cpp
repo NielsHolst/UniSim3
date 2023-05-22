@@ -32,7 +32,6 @@ double BudgetLayerScreen::updateCondensation() {
         screenSah  = sah(temperature);
     condensation = 2.*(*screenEffectiveArea)/groundArea*std::max(indoorsAh - screenSah, 0.);
     return condensation;
-    return 0.;
 }
 
 }

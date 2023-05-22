@@ -42,7 +42,7 @@ PidController::PidController(QString name, Box *parent)
     Output(error).help("The error");
     Output(integral).help("The integral error").unit("min");
     Output(derivative).help("The derivative of the approach of sensed towards target value").unit("/min");
-    Output(eta).help("Estimated time of arrival at desired value; negative means wrong direction").unit("min");
+//    Output(eta).help("Estimated time of arrival at desired value; negative means wrong direction").unit("min");
 }
 
 void PidController::reset() {
@@ -65,7 +65,7 @@ void PidController::updateControlVariable() {
     controlVariable = Kprop*error + Kint*integral + Kderiv*derivative*_dt;
     controlVariable = qBound(minimum, controlVariable, maximum);
     // Compute estimated time of arrival
-    eta = (derivative == 0.) ? 0. : error/derivative;;
+//    eta = (derivative == 0.) ? 0. : error/derivative;;
 }
 
 } //namespace

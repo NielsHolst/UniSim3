@@ -26,7 +26,7 @@ private:
         Kprop, Kint, Kderiv;
     // Outputs
     double controlVariable,
-        error, integral, derivative, eta;
+        error, integral, derivative;
     // Data
     double _dt, _prevSensedValue;
     int _tick;

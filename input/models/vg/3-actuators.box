@@ -1,5 +1,5 @@
 Simulation sim {
-  .steps = 1500
+  // .steps = 310
   Box global {
     &beginDate = 2022/08/01
   }
@@ -668,15 +668,11 @@ Simulation sim {
                  outdoors[rh] | outdoors[radiation] | outdoors[temperature]
       }
       PlotR {
-        .ports = *[effectiveArea] | shelter/screens/*[state]
+        .ports =  budget[transpiration] | budget[condensation] | budget[ventedWater] | budget[latentHeatBalance]
       }
       PlotR {
         .ncol = 2
         .ports = budget/*[temperature]
-      }
-      PlotR {
-        .ncol = 2
-        .ports = budget/*[condensation]
       }
     // OutputSelector {
       // .beginDateTime = global[beginDate]
