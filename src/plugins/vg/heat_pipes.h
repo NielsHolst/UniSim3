@@ -28,7 +28,8 @@ private:
     // Outputs
     double
         lwEmissionTop, lwEmissionBottom,
-        convectionTop, convectionBottom;
+        convectionTop, convectionBottom,
+        heatFlux;
     // Data
     QVector<ActuatorHeatPipe*> _heatPipes;
 };

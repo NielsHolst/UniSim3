@@ -51,6 +51,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(transpirationRate).imports("plant[transpiration]");
     Input(Pn).imports("plant[Pn]");
     Input(co2Injection).imports("actuators/co2[value]");
+    Input(heatPipeFlux).imports("actuators/heatPipes[heatFlux]");
     Input(ventilationThreshold).imports("controllers/ventilation/temperatureThreshold[value]");
     Input(ventilationCostThreshold).imports("controllers/ventilation/maxHeatingCost[value]");
     Input(heatingThreshold).imports("controllers/heating[value]");
@@ -397,8 +398,8 @@ void Budget::updateWaterBalance(double timeStep) {
     WaterIntegration w = waterIntegration(
         timeStep,
         indoorsAh,
-        transpirationRate,
-        2e-3*coverPerGroundArea,
+        transpirationRate/averageHeight,
+        2e-3*coverPerGroundArea/averageHeight,
         coverSah,
         v,
         outdoorsAh
@@ -412,7 +413,9 @@ void Budget::updateWaterBalance(double timeStep) {
 }
 
 void Budget::applyLatentHeat() {
-    budgetLayerCover->temperature += latentHeatBalance/(*budgetLayerCover->heatCapacity);
+//    budgetLayerCover->temperature += latentHeatBalance/(*budgetLayerCover->heatCapacity);
+    const double Cair = RhoAir*CpAir;
+    indoorsVol->temperature += latentHeatBalance/averageHeight/Cair;
 }
 
 
@@ -602,7 +605,8 @@ void Budget::diagnoseControl() {
     else if (ventilationOn)
         control = Control::NeedlessCooling;
     else control = Control::CarryOn;
-    greenhouseTooHumid = (ventilationCostThreshold > 0.);
+    greenhouseTooHumid   = (ventilationCostThreshold > 0.);
+    tooCostlyVentilation = (ventilationOn && heatPipeFlux > ventilationCostThreshold);
     controlCode = static_cast<int>(control);
 }
 
@@ -616,7 +620,7 @@ void Budget::exertControl() {
             increaseVentilation();
         break;
     case Control::GreenhouseTooCold:
-        if (ventilationOn && !greenhouseTooHumid)
+        if (tooCostlyVentilation)
             decreaseVentilation();
         else
             increaseHeating();
@@ -631,7 +635,12 @@ void Budget::exertControl() {
     case Control::OnSetpointVentilation:
     case Control::OnSetpointHeating:
     case Control::CarryOn:
-        action = Action::CarryOn;
+        if (tooCostlyVentilation)
+            decreaseVentilation();
+        else if (greenhouseTooHumid)
+            increaseVentilation();
+        else
+            action = Action::CarryOn;
         break;
     }
     actionCode = static_cast<int>(action);

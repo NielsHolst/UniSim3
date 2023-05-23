@@ -1,13 +1,13 @@
 Simulation sim {
-  // .steps = 310
+  // .steps = 120
   Box global {
-    &beginDate = 2022/08/01
+    &beginDate = 01/08/2022
   }
   Calendar calendar{
     .latitude  = 55.4
     .longitude = 10.4
     .begin = global[beginDate] - 1
-    .end   = 2022/08/02
+    .end   = 03/08/2022
     .timeStep = 90
     .timeUnit = "s"
   }
@@ -629,34 +629,22 @@ Simulation sim {
   }
   OutputR output {
     .clearPlots = FALSE
+    Box more {
+      &heatPipeFlux = sum(actuators/heatPipes/*[energyFlux])
+    }
     PageR {
       .xAxis = calendar[dateTime]
       .nrow = 1
       .width = 18
       .height = 8
-      // PlotR {
-        // .ports = budget/screen1[radiationDeltaT] | 
-                 // budget/screen1[convectionDeltaT] | 
-                 // budget/screen1[convectionTop] |
-                 // budget/screen1[convectionBottom] |
-                 // budget/screen1[temperature] 
-      // }
-      // PlotR {
-        // .ports = budget/screen2[radiationDeltaT] | 
-                 // budget/screen2[convectionDeltaT] | 
-                 // budget/screen2[convectionTop] |
-                 // budget/screen2[convectionBottom] |
-                 // budget/screen2[temperature] 
-      // }
       PlotR {
-        .ports = actuators/ventilation[minValue] |
-                 actuators/ventilation[maxValue] |
-                 actuators/ventilation[leakage] |
+        .ports = actuators/ventilation[leakage] |
                  actuators/ventilation[value] |
                  actuators/ventilation[relative] |
                  budget[ventilationCostThreshold] |
                  budget/plant[netRadiation] |
-                 heatPipes/*[inflowTemperature]
+                 heatPipes[heatFlux] |
+                 output/more[*]
       }
       PlotR {
         .ports = budget[radIterations] | budget[subSteps] | budget[maxDeltaT] | 
@@ -674,8 +662,9 @@ Simulation sim {
         .ncol = 2
         .ports = budget/*[temperature]
       }
-    // OutputSelector {
-      // .beginDateTime = global[beginDate]
+      OutputSelector {
+        .beginDateTime = global[beginDate]
+      }
     }
   }
 }

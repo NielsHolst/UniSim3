@@ -30,6 +30,7 @@ HeatPipes::HeatPipes(QString name, Box *parent)
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(convectionTop)   .help("Convective heat flux upwards").unit("W/m2");
     Output(convectionBottom).help("Convective heat flux downwards").unit("W/m2");
+    Output(heatFlux).help("Total heat flux from pipes").unit("W/m2");
 }
 
 void HeatPipes::reset() {
@@ -43,6 +44,7 @@ void HeatPipes::update() {
     lwEmissionBottom  = sum(lwEmissionBottomPipes);
     convectionTop    = sum(convectionTopPipes);
     convectionBottom = sum(convectionBottomPipes);
+    heatFlux = lwEmissionTop + lwEmissionBottom - convectionTop - convectionBottom;
 }
 
 void HeatPipes::increase(double delta) {

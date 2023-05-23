@@ -24,6 +24,7 @@ private:
         timeStep, averageHeight, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
         transpirationRate, Pn, co2Injection,
+        heatPipeFlux,
         ventilationThreshold, ventilationCostThreshold, heatingThreshold,
         deltaVentilationControl, deltaHeatingControl;
     QVector<bool> heatPipesOn;
@@ -62,7 +63,7 @@ private:
     State swState, lwState, parState;
     enum class Control{CarryOn, OnSetpointVentilation, OnSetpointHeating, GreenhouseTooHot, GreenhouseTooCold, NeedlessHeating, NeedlessCooling};
     Control control;
-    bool greenhouseTooHumid;
+    bool greenhouseTooHumid, tooCostlyVentilation;
     enum class Action{CarryOn, IncreaseVentilation, DecreaseVentilation, IncreaseHeating, DecreaseHeating};
     Action action;
 
