@@ -8,7 +8,6 @@
 #ifndef ACTUATOR_SCREEN_H
 #define ACTUATOR_SCREEN_H
 #include <base/box.h>
-#include "shelter_face.h"
 
 namespace vg {
 

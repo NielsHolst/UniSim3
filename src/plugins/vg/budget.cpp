@@ -83,17 +83,17 @@ void Budget::addVolumes() {
     // Add volumes as children
     BoxBuilder builder(this);
     builder.
-        box("BudgetVolumeExternal").name("outdoorsVol").
+        box("BudgetVolume").name("outdoorsVol").
             port("initTemperature").imports("/outdoors[temperature]").
             port("temperature").imports("/outdoors[temperature]").
             port("initRh").imports("/outdoors[rh]").
             port("rh").imports("/outdoors[rh]").
         endbox().
-        box("BudgetVolumeInternal").name("indoors").
+        box("BudgetVolume").name("indoors").
             port("initTemperature").equals(20.).
             port("initRh").equals(70).
         endbox().
-        box("BudgetVolumeExternal").name("soilVol").
+        box("BudgetVolume").name("soilVol").
             port("initTemperature").imports("soilTemperature[value]").
             port("temperature").imports("soilTemperature[value]").
         endbox();

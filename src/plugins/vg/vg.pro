@@ -12,26 +12,13 @@ HEADERS +=  \
     actuator_chalk.h \
     actuator_growth_light.h \
     actuators.h \
-    actuator_heat_exchanger.h \
     actuator_heat_pipe.h \
-    actuator_heat_pump.h \
-    actuator_humidifier.h \
-    actuator_pad_and_fan.h \
     actuator_screen.h \
     actuator_ventilation.h \
-    ah_from_rh.h \
-    any_flag.h \
-    arrhenius.h \
     average_cover.h \
     average_cover_or_screen.h \
     average_material.h \
     average_screen.h \
-    big_leaf_photosynthesis.h \
-    boundary_layer_resistance_base.h \
-    boundary_layer_resistance_jones_a.h \
-    boundary_layer_resistance_jones_b.h \
-    boundary_layer_resistance_stanghellini.h \
-    boundary_layer_resistance_monteith_unsworth.h \
     budget.h \
     budget_layer.h \
     budget_layer_cover.h \
@@ -39,97 +26,43 @@ HEADERS +=  \
     budget_layer_screen.h \
     budget_layer_sky.h \
     budget_volume.h \
-    budget_volume_external.h \
-    budget_volume_internal.h \
     canopy_photosynthesis.h \
     controllers.h \
-    controller_ventilation_combined.h \
     cover.h \
     crop.h \
-    diffuse_irradiation_base.h \
-    diffuse_irradiation_RE.h \
-    energy_budget.h \
     floor.h \
     geometry.h \
     growth_light_controller.h \
     growth_lights.h \
-    heat_buffer.h \
-    heat_sink.h \
-    heat_transfer_layer_base.h \
-    heat_transfer_layer_parameters.h \
     heat_pipes.h \
     ig_indoors_humidity.h \
-    indoors.h \
-    indoors_co2.h \
-    indoors_humidity.h \
-    indoors_temperature.h \
-    indoors_ventilation.h \
-    indoors_wind_speed.h \
-    intercellular_co2.h \
     layer.h \
     layer_adjusted.h \
     leakage_ventilation.h \
     outdoors.h \
-    outputs.h \
-    par_budget.h \
     pid_controller.h \
     pipe_forced.h \
     plant.h \
     screen.h \
-    screen_combination.h \
     sensor.h \
-    setpoints.h \
-    setpoint_heating.h \
-    setpoint_ventilation.h \
     shelter.h \
-    shelter_face.h \
-    shelter_face_area.h \
     sky.h \
     soil_temperature.h \
-    stomatal_resistance_ball_berry.h \
-    stomatal_resistance_ball_berry_opti_full.h \
-    stomatal_resistance_base.h \
-    total_radiation_from_par.h \
     u_wind.h \
-    vapour_flux_base.h \
-    vapour_flux_condensation_cover.h \
-    vapour_flux_condensation_crop.h \
-    vapour_flux_condensation_screen_base.h \
-    vapour_flux_condensation_screen1.h \
-    vapour_flux_condensation_screen2.h \
-    vapour_flux_condensation_screen3.h \
-    vapour_flux_condensation_screens.h \
-    vapour_flux_transpiration.h \
-    vapour_flux_ventilation.h \
-    vent.h \
-    ventilated_latent_heat_converter.h \
-    vg_documentation.h \
-    water_budget.h
+    vg_documentation.h
 
 SOURCES += \
     actuator_chalk.cpp \
     actuator_growth_light.cpp \
     actuators.cpp \
-    actuator_heat_exchanger.cpp \
     actuator_heat_pipe.cpp \
     actuator_heat_pump.cpp \
-    actuator_humidifier.cpp \
-    actuator_pad_and_fan.cpp \
     actuator_screen.cpp \
     actuator_ventilation.cpp \
-    ah_from_rh.cpp \
-    any_flag.cpp \
-    arrhenius.cpp \
     average_cover.cpp \
     average_cover_or_screen.cpp \
     average_material.cpp \
     average_screen.cpp \
-    big_leaf_photosynthesis.cpp \
-    boundary_layer_resistance_base.cpp \
-    boundary_layer_resistance_jones_a.cpp \
-    boundary_layer_resistance_jones_b.cpp \
-    boundary_layer_resistance_stanghellini.cpp \
-    boundary_layer_resistance_monteith_unsworth.cpp \
     budget.cpp \
     budget_layer.cpp \
     budget_layer_cover.cpp \
@@ -137,69 +70,26 @@ SOURCES += \
     budget_layer_screen.cpp \
     budget_layer_sky.cpp \
     budget_volume.cpp \
-    budget_volume_external.cpp \
-    budget_volume_internal.cpp \
     canopy_photosynthesis.cpp \
     controllers.cpp \
-    controller_ventilation_combined.cpp \
     cover.cpp \
     crop.cpp \
-    diffuse_irradiation_base.cpp \
-    diffuse_irradiation_RE.cpp \
-    energy_budget.cpp \
     floor.cpp \
     geometry.cpp \
     growth_light_controller.cpp \
     growth_lights.cpp \
-    heat_buffer.cpp \
     heat_pipes.cpp \
-    heat_sink.cpp \
-    heat_transfer_layer_base.cpp \
-    heat_transfer_layer_parameters.cpp \
     ig_indoors_humidity.cpp \
-    indoors.cpp \
-    indoors_co2.cpp \
-    indoors_humidity.cpp \
-    indoors_temperature.cpp \
-    indoors_ventilation.cpp \
-    indoors_wind_speed.cpp \
-    intercellular_co2.cpp \
     layer.cpp \
     layer_adjusted.cpp \
     leakage_ventilation.cpp \
     outdoors.cpp \
-    outputs.cpp \
-    par_budget.cpp  \
     pid_controller.cpp \
-    pipe_forced.cpp \
     plant.cpp \
     screen.cpp \
-    screen_combination.cpp \
     sensor.cpp \
-    setpoints.cpp \
-    setpoint_heating.cpp \
-    setpoint_ventilation.cpp \
     shelter.cpp \
-    shelter_face.cpp \
-    shelter_face_area.cpp \
     sky.cpp \
     soil_temperature.cpp \
-    stomatal_resistance_ball_berry.cpp \
-    stomatal_resistance_ball_berry_opti_full.cpp \
-    stomatal_resistance_base.cpp \
-    total_radiation_from_par.cpp \
     u_wind.cpp \
-    vapour_flux_base.cpp \
-    vapour_flux_condensation_cover.cpp \
-    vapour_flux_condensation_crop.cpp \
-    vapour_flux_condensation_screen_base.cpp \
-    vapour_flux_condensation_screen1.cpp \
-    vapour_flux_condensation_screen2.cpp \
-    vapour_flux_condensation_screen3.cpp \
-    vapour_flux_condensation_screens.cpp \
-    vapour_flux_transpiration.cpp \
-    vapour_flux_ventilation.cpp \
-    vent.cpp \
-    ventilated_latent_heat_converter.cpp \
-    vg_documentation.cpp \
-    water_budget.cpp
+    vg_documentation.cpp
