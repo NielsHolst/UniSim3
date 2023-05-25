@@ -21,7 +21,7 @@ transpiration     = 2.1861570864786665e-05/averageHeight
 condensation      = 1.8322423371401192e-05/averageHeight
 coverSah          = 0.00640180964538232
 indoorsAh         = 0.013785533838367395
-outdoorsAh        = 0.0084417480337549977
+outdoorsAh        = 0.0084417480337549977     
 ventilation       = 0.00017187500000000004
 
 # Check y0

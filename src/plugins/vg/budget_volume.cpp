@@ -5,6 +5,7 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
+#include <base/publish.h>
 #include "budget_layer.h"
 #include "budget_volume.h"
 
@@ -12,6 +13,7 @@ using namespace base;
 
 namespace vg {
 
+PUBLISH(BudgetVolume)
 
 BudgetVolume::BudgetVolume(QString name, base::Box *parent)
     : Box(name, parent)

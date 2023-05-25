@@ -30,7 +30,7 @@ public:
 
 private:
     // Input
-    bool showPlots, clearPlots, clearMemory, popUp, saveDataFrame, plotAsList, skipFormats;
+    bool showPlots, clearPlots, keepPlots, clearMemory, popUp, saveDataFrame, plotAsList, skipFormats;
     int showLines;
     double width, height, fontSize;
     QString code;

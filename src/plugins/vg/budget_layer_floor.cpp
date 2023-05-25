@@ -19,6 +19,7 @@ PUBLISH(BudgetLayerFloor)
 BudgetLayerFloor::BudgetLayerFloor(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
+    setClassName("vg", "BudgetLayer");
     Input(indoorsRh).imports("indoors[rh]");
 }
 

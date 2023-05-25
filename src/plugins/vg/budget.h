@@ -32,8 +32,10 @@ private:
 
     // Output
     int radIterations, subSteps, controlCode, actionCode;
-    double maxDeltaT, advectionDeltaT,
-        condensation, transpiration, ventedWater, latentHeatBalance;
+    double maxDeltaT, ventilationHeatLoss,
+        condensation, transpiration, ventedWater, latentHeatBalance,
+
+        indoorsSensibleHeatFlux, indoorsLatentHeatFlux;
 
     // Volumes
     QVector<BudgetVolume*> volumes;

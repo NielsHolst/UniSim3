@@ -22,6 +22,7 @@ private:
     // Inputs
     int step, beginStep, period;
     QDateTime dateTime, beginDateTime;
+    QString summary;
     bool final, useLocalDecimalChar, skipFormats;
     // Outputs
     bool isActive, isSkipping;

@@ -48,6 +48,7 @@ HEADERS +=  \
     shelter.h \
     sky.h \
     soil_temperature.h \
+    summary.h \
     u_wind.h \
     vg_documentation.h
 
@@ -90,6 +91,7 @@ SOURCES += \
     sensor.cpp \
     shelter.cpp \
     sky.cpp \
+    summary.cpp \
     soil_temperature.cpp \
     u_wind.cpp \
     vg_documentation.cpp

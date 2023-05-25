@@ -57,7 +57,7 @@ Simulation sim {
     .ea = 0.716
     .cw = 0.0358
     .ew = 0.531
-    .cz = 2.0
+    .cz = 1.0
     .biomass = biomass/structure[dw]
   }
   Box demand {

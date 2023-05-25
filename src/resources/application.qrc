@@ -189,24 +189,34 @@
     <file>data/input/models/saccharina/saccharina.R</file>
     <file>data/input/models/saccharina/sal-response.R</file>
     <file>data/input/models/saccharina/T-response.R</file>
-    <file>data/input/models/vg/0-energy-budget-functions(0).R</file>
-    <file>data/input/models/vg/0-energy-budget-functions.R</file>
-    <file>data/input/models/vg/1-energy-budget-sw.R</file>
-    <file>data/input/models/vg/2-energy-budget-lw.R</file>
-    <file>data/input/models/vg/3-energy-budget-U(0).R</file>
-    <file>data/input/models/vg/3-energy-budget-U.R</file>
-    <file>data/input/models/vg/4-energy-budget-complete.R</file>
-    <file>data/input/models/vg/5-energy-budget-scenario.R</file>
-    <file>data/input/models/vg/energy-budget(0).R</file>
-    <file>data/input/models/vg/energy-budget-conv.R</file>
-    <file>data/input/models/vg/energy-budget-lw(0).R</file>
-    <file>data/input/models/vg/energy-budget-lw(1).R</file>
-    <file>data/input/models/vg/greenhouse-geometry(0).R</file>
-    <file>data/input/models/vg/greenhouse-geometry.R</file>
-    <file>data/input/models/vg/greenhouse-ventilation.R</file>
-    <file>data/input/models/vg/heat-pipes.R</file>
-    <file>data/input/models/vg/plant-canopy-layer.R</file>
-    <file>data/input/models/vg/test-lw.R</file>
+    <file>data/input/models/vg/DNK_Odense.txt</file>
+    <file>data/input/models/vg/greenhouse.box</file>
+    <file>data/input/models/vg/R/0-energy-budget-functions.R</file>
+    <file>data/input/models/vg/R/1-energy-budget-sw.R</file>
+    <file>data/input/models/vg/R/2-energy-budget-lw.R</file>
+    <file>data/input/models/vg/R/3-energy-budget-convection.R</file>
+    <file>data/input/models/vg/R/4-energy-budget-advection.R</file>
+    <file>data/input/models/vg/R/5-energy-budget-plant.R</file>
+    <file>data/input/models/vg/R/6-water-budget.R</file>
+    <file>data/input/models/vg/R/7-energy-budget-complete.R</file>
+    <file>data/input/models/vg/R/advection.R</file>
+    <file>data/input/models/vg/R/co2-budget.R</file>
+    <file>data/input/models/vg/R/cover-averaging.R</file>
+    <file>data/input/models/vg/R/greenhouse-geometry.R</file>
+    <file>data/input/models/vg/R/greenhouse-ventilation.R</file>
+    <file>data/input/models/vg/R/h2o-budget.R</file>
+    <file>data/input/models/vg/R/heat-pipes (0).R</file>
+    <file>data/input/models/vg/R/heat-pipes (1).R</file>
+    <file>data/input/models/vg/R/heat-pipes.R</file>
+    <file>data/input/models/vg/R/photosynthesis.R</file>
+    <file>data/input/models/vg/R/pid-controller.R</file>
+    <file>data/input/models/vg/R/plant-canopy-layer.R</file>
+    <file>data/input/models/vg/R/proportional-setpoint.R</file>
+    <file>data/input/models/vg/R/screen-averaging.R</file>
+    <file>data/input/models/vg/R/setup.R</file>
+    <file>data/input/models/vg/R/verify-weighted-sum.R</file>
+    <file>data/input/models/vg/R/water-budget-integral.odt</file>
+    <file>data/input/models/vg/R/water-budget-integral.R</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>

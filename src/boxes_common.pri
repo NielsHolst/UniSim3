@@ -7,8 +7,8 @@
 #-------------------------------------------------
 
 # AUTO-CONFIG-BEGIN
-CONFIG += debug
-VERSION = 3.0.9
+CONFIG += release
+VERSION = 3.0.10
 CONFIG += skip_target_version_ext
 # AUTO-CONFIG-END
 
@@ -18,9 +18,11 @@ CONFIG += sdk_no_version_check      # Avoid SDK check on Mac
 # Set suffix 'd' for debug version
 CONFIG(debug, debug|release) {
     SUFFIX = d
+    BIN = bind
 }
 else {
     SUFFIX =
+    BIN = bin
 }
 
 # What we are building
@@ -31,7 +33,6 @@ QT += core widgets
 #} else {
 #    BIN = bin
 #}
-BIN = bin
 BIN_PATH = $$join(_PRO_FILE_PWD_, , , /../../../)
 BIN_PATH = $$join(BIN_PATH, , , $${BIN})
 BIN_PLUGINS_PATH = $$join(BIN_PATH, , , /plugins)
@@ -95,8 +96,6 @@ message($${BOOST_PATH})
 
 # Own libraries that we use, except 'base' does not use itself
 !equals(BOXES_PLUGIN_NAME, "base") {
-#    win32:LIBS += -L$$_PRO_FILE_PWD_/../../../bin/ -luniversal_simulator_base$${SUFFIX}
-#    unix:LIBS += -L$$_PRO_FILE_PWD_/../../../bin/ -luniversal_simulator_base$${SUFFIX}
     win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
     unix:LIBS  += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
     macx:LIBS  += -L"$$(HOME)/lib" -luniversal_simulator_base$${SUFFIX}

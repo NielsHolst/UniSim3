@@ -30,8 +30,8 @@ OutputR::OutputR(QString name, Box *parent)
 {
     help("creates output and scripts for R");
     sideEffects("writes an R script to the output folder\ncopies an R script to the clipboard");
+    Input(keepPlots).equals(true).help("Keep previous plots before showing new plots in R?");
     Input(clearMemory).equals(false).help("Clear R memory?");
-    Input(clearPlots).equals(false).help("Clear previous plots before showing new plots in R?");
     Input(showPlots).equals(true).help("Show plots in R?");
     Input(showLines).equals(0).help("Number of lines to show at the prompt");
     Input(popUp).equals(false).help("Show plots in pop-up windows?");
@@ -44,6 +44,7 @@ OutputR::OutputR(QString name, Box *parent)
     Input(code).help("R code to be run before 'scripts'");
     Input(scripts).help("R scripts to be run at the end");
     Input(plotTypes).computes("PlotR::*[type]");
+    Input(clearPlots).equals(false).help("Deprecated");
     Output(ports).noClear().computes("./PageR::*[xAxis] | ./*/PlotR::*[ports]").help("Path to all ports used by my pages and plots");
     Output(numPages).noClear().help("Number of pages in this output");
 }
@@ -153,7 +154,7 @@ QString OutputR::openPlotWindowCode() const {
 
 QString OutputR::popUpCode() const {
     QString s;
-    if (clearPlots) {
+    if (!keepPlots || clearPlots) {
         s = "graphics.off()\n";
         if (popUp) {
             s += openPlotWindowCode();

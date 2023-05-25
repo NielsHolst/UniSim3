@@ -1,6 +1,6 @@
 echo on
 if exist D:\Documents\QDev\UniSim3\ship\cmd\win goto :d_drive
-if exist C:\Users\au152367\Documents\QDev\UniSim3\ship\cmd\win goto :c_drive
+if exist C:\MyDocuments\QDev\UniSim3\ship\cmd\win goto :c_drive
 echo Could not find ship\cmd\win folder
 goto :end_fail
 :d_drive
@@ -9,13 +9,13 @@ cd \Documents\QDev\UniSim3\ship\cmd\win
 goto :ok_cmd_folder
 :c_drive
 C:
-cd \Users\au152367\Documents\QDev\UniSim3\ship\cmd\win
+cd \MyDocuments\QDev\UniSim3\ship\cmd\win
 :ok_cmd_folder
 
 rem Set up version
 set MAJOR=3
 set MINOR=0
-set SUB=9
+set SUB=10
 set VERSION=release
 echo Building version %MAJOR%.%MINOR%.%SUB% %VERSION%
 
@@ -32,6 +32,8 @@ if exist %QTENV% goto :ok_qt
 set QTENV="C:\Qt\5.9.2\mingw53_32\bin\qtenv2.bat"
 if exist %QTENV% goto :ok_qt
 set QTENV="C:\Qt\6.3.1\mingw_64\bin\qtenv2.bat"
+if exist %QTENV% goto :ok_qt
+set QTENV="C:\Qt\6.4.2\mingw_64\bin\qtenv2.bat"
 if exist %QTENV% goto :ok_qt
 
 echo .

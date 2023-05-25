@@ -19,6 +19,7 @@ PUBLISH(BudgetLayerSky)
 BudgetLayerSky::BudgetLayerSky(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
+    setClassName("vg", "BudgetLayer");
 }
 
 void BudgetLayerSky::updateLwEmission() {

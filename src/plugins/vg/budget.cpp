@@ -63,13 +63,16 @@ Budget::Budget(QString name, base::Box *parent)
     Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step among layers");
-    Output(advectionDeltaT).unit("K").help("Change in indoors temperature caused by ventilation");
     Output(controlCode).unit("int").help("Code for the control option needed");
     Output(actionCode).unit("int").help("Code for the control action taken");
     Output(transpiration).unit("kg/m2").help("Plant transpiration");
     Output(condensation).unit("kg/m2").help("Condensation on cover");
     Output(ventedWater).unit("kg/m2").help("Water loss by ventilation");
     Output(latentHeatBalance).unit("W/m2").help("Latent heat of water balance");
+    Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation");
+
+    Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
+    Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
 }
 
 void Budget::amend() {
@@ -271,9 +274,18 @@ void Budget::reset() {
 }
 
 void Budget::update() {
+    const double
+            indoorsTemp0 = indoorsVol->temperature,
+            indoorsRh0   = indoorsVol->rh;
     updateLayersAndVolumes();
     updateCo2();
     exertControl();
+
+    const double
+            indoorsTemp1 = indoorsVol->temperature,
+            indoorsRh1   = indoorsVol->rh;
+    indoorsSensibleHeatFlux = (indoorsTemp1 - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
+    indoorsLatentHeatFlux = (ahFromRh(indoorsTemp0, indoorsRh0) - ahFromRh(indoorsTemp1, indoorsRh1))*LHe*averageHeight/timeStep;
 }
 
 void Budget::updateLayersAndVolumes() {
@@ -423,7 +435,7 @@ void Budget::updateCo2() {
     double
         indoorsCo2  = 1.829e-3*indoorsVol->co2,
         outdoorsCo2 = 1.829e-3*Budget::outdoorsCo2,
-        injection   = co2Injection/averageHeight/3600.,
+        injection   = co2Injection/3600.,
         fixation    = Pn*44.01e-6/averageHeight,
         c           = injection - fixation,
         v           = (*ventilationRate)/3600.;
@@ -554,8 +566,10 @@ void Budget::updateDeltaT(double timeStep) {
         if (fabs(deltaT) > fabs(maxDeltaT))
             maxDeltaT = fabs(deltaT);
     }
-    advectionDeltaT = (outdoorsTemperature - indoorsVol->temperature)*(1. - exp(-(*ventilationRate)/3600.*timeStep));
-    indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity + advectionDeltaT;
+    double propVentilation   = 1. - exp(-(*ventilationRate)/3600.*timeStep),
+           ventilationDeltaT = (outdoorsTemperature - indoorsVol->temperature)*propVentilation;
+    indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity + ventilationDeltaT;
+    ventilationHeatLoss = ventilationDeltaT*averageHeight*RhoAir*CpAir/timeStep;
     if (fabs(indoorsDeltaT) > fabs(maxDeltaT))
         maxDeltaT = fabs(indoorsDeltaT);
 }

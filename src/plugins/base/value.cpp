@@ -52,7 +52,10 @@ QString Value::asString(bool stringent) const {
                               break;
     }
     if (isVector()) {
-       return "c(" + slist.join(",") +")";
+        if (stringent)
+            return slist.join("\t");
+        else
+            return "c(" + slist.join(",") +")";
     }
     else {
        return slist.at(0);

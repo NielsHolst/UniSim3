@@ -49,6 +49,7 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(convectionDeltaT).unit("oC").help("Change in temperature due to net convection/conduction");
     Output(totalDeltaT).unit("oC").help("Total change in temperature");
     Output(condensation).unit("kg/m2").help("Condensation (top+bottom)");
+    Output(netRadiation).unit("W/m2").help("Net radiation (absorption - emission");
 }
 
 void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom)

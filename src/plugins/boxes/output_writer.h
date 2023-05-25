@@ -30,23 +30,38 @@ public:
 private:
     // Inputs
     base::Path ports;
-    bool skipFormats,
+    bool showPorts,
+         skipFormats,
          useLocalDecimalChar,
+         isSkipping,
          isActive;
-
+    int period;
+    QString summary;
     // Outputs
     QString filePath, decimalChar;
 
     // Data
-    QVector<base::Port*> _ports;
-    QVector<const base::Value*> _values;
+    using Ports  = QVector<base::Port*>;
+    using Values = QVector<const base::Value*>;
+    struct Sum {
+        bool isNumeric;
+        double value;
+    };
+    using Sums   = QVector<Sum>;
+
+    Ports _ports;
+    Values  _values;
+    Sums _sums;
+    bool _writeAverage, _firstTimeActive;
     QFile _file;
     QTextStream _stream;
 
     // Methods
     void setColumnNames();
     void openFileStream();
-    void processValues();
+    void initSums();
+    void resetSums();
+    void updateSums();
     void writeColumnLabels();
     void writeColumnFormats();
     void writeValues();
