@@ -84,6 +84,8 @@ HEADERS +=  \
     reader_base.h \
     reader_boxscript.h \
     reader_xml.h \
+    reader_xml_strategy_base.h \
+    reader_xml_strategy_generic.h \
     resolved_references.h \
     proportions.h \
     psychrolib.h \
@@ -149,14 +151,16 @@ SOURCES +=  \
     port.cpp \
     port_status.cpp \
     port_type.cpp \
-    reader_base.cpp \
-    reader_boxscript.cpp \
-    reader_xml.cpp \
     product_base.cpp \
     proportions.cpp \
     psychrolib.c \
     random_generator.cpp \
     random_order.cpp \
+    reader_base.cpp \
+    reader_boxscript.cpp \
+    reader_xml.cpp \
+    reader_xml_strategy_base.cpp \
+    reader_xml_strategy_generic.cpp \
     resolved_references.cpp \
     save_grammar_atom.cpp \
     save_grammar_base.cpp \

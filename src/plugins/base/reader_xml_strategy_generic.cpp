@@ -7,34 +7,18 @@
 #include "computation.h"
 #include "dialog.h"
 #include "exception.h"
-#include "reader_xml.h"
 #include "reader_xml_strategy_generic.h"
 
 namespace base {
 
-ReaderXml::ReaderXml(BoxBuilder *builder)
-    : ReaderBase(builder)
+ReaderXmlStrategyGeneric::ReaderXmlStrategyGeneric(QXmlStreamReader *reader, BoxBuilder *builder)
+    : ReaderXmlStrategyBase(reader, builder)
 {
 }
 
-void ReaderXml::parse(QString filePath) {
-    // Change the computation step
-    Computation::changeStep(Computation::Step::Construct);
-
-    // Open XML reader
-    openReader(filePath);
-
-    // Loop through XML tokens
-    _reader.readNext();
-    if (_reader.tokenType() != QXmlStreamReader::StartDocument)
-        ThrowException("XML syntax error at start of document");
-    _reader.readNext();
-
-    QString format = _reader.attributes().hasAttribute("format") ?
-                     _reader.attributes().value("format").toString() :
-                      QString("generic");
-    while (!_reader.atEnd()) {
-        switch (_reader.tokenType()) {
+void ReaderXmlStrategyGeneric::parse() {
+    while (!_reader->atEnd()) {
+        switch (_reader->tokenType()) {
             case QXmlStreamReader::StartElement:
             setElementType();
             switch (_type) {
@@ -63,54 +47,45 @@ void ReaderXml::parse(QString filePath) {
             default:
                 break;
         }
-        _reader.readNext();
+        _reader->readNext();
     }
 }
 
-void ReaderXml::openReader(QString filePath) {
-    _file.setFileName(filePath);
-    if (!_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QString msg("Could not open file for reading");
-        ThrowException(msg).value(filePath);
-    }
-    _reader.setDevice(&_file);
-}
-
-void ReaderXml::setElementType() {
+void ReaderXmlStrategyGeneric::setElementType() {
     static QMap<QString, Type> lookup = {
         {"box",  Type::Box},
         {"port", Type::Port},
         {"aux",  Type::Aux}
     };
-    QString name = _reader.name().toString();
+    QString name = _reader->name().toString();
     if (lookup.contains(name))
         _type = lookup.value(name);
     else
         ThrowException("Unknown XML element. " + currentInfo()).value(name);
 }
 
-void ReaderXml::setBoxAttributes() {
+void ReaderXmlStrategyGeneric::setBoxAttributes() {
     // If box has no "class" attribute then default to "box" class
-    QString className = _reader.attributes().hasAttribute("class") ?
-                        _reader.attributes().value("class").toString() :
+    QString className = _reader->attributes().hasAttribute("class") ?
+                        _reader->attributes().value("class").toString() :
                         QString("Box");
     _builder->box(className);
     // Box name is optional
-    if (_reader.attributes().hasAttribute("name"))
-        _builder->name( _reader.attributes().value("name").toString() );
+    if (_reader->attributes().hasAttribute("name"))
+        _builder->name( _reader->attributes().value("name").toString() );
     // Check for unknown attributes; ignore "source" attribute
-    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
+    for (const QXmlStreamAttribute &attribute : _reader->attributes()) {
         QString name = attribute.name().toString();
         if (name != "class" && name != "name" && name != "source")
             ThrowException("Unexpected class attribute").value(name).hint(currentInfo());
     }
 }
 
-void ReaderXml::setPortAttributes(bool isAux) {
+void ReaderXmlStrategyGeneric::setPortAttributes(bool isAux) {
     bool nameSet{false};
-    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
+    for (const QXmlStreamAttribute &attribute : _reader->attributes()) {
         QString name = attribute.name().toString(),
-                value = _reader.attributes().value(name).toString();
+                value = _reader->attributes().value(name).toString();
         if (name == "name"){
             if (isAux)
                 _builder->aux(value);

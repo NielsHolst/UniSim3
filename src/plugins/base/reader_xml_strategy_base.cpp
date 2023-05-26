@@ -3,16 +3,16 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include "box.h"
-#include "reader_base.h"
+#include "reader_xml_strategy_base.h"
 
 namespace base {
 
-ReaderBase::ReaderBase(BoxBuilder *builder)
-    : _builder(builder)
+ReaderXmlStrategyBase::ReaderXmlStrategyBase(QXmlStreamReader *reader, BoxBuilder *builder)
+    : _reader(reader), _builder(builder)
 {
 }
 
-QString ReaderBase::currentInfo() const {
+QString ReaderXmlStrategyBase::currentInfo() const {
     QString info{"\n  Last box: '%1'\n  Last port: '%2'"};
     QString lastBox = _builder->currentBox() ? _builder->currentBox()->objectName() : QString();
     QString lastPort = _builder->currentPort() ? _builder->currentPort()->objectName() : QString();

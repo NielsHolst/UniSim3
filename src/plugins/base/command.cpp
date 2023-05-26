@@ -20,6 +20,17 @@ Command::Command(QString name, Box *parent)
 
 void Command::arguments(QStringList args) {
     _args = args;
+//    int i = 0, j = 0;
+//    bool appending = false;
+//    while (i < args.size) {
+//        QString item = args[i];
+//        if (appending) {
+//            item.last(1) == "\"";
+//            _args[j] += item.first(item.size()-1);
+//            appending = false;
+//        }
+//        append (args.at(i).at(0) == "\"")
+//    }
 }
 
 QStringList Command::arguments() const {

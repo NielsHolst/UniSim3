@@ -2,26 +2,23 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef BASE_READER_BASE_H
-#define BASE_READER_BASE_H
-#include <QString>
+#ifndef BASE_READER_XML_STRATEGY_BASE_H
+#define BASE_READER_XML_STRATEGY_BASE_H
+#include <QXmlStreamReader>
 #include "box_builder.h"
 
 namespace base {
 
-class BoxBuilder;
-
-class ReaderBase
+class ReaderXmlStrategyBase
 {
 public:
-    ReaderBase(BoxBuilder *builder);
-    virtual ~ReaderBase(){}
-    virtual void parse(QString filePath) = 0;
-protected:
-    // Data
-    BoxBuilder *_builder;
-    // Methods
+    ReaderXmlStrategyBase(QXmlStreamReader *reader, BoxBuilder *builder);
     QString currentInfo() const;
+    virtual void parse() = 0;
+
+    // Data
+    QXmlStreamReader *_reader;
+    BoxBuilder *_builder;
 };
 
 }
