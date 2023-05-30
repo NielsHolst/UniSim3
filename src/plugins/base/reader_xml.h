@@ -6,12 +6,12 @@
 #define BASE_READER_XML_H
 
 #include <QFile>
-#include <QMap>
-#include <QSet>
 #include <QXmlStreamReader>
 #include "reader_base.h"
 
 namespace base {
+
+class XmlNode;
 
 class ReaderXml : public ReaderBase
 {
@@ -22,10 +22,18 @@ private:
     // Data
     QXmlStreamReader _reader;
     QFile _file;
+    XmlNode *_doc;
     enum class Type {Box, Port, Aux};
     Type _type;
+    // Types
+    enum class Format{generic, vg};
     // Methods
     void openReader(QString filePath);
+    Format readRoot();
+    void readGeneric();
+    void readDocument();
+    void readVirtualGreenhouse();
+    void addAttributes(XmlNode *node);
     void setElementType();
     void setBoxAttributes();
     void setPortAttributes(bool isAux);

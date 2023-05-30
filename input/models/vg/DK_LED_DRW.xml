@@ -25,6 +25,7 @@
     <Currency>missing</Currency>
     <CalibrationHeat>1</CalibrationHeat>
     <CalibrationPower>1</CalibrationPower>
+    <InitialSoilTemperature>1.2</InitialSoilTemperature>
     <Panes>
       <Pane index="1" layer="0" position="1">
         <PaneTransmission>0.80</PaneTransmission>
@@ -700,14 +701,14 @@
     <DescriptionLong>missing</DescriptionLong>
     <ShortDesc>LED DRW</ShortDesc>
     <LongDesc>Væksthus 10.000 m2</LongDesc>
-    <WeatherFile>C:\VG2\VG Weather\DNK_Odense.txt</WeatherFile>
+    <WeatherFile>DNK_Odense.txt</WeatherFile>
     <Country>Denmark</Country>
     <Location>Odense</Location>
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
     <StartTime>01.01.2022</StartTime>
     <StopTime>31.12.2022</StopTime>
-    <TimeStep>2</TimeStep>
+    <TimeStep>90</TimeStep>
   </Description>
   <Status>
     <LightSum>

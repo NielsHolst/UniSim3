@@ -25,6 +25,7 @@ HEADERS +=  \
     day_degrees.h \
     date_time_signal.h \
     demand_budget.h \
+    dew_point.h \
     distributed_delay_base.h \
     distributed_delay.h \
     distributed_delay_2d.h \
@@ -123,6 +124,7 @@ SOURCES +=  \
     date_time_signal.cpp \
     day_degrees.cpp \
     demand_budget.cpp \
+    dew_point.cpp \
     distributed_delay_base.cpp \
     distributed_delay.cpp \
     distributed_delay_2d.cpp \

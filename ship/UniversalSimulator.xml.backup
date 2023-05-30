@@ -1,7 +1,7 @@
 <project>
     <shortName>UniversalSimulator</shortName>
     <fullName>Universal Simulator</fullName>
-    <version>3.10</version>
+    <version>3.0.9</version>
     <installerFilename></installerFilename>
     <licenseFile>builder-input/gpl-3.0.txt</licenseFile>
     <leftImage>builder-input/squirrel 163x314.png</leftImage>
@@ -65,16 +65,16 @@
                     <platforms>osx</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../nielsholst/lib/libuniversal_simulator_base.2.3.22.dylib</origin>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.2.3.22.dylib</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../../../nielsholst/lib/libuniversal_simulator_base.2.3.dylib</origin>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.2.3.dylib</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../../../nielsholst/lib/libuniversal_simulator_base.2.dylib</origin>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.2.dylib</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../../../nielsholst/lib/libuniversal_simulator_base.dylib</origin>
+                            <origin>../../../../../nielsholst/lib/libuniversal_simulator_base.dylib</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>

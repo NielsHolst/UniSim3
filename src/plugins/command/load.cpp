@@ -51,18 +51,26 @@ void load::doExecute() {
 }
 
 void load::readFile(QString fileName) {
+    QString fileNamePath = environment().inputFileNamePath(fileName);
+
     // Builder and reader collaborate to create model
     BoxBuilder builder;
-    auto reader = fileName.endsWith("box") ?
-            unique_ptr<ReaderBase>( new ReaderBoxScript(&builder) ) :
-            unique_ptr<ReaderBase>( new ReaderXml      (&builder) );
+    unique_ptr<ReaderBase> reader;
+    if (fileName.endsWith("box"))
+        reader = unique_ptr<ReaderBase>( new ReaderBoxScript(&builder) );
+    else if (fileName.endsWith("xml")) {
+        reader = unique_ptr<ReaderBase>( new ReaderXml(&builder) );
+    }
+    else {
+        ThrowException("Can only open files of type .box or .xml").value(fileNamePath);
+    }
 
     // Delete current model
     Box::root(nullptr);
 
     // Create a new model
     try {
-        reader->parse(environment().inputFileNamePath(fileName));
+        reader->parse(fileNamePath);
         Box::root(builder.root());
     }
     catch (const Exception &ex) {

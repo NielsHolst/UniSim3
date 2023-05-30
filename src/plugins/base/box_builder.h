@@ -51,8 +51,9 @@ template <class T> BoxBuilder& BoxBuilder::equals(T value) {
     if (!_currentPort)
         ThrowException("'equals' out of context");
 
-    // For an auxillary port, we did not know its type until now
-    if (_currentPort->type() == PortType::Auxiliary)
+    // For an auxillary port, we may not know its type until now
+    if (_currentPort->type() == PortType::Auxiliary &&
+        _currentPort->value().type() == Value::Type::Uninitialized)
         _currentPort->initialize(value);
 
     // Assign the value to the port we are currently defining

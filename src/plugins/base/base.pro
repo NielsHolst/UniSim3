@@ -84,8 +84,6 @@ HEADERS +=  \
     reader_base.h \
     reader_boxscript.h \
     reader_xml.h \
-    reader_xml_strategy_base.h \
-    reader_xml_strategy_generic.h \
     resolved_references.h \
     proportions.h \
     psychrolib.h \
@@ -108,7 +106,8 @@ HEADERS +=  \
     value_typed.h \
     vector_op.h \
     version.h \
-    win_taskbar_progress.h
+    win_taskbar_progress.h \
+    xml_node.h
 
 SOURCES +=  \
     altova_xml.cpp \
@@ -159,8 +158,6 @@ SOURCES +=  \
     reader_base.cpp \
     reader_boxscript.cpp \
     reader_xml.cpp \
-    reader_xml_strategy_base.cpp \
-    reader_xml_strategy_generic.cpp \
     resolved_references.cpp \
     save_grammar_atom.cpp \
     save_grammar_base.cpp \
@@ -175,5 +172,6 @@ SOURCES +=  \
     value.cpp \
     value_collection.cpp \
     vector_op.cpp \
-    version.cpp
+    version.cpp \
+    xml_node.cpp
 

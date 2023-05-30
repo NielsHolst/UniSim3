@@ -8,7 +8,7 @@
 #include "dialog.h"
 #include "exception.h"
 #include "reader_xml.h"
-#include "reader_xml_strategy_generic.h"
+#include "xml_node.h"
 
 namespace base {
 
@@ -24,6 +24,28 @@ void ReaderXml::parse(QString filePath) {
     // Open XML reader
     openReader(filePath);
 
+    // Read different XML formats
+    Format format = readRoot();
+    switch (format) {
+    case Format::generic:
+        readGeneric();
+        break;
+    case Format::vg:
+        readVirtualGreenhouse();
+        break;
+    }
+}
+
+void ReaderXml::openReader(QString filePath) {
+    _file.setFileName(filePath);
+    if (!_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QString msg("Could not open file for reading");
+        ThrowException(msg).value(filePath);
+    }
+    _reader.setDevice(&_file);
+}
+
+ReaderXml::Format ReaderXml::readRoot() {
     // Loop through XML tokens
     _reader.readNext();
     if (_reader.tokenType() != QXmlStreamReader::StartDocument)
@@ -33,6 +55,15 @@ void ReaderXml::parse(QString filePath) {
     QString format = _reader.attributes().hasAttribute("format") ?
                      _reader.attributes().value("format").toString() :
                       QString("generic");
+
+    if (format == "generic")
+        return Format::generic;
+    else if (format == "vg")
+        return Format::vg;
+    else ThrowException("Unknown XMLformat").value(format);
+}
+
+void ReaderXml::readGeneric() {
     while (!_reader.atEnd()) {
         switch (_reader.tokenType()) {
             case QXmlStreamReader::StartElement:
@@ -67,13 +98,69 @@ void ReaderXml::parse(QString filePath) {
     }
 }
 
-void ReaderXml::openReader(QString filePath) {
-    _file.setFileName(filePath);
-    if (!_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QString msg("Could not open file for reading");
-        ThrowException(msg).value(filePath);
+void ReaderXml::readDocument() {
+    XmlNode *current = new XmlNode("container", nullptr);
+    QString text, name;
+    while (current && !_reader.atEnd()) {
+        auto type = _reader.tokenType();
+        switch (type) {
+        case QXmlStreamReader::StartElement:
+            name = _reader.name().toString();
+            current = new XmlNode(name, current);
+            addAttributes(current);
+            break;
+        case QXmlStreamReader::Characters:
+            text = _reader.text().toString().trimmed();
+            if (!text.isEmpty())
+                current->setValue(text);
+            break;
+        case QXmlStreamReader::EndElement:
+            current = current->parent();
+            break;
+        default:
+            break;
+        }
+        _reader.readNext();
     }
-    _reader.setDevice(&_file);
+    if (!current || current->parent())
+        ThrowException("XML file is not well-structured").value(_file.fileName());
+    _doc = current->detachChild();
+    delete current;
+}
+
+void ReaderXml::addAttributes(XmlNode *node) {
+    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
+        QString name  = attribute.name().toString(),
+                value = attribute.value().toString();
+        node->addAttribute(name, value);
+    }
+}
+
+void ReaderXml::readVirtualGreenhouse() {
+    readDocument();
+    _builder->
+    box("Simulation").name("sim").
+        box().name("global").
+            aux("beginDate", "datetime").computes(_doc->find("Description/StartTime")->value()).
+        endbox().
+        box("Calendar").name("calendar").
+            port("latitude").equals(_doc->find("Description/Latitude")->value()).
+            port("longitude").equals(_doc->find("Description/Longitude")->value()).
+            port("begin").computes("global[beginDate] - 1").
+            port("end").equals(_doc->find("Description/StopTime")->value()).
+            port("timeStep").equals(_doc->find("Description/TimeStep")->value()).
+            port("timeUnit").equals("s").
+        endbox().
+        box("vg::Outdoors").
+            box("Records").name("records").
+                port("fileName").equals(_doc->find("Description/WeatherFile")->value()).
+                port("cycle").equals(true).
+            endbox().
+            box("SoilTemperature").name("soilTemperature").
+                port("initial").equals(_doc->find("Greenhouse/InitialSoilTemperature")->value()).
+            endbox().
+        endbox().
+    endbox();
 }
 
 void ReaderXml::setElementType() {
