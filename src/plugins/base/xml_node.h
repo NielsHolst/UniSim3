@@ -6,6 +6,7 @@
 #define BASE_XML_NODE_H
 
 #include <QMap>
+#include <QMultiMap>
 #include <QString>
 #include <QVector>
 
@@ -19,15 +20,18 @@ public:
     XmlNode* detachChild();
     void addAttribute(QString name, QString value);
     void setValue(QString value);
+    QString name() const;
     QString value() const;
+    QString attribute(QString name) const;
+    XmlNode* peak(QString path);
     XmlNode* find(QString path);
     XmlNode* parent();
-    QMap<QString, XmlNode*> & children();
+    QMultiMap<QString, XmlNode*> & children();
 private:
     // Data
     QString _name, _value;
     XmlNode* _parent;
-    QMap<QString, XmlNode*> _children;
+    QMultiMap<QString, XmlNode*> _children;
     QMap<QString, QString> _attributes;
     // Methods
     void addChild(XmlNode *child);

@@ -26,70 +26,62 @@
     <CalibrationHeat>1</CalibrationHeat>
     <CalibrationPower>1</CalibrationPower>
     <InitialSoilTemperature>1.2</InitialSoilTemperature>
+    <Positions>
+      <roof1 position="1">
+        <Weight>1</Weight>
+      </roof1>
+      <roof2 position="2">
+        <Weight>1</Weight>
+      </roof2>
+      <side1 position="3">
+        <Weight>1</Weight>
+      </side1>
+      <side2 position="4">
+        <Weight>0.5</Weight>
+      </side2>
+      <end1  position="5">
+        <Weight>0.2</Weight>
+      </end1>
+      <end2  position="6">
+        <Weight>0.2</Weight>
+      </end2>
+    </Positions>
     <Panes>
+      <Products>
+        <Product name="Single glass 4mm">
+          <PaneTransmission>0.80</PaneTransmission>
+          <PaneUValue>6.50</PaneUValue>
+          <PaneReflection>0.10</PaneReflection>
+          <PaneLwTransmission>0.20</PaneLwTransmission>
+          <PaneLwReflection>0.15</PaneLwReflection>
+          <PaneHeatCapacity>8400</PaneHeatCapacity>
+        </Product>
+        <Product name="Single glass 6mm">
+          <PaneTransmission>0.78</PaneTransmission>
+          <PaneUValue>5.50</PaneUValue>
+          <PaneReflection>0.10</PaneReflection>
+          <PaneLwTransmission>0.15</PaneLwTransmission>
+          <PaneLwReflection>0.15</PaneLwReflection>
+          <PaneHeatCapacity>12600</PaneHeatCapacity>
+        </Product>
+      </Products>
       <Pane index="1" layer="0" position="1">
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
         <Product>Single glass 4mm</Product>
       </Pane>
-      <Pane index="2" layer="0" position="2">
-        <Product>Single glass 4mm</Product>
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
-      </Pane>
-      <Pane index="3" layer="0" position="3">
-        <Product>Single glass 4mm</Product>
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
-      </Pane>
-      <Pane index="4" layer="0" position="4">
-        <Product>Single glass 4mm</Product>
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
-      </Pane>
-      <Pane index="5" layer="0" position="5">
-        <Product>Single glass 4mm</Product>
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
-      </Pane>
-      <Pane index="6" layer="0" position="6">
-        <Product>Single glass 4mm</Product>
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
-      </Pane>
-      <Pane index="7" layer="0" position="7">
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
+      <Pane index="1" layer="0" position="2">
         <Product>Single glass 4mm</Product>
       </Pane>
-      <Pane index="8" layer="0" position="8">
-        <PaneTransmission>0.80</PaneTransmission>
-        <PaneUValue>6.50</PaneUValue>
-        <PaneReflection>0.10</PaneReflection>
-        <PaneLwTransmission>0.20</PaneLwTransmission>
-        <PaneLwReflection>0.15</PaneLwReflection>
+      <Pane index="1" layer="0" position="3">
         <Product>Single glass 4mm</Product>
+      </Pane>
+      <Pane index="1" layer="0" position="4">
+        <Product>Single glass 4mm</Product>
+      </Pane>
+      <Pane index="1" layer="0" position="5">
+        <Product>Single glass 4mm</Product>
+      </Pane>
+      <Pane index="1" layer="0" position="6">
+        <Product>Single glass 6mm</Product>
       </Pane>
     </Panes>
     <Vents>
@@ -107,167 +99,75 @@
       </Vent>
     </Vents>
     <Screens>
+      <Products>
+        <Product name="LS Obscura 10070 FR WB BW">
+          <Transmission>0.010</Transmission>
+          <ReflectionOutwards>0.000</ReflectionOutwards>
+          <ReflectionInwards>0.990</ReflectionInwards>
+          <U>70.000</U>
+          <HeatCapacity>80</HeatCapacity>
+        </Product>
+        <Product name="LS Obscura 10075 FR AB BW">
+          <Transmission>0.100</Transmission>
+          <ReflectionOutwards>0.900</ReflectionOutwards>
+          <ReflectionInwards>0.900</ReflectionInwards>
+          <U>0.000</U>
+          <HeatCapacity>80</HeatCapacity>
+        </Product>
+      </Products>
       <Screen index="1" layer="1" position="1">
-        <Manufacture>LS -</Manufacture>
         <Product>LS Obscura 10070 FR WB BW</Product>
-        <Transmission>0.010</Transmission>
-        <ReflectionOutwards>0.000</ReflectionOutwards>
-        <ReflectionInwards>0.990</ReflectionInwards>
-        <U>70.000</U>
-        <Porosity>0.020</Porosity>
       </Screen>
       <Screen index="2" layer="1" position="2">
-        <Manufacture>LS</Manufacture>
         <Product>LS Obscura 10075 FR AB BW</Product>
-        <Transmission>0.100</Transmission>
-        <ReflectionOutwards>0.900</ReflectionOutwards>
-        <ReflectionInwards>0.900</ReflectionInwards>
-        <U>0.000</U>
-        <Porosity>0.200</Porosity>
       </Screen>
       <Screen index="3" layer="1" position="3">
-        <Manufacture>LS -</Manufacture>
         <Product>LS Obscura 10075 FR AB BW</Product>
-        <Transmission>0.100</Transmission>
-        <ReflectionOutwards>0.900</ReflectionOutwards>
-        <ReflectionInwards>0.900</ReflectionInwards>
-        <U>0.000</U>
-        <Porosity>0.200</Porosity>
       </Screen>
       <Screen index="4" layer="1" position="4">
-        <Manufacture>LS</Manufacture>
         <Product>LS Obscura 10075 FR AB BW</Product>
-        <Transmission>0.100</Transmission>
-        <ReflectionOutwards>0.900</ReflectionOutwards>
-        <ReflectionInwards>0.900</ReflectionInwards>
-        <U>0.000</U>
-        <Porosity>0.200</Porosity>
       </Screen>
       <Screen index="5" layer="1" position="5">
-        <Manufacture>LS</Manufacture>
         <Product>LS Obscura 10075 FR AB BW</Product>
-        <Transmission>0.100</Transmission>
-        <ReflectionOutwards>0.900</ReflectionOutwards>
-        <ReflectionInwards>0.900</ReflectionInwards>
-        <U>0.000</U>
-        <Porosity>0.200</Porosity>
       </Screen>
       <Screen index="6" layer="1" position="6">
-        <Manufacture>LS</Manufacture>
         <Product>LS Obscura 10070 FR WB BW</Product>
-        <Transmission>0.010</Transmission>
-        <ReflectionOutwards>0.000</ReflectionOutwards>
-        <ReflectionInwards>0.990</ReflectionInwards>
-        <U>70.000</U>
-        <Porosity>0.020</Porosity>
       </Screen>
       <Screen index="7" layer="2" position="1">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>0</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>1</U>
-        <Porosity>0</Porosity>
       </Screen>
       <Screen index="8" layer="2" position="2">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="9" layer="2" position="3">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="10" layer="2" position="4">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="11" layer="2" position="5">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="12" layer="2" position="6">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="13" layer="3" position="1">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="14" layer="3" position="2">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="15" layer="3" position="3">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="16" layer="3" position="4">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="17" layer="3" position="5">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
       <Screen index="18" layer="3" position="6">
-        <Manufacture>None</Manufacture>
         <Product>None</Product>
-        <Transmission>1</Transmission>
-        <ReflectionOutwards>0</ReflectionOutwards>
-        <ReflectionInwards>0</ReflectionInwards>
-        <U>0</U>
-        <Porosity>1</Porosity>
       </Screen>
     </Screens>
     <Lamps>

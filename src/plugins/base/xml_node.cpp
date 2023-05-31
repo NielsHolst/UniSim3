@@ -16,8 +16,10 @@ XmlNode::XmlNode(QString name, XmlNode *parent)
 
 XmlNode::~XmlNode() {
     auto child = _children.begin();
-    while (child != _children.end())
+    while (child != _children.end()) {
         delete child.value();
+        ++child;
+    }
 }
 
 XmlNode* XmlNode::detachChild() {
@@ -36,33 +38,51 @@ void XmlNode::setValue(QString value) {
     _value = value;
 }
 
+QString XmlNode::name() const {
+    return _name;
+}
+
 QString XmlNode::value() const {
     return _value;
+}
+
+QString XmlNode::attribute(QString name) const {
+    return _attributes.value(name, "");
 }
 
 XmlNode* XmlNode::parent() {
     return _parent;
 }
 
-QMap<QString, XmlNode*> & XmlNode::children() {
+QMultiMap<QString, XmlNode*> & XmlNode::children() {
     return _children;
 }
 
-XmlNode* XmlNode::find(QString path) {
+XmlNode* XmlNode::peak(QString path) {
     QStringList names = path.split(("/"));
     XmlNode *node = this;
     for (auto &name : names) {
+        int n = node->_children.values(name).size();
+        if (n > 1)
+            ThrowException("XML path is not unique").value(n);
         auto child = node->_children.find(name);
         if (child != node->_children.end())
             node = *child;
         else
-            ThrowException("Cannot find child XML element of that name").value("Path: "+path).value2("Child: "+name);
+            return nullptr;
     }
     return node;
 }
 
+XmlNode* XmlNode::find(QString path) {
+    XmlNode *node = peak(path);
+    if (!node)
+        ThrowException("Cannot find child XML element of that name").value(path);
+    return node;
+}
+
 void XmlNode::addChild(XmlNode *child) {
-    _children[child->_name] = child;
+    _children.insert(child->_name, child);
 }
 
 } // namespace

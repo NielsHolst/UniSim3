@@ -23,6 +23,8 @@ private:
     QXmlStreamReader _reader;
     QFile _file;
     XmlNode *_doc;
+    QMap<QString, int> _faces;
+
     enum class Type {Box, Port, Aux};
     Type _type;
     // Types
@@ -34,6 +36,13 @@ private:
     void readDocument();
     void readVirtualGreenhouse();
     void addAttributes(XmlNode *node);
+    BoxBuilder& shelterCovers();
+    BoxBuilder& shelterScreens();
+    BoxBuilder& shelterFaces();
+    QString findPaneProduct(QString position);
+    QStringList collectScreens(QString position);
+    QMap<QString, QStringList> collectAllScreens();
+
     void setElementType();
     void setBoxAttributes();
     void setPortAttributes(bool isAux);
