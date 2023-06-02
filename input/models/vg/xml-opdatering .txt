@@ -13,4 +13,4 @@ Tilføjet
 
 Præcisering
   For <Screen> tæller position ude fra; position=1 er altså gardinet nærmest glasset.
-  
+  Jeg har brugt sætpunktet <VentTemp> som ventilationstillægget, der lægges til <HeatingTemp>.

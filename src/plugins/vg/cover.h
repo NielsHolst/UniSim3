@@ -20,7 +20,7 @@ public:
     void update();
 private:
     // Additional inputs
-    double swReflectivityChalk, lwReflectivityChalk;
+    double transmissivityReduction, swReflectivityChalk, lwReflectivityChalk;
     // No additional outputs
 };
 

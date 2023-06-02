@@ -12,6 +12,33 @@
 
 namespace base {
 
+namespace {
+
+    int getPosition(XmlNode *node) {
+        int i = node->getAttributeInt("position");
+        bool ok = (1<=i && i<=6);
+        if (!ok)
+            ThrowException("Position value between 1 and 6 expected").value(node->name());
+        return i;
+    }
+
+    QString getChildValueString(XmlNode *parent, QString childName) {
+        XmlNode *child = parent->peak(childName);
+        if (!child)
+            ThrowException("Missing " + childName).value(parent->name());
+        return child->value();
+    }
+
+    double getChildValueDouble(XmlNode *parent, QString childName) {
+        QString s = getChildValueString(parent, childName);
+        bool ok;
+        double value = s.toDouble(&ok);
+        if (!ok)
+            ThrowException("Numerical value expected").value(s).value2(parent->name() + "/" + childName);
+        return value;
+    }
+}
+
 ReaderXml::ReaderXml(BoxBuilder *builder)
     : ReaderBase(builder)
 {
@@ -28,7 +55,7 @@ void ReaderXml::parse(QString filePath) {
     Format format = readRoot();
     switch (format) {
     case Format::generic:
-        readGeneric();
+        ThrowException("Unknown XML file format");
         break;
     case Format::vg:
         readVirtualGreenhouse();
@@ -61,41 +88,6 @@ ReaderXml::Format ReaderXml::readRoot() {
     else if (format == "vg")
         return Format::vg;
     else ThrowException("Unknown XMLformat").value(format);
-}
-
-void ReaderXml::readGeneric() {
-    while (!_reader.atEnd()) {
-        switch (_reader.tokenType()) {
-            case QXmlStreamReader::StartElement:
-            setElementType();
-            switch (_type) {
-                case Type::Box:
-                    setBoxAttributes();
-                    break;
-                case Type::Port:
-                    setPortAttributes(false);
-                    break;
-                case Type::Aux:
-                    setPortAttributes(true);
-                    break;
-            }
-            break;
-            case QXmlStreamReader::EndElement:
-                setElementType();
-                switch (_type) {
-                    case Type::Box:
-                        _builder->endbox();
-                        break;
-                    case Type::Port:
-                    case Type::Aux:
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
-        _reader.readNext();
-    }
 }
 
 void ReaderXml::readDocument() {
@@ -134,30 +126,6 @@ void ReaderXml::addAttributes(XmlNode *node) {
                 value = attribute.value().toString();
         node->addAttribute(name, value);
     }
-}
-
-namespace {
-
-int getPosition(XmlNode *node) {
-    bool ok;
-    QString s = node->attribute("position");
-    int i = s.toInt(&ok);
-    if (!ok || i<1 || i>6)
-        ThrowException("Position value between 1 and 6 expected").value(s);
-    return i;
-}
-
-double getChildValue(XmlNode *parent, QString childName) {
-    XmlNode *child = parent->peak(childName);
-    if (!child)
-        ThrowException("Missing " + childName).value(parent->name());
-    bool ok;
-    double value = child->value().toDouble(&ok);
-    if (!ok)
-        ThrowException("Numerical value expected").value(child->value()).value2(parent->name() + "/" + childName);
-    return value;
-}
-
 }
 
 void ReaderXml::readVirtualGreenhouse() {
@@ -219,27 +187,79 @@ void ReaderXml::readVirtualGreenhouse() {
                 endbox().
             endbox().
         endbox().
+        box().name("setpoints").
+            box().name("rhMax");
+                setpoint("MaxRelHmd", "threshold");
+                setpoint("rhMaxBand", "band").
+            endbox().
+            box().name("heating");
+                setpoint("HeatingTemp", "base");
+                setpoint("MaxHeatAddHighRH", "humidityOffset").
+            endbox().
+            box().name("ventilation");
+                setpoint("VentTemp", "offset");
+                setpoint("VentMaxCost", "maxHeatingCost").
+            endbox().
+            box().name("screens");
+                setpointsScreens().
+            endbox().
+            box().name("growthLights");
+                setpointsGrowthLights().
+            endbox().
+        endbox().
+        box("Box").name("controllers").
+            box("Sum").name("heating").
+                port("values").computes("setpoints/heating/base[value] | ./humidityOffset[value]").
+                box("ProportionalSignal").name("humidityOffset").
+                    port("input").imports("indoors[rh]").
+                    port("threshold").imports("setpoints/rhMax/threshold[value]").
+                    port("thresholdBand").imports("setpoints/rhMax/band[value]").
+                    port("maxSignal").imports("setpoints/heating/humidityOffset[value]").
+                    port("increasingSignal").equals(true).
+                endbox().
+            endbox().
+            box("Sum").name("ventilation").
+                port("values").computes("controllers/heating[value] | setpoints/ventilation/offset[value]").
+                box("ProportionalSignal").name("maxHeatingCost").
+                    port("input").imports("indoors[rh]").
+                    port("threshold").imports("setpoints/rhMax/threshold[value]").
+                    port("thresholdBand").imports("setpoints/rhMax/band[value]").
+                    port("maxSignal").imports("setpoints/ventilation/maxHeatingCost[value]").
+                    port("increasingSignal").equals(true).
+                endbox().
+            endbox();
+            controllersScreens();
+            controllersGrowthLights().
+        endbox().
+        box("Actuators").name("actuators").
+            box("ActuatorVentilation").name("ventilation").
+            endbox();
+            actuatorsScreens();
+            actuatorsGrowthLights().
+        endbox().
     endbox();
 
     delete _doc;
 }
 
 BoxBuilder& ReaderXml::shelterCovers() {
+    double transmissivityReduction = getChildValueDouble(_doc->find("Greenhouse"), "GreenhouseReductionFactorLight");
+
     XmlNode *products = _doc->find("Greenhouse/Panes/Products");
     auto product = products->children().begin();
     while (product != products->children().end()) {
-        QString productName = product.value()->attribute("name");
+        QString productName = product.value()->getAttributeString("name");
         if (productName.isEmpty())
             ThrowException("<Product> node is missing a 'name' attribute").value("Panes/Products/" + product.key());
         double
-            swt = getChildValue(product.value(), "PaneTransmission"),
-            swr = getChildValue(product.value(), "PaneReflection"),
+            swt = getChildValueDouble(product.value(), "PaneTransmission"),
+            swr = getChildValueDouble(product.value(), "PaneReflection"),
             swa = 1. - swt - swr,
-            lwt = getChildValue(product.value(), "PaneLwTransmission"),
-            lwr = getChildValue(product.value(), "PaneLwReflection"),
+            lwt = getChildValueDouble(product.value(), "PaneLwTransmission"),
+            lwr = getChildValueDouble(product.value(), "PaneLwReflection"),
             lwa = 1. - lwt - lwr,
-            U   = getChildValue(product.value(), "PaneUValue"),
-            C   = getChildValue(product.value(), "PaneHeatCapacity");
+            U   = getChildValueDouble(product.value(), "PaneUValue"),
+            C   = getChildValueDouble(product.value(), "PaneHeatCapacity");
         _builder->
         box("Cover").name(productName.replace(" ", "_")).
             port("swTransmissivityTop")   .equals(swt).
@@ -256,6 +276,9 @@ BoxBuilder& ReaderXml::shelterCovers() {
             port("lwAbsorptivityBottom")  .equals(lwa).
             port("Ubottom")               .equals(U).
             port("heatCapacity")          .equals(C).
+            port("transmissivityReduction").equals(transmissivityReduction).
+            port("swReflectivityChalk")   .computes("actuators/chalk[swReflectivity]").
+            port("lwReflectivityChalk")   .computes("actuators/chalk[lwReflectivity]").
         endbox();
         ++product;
     }
@@ -266,17 +289,18 @@ BoxBuilder& ReaderXml::shelterScreens() {
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     auto product = products->children().begin();
     while (product != products->children().end()) {
-        QString productName = product.value()->attribute("name");
+        QString productName = product.value()->getAttributeString("name");
         if (productName.isEmpty())
             ThrowException("<Product> node is missing a 'name' attribute").value("Screens/Products/" + product.key());
         double
-            t = getChildValue(product.value(), "Transmission"),
-            rtop = getChildValue(product.value(), "ReflectionOutwards"),
-            rbottom = getChildValue(product.value(), "ReflectionInwards"),
+            t = getChildValueDouble(product.value(), "Transmission"),
+            rtop = getChildValueDouble(product.value(), "ReflectionOutwards"),
+            rbottom = getChildValueDouble(product.value(), "ReflectionInwards"),
             atop = 1. - t - rtop,
             abottom = 1. - t - rbottom,
-            U   = getChildValue(product.value(), "U"),
-            C   = getChildValue(product.value(), "HeatCapacity");
+            U   = getChildValueDouble(product.value(), "U"),
+            C   = getChildValueDouble(product.value(), "HeatCapacity");
+        QString actuator = getChildValueString(product.value(), "Actuator");
         _builder->
         box("Screen").name(productName.replace(" ", "_")).
             port("swTransmissivityTop")   .equals(t).
@@ -293,6 +317,7 @@ BoxBuilder& ReaderXml::shelterScreens() {
             port("lwAbsorptivityBottom")  .equals(abottom).
             port("Ubottom")               .equals(U).
             port("heatCapacity")          .equals(C).
+            port("state")                 .imports("actuators/screens/" + actuator + "[state]").
         endbox();
         ++product;
     }
@@ -354,7 +379,270 @@ BoxBuilder& ReaderXml::shelterFaces() {
         aux("area").computes("construction/geometry[endArea]/2").
         aux("weight").equals(_doc->find("Greenhouse/Positions/end2/Weight")->value()).
     endbox();
+    return *_builder;
+}
 
+BoxBuilder& ReaderXml::setpoint(QString xmlName, const Setpoint &setpoint) {
+    _builder->box("DateTimeSignal");
+    if (!setpoint.fromDate.isEmpty())
+        _builder->port("beginDate").equals(setpoint.fromDate);
+    if (!setpoint.toDate.isEmpty())
+        _builder->port("endDate").equals(setpoint.toDate);
+    if (!setpoint.fromTime.isEmpty())
+        _builder->port("beginTime").equals(setpoint.fromTime);
+    if (!setpoint.toTime.isEmpty())
+        _builder->port("endTime").equals(setpoint.toTime);
+    if (setpoint.value.isEmpty())
+        ThrowException("Setpoint value is empty").value(xmlName);
+    _builder->port("signalInside").equals(setpoint.value).
+    endbox();
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::setpoint(QString xmlName, QString newName) {
+    _builder->box("PrioritySignal").name(newName);
+    Setpoints setpoints = getSetpoints(xmlName);
+    for (Setpoint &sp : setpoints)
+        setpoint(xmlName, sp);
+    _builder->endbox();
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::setpointsScreens() {
+    Setpoints
+        thresholds = getSetpoints("screenThreshold"),
+        bands      = getSetpoints("screenThresholdBand");
+    QMap<QString, Setpoints>
+        thresholdsByName, bandsByName;
+
+    _screenControllerNames.clear();
+    for (Setpoint &setpoint : thresholds) {
+        thresholdsByName[setpoint.name] << setpoint;
+        if (!_screenControllerNames.contains(setpoint.name))
+            _screenControllerNames << setpoint.name;
+    }
+    for (Setpoint &setpoint : bands) {
+        bandsByName[setpoint.name] << setpoint;
+        if (!_screenControllerNames.contains(setpoint.name))
+            _screenControllerNames << setpoint.name;
+    }
+    std::sort(_screenControllerNames.begin(), _screenControllerNames.end(),
+              [](const QString &a, const QString &b) { return a < b; });
+
+    for (const QString &name : _screenControllerNames) {
+        if (!thresholdsByName.contains(name))
+            ThrowException("No screen threshold matches a threshold band with this name").value(name);
+        if (!bandsByName.contains(name))
+            ThrowException("No screen threshold band matches a threshold with this name").value(name);
+
+        Setpoints
+            spThresholds = thresholdsByName.value(name),
+            spBands = bandsByName.value(name);
+        std::sort(spThresholds.begin(), spThresholds.end(),
+                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
+        std::sort(spBands.begin(), spBands.end(),
+                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
+        _builder->box().name(name);
+
+        _builder->box("PrioritySignal").name("threshold");
+        for (Setpoint &sp : spThresholds)
+            setpoint("screenThreshold/" + name, sp);
+        _builder->endbox();
+
+        _builder->box("PrioritySignal").name("band");
+        for (Setpoint &sp : spBands)
+            setpoint("screenThresholdBand/" + name, sp);
+        _builder->endbox();
+
+        _builder->endbox();
+    }
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::setpointsGrowthLights() {
+    Setpoints
+        modes          = getSetpoints("AssLightActive"),
+        thresholdsLow  = getSetpoints("AssLightOn"),
+        thresholdsHigh = getSetpoints("AssLightOff");
+    QMap<QString, Setpoints>
+        modesByName, thresholdsLowByName, thresholdsHighByName;
+
+    _growthLightNames.clear();
+    for (Setpoint &setpoint : modes) {
+        modesByName[setpoint.name] << setpoint;
+        if (!_growthLightNames.contains(setpoint.name))
+            _growthLightNames << setpoint.name;
+    }
+    for (Setpoint &setpoint : thresholdsLow) {
+        thresholdsLowByName[setpoint.name] << setpoint;
+        if (!_growthLightNames.contains(setpoint.name))
+            _growthLightNames << setpoint.name;
+    }
+    for (Setpoint &setpoint : thresholdsHigh) {
+        thresholdsHighByName[setpoint.name] << setpoint;
+        if (!_growthLightNames.contains(setpoint.name))
+            _growthLightNames << setpoint.name;
+    }
+
+    for (const QString &name : _growthLightNames) {
+        if (!modesByName.contains(name))
+            ThrowException("Missing <AssLightActive> for this growth light controller name").value(name);
+        if (!thresholdsLowByName.contains(name))
+            ThrowException("Missing <AssLightOn> for this growth light controller name").value(name);
+        if (!thresholdsHighByName.contains(name))
+            ThrowException("Missing <AssLightOff> for this growth light controller name").value(name);
+
+        Setpoints
+            spModes          = modesByName.value(name),
+            spThresholdsLow  = thresholdsLowByName.value(name),
+            spThresholdsHigh = thresholdsHighByName.value(name);
+        std::sort(spModes.begin(), spModes.end(),
+                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
+        std::sort(spThresholdsLow.begin(), spThresholdsLow.end(),
+                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
+        std::sort(spThresholdsHigh.begin(), spThresholdsHigh.end(),
+                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
+
+        _builder->box().name(name);
+
+        _builder->box("PrioritySignal").name("mode");
+        for (Setpoint &sp : spModes)
+            setpoint("AssLightActive/" + name, sp);
+        _builder->endbox();
+
+        _builder->box().name("thresholds");
+            _builder->box("PrioritySignal").name("low");
+            for (Setpoint &sp : spThresholdsLow)
+                setpoint("AssLightOn/" + name, sp);
+            _builder->endbox();
+
+            _builder->box("PrioritySignal").name("high");
+            for (Setpoint &sp : spThresholdsHigh)
+                setpoint("AssLightOff/" + name, sp);
+            _builder->endbox();
+        _builder->endbox();
+
+        _builder->endbox();
+    }
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::controllersScreens() {
+    _builder->box().name("screens");
+    for (const QString &name : _screenControllerNames) {
+        QString controlName = "Greenhouse/Control/Screen/" + name + "/Activate";
+        XmlNode *node = _doc->find(controlName);
+        QString s = node->value();
+        bool isIncreasing;
+        if (s == "BelowThreshold")
+            isIncreasing = false;
+        else if (s == "AboveThreshold")
+            isIncreasing = true;
+        else
+            ThrowException("Control node must have 'activate' attribute set to \"BelowThreshold\" or \"AboveThreshold\"").value(controlName).value2(s);
+
+        _builder->
+        box("ProportionalSignal").name(name).
+            port("input").imports("outdoors[radiation]").
+            port("threshold").imports("setpoints/screens/" + name + "/threshold[value]").
+            port("thresholdBand").imports("setpoints/screens/" + name + "/band[value]").
+            port("maxSignal").equals(1).
+            port("increasingSignal").equals(isIncreasing).
+        endbox();
+    }
+    _builder->endbox();
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::controllersGrowthLights() {
+    _builder->box().name("growthLights");
+    for (const QString &name : _growthLightNames) {
+        QString controlName = "Greenhouse/Control/AssLight/" + name + "/MinPeriodOn";
+        XmlNode *node = _doc->find(controlName);
+        QString minPeriodOn = node->value();
+
+        _builder->
+        box("GrowthLightController").name(name).
+            port("input").imports("outdoors[radiation]").
+            port("mode").imports("setpoints/growthLights/" + name + "/mode[value]").
+            port("thresholdLow").imports("setpoints/growthLights/" + name + "/thresholds/low[value]").
+            port("thresholdHigh").imports("setpoints/growthLights/" + name + "/thresholds/high[value]").
+            port("minPeriodOn").equals(minPeriodOn).
+        endbox();
+    }
+    _builder->endbox();
+    return *_builder;
+}
+
+namespace {
+    QString desiredState(QString s) {
+        QStringList controllers = s.split("+");
+        if (controllers.size() == 1)
+            return s;
+        for (int i = 0; i < controllers.size(); ++i)
+            controllers[i] = "controllers/screens/" + controllers.at(i) + "[value]";
+        return "max(" + controllers.join(" | ") +")";
+    }
+}
+
+BoxBuilder& ReaderXml::actuatorsScreens() {
+    _builder->box().name("screens");
+    for (const QString &name : _screenControllerNames) {
+        QString actuatorName = "Greenhouse/Actuator/Screens/" + name;
+        XmlNode
+            *parent      = _doc->find(actuatorName),
+            *controllers = parent->peak("Controllers"),
+            *lagPeriod   = parent->peak("LagPeriod");
+        if (!controllers)
+            ThrowException("In XML-File: Screen actuator lacks <Controllers> element").value(actuatorName);
+        _builder->box("ActuatorScreen").name(name).
+            port("desiredState").equals(desiredState(controllers->value()));
+        if (lagPeriod)
+            _builder->port("lagPeriod").equals(lagPeriod->value());
+        _builder->endbox();
+    }
+    _builder->endbox();
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::actuatorsGrowthLights() {
+    _builder->box().name("growthLights");
+    for (const QString &name : _growthLightNames) {
+        QString actuatorName = "Greenhouse/Actuator/AssLights/" + name;
+        XmlNode
+            *parent        = _doc->find(actuatorName),
+            *power         = parent->peak("LightCapacityPerSqm"),
+            *ballast       = parent->peak("Ballast"),
+            *parPhotonCoef = parent->peak("MicromolParPerWatt"),
+            *efficiency    = parent->peak("AgeCorrectedEfficiency"),
+            *propSw        = parent->peak("PropSw"),
+            *propLw        = parent->peak("PropLw"),
+            *propBallastLw = parent->peak("BallastPropLw");
+        if (!power)
+            ThrowException("AssLight is missing <LightCapacityPerSqm>").value(name);
+        if (!propSw)
+            ThrowException("AssLight is missing <propSw>").value(name);
+        if (!propLw)
+            ThrowException("AssLight is missing <propLw>").value(name);
+        if (!propBallastLw)
+            ThrowException("AssLight is missing <BallastPropLw>").value(name);
+
+        _builder->
+        box("ActuatorGrowthLight").name(name).
+            port("isOn").computes("controllers/growthLights/" + name +"[isOn]").
+            port("power").equals(power->toDouble()).
+            port("ballast").equals(ballast->toDouble()).
+            port("parPhotonCoef").equals(parPhotonCoef->toDouble()).
+            port("efficiency").equals(efficiency->toDouble()).
+            port("propSw").equals(propSw->toDouble()).
+            port("propLw").equals(propLw->toDouble()).
+            port("propConv").equals(1. - propSw->toDouble() - propLw->toDouble()).
+            port("propBallastLw").equals(propBallastLw->toDouble()).
+            port("propBallastConv").equals(1. - propBallastLw->toDouble()).
+        endbox();
+
+    }
+    _builder->endbox();
     return *_builder;
 }
 
@@ -366,11 +654,9 @@ QStringList ReaderXml::collectScreens(QString position) {
     auto screen = screens->children().begin();
     while (screen != screens->children().end()) {
         if (screen.value()->name() == "Screen" && getPosition(screen.value()) == pos) {
-            QString s = screen.value()->attribute("layer");
-            bool ok;
-            int i = s.toInt(&ok);
-            if (!ok || i<1)
-                ThrowException("Screen layer must be a positive integer").value(s);
+            int i = screen.value()->getAttributeInt("layer");
+            if (i<1)
+                ThrowException("Screen layer must be a positive integer").value(screen.value()->name());
 
             XmlNode *product = screen.value()->find("Product");
             QString productName = product->value().replace(" ", "_");
@@ -422,61 +708,31 @@ QMap<QString, QStringList> ReaderXml::collectAllScreens() {
     return result;
 }
 
-
-void ReaderXml::setElementType() {
-    static QMap<QString, Type> lookup = {
-        {"box",  Type::Box},
-        {"port", Type::Port},
-        {"aux",  Type::Aux}
-    };
-    QString name = _reader.name().toString();
-    if (lookup.contains(name))
-        _type = lookup.value(name);
-    else
-        ThrowException("Unknown XML element. " + currentInfo()).value(name);
-}
-
-void ReaderXml::setBoxAttributes() {
-    // If box has no "class" attribute then default to "box" class
-    QString className = _reader.attributes().hasAttribute("class") ?
-                        _reader.attributes().value("class").toString() :
-                        QString("Box");
-    _builder->box(className);
-    // Box name is optional
-    if (_reader.attributes().hasAttribute("name"))
-        _builder->name( _reader.attributes().value("name").toString() );
-    // Check for unknown attributes; ignore "source" attribute
-    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
-        QString name = attribute.name().toString();
-        if (name != "class" && name != "name" && name != "source")
-            ThrowException("Unexpected class attribute").value(name).hint(currentInfo());
+ReaderXml::Setpoints ReaderXml::getSetpoints(QString name) {
+    Setpoints result;
+    XmlNode *node = _doc->peak("Greenhouse/Climate/Setpoint");
+    if (!node)
+        ThrowException("Cannot find Setpoint node in XML file").value(name);
+    auto children = node->children(name);
+    auto sp = children.begin();
+    while (sp != children.end()) {
+        Setpoint setpoint;
+        setpoint.index    = sp.value()->getAttributeInt("index");
+        setpoint.name     = sp.value()->getAttributeString("name");
+        setpoint.fromDate = sp.value()->getAttributeString("FromDate");
+        setpoint.toDate   = sp.value()->getAttributeString("ToDate");
+        setpoint.fromTime = sp.value()->getAttributeString("FromTime");
+        setpoint.toTime   = sp.value()->getAttributeString("ToTime");
+        setpoint.value    = sp.value()->value();
+        result << setpoint;
+        ++sp;
     }
+    // Sort in decreasing order of index
+    std::sort(result.begin(), result.end(),
+              [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
+
+    return result;
 }
 
-void ReaderXml::setPortAttributes(bool isAux) {
-    bool nameSet{false};
-    for (const QXmlStreamAttribute &attribute : _reader.attributes()) {
-        QString name = attribute.name().toString(),
-                value = _reader.attributes().value(name).toString();
-        if (name == "name"){
-            if (isAux)
-                _builder->aux(value);
-            else
-                _builder->port(value);
-            nameSet = true;
-        }
-        else if (name == "value")
-            _builder->computes(value);
-//            _builder->equals(value);
-        else if (name == "ref")
-            _builder->imports(value);
-        else if (name == "computes")
-            _builder->computes(value);
-        else
-            _builder->currentPort()->addAttribute(name, value);
-    }
-    if (!nameSet)
-        ThrowException("Port misses \"name\" attribute").hint(currentInfo());
-}
 
 } // namespace

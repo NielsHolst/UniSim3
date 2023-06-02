@@ -431,7 +431,7 @@ Simulation sim {
       }
     }
   }
-  Controllers controllers {
+  Box controllers {
     Sum heating {
       .values = setpoints/heating/base[value] | ./humidityOffset[value]
       ProportionalSignal humidityOffset {
@@ -478,8 +478,8 @@ Simulation sim {
     }
     Box growthLights {
       GrowthLightController bank1 {
-        .mode          = setpoints/growthLights/bank1/mode[value]
         .input         = outdoors[radiation]
+        .mode          = setpoints/growthLights/bank1/mode[value]
         .thresholdLow  = setpoints/growthLights/bank1/thresholds/low[value]
         .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
         .minPeriodOn   = 5.

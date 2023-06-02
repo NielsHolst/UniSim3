@@ -20,6 +20,7 @@ Cover::Cover(QString name, Box *parent)
       LayerAdjusted(name, parent)
 {
     help("holds cover radiation and heat parameters");
+    Input(transmissivityReduction).unit("[0;1]").help("Reduced cover transmission due to beams, dirt, etc.");
     Input(swReflectivityChalk).unit("[0;1]").help("Additional short-wave reflectivity caused by chalk");
     Input(lwReflectivityChalk).unit("[0;1]").help("Additional long-wave reflectivity caused by chalk");
 }
@@ -37,10 +38,10 @@ void Cover::update() {
     lwReflectivityBottomAdj = std::min(lwReflectivityBottom + lwReflectivityChalk, 1.);
 
     // Subtract chalk from transmissivity
-    swTransmissivityTopAdj     = std::max(swTransmissivityTop     - swReflectivityChalk, 0.);
-    lwTransmissivityTopAdj     = std::max(lwTransmissivityTop     - lwReflectivityChalk, 0.);
-    swTransmissivityBottomAdj  = std::max(swTransmissivityBottom  - swReflectivityChalk, 0.);
-    lwTransmissivityBottomAdj  = std::max(lwTransmissivityBottom  - lwReflectivityChalk, 0.);
+    swTransmissivityTopAdj     = std::max(swTransmissivityTop     - swReflectivityChalk + transmissivityReduction, 0.);
+    lwTransmissivityTopAdj     = std::max(lwTransmissivityTop     - lwReflectivityChalk + transmissivityReduction, 0.);
+    swTransmissivityBottomAdj  = std::max(swTransmissivityBottom  - swReflectivityChalk + transmissivityReduction, 0.);
+    lwTransmissivityBottomAdj  = std::max(lwTransmissivityBottom  - lwReflectivityChalk + transmissivityReduction, 0.);
 
     // Absorptivity takes the rest
     swAbsorptivityTopAdj     = 1. - swReflectivityTopAdj    - swTransmissivityTopAdj;

@@ -9,6 +9,7 @@
 #include <QMultiMap>
 #include <QString>
 #include <QVector>
+#include "exception.h"
 
 namespace base {
 
@@ -21,17 +22,24 @@ public:
     void addAttribute(QString name, QString value);
     void setValue(QString value);
     QString name() const;
+
     QString value() const;
-    QString attribute(QString name) const;
+    int toInt() const;
+    double toDouble() const;
+
+    QString getAttributeString(QString name) const;
+    int getAttributeInt(QString name) const;
+    double getAttributeDouble(QString name) const;
+
     XmlNode* peak(QString path);
     XmlNode* find(QString path);
     XmlNode* parent();
-    QMultiMap<QString, XmlNode*> & children();
+    QMultiMap<QString, XmlNode *> &children(QString childName="");
 private:
     // Data
     QString _name, _value;
     XmlNode* _parent;
-    QMultiMap<QString, XmlNode*> _children;
+    QMultiMap<QString, XmlNode*> _children, _subset;
     QMap<QString, QString> _attributes;
     // Methods
     void addChild(XmlNode *child);

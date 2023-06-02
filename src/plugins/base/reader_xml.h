@@ -24,28 +24,41 @@ private:
     QFile _file;
     XmlNode *_doc;
     QMap<QString, int> _faces;
-
+    QVector<QString> _screenControllerNames, _growthLightNames;
     enum class Type {Box, Port, Aux};
     Type _type;
+
     // Types
     enum class Format{generic, vg};
+    struct Setpoint {
+        int index;
+        QString name, fromDate, toDate, fromTime, toTime, value;
+    };
+    using Setpoints = QVector<Setpoint>;
+
     // Methods
     void openReader(QString filePath);
     Format readRoot();
-    void readGeneric();
     void readDocument();
     void readVirtualGreenhouse();
     void addAttributes(XmlNode *node);
     BoxBuilder& shelterCovers();
     BoxBuilder& shelterScreens();
     BoxBuilder& shelterFaces();
+    BoxBuilder& setpoint(QString xmlName, QString newName);
+    BoxBuilder& setpoint(QString xmlName, const Setpoint &setpoint);
+    BoxBuilder& setpointsScreens();
+    BoxBuilder& setpointsGrowthLights();
+    BoxBuilder& controllersScreens();
+    BoxBuilder& controllersGrowthLights();
+    BoxBuilder& actuatorsScreens();
+    BoxBuilder& actuatorsGrowthLights();
+
     QString findPaneProduct(QString position);
     QStringList collectScreens(QString position);
     QMap<QString, QStringList> collectAllScreens();
 
-    void setElementType();
-    void setBoxAttributes();
-    void setPortAttributes(bool isAux);
+    Setpoints getSetpoints(QString name);
 };
 
 }

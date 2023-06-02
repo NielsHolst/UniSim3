@@ -3,29 +3,29 @@
     <Length>100</Length>
     <SpanSize>4</SpanSize>
     <NumberOfSpans>25</NumberOfSpans>
-    <Orientation>0</Orientation>
+    <!-- <Orientation>0</Orientation> -->
     <GreenhouseReductionFactorLight>0.1</GreenhouseReductionFactorLight>
     <TrempelHeight>4</TrempelHeight>
     <RoofPitch>26</RoofPitch>
     <UwindSlope>1.2</UwindSlope>
     <leakage>0.1</leakage>
     <HeatPipeConvection>0.85</HeatPipeConvection>
-    <screenPerfection>0.95</screenPerfection>
-    <screenAirExponent>6</screenAirExponent>
-    <screenUstateExponent>32</screenUstateExponent>
-    <screenUventilationSlope>0.5</screenUventilationSlope>
+    <!-- <screenPerfection>0.95</screenPerfection> -->
+    <!-- <screenAirExponent>6</screenAirExponent> -->
+    <!-- <screenUstateExponent>32</screenUstateExponent> -->
+    <!-- <screenUventilationSlope>0.5</screenUventilationSlope> -->
     <screenUair>2.27</screenUair>
     <floor-Uindoors>7.5</floor-Uindoors>
     <floor-Usoil>0.1</floor-Usoil>
     <floor-heatCapacity>42000</floor-heatCapacity>
     <floor-reflectance>0.4</floor-reflectance>
-    <HasHeatSink>0</HasHeatSink>
-    <priceHeat>30</priceHeat>
-    <pricePower>60</pricePower>
-    <Currency>missing</Currency>
-    <CalibrationHeat>1</CalibrationHeat>
-    <CalibrationPower>1</CalibrationPower>
-    <InitialSoilTemperature>1.2</InitialSoilTemperature>
+    <!-- <HasHeatSink>0</HasHeatSink> -->
+    <!-- <priceHeat>30</priceHeat> -->
+    <!-- <pricePower>60</pricePower> -->
+    <!-- <Currency>missing</Currency> -->
+    <!-- <CalibrationHeat>1</CalibrationHeat> -->
+    <!-- <CalibrationPower>1</CalibrationPower> -->
+    <InitialSoilTemperature>1.2</InitialSoilTemperature> <!-- Ny -->
     <Positions>
       <roof1 position="1">
         <Weight>1</Weight>
@@ -104,15 +104,21 @@
           <Transmission>0.010</Transmission>
           <ReflectionOutwards>0.000</ReflectionOutwards>
           <ReflectionInwards>0.990</ReflectionInwards>
-          <U>70.000</U>
+          <InsulationU>70.000</InsulationU> <!-- Ny -->
+          <U>1.2</U>
           <HeatCapacity>80</HeatCapacity>
+          <Actuator>Energy</Actuator>  <!-- Ny -->
         </Product>
         <Product name="LS Obscura 10075 FR AB BW">
           <Transmission>0.100</Transmission>
           <ReflectionOutwards>0.900</ReflectionOutwards>
           <ReflectionInwards>0.900</ReflectionInwards>
-          <U>0.000</U>
+          <!-- Bemærk: U-værdier er konduktanser. U=0 betyder at igen varme slipper igennem. -->
+          <!-- Derfor bør man sætte U større end 0 -->
+          <InsulationU>0.1</InsulationU> <!-- Ny -->
+          <U>1.2</U>
           <HeatCapacity>80</HeatCapacity>
+          <Actuator>Blackout</Actuator>  <!-- Ny -->
         </Product>
       </Products>
       <Screen index="1" layer="1" position="1">
@@ -170,41 +176,42 @@
         <Product>None</Product>
       </Screen>
     </Screens>
-    <Lamps>
-      <Lamp index="1" layer="0" position="1">
-        <Product>Deep Red/White LB</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>31</LightCapacityPerSqm>
-        <MicromolParPerWatt>3.500</MicromolParPerWatt>
-        <LampType>Led</LampType>
-        <Manufacture>Philips</Manufacture>
-        <Ballast>Led</Ballast>
-        <PropLw>Led</PropLw>
-        <MinPeriodOn>Led</MinPeriodOn>
-      </Lamp>
-      <Lamp index="2" layer="0" position="2">
-        <Product>None</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>0</LightCapacityPerSqm>
-        <MicromolParPerWatt>0.000</MicromolParPerWatt>
-        <LampType>Led</LampType>
-        <Manufacture>None</Manufacture>
-        <Ballast>50</Ballast>
-        <PropLw>0.5</PropLw>
-        <MinPeriodOn>20</MinPeriodOn>
-      </Lamp>
-      <Lamp index="3" layer="0" position="3">
-        <Product>None</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>0</LightCapacityPerSqm>
-        <MicromolParPerWatt>2.800</MicromolParPerWatt>
-        <LampType>Led</LampType>
-        <Manufacture>None</Manufacture>
-        <Ballast>50</Ballast>
-        <PropLw>0.5</PropLw>
-        <MinPeriodOn>20</MinPeriodOn>
-      </Lamp>
-    </Lamps>
+    <!-- Lamps er flytte til <Actuator> <AssLight>-->
+    <!-- <Lamps> -->
+      <!-- <Lamp index="1" layer="0" position="1"> -->
+        <!-- <Product>Deep Red/White LB</Product> -->
+        <!-- <ageCorrectedEfficiency>1</ageCorrectedEfficiency> -->
+        <!-- <LightCapacityPerSqm>31</LightCapacityPerSqm> -->
+        <!-- <MicromolParPerWatt>3.500</MicromolParPerWatt> -->
+        <!-- <LampType>Led</LampType> -->
+        <!-- <Manufacture>Philips</Manufacture> -->
+        <!-- <Ballast>Led</Ballast> -->
+        <!-- <PropLw>Led</PropLw> -->
+        <!-- <MinPeriodOn>Led</MinPeriodOn> -->
+      <!-- </Lamp> -->
+      <!-- <Lamp index="2" layer="0" position="2"> -->
+        <!-- <Product>None</Product> -->
+        <!-- <ageCorrectedEfficiency>1</ageCorrectedEfficiency> -->
+        <!-- <LightCapacityPerSqm>0</LightCapacityPerSqm> -->
+        <!-- <MicromolParPerWatt>0.000</MicromolParPerWatt> -->
+        <!-- <LampType>Led</LampType> -->
+        <!-- <Manufacture>None</Manufacture> -->
+        <!-- <Ballast>50</Ballast> -->
+        <!-- <PropLw>0.5</PropLw> -->
+        <!-- <MinPeriodOn>20</MinPeriodOn> -->
+      <!-- </Lamp> -->
+      <!-- <Lamp index="3" layer="0" position="3"> -->
+        <!-- <Product>None</Product> -->
+        <!-- <ageCorrectedEfficiency>1</ageCorrectedEfficiency> -->
+        <!-- <LightCapacityPerSqm>0</LightCapacityPerSqm> -->
+        <!-- <MicromolParPerWatt>2.800</MicromolParPerWatt> -->
+        <!-- <LampType>Led</LampType> -->
+        <!-- <Manufacture>None</Manufacture> -->
+        <!-- <Ballast>50</Ballast> -->
+        <!-- <PropLw>0.5</PropLw> -->
+        <!-- <MinPeriodOn>20</MinPeriodOn> -->
+      <!-- </Lamp> -->
+    <!-- </Lamps> -->
     <Heatpipes>
       <Heatpipe index="1" layer="0" position="1">
         <Product>32 mm Steel</Product>
@@ -538,17 +545,31 @@
     </HeatBuffer>
     <Climate>
       <Setpoint>
-        <AssLightActive1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="06:00">0</AssLightActive1>
-        <AssLightActive1 index="1" FromDate="01/01" ToDate="31/12" FromTime="06:00" ToTime="18:00">1</AssLightActive1>
-        <AssLightActive1 index="2" FromDate="01/01" ToDate="31/12" FromTime="18:00" ToTime="23:59">0</AssLightActive1>
-        <AssLightActive2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</AssLightActive2>
-        <AssLightActive3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</AssLightActive3>
-        <AssLightOff1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff1>
-        <AssLightOff2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff2>
-        <AssLightOff3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff3>
-        <AssLightOn1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn1>
-        <AssLightOn2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn2>
-        <AssLightOn3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn3>
+        <!-- <AssLightActive1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="06:00">0</AssLightActive1> -->
+        <!-- <AssLightActive1 index="1" FromDate="01/01" ToDate="31/12" FromTime="06:00" ToTime="18:00">1</AssLightActive1> -->
+        <!-- <AssLightActive1 index="2" FromDate="01/01" ToDate="31/12" FromTime="18:00" ToTime="23:59">0</AssLightActive1> -->
+        <!-- <AssLightActive2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</AssLightActive2> -->
+        <!-- <AssLightActive3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</AssLightActive3> -->
+        <!-- <AssLightOff1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff1> -->
+        <!-- <AssLightOff2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff2> -->
+        <!-- <AssLightOff3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff3> -->
+        <!-- <AssLightOn1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn1> -->
+        <!-- <AssLightOn2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn2> -->
+        <!-- <AssLightOn3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn3> -->
+        <!-- Ændret herfra -->
+        <AssLightActive index="0" name="Bank1" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="06:00">0</AssLightActive>
+        <AssLightActive index="1" name="Bank1" FromDate="01/01" ToDate="31/12" FromTime="06:00" ToTime="18:00">1</AssLightActive>
+        <AssLightActive index="2" name="Bank1" FromDate="01/01" ToDate="31/12" FromTime="18:00" ToTime="23:59">0</AssLightActive>
+        <AssLightActive index="0" name="Bank2" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</AssLightActive>
+        <AssLightActive index="0" name="Bank3" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</AssLightActive>
+        <AssLightOff    index="0" name="Bank1" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff>
+        <AssLightOff    index="0" name="Bank2" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff>
+        <AssLightOff    index="0" name="Bank3" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">600</AssLightOff>
+        <AssLightOn     index="0" name="Bank1" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn>
+        <AssLightOn     index="0" name="Bank2" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn>
+        <AssLightOn     index="0" name="Bank3" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</AssLightOn>
+        <!-- Ændret hertil -->
+        
         <CO2Capacity index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">50</CO2Capacity>
         <CO2Setpoint index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">900</CO2Setpoint>
         <CO2VentilationBand index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0.2</CO2VentilationBand>
@@ -572,30 +593,102 @@
         <minPipeTemperature2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</minPipeTemperature2>
         <minRelHmd index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">40</minRelHmd>
         <rhMaxBand index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</rhMaxBand>
-        <rhMinBand index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">2</rhMinBand>
-        <screenActive1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">shade1+energy1</screenActive1>
-        <screenActive1Layer index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">
-        </screenActive1Layer>
-        <screenActive2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">
-        </screenActive2>
-        <screenActive2Layer index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">
-        </screenActive2Layer>
-        <screenActive3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">
-        </screenActive3>
-        <screenActive3Layer index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">
-        </screenActive3Layer>
-        <screenEnergyThreshold1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</screenEnergyThreshold1>
-        <screenEnergyThreshold2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</screenEnergyThreshold2>
-        <ScreenEnergyThresholdBand index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</ScreenEnergyThresholdBand>
-        <screenFixed1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</screenFixed1>
-        <screenFixed2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</screenFixed2>
-        <screenShadeThreshold1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">500</screenShadeThreshold1>
-        <screenShadeThreshold2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">500</screenShadeThreshold2>
-        <screenShadeThresholdBand index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">50</screenShadeThresholdBand>
+        <!-- <rhMinBand index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">2</rhMinBand> -->
+        <!-- <screenActive1 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">shade1+energy1</screenActive1> -->
+        <!-- <screenActive1Layer index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00"> -->
+        <!-- </screenActive1Layer> -->
+        <!-- <screenActive2 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00"> -->
+        <!-- </screenActive2> -->
+        <!-- <screenActive2Layer index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00"> -->
+        <!-- </screenActive2Layer> -->
+        <!-- <screenActive3 index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00"> -->
+        <!-- </screenActive3> -->
+        <!-- <screenActive3Layer index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00"> -->
+        <!-- </screenActive3Layer> -->
+        <!-- Ændret herfra -->
+        <screenThreshold     index="0" name="Energy"   FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</screenThreshold>
+        <screenThresholdBand index="0" name="Energy"   FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</screenThresholdBand>
+        <screenThreshold     index="0" name="Blackout" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">-1</screenThreshold>
+        <screenThresholdBand index="0" name="Blackout" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</screenThresholdBand>
+        <screenThreshold     index="0" name="Shade"    FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">500</screenThreshold>
+        <screenThresholdBand index="0" name="Shade"    FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">50</screenThresholdBand>
+        <!-- Ændret hertil -->
         <ShadingAgentReduction index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">0</ShadingAgentReduction>
         <VentTemp index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">5</VentTemp>
+        <VentMaxCost index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">50</VentMaxCost>
       </Setpoint>
     </Climate>
+    <Control> <!-- Ny -->
+      <Screen>
+        <Energy>
+          <Activate>BelowThreshold</Activate>
+        </Energy>
+        <Blackout>
+          <Activate>AboveThreshold</Activate>
+        </Blackout>
+        <Shade>
+          <Activate>AboveThreshold</Activate>
+        </Shade>
+      </Screen>
+      <AssLight>
+        <Bank1>
+          <MinPeriodOn>5</MinPeriodOn>
+        </Bank1>
+        <Bank2>
+          <MinPeriodOn>5</MinPeriodOn>
+        </Bank2>
+        <Bank3>
+          <MinPeriodOn>5</MinPeriodOn>
+        </Bank3>
+      </AssLight>
+    </Control>
+    <Actuator> <!-- Ny -->
+      <Screens>
+        <Energy>
+          <Controllers>Energy</Controllers>
+          <LagPeriod>10</LagPeriod>
+        </Energy>
+        <Blackout>
+          <Controllers>Blackout+Energy</Controllers>
+          <LagPeriod>10</LagPeriod>
+        </Blackout>
+        <Shade>
+          <Controllers>Shade</Controllers>
+          <LagPeriod>10</LagPeriod>
+        </Shade>
+      </Screens>
+      <AssLights>
+        <Bank1>
+          <AgeCorrectedEfficiency>1</AgeCorrectedEfficiency> <!-- Med stort A -->
+          <!-- Jeg antager dette betyder 31 W/m2. Ballast kommer oven i. -->
+          <LightCapacityPerSqm>31</LightCapacityPerSqm>
+          <MicromolParPerWatt>3.500</MicromolParPerWatt>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw> <!-- Ny. Resten afgives ved konvektion = 1 - PropLw - PropSw -->
+          <BallastPropLw>0.3</BallastPropLw> <!-- Ny. Resten afgives ved konvektion = 1 - BallastPropLw -->
+          <!-- <MinPeriodOn>Led</MinPeriodOn> Flyttet til <Controller> -->
+        </Bank1>
+        <Bank2>
+          <AgeCorrectedEfficiency>1</AgeCorrectedEfficiency> 
+          <LightCapacityPerSqm>0</LightCapacityPerSqm>
+          <MicromolParPerWatt>0.000</MicromolParPerWatt>
+          <Ballast>50</Ballast>
+          <PropLw>0.5</PropLw>
+          <PropSw>0.4</PropSw> 
+          <BallastPropLw>0.3</BallastPropLw>
+        </Bank2>
+        <Bank3>
+          <AgeCorrectedEfficiency>1</AgeCorrectedEfficiency>
+          <LightCapacityPerSqm>0</LightCapacityPerSqm>
+          <MicromolParPerWatt>2.800</MicromolParPerWatt>
+          <Ballast>50</Ballast>
+          <PropLw>0.5</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.3</BallastPropLw>
+        </Bank3>
+      </AssLights>
+        </Actuator>
   </Greenhouse>
   <Description>
     <DescriptionLong>missing</DescriptionLong>

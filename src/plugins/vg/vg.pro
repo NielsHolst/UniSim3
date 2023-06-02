@@ -27,7 +27,6 @@ HEADERS +=  \
     budget_layer_sky.h \
     budget_volume.h \
     canopy_photosynthesis.h \
-    controllers.h \
     cover.h \
     crop.h \
     floor.h \
@@ -72,7 +71,6 @@ SOURCES += \
     budget_layer_sky.cpp \
     budget_volume.cpp \
     canopy_photosynthesis.cpp \
-    controllers.cpp \
     cover.cpp \
     crop.cpp \
     floor.cpp \
