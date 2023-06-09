@@ -5,26 +5,21 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
-#include "layer.h"
-#include "layer_adjusted.h"
+#ifndef SHADING_AGENT_H
+#define SHADING_AGENT_H
+#include <base/box.h>
+
 
 namespace vg {
 
-class Cover : public Layer, public LayerAdjusted
+class ShadingAgent : public base::Box
 {
-public:
-    Cover(QString name, Box *parent);
-    void reset();
-    void update();
+public: 
+    ShadingAgent(QString name, Box *parent);
 private:
-    // Additional inputs
-    double transmissivityReduction, swShading, lwShading;
-    // No additional outputs
+    // Inputs
+    double swReflectivity, lwReflectivity, state;
 };
 
 } //namespace
-
-
 #endif

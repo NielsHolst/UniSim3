@@ -1,12 +1,12 @@
 Simulation sim {
   Box global {
-    &beginDate = 01/05/2022
+    &beginDate = 09/05/2022
   }
   Calendar calendar{
     .latitude  = 55.4
     .longitude = 10.4
     .begin = global[beginDate] - 1
-    .end   = 02/05/2022
+    .end   = 12/05/2022
     .timeStep = 3
     .timeUnit = "m"
   }
@@ -34,6 +34,18 @@ Simulation sim {
     Shelter shelter {
       UWind Utop {
       }
+      Shading shading {
+        ShadingAgent chalk {
+          .swReflectivity = 0.2
+          .lwReflectivity = 0.1
+          .state = setpoints/shading/chalk[value]
+        }
+        ShadingAgent whiteFix {
+          .swReflectivity = 0.6
+          .lwReflectivity = 0.7
+          .state = setpoints/shading/whiteFix[value]
+        }
+      }
       Box covers {
         Cover glass {
           .swReflectivityTop      = 0.1
@@ -55,8 +67,8 @@ Simulation sim {
           .Utop                   = ../../Utop[value]
           .Ubottom                = 3.3
           .heatCapacity           = 8400
-          .swReflectivityChalk    = actuators/chalk[swReflectivity]
-          .lwReflectivityChalk    = actuators/chalk[lwReflectivity]
+          .swShading              = shelter/shading[swReflectivity]
+          .lwShading              = shelter/shading[lwReflectivity]
         }
         Cover oldGlass {
           .swReflectivityTop      = 0.1
@@ -78,8 +90,8 @@ Simulation sim {
           .Utop                   = ../../Utop[value]
           .Ubottom                = 3.3
           .heatCapacity           = 8400
-          .swReflectivityChalk    = actuators/chalk[swReflectivity]
-          .lwReflectivityChalk    = actuators/chalk[lwReflectivity]
+          .swShading              = shelter/shading[swReflectivity]
+          .lwShading              = shelter/shading[lwReflectivity]
         }
       }
       Box screens {
@@ -254,6 +266,20 @@ Simulation sim {
           .signalInside = 2
         }
       }
+      PrioritySignal minTemperature {
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .signalInside = 25
+        }
+      }
+      PrioritySignal maxTemperature {
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .signalInside = 80
+        }
+      }
     }
     Box ventilation {
       PrioritySignal offset {
@@ -383,21 +409,35 @@ Simulation sim {
           DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
-            .signalInside = 0
+           .signalInside = 0
           }
         }
       }
     }
-    PrioritySignal chalk {
-      DateTimeSignal {
-        .beginDate = 1/3
-        .endDate = 15/4
-        .signalInside = 1
+    Box shading {
+      PrioritySignal chalk {
+        DateTimeSignal {
+          .beginDate = 1/3
+          .endDate = 15/4
+          .signalInside = 1
+        }
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .signalInside = 0
+        }
       }
-      DateTimeSignal {
-        .beginDate = 1/1
-        .endDate = 31/12
-        .signalInside = 0
+      PrioritySignal whiteFix {
+        DateTimeSignal {
+          .beginDate = 16/4
+          .endDate = 15/8
+          .signalInside = 1
+        }
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .signalInside = 0
+        }
       }
     }
     Box co2 {
@@ -413,19 +453,26 @@ Simulation sim {
           .signalInside = 900
         }
       }
+      PrioritySignal capacity {
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .signalInside = 50 // g CO2/m2/h
+        }
+      }
       Box ventilation {
         PrioritySignal threshold {
           DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
-            .signalInside = 0.2
+            .signalInside = 5
           }
         }
         PrioritySignal band {
           DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
-            .signalInside = 0.1
+            .signalInside = 1
           }
         }
       }
@@ -453,9 +500,6 @@ Simulation sim {
         .maxSignal     = setpoints/ventilation/maxHeatingCost[value]
         .increasingSignal = TRUE
       }
-    }
-    Box chalk {
-      &value = controllers/chalk[value]
     }
     Box screens {
       ProportionalSignal energy {
@@ -491,10 +535,31 @@ Simulation sim {
     }
   }
   Box actuators {
-    ActuatorChalk chalk {
-      .state = controllers/chalk[value]
-      .swReflectivity = 0.2
-      .lwReflectivity = 0.1
+    HeatPipes heatPipes {
+      ActuatorHeatPipe circuit1 {
+        .volume = 14.14 
+        .flowRate = 40.0
+        .k = 0.0063
+        .b = 1.25
+        .propLw = 0.2
+        .inflowTemperature = 80.0
+        .indoorsTemperature = 20.0
+        .minTemperature = setpoints/heating/minTemperature[value]
+        .maxTemperature = setpoints/heating/maxTemperature[value]
+      }
+      ActuatorHeatPipe circuit2 {
+        .volume = 14.14 
+        .flowRate = 40.0
+        .k = 0.0063
+        .b = 1.25
+        .propLw = 0.2
+        .inflowTemperature = 80.0
+        .indoorsTemperature = 20.0
+        .minTemperature = setpoints/heating/minTemperature[value]
+        .maxTemperature = setpoints/heating/maxTemperature[value]
+      }
+    }
+    ActuatorVentilation ventilation {
     }
     Box screens {
       ActuatorScreen energy {
@@ -520,37 +585,15 @@ Simulation sim {
         .power = 80.
       }
     }
-    HeatPipes heatPipes {
-      ActuatorHeatPipe circuit1 {
-        .volume = 14.14 
-        .flowRate = 40.0
-        .k = 0.0063
-        .b = 1.25
-        .propLw = 0.2
-        .inflowTemperature = 80.0
-        .indoorsTemperature = 20.0
-      }
-      ActuatorHeatPipe circuit2 {
-        .volume = 14.14 
-        .flowRate = 40.0
-        .k = 0.0063
-        .b = 1.25
-        .propLw = 0.2
-        .inflowTemperature = 80.0
-        .indoorsTemperature = 20.0
-      }
-    }
     Accumulator co2 {
       .change = ./controller[controlVariable]
       .minValue = 0
-      .maxValue = 50 // g CO2/m2/h
+      .maxValue = setpoints/co2/capacity[value] 
       PidController controller{
         .sensedValue = indoors[co2]
         .desiredValue = setpoints/co2/concentration[value]
         .Kprop = 0.05
       }
-    }
-    ActuatorVentilation ventilation {
     }
   }
   vg::Plant plant {
@@ -575,7 +618,7 @@ Simulation sim {
   Summary summary {
   }
   OutputR output {
-    .keepPlots = FALSE
+    .keepPlots = TRUE
     PageR {
       .xAxis = calendar[dateTime]
       .nrow = 1
@@ -593,6 +636,7 @@ Simulation sim {
         &balance = sum(../balance[*])
         &parAbsorbed = budget/plant[parAbsorbedTop] + budget/plant[parAbsorbedBottom]
         &ventilationFlow = actuators/ventilation[value]
+        &ventilationDesired = actuators/ventilation[desiredValue]
       }
       PlotR {
         .ports = outdoors[temperature] | outdoors[rh] | outdoors[radiation] | outdoors[windSpeed] | outdoors[soilTemperature]
@@ -601,11 +645,14 @@ Simulation sim {
         .ports = indoors[temperature]  | indoors[rh]  | ../var[parAbsorbed] | indoors[co2] | budget/plant[temperature] | floor[temperature]
       }
       PlotR {
-        .ports =  ../var[ventilationFlow] | budget[ventilationCostThreshold] | actuators/co2[value] | heatPipes/*[inflowTemperature] |
+        .ports =  ../var[ventilationFlow] | ../var[ventilationDesired] |budget[ventilationCostThreshold] | actuators/co2[value] | heatPipes/*[inflowTemperature] |
                   actuators/screens/*[state]
       }
       PlotR {
         .ports = balance[*] | var[balance] 
+      }
+      PlotR {
+        .ports = budget[subSteps] | budget[radIterations]  |budget[maxDeltaT] | budget[controlCode] | budget[actionCode]
       }
       // PlotR {
         // .ports = summary[output::*]
@@ -613,7 +660,7 @@ Simulation sim {
     }
     OutputSelector  {
       .beginDateTime = global[beginDate]
-      .period = 20
+      // .period = 20
     }
   }
 }

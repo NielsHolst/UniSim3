@@ -51,6 +51,8 @@ private:
     BoxBuilder& setpointsGrowthLights();
     BoxBuilder& controllersScreens();
     BoxBuilder& controllersGrowthLights();
+    BoxBuilder& actuatorsHeatPipes();
+    BoxBuilder& actuatorsVentilation();
     BoxBuilder& actuatorsScreens();
     BoxBuilder& actuatorsGrowthLights();
 
@@ -59,6 +61,7 @@ private:
     QMap<QString, QStringList> collectAllScreens();
 
     Setpoints getSetpoints(QString name);
+    double groundArea();
 };
 
 }

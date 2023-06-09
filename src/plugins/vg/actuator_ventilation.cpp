@@ -58,6 +58,12 @@ void ActuatorVentilation::increase(double delta) {
     updateOutput();
 }
 
+void ActuatorVentilation::decrease(double delta, double relative) {
+    double change = std::max(delta, relative*value);
+    desiredValue = value - change;
+    updateOutput();
+}
+
 void ActuatorVentilation::updateOutput() {
     value = minmax(minValue, desiredValue, maxValue);
     relative = (maxValue == 0.) ? 0. : (value-leakage)/(maxValue-leakage);

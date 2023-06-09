@@ -5,26 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
-#include "layer.h"
-#include "layer_adjusted.h"
+#ifndef FACE_H
+#define FACE_H
+#include <base/box.h>
+
 
 namespace vg {
 
-class Cover : public Layer, public LayerAdjusted
+class Face : public base::Box
 {
-public:
-    Cover(QString name, Box *parent);
-    void reset();
-    void update();
+public: 
+    Face(QString name, Box *parent);
+    void initialize();
 private:
-    // Additional inputs
-    double transmissivityReduction, swShading, lwShading;
-    // No additional outputs
+    // Inputs
+    QString cover, screens;
+    double area, weight;
+    // Outputs
+    QVector<QString> screenMaterials;
 };
 
 } //namespace
-
-
 #endif

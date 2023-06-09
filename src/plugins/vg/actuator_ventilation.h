@@ -19,6 +19,7 @@ public:
     void reset();
     void update();
     void increase(double delta);
+    void decrease(double delta, double relative);
 private:
     // Inputs
     double

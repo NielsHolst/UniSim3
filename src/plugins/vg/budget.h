@@ -26,7 +26,7 @@ private:
         transpirationRate, Pn, co2Injection,
         heatPipeFlux,
         ventilationThreshold, ventilationCostThreshold, heatingThreshold,
-        deltaVentilationControl, deltaHeatingControl;
+        deltaVentControl, deltaVentControlRelative, deltaHeatingControl;
     QVector<bool> heatPipesOn;
     bool ventilationOn;
 

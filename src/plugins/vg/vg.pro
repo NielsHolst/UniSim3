@@ -44,6 +44,8 @@ HEADERS +=  \
     plant.h \
     screen.h \
     sensor.h \
+    shading.h \
+    shading_agent.h \
     shelter.h \
     sky.h \
     soil_temperature.h \
@@ -87,6 +89,8 @@ SOURCES += \
     plant.cpp \
     screen.cpp \
     sensor.cpp \
+    shading.cpp \
+    shading_agent.cpp \
     shelter.cpp \
     sky.cpp \
     summary.cpp \

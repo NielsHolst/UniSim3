@@ -57,8 +57,9 @@ Budget::Budget(QString name, base::Box *parent)
     Input(heatingThreshold).imports("controllers/heating[value]");
     Input(heatPipesOn).imports("heatPipes/*[isHeating]");
     Input(ventilationOn).imports("actuators/ventilation[isVentilating]");
-    Input(deltaVentilationControl).equals(0.3).unit("/h/min").help("Exploratory change in ventilation flux");
-    Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Exploratory change in heating temperature");
+    Input(deltaVentControl).equals(0.3).unit("/h/min").help("Control increment of ventilation flux");
+    Input(deltaVentControlRelative).equals(0.05).unit("/min").help("Relative control of ventilation flux");
+    Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
 
     Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
@@ -383,7 +384,7 @@ WaterIntegration waterIntegration(
         cn = 0.;
     const double
         indoorsAh0    = y0,
-        indoorsAh1    = (-exp(x*(-(cn + v)))*(cn*C - y0*(cn + v) + T + v*V) + cn*C + T + v*V)/(cn + v),
+        indoorsAh1    = (cn + v > 0.) ? (-exp(x*(-(cn + v)))*(cn*C - y0*(cn + v) + T + v*V) + cn*C + T + v*V)/(cn + v) : 0.,
         avgAh         = (indoorsAh0 + indoorsAh1)/2,
         transpiration = T*x,
         condensation  = std::max(cn*(avgAh - C)*x, 0.),
@@ -662,14 +663,14 @@ void Budget::exertControl() {
 
 void Budget::increaseVentilation() {
     rollBack();
-    actuatorVentilation->increase(deltaVentilationControl*timeStep/60.);
+    actuatorVentilation->increase(deltaVentControl*timeStep/60.);
     updateLayersAndVolumes();
     action = Action::IncreaseVentilation;
 }
 
 void Budget::decreaseVentilation() {
     rollBack();
-    actuatorVentilation->increase(-deltaVentilationControl*timeStep/60.);
+    actuatorVentilation->decrease(-deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
     updateLayersAndVolumes();
     action = Action::DecreaseVentilation;
 }
@@ -698,7 +699,7 @@ void Budget::decreaseHeating() {
 
 void Budget::extraVentilation() {
     if (greenhouseTooHumid) {
-        actuatorVentilation->increase(deltaVentilationControl*timeStep/60.);
+        actuatorVentilation->increase(deltaVentControl*timeStep/60.);
     }
 }
 

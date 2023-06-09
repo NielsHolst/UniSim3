@@ -5,25 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef COVER_H
-#define COVER_H
-#include "layer.h"
-#include "layer_adjusted.h"
+#ifndef CONTROLLER_HEAT_PIPE_H
+#define CONTROLLER_HEAT_PIPE_H
+#include <base/box.h>
 
 namespace vg {
 
-class Cover : public Layer, public LayerAdjusted
+class ControllerHeatPipe : public base::Box
 {
 public:
-    Cover(QString name, Box *parent);
+    ControllerHeatPipe(QString name, Box *parent);
     void reset();
     void update();
 private:
-    // Additional inputs
-    double transmissivityReduction, swShading, lwShading;
-    // No additional outputs
+    // Inputs
+    QVector<double> terms;
+    double minTemperature, maxTemperature;
+    // Outputs
+    double temperature;
 };
-
 } //namespace
 
 

@@ -7,8 +7,11 @@
 #include "computation.h"
 #include "dialog.h"
 #include "exception.h"
+#include "phys_math.h"
 #include "reader_xml.h"
 #include "xml_node.h"
+
+using namespace phys_math;
 
 namespace base {
 
@@ -151,7 +154,7 @@ void ReaderXml::readVirtualGreenhouse() {
             port("timeStep").equals(_doc->find("Description/TimeStep")->value()).
             port("timeUnit").equals("s").
         endbox().
-        box("vg::Outdoors").
+        box("vg::Outdoors").name("outdoors").
             box("Records").name("records").
                 port("fileName").equals(_doc->find("Description/WeatherFile")->value()).
                 port("cycle").equals(true).
@@ -194,7 +197,9 @@ void ReaderXml::readVirtualGreenhouse() {
             endbox().
             box().name("heating");
                 setpoint("HeatingTemp", "base");
-                setpoint("MaxHeatAddHighRH", "humidityOffset").
+                setpoint("MaxHeatAddHighRH", "humidityOffset");
+                setpoint("minPipeTemperature", "minTemperature");
+                setpoint("maxPipeTemperature", "maxTemperature").
             endbox().
             box().name("ventilation");
                 setpoint("VentTemp", "offset");
@@ -202,12 +207,21 @@ void ReaderXml::readVirtualGreenhouse() {
             endbox().
             box().name("screens");
                 setpointsScreens().
-            endbox().
+            endbox();
+            setpoint("ShadingAgentReduction", "chalk").
             box().name("growthLights");
                 setpointsGrowthLights().
             endbox().
+            box().name("co2");
+                setpoint("CO2Setpoint", "concentration");
+                setpoint("CO2Capacity", "capacity").
+                box().name("ventilation");
+                    setpoint("CO2VentilationThreshold", "threshold");
+                    setpoint("CO2VentilationBand", "band").
+                endbox().
+            endbox().
         endbox().
-        box("Box").name("controllers").
+        box().name("controllers").
             box("Sum").name("heating").
                 port("values").computes("setpoints/heating/base[value] | ./humidityOffset[value]").
                 box("ProportionalSignal").name("humidityOffset").
@@ -228,14 +242,39 @@ void ReaderXml::readVirtualGreenhouse() {
                     port("increasingSignal").equals(true).
                 endbox().
             endbox();
-            controllersScreens();
+            controllersScreens().
+            box().name("chalk").
+                aux("value").imports("setpoints/chalk[value]").
+            endbox();
             controllersGrowthLights().
         endbox().
-        box("Actuators").name("actuators").
-            box("ActuatorVentilation").name("ventilation").
+        box("Actuators").name("actuators");
+            actuatorsHeatPipes();
+            actuatorsVentilation();
+            actuatorsScreens().
+            box("ActuatorChalk").name("chalk").
+                port("state").imports("controllers/chalk[value]").
+                port("swReflectivity").equals(_doc->find("Greenhouse/Actuators/ShadingAgent/SwReflectivity")->toDouble()).
+                port("lwReflectivity").equals(_doc->find("Greenhouse/Actuators/ShadingAgent/LwReflectivity")->toDouble()).
             endbox();
-            actuatorsScreens();
             actuatorsGrowthLights().
+            box("Accumulator").name("co2").
+                port("change").imports("./controller[controlVariable]").
+                port("minValue").equals(0).
+                port("maxValue").imports("setpoints/co2/capacity[value]").
+                box("PidController").name("controller").
+                    port("sensedValue").imports("indoors[co2]").
+                    port("desiredValue").imports("setpoints/co2/concentration[value]").
+                    port("Kprop").equals(_doc->find("Greenhouse/CO2PIDProp")->toDouble()).
+                endbox().
+            endbox().
+        endbox().
+        box("OutputR").name("output").
+            box("PageR").
+                box("PlotR").
+                    port("ports").equals(_doc->find("Output/Variables")->value()).
+                endbox().
+            endbox().
         endbox().
     endbox();
 
@@ -246,20 +285,21 @@ BoxBuilder& ReaderXml::shelterCovers() {
     double transmissivityReduction = getChildValueDouble(_doc->find("Greenhouse"), "GreenhouseReductionFactorLight");
 
     XmlNode *products = _doc->find("Greenhouse/Panes/Products");
-    auto product = products->children().begin();
-    while (product != products->children().end()) {
-        QString productName = product.value()->getAttributeString("name");
+
+    for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
+        XmlNode *product = pr.value();
+        QString productName = product->getAttributeString("name");
         if (productName.isEmpty())
-            ThrowException("<Product> node is missing a 'name' attribute").value("Panes/Products/" + product.key());
+            ThrowException("<Product> node is missing a 'name' attribute").value("Panes/Products/" + pr.key());
         double
-            swt = getChildValueDouble(product.value(), "PaneTransmission"),
-            swr = getChildValueDouble(product.value(), "PaneReflection"),
+            swt = getChildValueDouble(product, "PaneTransmission"),
+            swr = getChildValueDouble(product, "PaneReflection"),
             swa = 1. - swt - swr,
-            lwt = getChildValueDouble(product.value(), "PaneLwTransmission"),
-            lwr = getChildValueDouble(product.value(), "PaneLwReflection"),
+            lwt = getChildValueDouble(product, "PaneLwTransmission"),
+            lwr = getChildValueDouble(product, "PaneLwReflection"),
             lwa = 1. - lwt - lwr,
-            U   = getChildValueDouble(product.value(), "PaneUValue"),
-            C   = getChildValueDouble(product.value(), "PaneHeatCapacity");
+            U   = getChildValueDouble(product, "PaneUValue"),
+            C   = getChildValueDouble(product, "PaneHeatCapacity");
         _builder->
         box("Cover").name(productName.replace(" ", "_")).
             port("swTransmissivityTop")   .equals(swt).
@@ -277,10 +317,9 @@ BoxBuilder& ReaderXml::shelterCovers() {
             port("Ubottom")               .equals(U).
             port("heatCapacity")          .equals(C).
             port("transmissivityReduction").equals(transmissivityReduction).
-            port("swReflectivityChalk")   .computes("actuators/chalk[swReflectivity]").
-            port("lwReflectivityChalk")   .computes("actuators/chalk[lwReflectivity]").
+            port("swReflectivityChalk")   .computes("actuators/shading[swReflectivity]").
+            port("lwReflectivityChalk")   .computes("actuators/shading[lwReflectivity]").
         endbox();
-        ++product;
     }
     return *_builder;
 }
@@ -530,7 +569,7 @@ BoxBuilder& ReaderXml::setpointsGrowthLights() {
 BoxBuilder& ReaderXml::controllersScreens() {
     _builder->box().name("screens");
     for (const QString &name : _screenControllerNames) {
-        QString controlName = "Greenhouse/Control/Screen/" + name + "/Activate";
+        QString controlName = "Greenhouse/Controllers/Screen/" + name + "/Activate";
         XmlNode *node = _doc->find(controlName);
         QString s = node->value();
         bool isIncreasing;
@@ -557,7 +596,7 @@ BoxBuilder& ReaderXml::controllersScreens() {
 BoxBuilder& ReaderXml::controllersGrowthLights() {
     _builder->box().name("growthLights");
     for (const QString &name : _growthLightNames) {
-        QString controlName = "Greenhouse/Control/AssLight/" + name + "/MinPeriodOn";
+        QString controlName = "Greenhouse/Controllers/AssLight/" + name + "/MinPeriodOn";
         XmlNode *node = _doc->find(controlName);
         QString minPeriodOn = node->value();
 
@@ -585,10 +624,56 @@ namespace {
     }
 }
 
+BoxBuilder& ReaderXml::actuatorsHeatPipes() {
+     _builder->box("HeatPipes").name("heatPipes");
+    auto heatPipes = _doc->find("Greenhouse/Heatpipes")->children();
+    for (auto hp = heatPipes.begin(); hp != heatPipes.end(); ++hp) {
+        XmlNode &heatPipe(*hp.value());
+        int index = heatPipe.getAttributeInt("index");
+        double
+            diameter = heatPipe.find("InnerDiameter")->toDouble(),
+            lengthPerSqm = heatPipe.find("PipeLengthPerSqm")->toDouble(),
+            volume = lengthPerSqm*PI*p2(diameter/1000.)*groundArea();
+        _builder->
+        box("ActuatorHeatPipe").name("circuit"+QString::number(index)).
+            port("volume").equals(volume).
+            port("flowRate").equals(heatPipe.find("heatPipeFlowRate")->toDouble()).
+            port("k").equals(heatPipe.find("k")->toDouble()).
+            port("b").equals(heatPipe.find("b")->toDouble()).
+            port("propLw").equals(heatPipe.find("PropLw")->toDouble()).
+            port("minTemperature").imports("setpoints/heating/minTemperature[value]").
+            port("maxTemperature").imports("setpoints/heating/maxTemperature[value]").
+            port("inflowTemperature").equals(50).
+            port("indoorsTemperature").equals(20).
+        endbox();
+    }
+    _builder->endbox();
+    return *_builder;
+}
+
+BoxBuilder& ReaderXml::actuatorsVentilation() {
+    double ventArea;
+    auto vents = _doc->find("Greenhouse/Vents")->children();
+    for (auto v = vents.begin(); v != vents.end(); ++v) {
+        XmlNode &vent(*v.value());
+        double
+                length = vent.find("Length")->toDouble(),
+                width = vent.find("Width")->toDouble(),
+                number = vent.find("Number")->toDouble(),
+                efficiency = vent.find("VentTransmissivity")->toDouble();
+        ventArea += length*width*number*efficiency;
+    }
+    _builder->box("ActuatorVentilation").name("ventilation").
+        port("ventAreaRatio").equals(ventArea/groundArea()).
+
+            endbox();
+    return *_builder;
+}
+
 BoxBuilder& ReaderXml::actuatorsScreens() {
     _builder->box().name("screens");
     for (const QString &name : _screenControllerNames) {
-        QString actuatorName = "Greenhouse/Actuator/Screens/" + name;
+        QString actuatorName = "Greenhouse/Actuators/Screens/" + name;
         XmlNode
             *parent      = _doc->find(actuatorName),
             *controllers = parent->peak("Controllers"),
@@ -608,7 +693,7 @@ BoxBuilder& ReaderXml::actuatorsScreens() {
 BoxBuilder& ReaderXml::actuatorsGrowthLights() {
     _builder->box().name("growthLights");
     for (const QString &name : _growthLightNames) {
-        QString actuatorName = "Greenhouse/Actuator/AssLights/" + name;
+        QString actuatorName = "Greenhouse/Actuators/AssLights/" + name;
         XmlNode
             *parent        = _doc->find(actuatorName),
             *power         = parent->peak("LightCapacityPerSqm"),
@@ -621,9 +706,9 @@ BoxBuilder& ReaderXml::actuatorsGrowthLights() {
         if (!power)
             ThrowException("AssLight is missing <LightCapacityPerSqm>").value(name);
         if (!propSw)
-            ThrowException("AssLight is missing <propSw>").value(name);
+            ThrowException("AssLight is missing <PropSw>").value(name);
         if (!propLw)
-            ThrowException("AssLight is missing <propLw>").value(name);
+            ThrowException("AssLight is missing <PropLw>").value(name);
         if (!propBallastLw)
             ThrowException("AssLight is missing <BallastPropLw>").value(name);
 
@@ -732,6 +817,14 @@ ReaderXml::Setpoints ReaderXml::getSetpoints(QString name) {
               [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
 
     return result;
+}
+
+double ReaderXml::groundArea() {
+    double
+        spanWidth = _doc->find("Greenhouse/SpanSize")->toDouble(),
+        length = _doc->find("Greenhouse/Length")->toDouble(),
+        numSpans = _doc->find("Greenhouse/NumberOfSpans")->toDouble();
+    return spanWidth*length*numSpans;
 }
 
 

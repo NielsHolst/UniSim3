@@ -21,8 +21,8 @@ Cover::Cover(QString name, Box *parent)
 {
     help("holds cover radiation and heat parameters");
     Input(transmissivityReduction).unit("[0;1]").help("Reduced cover transmission due to beams, dirt, etc.");
-    Input(swReflectivityChalk).unit("[0;1]").help("Additional short-wave reflectivity caused by chalk");
-    Input(lwReflectivityChalk).unit("[0;1]").help("Additional long-wave reflectivity caused by chalk");
+    Input(swShading).unit("[0;1]").help("Additional short-wave reflectivity caused by chalk");
+    Input(lwShading).unit("[0;1]").help("Additional long-wave reflectivity caused by chalk");
 }
 
 void Cover::reset() {
@@ -31,23 +31,30 @@ void Cover::reset() {
 }
 
 void Cover::update() {
-    // Add chalk to reflectivity
-    swReflectivityTopAdj    = std::min(swReflectivityTop    + swReflectivityChalk, 1.);
-    lwReflectivityTopAdj    = std::min(lwReflectivityTop    + lwReflectivityChalk, 1.);
-    swReflectivityBottomAdj = std::min(swReflectivityBottom + swReflectivityChalk, 1.);
-    lwReflectivityBottomAdj = std::min(lwReflectivityBottom + lwReflectivityChalk, 1.);
+    // Add shading to reflectivity
+    swReflectivityTopAdj    = 1. - (1. - swReflectivityTop)*(1. - swShading);
+    lwReflectivityTopAdj    = 1. - (1. - lwReflectivityTop)*(1. - lwShading);
+    swReflectivityBottomAdj = 1. - (1. - swReflectivityBottom)*(1. - swShading);
+    lwReflectivityBottomAdj = 1. - (1. - lwReflectivityBottom)*(1. - lwShading);
 
-    // Subtract chalk from transmissivity
-    swTransmissivityTopAdj     = std::max(swTransmissivityTop     - swReflectivityChalk + transmissivityReduction, 0.);
-    lwTransmissivityTopAdj     = std::max(lwTransmissivityTop     - lwReflectivityChalk + transmissivityReduction, 0.);
-    swTransmissivityBottomAdj  = std::max(swTransmissivityBottom  - swReflectivityChalk + transmissivityReduction, 0.);
-    lwTransmissivityBottomAdj  = std::max(lwTransmissivityBottom  - lwReflectivityChalk + transmissivityReduction, 0.);
+    // Absorptivity is unaffacted but hold upper limit
+    swAbsorptivityTopAdj     = (swAbsorptivityTop + swReflectivityTopAdj < 1.) ?
+                                swAbsorptivityTop : 1. - swReflectivityTopAdj;
 
-    // Absorptivity takes the rest
-    swAbsorptivityTopAdj     = 1. - swReflectivityTopAdj    - swTransmissivityTopAdj;
-    lwAbsorptivityTopAdj     = 1. - lwReflectivityTopAdj    - lwTransmissivityTopAdj;
-    swAbsorptivityBottomAdj  = 1. - swReflectivityBottomAdj - swTransmissivityBottomAdj;
-    lwAbsorptivityBottomAdj  = 1. - lwReflectivityBottomAdj - lwTransmissivityBottomAdj;
+    lwAbsorptivityTopAdj     = (lwAbsorptivityTop + lwReflectivityTopAdj < 1.) ?
+                                lwAbsorptivityTop : 1. - lwReflectivityTopAdj;
+
+    swAbsorptivityBottomAdj  = (swAbsorptivityBottom + swReflectivityBottomAdj < 1.) ?
+                                swAbsorptivityBottom : 1. - swReflectivityBottomAdj;
+
+    lwAbsorptivityBottomAdj  = (lwAbsorptivityBottom + lwReflectivityBottomAdj < 1.) ?
+                                lwAbsorptivityBottom : 1. - lwReflectivityBottomAdj;
+
+    // Transmissivity takes rest
+    swTransmissivityTopAdj     = 1. - swReflectivityTopAdj    - swAbsorptivityTopAdj;
+    lwTransmissivityTopAdj     = 1. - lwReflectivityTopAdj    - lwAbsorptivityTopAdj;
+    swTransmissivityBottomAdj  = 1. - swReflectivityBottomAdj - swAbsorptivityBottomAdj;
+    lwTransmissivityBottomAdj  = 1. - lwReflectivityBottomAdj - lwAbsorptivityBottomAdj;
 
     // Unaffected by chalk
     UtopAdj         = Utop;
