@@ -7,6 +7,7 @@
 */
 #include <base/box_builder.h>
 #include <base/publish.h>
+#include <base/vector_op.h>
 #include "average_cover.h"
 
 using namespace base;
@@ -20,6 +21,7 @@ AverageCover::AverageCover(QString name, Box *parent)
       AverageCoverOrScreen(name, parent)
 {
     help("computes average cover radiation and heat parameters");
+    Input(groundArea).imports("geometry[groundArea]");
 }
 
 void AverageCover::amend() {
@@ -48,6 +50,44 @@ void AverageCover::amend() {
     for (const QString &material : qAsConst(materials))
         buildAverageMaterial(builder, material);
     builder.endbox();
+}
+
+void AverageCover::reset() {
+    for (int i = 0; i < 6; ++i)
+        _Uinsulations[i].clear();
+
+    int i = 0;
+    for (Box *face : _faces) {
+        _areas[i] = face->port("area")->value<double>();
+
+        QString coverMaterial = face->port("cover")->value<QString>();
+        Box *cover = findOne<Box*>("shelter/covers/" + coverMaterial);
+        _Rfaces[i] = 1./cover->port("Ubottom")->value<double>();
+
+        for (QString screenMaterial : face->port("screenMaterials")->value<QVector<QString>>()) {
+            if (screenMaterial != "none") {
+                Box *screen = findOne<Box*>("shelter/screens/" + screenMaterial);
+                // On one face, resistances are in a series
+                _Uinsulations[i] <<  screen->port("UinsulationAdj")->valuePtr<double>();
+            }
+        }
+        ++i;
+    }
+    AverageCoverOrScreen::reset();
+}
+
+void AverageCover::updateUbottomAdj() {
+//    UbottomAdj = vector_op::sum(Ubottoms);
+    double sumUface = 0;
+    for (int i = 0; i < 6; ++i) {
+        // On one face, resistances are in a series
+        double Rface = _Rfaces[i];
+        for (const double *Uinsulation : _Uinsulations[i])
+            Rface += 1./(*Uinsulation);
+        // Overall, the resistances of the six surfaces are in parallel
+        sumUface += _areas[i]*1./Rface;
+    }
+    UbottomAdj = sumUface/groundArea;
 }
 
 QStringList AverageCover::collectFacesByMaterial(QString material) {

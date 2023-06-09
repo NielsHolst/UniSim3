@@ -80,7 +80,7 @@ void AverageCoverOrScreen::update() {
     lwTransmissivityBottomAdj = t/(a+r+t);
 
     UtopAdj = sum(Utops);
-    UbottomAdj = sum(Ubottoms);
+    updateUbottomAdj();
     heatCapacityAdj = sum(heatCapacitys);
 
     checkOutputs();

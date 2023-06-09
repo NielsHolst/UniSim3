@@ -30,6 +30,7 @@ private:
     QVector<double> _areas;
     QVector<const double *> _states;
     // Methods
+    void updateUbottomAdj();
     QStringList collectFacesByMaterial(QString material);
     QString pathToMaterialPorts(QString material, QString portName) const;
 

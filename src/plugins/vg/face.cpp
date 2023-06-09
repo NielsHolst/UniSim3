@@ -22,7 +22,7 @@ Face::Face(QString name, Box *parent)
     Input(screens).help("Zero or more screen materials listed in shelter/screens");
     Input(area).unit("m2").help("Area of face");
     Input(weight).equals(1.).unit("[0;1]").help("Weight given to face in radiation budget");
-    Output(screenMaterials).help("Vector of screen material names");
+    Output(screenMaterials).noClear().help("Vector of screen material names");
 }
 
 void Face::initialize() {

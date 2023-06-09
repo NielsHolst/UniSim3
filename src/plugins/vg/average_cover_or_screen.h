@@ -30,8 +30,14 @@ private:
         lwAbsorptivityTops,   lwAbsorptivityBottoms,
         lwReflectivityTops,   lwReflectivityBottoms,
         lwTransmissivityTops, lwTransmissivityBottoms,
-        Utops, Ubottoms,
+        Utops,
         heatCapacitys;
+protected:
+    QVector<double>
+        Ubottoms, Uinsulation;
+private:
+    // Methods
+    virtual void updateUbottomAdj() = 0;
     virtual QStringList collectFacesByMaterial(QString material) = 0;
     virtual QString pathToMaterialPorts(QString material, QString portName) const = 0;
 protected:

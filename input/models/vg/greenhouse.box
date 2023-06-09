@@ -1,6 +1,7 @@
 Simulation sim {
   Box global {
     &beginDate = 09/05/2022
+    &screenUinsulation = 10.
   }
   Calendar calendar{
     .latitude  = 55.4
@@ -114,6 +115,7 @@ Simulation sim {
 
           .Utop                   = 1.2
           .Ubottom                = 1.2
+          .Uinsulation            = global[screenUinsulation]
           .heatCapacity           = 80
           .state = actuators/screens/energy[state]
         }
@@ -136,6 +138,7 @@ Simulation sim {
 
           .Utop                   = 1.2
           .Ubottom                = 1.2
+          .Uinsulation            = global[screenUinsulation]
           .heatCapacity           = 80.
           .state = actuators/screens/shade[state]
         }
@@ -158,6 +161,7 @@ Simulation sim {
 
           .Utop                   = 1.1
           .Ubottom                = 1.1
+          .Uinsulation            = global[screenUinsulation]
           .heatCapacity           = 120.
           .state = actuators/screens/shade[state]
         }
@@ -180,46 +184,47 @@ Simulation sim {
 
           .Utop                   = 1.2
           .Ubottom                = 1.2
+          .Uinsulation            = global[screenUinsulation]
           .heatCapacity           = 200.
           .state = actuators/screens/blackout[state]
         }
       }
       Box faces {
-        Box roof1 {
-          &cover = "glass"
-          &screens = "energy+shade1+blackout"
-          &area = construction/geometry[roofArea]/2
-          &weight = 1
+        Face roof1 {
+          .cover = "glass"
+          .screens = "energy+shade1+blackout"
+          .area = construction/geometry[roofArea]/2
+          .weight = 1
         }
-        Box roof2 {
-          &cover = "glass"
-          &screens = "energy+shade1+blackout"
-          &area = construction/geometry[roofArea]/2
-          &weight = 1
+        Face roof2 {
+          .cover = "glass"
+          .screens = "energy+shade1+blackout"
+          .area = construction/geometry[roofArea]/2
+          .weight = 1
         }
-        Box side1 {
-          &cover = "glass"
-          &screens = "none+shade2+blackout"
-          &area = construction/geometry[sideArea]/2
-          &weight = 1
+        Face side1 {
+          .cover = "glass"
+          .screens = "none+shade2+blackout"
+          .area = construction/geometry[sideArea]/2
+          .weight = 1
         }
-        Box side2 {
-          &cover = "oldGlass"
-          &screens = "none+none+blackout"
-          &area = construction/geometry[sideArea]/2
-          &weight = 0.5
+        Face side2 {
+          .cover = "oldGlass"
+          .screens = "none+none+blackout"
+          .area = construction/geometry[sideArea]/2
+          .weight = 0.5
         }
-        Box end1 {
-          &cover = "oldGlass"
-          &screens = "none+none+blackout"
-          &area = construction/geometry[endArea]/2
-          &weight = 0.2
+        Face end1 {
+          .cover = "oldGlass"
+          .screens = "none+none+blackout"
+          .area = construction/geometry[endArea]/2
+          .weight = 0.2
         }
-        Box end2 {
-          &cover = "glass"
-          &screens = "energy+none+blackout"
-          &area = construction/geometry[endArea]/2
-          &weight = 0.2
+        Face end2 {
+          .cover = "glass"
+          .screens = "energy+none+blackout"
+          .area = construction/geometry[endArea]/2
+          .weight = 0.2
         }
       }
     }
@@ -533,6 +538,13 @@ Simulation sim {
         .minPeriodOn   = 30.
       }
     }
+    ProportionalSignal co2 {
+      .input         = actuators/ventilation[value]
+      .threshold     = setpoints/co2/ventilation/threshold[value]
+      .thresholdBand = setpoints/co2/ventilation/band[value]
+      .maxSignal = setpoints/co2/capacity[value]
+      .increasingSignal = FALSE
+    }
   }
   Box actuators {
     HeatPipes heatPipes {
@@ -588,7 +600,7 @@ Simulation sim {
     Accumulator co2 {
       .change = ./controller[controlVariable]
       .minValue = 0
-      .maxValue = setpoints/co2/capacity[value] 
+      .maxValue = controllers/co2[value] 
       PidController controller{
         .sensedValue = indoors[co2]
         .desiredValue = setpoints/co2/concentration[value]
@@ -645,15 +657,16 @@ Simulation sim {
         .ports = indoors[temperature]  | indoors[rh]  | ../var[parAbsorbed] | indoors[co2] | budget/plant[temperature] | floor[temperature]
       }
       PlotR {
-        .ports =  ../var[ventilationFlow] | ../var[ventilationDesired] |budget[ventilationCostThreshold] | actuators/co2[value] | heatPipes/*[inflowTemperature] |
+        .ports =  ../var[ventilationFlow] | ../var[ventilationDesired] | budget[ventilationCostThreshold] | actuators/co2[value] | heatPipes/*[inflowTemperature] |
                   actuators/screens/*[state]
       }
       PlotR {
         .ports = balance[*] | var[balance] 
       }
       PlotR {
-        .ports = budget[subSteps] | budget[radIterations]  |budget[maxDeltaT] | budget[controlCode] | budget[actionCode]
+        .ports = budget[subSteps] | budget[radIterations]  |budget[maxDeltaT] | budget[controlCode] | budget[actionCode] | shelter/layers/cover[UbottomAdj]
       }
+      
       // PlotR {
         // .ports = summary[output::*]
       // }

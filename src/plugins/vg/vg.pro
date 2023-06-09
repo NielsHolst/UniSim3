@@ -29,6 +29,7 @@ HEADERS +=  \
     canopy_photosynthesis.h \
     cover.h \
     crop.h \
+    face.h \
     floor.h \
     geometry.h \
     growth_light_controller.h \
@@ -75,6 +76,7 @@ SOURCES += \
     canopy_photosynthesis.cpp \
     cover.cpp \
     crop.cpp \
+    face.cpp \
     floor.cpp \
     geometry.cpp \
     growth_light_controller.cpp \

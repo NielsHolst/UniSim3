@@ -121,6 +121,9 @@ void AverageScreen::buildAverageMaterialNone(BoxBuilder &builder) {
     endbox();
 }
 
+void AverageScreen::updateUbottomAdj() {
+    UbottomAdj = vector_op::sum(Ubottoms);
+}
 
 QStringList AverageScreen::collectFacesByMaterial(QString material) {
     QStringList result;
