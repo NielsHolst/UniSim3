@@ -7,7 +7,7 @@ Simulation sim {
     .latitude  = 55.4
     .longitude = 10.4
     .begin = global[beginDate] - 1
-    .end   = 02/01/2022
+    .end   = 31/12/2022
     .timeStep = 3
     .timeUnit = "m"
   }
@@ -550,10 +550,10 @@ Simulation sim {
     HeatPipes heatPipes {
       ActuatorHeatPipe circuit1 {
         .volume = 14.14 
-        .flowRate = 40.0
+        .flowRate = 50.0
         .k = 0.0063
         .b = 1.25
-        .propLw = 0.2
+        .propLw = 0.1
         .inflowTemperature = 80.0
         .indoorsTemperature = 20.0
         .minTemperature = setpoints/heating/minTemperature[value]
@@ -561,10 +561,10 @@ Simulation sim {
       }
       ActuatorHeatPipe circuit2 {
         .volume = 14.14 
-        .flowRate = 40.0
+        .flowRate = 50.0
         .k = 0.0063
         .b = 1.25
-        .propLw = 0.2
+        .propLw = 0.1
         .inflowTemperature = 80.0
         .indoorsTemperature = 20.0
         .minTemperature = setpoints/heating/minTemperature[value]
@@ -627,6 +627,7 @@ Simulation sim {
     .radPrecision = 0.1
     .tempPrecision = 0.5
     .deltaVentControlRelative = 0.2
+    .babyTimeStep = 1
   }
   Summary summary {
   }
@@ -674,7 +675,7 @@ Simulation sim {
     }
     OutputSelector  {
       .beginDateTime = global[beginDate]
-      // .period = 20
+      .period = 5
     }
   }
 }

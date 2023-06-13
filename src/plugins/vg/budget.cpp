@@ -59,15 +59,16 @@ Budget::Budget(QString name, base::Box *parent)
     Input(heatPipesOn).imports("heatPipes/*[isHeating]");
     Input(ventilationOn).imports("actuators/ventilation[isVentilating]");
     Input(deltaVentControl).equals(0.3).unit("/h/min").help("Control increment of ventilation flux");
-    Input(deltaVentControlRelative).equals(0.05).unit("/min").help("Relative control of ventilation flux");
+    Input(deltaVentControlRelative).equals(0.2).unit("/min").help("Relative control of ventilation flux");
     Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
+    Input(babyTimeStep).equals(5.).unit("s").help("Length of first time step after climate control action");
 
     Input(step).imports("sim[step]");
     Input(dateTime).imports("calendar[dateTime]");
 
     Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
-    Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step among layers");
+    Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step");
     Output(controlCode).unit("int").help("Code for the control option needed");
     Output(actionCode).unit("int").help("Code for the control action taken");
     Output(transpiration).unit("kg/m2").help("Plant transpiration");
@@ -278,6 +279,8 @@ void Budget::initialize() {
 void Budget::reset() {
     control = Control::CarryOn;
     action = Action::CarryOn;
+    _subTimeStep = timeStep;
+    _maxDeltaT = tempPrecision;
 }
 
 void Budget::update() {
@@ -298,50 +301,31 @@ void Budget::update() {
 void Budget::updateLayersAndVolumes() {
     saveForRollBack();
     maxDeltaT = 0.;
-    updateSubStep(timeStep, UpdateOption::IncludeSwPar);
-    if (tempPrecision > maxDeltaT) {
-        subSteps = 1;
+    subSteps = 0;
+    double timePassed = 0.;
+    babyStep();
+    while (lt(timePassed, timeStep)) {
+        _subTimeStep = std::min(_subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
+        updateSubStep(_subTimeStep, UpdateOption::ExcludeSwPar);
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
                                  budgetLayerPlant->parAbsorbedBottom);
-        updateWaterBalance(timeStep);
+        updateWaterBalance(_subTimeStep);
         applyDeltaT();
         applyLatentHeat();
-    }
-    else {
-        QVector<double> T, netRad;
-        for (auto *layer : layers) {
-            T << layer->temperature;
-            netRad << layer->netRadiation;
-        }
-        subSteps = 0;
-        double
-            subTimeStep = timeStep*tempPrecision/maxDeltaT,
-            timePassed = 0.;
-        while (lt(timePassed, timeStep)) {
-            maxDeltaT = 0.;
-            updateSubStep(subTimeStep, UpdateOption::ExcludeSwPar);
-            plant->updateByRadiation(budgetLayerPlant->netRadiation,
-                                     budgetLayerPlant->parAbsorbedTop +
-                                     budgetLayerPlant->parAbsorbedBottom);
-            updateWaterBalance(subTimeStep);
-            applyDeltaT();
-            applyLatentHeat();
-            timePassed += subTimeStep;
-            double a = subTimeStep*tempPrecision/maxDeltaT, b = timeStep - timePassed;
-            subTimeStep = std::min(a,b);
-//            subTimeStep = std::min(subTimeStep*tempPrecision/maxDeltaT, timeStep - timePassed);
-            ++subSteps;
-//            logger.write(QString::number(step) + "\t" +
-//                         convert<QString>(dateTime) + "\t" +
-//                         QString::number(i) + "\t" +
-//                         QString::number(subSteps) + "\t" +
-//                         QString::number(maxDeltaT));
-        }
+//        logger.write(QString::number(step) + "\t" +
+//                     convert<QString>(dateTime) + "\t" +
+//                     QString::number(subSteps) + "\t" +
+//                     QString::number(_subTimeStep) + "\t" +
+//                     QString::number(_maxDeltaT));
+        timePassed += _subTimeStep;
+        ++subSteps;
     }
 }
 
 void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
+    // Reset to find maximum temperature change during sub-step
+    _maxDeltaT = 0.;
     // Update radiation budget
     updateLwEmission();
     if (option == UpdateOption::IncludeSwPar) {
@@ -361,6 +345,9 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     updateConvection();
     // Update prospective change in temperature
     updateDeltaT(subTimeStep);
+    // Update max temperature within simulation time step
+    if (_maxDeltaT > maxDeltaT)
+        maxDeltaT = _maxDeltaT;
 }
 
 void Budget::updateLwEmission() {
@@ -583,15 +570,15 @@ void Budget::distributeRadiation(State &s, const Parameters &p) {
 void Budget::updateDeltaT(double timeStep) {
     for (BudgetLayer *layer : layers) {
         double deltaT = layer->updateDeltaT(timeStep);
-        if (fabs(deltaT) > fabs(maxDeltaT))
-            maxDeltaT = fabs(deltaT);
+        if (fabs(deltaT) > fabs(_maxDeltaT))
+            _maxDeltaT = fabs(deltaT);
     }
     double propVentilation   = 1. - exp(-(*ventilationRate)/3600.*timeStep),
            ventilationDeltaT = (outdoorsTemperature - indoorsVol->temperature)*propVentilation;
     indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity + ventilationDeltaT;
     ventilationHeatLoss = ventilationDeltaT*averageHeight*RhoAir*CpAir/timeStep;
-    if (fabs(indoorsDeltaT) > fabs(maxDeltaT))
-        maxDeltaT = fabs(indoorsDeltaT);
+    if (fabs(indoorsDeltaT) > fabs(_maxDeltaT))
+        _maxDeltaT = fabs(indoorsDeltaT);
 }
 
 void Budget::applyDeltaT() {
@@ -683,6 +670,7 @@ void Budget::exertControl() {
 void Budget::increaseVentilation() {
     rollBack();
     actuatorVentilation->increase(deltaVentControl*timeStep/60.);
+    babyStep();
     updateLayersAndVolumes();
     action = Action::IncreaseVentilation;
 }
@@ -690,6 +678,7 @@ void Budget::increaseVentilation() {
 void Budget::decreaseVentilation() {
     rollBack();
     actuatorVentilation->decrease(-deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
+    babyStep();
     updateLayersAndVolumes();
     action = Action::DecreaseVentilation;
 }
@@ -700,6 +689,7 @@ void Budget::increaseHeating() {
         heatPipes->increase(deltaHeatingControl*timeStep/60.);
         budgetLayerHeatPipes->evaluatePorts();
         extraVentilation();
+        babyStep();
         updateLayersAndVolumes();
     }
     action = Action::IncreaseHeating;
@@ -711,6 +701,7 @@ void Budget::decreaseHeating() {
         heatPipes->increase(-deltaHeatingControl*timeStep/60.);
         budgetLayerHeatPipes->evaluatePorts();
         extraVentilation();
+        babyStep();
         updateLayersAndVolumes();
     }
     action = Action::DecreaseHeating;
@@ -718,8 +709,13 @@ void Budget::decreaseHeating() {
 
 void Budget::extraVentilation() {
     if (greenhouseTooHumid) {
+        babyStep();
         actuatorVentilation->increase(deltaVentControl*timeStep/60.);
     }
 }
 
+void Budget::babyStep() {
+    // Force a tentative, short _subTimeStep to assess the rate of temperature change
+    _maxDeltaT = _subTimeStep*tempPrecision/babyTimeStep;
+}
 }

@@ -27,7 +27,8 @@ private:
         transpirationRate, Pn, co2Injection,
         heatPipeFlux,
         ventilationThreshold, ventilationCostThreshold, heatingThreshold,
-        deltaVentControl, deltaVentControlRelative, deltaHeatingControl;
+        deltaVentControl, deltaVentControlRelative, deltaHeatingControl,
+        babyTimeStep;
     QVector<bool> heatPipesOn;
     bool ventilationOn;
 
@@ -39,7 +40,6 @@ private:
     int radIterations, subSteps, controlCode, actionCode;
     double maxDeltaT, ventilationHeatLoss,
         condensation, transpiration, ventedWater, latentHeatBalance,
-
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux;
 
     // Volumes
@@ -73,6 +73,7 @@ private:
     bool greenhouseTooHumid, tooCostlyVentilation;
     enum class Action{CarryOn, IncreaseVentilation, DecreaseVentilation, IncreaseHeating, DecreaseHeating};
     Action action;
+    double _maxDeltaT, _subTimeStep;
 
     // Parameters
     struct Parameters {
@@ -120,6 +121,7 @@ private:
     void increaseHeating();
     void decreaseHeating();
     void extraVentilation();
+    void babyStep();
 };
 
 }
