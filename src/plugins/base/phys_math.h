@@ -119,6 +119,7 @@ struct Parabola {
     double a,b,c;
 };
 Parabola fitParabola(double y0, double y1, double y2);
+Parabola fitParabola(const double *x, const double *y);
 
 double fitPointPPS(double y0, double y1, double y2_slope);
 

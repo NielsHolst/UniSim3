@@ -1,6 +1,7 @@
 #ifndef BUDGET_H
 #define BUDGET_H
 #include <base/box.h>
+#include <base/logger.h>
 
 namespace vg {
 
@@ -29,6 +30,10 @@ private:
         deltaVentControl, deltaVentControlRelative, deltaHeatingControl;
     QVector<bool> heatPipesOn;
     bool ventilationOn;
+
+    int step;
+    QDateTime dateTime;
+    base::Logger logger;
 
     // Output
     int radIterations, subSteps, controlCode, actionCode;

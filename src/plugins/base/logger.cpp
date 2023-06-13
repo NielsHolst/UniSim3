@@ -5,25 +5,23 @@
 #include <iostream>
 #include <QDateTime>
 #include <QDir>
-#include <QFile>
-#include <QTextStream>
 #include "environment.h"
 #include "logger.h"
 
 namespace base {
 
-void log(QString s) {
-//    QString fileNamePath = environment().filePath(Environment::Folder::Output, "/unisim_log.txt");
-    QString fileNamePath = "C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt";
-    std::cout << qPrintable("Logging to: " + fileNamePath) << "\n";
-
-    QString timeStamp = QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss.zzz");
-
-    QFile file;
+void Logger::open(QString fileNamePath) {
     file.setFileName(fileNamePath);
-    file.open(QIODevice::Text|QIODevice::Append);
-    QTextStream str(&file);
-    str << qPrintable(timeStamp + "\t" + s) << "\n";
+    file.open(QIODeviceBase::Text | QIODeviceBase::WriteOnly);
+    str.setDevice(&file);
+}
+
+void Logger::write(QString s) {
+    str << qPrintable(s) << "\n";
+}
+
+
+void Logger::close() {
     file.close();
 }
 

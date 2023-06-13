@@ -448,6 +448,23 @@ Parabola fitParabola(double y0, double y1, double y2) {
         };
 }
 
+Parabola fitParabola(const double *x, const double *y) {
+    const double
+        &x1(x[0]),
+        &x2(x[1]),
+        &x3(x[2]),
+        &y1(y[0]),
+        &y2(y[1]),
+        &y3(y[2]),
+        detA = p2(x1)*(x2 - x3) - p2(x2)*(x1 - x3) + p2(x3)*(x1 - x2);
+    return
+        Parabola {
+            (y1*(x2 - x3) - y2*(x1 - x3) + y3*(x1 - x2)) / detA,
+            (p2(x1)*(y2 - y3) - p2(x2)*(y1 - y3) + p2(x3)*(y1 - y2)) / detA,
+            (p2(x1)*(x2*y3 - x3*y2) - p2(x2)*(x1*y3 - x3*y1) + p2(x3)*(x1*y2 - x2*y1)) / detA
+    };
+}
+
 //! Extrapolate parabolic curve (2 points and 1 slope)
 /*!
  * \brief A parabolic curve is fitted by two points (y0,y1) and the slope in the third point (y2_slope)

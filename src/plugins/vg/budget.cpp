@@ -3,6 +3,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/box_builder.h>
+#include <base/logger.h>
 #include <base/phys_math.h>
 #include <base/publish.h>
 #include <base/test_num.h>
@@ -60,6 +61,9 @@ Budget::Budget(QString name, base::Box *parent)
     Input(deltaVentControl).equals(0.3).unit("/h/min").help("Control increment of ventilation flux");
     Input(deltaVentControlRelative).equals(0.05).unit("/min").help("Relative control of ventilation flux");
     Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
+
+    Input(step).imports("sim[step]");
+    Input(dateTime).imports("calendar[dateTime]");
 
     Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
@@ -267,6 +271,8 @@ void Budget::initialize() {
     actuatorVentilation = findOne<ActuatorVentilation*>("actuators/ventilation");
     ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
+
+    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
 }
 
 void Budget::reset() {
@@ -293,7 +299,7 @@ void Budget::updateLayersAndVolumes() {
     saveForRollBack();
     maxDeltaT = 0.;
     updateSubStep(timeStep, UpdateOption::IncludeSwPar);
-    if (maxDeltaT < tempPrecision) {
+    if (tempPrecision > maxDeltaT) {
         subSteps = 1;
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
@@ -308,16 +314,29 @@ void Budget::updateLayersAndVolumes() {
             T << layer->temperature;
             netRad << layer->netRadiation;
         }
-        subSteps = static_cast<int>(ceil(maxDeltaT/tempPrecision));
-        maxDeltaT = 0.;
-        for (int i=0; i<subSteps; ++i) {
-            updateSubStep(timeStep/subSteps, UpdateOption::ExcludeSwPar);
+        subSteps = 0;
+        double
+            subTimeStep = timeStep*tempPrecision/maxDeltaT,
+            timePassed = 0.;
+        while (lt(timePassed, timeStep)) {
+            maxDeltaT = 0.;
+            updateSubStep(subTimeStep, UpdateOption::ExcludeSwPar);
             plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                      budgetLayerPlant->parAbsorbedTop +
                                      budgetLayerPlant->parAbsorbedBottom);
-            updateWaterBalance(timeStep/subSteps);
+            updateWaterBalance(subTimeStep);
             applyDeltaT();
             applyLatentHeat();
+            timePassed += subTimeStep;
+            double a = subTimeStep*tempPrecision/maxDeltaT, b = timeStep - timePassed;
+            subTimeStep = std::min(a,b);
+//            subTimeStep = std::min(subTimeStep*tempPrecision/maxDeltaT, timeStep - timePassed);
+            ++subSteps;
+//            logger.write(QString::number(step) + "\t" +
+//                         convert<QString>(dateTime) + "\t" +
+//                         QString::number(i) + "\t" +
+//                         QString::number(subSteps) + "\t" +
+//                         QString::number(maxDeltaT));
         }
     }
 }

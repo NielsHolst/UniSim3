@@ -4,11 +4,24 @@
 */
 #ifndef LOGGER_H
 #define LOGGER_H
+#include <QFile>
 #include <QString>
+#include <QTextStream>
 
 namespace base {
 
-void log(QString s);
+class Logger {
+public:
+    Logger(){}
+    void open(QString fileNamePath);
+    void write(QString s);
+    void close();
+private:
+    QFile file;
+    QTextStream str;
+
+};
+
 
 }
 
