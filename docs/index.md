@@ -19,4 +19,7 @@ $$
 y^2 = 7\alpha 
 $$
 
+[eqs](equations.html)
+
+[eqs2](equations2.html)
 
