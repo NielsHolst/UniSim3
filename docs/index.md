@@ -21,5 +21,3 @@ $$
 
 [eqs](equations.html)
 
-[eqs2](equations2.html)
-
