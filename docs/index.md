@@ -1,3 +1,6 @@
+---
+usemathjax: true
+---
 # Home page
 
 ## Introduction
