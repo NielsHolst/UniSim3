@@ -127,8 +127,10 @@ void ListOutput::toString(base::Port *port, int level) {
         _s += " " + port->unit();
     if (port->isConstant())
         _s += " const";
-    if (port->expression().stack().size() == 1 &&
-        Expression::type(port->expression().stack().at(0)) != Expression::Type::Value)
+    bool oneImportedElement = (port->expression().stack().size() == 1 &&
+                               Expression::type(port->expression().stack().at(0)) != Expression::Type::Value),
+         manyElements = (port->expression().stack().size() > 1);
+    if (oneImportedElement || manyElements)
         _s += " <- " + port->unparsedExpression();
     _s += "\n";
 

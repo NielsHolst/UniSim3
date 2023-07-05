@@ -30,12 +30,13 @@ PageR::PageR(QString name, Box *parent)
 //    Input(direction).equals("row").help("Fill in plots by 'row' or 'col'");
     Input(commonLegend).equals(false).help("Collate legends of blots into one common legend");
     Input(legendPosition).equals("bottom").help("If 'commonLegend' then place legend here");
-    Input(width)     .imports("..[width]");
-    Input(height)    .imports("..[height]");
-    Input(fontSize)  .imports("..[fontSize]");
-    Input(plotAsList).imports("..[plotAsList]");
-    Input(popUp)     .imports("..[popUp]");
-    Input(numPages)  .imports("..[numPages]");
+    Input(width)         .imports("..[width]");
+    Input(height)        .imports("..[height]");
+    Input(maximizeWindow).imports("..[maximizeWindow]");
+    Input(fontSize)     .imports("..[fontSize]");
+    Input(plotAsList)   .imports("..[plotAsList]");
+    Input(popUp)        .imports("..[popUp]");
+    Input(numPages)     .imports("..[numPages]");
     Input(layouts).imports("./PlotR::*[layout]");
 }
 
@@ -120,8 +121,10 @@ QString PageR::toScript() {
 //        s << ",\n"
 //          << "    byrow = " << _byRow;
 
-    s << "\n  ))"
-      << "\n}\n";
+    s << "\n  ))\n";
+    if (maximizeWindow)
+        s << "msgWindow(type=\"maximize\")\n";
+    s << "}\n";
     return string;
 }
 

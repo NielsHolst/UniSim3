@@ -37,6 +37,7 @@ OutputR::OutputR(QString name, Box *parent)
     Input(popUp).equals(false).help("Show plots in pop-up windows?");
     Input(width).equals(7).help("Width of pop-up windows (only used if popUp is set)");
     Input(height).equals(7).help("Height of pop-up windows (only used if popUp is set)");
+    Input(maximizeWindow).equals(false).help("Maximize plot window size?");
     Input(fontSize).equals(0).help("Only used if >0");
     Input(plotAsList).equals(false).help("Put plots into an R list?");
     Input(saveDataFrame).equals(false).help("Save output as R data frame?");

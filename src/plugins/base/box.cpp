@@ -159,7 +159,8 @@ void Box::amendFamily() {
     if (!_amended)
         createTimers();
     _timer.start("amend");
-    for (auto box : children<Box*>())
+    const auto boxes = children<Box*>();
+    for (auto box : boxes)
         box->amendFamily();
     if (!_amended) {
         if (_debugOn)
@@ -205,7 +206,8 @@ void Box::initializeFamily() {
         Node::enumerate();
 
     _timer.reset();
-    for (auto box : children<Box*>())
+    const auto boxes = children<Box*>();
+    for (auto box : boxes)
         box->initializeFamily();
     evaluatePorts();
     _timer.start("initialize");
@@ -217,7 +219,8 @@ void Box::initializeFamily() {
 }
 
 void Box::resetFamily() {
-    for (auto box : children<Box*>())
+    const auto boxes = children<Box*>();
+    for (auto box : boxes)
         box->resetFamily();
     clearPorts();
     evaluatePorts();
@@ -231,7 +234,8 @@ void Box::resetFamily() {
 }
 
 void Box::updateFamily() {
-    for (auto box : children<Box*>())
+    const auto boxes = children<Box*>();
+    for (auto box : boxes)
         box->updateFamily();
     evaluatePorts();
     _timer.start("update");
@@ -244,7 +248,8 @@ void Box::updateFamily() {
 }
 
 void Box::cleanupFamily() {
-    for (auto box : children<Box*>())
+    const auto boxes = children<Box*>();
+    for (auto box : boxes)
         box->cleanupFamily();
     evaluatePorts();
     _timer.start("cleanup");
@@ -257,7 +262,8 @@ void Box::cleanupFamily() {
 }
 
 void Box::debriefFamily() {
-    for (auto box : children<Box*>())
+    const auto boxes = children<Box*>();
+    for (auto box : boxes)
         box->debriefFamily();
     evaluatePorts();
     _timer.start("debrief");

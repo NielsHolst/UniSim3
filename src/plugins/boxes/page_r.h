@@ -27,7 +27,7 @@ private:
     double width, height, fontSize;
     int ncol, nrow, numPages;
     QString title, legendPosition, direction;
-    bool plotAsList, popUp, commonLegend;
+    bool plotAsList, popUp, maximizeWindow, commonLegend;
     QVector<QString> layouts;
     // Data
     QVector<PlotR*> _plots;

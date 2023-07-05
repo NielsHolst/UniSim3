@@ -2,6 +2,7 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
+#include <QTextStream>
 #include <base/box_builder.h>
 #include <base/logger.h>
 #include <base/phys_math.h>
@@ -19,6 +20,8 @@
 #include "layer_adjusted.h"
 #include "plant.h"
 #include "sky.h"
+
+#include <base/dialog.h>
 
 using namespace base;
 using namespace phys_math;
@@ -273,7 +276,7 @@ void Budget::initialize() {
     ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
 
-    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
+//    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
 }
 
 void Budget::reset() {
@@ -299,12 +302,19 @@ void Budget::update() {
 }
 
 void Budget::updateLayersAndVolumes() {
+    const int maxSubSteps = 1000;
     saveForRollBack();
     maxDeltaT = 0.;
     subSteps = 0;
     double timePassed = 0.;
     babyStep();
-    while (lt(timePassed, timeStep)) {
+    while (lt(timePassed, timeStep) && subSteps < maxSubSteps) {
+//        logger.write(
+//            QString::number(timePassed) + "\n" +
+//            QString::number(_maxDeltaT) + "\n" +
+//            dump(swState, Dump::WithHeader) +
+//            dump(lwState, Dump::WithHeader)
+//        );
         _subTimeStep = std::min(_subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
         updateSubStep(_subTimeStep, UpdateOption::ExcludeSwPar);
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
@@ -313,14 +323,12 @@ void Budget::updateLayersAndVolumes() {
         updateWaterBalance(_subTimeStep);
         applyDeltaT();
         applyLatentHeat();
-//        logger.write(QString::number(step) + "\t" +
-//                     convert<QString>(dateTime) + "\t" +
-//                     QString::number(subSteps) + "\t" +
-//                     QString::number(_subTimeStep) + "\t" +
-//                     QString::number(_maxDeltaT));
         timePassed += _subTimeStep;
         ++subSteps;
     }
+    if (subSteps == maxSubSteps)
+        dialog().error("Energy budget did not converge");
+//    logger.close();
 }
 
 void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
@@ -554,17 +562,25 @@ void Budget::distributeRadUp(State &s, const Parameters &p) {
 }
 
 void Budget::distributeRadiation(State &s, const Parameters &p) {
+    const int maxIterations = 99;
     radIterations = 0;
     double residual;
+//    dialog().information(dump(p, Dump::WithHeader));
+//    dialog().information(dump(s, Dump::WithHeader));
     do {
         ++radIterations;
+//        dialog().information(QString::number(radIterations) + " " + QString::number(residual));
         distributeRadDown(s, p);
         distributeRadUp(s, p);
+//        dialog().information(dump(s));
         // Don't include upwards radiation (F_) from sky layer in residual
         residual = *s.F.at(0);
         for (int i=1; i<numLayers; ++i)
             residual += *s.F.at(i) + *s.F_.at(i);
-    } while (residual > radPrecision);
+    } while (residual > radPrecision && radIterations < maxIterations);
+    if (radIterations == maxIterations)
+       ThrowException("Radiation budget did not converge").value(residual).
+                 hint("Check your parameters:\n" + dump(p, Dump::WithHeader)).context(this);
 }
 
 void Budget::updateDeltaT(double timeStep) {
@@ -718,4 +734,47 @@ void Budget::babyStep() {
     // Force a tentative, short _subTimeStep to assess the rate of temperature change
     _maxDeltaT = _subTimeStep*tempPrecision/babyTimeStep;
 }
+
+QString Budget::dump(const State &s, Dump header) {
+    QString string;
+    QTextStream result(&string);
+    if (header == Dump::WithHeader)
+        result << "i\tlayer\tE\tE_\tF\tF_\tA\tA_\tT\n";
+    int n = s.E.size();
+    for (int i = 0; i < n; ++i) {
+        result
+            << i << "\t"
+            << layers.at(i)->name() << "\t"
+            << *s.E.at(i) << "\t"
+            << *s.E_.at(i) << "\t"
+            << *s.F.at(i) << "\t"
+            << *s.F_.at(i) << "\t"
+            << *s.A.at(i) << "\t"
+            << *s.A_.at(i) << "\t"
+            << layers.at(i)->temperature << "\n";
+    }
+    return string;
+}
+
+QString Budget::dump(const Parameters &p, Dump header) {
+    QString string;
+    QTextStream result(&string);
+    if (header == Dump::WithHeader)
+        result << "i\tlayer\ta\ta_\tr\tr_\tt\tt_\n";
+    int n = p.a.size();
+    for (int i = 0; i < n; ++i) {
+        result
+            << i << "\t"
+            << layers.at(i)->name() << "\t"
+            << *p.a.at(i) << "\t"
+            << *p.a_.at(i) << "\t"
+            << *p.r.at(i) << "\t"
+            << *p.r_.at(i) << "\t"
+            << *p.t.at(i) << "\t"
+            << *p.t_.at(i) << "\n";
+    }
+    return string;
+}
+
+
 }

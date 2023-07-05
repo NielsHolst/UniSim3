@@ -3,6 +3,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <QXmlStreamAttributes>
+#include <QRegularExpression>
 #include "box.h"
 #include "computation.h"
 #include "dialog.h"
@@ -19,9 +20,9 @@ namespace {
 
     int getPosition(XmlNode *node) {
         int i = node->getAttributeInt("position");
-        bool ok = (1<=i && i<=6);
+        bool ok = (1<=i && i<=8);
         if (!ok)
-            ThrowException("Position value between 1 and 6 expected").value(node->name());
+            ThrowException("Position value between 1 and 8 expected").value(node->name());
         return i;
     }
 
@@ -40,6 +41,12 @@ namespace {
             ThrowException("Numerical value expected").value(s).value2(parent->name() + "/" + childName);
         return value;
     }
+
+    bool isValidNodeName(QString s) {
+        const auto regex = QRegularExpression("^[a-zA-Z]+[a-zA-Z0-9]*");
+        return s.contains(regex);
+    }
+
 }
 
 ReaderXml::ReaderXml(BoxBuilder *builder)
@@ -131,8 +138,34 @@ void ReaderXml::addAttributes(XmlNode *node) {
     }
 }
 
+void ReaderXml::collectScreenProducts() {
+    _screenProducts.clear();
+    XmlNode *products = _doc->find("Greenhouse/Screens/Products");
+    for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
+        XmlNode *product = pr.value();
+        QString productName = product->getAttributeString("name").trimmed();
+        if (productName.toLower() != "none")
+            _screenProducts[productName] = QSet<int>();
+    }
+
+    XmlNode *screens = _doc->find("Greenhouse/Screens");
+    for (auto sc = screens->children().begin(); sc != screens->children().end(); ++sc) {
+        XmlNode *screen = sc.value();
+        if (screen->name() == "Screen") {
+            QString productName = screen->find("Product")->value().trimmed();
+            if (productName.toLower() != "none") {
+                if (!_screenProducts.contains(productName))
+                    ThrowException("Undefined screen product name").value(productName);
+                int layer = screen->getAttributeInt("layer");
+                _screenProducts[productName].insert(layer);
+            }
+        }
+    }
+}
+
 void ReaderXml::readVirtualGreenhouse() {
     readDocument();
+    collectScreenProducts();
 
     XmlNode *positions = _doc->find("Greenhouse/Positions");
     auto position = positions->children().begin();
@@ -140,6 +173,9 @@ void ReaderXml::readVirtualGreenhouse() {
         _faces[position.key()] = getPosition(position.value());
         ++position;
     }
+
+    double
+        floorReflectance = _doc->find("Greenhouse/floor-reflectance")->toDouble();
 
     _builder->
     box("Simulation").name("sim").
@@ -151,12 +187,13 @@ void ReaderXml::readVirtualGreenhouse() {
             port("longitude").equals(_doc->find("Description/Longitude")->value()).
             port("begin").computes("global[beginDate] - 1").
             port("end").equals(_doc->find("Description/StopTime")->value()).
-            port("timeStep").equals(_doc->find("Description/TimeStep")->value()).
+            port("timeStep").equals(static_cast<int>(_doc->find("Description/TimeStep")->toDouble()*60)).
             port("timeUnit").equals("s").
         endbox().
         box("vg::Outdoors").name("outdoors").
             box("Records").name("records").
                 port("fileName").equals(_doc->find("Description/WeatherFile")->value()).
+                port("ignoreYear").equals(true).
                 port("cycle").equals(true).
             endbox().
             box("SoilTemperature").name("soilTemperature").
@@ -174,10 +211,14 @@ void ReaderXml::readVirtualGreenhouse() {
                 port("roofPitch").equals(_doc->find("Greenhouse/RoofPitch")->value()).
             endbox().
             box("LeakageVentilation").name("leakage").
+                port("leakage").equals(_doc->find("Greenhouse/leakage")->value()).
             endbox().
             box("Shelter").name("shelter").
                 box("UWind").name("Utop").
                     port("UwindSlope").equals(_doc->find("Greenhouse/UwindSlope")->value()).
+                endbox().
+                box("Shading").name("shading");
+                    shadingAgents().
                 endbox().
                 box().name("covers");
                     shelterCovers().
@@ -198,8 +239,7 @@ void ReaderXml::readVirtualGreenhouse() {
             box().name("heating");
                 setpoint("HeatingTemp", "base");
                 setpoint("MaxHeatAddHighRH", "humidityOffset");
-                setpoint("minPipeTemperature", "minTemperature");
-                setpoint("maxPipeTemperature", "maxTemperature").
+                setpoint("minPipeTemperature", "minTemperature").
             endbox().
             box().name("ventilation");
                 setpoint("VentTemp", "offset");
@@ -207,10 +247,32 @@ void ReaderXml::readVirtualGreenhouse() {
             endbox().
             box().name("screens");
                 setpointsScreens().
-            endbox();
-            setpoint("ShadingAgentReduction", "chalk").
-            box().name("growthLights");
-                setpointsGrowthLights().
+            endbox().
+            box().name("shading");
+                setpoint("ShadingAgentReduction", _chosenShadingAgent).
+            endbox().
+            box().name("growthLights").
+                box().name("bank1");
+                    setpoint("AssLightActive1", "mode").
+                    box().name("thresholds");
+                        setpoint("AssLightOn1", "low");
+                        setpoint("AssLightOff1", "high").
+                    endbox().
+                endbox().
+                box().name("bank2");
+                    setpoint("AssLightActive2", "mode").
+                    box().name("thresholds");
+                        setpoint("AssLightOn2", "low");
+                        setpoint("AssLightOff2", "high").
+                    endbox().
+                endbox().
+                box().name("bank3");
+                    setpoint("AssLightActive3", "mode").
+                    box().name("thresholds");
+                        setpoint("AssLightOn3", "low");
+                        setpoint("AssLightOff3", "high").
+                    endbox().
+                endbox().
             endbox().
             box().name("co2");
                 setpoint("CO2Setpoint", "concentration");
@@ -242,21 +304,13 @@ void ReaderXml::readVirtualGreenhouse() {
                     port("increasingSignal").equals(true).
                 endbox().
             endbox();
-            controllersScreens().
-            box().name("chalk").
-                aux("value").imports("setpoints/chalk[value]").
-            endbox();
+            controllersScreens();
             controllersGrowthLights().
         endbox().
         box("Actuators").name("actuators");
             actuatorsHeatPipes();
             actuatorsVentilation();
-            actuatorsScreens().
-            box("ActuatorChalk").name("chalk").
-                port("state").imports("controllers/chalk[value]").
-                port("swReflectivity").equals(_doc->find("Greenhouse/Actuators/ShadingAgent/SwReflectivity")->toDouble()).
-                port("lwReflectivity").equals(_doc->find("Greenhouse/Actuators/ShadingAgent/LwReflectivity")->toDouble()).
-            endbox();
+            actuatorsScreens();
             actuatorsGrowthLights().
             box("Accumulator").name("co2").
                 port("change").imports("./controller[controlVariable]").
@@ -269,16 +323,88 @@ void ReaderXml::readVirtualGreenhouse() {
                 endbox().
             endbox().
         endbox().
-        box("OutputR").name("output").
+        box("vg::Plant").name("plant").
+            port("k_sw").equals(_doc->find("Greenhouse/Crops/Crop/k")->toDouble()).
+            port("g0").equals(_doc->find("Greenhouse/Crops/Crop/BallBerryIntercept")->toDouble()).
+            port("g1").equals(_doc->find("Greenhouse/Crops/Crop/BallBerrySlope")->toDouble()).
+            port("re").equals(_doc->find("Greenhouse/Crops/Crop/re")->toDouble()).
+            port("lai").equals(_doc->find("Greenhouse/Crops/Crop/LAI")->toDouble()).
+            port("coverage").equals(_doc->find("Greenhouse/Crops/Crop/propAreaCultured")->toDouble()).
+            port("Jmax").equals(_doc->find("Greenhouse/Crops/Crop/Jmax25")->toDouble()).
+            port("Vcmax").equals(_doc->find("Greenhouse/Crops/Crop/Vcmax25")->toDouble()).
+            port("GammaStar").equals(_doc->find("Greenhouse/Crops/Crop/GammaStar")->toDouble()).
+            port("Km").equals(_doc->find("Greenhouse/Crops/Crop/Km")->toDouble()).
+            port("Rd0").equals(_doc->find("Greenhouse/Crops/Crop/lightRespiration")->toDouble()).
+            port("alpha").equals(_doc->find("Greenhouse/Crops/Crop/alpha")->toDouble()).
+            port("theta").equals(_doc->find("Greenhouse/Crops/Crop/theta")->toDouble()).
+            port("Q10").equals(_doc->find("Greenhouse/Crops/Crop/Q10")->toDouble()).
+        endbox().
+        box("Floor").name("floor").
+            port("swReflectivityTop").equals(floorReflectance).
+            port("swAbsorptivityTop").equals(1. - floorReflectance).
+            port("swTransmissivityTop").equals(0.).
+            port("lwReflectivityTop").equals(floorReflectance).
+            port("lwAbsorptivityTop").equals(1. - floorReflectance).
+            port("lwTransmissivityTop").equals(0.).
+            port("Utop").equals(_doc->find("Greenhouse/floor-Uindoors")->toDouble()).
+            port("Ubottom").equals(_doc->find("Greenhouse/floor-Usoil")->toDouble()).
+            port("heatCapacity").equals(_doc->find("Greenhouse/floor-heatCapacity")->toDouble()).
+        endbox().
+        box("Budget").name("budget").
+        endbox().
+        box("Summary").name("summary").
+        endbox().
+        box("OutputR").name("output");
+            outputVariables().
             box("PageR").
+                port("xAxis").imports("calendar[dateTime]").
+                port("maximizeWindow").equals(numRows() >= 4).
                 box("PlotR").
-                    port("ports").equals(_doc->find("Output/Variables")->value()).
+                    port("ports").equals("output/variables[*]").
+                    port("nrow").equals(numRows()).
                 endbox().
+            endbox().
+            box("OutputSelector").name("selector").
+                port("beginDateTime").equals(_doc->find("Description/StartTime")->value()).
+                port("period").equals(_doc->find("Output/Period")->toInt()).
+                port("useLocalDecimalChar").equals(_doc->find("Output/UseLocalDecimalChar")->toBool()).
+                port("skipFormats").equals(_doc->find("Output/SkipFormats")->toBool()).
             endbox().
         endbox().
     endbox();
 
     delete _doc;
+}
+
+BoxBuilder& ReaderXml::shadingAgents() {
+    _chosenShadingAgent = _doc->find("Greenhouse/ShadingAgents/ChosenProduct")->value();
+    bool chosenExists = false;
+    XmlNode *products = _doc->find("Greenhouse/ShadingAgents/Products");
+    for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
+        XmlNode *product = pr.value();
+        QString productName = product->getAttributeString("name");
+        if (productName.isEmpty())
+            ThrowException("<Product> node is missing a 'name' attribute").value("ShadingAgents/Products/" + pr.key());
+        if (!isValidNodeName(productName))
+            ThrowException("Invalid name of shading product").value(productName).hint("Must begin with a letter followed by letters and numbers; no blanks");
+        double
+            swReflectivity = getChildValueDouble(product, "SwReflectivity"),
+            lwReflectivity = getChildValueDouble(product, "LwReflectivity");
+        _builder->
+        box("ShadingAgent").name(productName).
+            port("swReflectivity").equals(swReflectivity).
+            port("lwReflectivity").equals(lwReflectivity);
+        if (productName == _chosenShadingAgent) {
+            _builder->port("state").imports("setpoints/shading/" + productName + "[value]");
+            chosenExists = true;
+        }
+        else
+            _builder->port("state").equals(0);
+        _builder->endbox();
+    }
+    if (!chosenExists)
+        ThrowException("No shading agent product of that name").value(_chosenShadingAgent);
+    return *_builder;
 }
 
 BoxBuilder& ReaderXml::shelterCovers() {
@@ -314,51 +440,69 @@ BoxBuilder& ReaderXml::shelterCovers() {
             port("lwTransmissivityBottom").equals(lwt).
             port("lwReflectivityBottom")  .equals(lwr).
             port("lwAbsorptivityBottom")  .equals(lwa).
+            port("Utop")                  .imports("shelter/Utop[value]").
             port("Ubottom")               .equals(U).
             port("heatCapacity")          .equals(C).
             port("transmissivityReduction").equals(transmissivityReduction).
-            port("swReflectivityChalk")   .computes("actuators/shading[swReflectivity]").
-            port("lwReflectivityChalk")   .computes("actuators/shading[lwReflectivity]").
+            port("swShading")             .computes("shelter/shading[swReflectivity]").
+            port("lwShading")             .computes("shelter/shading[lwReflectivity]").
         endbox();
     }
     return *_builder;
 }
 
+const QString ReaderXml::makeScreenId(QString screenProduct, int layer) {
+    return "layer" + QString::number(layer) + "_" + screenProduct.simplified().replace(" ", "_");
+}
+
 BoxBuilder& ReaderXml::shelterScreens() {
+    double UinsulationEffectivity = _doc->find("Greenhouse/screenPerfection")->toDouble();
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
-    auto product = products->children().begin();
-    while (product != products->children().end()) {
-        QString productName = product.value()->getAttributeString("name");
+    for (auto product = products->children().begin(); product != products->children().end(); ++product) {
+        // Create screen products
+        QString productName = product.value()->getAttributeString("name").trimmed();
         if (productName.isEmpty())
             ThrowException("<Product> node is missing a 'name' attribute").value("Screens/Products/" + product.key());
+        if (productName.toLower() == "none")
+            continue;
+        if (!_screenProducts.contains(productName))
+            ThrowException("Undefined screen product").value(productName);
         double
             t = getChildValueDouble(product.value(), "Transmission"),
             rtop = getChildValueDouble(product.value(), "ReflectionOutwards"),
             rbottom = getChildValueDouble(product.value(), "ReflectionInwards"),
             atop = 1. - t - rtop,
             abottom = 1. - t - rbottom,
-            U   = getChildValueDouble(product.value(), "U"),
-            C   = getChildValueDouble(product.value(), "HeatCapacity");
-        QString actuator = getChildValueString(product.value(), "Actuator");
-        _builder->
-        box("Screen").name(productName.replace(" ", "_")).
-            port("swTransmissivityTop")   .equals(t).
-            port("swReflectivityTop")     .equals(rtop).
-            port("swAbsorptivityTop")     .equals(atop).
-            port("swTransmissivityBottom").equals(t).
-            port("swReflectivityBottom")  .equals(rbottom).
-            port("swAbsorptivityBottom")  .equals(abottom).
-            port("lwTransmissivityTop")   .equals(t).
-            port("lwReflectivityTop")     .equals(rtop).
-            port("lwAbsorptivityTop")     .equals(atop).
-            port("lwTransmissivityBottom").equals(t).
-            port("lwReflectivityBottom")  .equals(rbottom).
-            port("lwAbsorptivityBottom")  .equals(abottom).
-            port("Ubottom")               .equals(U).
-            port("heatCapacity")          .equals(C).
-            port("state")                 .imports("actuators/screens/" + actuator + "[state]").
-        endbox();
-        ++product;
+            U       = getChildValueDouble(product.value(), "U"),
+            Uins    = getChildValueDouble(product.value(), "InsulationU"),
+            C       = getChildValueDouble(product.value(), "HeatCapacity");
+
+        // Loop through the layers (1 to 3 layers) that uses this screen product
+        const auto &layerNumbers(_screenProducts.value(productName));
+        for (auto layerNumber = layerNumbers.constBegin(); layerNumber != layerNumbers.constEnd(); ++layerNumber) {
+            QString boxId = makeScreenId(productName,*layerNumber);
+            _builder->
+            box("Screen").name(boxId).
+                port("swTransmissivityTop")   .equals(t).
+                port("swReflectivityTop")     .equals(rtop).
+                port("swAbsorptivityTop")     .equals(atop).
+                port("swTransmissivityBottom").equals(t).
+                port("swReflectivityBottom")  .equals(rbottom).
+                port("swAbsorptivityBottom")  .equals(abottom).
+                port("lwTransmissivityTop")   .equals(t).
+                port("lwReflectivityTop")     .equals(rtop).
+                port("lwAbsorptivityTop")     .equals(atop).
+                port("lwTransmissivityBottom").equals(t).
+                port("lwReflectivityBottom")  .equals(rbottom).
+                port("lwAbsorptivityBottom")  .equals(abottom).
+                port("Utop")                  .equals(U).
+                port("Ubottom")               .equals(U).
+                port("Uinsulation")           .equals(Uins).
+                port("UinsulationEffectivity").equals(UinsulationEffectivity).
+                port("heatCapacity")          .equals(C).
+                port("state")                 .imports("actuators/screens/layer" + QString::number(*layerNumber) + "[state]").
+            endbox();
+        }
     }
     return *_builder;
 }
@@ -366,13 +510,14 @@ BoxBuilder& ReaderXml::shelterScreens() {
 QString ReaderXml::findPaneProduct(QString position) {
     int pos = _faces.value(position);
     XmlNode *panes = _doc->find("Greenhouse/Panes");
-    auto pane = panes->children().begin();
-    while (pane != panes->children().end()) {
-        if (pane.value()->name() == "Pane" && getPosition(pane.value()) == pos) {
-            XmlNode *product = pane.value()->find("Product");
-            return product->value().replace(" ", "_");
+    for (auto pane = panes->children().begin(); pane != panes->children().end(); ++pane) {
+        if (pane.value()->name() == "Pane") {
+           int panePosition = getPosition(pane.value());
+           if (panePosition <= 6 && panePosition == pos) {
+                XmlNode *product = pane.value()->find("Product");
+                return product->value().replace(" ", "_");
+           }
         }
-        ++pane;
     }
     ThrowException("Pane position not found").value(position);
 }
@@ -382,41 +527,41 @@ BoxBuilder& ReaderXml::shelterFaces() {
     auto screens = collectAllScreens();
 
     _builder->
-    box().name("roof1").
-        aux("cover").equals(findPaneProduct("roof1")).
-        aux("screens").equals(screens.value("roof1").join("+")).
-        aux("area").computes("construction/geometry[roofArea]/2").
-        aux("weight").equals(_doc->find("Greenhouse/Positions/roof1/Weight")->value()).
+    box("Face").name("roof1").
+        port("cover").equals(findPaneProduct("roof1")).
+        port("screens").equals(screens.value("roof1").join("+")).
+        port("area").computes("construction/geometry[roofArea]/2").
+        port("weight").equals(_doc->find("Greenhouse/Positions/roof1/Weight")->value()).
     endbox().
-    box().name("roof2").
-        aux("cover").equals(findPaneProduct("roof2")).
-        aux("screens").equals(screens.value("roof2").join("+")).
-        aux("area").computes("construction/geometry[roofArea]/2").
-        aux("weight").equals(_doc->find("Greenhouse/Positions/roof2/Weight")->value()).
+    box("Face").name("roof2").
+        port("cover").equals(findPaneProduct("roof2")).
+        port("screens").equals(screens.value("roof2").join("+")).
+        port("area").computes("construction/geometry[roofArea]/2").
+        port("weight").equals(_doc->find("Greenhouse/Positions/roof2/Weight")->value()).
     endbox().
-    box().name("side1").
-        aux("cover").equals(findPaneProduct("side1")).
-        aux("screens").equals(screens.value("side1").join("+")).
-        aux("area").computes("construction/geometry[sideArea]/2").
-        aux("weight").equals(_doc->find("Greenhouse/Positions/side1/Weight")->value()).
+    box("Face").name("side1").
+        port("cover").equals(findPaneProduct("side1")).
+        port("screens").equals(screens.value("side1").join("+")).
+        port("area").computes("construction/geometry[sideArea]/2").
+        port("weight").equals(_doc->find("Greenhouse/Positions/side1/Weight")->value()).
     endbox().
-    box().name("side2").
-        aux("cover").equals(findPaneProduct("side2")).
-        aux("screens").equals(screens.value("side2").join("+")).
-        aux("area").computes("construction/geometry[sideArea]/2").
-        aux("weight").equals(_doc->find("Greenhouse/Positions/side2/Weight")->value()).
+    box("Face").name("side2").
+        port("cover").equals(findPaneProduct("side2")).
+        port("screens").equals(screens.value("side2").join("+")).
+        port("area").computes("construction/geometry[sideArea]/2").
+        port("weight").equals(_doc->find("Greenhouse/Positions/side2/Weight")->value()).
     endbox().
-    box().name("end1").
-        aux("cover").equals(findPaneProduct("end1")).
-        aux("screens").equals(screens.value("end1").join("+")).
-        aux("area").computes("construction/geometry[endArea]/2").
-        aux("weight").equals(_doc->find("Greenhouse/Positions/end1/Weight")->value()).
+    box("Face").name("end1").
+        port("cover").equals(findPaneProduct("end1")).
+        port("screens").equals(screens.value("end1").join("+")).
+        port("area").computes("construction/geometry[endArea]/2").
+        port("weight").equals(_doc->find("Greenhouse/Positions/end1/Weight")->value()).
     endbox().
-    box().name("end2").
-        aux("cover").equals(findPaneProduct("end2")).
-        aux("screens").equals(screens.value("end2").join("+")).
-        aux("area").computes("construction/geometry[endArea]/2").
-        aux("weight").equals(_doc->find("Greenhouse/Positions/end2/Weight")->value()).
+    box("Face").name("end2").
+        port("cover").equals(findPaneProduct("end2")).
+        port("screens").equals(screens.value("end2").join("+")).
+        port("area").computes("construction/geometry[endArea]/2").
+        port("weight").equals(_doc->find("Greenhouse/Positions/end2/Weight")->value()).
     endbox();
     return *_builder;
 }
@@ -448,147 +593,74 @@ BoxBuilder& ReaderXml::setpoint(QString xmlName, QString newName) {
 }
 
 BoxBuilder& ReaderXml::setpointsScreens() {
-    Setpoints
-        thresholds = getSetpoints("screenThreshold"),
-        bands      = getSetpoints("screenThresholdBand");
-    QMap<QString, Setpoints>
-        thresholdsByName, bandsByName;
-
-    _screenControllerNames.clear();
-    for (Setpoint &setpoint : thresholds) {
-        thresholdsByName[setpoint.name] << setpoint;
-        if (!_screenControllerNames.contains(setpoint.name))
-            _screenControllerNames << setpoint.name;
-    }
-    for (Setpoint &setpoint : bands) {
-        bandsByName[setpoint.name] << setpoint;
-        if (!_screenControllerNames.contains(setpoint.name))
-            _screenControllerNames << setpoint.name;
-    }
-    std::sort(_screenControllerNames.begin(), _screenControllerNames.end(),
-              [](const QString &a, const QString &b) { return a < b; });
-
-    for (const QString &name : _screenControllerNames) {
-        if (!thresholdsByName.contains(name))
-            ThrowException("No screen threshold matches a threshold band with this name").value(name);
-        if (!bandsByName.contains(name))
-            ThrowException("No screen threshold band matches a threshold with this name").value(name);
-
-        Setpoints
-            spThresholds = thresholdsByName.value(name),
-            spBands = bandsByName.value(name);
-        std::sort(spThresholds.begin(), spThresholds.end(),
-                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
-        std::sort(spBands.begin(), spBands.end(),
-                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
-        _builder->box().name(name);
-
-        _builder->box("PrioritySignal").name("threshold");
-        for (Setpoint &sp : spThresholds)
-            setpoint("screenThreshold/" + name, sp);
-        _builder->endbox();
-
-        _builder->box("PrioritySignal").name("band");
-        for (Setpoint &sp : spBands)
-            setpoint("screenThresholdBand/" + name, sp);
-        _builder->endbox();
-
-        _builder->endbox();
-    }
+    _builder->
+    box().name("energy1");
+        setpoint("screenEnergyThreshold1", "threshold");
+        setpoint("screenEnergyThresholdBand", "band").
+    endbox().
+    box().name("energy2");
+        setpoint("screenEnergyThreshold2", "threshold");
+        setpoint("screenEnergyThresholdBand", "band").
+    endbox().
+    box().name("energy3");
+        setpoint("screenEnergyThreshold3", "threshold");
+        setpoint("screenEnergyThresholdBand", "band").
+    endbox().
+    box().name("shade1");
+        setpoint("screenShadeThreshold1", "threshold");
+        setpoint("screenShadeThresholdBand", "band").
+    endbox().
+    box().name("shade2");
+        setpoint("screenShadeThreshold2", "threshold");
+        setpoint("screenShadeThresholdBand", "band").
+    endbox().
+    box().name("shade3");
+        setpoint("screenShadeThreshold3", "threshold");
+        setpoint("screenShadeThresholdBand", "band").
+    endbox().
+    box().name("blackout1");
+        setpoint("screenFixed1", "state").
+    endbox().
+    box().name("blackout2");
+        setpoint("screenFixed2", "state").
+    endbox().
+    box().name("blackout3");
+        setpoint("screenFixed3", "state").
+    endbox();
     return *_builder;
 }
 
-BoxBuilder& ReaderXml::setpointsGrowthLights() {
-    Setpoints
-        modes          = getSetpoints("AssLightActive"),
-        thresholdsLow  = getSetpoints("AssLightOn"),
-        thresholdsHigh = getSetpoints("AssLightOff");
-    QMap<QString, Setpoints>
-        modesByName, thresholdsLowByName, thresholdsHighByName;
 
-    _growthLightNames.clear();
-    for (Setpoint &setpoint : modes) {
-        modesByName[setpoint.name] << setpoint;
-        if (!_growthLightNames.contains(setpoint.name))
-            _growthLightNames << setpoint.name;
-    }
-    for (Setpoint &setpoint : thresholdsLow) {
-        thresholdsLowByName[setpoint.name] << setpoint;
-        if (!_growthLightNames.contains(setpoint.name))
-            _growthLightNames << setpoint.name;
-    }
-    for (Setpoint &setpoint : thresholdsHigh) {
-        thresholdsHighByName[setpoint.name] << setpoint;
-        if (!_growthLightNames.contains(setpoint.name))
-            _growthLightNames << setpoint.name;
-    }
-
-    for (const QString &name : _growthLightNames) {
-        if (!modesByName.contains(name))
-            ThrowException("Missing <AssLightActive> for this growth light controller name").value(name);
-        if (!thresholdsLowByName.contains(name))
-            ThrowException("Missing <AssLightOn> for this growth light controller name").value(name);
-        if (!thresholdsHighByName.contains(name))
-            ThrowException("Missing <AssLightOff> for this growth light controller name").value(name);
-
-        Setpoints
-            spModes          = modesByName.value(name),
-            spThresholdsLow  = thresholdsLowByName.value(name),
-            spThresholdsHigh = thresholdsHighByName.value(name);
-        std::sort(spModes.begin(), spModes.end(),
-                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
-        std::sort(spThresholdsLow.begin(), spThresholdsLow.end(),
-                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
-        std::sort(spThresholdsHigh.begin(), spThresholdsHigh.end(),
-                  [](const Setpoint &a, const Setpoint &b) { return a.index > b.index; });
-
-        _builder->box().name(name);
-
-        _builder->box("PrioritySignal").name("mode");
-        for (Setpoint &sp : spModes)
-            setpoint("AssLightActive/" + name, sp);
-        _builder->endbox();
-
-        _builder->box().name("thresholds");
-            _builder->box("PrioritySignal").name("low");
-            for (Setpoint &sp : spThresholdsLow)
-                setpoint("AssLightOn/" + name, sp);
-            _builder->endbox();
-
-            _builder->box("PrioritySignal").name("high");
-            for (Setpoint &sp : spThresholdsHigh)
-                setpoint("AssLightOff/" + name, sp);
-            _builder->endbox();
-        _builder->endbox();
-
-        _builder->endbox();
-    }
+BoxBuilder& ReaderXml::controllerScreen(QString name, int layer, bool isIncreasing) {
+    QString id = name + QString::number(layer);
+    _builder->
+    box("ProportionalSignal").name(id).
+        port("input").imports("outdoors[radiation]").
+        port("threshold").imports("setpoints/screens/" + id + "/threshold[value]").
+        port("thresholdBand").imports("setpoints/screens/" + id + "/band[value]").
+        port("maxSignal").equals(1).
+        port("increasingSignal").equals(isIncreasing).
+    endbox();
     return *_builder;
 }
 
 BoxBuilder& ReaderXml::controllersScreens() {
     _builder->box().name("screens");
-    for (const QString &name : _screenControllerNames) {
-        QString controlName = "Greenhouse/Controllers/Screen/" + name + "/Activate";
-        XmlNode *node = _doc->find(controlName);
-        QString s = node->value();
-        bool isIncreasing;
-        if (s == "BelowThreshold")
-            isIncreasing = false;
-        else if (s == "AboveThreshold")
-            isIncreasing = true;
-        else
-            ThrowException("Control node must have 'activate' attribute set to \"BelowThreshold\" or \"AboveThreshold\"").value(controlName).value2(s);
-
-        _builder->
-        box("ProportionalSignal").name(name).
-            port("input").imports("outdoors[radiation]").
-            port("threshold").imports("setpoints/screens/" + name + "/threshold[value]").
-            port("thresholdBand").imports("setpoints/screens/" + name + "/band[value]").
-            port("maxSignal").equals(1).
-            port("increasingSignal").equals(isIncreasing).
+        controllerScreen("energy", 1, false);
+        controllerScreen("energy", 2, false);
+        controllerScreen("energy", 3, false);
+        controllerScreen("shade", 1, true);
+        controllerScreen("shade", 2, true);
+        controllerScreen("shade", 3, true).
+        box().name("blackout1").
+            aux("value").imports("setpoints/screens/blackout1/state[value]").
+        endbox().
+        box().name("blackout2").
+            aux("value").imports("setpoints/screens/blackout2/state[value]").
+        endbox().
+        box().name("blackout3").
+            aux("value").imports("setpoints/screens/blackout3/state[value]").
         endbox();
-    }
     _builder->endbox();
     return *_builder;
 }
@@ -613,36 +685,36 @@ BoxBuilder& ReaderXml::controllersGrowthLights() {
     return *_builder;
 }
 
-namespace {
-    QString desiredState(QString s) {
-        QStringList controllers = s.split("+");
-        if (controllers.size() == 1)
-            return s;
-        for (int i = 0; i < controllers.size(); ++i)
-            controllers[i] = "controllers/screens/" + controllers.at(i) + "[value]";
-        return "max(" + controllers.join(" | ") +")";
-    }
-}
+//namespace {
+//    QString desiredState(QString s) {
+//        QStringList controllers = s.split("+");
+//        if (controllers.size() == 1)
+//            return s;
+//        for (int i = 0; i < controllers.size(); ++i)
+//            controllers[i] = "controllers/screens/" + controllers.at(i) + "[value]";
+//        return "max(" + controllers.join(" | ") +")";
+//    }
+//}
 
 BoxBuilder& ReaderXml::actuatorsHeatPipes() {
      _builder->box("HeatPipes").name("heatPipes");
     auto heatPipes = _doc->find("Greenhouse/Heatpipes")->children();
     for (auto hp = heatPipes.begin(); hp != heatPipes.end(); ++hp) {
         XmlNode &heatPipe(*hp.value());
-        int index = heatPipe.getAttributeInt("index");
+        int circuit = heatPipe.getAttributeInt("position");
         double
             diameter = heatPipe.find("InnerDiameter")->toDouble(),
             lengthPerSqm = heatPipe.find("PipeLengthPerSqm")->toDouble(),
             volume = lengthPerSqm*PI*p2(diameter/1000.)*groundArea();
         _builder->
-        box("ActuatorHeatPipe").name("circuit"+QString::number(index)).
+        box("ActuatorHeatPipe").name("circuit"+QString::number(circuit)).
             port("volume").equals(volume).
             port("flowRate").equals(heatPipe.find("heatPipeFlowRate")->toDouble()).
             port("k").equals(heatPipe.find("k")->toDouble()).
             port("b").equals(heatPipe.find("b")->toDouble()).
             port("propLw").equals(heatPipe.find("PropLw")->toDouble()).
             port("minTemperature").imports("setpoints/heating/minTemperature[value]").
-            port("maxTemperature").imports("setpoints/heating/maxTemperature[value]").
+            port("maxTemperature").equals(heatPipe.find("CommonFlowTemperature")->toDouble()).
             port("inflowTemperature").equals(50).
             port("indoorsTemperature").equals(20).
         endbox();
@@ -671,20 +743,31 @@ BoxBuilder& ReaderXml::actuatorsVentilation() {
 }
 
 BoxBuilder& ReaderXml::actuatorsScreens() {
+    auto screenLayers = _doc->find("Greenhouse/ScreenLayers")->children();
+    QMap<int, QStringList> controllers = {
+        {1, {}},
+        {2, {}},
+        {3, {}}
+    };
+    for (auto sl = screenLayers.begin(); sl != screenLayers.end(); ++sl) {
+        XmlNode &screenLayer(*sl.value());
+        int layerNumber = screenLayer.getAttributeInt("layer");
+        QStringList controllerNames = screenLayer.find("Actuator")->value().split("+");
+        for (int i = 0; i < controllerNames.size(); ++i)
+            controllerNames[i] = "controllers/screens/" + controllerNames[i].toLower() + QString::number(layerNumber) + "[value]";
+        controllers[layerNumber] = controllerNames;
+    }
+
     _builder->box().name("screens");
-    for (const QString &name : _screenControllerNames) {
-        QString actuatorName = "Greenhouse/Actuators/Screens/" + name;
-        XmlNode
-            *parent      = _doc->find(actuatorName),
-            *controllers = parent->peak("Controllers"),
-            *lagPeriod   = parent->peak("LagPeriod");
-        if (!controllers)
-            ThrowException("In XML-File: Screen actuator lacks <Controllers> element").value(actuatorName);
-        _builder->box("ActuatorScreen").name(name).
-            port("desiredState").equals(desiredState(controllers->value()));
-        if (lagPeriod)
-            _builder->port("lagPeriod").equals(lagPeriod->value());
-        _builder->endbox();
+    double lagPeriod = _doc->find("Greenhouse/ScreenLagPeriod")->toDouble();
+    for (auto controller = controllers.constBegin(); controller != controllers.constEnd(); ++controller) {
+        if (!controller.value().isEmpty()) {
+            _builder->
+            box("ActuatorScreen").name("layer" + QString::number(controller.key())).
+                port("desiredState").computes("max(" + controller.value().join(" | ") + ")").
+                port("lagPeriod").equals(lagPeriod).
+            endbox();
+        }
     }
     _builder->endbox();
     return *_builder;
@@ -739,15 +822,16 @@ QStringList ReaderXml::collectScreens(QString position) {
     auto screen = screens->children().begin();
     while (screen != screens->children().end()) {
         if (screen.value()->name() == "Screen" && getPosition(screen.value()) == pos) {
-            int i = screen.value()->getAttributeInt("layer");
-            if (i<1)
+            int layer = screen.value()->getAttributeInt("layer");
+            if (layer<1)
                 ThrowException("Screen layer must be a positive integer").value(screen.value()->name());
 
             XmlNode *product = screen.value()->find("Product");
             QString productName = product->value().replace(" ", "_");
-            if (productName == "None")
-                productName = "none";
-            result[i] = productName;
+            productName = (productName.toLower() == "none") ?
+                          "none" :
+                          "layer" + QString::number(layer) + "_" + productName;
+            result[layer] = productName;
         }
         ++screen;
     }
@@ -757,45 +841,20 @@ QStringList ReaderXml::collectScreens(QString position) {
 QMap<QString, QStringList> ReaderXml::collectAllScreens() {
     QMap<QString, QStringList> result;
     int n = 0;
-    auto face = _faces.begin();
-    while (face != _faces.end()) {
+    for (auto face = _faces.begin(); face != _faces.end(); ++face) {
         QStringList screens = collectScreens(face.key());
         result[face.key()] = screens;
         if (n == 0)
             n = screens.size();
         else if (screens.size() != n)
             ThrowException("The same number of screens must be defined for each layer").value(n).value2(screens.size()).hint("Use Product \"None\" for missing screens");
-        ++face;
-    }
-
-    QVector<bool> drop;
-    drop.fill(true, n);
-    for (int i=0; i<n; ++i) {
-        auto res = result.begin();
-        while (res != result.end()) {
-            if (res.value().at(i) != "none")
-                drop[i] = false;
-            ++res;
-        }
-    }
-
-    QMutableMapIterator<QString, QStringList> revise(result);
-        while (revise.hasNext()) {
-            revise.next();
-            for (int i=n-1; i>=0; --i) {
-                if (drop.at(i)) {
-                    QStringList sl = revise.value();
-                    sl.removeAt(i);
-                    revise.setValue(sl);
-                }
-            }
     }
     return result;
 }
 
 ReaderXml::Setpoints ReaderXml::getSetpoints(QString name) {
     Setpoints result;
-    XmlNode *node = _doc->peak("Greenhouse/Climate/Setpoint");
+    XmlNode *node = _doc->peak("Climate/Setpoint");
     if (!node)
         ThrowException("Cannot find Setpoint node in XML file").value(name);
     auto children = node->children(name);
@@ -827,5 +886,22 @@ double ReaderXml::groundArea() {
     return spanWidth*length*numSpans;
 }
 
+
+BoxBuilder& ReaderXml::outputVariables() {
+    XmlNode *variables = _doc->find("Output/Variables");
+    _builder->box().name("variables");
+    for (auto variable = variables->children().begin(); variable != variables->children().end(); ++variable) {
+        QString path = variable.value()->getAttributeString("path"),
+                name = variable.value()->getAttributeString("name");
+        _builder->aux(name).imports(path);
+    }
+    _builder->endbox();
+    return *_builder;
+}
+int ReaderXml::numRows() {
+    XmlNode *variables = _doc->find("Output/Variables");
+    auto n = variables->children().size();
+    return std::max(static_cast<int>(sqrt(n)), 4);
+}
 
 } // namespace

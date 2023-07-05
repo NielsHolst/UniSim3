@@ -26,8 +26,9 @@ Screen::Screen(QString name, Box *parent)
 {
     help("models a screen layer as influenced by its state");
     Input(state).help("Proportion drawn (0=fully withdrawn; 1=fully drawn").unit("[0;1]");
-    Input(Uinsulation).unit("W/K/m2 layer").equals(1e16).help("Insulation effect on cover");
-    Output(UinsulationAdj).unit("W/K/m2 layer").help("Insulation effect on cover adjusted for state");
+    Input(Uinsulation).equals(1e16).unit("W/K/m2 layer").help("Insulation effect on cover");
+    Input(UinsulationEffectivity).equals(1.).unit("[0;1]").help("Effectivity of Uinsulation");
+    Output(UinsulationAdj).unit("W/K/m2 layer").help("Insulation effect on cover adjusted for state and perfection");
 }
 
 void Screen::reset() {
@@ -60,7 +61,7 @@ void Screen::update() {
 
     UtopAdj         = Utop;
     UbottomAdj      = Ubottom;
-    UinsulationAdj  = Uinsulation/state;
+    UinsulationAdj  = Uinsulation/state/UinsulationEffectivity;
     heatCapacityAdj = heatCapacity;
 
     checkOutputs();

@@ -157,7 +157,8 @@ Port& Port::equals(const Value &value) {
 }
 
 Port& Port::equals(const Expression &expression) {
-    _unparsedExpression = expression.originalAsString();
+    if (_unparsedExpression.isEmpty())
+        _unparsedExpression = expression.originalAsString();
     _expression = expression;
     define();
     return *this;

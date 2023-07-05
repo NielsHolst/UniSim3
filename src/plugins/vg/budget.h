@@ -34,7 +34,7 @@ private:
 
     int step;
     QDateTime dateTime;
-    base::Logger logger;
+//    base::Logger logger;
 
     // Output
     int radIterations, subSteps, controlCode, actionCode;
@@ -122,6 +122,9 @@ private:
     void decreaseHeating();
     void extraVentilation();
     void babyStep();
+    enum class Dump{WithHeader, WithoutHeader};
+    QString dump(const State &s, Dump header = Dump::WithoutHeader);
+    QString dump(const Parameters &p, Dump header = Dump::WithoutHeader);
 };
 
 }

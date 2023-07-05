@@ -24,9 +24,11 @@ private:
     QFile _file;
     XmlNode *_doc;
     QMap<QString, int> _faces;
+    QMap<QString, QSet<int>> _screenProducts;
     QVector<QString> _screenControllerNames, _growthLightNames;
     enum class Type {Box, Port, Aux};
     Type _type;
+    QString _chosenShadingAgent;
 
     // Types
     enum class Format{generic, vg};
@@ -42,26 +44,31 @@ private:
     void readDocument();
     void readVirtualGreenhouse();
     void addAttributes(XmlNode *node);
+    void collectScreenProducts();
+    BoxBuilder& shadingAgents();
     BoxBuilder& shelterCovers();
     BoxBuilder& shelterScreens();
     BoxBuilder& shelterFaces();
     BoxBuilder& setpoint(QString xmlName, QString newName);
     BoxBuilder& setpoint(QString xmlName, const Setpoint &setpoint);
     BoxBuilder& setpointsScreens();
-    BoxBuilder& setpointsGrowthLights();
     BoxBuilder& controllersScreens();
+    BoxBuilder& controllerScreen(QString name, int layer, bool isIncreasing);
     BoxBuilder& controllersGrowthLights();
     BoxBuilder& actuatorsHeatPipes();
     BoxBuilder& actuatorsVentilation();
     BoxBuilder& actuatorsScreens();
     BoxBuilder& actuatorsGrowthLights();
+    BoxBuilder& outputVariables();
 
+    int numRows();
     QString findPaneProduct(QString position);
     QStringList collectScreens(QString position);
     QMap<QString, QStringList> collectAllScreens();
 
     Setpoints getSetpoints(QString name);
     double groundArea();
+    const QString makeScreenId(QString screenProduct, int layer);
 };
 
 }

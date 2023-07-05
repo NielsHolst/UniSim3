@@ -20,7 +20,7 @@ public:
     void update();
 private:
     // Additional inputs
-    double state, Uinsulation, UinsulationAdj;
+    double state, Uinsulation, UinsulationAdj, UinsulationEffectivity;
     // No additional outputs
 };
 

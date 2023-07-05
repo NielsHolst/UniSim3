@@ -45,6 +45,10 @@ QString XmlNode::value() const {
     return _value;
 }
 
+bool XmlNode::toBool() const {
+    return (toInt() != 0);
+}
+
 int XmlNode::toInt() const {
     bool ok;
     int value = _value.toInt(&ok);
@@ -105,7 +109,7 @@ XmlNode* XmlNode::peak(QString path) {
     for (auto &name : names) {
         int n = node->_children.values(name).size();
         if (n > 1)
-            ThrowException("XML path is not unique").value(n);
+            ThrowException("XML path is not unique").value(path).value2(n);
         auto child = node->_children.find(name);
         if (child != node->_children.end())
             node = *child;

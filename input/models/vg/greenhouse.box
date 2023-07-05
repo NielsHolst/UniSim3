@@ -1,13 +1,14 @@
 Simulation sim {
+  .steps = 1
   Box global {
     &beginDate = 01/01/2022
-    &screenUinsulation = 10.
+    &screenPerfection = 0.9
   }
   Calendar calendar{
     .latitude  = 55.4
     .longitude = 10.4
     .begin = global[beginDate] - 1
-    .end   = 31/12/2022
+    .end   = 31/01/2022
     .timeStep = 3
     .timeUnit = "m"
   }
@@ -115,7 +116,7 @@ Simulation sim {
 
           .Utop                   = 1.2
           .Ubottom                = 1.2
-          .Uinsulation            = global[screenUinsulation]
+          .Uinsulation            = 10
           .heatCapacity           = 80
           .state = actuators/screens/energy[state]
         }
@@ -138,7 +139,7 @@ Simulation sim {
 
           .Utop                   = 1.2
           .Ubottom                = 1.2
-          .Uinsulation            = global[screenUinsulation]
+          .Uinsulation            = 10
           .heatCapacity           = 80.
           .state = actuators/screens/shade[state]
         }
@@ -161,7 +162,7 @@ Simulation sim {
 
           .Utop                   = 1.1
           .Ubottom                = 1.1
-          .Uinsulation            = global[screenUinsulation]
+          .Uinsulation            = 10
           .heatCapacity           = 120.
           .state = actuators/screens/shade[state]
         }
@@ -184,7 +185,7 @@ Simulation sim {
 
           .Utop                   = 1.2
           .Ubottom                = 1.2
-          .Uinsulation            = global[screenUinsulation]
+          .Uinsulation            = 10
           .heatCapacity           = 200.
           .state = actuators/screens/blackout[state]
         }
@@ -276,13 +277,6 @@ Simulation sim {
           .beginDate = 1/1
           .endDate = 31/12
           .signalInside = 25
-        }
-      }
-      PrioritySignal maxTemperature {
-        DateTimeSignal {
-          .beginDate = 1/1
-          .endDate = 31/12
-          .signalInside = 80
         }
       }
     }
@@ -557,7 +551,7 @@ Simulation sim {
         .inflowTemperature = 80.0
         .indoorsTemperature = 20.0
         .minTemperature = setpoints/heating/minTemperature[value]
-        .maxTemperature = setpoints/heating/maxTemperature[value]
+        .maxTemperature = 80.
       }
       ActuatorHeatPipe circuit2 {
         .volume = 14.14 
@@ -568,7 +562,7 @@ Simulation sim {
         .inflowTemperature = 80.0
         .indoorsTemperature = 20.0
         .minTemperature = setpoints/heating/minTemperature[value]
-        .maxTemperature = setpoints/heating/maxTemperature[value]
+        .maxTemperature = 80.
       }
     }
     ActuatorVentilation ventilation {

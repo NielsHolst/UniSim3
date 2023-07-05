@@ -24,6 +24,7 @@ public:
     QString name() const;
 
     QString value() const;
+    bool toBool() const;
     int toInt() const;
     double toDouble() const;
 
