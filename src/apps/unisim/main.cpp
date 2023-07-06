@@ -8,7 +8,6 @@
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
-#include <base/altova_xml.h>
 #include <base/box.h>
 #include <base/command.h>
 #include <base/dialog_minimal.h>
@@ -39,30 +38,6 @@ bool canWriteTo(QString fileName) {
     return ok;
 }
 
-QString translateInputXml(QString inputFilePath) {
-    AltovaXml altova;
-
-    QFileInfo fi(inputFilePath);
-    QString path = fi.absolutePath(),
-            fileName = fi.fileName();
-
-    if (fi.suffix().toLower() != "xml")
-        ThrowException("Input must be an XML file").value(inputFilePath);
-
-    QDir dir(path);
-    if (!dir.exists())
-        ThrowException("Input folder does not exist:\n" + path);
-    dir.cdUp();
-    dir.mkdir("temp");
-    dir.cd("temp");
-    if (!dir.exists())
-        ThrowException("Temporary folder does not exist:\n" + dir.absolutePath());
-
-    QString outputFilePath = dir.absoluteFilePath(fileName);
-    altova.run(inputFilePath, outputFilePath);
-    return outputFilePath;
-}
-
 QStringList extractArguments(int argc, char *argv[]) {
     QStringList list;
     for(int i = 1; i < argc; ++i) {
@@ -73,12 +48,7 @@ QStringList extractArguments(int argc, char *argv[]) {
     return list;
 }
 
-QString destinationFilePath(QStringList args) {
-    return QFileInfo(args.at(2)).absoluteFilePath();
-}
-
-void clearDestination(QStringList args) {
-    QString filePath = destinationFilePath(args);
+void clearOutputFile(QString filePath) {
     if (QFile::exists(filePath)) {
         if (!QFile::remove(filePath))
             QMessageBox::warning(nullptr, "Error", "Cannot access output file:\n"+filePath);
@@ -91,8 +61,7 @@ void copyFile(QString fromFilePath, QString toFilePath) {
         ThrowException(message.arg(fromFilePath).arg(toFilePath));
     }
 }
-void writeErrorToOutputFile(QString errorMessage, QStringList args) {
-    QString filePath = destinationFilePath(args);
+void writeErrorToOutputFile(QString errorMessage, QString filePath) {
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         ThrowException("Cannot open output file").value(filePath);
@@ -104,8 +73,11 @@ int runWithoutDialog(int argc, char *argv[]) {
     DialogMinimal *dialog = new DialogMinimal(qApp);
     QStringList args = extractArguments(argc, argv);
 //    QStringList args = {"run",
-//                        "D:/Documents/QDev/UniSim3/input/projects/vg/2022-10-05-NyXML.xml",
-//                        "D:/Documents/QDev/UniSim3/output/vg.txt"};
+//                        "C:/MyDocuments/QDev/UniSim3/input/models/vg/2023-07-05-test.xml",
+//                        "C:/MyDocuments/QDev/UniSim3/output/vg.txt"};
+    QString
+        inputFilePath  = QFileInfo(args.at(1)).absoluteFilePath(),
+        outputFilePath = QFileInfo(args.at(2)).absoluteFilePath();
     try {
         environment().checkInstallation();
 
@@ -113,17 +85,14 @@ int runWithoutDialog(int argc, char *argv[]) {
         if (command!="run" && command!="doc")
             ThrowException("Use 'run' or 'doc' as first argument").value(command).value2(args.join("\n"));
 
-        QString inputFilePath = args.at(1);
-        clearDestination(args);
-
-        QString translatedFilePath = translateInputXml(inputFilePath);
+        clearOutputFile(outputFilePath);
 
         Command::submit(QStringList() << "set" << "folder" << "work" << "HOME");
         Command::submit(QStringList() << "set" << "folder" << "input" << "input");
         Command::submit(QStringList() << "set" << "folder" << "output" << "output");
 
         dialog->resetErrorCount();
-        Command::submit(QStringList() << command << translatedFilePath);
+        Command::submit(QStringList() << command << inputFilePath);
         if (dialog->errorCount() > 0)
             ThrowException(dialog->getError());
 
@@ -131,11 +100,11 @@ int runWithoutDialog(int argc, char *argv[]) {
         if (!sim)
             ThrowException("No XML script loaded");
         Box *writer = sim->findOne<Box*>("outputWriter");
-        QString outputFilePath = writer->port("filePath")->value<QString>();
-        copyFile(outputFilePath, destinationFilePath(args));
+        QString writerFilePath = writer->port("filePath")->value<QString>();
+        copyFile(writerFilePath, outputFilePath);
     }
     catch (Exception &ex){
-        writeErrorToOutputFile(ex.what(), args);
+        writeErrorToOutputFile(ex.what(), outputFilePath);
         QMessageBox::warning(nullptr, "Error", ex.what());
         return 1;
     }
@@ -151,6 +120,7 @@ int main(int argc, char *argv[])
     bool hasArguments = (argc > 1);
     int result;
     try {
+//        result = runWithoutDialog(argc, argv);
         result = hasArguments ? runWithoutDialog(argc, argv) : runWithDialog();
     }
     catch (Exception &ex){

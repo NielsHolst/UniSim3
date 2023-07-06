@@ -32,18 +32,22 @@ private:
         EaVC, EdVC, delsC,
         Q10,
 
-        indoorsTemperature, indoorsRh, indoorsCo2;
+        indoorsTemperature, indoorsRh, indoorsCo2,
+        timeStep;
     // Output
     double temperature, transpiration,
-        leafAm, leafAc, leafAj, leafRd,
-        Pn, Rd;
+        incidentPar,
+        leafAm, leafAc, leafAj, leafRd, leafGrowthRate,
+        Pn, Pg, Rd, growthRate,
+        lue;
     // Data
     double
         netRadiation_,
         rhoh_, vp_, svp_, svpSlope_, ri_,
-        absorbedTotal_, incidentPar_,
+        absorbedTotal_,
         VcmaxAdj_, JmaxAdj_;
-
+    // 6 moles CO2 (44 g/mole) -> 1 mole glucose (180 g/mole)
+    const double co2ToBiomass = 180./(6*44);
     // Methods
     void updateRadiative();
     void updateTemperature();

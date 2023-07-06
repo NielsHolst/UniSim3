@@ -82,14 +82,14 @@ unisim.depends = vg
 # Unit tests
 #
 
-#SUBDIRS += test
-#test.subdir = src/apps/test
-#test.depends = base
+SUBDIRS += test
+test.subdir = src/apps/test
+test.depends = base
 
-#SUBDIRS += test_boxes
-#test_boxes.subdir = src/plugins/test_boxes
-#test_boxes.depends = base
+SUBDIRS += test_boxes
+test_boxes.subdir = src/plugins/test_boxes
+test_boxes.depends = base
 
-#SUBDIRS += test_boxes2
-#test_boxes2.subdir = src/plugins/test_boxes2
-#test_boxes2.depends = base
+SUBDIRS += test_boxes2
+test_boxes2.subdir = src/plugins/test_boxes2
+test_boxes2.depends = base

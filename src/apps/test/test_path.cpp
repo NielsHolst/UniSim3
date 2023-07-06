@@ -1,7 +1,6 @@
 #include <base/box.h>
 #include <base/box_builder.h>
 #include <base/computation.h>
-#include <base/logger.h>
 #include <base/path.h>
 #include <base/port.h>
 #include "exception_expectation.h"
@@ -113,5 +112,4 @@ void TestPath::testLookInChildrenNotSelf() {
     QCOMPARE(x.size(), 2);
     QCOMPARE(x.at(0)->value<int>(), 20);
     QCOMPARE(x.at(1)->value<int>(), 30);
-    base::log("testLookInChildrenNotSelf() Z");
 }

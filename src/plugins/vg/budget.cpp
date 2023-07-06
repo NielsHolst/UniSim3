@@ -43,7 +43,7 @@ Budget::Budget(QString name, base::Box *parent)
     : Box(name, parent)
 {
     help("resolves energy and water budgets across layers and volumes");
-    Input(radPrecision).equals(1e-3).unit("W/m2|mumol/m2/s").help("Precision of numerical solution to radiation budget");
+    Input(radPrecision).equals(0.1).unit("W/m2|mumol/m2/s").help("Precision of numerical solution to radiation budget");
     Input(tempPrecision).equals(0.5).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(thresholdPrecision).equals(0.1).unit("K").help("Precision of temperature thresholds for climate control");
     Input(timeStep).imports("calendar[timeStepSecs]");
@@ -64,7 +64,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(deltaVentControl).equals(0.3).unit("/h/min").help("Control increment of ventilation flux");
     Input(deltaVentControlRelative).equals(0.2).unit("/min").help("Relative control of ventilation flux");
     Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
-    Input(babyTimeStep).equals(5.).unit("s").help("Length of first time step after climate control action");
+    Input(babyTimeStep).equals(1.).unit("s").help("Length of first time step after climate control action");
 
     Input(step).imports("sim[step]");
     Input(dateTime).imports("calendar[dateTime]");
@@ -168,6 +168,7 @@ void Budget::addLayers() {
                 port("lwEmissionBottom").imports("actuators/heatPipes[lwEmissionBottom]").
                 port("convectionTop")   .imports("actuators/heatPipes[convectionTop]").
                 port("convectionBottom").imports("actuators/heatPipes[convectionBottom]").
+                port("temperature")     .imports("actuators/heatPipes[inflowTemperatureAvg]").
             endbox();
     }
     builder.
@@ -309,14 +310,8 @@ void Budget::updateLayersAndVolumes() {
     double timePassed = 0.;
     babyStep();
     while (lt(timePassed, timeStep) && subSteps < maxSubSteps) {
-//        logger.write(
-//            QString::number(timePassed) + "\n" +
-//            QString::number(_maxDeltaT) + "\n" +
-//            dump(swState, Dump::WithHeader) +
-//            dump(lwState, Dump::WithHeader)
-//        );
         _subTimeStep = std::min(_subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
-        updateSubStep(_subTimeStep, UpdateOption::ExcludeSwPar);
+        updateSubStep(_subTimeStep, (timePassed == 0.) ? UpdateOption::IncludeSwPar : UpdateOption::ExcludeSwPar);
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
                                  budgetLayerPlant->parAbsorbedBottom);

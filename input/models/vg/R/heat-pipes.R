@@ -65,4 +65,7 @@ ggarrange(
     common.legend = TRUE,
     legend = "right"
 )
+pipe_volume
+k
+b
 

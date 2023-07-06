@@ -8,7 +8,7 @@
 
 # AUTO-CONFIG-BEGIN
 CONFIG += debug
-VERSION = 3.0.10
+VERSION = 3.0.12
 CONFIG += skip_target_version_ext
 # AUTO-CONFIG-END
 

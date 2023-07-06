@@ -16,7 +16,6 @@ HEADERS +=  \
     exception_expectation.h \
     input_file_path.h \
     output_file.h \
-    test_average.h \
     test_bare_date.h \
     test_bitset.h \
     test_boost_variant.h \
@@ -54,7 +53,6 @@ HEADERS +=  \
 SOURCES +=  \
     main.cpp \
     output_file.cpp \
-    test_average.cpp \
     test_bare_date.cpp \
     test_bitset.cpp \
     test_boost_variant.cpp \

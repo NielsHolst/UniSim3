@@ -24,11 +24,13 @@ private:
     // Inputs
     QVector<double>
         lwEmissionTopPipes, lwEmissionBottomPipes,
-        convectionTopPipes, convectionBottomPipes;
+        convectionTopPipes, convectionBottomPipes,
+        inflowTemperaturePipes;
     // Outputs
     double
         lwEmissionTop, lwEmissionBottom,
         convectionTop, convectionBottom,
+        inflowTemperatureAvg,
         heatFlux;
     // Data
     QVector<ActuatorHeatPipe*> _heatPipes;

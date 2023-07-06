@@ -13,7 +13,6 @@ QT += widgets
 HEADERS +=  \
     accumulator.h \
     all_types.h \
-    average.h \
     boxes_documentation.h \
     briere.h \
     buffer.h \
@@ -112,7 +111,6 @@ HEADERS +=  \
 SOURCES +=  \
     accumulator.cpp \
     all_types.cpp \
-    average.cpp \
     boxes_documentation.cpp \
     briere.cpp \
     buffer.cpp \

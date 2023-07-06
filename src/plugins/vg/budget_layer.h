@@ -50,7 +50,7 @@ protected:
         temperature,
         lwEmissionTop, lwEmissionBottom,
         parAbsorbedTop, parAbsorbedBottom,
-        netRadiation,
+        netRadiation, netConvection,
         condensation;
     // Data
     const double *emissivityTop, *emissivityBottom,

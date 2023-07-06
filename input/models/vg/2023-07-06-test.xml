@@ -9,7 +9,7 @@
 		<Longitude>10.4024</Longitude>
 		<Latitude>55.4038</Latitude>
 		<StartTime>01.01.2022</StartTime>
-		<StopTime>03.01.2022</StopTime>
+		<StopTime>31.12.2022</StopTime>
 		<TimeStep>3</TimeStep>
 	</Description>
 	<Greenhouse>
@@ -346,7 +346,7 @@
 				<Manufacture>Philips</Manufacture>
 				<Ballast>0.0000</Ballast>
 				<PropLw>0.1000</PropLw>
-				<MinPeriodOn>Led</MinPeriodOn>
+				<MinPeriodOn>0</MinPeriodOn>
 				<Name>Bank1</Name>
 				<PropSw>0.4000</PropSw>
 				<BallastPropLw>100</BallastPropLw>
@@ -363,6 +363,7 @@
 				<MinPeriodOn>20</MinPeriodOn>
 				<Name>Bank2</Name>
 				<PropSw>0.4</PropSw>
+				<BallastPropLw>100</BallastPropLw>
 			</Lamp>
 			<Lamp index="0" layer="0" position="3">
 				<Product>None</Product>
@@ -660,35 +661,61 @@
 		<UseLocalDecimalChar>0</UseLocalDecimalChar> 
 		<SkipFormats>0</SkipFormats>
 		<Variables>
-			<Variable name="CO2in" path="budget/indoors[co2]" />
-			<Variable name="RadCover" path="budget/cover[netRadiation]" />
-			<Variable name="RadFloor" path="budget/floor[netRadiation]" />
-			<Variable name="RadPipes" path="budget/heatPipes[netRadiation]" />
-			<Variable name="RadPlant" path="budget/plant[netRadiation]" />
-			<Variable name="RadScreen1" path="budget/screen1[netRadiation]" />
-			<Variable name="RadSky" path="budget/sky[netRadiation]" />
-
-			<Variable name="ConvCover" path="budget/cover[netConvection]" />
-			<Variable name="ConvFloor" path="budget/floor[netConvection]" />
-			<Variable name="ConvPipes" path="budget/heatPipes[netConvection]" />
-			<Variable name="ConvScreen1" path="budget/screen1[netConvection]" />
-	
-			<Variable name="RHin" path="budget/indoors[rh]" />
-			<Variable name="RHout" path="outdoors[rh]" />
-			<Variable name="Sunlight" path="outdoors[radiation]" />
-			<Variable name="TCover" path="budget/cover[temperature]" />
-			<Variable name="TFloor" path="budget/floor[temperature]" />
-			<Variable name="Tin" path="budget/indoors[temperature]" />
-			<Variable name="Tout" path="outdoors[temperature]" />
-			<Variable name="TPipes" path="budget/heatPipes[temperature]" />
-			<Variable name="TPlant" path="budget/plant[temperature]" />
-			<Variable name="TScreen1" path="budget/screen1[temperature]" />
-			<Variable name="TSky" path="budget/sky[temperature]" />
-			<Variable name="WindSpeed" path="outdoors[windSpeed]" /> <!-- Med stort "S": "windSpeed" -->
-			<Variable name="Screen1On" path="actuators/screens/layer1[state]" />
-			<Variable name="Ventilation" path="actuators/ventilation[value]" />
-
-			<Variable name="control" path="budget[controlCode]" />
+      <Variable name="skyT" path="budget/sky[temperature]"/>
+      <Variable name="outdoorsT" path="outdoors[temperature]"/>
+      <Variable name="outdoorsRh" path="outdoors[rh]"/>
+      <Variable name="outdoorsLight" path="outdoors[radiation]"/>
+      <Variable name="outdoorsPar" path="outdoors[par]"/>
+      <Variable name="outdoorsWindSpeed" path="outdoors[windSpeed]"/>
+      <Variable name="soilT" path="outdoors[soilTemperature]"/>
+      <Variable name="coverT" path="budget/cover[temperature]"/>
+      <Variable name="screen1T" path="budget/screen1[temperature]"/>
+      <Variable name="screen2T" path="budget/screen2[temperature]"/>
+      <Variable name="screen3T" path="budget/screen3[temperature]"/>
+      <Variable name="pipeT" path="budget/heatPipes[temperature]"/>
+      <Variable name="leafT" path="budget/plant[temperature]"/>
+      <Variable name="floorT" path="budget/floor[temperature]"/>
+      <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsRh" path="budget/indoors[rh]"/>
+      <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
+      <Variable name="indoorsGrowthLightsPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="indoorsCo2" path="budget/indoors[co2]"/>
+      <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
+      <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
+      <Variable name="spHeatingTemperature" path="controllers/heating[value]"/>
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]"/>
+      <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
+      <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
+      <Variable name="actVentilation" path="actuators/ventilation[value]"/>
+      <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
+      <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
+      <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
+      <Variable name="actScreen1" path="actuators/screens/layer1[state]"/>
+      <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
+      <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
+      <Variable name="actLightPower" path="actuators/growthLights[powerUsage]"/>
+      <Variable name="actLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="actPipeTempIn1" path="actuators/heatPipes/circuit1[inflowTemperature]"/>
+      <Variable name="actPipeTempIn2" path="actuators/heatPipes/circuit2[inflowTemperature]"/>
+      <Variable name="actPipeTempOut1" path="actuators/heatPipes/circuit1[outflowTemperature]"/>
+      <Variable name="actPipeTempOut2" path="actuators/heatPipes/circuit2[outflowTemperature]"/>
+      <Variable name="actCo2" path="actuators/co2[value]"/>
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
+      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]"/>
+      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/>
+      <Variable name="grossAssimilationRate" path="plant[Pg]"/>
+      <Variable name="netAssimilationRate" path="plant[Pn]"/>
+      <Variable name="respirationRate" path="plant[Rd]"/>
+      <Variable name="netGrowthRate" path="plant[growthRate]"/>
+      <Variable name="netGrowthRateLeaf" path="plant[leafGrowthRate]"/>
+      <Variable name="lightUseEfficiency" path="plant[lue]"/>
+      <Variable name="heatFluxCover" path="budget/cover[convectionTop]"/>
+      <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
+      <Variable name="lwEmissionCover" path="budget/cover[lwEmissionTop]"/>
+      <Variable name="heatFluxFloor" path="budget/floor[convectionBottom]"/>
+      <Variable name="transpiration" path="budget[transpiration]"/>
+      <Variable name="condensation" path="budget[condensation]"/>			
+      <Variable name="control" path="budget[controlCode]" />
 			<Variable name="action" path="budget[actionCode]" />
 		</Variables>
 	</Output>

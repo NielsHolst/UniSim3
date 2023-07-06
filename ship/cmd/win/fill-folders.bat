@@ -40,9 +40,6 @@ copy %UNISIM_SHIP%\..\bin\unisim.exe %UNISIM_BIN%
 copy %UNISIM_SHIP%\..\bin\universal_simulator_base.dll %UNISIM_BIN%
 copy %UNISIM_SHIP%\..\bin\plugins\*.dll %UNISIM_BIN%\plugins
 
-echo = AltovaXML =
-copy %UNISIM_SHIP%\..\..\AltovaXML.exe %UNISIM_BIN%
-
 echo = Copy MinGW libraries =
 pushd %QT_BIN%
 copy libwinpthread-1.dll %UNISIM_BIN%

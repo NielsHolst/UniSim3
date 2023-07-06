@@ -294,8 +294,10 @@ void ReaderXml::readVirtualGreenhouse() {
                     port("increasingSignal").equals(true).
                 endbox().
             endbox().
-            box("Sum").name("ventilation").
-                port("values").computes("controllers/heating[value] | setpoints/ventilation/offset[value]").
+            box().name("ventilation").
+                box("Sum").name("temperatureThreshold").
+                    port("values").computes("controllers/heating[value] | setpoints/ventilation/offset[value]").
+                endbox().
                 box("ProportionalSignal").name("maxHeatingCost").
                     port("input").imports("indoors[rh]").
                     port("threshold").imports("setpoints/rhMax/threshold[value]").
@@ -666,19 +668,18 @@ BoxBuilder& ReaderXml::controllersScreens() {
 }
 
 BoxBuilder& ReaderXml::controllersGrowthLights() {
+    auto lamps = _doc->find("Greenhouse/Lamps")->children();
     _builder->box().name("growthLights");
-    for (const QString &name : _growthLightNames) {
-        QString controlName = "Greenhouse/Controllers/AssLight/" + name + "/MinPeriodOn";
-        XmlNode *node = _doc->find(controlName);
-        QString minPeriodOn = node->value();
-
+    for (auto la = lamps.begin(); la != lamps.end(); ++la) {
+        XmlNode &lamp(*la.value());
+        QString name = "bank" + lamp.getAttributeString("position");
         _builder->
         box("GrowthLightController").name(name).
             port("input").imports("outdoors[radiation]").
             port("mode").imports("setpoints/growthLights/" + name + "/mode[value]").
             port("thresholdLow").imports("setpoints/growthLights/" + name + "/thresholds/low[value]").
             port("thresholdHigh").imports("setpoints/growthLights/" + name + "/thresholds/high[value]").
-            port("minPeriodOn").equals(minPeriodOn).
+            port("minPeriodOn").equals(lamp.find("MinPeriodOn")->toDouble()).
         endbox();
     }
     _builder->endbox();
@@ -705,7 +706,7 @@ BoxBuilder& ReaderXml::actuatorsHeatPipes() {
         double
             diameter = heatPipe.find("InnerDiameter")->toDouble(),
             lengthPerSqm = heatPipe.find("PipeLengthPerSqm")->toDouble(),
-            volume = lengthPerSqm*PI*p2(diameter/1000.)*groundArea();
+            volume = PI*p2(diameter)*lengthPerSqm*groundArea();
         _builder->
         box("ActuatorHeatPipe").name("circuit"+QString::number(circuit)).
             port("volume").equals(volume).
@@ -716,7 +717,7 @@ BoxBuilder& ReaderXml::actuatorsHeatPipes() {
             port("minTemperature").imports("setpoints/heating/minTemperature[value]").
             port("maxTemperature").equals(heatPipe.find("CommonFlowTemperature")->toDouble()).
             port("inflowTemperature").equals(50).
-            port("indoorsTemperature").equals(20).
+            port("indoorsTemperature").imports("indoors[temperature]").
         endbox();
     }
     _builder->endbox();
@@ -774,39 +775,23 @@ BoxBuilder& ReaderXml::actuatorsScreens() {
 }
 
 BoxBuilder& ReaderXml::actuatorsGrowthLights() {
-    _builder->box().name("growthLights");
-    for (const QString &name : _growthLightNames) {
-        QString actuatorName = "Greenhouse/Actuators/AssLights/" + name;
-        XmlNode
-            *parent        = _doc->find(actuatorName),
-            *power         = parent->peak("LightCapacityPerSqm"),
-            *ballast       = parent->peak("Ballast"),
-            *parPhotonCoef = parent->peak("MicromolParPerWatt"),
-            *efficiency    = parent->peak("AgeCorrectedEfficiency"),
-            *propSw        = parent->peak("PropSw"),
-            *propLw        = parent->peak("PropLw"),
-            *propBallastLw = parent->peak("BallastPropLw");
-        if (!power)
-            ThrowException("AssLight is missing <LightCapacityPerSqm>").value(name);
-        if (!propSw)
-            ThrowException("AssLight is missing <PropSw>").value(name);
-        if (!propLw)
-            ThrowException("AssLight is missing <PropLw>").value(name);
-        if (!propBallastLw)
-            ThrowException("AssLight is missing <BallastPropLw>").value(name);
-
+    auto lamps = _doc->find("Greenhouse/Lamps")->children();
+    _builder->box("GrowthLights").name("growthLights");
+    for (auto la = lamps.begin(); la != lamps.end(); ++la) {
+        XmlNode &lamp(*la.value());
+        QString name = "bank" + lamp.getAttributeString("position");
         _builder->
         box("ActuatorGrowthLight").name(name).
-            port("isOn").computes("controllers/growthLights/" + name +"[isOn]").
-            port("power").equals(power->toDouble()).
-            port("ballast").equals(ballast->toDouble()).
-            port("parPhotonCoef").equals(parPhotonCoef->toDouble()).
-            port("efficiency").equals(efficiency->toDouble()).
-            port("propSw").equals(propSw->toDouble()).
-            port("propLw").equals(propLw->toDouble()).
-            port("propConv").equals(1. - propSw->toDouble() - propLw->toDouble()).
-            port("propBallastLw").equals(propBallastLw->toDouble()).
-            port("propBallastConv").equals(1. - propBallastLw->toDouble()).
+            port("isOn").imports("controllers/growthLights/" + name +"[isOn]").
+            port("power").equals(lamp.find("LightCapacityPerSqm")->toDouble()).
+            port("ballast").equals(lamp.find("Ballast")->toDouble()).
+            port("parPhotonCoef").equals(lamp.find("MicromolParPerWatt")->toDouble()).
+            port("efficiency").equals(lamp.find("ageCorrectedEfficiency")->toDouble()).
+            port("propSw").equals(lamp.find("PropSw")->toDouble()).
+            port("propLw").equals(lamp.find("PropLw")->toDouble()).
+            port("propConv").equals(1. - lamp.find("PropSw")->toDouble() - lamp.find("PropLw")->toDouble()).
+            port("propBallastLw").equals(lamp.find("BallastPropLw")->toDouble()).
+            port("propBallastConv").equals(1. - lamp.find("BallastPropLw")->toDouble()).
         endbox();
 
     }

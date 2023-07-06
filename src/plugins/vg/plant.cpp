@@ -51,15 +51,21 @@ Plant::Plant(QString name, Box *parent)
     Input(indoorsTemperature).imports("indoors[temperature]");
     Input(indoorsRh).imports("indoors[rh]");
     Input(indoorsCo2).imports("indoors[co2]");
+    Input(timeStep).imports("calendar[timeStepSecs]");
 
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
+    Output(incidentPar).unit("mymol PAR/m2 ground/s").help("PAR hitting the canopy");
     Output(Pn).unit("μmol CO2/m2 ground/s").help("Net photosynthetic rate");
+    Output(Pg).unit("μmol CO2/m2 ground/s").help("Gross photosynthetic rate");
     Output(Rd).unit("μmol CO2/m2 ground/s").help("Respiration rate");
+    Output(growthRate).unit("g carbohydrate/m2 ground").help("Carbohydrate biomass produced in this time step");
     Output(leafAm).unit("μmol CO2/m2 leaf/s").help("Leaf net photosynthetic rate");
     Output(leafAc).unit("μmol CO2/m2 leaf/s").help("Leaf net photosynthetic rate; Rubisco-limited");
     Output(leafAj).unit("μmol CO2/m2 leaf/s").help("Leaf net photosynthetic rate; electron transport-limited");
     Output(leafRd).unit("μmol CO2/m2 leaf/s").help("Leaf respiration rate");
+    Output(leafGrowthRate).unit("g carbohydrate/m2 leaf").help("Carbohydrate biomass produced in this time step");
+    Output(lue).unit("g carbohydrate/micromole PAR absorbed").help("Light use efficiency");
 }
 
 void Plant::reset() {
@@ -74,7 +80,7 @@ void Plant::update() {
 
 void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
     netRadiation_ = netRadiation;
-    incidentPar_  = parAbsorbed/lai/swAbsorptivityTopAdj;
+    incidentPar  = parAbsorbed/lai/swAbsorptivityTopAdj;
     svp_          = svp(indoorsTemperature);
     vp_           = vpFromRh(indoorsTemperature, indoorsRh);
     svpSlope_     = svpSlope(indoorsTemperature);
@@ -83,6 +89,7 @@ void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
     updateTranspiration();
     updateLeafPhotosynthesis();
     updateCanopyPhotosynthesis();
+    lue = std::max((parAbsorbed > 0.) ? leafAm*co2ToBiomass/parAbsorbed : 0., 0.);
 }
 
 void Plant::updateRadiative() {
@@ -156,11 +163,14 @@ void Plant::updateLeafPhotosynthesis() {
     leafAc = Ac;
     leafAj = Aj;
     leafRd = Rd;
+    leafGrowthRate = leafAm*co2ToBiomass*timeStep*1e-6; // convert from micro gram to gram
 }
 
 void Plant::updateCanopyPhotosynthesis() {
     Pn = coverage*leafAm*lai;
     Rd = coverage*leafRd*lai;
+    Pg = Pn + Rd;
+    growthRate = Pn*co2ToBiomass*timeStep*1e-6; // convert from micro gram to gram;
 }
 
 double Plant::ri() const {
@@ -194,7 +204,7 @@ double Plant::TJmax() const {
 // Non-rectangular hyperbola
 double Plant::Jfun() const {
     const double
-        &PPFD(incidentPar_),
+        &PPFD(incidentPar),
         &Jmax(JmaxAdj_);
     return
         (alpha*PPFD + Jmax - sqrt(p2(alpha*PPFD + Jmax) - 4*alpha*theta*PPFD*Jmax))/(2*theta);

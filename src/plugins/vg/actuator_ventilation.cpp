@@ -30,10 +30,17 @@ ActuatorVentilation::ActuatorVentilation(QString name, Box *parent)
     Input(leakage).imports("construction/leakage[value]", CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]", CA);
     Input(indoorsTemperature).imports("indoors[temperature]", CA);
+    Input(outdoorsRh).imports("outdoors[rh]", CA);
+    Input(indoorsRh).imports("indoors[rh]", CA);
+    Input(timeStep).imports("calendar[timeStepSecs]");
+    Input(indoorsVolume).imports("geometry[volume]");
+
     Output(value).help("Ventilation air flux, including leakage").unit("/h");
     Output(minValue).help("Minimum possible air flux, including leakage").unit("/h");
     Output(maxValue).help("Maximum possible air flux, including leakage").unit("/h");
     Output(relative).unit("[0;1]").help("Ventilation relative to maximum possible");
+    Output(sensibleHeatFlux).unit("W/m2").help("Sensible heat flux");
+    Output(latentHeatFlux).unit("W/m2").help("Latent heat flux");
     Output(isVentilating).unit("bool").help("Are vents more open than crack?");
 }
 
@@ -68,6 +75,14 @@ void ActuatorVentilation::updateOutput() {
     value = minmax(minValue, desiredValue, maxValue);
     relative = (maxValue == 0.) ? 0. : (value-leakage)/(maxValue-leakage);
     isVentilating = gt(value, minValue);
+    // Energetics
+    double
+        deltaT = outdoorsTemperature - indoorsTemperature,
+        deltaAh = ahFromRh(outdoorsTemperature, outdoorsRh) -
+                  ahFromRh(indoorsTemperature, indoorsRh),
+        deltaV = (1. - exp(-value/3600.))*indoorsVolume;
+    sensibleHeatFlux = deltaV*deltaT*CpAirVol/timeStep;
+    latentHeatFlux   = deltaV*deltaAh*LHe/timeStep;
 }
 
 } //namespace

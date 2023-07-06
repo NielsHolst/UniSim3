@@ -34,6 +34,8 @@ private:
         _clearAtReset,      // Is value set to T() at reset()? Defaults to true for output and aux ports
         _acceptNull,        // Accept evaluation yielding Null?
         _isConstant;        // Does the value remain fixed following its first evaluation?
+    int
+        _nullCount;         // Count of evaluations yielding Null
     QString
         _unparsedExpression,// Original, unparsed expression
         _unit,              // Unit text

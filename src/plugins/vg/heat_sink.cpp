@@ -22,7 +22,7 @@ HeatSink::HeatSink(QString name, Box *parent)
 {
     help("provides an artificial sink for excess heat");
     Input(setpointVentilation).imports("setpoints/ventilationTemperature[value]", CA);
-    Input(indoorsTemperature).imports("indoors/temperature[value]", CA);
+    Input(indoorsTemperature).imports("indoors[temperature]", CA);
     Input(averageHeight).imports("geometry[averageHeight]", CA);
     Input(dt).imports("calendar[timeStepSecs]", CA);
     Output(value).help("Heat flux to sink").unit("W/m2");

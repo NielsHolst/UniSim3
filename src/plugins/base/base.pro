@@ -24,7 +24,6 @@ TARGET = universal_simulator_base$${SUFFIX}
 
 # Our project header and source code
 HEADERS +=  \
-    altova_xml.h \
     bare_date.h \
     base_signal.h \
     box.h \
@@ -110,7 +109,6 @@ HEADERS +=  \
     xml_node.h
 
 SOURCES +=  \
-    altova_xml.cpp \
     base_signal.cpp \
     bare_date.cpp \
     box.cpp \

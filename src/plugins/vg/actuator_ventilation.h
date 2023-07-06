@@ -26,10 +26,14 @@ private:
         desiredValue,
         windCoef, temperatureCoef,
         leakage,
-        windSpeed, outdoorsTemperature, indoorsTemperature,
-        ventAreaRatio;
+        windSpeed,
+        outdoorsTemperature, indoorsTemperature,
+        outdoorsRh, indoorsRh,
+        indoorsVolume, ventAreaRatio, timeStep;
     // Output
-    double value, relative, minValue, maxValue;
+    double
+        value, relative, minValue, maxValue,
+        sensibleHeatFlux, latentHeatFlux;
     bool isVentilating;
     // Methods
     void updateOutput();

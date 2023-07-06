@@ -22,8 +22,8 @@ ActuatorHeatExchanger::ActuatorHeatExchanger(QString name, Box *parent)
     help("models a heat exchanger");
     Input(groundArea).imports("construction/geometry[groundArea]",CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]",CA);
-    Input(indoorsTemperature).imports("indoors/temperature[value]",CA);
-    Input(indoorsRh).imports("indoors/humidity[rh]",CA);
+    Input(indoorsTemperature).imports("indoors[temperature]",CA);
+    Input(indoorsRh).imports("indoors[rh]",CA);
     Input(state).imports("setpoints/elementary/heatExchangersOn[value]",CA).help("Running state relative to full effect").unit("[0;1]");
     
     Input(number).equals(1).help("Number of heat pumps").unit("0,1,2,...");

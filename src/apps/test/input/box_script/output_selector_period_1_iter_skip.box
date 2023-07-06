@@ -6,6 +6,7 @@ Simulation sim {
     OutputSelector selector {
       .beginStep = 3
       .period    = 6
+      .summary = "current"
     }
   }
 }

@@ -22,15 +22,17 @@ HeatPipes::HeatPipes(QString name, Box *parent)
       LayerAdjusted(name, parent)
 {
     help("sums power use and radiation from growth light");
-    Input(lwEmissionTopPipes)   .imports("./*[lwEmissionTop]");
-    Input(lwEmissionBottomPipes).imports("./*[lwEmissionBottom]");
-    Input(convectionTopPipes)   .imports("./*[convectionTop]");
-    Input(convectionBottomPipes).imports("./*[convectionBottom]");
+    Input(lwEmissionTopPipes)    .imports("./*[lwEmissionTop]");
+    Input(lwEmissionBottomPipes) .imports("./*[lwEmissionBottom]");
+    Input(convectionTopPipes)    .imports("./*[convectionTop]");
+    Input(convectionBottomPipes) .imports("./*[convectionBottom]");
+    Input(inflowTemperaturePipes).imports("./*[inflowTemperature]");
     Output(lwEmissionTop)   .help("Long-wave emission upwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(convectionTop)   .help("Convective heat flux upwards").unit("W/m2");
     Output(convectionBottom).help("Convective heat flux downwards").unit("W/m2");
     Output(heatFlux).help("Total heat flux from pipes").unit("W/m2");
+    Output(inflowTemperatureAvg).help("Average of inflow temperatures").unit("oC");
 }
 
 void HeatPipes::reset() {
@@ -40,10 +42,11 @@ void HeatPipes::reset() {
 }
 
 void HeatPipes::update() {
-    lwEmissionTop     = sum(lwEmissionTopPipes);
-    lwEmissionBottom  = sum(lwEmissionBottomPipes);
-    convectionTop    = sum(convectionTopPipes);
-    convectionBottom = sum(convectionBottomPipes);
+    lwEmissionTop        = sum(lwEmissionTopPipes);
+    lwEmissionBottom     = sum(lwEmissionBottomPipes);
+    convectionTop        = sum(convectionTopPipes);
+    convectionBottom     = sum(convectionBottomPipes);
+    inflowTemperatureAvg = average(inflowTemperaturePipes);
     heatFlux = lwEmissionTop + lwEmissionBottom - convectionTop - convectionBottom;
 }
 

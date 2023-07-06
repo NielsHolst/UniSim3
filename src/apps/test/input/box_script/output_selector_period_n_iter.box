@@ -5,6 +5,7 @@ Simulation sim {
     .ports = /.[iteration] | /.[step]
     OutputSelector selector {
       .period = 6
+      .summary = "current"
     }
   }
 }

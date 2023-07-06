@@ -36,7 +36,7 @@ void OutputSelector::initialize() {
         port("dateTime")->setConstness(true);
     }
     if (summary != "average" && summary != "current")
-        ThrowException("Summary must be either 'avearge' or 'current'").context(this);
+        ThrowException("Summary must be either 'average' or 'current'").context(this);
     updateSkipping();
     isActive = false;
 }

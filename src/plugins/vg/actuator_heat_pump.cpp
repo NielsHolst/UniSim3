@@ -21,7 +21,7 @@ ActuatorHeatPump::ActuatorHeatPump(QString name, Box *parent)
 {
     help("models a heat pump");
     Input(groundArea).imports("construction/geometry[groundArea]",CA);
-    Input(indoorsTemperature).imports("indoors/temperature[value]",CA);
+    Input(indoorsTemperature).imports("indoors[temperature]",CA);
     Input(indoorsRh).imports("indoors/humidity[rh]",CA);
     Input(state).imports("setpoints/elementary/heatPumpsOn[value]",CA).help("Running state relative to full effect").unit("[0;1]");
     Input(number).equals(1).help("Number of heat pumps").unit("0,1,2,...");

@@ -81,6 +81,9 @@ void Port::define() {
     if (step == Computation::Step::Scratch)
         return;
 
+    // Prepare to count expression evaluations to Null
+    _nullCount = 0;
+
     // Check parent
     auto *box = parent<Box*>();
     if (!box)
@@ -232,10 +235,13 @@ void Port::evaluate() {
     else {
         // Update value, keeping its type, which for inputs and outputs were defined
         // in the C++ code; the expression's type will be converted to the value's types
-        // For aux ports, all references have now been resolved and the value's type thereby fixed
+        // For aux ports, all references have now been resolved and the value's type thereby fixed        
         Value evaluation = _expression.evaluate();
+        if  (evaluation.isNull() && !_acceptNull)
+            ++_nullCount;
         bool vectorError = evaluation.isVector() && !_value.isVector(),
-             nullError   = evaluation.isNull() && !_acceptNull && ResolvedReferences::fixed();
+             nullError   = (evaluation.isNull() && !_acceptNull && ResolvedReferences::fixed()) || (_nullCount > 10);
+
         if (vectorError || nullError) {
             QString msg = vectorError ? "Cannot assign vector to scalar" : "Cannot assign to null. Reference not found";
             ThrowException(msg).

@@ -21,8 +21,8 @@ HeatPump::HeatPump(QString name, Box *parent)
 {
     help("models a heat pump");
     Input(groundArea).imports("construction/geometry[groundArea]",CA);
-    Input(indoorsTemperature).imports("indoors/temperature[value]",CA);
-    Input(indoorsRh).imports("indoors/humidity[rh]",CA);
+    Input(indoorsTemperature).imports("indoors[temperature]",CA);
+    Input(indoorsRh).imports("indoors[rh]",CA);
     Input(number).equals(1).help("Number of heat pumps").unit("0,1,2,...");
     Input(maxCoolingPower).equals(78.4).help("Maximum cooling power").unit("kW");
     Input(coolingEfficiency).equals(0.69).help("Effective proportion of cooling power").unit("[0;1]");

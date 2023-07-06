@@ -49,6 +49,7 @@
     <file>data/input/demo/output_selector/output_selector2.box</file>
     <file>data/input/demo/output_selector/output_selector3.box</file>
     <file>data/input/demo/output_selector/output_selector4.box</file>
+    <file>data/input/demo/physics/dew-point.box</file>
     <file>data/input/demo/port_types/null.box</file>
     <file>data/input/demo/randomiser/randomiser1.box</file>
     <file>data/input/demo/randomiser/randomiser2.box</file>
@@ -189,6 +190,12 @@
     <file>data/input/models/saccharina/saccharina.R</file>
     <file>data/input/models/saccharina/sal-response.R</file>
     <file>data/input/models/saccharina/T-response.R</file>
+    <file>data/input/models/vg/2023-06-19-test.xml</file>
+    <file>data/input/models/vg/2023-06-22-test.xml</file>
+    <file>data/input/models/vg/2023-07-04-test.xml</file>
+    <file>data/input/models/vg/2023-07-05-test.xml</file>
+    <file>data/input/models/vg/2023-07-06-test.xml</file>
+    <file>data/input/models/vg/DK_LED_DRW_UniSim.xml</file>
     <file>data/input/models/vg/DNK_Odense.txt</file>
     <file>data/input/models/vg/greenhouse.box</file>
     <file>data/input/models/vg/R/0-energy-budget-functions.R</file>
@@ -217,6 +224,7 @@
     <file>data/input/models/vg/R/verify-weighted-sum.R</file>
     <file>data/input/models/vg/R/water-budget-integral.odt</file>
     <file>data/input/models/vg/R/water-budget-integral.R</file>
+    <file>data/input/models/vg/xml-opdatering .txt</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>
