@@ -63,6 +63,10 @@ bool Expression::isConstant() const {
     return !_stack.empty();
 }
 
+bool Expression::isResolved() const {
+    return _isResolved;
+}
+
 void Expression::checkNotClosed() {
     if (_isClosed)
         ThrowException("You cannot push to a closed stack").value(originalAsString()).context(_parent);

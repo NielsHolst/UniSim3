@@ -1,0 +1,22 @@
+Simulation sim {
+  .steps = 10
+  Calendar calendar {
+    .begin = 1/1/2009  
+  }
+  Box butterfly {
+    OnOffByDate time { 
+      .x = calendar[date]
+      .xOn = 5/1   
+      .xOff = 8/1  
+      .valueOn = ./dayDegrees[step]
+      .valueOff = 0
+      DayDegrees dayDegrees {
+        .T0 = 5
+        .T = weather[Tavg] //missing reference
+      }
+    }
+  }
+  OutputText {
+    .ports = calendar[date] | time[isOn]
+  }
+}

@@ -193,6 +193,11 @@ void Port::updateConstness() {
     // an output will keep its constness (which is nearly always false)
     if (_isConstant || _type==PortType::Output)
         return;
+    // An unresolved expression is not constant
+    if (!_expression.isResolved()) {
+        _isConstant = false;
+        return;
+    }
     // If any imported port is non-const, neither is this one
     auto imports = importPortsLeaves();
     for (auto imported : imports) {
@@ -221,6 +226,10 @@ void Port::touch() {
 }
 
 void Port::evaluate() {
+//    if (name() == "latitude") {
+//        dialog().information("latitude is const" + convert<QString>(_isConstant));
+//    }
+
     // A constant port, a port with an empty expression, or a port to path needs no evaluation
     if (_isConstant || _expression.isEmpty() || _value.type() == Value::Type::Path)
         return;
@@ -237,6 +246,9 @@ void Port::evaluate() {
         // in the C++ code; the expression's type will be converted to the value's types
         // For aux ports, all references have now been resolved and the value's type thereby fixed        
         Value evaluation = _expression.evaluate();
+//        if (name() == "latitude") {
+//            dialog().information("latitude is null " + convert<QString>(evaluation.isNull()));
+//        }
         if  (evaluation.isNull() && !_acceptNull)
             ++_nullCount;
         bool vectorError = evaluation.isVector() && !_value.isVector(),

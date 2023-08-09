@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Ecological Modelling Laboratory</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content=""/>
+    <link rel="icon" href="squirrel-32x32.ico">
+    <link rel="stylesheet" type="text/css" href="basic.css"/>
+    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+  </head>
+  <body>
+  <div class="insert macro">#header.html#home#Do-it-yourself, open-source modelling</div>
+  <div class="begin macro"></div>
+    <div id="header" class="border-blue">
+      <div id="title">
+        <img src="media/squirrel.gif"/>
+        <div>
+          <h1 id="top">Ecological Modelling Laboratory</h1>
+          <p class="slogan">Do-it-yourself, open-source modelling</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html" id="current">Home</a>
+        <a href="intro.html" id="intro">Intro</a>
+        <a href="commands.html" id="commands">Commands</a>
+        <a href="boxscript.html" id="boxscript">BoxScript</a>
+        <a href="models.html" id="models">Models</a>
+        <a href="download.html" id="download">Download</a>
+        <a href="about.html" id="about">About</a>
+      </nav>
+    </div>
+  <div class="end macro"></div>
+  <div class="wide-panel">
+      <div class="banner-item border-green">
+        <h1>BoxScript</h1>
+        <p>BoxScript is a domain-specific language designed to make it easy to compose models using the toolbox provided by the Universal Simulator. In a boxscript, you declare the objects (boxes) that make up your model. You organise them in a hierarchy and define the flows of information between the output and input ports supplied by each box.</p>
+      </div>
+      <div class="banner-item border-orange">
+        <h1>Universal Simulator</h1>
+        <p>Universal Simulator is an open-source software developed in the lab. It is programmed in C++ using Qt Creator, which ensures fast execution on several platforms. You use it to run simulations of models written in the BoxScript language. Model outputs are written to a text file, which is grabbed by R to produce plots.</p>
+      </div>
+      <div class="banner-item border-violet">
+        <h1>Framework</h1>
+        <p>Universal Simulator comes with a framework based on one base class (Box). It holds a toolbox of classes derived from Box, which you can use as model building blocks. You compose a model from these building blocks with a boxscript written in BoxScript code. You can extend the toolbox by coding your own Box-derived classes.</p>
+      </div>
+    </div>
+    <div class="wide-panel">
+      <div class="begin-index-headers"></div>
+      <div class="central">
+<p class='hidden-anchor' id='motivation'>xxx</p><div class='border-grey'>
+<h1>Motivation</h1>
+          <p>You want to create a mathematical model of sorts. Well, not that mathematical maybe. More, like computational. You have this image in your mind, which you just put down on paper. Maybe it looks like this:</p>
+          <p><img src="https://tildeweb.au.dk/au152367/media/cats-owls-mice-3.png"></p>
+<p>The math is not that complicated. The arrows represent equations specifying that both owls and cats eat mice, which again eat your morning cereals (important model restriction: exclude yourself as a cereal forager and leave out the cereal production system). If we looked inside the boxes and elaborated further, we could add how cereals is a resource for mice offspring. Throw in kittens and owlets, and we’ve got a whole ecosystem going. We’ll look into textbooks of population dynamics and quickly find a few, simple equations describing each sub-process. Having the system diagram (which have grown since our first sketch above) drawn on one paper and an assortment of equations listed on another paper, how do we proceed? Every bit is simple enough but to assemble this as a whole in a neat model running on your computer seems beyond your reach.</p>
+<p>If you are an engineer, I am sorry for having bothered you with this bottomless pit of biological processes and ever-enfolded sub-processes and sub-sub-process. Maybe you are more into a physical systems, like a greenhouse (from <a href='https://doi.org/10.1016/j.compag.2017.08.020'>j.compag.2017.08.020</a>):</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/reyes-rosas-et-al-2017.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p>So what’s the problem? Go ahead. Write down those differential equations, built on the safe physical principles of thermodynamics, heat exchange, etc. But then you realise that the smoothness of your equations belies the abruptness of the real-world system. You’ve got windows opening and closing, curtains being drawn, heat system turning on/off — a battery of effectuators controlled by the logic of the greenhouse climate computer. Trying to incorporate that logic into your equations disrupts their beauty and turn the model as a whole into an unmanageable monster. No. You need another approach: Describe the logic inside each box on its own and then connect the boxes, like <a href='https://www.lego.com'>Lego</a> bricks, to build the whole model.</p>
+<p>If you are a mathematician, you may have come to the wrong place, unless you want to learn about model-building that involves no fancy math at all.</p>
+<p><em>BoxScript</em> is a language developed at the Ecological Modelling Laboratory as a tool to compose models out of model building blocks, like those described loosely in the two examples above. It is not yet another software <em>to draw</em> models by dropping building blocks (boxes, arrows and whatnot) on a graphical canvas. BoxScript is a programming language used <em>to write</em> models in text files, which we call <em>boxscripts</em>.</p>
+<p>Knowing how to write BoxScript code only gets you half-way. You also need software that will read the boxscript and run the model. Universal Simulator is the software created at the lab for this purpose. It reads and executes boxscripts and produces output that is seamlessly exported to R, where the output is displayed and, optionally, further analysed. Any R skills you may have honed can thus be applied readily for visualisation and statistical analysis of model outputs.</p>
+<p>The Universal Simulator comes with a toolbox of model building blocks that you can use in your boxscripts for model-building. However, if you are going to build a model of any complexity, you will likely need to create additional building blocks, custom-made for your modelling needs. Building blocks are written in C++. You code your own by downloading the source code for Universal Simulator, as it includes a simple (yes, it is simple) programming framework for defining new building blocks based on the <em>Box</em> base class. C++ from scratch is difficult but the <em>Box</em> framework let’s you cheat and write C++ code without knowing the technical details of what goes on under the surface. </p>
+<p>You will use <a href='https://www.qt.io/product/development-tools'>Qt Creator</a> to write and manage your C++ code. You will use Qt Creator on its open-source license, which means that Universal Simulator and your code as well must be open-source. Qt Creator and Universal Simulator work on the major computer platforms: Windows, Mac and Linux. You will, lastly, need a decent text editor to write boxscripts. Any one will do but if you use <a href='https://notepad-plus-plus.org'>Notepad++</a> or <a href='https://atom.io/'>Atom</a>, you will benefit from the highlighting of BoxScript syntax.</p>
+
+        </div>
+<p class='hidden-anchor' id='why-boxscript'>xxx</p><div class='border-grey'>
+<h1>Why BoxScript?</h1>
+<p>It seems to be a common understanding, which I will not hesitate to deem a misunderstanding, that graphical tools are superior to text-based tools. Surely, it is easier to draw a model on the screen, mousing around, dragging and dropping, than it is to type code into a text editor? Well, if that were the case, why is R then such a global success? The very first time you set forth to create a scatter plot in R, carry out a linear regression and overlay the scatter plot with the estimated line, you will be too exhausted after the ordeal to be capable of answering that question. You could have achieved the same result in a spreadsheet in no time. However, after the quick solution in the spreadsheet (which, admit it, was just a first stab at analysing your data), you realise that you have to filter your data, add random factors and, by the way, produce a print-ready figure of 68 mm width for the journal (in addition to the full-coloured one for your talk). After finishing <em>that job</em> in the spreadsheet, you are too exhausted to think of, that you will have to repeat, more or less, the same procedure for five other data sets. How again did I fix this axis? Did I right-click it? Did I change the layout or the options? Enter R. After having produced the first figure, the whole procedure is documented right there in the code. Copy and paste to do the other five data sets or, if you are experienced, cut out the common code and package it into a function that does most of the job. This same benefit is true for BoxScript, when you compare it to a graphical tool. Graphical tools make the first baby steps easy but also pose a hindrance to come up and running.</p>
+<p>R is a success also because it can be extended with new functionality through its package system. BoxScript takes the same approach, as you can define new building blocks, which are then available in your boxscripts. When you are writing building blocks in the <em>Box</em> framework, you create them in your own C++ namespace, say, you call it <em>savanna</em>. Your savanna building blocks ends up in a <em>savanna</em> module (technically, a binary library file, i.e., on Windows a DLL file), which you can upload to make it immediately useful to other users.</p>
+<p>Other reasons for R&#39;s success, which work in concert with those above, are that it is open-source and that it is an interpreted language. The latter means that you can execute your R code immediately. BoxScript and Universal Simulator are open-source too but BoxScript cannot be executed directly, as we&#39;ll quickly see from the examples in the following. Another difference is that BoxScript is a <em>declarative</em> language whereas R is an <em>imperative</em> language. In BoxScript you describe <em>what</em> a model consists of but not how the simulation should be carried out. In R you describe <em>how</em> every computational step should be carried out.</p>
+<p>There are many programming languages already. You may be well-versed in a few of them, or you may be a newbie in the programming world. Why should you learn BoxScript in addition, or maybe as a first, language? Well, first of all BoxScript is really simple. There is nothing much to learn. That&#39;s because it was designed as a <em>domain-specific language</em> (DSL). The domain is modelling, well, not any kind of modelling. If you have a system which you can describe adequately with differential equations, go ahead, and use software for that domain. This is not the domain BoxScript was designed for. But if your model contains heterogenuos components (building blocks) made out of math and algorithms (e.g., <em>code</em>)  that is what BoxScript is for. Such models can be difficult to manage, e.g. difficult to extend and re-use, but with BoxScript they become manageable. In R, I am telling you, they do not. I created BoxScript because I found no language or tool that could solve this problem for me.</p>
+<p>While the domain of heterogenous, modular (i.e., build block-based) modelling is still rather broad, the more precise domain is defined by the building blocks available in the toolbox. What those are have been determined by the various projects that I have been worked on through the years in collaboration with students, researchers and engineers in academia and R&amp;D companies. Thus you will find building blocks to model crops, pests, population dynamics and greenhouse microclimate. In addition, there a building blocks to deal with generic modelling tasks, such as random number generation, uncertainty and sensitivity analysis, and visualisation of model outputs.</p>
+        </div>
+<p class='hidden-anchor' id='what-s-boxscript'>xxx</p><div class='border-grey'>
+<h1>What's BoxScript?</h1>
+<p>Enough talk. Let&#39;s see what a real boxscript looks like. Here&#39;s one:</p>
+<pre><code class="listing">// Butterfly model
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/05/2009
+    .end   = 30/09/2009
+  }
+  Records weather {
+    .fileName = &quot;flakkebjerg 2009.txt&quot;
+  }
+  Box butterfly {
+    DayDegrees time {
+      .T0 = 5
+      .T  = weather[Tavg]
+    }
+    Stage egg {
+      .initial  = 100 
+      .duration = 140
+      .timeStep = ../time[step]
+    }
+    Stage larva {
+      .inflow   = ../egg[outflow]
+      .duration = 200
+      .timeStep = ../time[step]
+    }
+    Stage pupa {
+      .inflow   = ../larva[outflow]
+      .duration = 100
+      .timeStep = ../time[step]
+    }
+    Stage adult {
+      .inflow   = ../pupa[outflow]
+      .duration = 28
+      .timeStep = 1
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = weather[Tavg]
+      }
+      PlotR {
+        .ports = Stage::*[content]
+      }
+    }
+  }
+}
+</code></pre>
+<p>Even if you are not an entomologist, you should be able to recognize the series of life stages that leads to an adult butterfly. You should also be able to guess from this code, how many eggs we start out with, and on what date the eggs were laid. The concept of day-degrees may be new to you, but it is easy to understand by example: If you have a threshold of 5 degrees and an average temperature of the day of 23 degrees then that corresponds to 18 day-degrees. A cold day below the threshold, would correspond to zero day-degrees. Right, so what is the temperature threshold in this model? And, what is the source for daily temperature readings? See if you can guess that information in the boxscript above.</p>
+<p>You will notice that each of the three immature stages (egg, larva, pupa) has a <code>timeStep</code> that refers to <code>../time[step]</code>. For the adult butterflies, it is more straightforward as <code>timeStep</code> is set to 1 (One what? We&#39;ll return to that). First of all, you should appreciate the structure of the file, which is by no means original; you will find the exact same structure in standard languages, such as XML, JSON, HTML, etc. It is a hierarchy of boxes inside boxes, each box delineated by a pair of braces <code>{ }</code>. The <em>type</em> of the box (which corresponds one-to-one with the C++ <em>class</em> defining the behaviour of the box) is written in front of the braces, optionally, followed by the <em>name</em> of that particular box (the name of that particular <em>object</em> in programmer&#39;s parlance).</p>
+<p>Thus this box is of the <code>Stage</code> class and is named <code>pupa</code>:</p>
+<pre><code>Stage pupa { }
+</code></pre>
+<p>And this box is of the <code>OutputR</code> class and is unnamed:</p>
+<pre><code>OutputR { }
+</code></pre>
+<p>Each kind (class) of box defines the <code>inputs</code> that it will take, and the <code>outputs</code> that it will compute and make available to other boxes. A common name for inputs and outputs is <code>ports</code>. You can look up the ports of a certain box class in the class&#39;s documentation. </p>
+<p>To set the value of an input, you precede its name with a period. Here <code>duration</code> is set to 100:</p>
+<pre><code>.duration = 100
+</code></pre>
+<p>In the butterfly boxscript, you can find examples of the various types of inputs. If the input is a string (i.e., a piece of text), it must be written in apostrophs:</p>
+<pre><code>.fileName = &quot;flakkebjerg 2009.txt&quot;
+</code></pre>
+<p>Dates can be written in European (day/month/year), international (year/month/day) or American (/month/day/year) format. So, these three lines are equivalent:</p>
+<pre><code>.end = 30/09/2009
+.end = 2009/09/30
+.end = /9/30/2009
+</code></pre>
+<p>Note, that the year must be written in full, and that American notation is preceded by an extra slash. Leading zeroes on day and month are optional.</p>
+<p>Finally, but importantly, an input can be set not to a fixed value but to the output from (or the input to) another box. This line will set the value of the <code>T</code> input equal to the output <code>Tavg</code> output delivered by the <code>weather</code> box:</p>
+<pre><code>.T = weather[Tavg]
+</code></pre>
+<p>In this case <code>T</code> is a <em>scalar</em> input (defined in the C++ implementation of the <code>Stage</code> class and reported in the documentation of the <code>Stage</code> class), which means it takes exactly one value. Hence, there must be exactly one match when <code>weather[Tavg]</code> is looked up in the boxscript. Had <code>T</code> been defined as a <em>vector</em> input then it would be all right, if zero or more matches were found.</p>
+<p>References to ports are written as <em>paths</em>. Just like a file path (e.g., &quot;/home/documents/letter.pdf&quot; or &quot;*.pdf&quot;) may point to zero, one or more files in the directory of folders in your computer&#39;s file system, a BoxScript reference may point to zero, one or more ports in the boxscript. In BoxScript references, the port name is written in brackets at the end of the path. Here are some examples of references used in the butterfly boxscript:</p>
+<pre><code>butterfly/egg[duration]
+egg[inflow]
+*[inflow]
+</code></pre>
+<p>Slashes join one box (the <em>parent</em>) to a box inside (the <em>child</em>). An asterisc functions as a joker (any name) and is likely to yield many matches (four in the case of <code>*[inflow]</code>). Optionally, you can specify which class a box on the path must belong to. Thus this path matches a port named <code>content</code> found in any box of the <code>Stage</code> class:</p>
+<pre><code>Stage::*[content]
+</code></pre>
+<p>References will often benefit from being relative, which is marked by an initial single-period (meaning <em>me</em>) or double-period (meaning <em>my parent</em>). You can find this path in the butterfly boxscript:</p>
+<pre><code>.inflow = ../larva[outflow]
+</code></pre>
+<p>It refers to the parent (look it up and you should find <code>butterfly</code> to be the parent) and inside that the child <code>larva</code> from which it takes the <code>outflow</code> output. In effect it refers to the <em>sibling</em> box called <code>larva</code>.</p>
+<p>Without this explanation you would likely have guessed the meaning correctly, despite not knowing the details about how paths specify references (in fact, there are even more details given in the documentation of reference paths).</p>
+<p>If we step back once again to get an overview of the model dynamics, we can see that the first three life stages will last 140, 200 and 100 day-degrees, respectively. The adult stage lasts, in fact, 28 days. That&#39;s because the time step by default is 1 day. The time step is specified by the <code>Calendar</code> box (if such is present). </p>
+<p>All box inputs will have a sensible default value, which they will keep unless you change the input value in the boxscript. Thus the <code>calendar</code> box in the butterfly boxscript have many inputs besides the <code>begin</code> and <code>end</code> inputs, which were set explicitly. One of them is <code>timeStep</code> which defaults to a value of <code>1</code>, another is <code>timeUnit</code> which defaults to <code>&quot;d&quot;</code> for days. You can look up the default values for all inputs in the class documentation.</p>
+<p>Most often you would like to see model outputs as time series in a figure. You specify this with an <code>OutputR</code> box (not more than one), which can contain one or more <code>PageR</code> boxes (each will produce one page of output in R), which again each may contain one or more <code>PlotR</code> boxes (each producing one plot on the page). All plots on a page have the same x-axis. </p>
+<p>Here is the page, consisting of two plots, produced by the boxscript :</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/butterfly.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p>We chose to put date on the x-axis:</p>
+<pre><code> .xAxis = calendar[date]
+</code></pre>
+<p>Each plot may show one or more ports. In the left plot, we show just a single port, namely the daily average temperature, resulting in one curve in the plot:</p>
+<pre><code>.ports = weather[Tavg]
+</code></pre>
+<p>In the right plot, we show the current number of individuals in each life stage, resulting in four curves in the plot:</p>
+<pre><code>.ports = Stage::*[content]
+</code></pre>
+<p>If you are not satisfied with the default plots, you can write your own R scripts to produce plots and do other post-processing of the simulation outputs, which are all accessible as a <code>sim</code> data frame in R. You would specify these scripts as inputs to the <code>PageR</code> box:</p>
+<pre><code>PageR {
+  .scripts = c(&quot;my-analysis.R&quot;, &quot;my-plots.R&quot;)
+}
+</code></pre>
+<p>(Yes. You construct vectors in boxscript with a <code>c</code> function, just like in R.)</p>
+<p>It turns out that &quot;BoxScript&quot; is so obvious a name for a language or a script that it has been used earlier (see e.g. <a href='https://dl.acm.org/doi/10.1145/1167350.1167447'>Liu &amp; Cunningham 2005</a> and <a href='https://ii.tudelft.nl/naodoc/site_en/greendoc/choregraphe/creating_script_using_parameters.html'>Aldebaran Robotics</a>). In comparison, I believe you will find the present BoxScript a lot simpler!</p>
+        </div>
+<p class='hidden-anchor' id='what-s-the-universal-simulator'>xxx</p><div class='border-grey'>
+<h1>What’s the Universal Simulator?</h1>
+<p>The Universal Simulator provides a <em>prompt</em> as the user interface. Under the hood, it contains the <em>BoxScript Engine</em>, which carries out the actual simulations. It collaborates smoothly with <em>R</em> to produce simulation outputs. This is the overall process:</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/whats-unisim-b-1.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p>Here, the green-dashed boxes are text files (such as weather files) and R scripts optionally supplied by the modeller. The violet-punctuated boxes are temporary files, together with content copied to the clipboard (the R snippet). These can usually be ignored by the modeller but they might come handy, when debugging faulty models.</p>
+<p>The Boxscript Engine reads the boxscript and other input files (specified in the boxscript) &#8212; and carries out the simulation. The user steers this process through the <em>load</em> and <em>run</em> commands typed in at the prompt. Remember, that a boxscript does not include the code defining the behaviour of the boxes that make up the model. It only declares which boxes the model is constructed of, while setting the input ports to the desired values. The behaviour of the boxes is defined in the C++ implementation of each <code>Box</code> class. Technically, those <code>Box</code> class implementations are loaded from dynamic link libraries by the BoxScript Engine. If you should refer to a <code>Box</code> class that is lacking from these libraries, you will be told so by an error message at the prompt.</p>
+<p>The simulation output comes as a tab-separated text file, which contains columns corresponding to the ports, referred to in the boxscript&#39;s <code>PageR</code> and <code>PlotR</code> boxes, with a row for each time step of the model. In addition, an R script is produced that will show the demanded plots (R <em>ggplot</em> is used for this purpose). For ease of use, finally, a snippet of R code is put into the clipboard, so that all you have to do as a user, once the engine has finished its job, is to paste the clipboard at the R prompt. The plots will appear immediately, optionally amended with analyses defined in additional R scripts supplied by the user (which R scripts can be specified in the boxscript).</p>
+<p>The Boxscript Engine is embedded inside the Universal Simulator, so there was a need for a user interface to interact with it. This could have been designed with a top menu line, roll-down and pop-up menus, click buttons and other user input paraphenalia. But it isn&#39;t. You commandeer Universal Simulator through its prompt. For example:</p>
+<ul>
+<li>load butterfly.box</li>
+<li>run</li>
+
+</ul>
+<p>Other commands include</p>
+<ul>
+<li>load [&lt;file name&gt;]</li>
+<li>run [&lt;file name&gt;]</li>
+<li>edit</li>
+<li>list [&lt;path&gt;] [p|r|i|x]</li>
+<li>find &lt;path&gt;</li>
+<li>help [&lt;class name&gt;]</li>
+
+</ul>
+<p>The manual contains the full list of commands and their documentation. Here, I shall only give the explanation that items in brackets <code>[ ]</code> are optional. and that the pipe symbol <code>|</code> separates options of which one or more can be included. You have already guessed that you should replace content in sharp parentheses (&lt; ... &gt;) with your own text.</p>
+<p>This prompt is much more restricted in use than the R prompt. At the R prompt, you can write R code. At the Universal Simulator code, you cannot write BoxScript code, you can only issue a few commands to manage (load, run, edit, list, search) your boxscripts and to look up help.</p>
+        </div>
+      </div>
+      <div class="end-index-headers"></div>
+
+      <div class="left">
+        <div class="begin-menu"></div>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#motivation">Motivation</a></li><li><a href="#why-boxscript">Why BoxScript?</a></li><li><a href="#what-s-boxscript">What's BoxScript?</a></li><li><a href="#what-s-the-universal-simulator">What’s the Universal Simulator?</a></li></ul>
+        <div class="end-menu"></div>
+      </div>
+      <div class="insert macro">#right.html</div>
+      <div class="begin macro"></div>
+      <div class="right">
+        <div class="border-red">
+          <h2>Try it!</h2>
+          <p>Download the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-orange">
+          <h2>Contact</h2>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-violet">
+          <h2>Model just published</h2>
+          <p>Read our paper on the Cereal Aphid-Fungus model and study the detailed documentation. Any questions? Write us.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-pink">
+          <h2>Home page overhaul</h2>
+          <p>We remain candy-coloured until further notice. Barbie goes from model to modeller!</p>
+          <p class="date">1 Aug 2023</p>
+        </div>
+      </div>
+      <div class="end macro"></div>
+    </div>
+    <div class="insert macro">#footer.html</div>
+    <div class="begin macro"></div>
+    <div id="footer" class="border-brown">
+      <p>The Ecological Modelling Laboratory is the lab of</p>
+      <p>Senior Scientist Niels Holst, Dept. of Agroecology, Aarhus University, Denmark</p>
+    </div>
+    <div class="end macro"></div>
+  </body>
+</html>

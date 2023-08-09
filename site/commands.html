@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Ecological Modelling Laboratory</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content=""/>
+    <link rel="icon" href="media/squirrel-32x32.ico">
+    <link rel="stylesheet" type="text/css" href="basic.css"/>
+    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+  </head>
+  <body>
+  <div class="insert macro">#header.html#docs#At your command</div>
+  <div class="begin macro"></div>
+    <div id="header" class="border-blue">
+      <div id="title">
+        <img src="media/squirrel.gif"/>
+        <div>
+          <h1 id="top">Ecological Modelling Laboratory</h1>
+          <p class="slogan">At your command</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html" id="home">Home</a>
+        <a href="intro.html" id="intro">Intro</a>
+        <a href="commands.html" id="commands">Commands</a>
+        <a href="boxscript.html" id="boxscript">BoxScript</a>
+        <a href="models.html" id="models">Models</a>
+        <a href="download.html" id="download">Download</a>
+        <a href="about.html" id="about">About</a>
+      </nav>
+    </div>
+  <div class="end macro"></div>
+    <div class="wide-panel">
+      <div class="begin-index-headers"></div>
+      <div class="central">
+<p class='hidden-anchor' id='commands'>xxx</p><div class='border-grey'>
+<h1>Commands</h1>
+<p>You interact with the Universal Simulator software through the commands listed here. For a quick introduction to the most common commands (you will need to know only a handful), check out the <a href="intro.html">Intro</a>.</p>
+</div>
+<p class='hidden-anchor' id='clear'>xxx</p><div class='border-grey'>
+<h2>clear</h2>
+            <p>To clear the prompt dialog simply type:</p>
+            <pre><code class="command">&gt; clear</code></pre>
+            <p>The <code class="command">&lt;Ctrl+L&gt;</code> shortcut will also evoke the <code class="command">clear</code> command.</p>
+</div>
+<p class='hidden-anchor' id='clip'>xxx</p><div class='border-grey'>
+<h2>clip</h2>
+            <p>The <a href='#run'>run</a> automatically copies its output to the clipboard. If you have used the clipboard for other purposes after a <code class="command">run</code> then you don&#39;t need to run the boxscript again you can simply use the <code class="command">clip</code> command to re-create the clipboard with the simulation output. This is particularly useful if a <code class="command">run</code> takes a long time.</p>
+</div>
+<p class='hidden-anchor' id='debug'>xxx</p><div class='border-grey'>
+<h2>debug</h2>
+            <p>The <code class="command">debug</code> command works just like <code class="command">run</code>. You cannot give it a boxscript as an argument though; it always works on the latest loaded or run boxscript:</p>
+            <pre><code class="command">&gt; load demo/butterfly.box</code>
+<code class="output">...</code>
+<code class="command">&gt; debug</code>
+<code class="output">...</code></pre>
+            <p>
+              <code class="command">debug</code> produces a lot of output at the Universal Simulator prompt, easily hundreds or thousands of lines. It will write a line reporting whenever it is carrying out a <a href='#computational-model'>computational step</a> on a box. debug is useful if you program crashes and you want to pinpoint exactly where it happens.</p>
+</div>
+<p class='hidden-anchor' id='edit'>xxx</p><div class='border-grey'>
+<h2>edit</h2>
+            <p>There are two ways to open a boxscript for editing. The first one is to open the boxscript from your editor&#39;s File|Open menu. If you are uncertain where the boxscript resides, you can find the input folder with the  <a href='#get-folders'>get folders</a> command:</p>
+            <pre><code class="command">> get folders</code></pre>
+            <p>Alternatively (and much easier), you can first <a href='#load'>load</a> the boxscript and the invoke the <code class="command">edit</code> command:</p>
+            <pre><code class="command">&gt; load demo/butterfly.box</code>
+<code class="output">...</code>
+<code class="command">&gt; edit</code></pre>
+            <p>The very first time you use the <code class="command">edit</code> command on a computer, it will not know which program to use to open a file with the <span class="file-path">.box</span> type. Therefore, you will be queried which program you want to use to open the boxscript. Choose a text editor, not a word-processing program. On Windows, choose <a href='https://notepad-plus-plus.org/'>Notepad++</a> or Notepad.</p>
+            <p>Feel free to keep the boxscript open in the editor, while you are loading and running the boxscript in Universal Simulator. Just remember to save any changes to the boxscript in the editor before you re-load the boxscript in Universal Simulator.</p>
+</div>
+<p class='hidden-anchor' id='find'>xxx</p><div class='border-grey'>
+<h2>find</h2>
+            <p>Use <code class="command">find</code> to find all the nodes (i.e., boxes and ports ) in the model that match a certain <a href='#port-paths'>path</a>. The <code class="command">find</code> command takes a path as its single argument, for example, to find all the boxes of the <code>Stage</code> class in the model:</p>
+            <pre><code class="command">&gt; load demo/butterfly.box
+&gt; find Stage::*</code>
+<code class="output">Stage sim/butterfly/egg
+Stage sim/butterfly/larva
+Stage sim/butterfly/pupa
+Stage sim/butterfly/adult</code></pre>
+            <p>For each match, you will get one line with the <em>class name</em> and the <em>full path</em> to the node. Here, we found four boxes. You would possibly like to proceed with <code class="command">help Stage</code> to find the documentation for the Stage class, or maybe <code class="command">list Stage::* p</code> to see the current value of all the ports for each of the four boxes. Read more about <a href='#help'>help</a> and <a href='#list'>list</a>.</p>
+            <p>If you use <code class="command">find</code> to look up ports, you will be told the type of each port:</p>
+            <pre><code class="command">&gt; find weather[input::*]</code>
+<code class="output">Port string   sim/weather[fileName]
+Port string   sim/weather[dateColumnName]
+Port string   sim/weather[timeColumnName]
+Port bool     sim/weather[cycle]
+Port datetime sim/weather[calendarDateTime]</code></pre>
+            <p>Here we have found five nodes of the <code>Port</code> class. Three are of type <code>string</code> (i.e. a piece of text), one is of type <code>bool</code> (i.e., with value <code>TRUE</code> or <code>FALSE</code>) and one a <code>datetime</code> (i.e. a calendar date in combination with a time of the day).</p>
+            <p>If you are wondering about the notation for the paths above (<code>Stage::*</code> and <code>weather[input::*]</code>) then read up on <a href='#port-paths'>paths</a>. If you try out <code class="command">find .</code>, you will find the root box (often called <code>sim</code>), because the root it in focus from start. You can move the focus of the <a href='#find'>find</a> and <a href='#list'>list</a> commands using the <a href='#go'>go</a> command.</p>
+</div>
+<p class='hidden-anchor' id='get-folders'>xxx</p><div class='border-grey'>
+<h2>get folders</h2>
+            <p>If you wonder where the boxscripts are located or where your output is going, use the <code class="command">get folders</code> command. You will then see something like this</p>
+            <pre><code class="command">&gt; get folders</code>
+<code class="output">Work folder:
+  absolute path &#39;.../UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;.../UniversalSimulatorHome/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;.../UniversalSimulatorHome/output&#39;</code></pre>
+            <p>The <code class="output">...</code> part will be something else on your computer. There are three folders to have in mind:</p>
+            <ul>
+              <li>work</li>
+              <li>input</li>
+              <li>output</li>
+            </ul>
+            <p>The <strong>work</strong> folder is where you put files related to model development. If nothing else it serves as a folder to keep the <strong>input</strong> and <strong>output</strong> folders neatly in one place. This is the standard layout shown above. If you want to change it then consult the <a href='#set-folder'>set folder</a> command.</p>
+</div>
+<p class='hidden-anchor' id='go'>xxx</p><div class='border-grey'>
+<h2>go</h2>
+            <p>The <code class="command">go</code> command is used together with the <a href='#find'>find</a> and <a href='#list'>list</a> commands. After loading a boxscript the root node is the <em>focus node</em>. The focus node is used as the reference node, when you use <code class="command">find</code> or <code class="command">list</code> with a relative <a href='#port-paths'>path</a> (i.e. one beginning with one or two periods). You use <code class="command">go</code> to change the focus node:</p>
+            <pre><code class="command">&gt; load demo/butterfly.box</code>
+<code class="output">Constructing...
+Amending...
+15 boxes created</code>
+<code class="command">&gt; find .</code>
+<code class="output">Simulation sim</code>
+<code class="command">&gt; go egg</code>
+<code class="output">Now at Stage sim/butterfly/egg</code>
+<code class="command">&gt; find ..</code>
+<code class="output">Box sim/butterfly</code>
+<code class="command">&gt; run</code>
+<code class="output">...</code>
+<code class="command">&gt; go time</code>
+<code class="output">Now at DayDegrees sim/butterfly/time</code>
+<code class="command">&gt; list . x</code>
+<code class="output">DayDegrees time
+  &gt;step = 5.5 oD
+    &gt;&gt; sim/butterfly/egg[timeStep]
+    &gt;&gt; sim/butterfly/larva[timeStep]
+    &gt;&gt; sim/butterfly/pupa[timeStep]</code></pre>
+            <p>Beyond the use of <code class="command">find</code> and <code class="command">list</code>, it does not matter what the current focus node is. </p>
+</div>
+<p class='hidden-anchor' id='head'>xxx</p><div class='border-grey'>
+<h2>head</h2>
+            <p>The <code class="command">head</code> command shows the first <em>n</em> lines of the lates simulation output (default <em>n</em>=6). It mimics the behaviour of the R head command:</p>
+            <pre><code class="command">&gt; run demo/butterfly.box</code>
+<code class="output">...</code>
+<code class="command">&gt; head</code>
+<code class="output">Showing .../UniversalSimulatorHome/output/butterfly_nnnn.txt
+Tavg egg.content larva.content pupa.content adult.content iteration step
+10.4       100.0           0.0          0.0           0.0         1    0
+10.5       100.0           0.0          0.0           0.0         1    1
+11.0       100.0           0.0          0.0           0.0         1    2
+ 9.4       100.0           0.0          0.0           0.0         1    3
+10.1       100.0           0.0          0.0           0.0         1    4
+10.0       100.0           0.0          0.0           0.0         1    5</code></pre>
+            <p>Write <code class="command">head n</code> to show up to <em>n</em> lines:</p>
+            <pre><code class="command">&gt; head 3</code>
+<code class="output">Showing .../UniversalSimulatorHome/output/butterfly_nnnn.txt
+Tavg egg.content larva.content pupa.content adult.content iteration step
+10.4       100.0           0.0          0.0           0.0         1    0
+10.5       100.0           0.0          0.0           0.0         1    1
+11.0       100.0           0.0          0.0           0.0         1    2</code></pre>
+            <p>See also <a href='#ht'>ht</a> and <a href='#tail'>tail</a>.</p>
+</div>
+<p class='hidden-anchor' id='help'>xxx</p><div class='border-grey'>
+<h2>help</h2>
+            <p>The <code class="command">help</code> command gives you quick access to information on available commands (applicable a the Universal Simulator prompt) and <code>Box</code> classes (available to compose boxscripts).</p>
+            <p>The information shown by help depends on the options you give it:</p>
+            <ul>
+              <li>
+                <code class="command">help</code> or <code class="command">help ?</code> provides an overview of the help options</li>
+              <li>
+                <code class="command">help c</code>  shows all commands</li>
+              <li>
+                <code class="command">help p</code>  shows all plugins</li>
+              <li>
+                <code class="command">help &lt;class name&gt;</code>  shows specific class documentation</li>
+              <li>
+                <code class="command">help &lt;plugin name&gt;</code> shows specific plugin documentation</li>
+            </ul>
+<h3 id='show-all-commands'><li>Show all commands</li></h3>
+            <p>The output from <code class="command">help c</code> will list all the commands explained here plus some experimental ones.</p>
+<h3 id='show-all-plugins'><li>Show all plugins</li></h3>
+            <p>If a boxscript is not working, maybe it&#39;s because a <a href='#plugins'>plugin</a> is missing? You can check out the installed plugins with <code class="command">help p</code>:</p>
+            <pre><code class="command">&gt; help p</code>
+<code class="output">boxes   -Basic building blocks
+command -Commands for the prompt
+student -Student playing ground</code></pre>
+<h3 id='show-class-description'><li>Show class description</li></h3>
+<h3 id='show-classes-in-a-plugin'><li>Show classes in a plugin</li></h3>
+</div>
+<p class='hidden-anchor' id='ht'>xxx</p><div class='border-grey'>
+<h2>ht</h2>
+            <p>
+              <code class="command">ht</code> works the same way as if you write <a href='#head'>head</a> followed by <a href='#tail'>tail</a>. It shows the first and last <em>n</em> lines of the output with <em>n=6</em> as the default value. Here we try with <em>n</em>=3:</p>
+            <pre><code class="command">&gt; ht 3</code>
+<code class="output">Showing .../output/butterfly_0020.txt
+Tavg egg.content larva.content pupa.content adult.content iteration step
+10.4       100.0           0.0          0.0           0.0         1    0
+10.5       100.0           0.0          0.0           0.0         1    1
+11.0       100.0           0.0          0.0           0.0         1    2
+ ...
+14.9         0.0           0.0          0.0           0.0         1  150
+11.2         0.0           0.0          0.0           0.0         1  151
+10.5         0.0           0.0          0.0           0.0         1  152</code></pre>
+</div>
+<p class='hidden-anchor' id='latest'>xxx</p><div class='border-grey'>
+<h2>latest</h2>
+            <p>Sometimes you want to review one of your recent simulations. <code class="command">latest</code> will show you the name of the latest 10 boxscripts that you loaded or run.</p>
+</div>
+<p class='hidden-anchor' id='libr'>xxx</p><div class='border-grey'>
+<h2>libr</h2>
+            <p>You use the <code class="command">libr</code> command to check that you&#39;ve got the necessary R packages installed. Thus <code class="command">libr</code> should be one of the very first commands that you invoke, once you&#39;ve got Universal Simulator started. Use it with the <code class="command">l</code> option to generate code that will load the necessary libraries in R:</p>
+            <pre><code class="command">&gt; libr l</code>
+<code class="output"># R packages needed by Universal Simulator
+library(&quot;colorspace&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggpubr&quot;)
+library(&quot;gridExtra&quot;)
+library(&quot;lubridate&quot;)
+library(&quot;plyr&quot;)
+library(&quot;reshape2&quot;)
+library(&quot;scales&quot;)
+library(&quot;splines&quot;)
+library(&quot;stringr&quot;)
+
+R code copied to clipboard! You may paste it into R.</code></pre>
+            <p>You can paste the clipboard at the R prompt and check for any error messages that you are missing one or more packages. </p>
+            <p>If you miss some packages, use the <code class="command">libr</code> command again, this time with the <code class="command">i</code> option:</p>
+            <pre><code class="command">&gt; libr i</code>
+<code class="output"># R packages needed by Universal Simulator
+install.packages(&quot;colorspace&quot;)
+install.packages(&quot;ggplot2&quot;)
+install.packages(&quot;ggpubr&quot;)
+install.packages(&quot;gridExtra&quot;)
+install.packages(&quot;lubridate&quot;)
+install.packages(&quot;plyr&quot;)
+install.packages(&quot;reshape2&quot;)
+install.packages(&quot;scales&quot;)
+install.packages(&quot;splines&quot;)
+install.packages(&quot;stringr&quot;)
+
+Copy and paste into R for any library you are missing.</code></pre>
+            <p>This time nothing is put into the clipboard for you. You need to copy and paste into R those lines for which you are missing the library.</p>
+            <p>This whole procedure is only necessary first time you have installed Universal Simulator or if you have just (re-)installed R.</p>
+</div>
+<p class='hidden-anchor' id='list'>xxx</p><div class='border-grey'>
+<h2>list</h2>
+          <ul class="h3-links">
+            <li><a href="#list-overview">Overview</a></li>
+            <li><a href="#all-boxes">All boxes</a></li>
+            <li><a href="#box-and-descendants">Box and descendants</a></li>
+            <li><a href="#recurse-boxes">Recurse boxes</a></li>
+            <li><a href="#all-ports">All ports</a></li>
+            <li><a href="#input-ports">Input ports</a></li>
+            <li><a href="#output-ports">Output ports</a></li>
+            <li><a href="#imported-ports">Imported ports</a></li>
+            <li><a href="#exported-ports">Exported ports</a></li>
+            <li><a href="#shortened-ports">Shortened ports</a></li>
+          </ul>
+<h3 id='overview'><li>Overview</li></h3>
+            <p>You use <code class="command">list</code> to inspect the structure of the currently loaded boxscript. You can also use it to find out the current values of ports. To try out the examples below, first do <code class="command">load demo/butterfly.box</code>. </p>
+            <p>In general you can use <code class="command">list</code> in three ways:</p>
+            <ul>
+              <li>on its own: <code class="command">list</code>
+              </li>
+              <li>with a path to one or more boxes: <code class="command">list butterfly</code>
+              </li>
+              <li>with a path to one or more boxes followed by one or more one-letter options: <code class="command">list butterfly pr</code>
+              </li>
+            </ul>
+            <p>Here, <code class="command">butterfly</code> was used as a simple example of a path leading to just one box. </p>
+            <p>The options explained further below are</p>
+            <ul>
+              <li>
+                <code class="command">b</code> (to show <strong>b</strong>oxes)</li>
+              <li>
+                <code class="command">r</code> (to show <strong>r</strong>ecursively)</li>
+              <li>
+                <code class="command">p</code> (to show <strong>p</strong>orts)</li>
+              <li>
+                <code class="command">i</code> (to show <strong>i</strong>nput ports)</li>
+              <li>
+                <code class="command">o</code> (to show <strong>o</strong>utput ports)</li>
+              <li>
+                <code class="command">m</code> (to show i<strong>m</strong>ported ports)</li>
+              <li>
+                <code class="command">x</code> (to show e<strong>x</strong>ported ports)</li>
+              <li>
+                <code class="command">s</code> (to show ports in <strong>s</strong>hort format)</li>
+            </ul>
+            <p>To get an overview of the options at the prompt, type <code class="command">list ?</code>.</p>
+            <p>If you <code class="command">list</code> after <code class="command">load</code>, you will see the <strong>default values</strong> of ports. If you have <code class="command">run</code> the script, you will see the <strong>final values</strong> of the ports (<a href='#all-ports'>see examples</a>).</p>
+            <p>The default <a href='#port-paths'>path</a> is <code class="command">.</code> (i.e. the box in <em>focus</em>). You can move the focus of the <a href='#find'>find</a> and <a href='#list'>list</a> commands using the <a href='#go'>go</a> command. The default options are <code class="command">br</code>. Hence, <code class="command">list</code> on its own yields <code class="command">list . br</code>.</p>
+<h3 id='all-boxes'><li>All boxes</li></h3>
+            <p>Use list on its own to see all the boxes. The hierarchy of boxes inside boxes (or of parent-child relationships to use another metaphore) are shown by indentation:</p>
+            <pre><code class="command">&gt; list</code>
+<code class="output">Simulation sim
+  Calendar calendar
+  Records weather
+  Box butterfly
+    DayDegrees time
+    Stage egg
+    Stage larva
+    Stage pupa
+    Stage adult
+  OutputR 
+    PageR 
+      PlotR 
+      PlotR 
+  OutputWriter outputWriter
+    OutputSelector selector</code></pre>
+            <p>For each box is shown its class name followed by its object name, if it has such.</p>
+<h3 id='box-and-descendants'><li>Box and descendants</li></h3>
+            <p>To focus on what box and its contents (i.e., its children, grandchildren, and so forth) follow list by the box name:</p>
+            <pre><code class="command">&gt; list butterfly</code>
+<code class="output">Box butterfly
+  DayDegrees time
+  Stage egg
+  Stage larva
+  Stage pupa
+  Stage adult</code></pre>
+<h3 id='recurse-boxes'><li>Recurse boxes</li></h3>
+            <p>The default options are <code class="command">br</code>, so you will always recurse through boxes if you don&#39;t include any options. Here, we have included the default <code class="command">br</code> explicitly to assist the our understanding:</p>
+            <pre><code class="command">&gt; list sim br</code>
+<code class="output">Simulation sim
+  Calendar calendar
+  Records weather
+  Box butterfly
+    DayDegrees time
+    Stage egg
+    Stage larva
+    Stage pupa
+    Stage adult
+  OutputR 
+    PageR 
+      PlotR 
+      PlotR 
+  OutputWriter outputWriter
+    OutputSelector selector</code></pre>
+            <p>First, <code class="command">list</code> found one box on the path (<code class="command">sim</code>). It then proceded to recurse through and list all its descendant boxes.</p>
+            <p>Here, list found 5 boxes on path (allthe children of <code class="command">sim</code>). It then proceded to list each of those children recursively:</p>
+            <pre><code class="command">&gt; list sim/* br</code>
+<code class="output">Calendar calendar
+Records weather
+Box butterfly
+  DayDegrees time
+  Stage egg
+  Stage larva
+  Stage pupa
+  Stage adult
+OutputR 
+  PageR 
+    PlotR 
+    PlotR 
+OutputWriter outputWriter</code></pre>
+            <p>If we leave out the <code class="command">r</code> option, only the 5 children are listed:</p>
+            <pre><code class="command">&gt; list sim/* b</code>
+<code class="output">Calendar calendar
+Records weather
+Box butterfly
+OutputR 
+OutputWriter outputWriter</code></pre>
+<h3 id='all-ports'><li>All ports</li></h3>
+            <p>To see all ports inside a box and their current value use the <code class="command">p</code> option after the path:</p>
+            <pre><code class="command">&gt; list butterfly/time p</code>
+<code class="output">DayDegrees time
+  .T = 0.0 oC
+  .timeStepDays = 0.0 d
+  .resetTotal = FALSE
+  .isTicking = TRUE
+  .T0 = 5.0 oC
+  .Topt = 100.0 oC
+  .Tmax = 100.0 oC
+  &gt;step = 0.0 oD
+  &gt;total = 0.0 oD</code></pre>
+            <p>Inputs are preceded with a period, outputs with a sharp parenthesis. Values are followed by their unit (nothing if they are unitless, or if the programmer of class  (you?) was lazy and did not specify it). Sometimes, units are not self-explanatory (<code>oD</code> in this example). If so, try out the <a href='#help'>help</a> avalailable on the class, here <code class="command">help DayDegrees</code>. Oh, of course, it stands for day-degrees.</p>
+            <p>If values above are the default values; you will see those if you <code class="command">load</code> and then <code class="command">list</code>. If you <code class="command">run</code> the boxscript and then <code class="command">list</code>, you will get the final values after the simulation has finished together with additional information:</p>
+            <pre><code class="command">&gt; list butterfly/time p</code>
+<code class="output">DayDegrees time
+  .T = 10.5 oC &lt;- sim/weather[Tavg]
+  .timeStepDays = 1.0 d &lt;- sim/calendar[timeStepDays]
+  .resetTotal = FALSE const
+  .isTicking = TRUE const
+  .T0 = 5.0 oC const
+  .Topt = 100.0 oC const
+  .Tmax = 100.0 oC const
+  &gt;step = 5.5 oD
+  &gt;total = 1605.7 oD</code></pre>
+            <p>Besides the final values, you will see <code>const</code> for those inputs that had been set to constant values. For variable inputs, you will see their expressions after the arrow <code>&lt;-</code>.</p>
+<h3 id='input-ports'><li>Input ports</li></h3>
+            <p>To see all the <strong>input</strong> ports inside a box and their current value use the <code class="command">i</code> option after the path:</p>
+            <pre><code class="command">&gt; list butterfly/time i</code>
+<code class="output">DayDegrees time
+  .T = 0.0 oC
+  .timeStepDays = 0.0 d
+  .resetTotal = FALSE
+  .isTicking = TRUE
+  .T0 = 5.0 oC
+  .Topt = 100.0 oC
+  .Tmax = 100.0 oC</code></pre>
+<h3 id='output-ports'><li>Output ports</li></h3>
+            <p>To see all the <strong>output</strong> ports inside a box and their current value use the <code class="command">o</code> option after the path:</p>
+            <pre><code class="command">&gt; list butterfly/time o</code>
+<code class="output">DayDegrees time
+  &gt;step = 0.0 oD
+  &gt;total = 0.0 oD</code></pre>
+<h3 id='imported-ports'><li>Imported ports</li></h3>
+            <p>To see all the <strong>imported</strong> ports inside a box and their current value use the <code class="command">m</code> option after the path:</p>
+            <pre><code class="command">&gt; list butterfly/time m</code>
+<code class="output">DayDegrees time
+  .T = 10.5 oC &lt;- weather[Tavg]
+    &lt;&lt; sim/weather[Tavg]
+  .timeStepDays = 1.0 d &lt;- calendar[timeStepDays]
+    &lt;&lt; sim/calendar[timeStepDays]</code></pre>
+            <p>An imported port is one referenced in an expression. For each port in the box, the imported ports are listed with a <code>&lt;&lt;</code> prefix. Use this option to sort out a box&#39;s dependencies.  You need to <code class="command">run</code> the boxscript before listing imports, because all expressions in the boxscript are only resolved when it is run.</p>
+<h3 id='exported-ports'><li>Exported ports</li></h3>
+            <p>To see all the <strong>exported</strong> ports inside a box and their current value use the `x option after the path:</p>
+            <pre><code class="command">&gt; list butterfly/time x</code>
+<code class="output">DayDegrees time
+  &gt;step = 5.5 oD
+    &gt;&gt; sim/butterfly/egg[timeStep]
+    &gt;&gt; sim/butterfly/larva[timeStep]
+    &gt;&gt; sim/butterfly/pupa[timeStep]</code></pre>
+            <p>An exported port is one referenced in another port&#39;s expression. For each port in the box, the exported ports are listed with a <code>&gt;&gt;</code> prefix. Use this option to find out, which other boxes make use of this box&#39;s outputs. You need to <code class="command">run</code> the boxscript before listing exports, because all expressions in the boxscript are only resolved when it is run.</p>
+<h3 id='shortened-ports'><li>Shortened ports</li></h3>
+            <p>To shorten the format of the listed ports use the <code class="command">s</code> option together with one or more of the options <code class="command">piomx</code>:</p>
+            <pre><code class="command">&gt; list butterfly/time os</code>
+<code class="output">DayDegrees time
+  step = 0.0
+  total = 0.0
+</code></pre>
+            <p>Ports will be listed only with their name and value. </p>
+</div>
+<p class='hidden-anchor' id='load'>xxx</p><div class='border-grey'>
+<h2>load</h2>
+            <p>You use the <code class="command">load</code> command to read a boxscript without running it. Other commands, such as <a href='#run'>run</a> (without boxscript argument), <a href='#list'>list</a> and <a href='#find'>find</a> will work on the latest loaded  boxscript. You can only have one boxscript loaded at a time; when you load one, the previous will be forgotten.</p>
+            <p>
+              <code class="command">load</code> on is own will re-load the latest loaded or <a href='#run'>run</a> boxscript. This is useful if  you just changed the boxscript in a text editor. <code class="command">load &lt;boxscript&gt;</code> will load the given boxscript. You can type <code class="command">load</code> followed by <code class="command">Ctrl+spacebar</code> to bring up a file picker. This is the usual procedure.</p>
+            <p>
+              <code class="command">load</code> will report how many boxes (i.e. <code>Box</code>
+              <a href='#objects'>objects</a>) were created:</p>
+            <pre><code class="command">&gt; load demo/butterfly.box</code>
+<code class="output">Constructing...
+Amending...
+15 boxes created</code></pre>
+</div>
+<p class='hidden-anchor' id='location'>xxx</p><div class='border-grey'>
+<h2>location</h2>
+            <p>Use this command to find out what the local decimal point character is</p>
+            <pre><code class="command">&gt; location</code>
+<code class="output">Country: United Kingdom
+Decimal character in output: &quot;.&quot;</code></pre>
+            <p>You can include a <a href='#outputselector'>OutputSelector</a> box in your boxscript to use the local decimal point character, rather then the default period (i.e., <code class="output">3.14</code>), in the simulation output.</p>
+</div>
+<p class='hidden-anchor' id='profile'>xxx</p><div class='border-grey'>
+<h2>profile</h2>
+            <p>If you wonder which boxes spend the most execution time, you invoke the <code class="command">profile</code> command after you have <a href='#run'>run</a> a model:</p>
+            <pre><code class="command">&gt; run demo/butterfly.box</code>
+<code class="output">...</code>
+<code class="command">&gt; profile</code>
+<code class="output">Profile information written to &#39;.../output/butterfly_0022.txt&#39;</code></pre>
+            <p>Open the <code>.txt</code> file referred to in a spreadsheet program. It is a column-oriented text file with columns separated by tab characters. It is sorted to show the most time-consuming tasks from the top. Here are the top lines of the profile output:</p>
+              <table id="table-profile">
+                <thead>
+                  <tr>
+                    <th style="text-align: left">Box</th>
+                    <th style="text-align: left">Task</th>
+                    <th>msecs</th>
+                    <th>Pct</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>sim/OutputR::*</td>
+                    <td>debrief</td>
+                    <td>36.8495</td>
+                    <td>22</td>
+                  </tr>
+                  <tr>
+                    <td>sim/weather</td>
+                    <td>reset</td>
+                    <td>20.1803</td>
+                    <td>12</td>
+                  </tr>
+                  <tr>
+                    <td>sim/weather</td>
+                    <td>initialize</td>
+                    <td>14.936</td>
+                    <td>9</td>
+                  </tr>
+                  <tr>
+                    <td>sim/outputWriter/selector</td>
+                    <td>evaluatePorts</td>
+                    <td>10.84</td>
+                    <td>6</td>
+                  </tr>
+                  <tr>
+                    <td>sim/outputWriter</td>
+                    <td>debrief</td>
+                    <td>10.2502</td>
+                    <td>6</td>
+                  </tr>
+                  <tr>
+                    <td>sim/weather</td>
+                    <td>update</td>
+                    <td>7.5492</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td>sim</td>
+                    <td>evaluatePorts</td>
+                    <td>6.935</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td>sim/OutputR::*</td>
+                    <td>evaluatePorts</td>
+                    <td>6.7591</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td>sim</td>
+                    <td>initialize</td>
+                    <td>6.3079</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td>sim/outputWriter</td>
+                    <td>evaluatePorts</td>
+                    <td>6.1309</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td>sim/OutputR::*</td>
+                    <td>initialize</td>
+                    <td>5.0027</td>
+                    <td>3</td>
+                  </tr>
+                  <tr>
+                    <td>sim/OutputR::*/PageR::*</td>
+                    <td>evaluatePorts</td>
+                    <td>4.7758</td>
+                    <td>3</td>
+                  </tr>
+                  <tr>
+                    <td>sim/OutputR::*/PageR::*</td>
+                    <td>initialize</td>
+                    <td>3.1924</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/time</td>
+                    <td>evaluatePorts</td>
+                    <td>3.0911</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>sim</td>
+                    <td>debrief</td>
+                    <td>2.8052</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>sim/outputWriter</td>
+                    <td>initialize</td>
+                    <td>2.4478</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/weather</td>
+                    <td>evaluatePorts</td>
+                    <td>2.4023</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/outputWriter</td>
+                    <td>update</td>
+                    <td>2.2211</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/outputWriter</td>
+                    <td>reset</td>
+                    <td>1.9182</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/pupa</td>
+                    <td>update</td>
+                    <td>1.7367</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/OutputR::*/PageR::*/PlotR::*</td>
+                    <td>evaluatePorts</td>
+                    <td>1.5676</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/egg</td>
+                    <td>update</td>
+                    <td>1.4996</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/calendar</td>
+                    <td>initialize</td>
+                    <td>1.3263</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/OutputR::*/PageR::*/PlotR::*</td>
+                    <td>evaluatePorts</td>
+                    <td>1.2768</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/larva</td>
+                    <td>update</td>
+                    <td>1.0669</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/egg</td>
+                    <td>reset</td>
+                    <td>0.9363</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/adult</td>
+                    <td>update</td>
+                    <td>0.832</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/larva</td>
+                    <td>evaluatePorts</td>
+                    <td>0.7556</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td>sim/butterfly/pupa</td>
+                    <td>evaluatePorts</td>
+                    <td>0.6975</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td>sim/calendar</td>
+                    <td>update</td>
+                    <td>0.5569</td>
+                    <td>0</td>
+                  </tr>
+                </tbody>
+              </table>
+            <p>Each box in the boxscript appears several times in the profile, because it has been logged how much time was spent on different tasks. The task is one of the steps in the <a href='#computational-model'>computational model</a> or the &#39;evaluatePorts&#39; task, which is time spent evaluating the expressions of the inputs to the box. All tasks of all boxes will have one line in the table telling the total time spent on that task (in milliseconds) and how much that made out of the total run time (as a percentage).</p>
+            <p>Here, the boxes taking care of simulation outputs, together with the <code>weather</code> box, take the most time. If you want to investigate further you can find the C++ source code by looking up the class definition (e.g., the <code>OutputR</code> class is defined in the file <code>src/plugins/boxes/output_r.cpp</code>) and finding the method listed under &#39;Task&#39; in the profile table (e.g., the <code>OutputR::debrief()</code> method). You will need to <a href='https://www.ecolmod.org/download/'>download</a> the source code first.</p>
+</div>
+<p class='hidden-anchor' id='quit'>xxx</p><div class='border-grey'>
+<h2>quit</h2>
+            <p>
+              <code class="command">quit</code> shuts down Universal Simulator.</p>
+</div>
+<p class='hidden-anchor' id='run'>xxx</p><div class='border-grey'>
+<h2>run</h2>
+            <p>
+              <code class="command">run</code> on is own will <a href='#load'>load</a> and run the latest loaded or run boxscript. <code class="command">run &lt;boxscript&gt;</code> will load and run the given boxscript. You can type <code class="command">run</code> followed by <code class="command">Ctrl+spacebar</code> to bring up a file picker.</p>
+            <p>
+              <code class="command">run</code> first reports the number of boxes creates (well, actually <code class="command">load</code> does that behind the scenes). It continues to report at the simulation runs throught the steps of the <a href='#computational-model'>computational model</a>. </p>
+            <pre><code class="command">&gt; run demo/butterfly.box</code>
+<code class="output">Constructing...
+Amending...
+15 boxes created
+Initializing...
+Resetting...
+Updating...
+Cleaning up...
+Debriefing...
+R script written to &#39;C:/Users/au152367/Documents/QDev/UniSim3/output/butterfly_0013.R&#39;
+Executable R snippet copied to clipboard!
+Data frame written to &#39;C:/Users/au152367/Documents/QDev/UniSim3/output/butterfly_0013.txt&#39;
+Finished after 163 msecs in step 152/152</code></pre>
+            <p>After the simulation has finished it reports, where the generated text output and R script files are located; that will be in your <a href='#output-folder'>output folder</a>. You are also reminded about the contents of the clipboard, which you are now expected to paste at the R prompt. The last line tells you how long it took and for how many steps (or iterations, if more than one) it was running.</p>
+</div>
+<p class='hidden-anchor' id='set-folder'>xxx</p><div class='border-grey'>
+<h2>set folder</h2>
+            <p>You can use the <a href='#get-folders'>get folders</a> command to find the current location of your <strong>work</strong>, <strong>input</strong> and <strong>output</strong> folders:</p>
+            <pre><code class="command">&gt; get folders</code>
+<code class="output">Work folder:
+  absolute path &#39;C:/Users/au152367/UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;C:/Users/au152367/UniversalSimulatorHome/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;C:/Users/au152367/UniversalSimulatorHome/output&#39;</code></pre>
+            <p>You can change any of these folders with the <code class="command">set folder</code> command. It comes in three flavours described below: <code class="command">set folder work</code>, <code class="command">set folder input</code> and <code class="command">set foldet output</code>.</p>
+<h3 id='set-folder-work'><li>set folder work</li></h3>
+            <p>This is how you change the work folder:</p>
+            <pre><code class="command">&gt; set folder work D:/Documents/ipm-model</code>
+<code class="output">Work folder:
+  absolute path &#39;D:/Documents/ipm-model&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;D:/Documents/ipm-model/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;D:/Documents/ipm-model/output&#39;
+&gt;
+</code></pre>
+            <p>You must provide an absolute path to the work folder. If you don&#39;t know what an &#39;absolute path&#39;, look it up. In this case it is <code>D:/Documents/ipm-model</code>. I recommend that you have no spaces in the path, as it can cause all kinds of trouble. General rule: Never put spaces in a folder name.</p>
+            <p>Here we kept the default input and output paths, which are both relative paths, aptly named <code>input</code> and <code>output</code>. These paths are interpreted as being relative to the work folder, hence they end up on the absolute paths <code>D:/Documents/ipm-model/input</code> and <code>D:/Documents/ipm-model/output</code> in this example.</p>
+            <p>There are two magic keywords you can use for the path you provide for the work folder. They are <code class="command">HOME</code> and <code class="command">DEV</code> as described next.</p>
+<h3 id='set-folder-work-home'><li>set folder work HOME</li></h3>
+            <p>Set the work folder to <code class="command">HOME</code> to restore the work folder to its default value:</p>
+            <pre><code class="command">&gt; get folders</code>
+<code class="output">Work folder:
+  absolute path &#39;D:/Documents/ipm-model&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;D:/Documents/ipm-model/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;D:/Documents/ipm-model/output&#39;
+&gt; set folder work HOME
+Work folder:
+  absolute path &#39;.../UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;.../UniversalSimulatorHome/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to .../UniversalSimulatorHome/output&#39;</code></pre>
+            <p>This is just a convenience since the your home folder may be akward to find on your computer.</p>
+<h3 id='set-folder-work-dev'><li>set folder work DEV</li></h3>
+            <p>Set the work folder to <code class="command">DEV</code> to set the work folder to your software development folder. This might be useful if you have downloaded the source code for Universal Simulator and you want to keep your boxscripts and C++ code in the same folder:</p>
+            <pre><code class="command">&gt; get folders</code>
+<code class="output">Work folder:
+  absolute path &#39;.../UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;.../UniversalSimulatorHome/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to .../UniversalSimulatorHome/output&#39;</code>
+<code class="command">&gt; set folder work DEV</code>
+<code class="output">Work folder:
+  absolute path &#39;.../Documents/dev/UniSim3&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;.../Documents/dev/UniSim3/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;.../Documents/dev/UniSim3/output&#39;</code></pre>
+</div>
+<p class='hidden-anchor' id='set-folder-input'>xxx</p><div class='border-grey'>
+<h2>set folder input</h2>
+            <p>I never needed to change the input folder but it would go like this using <code class="command">set folder input</code>:</p>
+            <pre><code class="command">&gt; get folders</code>
+<code class="output">Work folder:
+  absolute path &#39;.../Documents/dev/UniSim3&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;.../Documents/dev/UniSim3/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;.../Documents/dev/UniSim3/output&#39;</code>
+<code class="command">&gt; set folder input test-input</code>
+<code class="output">relative path &#39;test-input&#39; resolves to &#39;.../Documents/QDev/UniSim3/test-input&#39;</code></pre>
+</div>
+<p class='hidden-anchor' id='set-folder-output'>xxx</p><div class='border-grey'>
+<h2>set folder output</h2>
+            <p>I have never needed to change the output folder either (see <a href='#set-folder-input'>set folder input</a>) but it would go like this using <code class="command">set folder output</code>:</p>
+            <pre><code class="command">&gt; get folders</code>
+<code class="output">Work folder:
+  absolute path &#39;.../UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;.../Documents/dev/UniSim3/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to .../Documents/dev/UniSim3/output&#39;</code>
+<code class="command">&gt; set folder output bucket</code>
+<code class="output">relative path &#39;bucket&#39; resolves to &#39;.../Documents/QDev/UniSim3/bucket&#39;</code></pre>
+</div>
+<p class='hidden-anchor' id='tail'>xxx</p><div class='border-grey'>
+<h2>tail</h2>
+            <p>The <code class="command">tail</code> command shows the last <em>n</em> lines of the lates simulation output (default <em>n</em>=6). It mimics the behaviour of the R <code class="command">tail</code> command:</p>
+            <pre><code class="command">&gt; run demo/butterfly.box</code>
+<code class="output">...</code>
+<code class="command">&gt; tail</code>
+<code class="output">Showing .../UniversalSimulatorHome/output/butterfly_nnnn.txt
+Tavg egg.content larva.content pupa.content adult.content iteration step
+14.5         0.0           0.0          0.0           0.0         1  147
+15.0         0.0           0.0          0.0           0.0         1  148
+15.2         0.0           0.0          0.0           0.0         1  149
+14.9         0.0           0.0          0.0           0.0         1  150
+11.2         0.0           0.0          0.0           0.0         1  151
+10.5         0.0           0.0          0.0           0.0         1  152</code></pre>
+            <p>Write <code class="command">tail n</code> to show up to <em>n</em> lines:</p>
+            <pre><code class="command">&gt; tail 3</code>
+<code class="output">Showing .../UniversalSimulatorHome/output/butterfly_nnnn.txt
+Tavg egg.content larva.content pupa.content adult.content iteration step
+14.9         0.0           0.0          0.0           0.0         1  150
+11.2         0.0           0.0          0.0           0.0         1  151
+10.5         0.0           0.0          0.0           0.0         1  152</code></pre>
+            <p>See also <a href='#head'>head</a> and <a href='#ht'>ht</a>.</p>
+</div>
+<p class='hidden-anchor' id='what'>xxx</p><div class='border-grey'>
+<h2>what</h2>
+            <p>Just in case you have forgotten what you are doing, the <code class="command">what</code> command will tell you the name of the latest loaded or run boxscript.</p>
+</div>
+<p class='hidden-anchor' id='ctrl-c'>xxx</p><p class='hidden-anchor' id='esc'>xxx</p><p class='hidden-anchor' id='shortcuts'>xxx</p><div class='border-grey'>
+<h2>Shortcuts</h2>
+<h3><li>Esc</li></h3>
+            <p>The escape key moves the cursor to the end of the dialog and offers you a fresh dialog.</p>
+<h3><li>Ctrl+C</li></h3>
+            <p>Your usual shortcut for copying the currently selected text to clipboard.</p>
+<h3 id='ctrl-l'><li>Ctrl+L</li></h3>
+            <p>Shortcut for the <a href='#clear'>
+                <code class="command">clear</code>
+              </a> command.</p>
+<h3 id='ctrl-v'><li>Ctrl+V</li></h3>
+            <p>Your usual shortcut for pasting the clipboard contents at the position of the cursor.</p>
+<h3 id='ctrl-q'><li>Ctrl+Q</li></h3>
+            <p>Shortcut for the <a href='#quit'>
+                <code class="command">quit</code>
+              </a> command.</p>
+<h3 id='ctrl-r'><li>Ctrl+R</li></h3>
+            <p>Shortcut for the <a href='#run'>
+                <code class="command">run</code>
+              </a> command.</p>
+<h3 id='mouse-right-click-or-shift-click'><li>Mouse right-click or shift-click</li></h3>
+            <p>The usual copy-paste-cut menu pops up when you right-click (Windows) or shift-click (Mac) or whatever (Linux).</p>
+
+        </div>
+      </div>
+      <div class="end-index-headers"></div>
+      <div class="left">
+        <div class="begin-menu"></div>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#commands">Commands</a><ul><li><a href="#clear">clear</a></li><li><a href="#clip">clip</a></li><li><a href="#debug">debug</a></li><li><a href="#edit">edit</a></li><li><a href="#find">find</a></li><li><a href="#get-folders">get folders</a></li><li><a href="#go">go</a></li><li><a href="#head">head</a></li><li><a href="#help">help</a></li><li><a href="#ht">ht</a></li><li><a href="#latest">latest</a></li><li><a href="#libr">libr</a></li><li><a href="#list">list</a></li><li><a href="#load">load</a></li><li><a href="#location">location</a></li><li><a href="#profile">profile</a></li><li><a href="#quit">quit</a></li><li><a href="#run">run</a></li><li><a href="#set-folder">set folder</a></li><li><a href="#set-folder-input">set folder input</a></li><li><a href="#set-folder-output">set folder output</a></li><li><a href="#tail">tail</a></li><li><a href="#what">what</a></li><li><a href="#shortcuts">Shortcuts</a>
+        <div class="end-menu"></div>
+      </div>
+      <div class="insert macro">#right.html</div>
+      <div class="begin macro"></div>
+      <div class="right">
+        <div class="border-red">
+          <h2>Try it!</h2>
+          <p>Download the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-orange">
+          <h2>Contact</h2>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-violet">
+          <h2>Model just published</h2>
+          <p>Read our paper on the Cereal Aphid-Fungus model and study the detailed documentation. Any questions? Write us.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-pink">
+          <h2>Home page overhaul</h2>
+          <p>We remain candy-coloured until further notice. Barbie goes from model to modeller!</p>
+          <p class="date">1 Aug 2023</p>
+        </div>
+      </div>
+      <div class="end macro"></div>
+    </div>
+    <div class="insert macro">#footer.html</div>
+    <div class="begin macro"></div>
+    <div id="footer" class="border-brown">
+      <p>The Ecological Modelling Laboratory is the lab of</p>
+      <p>Senior Scientist Niels Holst, Dept. of Agroecology, Aarhus University, Denmark</p>
+    </div>
+    <div class="end macro"></div>
+  </body>
+</html>

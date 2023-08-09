@@ -81,9 +81,13 @@ void Simulation::run() {
         while (!stopIteration && iteration < iterations) {
             ++iteration;
             Computation::changeStep(Computation::Step::Reset);
+            dialog().information("run() A " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
             resetFamily();
+            dialog().information("run() B " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
             ResolvedReferences::check();
+            dialog().information("run() C " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
             updateConstnessFamily();
+            dialog().information("run() D " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
             Computation::changeStep(Computation::Step::Update);
 
             step = 0;

@@ -219,6 +219,7 @@ void Box::initializeFamily() {
 }
 
 void Box::resetFamily() {
+    dialog().information(name() + " resetFamily() A " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
     const auto boxes = children<Box*>();
     for (auto box : boxes)
         box->resetFamily();
@@ -231,9 +232,11 @@ void Box::resetFamily() {
     reset();
     verifyPorts();
     _timer.stop("reset");
+    dialog().information(name() + " resetFamily() Z " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
 }
 
 void Box::updateFamily() {
+    dialog().information(name() + " updateFamily() A " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
     const auto boxes = children<Box*>();
     for (auto box : boxes)
         box->updateFamily();
@@ -245,6 +248,7 @@ void Box::updateFamily() {
     update();
     verifyPorts();
     _timer.stop("update");
+    dialog().information(name() + " updateFamily() Z " + QString::number(findOne<Box*>("solar")->port("latitude")->isConstant()));
 }
 
 void Box::cleanupFamily() {

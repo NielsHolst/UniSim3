@@ -176,9 +176,12 @@ void ReaderXml::readVirtualGreenhouse() {
 
     double
         floorReflectance = _doc->find("Greenhouse/floor-reflectance")->toDouble();
-
+    XmlNode *stopInStep = _doc->peak("Description/StopInStep");
     _builder->
-    box("Simulation").name("sim").
+    box("Simulation").name("sim");
+    if (stopInStep)
+        _builder->port("steps").equals(stopInStep->toInt());
+        _builder->
         box().name("global").
             aux("beginDate", "datetime").computes(_doc->find("Description/StartTime")->value()).
         endbox().

@@ -15,6 +15,7 @@ object_script*
 bin/
 bind/
 bin32/
+bind32/
 output/
 src/resources/data/input/*
 ship/bin/

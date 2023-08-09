@@ -1,0 +1,334 @@
+body {
+  font-family: Cambria, Georgia, "Times New Roman", Times, serif;
+}
+.file-path {
+  font-family: system-ui, sans-serif;;
+  text-decoration: underline dashed;
+}
+p, li {
+  line-height: 1.5; 
+}
+h1,h2 {
+  font-weight: 500;
+}
+.central h1 {
+  margin-top: -0.15em;
+  margin-bottom: 0.1em;
+}
+.central h2 {
+  margin-top: -0.1em;
+}
+.central h1+p {
+  /* border: 1px solid red; */
+  margin-top: -0.5em;
+}
+h3 {
+  font-weight: 600;
+  font-size: 100%;
+  padding-top: 0.3em;
+}
+h3 li {
+  list-style: disclosure-closed;
+  list-style-position: inside;
+}
+.h3-links li {
+  list-style: disclosure-closed;
+}
+p+p {
+  padding-top: 0.5em;
+}
+h1+p {
+  padding-top: 0.3em;
+}
+ul {
+  padding: 0.3em 0 0.5em 2em;
+}
+table {
+  /* font-family: system-ui, sans-serif;; */
+  /* font-size: smaller; */
+  margin-top:    0.6em;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid black;
+  border-radius: 0;
+}
+table code {
+  font-size: 100%;
+}
+th {
+  border-top   : 2px solid black;
+  border-bottom: 1px solid black;
+  border-radius: 0;
+}
+tbody tr:nth-child(odd) {
+  background: var(--col-pink-l);
+}
+tbody tr:nth-child(even), thead tr {
+  background: var(--col-orange-l);
+}
+tbody tr:last-child {
+  /* background: var(--col-orange); */
+  border: 2px solid black;
+}
+th, td {
+  vertical-align: middle;
+  line-height: 1.5;
+}
+th {
+  padding: 0.3em 1em 0.4em 0.3em;
+}
+td {
+  padding: 0.1em 1em 0.1em 0.3em;
+}
+table#table-profile thead th:nth-child(3), 
+table#table-profile thead th:nth-child(4),
+table#table-profile tbody td:nth-child(3), 
+table#table-profile tbody td:nth-child(4) {
+  text-align: right;
+}
+table#table-boxscript tbody td:nth-child(1),
+table#table-boxscript tbody td:nth-child(2),
+table#table-conversions tbody td:nth-child(1)
+ {
+  font-family: "Courier New", monospace;
+  color: var(--col-brown);
+  font-size: 90%;
+}
+table#table-conversions tbody td {
+  font-size: 90%;
+}
+/* Code */
+code {
+  font-family: "Courier New", monospace;
+  color: var(--col-brown);
+  font-size: 90%;
+}
+p code {
+  font-weight: 600;
+}
+p code.command {
+  font-weight: 500;
+}
+pre code {
+  line-height: 1.2;
+  display: block; 
+  margin: 0.8em 0.2em 0.8em 2em;
+}
+pre code+code{
+  margin: -2em 0.2em 0.8em 2em;
+}
+.output {
+  color: var(--col-green);
+}
+.command {
+  color: var(--col-red);
+}
+.listing {
+  font-size: 85%;
+}
+/* Links */
+a {
+  color: var(--col-blue);
+  text-decoration: none;
+}
+h1>a {
+  color: black;
+}
+a:hover, a:focus, a:active {
+  color: var(--col-violet);
+  text-decoration: underline;
+}
+a:visited {
+  text-decoration: underline dotted;
+}
+nav a {
+  color: var(--col-blue);
+  text-decoration: none;
+  border-top:    1px solid #00000000;
+  border-bottom: 1px solid #00000000;
+}
+nav a:hover, nav a:focus, nav a:active {
+  color: var(--col-blue);
+  text-decoration: none;
+  border-top:    1px solid var(--col-blue);
+  border-bottom: 1px solid var(--col-blue);
+}
+a:visited {
+  text-decoration: none;
+}
+
+html {
+  --max-content : 50rem;
+  --max-side    : 15rem;
+  --max-width   : 80rem;
+  --central-direction : row;
+  --order-left   : 1;
+  --order-central: 2;
+  --order-right  : 3;
+}
+
+@font-face {
+  font-family: "Tangerine";
+  src: url("fonts/Tangerine-Regular.ttf");
+}
+
+@media (max-width: 81rem) {
+  html {
+    --max-width: 100%;
+  }
+}
+@media (max-width: 50rem) {
+  html {
+    --max-content: 100%;
+  }
+}
+@media (max-width: 40rem) {
+  html {
+    --central-direction: column;
+    --max-side   : 100%;
+    --order-left   : 1;
+    --order-central: 3;
+    --order-right  : 2;
+  }
+}
+body {
+  display: flex;
+  flex-direction: column;
+  width: var(--max-width);
+  margin: auto;
+  padding: 0;
+  background-color: #fafafa;
+}
+.macro {
+  display: none;
+}
+#header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+#title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0;
+}
+#title>* {
+  margin: 0;
+}
+#title h1 {
+  padding: 0 15px;
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+#title .slogan {
+  font-family: Tangerine, serif;
+  font-size: xxx-large;
+  line-height: 1; 
+  padding: 10px 15px 0;
+}
+nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+nav a {
+  display: flex;
+  margin: 0 0.1em;
+  padding: 0 0.2em;
+  font-size: large;
+}
+#current {
+  color: var(--col-violet);
+  border-top:    1px solid var(--col-violet);
+  border-bottom: 1px solid var(--col-violet);
+}
+#footer {
+  text-align: center;
+  font-size: larger;
+}
+#footer p {
+  line-height: 1;
+}
+.wide-panel {
+  display: flex;
+  flex-direction: var(--central-direction);
+}
+.banner-item {
+  flex: 1 1 auto;
+}
+.central {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: var(--max-content);
+  order: var(--order-central);
+}
+.left, .right {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: var(--max-side);
+}
+
+.left {
+  order: var(--order-left);
+  /* overflow: auto; */
+  /* height: calc(100vh - 15rem); */
+}
+.right {
+  order: var(--order-right);
+}
+.date {
+  font-style: italic; 
+  text-align: right;
+}
+.right p {
+  padding-top: 0.3em;
+  line-height: 1.35;
+}
+.left ul {
+  position: sticky;
+  top: 0;
+  list-style: none;
+  line-height: 1.35;
+  padding: 0;
+  /* border: 1px solid violet; */
+}
+.left li {
+  padding-top:    0.1em;
+  padding-bottom: 0.1em;
+  padding-left: 0.75em;
+  line-height: 1.35;
+}
+.left .border-grey>li {
+  padding-left: var(--border-padding);
+  /* border: 1px solid violet; */
+}
+.left .border-grey>li:first-child {
+  padding-top: calc(var(--border-padding) / 2);
+  /* border: 1px solid violet; */
+}
+.left .border-grey>li:last-child {
+  padding-bottom: calc(var(--border-padding) / 2);
+  /* border: 1px solid violet; */
+}
+.squirrel-link {
+  width: 4em;
+  display:inline;
+  padding: 0.4em 0.75em;
+  margin: 0 0 -0.6em 0;
+}
+.hidden-anchor {
+  color: #fafafa;
+  line-height: 1;
+  font-size: 5px;
+  margin: -5px 0 0 0;
+  padding: 0;
+}
+/* * { */
+  /* border: 1px solid red; */
+/* } */
+

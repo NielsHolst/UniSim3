@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Ecological Modelling Laboratory</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content=""/>
+    <link rel="icon" href="media/squirrel-32x32.ico">
+    <link rel="stylesheet" type="text/css" href="basic.css"/>
+    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+  </head>
+  <body>
+  <div class="insert macro">#header.html#intro#Welcome to the lab</div>
+  <div class="begin macro"></div>
+    <div id="header" class="border-blue">
+      <div id="title">
+        <img src="media/squirrel.gif"/>
+        <div>
+          <h1 id="top">Ecological Modelling Laboratory</h1>
+          <p class="slogan">Welcome to the lab</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html" id="home">Home</a>
+        <a href="intro.html" id="current">Intro</a>
+        <a href="commands.html" id="commands">Commands</a>
+        <a href="boxscript.html" id="boxscript">BoxScript</a>
+        <a href="models.html" id="models">Models</a>
+        <a href="download.html" id="download">Download</a>
+        <a href="about.html" id="about">About</a>
+      </nav>
+    </div>
+  <div class="end macro"></div>
+    <div class="wide-panel">
+      <div class="begin-index-headers"></div>
+      <div class="central">
+<p class='hidden-anchor' id='software-installation'>xxx</p><p class='hidden-anchor' id='getting-started'>xxx</p><div class='border-grey'>
+<h1>Getting started</h1>
+<h2>Software installation</h2>
+          <p><strong>Universal Simulator</strong> comes as an installation package. Just download <a href='https://www.ecolmod.org/download/'>Universal Simulator</a> and afterwards launch the downloaded installation package. It is currently a Windows-only software. Hail me with some encouragement, and I will find time to build a Mac or Linux installation package too.</p>
+          <p>You will also need <strong>R</strong> software, either stay with the <a href='https://www.r-project.org/'>classic R</a> or put <a href='https://www.rstudio.com/products/rstudio/download/'>R Studio</a> on top of it.</p>
+          <p>You&#39;ve already got a pre-installed <strong>text editor</strong> on your computer. Free and not very useful. On Windows, that means Notepad. Improve on that and download <a href='https://notepad-plus-plus.org/downloads/'>Notepad++</a>, right away. If you are an experienced power user, you can just keep using your favourite text editor.</p>
+          <p>If you are an experienced programmer, you may want to download the Universal Simulator source code and the Qt Creator development environment. You can find the details in the <a href='#boxscript-developer'>BoxScript Developer</a> section.</p>
+        </div>
+<p class='hidden-anchor' id='hello-world'>xxx</p><div class='border-grey'>
+
+<h2>Hello world!</h2>
+    <p>BoxScript is not a language designed to put text messages on to your screen. Anyway: No programming language without a <em>Hello world!</em> example. Here goes</p>
+    <pre><code class="listing">// hello_world1.box
+Simulation sim {
+  .steps = 3
+  OutputText {
+    &amp;message = &quot;Hello world!&quot;
+    .ports = .[message]
+  }
+}</code></pre>
+    <p>Start up Universal Simulator and type at its prompt:</p>
+    <pre><code class="command">&gt; run demo/hello_world1.box</code></pre>
+    <p>After it has successfully completed (we expect nothing but success of this exercise), follow up with this command:</p>
+    <pre><code class="command">&gt; head</code></pre>
+    <p>The only surprise you will get is that you will see the happy message four, not three, times. Take it easy. That will be explained in due time:</p>
+    <pre><code class="output">message      iteration step
+Hello world!         1    0
+Hello world!         1    1
+Hello world!         1    2
+Hello world!         1    3</code></pre>
+    <p>The output consists of three columns, two more than the message we asked for. Consider the output of this slightly extended boxscript:</p>
+    <pre><code class="listing">// hello_world2.box
+Simulation sim {
+  .iterations = 2
+  .steps = 3
+  OutputText {
+    &amp;message = &quot;Hello world!&quot;
+    .ports = .[message]
+  }
+}</code></pre>
+    <p>The output has now been doubled in length. You&#39;ll see two iterations producing four lines each:</p>
+    <pre><code class="output">message      iteration step
+Hello world!         1    0
+Hello world!         1    1
+Hello world!         1    2
+Hello world!         1    3
+Hello world!         2    0
+Hello world!         2    1
+Hello world!         2    2
+Hello world!         2    3</code></pre>
+    <p>If you just write <code class="command">head</code> then you will only see the first 6 lines of the output (mimicking the R <code class="command">head</code> function). To see up to, say, 10 lines, you write</p>
+    <pre><code class="command">&gt; head 10</code></pre>
+    <p>The <code class="output">iteration</code> column counts the iterations starting from 1, while the <code class="output">step</code> column counts the steps within each iteration starting from 0. These two loops, steps within 
+iterations, are central to the <a href='#computational-model'>computational model</a> of Universal Simulator.</p>
+    </div>
+        
+<p class='hidden-anchor' id='hello-r'>xxx</p><div class='border-grey'>
+<h2>Hello R!</h2>
+    <p>While we achieved a quick response from our efforts at the prompt above, it is not very useful for simulation outputs that spans hundreds (or millions, there are no hard-coded limits) of lines. To process larger outputs we make use of R:</p>
+    <pre><code class="listing">// hello_world3.box
+Simulation sim {
+  .iterations = 5
+  .steps = 100
+  OutputR {
+    OutputText {
+      &amp;message = &quot;Hello R!&quot;
+      .ports = .[message]
+    }
+  }
+}</code></pre>
+    <p>Among the status messages reported by Universal Simulator you will see</p>
+    <pre><code class="output">...
+Executable R snippet copied to clipboard!
+...</code></pre>
+    <p>So, switch to R and paste the clipboard at the R prompt. There you will get this message reported by R:</p>
+    <pre><code class="output">Simulation output available in data frame &#39;sim&#39; with 505 rows and 3 columns</code></pre>
+    <p>If you inspect the sim data frame you will find the expected outputs. Look into <a href='#running-simulations'>Running simulations</a> for a demonstration of how simulation outputs can be shown in R plots, or continue your reading here to learn more about the data structures behind the boxscripts.</p>
+            </div>
+<p class='hidden-anchor' id='classes'>xxx</p><div class='border-grey'>
+
+<h2>Classes</h2>
+<p>A boxscript arranges objects in the well-known <strong>composite pattern</strong> (<a href='https://www.pearson.com/en-us/subject-catalog/p/Gamma-Design-Patterns-Elements-of-Reusable-Object-Oriented-Software/P200000009480/9780201633610'>GoF  1995</a>).  For this to work, all objects need to be of a class derived from a common base class. In the <a href='#boxscript-framework'>BoxScript framework</a> the common base class is <code>Node</code>:</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/getting-started-class-diagram.svg" style="zoom:50%;" /></p>
+<p><code>Box</code> and <code>Port</code> are classes derived from <code>Node</code>. You can use <code>Box</code> directly in a boxscript as a simple container for other nodes but, more importantly, it serves as a base class for classes with various behaviours, such as <code>Simulation</code> and <code>OutputText</code>. You can use this command to see all the standard classes derived from <code>Box</code>:</p>
+<pre><code class="command">&gt; help boxes</code></pre>
+<p><code>Port</code> is a class that allows information to flow in and out of boxes.</p>
+    </div>
+        
+<p class='hidden-anchor' id='objects'>xxx</p><div class='border-grey'>
+<h2>Objects</h2>
+<p>Object-oriented design invites the use of natural language for very specific meanings. Thus we will use &#39;node&#39; to mean a <code>Node</code> object, &#39;box&#39; to mean a <code>Box</code> object and &#39;port&#39; to mean a <code>Port</code> object. Plural forms mean many such objects, e.g., &#39;boxes&#39; mean some number of <code>Box</code> objects.</p>
+<p>In the <span class="file-path">hello_world2.box</span> script above, we created one <code>Simulation</code> box called <code>sim</code> and one <code>OutputText</code> box, which we left unnamed. We consider the latter the <strong>child</strong> of the former, its <strong>parent</strong>. They are both parts of this object diagram:</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/getting-started-object-diagram.svg" style="zoom:50%;" /></p>
+<p>The diagram shows five children of the <code>sim</code> box and two children of the <code>OutputText</code> box. There are three types of ports:</p>
+<ul>
+<li>Input</li>
+<li>Output</li>
+<li>Auxiliary</li>
+
+</ul>
+<p>These different types of ports were not implemented as classes derived from <code>Port</code>. There is instead a <code>type</code> field in the <code>Port</code> class defining the type of the specific port. While the basic <code>Box</code> class comes with no ports defined, derived classes will usually be equipped with <strong>input ports</strong> to supply whatever parameters and variables are needed for their functionality. Note that BoxScript does not discern between fixed inputs (in other languages called parameters, constants or settings) and variable inputs (variables). They are all just considered inputs. </p>
+<p><strong>Output ports</strong> (marked by an &#39;&#39;&gt;&#39;&#39; above), on the other hand, provide access to the state of the box. You won&#39;t find all the output ports of all boxes in the boxscript represented as a column in the simulation output. Rather, you tell the <code>OutputText</code> box (or any other box providing output, e.g. for R plots) which ports you want included (through its <code>ports</code> input port; well, maybe I should have chosen another name for that one). However, the <code>iteration</code> and <code>step</code> outputs of the <code>Simulator</code> box are obligatory in the output, which is how we ended up with three columns in the output above.</p>
+<p>You can use the <strong>help</strong> command together with a class name to see the input and output ports belonging to a class:</p>
+<pre><code class="command">&gt; help Simulation</code></pre>
+<p><code>help</code> will list the ports together with their <a href='#port-types'>type</a>, their default value (inputs only), their unit (in brackets, may be unitless) and description. If the port defaults to an <a href='#expressions'>expression</a>, the expression will be shown.</p>
+<p>If you want to change the default value of an input port, you precede its name by a period and write its value, as seen in the <span class="file-path">hello_world2.box</span> script:</p>
+<pre><code class="listing">Simulation sim {
+  .steps = 3
+}
+</code></pre>
+<p>The right-hand side may be a constant as above or a more complicated <a href='#expressions'>expression</a>. Most importantly, you can refer to the value of another port providing a <a href='#port-paths'>path</a> to it:</p>
+<pre><code class="listing">OutputText {
+  &amp;message = &quot;Hello world!&quot;
+  .ports = .[message]
+}
+</code></pre>
+<p>The code above also exemplifies how to create an <strong>auxiliary port</strong>. You can equip any box with auxiliary ports of your own choice by preceding the port name with an ampersand <code>&amp;</code>.</p>
+<p>Shortly on paths: The port name is always written in brackets. If several ports happen to be on the path, you will get a vector of values. The value(s) found on the path will be converted to the type of the receiving input port as needed. Incompatible port types will result in a runtime error. The full description of <a href='#port-paths'>paths</a> and <a href='#port-types'>port types</a> is not overly complicated.</p>
+    </div>
+        
+<p class='hidden-anchor' id='models'>xxx</p><div class='border-grey'>
+<h2>Models</h2>
+<p>The complete boxscript describes a  <strong>model</strong> but often a single class or an object in itself defines a model. The <a href='#daydegrees'>DayDegrees</a> class, for example, defines a simple model of physiological development. So, does a concrete object of that class. Thus we may refer to a boxscript, a class or an object as a model. On the other hand, it would be confusing to call the <a href='#calendar'>Calendar</a> class a model, since it only role is to keep track of time.</p>
+    </div>
+        
+<p class='hidden-anchor' id='demo-boxscripts'>xxx</p><div class='border-grey'>
+<h2>Demo boxscripts</h2>
+<p>First time you run Universal Simulator (or whenever you have installed a new version and the first time you run that), it will give birth to a new folder <span class="file-path">UniversalSimulatorHome</span> inside your home folder. The home folder is easily found on a Mac or in Linux but is well hidden on Windows (where it seemingly doesn&#39;t feel right at home). On Windows you will find it inside <span class="file-path">C:\users\your_name</span>.</p>
+<p>You are told as much in the Welcome that greets you whenever you start Universal Simulator, here on a Windows computer:</p>
+<pre><code class="output">Work folder:
+  absolute path &#39;C:/Users/your_name/UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;C:/Users/your_name/UniversalSimulatorHome/input&#39;
+Output folder:
+  absolute path &#39;C:/Users/your_name/Documents/QDev/UniSim2/output&#39;
+</code></pre>
+<p>You can also retrieve this information with the  <a href='#get-folders'>get folders</a> command:</p>
+<pre><code class="command">&gt; get folders</code></pre>
+<p>For a start, <span class="file-path">UniversalSimulatorHome</span> is set as your <em>work folder</em>. Inside the work folder, you&#39;ve always got two sub-folders, the <em>input folder</em> and the <em>output folder</em>, aptly named <span class="file-path">input</span> and <span class="file-path">output</span> by default. </p>
+<p>The <span class="file-path">UniversalSimulatorHome/input</span> folder will be filled with all the example boxscripts found on this site and referred to in any publications that used Universal Simulator. You will find them in the <span class="file-path">input/demo</span> and <span class="file-path">input/papers</span> folders, respectively.</p>
+    </div>
+        
+<p class='hidden-anchor' id='user-boxscripts'>xxx</p><div class='border-grey'>
+<h2>User boxscripts</h2>
+<p>It is recommended that you create your own <em>work folder</em> for your models. Create a folder, maybe as a sub-folder of your <span class="file-path">Documents</span> folder. You can call it, for instance, <span class="file-path">BoxModels</span>. Inside that create a folder called <span class="file-path">input</span>. You&#39;ve now got these two empty folders:</p>
+<ul>
+<li><span class="file-path">Documents/BoxModels</span></li>
+<li><span class="file-path">Documents/BoxModels/input</span></li>
+
+</ul>
+<p>Next, you need to tell Universal Simulator that <span class="file-path">BoxModels</span> is your work folder. First, find the absolute path to your work folder. On Windows, use File Explorer: Right-click the <span class="file-path">BoxModels</span> folder, choose Properties on the pop-up menu, select and copy the Location path. Paste this path as an argument to the <a href='#set-folder-work'>set folder work</a> command:</p>
+<pre><code class="command">&gt; set folder work C:/Users/your_name/Documents/BoxModels</code>
+<code class="output">Work folder:
+  absolute path &#39;C:/Users/your_name/Documents/BoxModels&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;C:/Users/your_name/Documents/BoxModels/input&#39;
+Output folder:
+  relative path &#39;output&#39; resolves to &#39;C:/Users/your_name/Documents/BoxModels/output&#39;
+</code></pre>
+<p>Now, you are ready to keep your own boxscripts in the <span class="file-path">BoxModels</span> folder. Create sub-folders inside BoxModels to organize your boxscripts as you wish.</p>
+<p>If you need to revert to the default work folder (maybe to find the demo boxscripts more easily), use <a href='#set-folder-work-home'>HOME</a> as a magic folder name:</p>
+<pre><code class="command">&gt; set folder work HOME</code>
+<code class="output">Work folder:
+  absolute path &#39;C:/Users/your_name/UniversalSimulatorHome&#39;
+Input folder:
+  relative path &#39;input&#39; resolves to &#39;C:/Users/your_name/UniversalSimulatorHome/input&#39;
+Output folder:
+  absolute path &#39;C:/Users/your_name/Documents/QDev/UniSim2/output&#39;
+</code></pre>
+        </div>
+                
+<p class='hidden-anchor' id='loading-a-boxscript'>xxx</p><p class='hidden-anchor' id='running-simulations'>xxx</p><div class='border-grey'>
+<h1>Running simulations</h1>
+<h2>Loading a boxscript</h2>
+<p>You load a boxscript like this</p>
+<pre><code class="command">&gt; load demo/butterfly1.box</code>
+<code class="output">Constructing...
+Amending...
+17 boxes created
+</code></pre>
+<p>In response to reading the boxscript, Universal Simulator will construct and amend all the boxes needed to run the boxscript. In this case 17 boxes were created. The difference between constructing and amending only becomes important, once you get to the advanced stage of developing your own boxes in C++ (as <code>Box</code>-derived classes).</p>
+<p>If you&#39;d rather not type out the full path to the boxscript, you simple type <code class="command">&lt;Ctrl+space bar&gt;</code>:</p>
+<pre><code class="command">&gt; load &lt;Ctrl+space bar&gt;</code></pre>
+<p>This will bring up a file picker, which will allow you to point and click all the way to the wanted boxscript. The file picker will start out in the same folder as the latest boxscript that you loaded.</p>
+<p>When a boxscript has been loaded successfully (any lack of success will be obvious from error messages), you have in effect loaded a <em>model</em>, ready to be run. You can only have one model loaded at a time. If you load another model (i.e. if you load another boxscript), it will replace the current model.</p>
+        </div>
+                
+<p class='hidden-anchor' id='running-a-model'>xxx</p><div class='border-grey'>
+<h2>Running a model</h2>
+<p>When you run a model, it means you carry out a <em>simulation</em> as defined by the model. You can run the current model (i.e. the one defined by your latest loaded boxscript) like this</p>
+<pre><code class="command">&gt; run</code>
+<code class="output">Constructing...
+Amending...
+17 boxes created
+Initializing...
+Resetting...
+Updating...
+Cleaning up...
+Debriefing...
+R script written to 
+  &#39;C:/Users/your_name/UniversalSimulatorHome/output/butterfly1_0010.R&#39;
+Executable R snippet copied to clipboard
+Data frame written to 
+  &#39;C:/Users/your_name/UniversalSimulatorHome/output/butterfly1_0010.txt&#39;
+Finished after 266 msecs in step 152/152
+</code></pre>
+<p>From the output you can see that a <code>run</code> actually always carries out an initial <code class="command">load</code> (the 17 boxes were created anew). This means that if you are in a hurry you can run a specific model directly:</p>
+<pre><code class="command">&gt; run demo/butterfly1.box</code></pre>
+<p>The simulation goes through specific stages, which reflect the logic of how box behaviour is defined in C++. Finally, you get a report of the three specific outputs produced by the simulation:</p>
+<ul>
+<li>an R script written to a file</li>
+<li>an R snippet copied to the clipboard</li>
+<li>a data frame written to a text file</li>
+
+</ul>
+<p>Two files are written to the output folder. Every time you run a simulation, an additional two files will be written there. You should empty the output folder now and then to get rid of all these files.</p>
+<p>The R snippet (a &#39;code snippet&#39; is a few lines of code) in the clipboard is meant to be pasted directly at the <em>R prompt</em>. As you deftly switch (by <code class="command">&lt;Alt+Tab&gt;</code> or <code class="command">&lt;Command+Tab&gt;</code>) from the Universal Simulator prompt to the R prompt, where you paste (by<code class="command">&lt;Ctrl+V&gt;</code> or <code class="command">&lt;Command+V&gt;</code>), you are rewarded immediately by plots showing the simulation results:</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/butterfly1.png" referrerpolicy="no-referrer"></p>
+<p>As you might have guessed, the R snippet makes clever use of the two output files to create the plots defined in the boxscript: The text file is read and ends up in an R data frame called <code>sim</code>. This data frame contains that data needed to produce the plots.</p>
+<p>After celebrating your success, you can switch back to the Universal Simulator prompt to run an other simulation.</p>
+        </div>
+                
+<p class='hidden-anchor' id='seeing-and-editing-a-boxscript'>xxx</p><div class='border-grey'>
+<h2>Seeing and editing a boxscript</h2>
+<p>To have a look at the current boxscript simply type</p>
+<pre><code class="command">edit</code></pre>
+<p>This will show the boxscript code in the editor set up to edit boxscripts. First time off, no editor has been set up, so your operating system (Windows/OS X/Linux) will prompt you to choose an editor for this purpose. Any pure text editor will work (e.g., on Windows Notepad, or even better, <a href='https://notepad-plus-plus.org/'>Notepad++</a> but do not choose a word processor. Here, is the BoxScript code that you will see for the <span class="file-path">butterfly1</span> boxscript:</p>
+<pre><code class="listing">// butterfly1.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/05/2009
+    .end   = 30/09/2009
+  }  
+  Records weather {
+    .fileName = &quot;weather/flakkebjerg 2009.txt&quot;
+  }
+  Box butterfly {
+    Stage egg {
+      .initial = 100 
+      .duration = 140
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 5
+        .T = weather[Tavg]
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = weather[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Stage adult {
+      .inflow = ../pupa[outflow]
+      .duration = 28
+      .timeStep = 1
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .ncol = 2
+      PlotR {
+        .ports = *[content]
+        .ggplot = &quot;scale_x_datetime(
+                     breaks = date_breaks(&#39;months&#39;), 
+                     labels = date_format(&#39;%b&#39;)
+                   )&quot; 
+      }
+      PlotR {
+        .ports = *[outflowTotal]
+        .ggplot = &quot;scale_x_datetime(
+                     breaks = date_breaks(&#39;months&#39;), 
+                     labels = date_format(&#39;%b&#39;)
+                   )&quot; 
+      }
+    }
+  }
+}</code></pre>
+<p>Fell free to change the code, save the file, and  run the script again to see what change it made to the simulation output. Or, on second thought, save your changed boxscript under another name and then run <em>that</em> boxscript.</p>
+        </div>
+                
+<p class='hidden-anchor' id='listing-a-boxscript'>xxx</p><div class='border-grey'>
+<h2>Listing a boxscript</h2>
+<p>The list command is a powerful tool to inspect the <em>structure</em> and <em>state</em> of your currently loaded model. The structure will remain unaltered after you have loaded the boxscript but the state will have changed after you have run a simulation. </p>
+<p>First you can simply list all the boxes which together constitute the model:</p>
+<pre><code class="command">&gt; list</code>
+<code class="output">Simulation sim
+  Calendar calendar
+  Records weather
+  Box butterfly
+    Stage egg
+      DayDegrees time
+    Stage larva
+      DayDegrees time
+    Stage pupa
+      DayDegrees time
+    Stage adult
+  OutputR 
+    PageR 
+      PlotR 
+      PlotR 
+  OutputWriter outputWriter
+    OutputSelector selector
+</code></pre>
+<p>The hierarchy of boxes is shown by identation. Each box is designated by its <em>class</em> (e.g. <code>Records</code>) and its <em>name</em> (e.g. <code>weather</code>), unless it is nameless (e.g. the <code>PlotR</code> boxes). Class names must correspond to a name defined in the Universal Simulator toolbox, while box names can be chosen freely albeit according to custom, they should start with a lowercase letter (telling those in the know that they are actually <em>object names</em>).</p>
+<p>You can list a particular box and all its descendents by giving its name followed by the <code>r</code> option, which stands for <em>recurse</em>:</p>
+<pre><code class="command">&gt; list butterfly r</code>
+<code class="output">Box butterfly
+  Stage egg
+    DayDegrees time
+  Stage larva
+    DayDegrees time
+  Stage pupa
+    DayDegrees time
+  Stage adult</code></pre>
+<p>To inspect the ports, you add the <code>p</code> option:</p>
+<pre><code class="command">&gt; list calendar p</code>
+<code class="output">Calendar calendar
+  .latitude = 52.0 [-90,90]
+  .longitude = 11.0 [-180,180]
+  .timeZone = 1 h
+  .begin = 2009/05/01T00:00:00 DateTime
+  .end = 2009/09/30T00:00:00 DateTime
+  .timeStep = 1 int&gt;0
+  .timeUnit = &quot;d&quot; y|d|h|m|s
+  &gt;steps = 0
+  &gt;date =  d/m/y
+  &gt;time =  h:m:s
+  &gt;dateTime = T d/m/y h:m:s
+  &gt;timeStepSecs = 0.0 s
+  &gt;timeStepDays = 0.0 d
+  &gt;totalTimeSteps = 0 int
+  &gt;totalTime = 0 int
+  &gt;totalDays = 0.0 d
+  &gt;dayOfYear = 0 [1;366]</code></pre>
+<p>Here, the input ports are preceded by a period <code>.</code> and the output ports by a <code>&gt;</code>. For each port you see its current value, often follow by its type or an indication of its legal values. The command above was issued just after loading the <span class="file-path">butterfly1</span> boxscript. That&#39;s why the output ports carry their initial values, and the date, time and dateTime ports even appear empty (because their values are yet undefined). If we run the model and repeat the command, we get</p>
+<pre><code class="command">&gt; list calendar p</code>
+<code class="output">Calendar calendar
+  .latitude = 52.0 [-90,90] const
+  .longitude = 11.0 [-180,180] const
+  .timeZone = 1 h const
+  .begin = 2009/05/01T00:00:00 DateTime const
+  .end = 2009/09/30T00:00:00 DateTime const
+  .timeStep = 1 int&gt;0 const
+  .timeUnit = &quot;d&quot; y|d|h|m|s const
+  &gt;steps = 152
+  &gt;date = 2009/09/30 d/m/y
+  &gt;time = 00:00:00 h:m:s
+  &gt;dateTime = 2009/09/30T00:00:00 d/m/y h:m:s
+  &gt;timeStepSecs = 86400.0 s
+  &gt;timeStepDays = 1.0 d
+  &gt;totalTimeSteps = 152 int
+  &gt;totalTime = 152 int
+  &gt;totalDays = 152.0 d
+  &gt;dayOfYear = 273 [1;366]</code></pre>
+<p>The output ports have now been updated and maintain their final values in the simulation. You will also note that all the inputs have been marked <code class="output">const</code>. That&#39;s because they have been identified as being constant throughtout the simulation. This speeds up the execution. We can find examples of inputs that are not constant in one of the <code>DayDegrees</code> boxes:</p>
+<pre><code class="command">&gt; list butterfly/egg/time p</code>
+<code class="output">DayDegrees time
+  .T = 10.5 &lt;- sim/weather[Tavg]
+  .timeStepDays = 1.0 &lt;- sim/calendar[timeStepDays]
+  .resetTotal = FALSE const
+  .isTicking = TRUE const
+  .T0 = 5.0 const
+  .Topt = 100.0 const
+  .Tmax = 100.0 const
+  &gt;step = 5.5 PTU
+  &gt;total = 1605.7 PTU</code></pre>
+<p>First of all, you can see how to specify the <em>path</em> two a specific box <code>butterfly/egg/time</code>. Here you can read  <a href='#port-paths'>more about paths</a>.</p>
+<p>The two non-constant input ports are <code>T</code> and <code>timeStepDays</code>. You can see from which output ports they fetch their inputs and you can see their  current (final, if we just ran the model) values. This was set up in the boxscript like this</p>
+<pre><code class="listing">Stage egg {
+  .initial = 100 
+  .duration = 140
+  .timeStep = ./time[step]
+  DayDegrees time {
+    .T0 = 5
+    .T = weather[Tavg]
+  }
+}</code></pre>
+<p>Note: If <code>timeStep</code> is followed all the way back to its source, it turns out to remain constant during the simulation since it ultimately relies only on inputs that are all constant. Currently, Universal Simulator marks as constant only those ports that are immediately constant. More intelligent resolution of constants can be expected in future versions (to speed up the execution even more).</p>
+<p>The options can be combined. Here are a few combinations (output not shown):</p>
+<pre><code class="command">&gt; list butterfly/egg pr</code>
+<code class="output">...</code>
+<code class="command">&gt; list sim pr</code>
+<code class="output">...</code></pre>
+<p>Maybe after that, it will be nice to know that <code class="command">clear</code> command clears the prompt dialog. It&#39;s so often called for that the <code class="command">&lt;Ctrl+L&gt;</code> shortcut achieves the same. Bonus info: <code class="command">&lt;Ctrl+L&gt;</code> also works on the R prompt. And, at the Linux prompt (but if you use Linux, you already knew that).</p>
+<p>In the reference manual, you can find are even <a href='#list'>more options</a> for the list command.</p>
+        </div>
+                
+<p class='hidden-anchor' id='r-integration'>xxx</p><div class='border-grey'>
+<h2>R integration</h2>
+<p>When you paste the clipboard at the R prompt, a snippet of pre-cooked R code is executed corresponding to your boxscript. However, you can also define you own R script (or R scripts) to be carried out. Here is an example of a boxscript, which does not carry out a proper simulation but rather demonstrates the curve shapes produced by to kinds of boxes, <code>DayDegrees</code> and <code>Briere</code>:</p>
+<pre><code class="listing">// briere1.box
+Simulation sim {
+  .steps = temperature[steps]
+  SequenceByStep temperature {
+    .min = 12
+    .max = 37
+    .by = 0.2
+  }
+  DayDegrees dayDegrees {
+    .timeStepDays = 1
+    .T0 = 14.2
+    .Topt = 29
+    .Tmax = 35
+    .T = temperature[value]
+  }
+  Briere briere {
+    .timeStepDays = 1
+    .T0 = 14.2
+    .Tmax = 35
+    .a = 2.836e-5
+    .T = temperature[value]
+  }
+  
+  OutputR {
+    .scripts = &quot;briere1.R&quot;
+    OutputText {
+      .ports = temperature[value] | dayDegrees[step] | briere[step]
+    }
+  }
+}</code></pre>
+<p>The output is stated as an <code>OutputText</code>, which simple produced an output text file. You specify the R script(s)—supposedly to work on that output but, in fact the R script(s) could do anything)—in <code>scripts</code> port of the <code>OutputR</code> box. This port takes a vector of strings, so you could also write:</p>
+<pre><code class="listing">.scripts = c(&quot;briere1.R&quot;, &quot;briere2.R&quot;, &quot;briere3.R&quot;)</code></pre>
+<p>The R scripts can be placed in the same folder as the boxscript, or you can put them in a folder, which you can refer to by paths relative to the folder of the boxscript, for example:</p>
+<pre><code class="listing">.scripts = c(&quot;general/setup.R&quot;, &quot;analysis/briere.R&quot;, &quot;figures/briere3.R&quot;)
+</code></pre>
+<p>The R scripts will be carried out (in the given order) when you paste the clipboard at the R prompt after having run your boxscript.</p>
+<p>Before your R scripts, another R script has been executed providing you with useful <em>hooks</em> to the output produced by your script. This script is the <span class="file-path">begin.R</span>, which is one of the standard scripts  residing in the <span class="file-path">inputs/scripts</span> folder of the Universal Simulator home folder. It sets up the following <em>variables</em>:</p>
+<ul>
+<li>Colours named <code>red</code>, <code>blue</code>, <code>green</code>, <code>violet</code>, <code>orange</code>, <code>brown</code>, <code>pink</code>, <code>grey</code>. These colours can be used individually but they have also been set up to replace the default colour scales of <code>ggplot</code>.</li>
+<li>A data frame <code>sim</code> with all outputs from the boxscript.</li>
+<li>The name of the columns in the data frame containing the iteration counter (<code>iterationColumn</code>) and step counter (<code>stepColumn</code>).</li>
+<li>The absolute path to the folder that holds the boxscript (<code>box_script_folder</code>).</li>
+<li>The the full path (absolute path and file name) to the file holding the boxscript output (<code>output_file_name</code>), i.e. the text file read into the <code>sim</code> data frame. </li>
+
+</ul>
+<p>In addition, you will have access to these <em>functions</em>:</p>
+<ul>
+<li><code>ggplot_theme(font_size)</code> returns a <em>ggplot</em> theme adjusted to the given <code>font_size</code>.</li>
+<li><code>output_file_folder()</code> returns the absolute path to the output folder, i.e. the path part of <code>output_file_name</code>.</li>
+<li><code>output_file_base_name()</code> returns the base file name of the output folder, i.e. the base file name part of <code>output_file_name</code>. The base file name is the file name without the suffix, in this case with out the <code>.txt</code> suffix.</li>
+<li><code>open_plot_window(width=7, height=7)</code> opens a pop-up window to show you plot. It uses different methods to create the windows depending on the platform (Mac, Windows or Linux).</li>
+
+</ul>
+<p>Here is the full <span class="file-path">briere1.R</span> script referred to in the boxscript above. It demonstrates how to compare boxscript outputs with observations:</p>
+<pre><code class="listing"># briere1.R
+sim = sim[1:3]
+colnames(sim) = c(&quot;Temperature&quot;, &quot;DayDegrees&quot;, &quot;Briere&quot;)
+sim$DayDegrees = sim$DayDegrees/472.1
+
+obs = data.frame(
+  Temperature = c(15,17,20,25,27,30,33,35),
+  L = c(Inf, 
+        121.5, 
+        (83.68+78.46)/2,
+        (47.97+41.32)/2,
+        (38.92+34.42)/2,
+        (35.05+32.41)/2,
+        (38.33+37)/2,
+        Inf)
+)
+obs$DevRate = 1/obs$L
+
+model = lm(DevRate~Temperature, data=obs[1:5,])
+icept = coef(model)[1]
+slope = coef(model)[2]
+T0 = -icept/slope
+duration = 1/slope
+
+open_plot_window(6,3.5)
+M = melt(sim, id.vars=&quot;Temperature&quot;, value.name=&quot;DevRate&quot;, variable.name=&quot;Model&quot;)
+P = ggplot(M, aes(x=Temperature, y=DevRate, colour=Model)) +
+  geom_abline(intercept=icept, slope=slope, colour=brown, size=3, alpha=0.6) +
+  geom_line(size=1) +
+  geom_point(data=obs, colour=red, size=3) +
+  geom_vline(xintercept=T0) +
+  geom_hline(yintercept=0) +
+  scale_color_manual(values=c(green,blue)) +
+  scale_x_continuous(breaks=c(T0,20,25,30,35), labels=c(round(T0,1), 20,25,30,35)) +
+  labs(x=&quot;Temperature (oC)&quot;, y=&quot;1/L (per day)&quot;)
+print(P)</code></pre>
+<p>Here is the resulting plot:</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/briere1.png" referrerpolicy="no-referrer"></p>
+        </div>
+      <div class="end-index-headers"></div>
+      </div>
+
+      <div class="left">
+        <div class="begin-menu"></div>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#getting-started">Getting started</a><ul><li><a href="#software-installation">Software installation</a></li><li><a href="#hello-world">Hello world!</a></li><li><a href="#hello-r">Hello R!</a></li><li><a href="#classes">Classes</a></li><li><a href="#objects">Objects</a></li><li><a href="#models">Models</a></li><li><a href="#demo-boxscripts">Demo boxscripts</a></li><li><a href="#user-boxscripts">User boxscripts</a></li></ul></li><li><a href="#running-simulations">Running simulations</a><ul><li><a href="#loading-a-boxscript">Loading a boxscript</a></li><li><a href="#running-a-model">Running a model</a></li><li><a href="#seeing-and-editing-a-boxscript">Seeing and editing a boxscript</a></li><li><a href="#listing-a-boxscript">Listing a boxscript</a></li><li><a href="#r-integration">R integration</a></li></ul></li></ul>
+        <div class="end-menu"></div>
+      </div>
+      <div class="insert macro">#right.html</div>
+      <div class="begin macro"></div>
+      <div class="right">
+        <div class="border-red">
+          <h2>Try it!</h2>
+          <p>Download the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-orange">
+          <h2>Contact</h2>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-violet">
+          <h2>Model just published</h2>
+          <p>Read our paper on the Cereal Aphid-Fungus model and study the detailed documentation. Any questions? Write us.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-pink">
+          <h2>Home page overhaul</h2>
+          <p>We remain candy-coloured until further notice. Barbie goes from model to modeller!</p>
+          <p class="date">1 Aug 2023</p>
+        </div>
+      </div>
+      <div class="end macro"></div>
+    </div>
+    <div class="insert macro">#footer.html</div>
+    <div class="begin macro"></div>
+    <div id="footer" class="border-brown">
+      <p>The Ecological Modelling Laboratory is the lab of</p>
+      <p>Senior Scientist Niels Holst, Dept. of Agroecology, Aarhus University, Denmark</p>
+    </div>
+    <div class="end macro"></div>
+  </body>
+</html>

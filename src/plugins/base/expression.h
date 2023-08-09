@@ -65,6 +65,7 @@ public:
     int size() const     { return _stack.size();}
     bool isEmpty() const { return _stack.empty();}
     bool isConstant() const;
+    bool isResolved() const;
     template <class T> void push(T element);
     void close();
     void resolveReferences();

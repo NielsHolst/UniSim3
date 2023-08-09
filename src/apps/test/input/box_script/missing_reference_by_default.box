@@ -1,0 +1,8 @@
+Simulation sim {
+  .steps = 10
+  SolarTime solar {
+  }
+  OutputText {
+    .ports = solar[latitude]
+  }
+}

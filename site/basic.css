@@ -1,0 +1,92 @@
+html {
+  --col-red    : #e41a1c;
+  --col-blue   : #377eb8;
+  --col-green  : #4daf4a;
+  --col-violet : #984ea3;
+  --col-orange : #ff7f00;
+  --col-brown  : #a65628;
+  --col-pink   : #f781bf;
+  --col-grey   : #999999;
+  --col-red-l    : #e41a1c11;
+  --col-blue-l   : #377eb811;
+  --col-green-l  : #4daf4a11;
+  --col-violet-l : #984ea311;
+  --col-orange-l : #ff7f0011;
+  --col-brown-l  : #a6562811;
+  --col-pink-l   : #f781bf11;
+  --col-grey-l   : #99999911;
+  
+  --col-sky-blue  : #e8f0f7;
+  --col-sand      : #feebd7;
+  --border-width: 2px;
+  --border-padding: 0.5em;
+  --border-margin: 0.5em;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+}
+img {
+  display: block;
+  margin: 1em auto;
+  max-width: 100%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* Borders */
+.border-red {
+  border: var(--border-width) solid var(--col-red);
+  background-color: var(--col-red-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-blue {
+  border: var(--border-width) solid var(--col-blue);
+  background-color: var(--col-blue-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-green {
+  border: var(--border-width) solid var(--col-green);
+  background-color: var(--col-green-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-violet {
+  border: var(--border-width) solid var(--col-violet);
+  background-color: var(--col-violet-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-orange {
+  border: var(--border-width) solid var(--col-orange);
+  background-color: var(--col-orange-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-brown {
+  border: var(--border-width) solid var(--col-brown);
+  background-color: var(--col-brown-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-pink {
+  border: var(--border-width) solid var(--col-pink);
+  background-color: var(--col-pink-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+}
+.border-grey {
+  border: var(--border-width) solid var(--col-grey);
+  background-color: var(--col-grey-l);
+  padding: var(--border-padding);
+  margin: var(--border-margin);
+  /* margin-left: var(--border-margin); */
+  /* margin-right: var(--border-margin); */
+  /* margin-top: calc(var(--border-margin) - 3px); */
+  /* margin-bottom: calc(var(--border-margin) - 3px); */
+}
