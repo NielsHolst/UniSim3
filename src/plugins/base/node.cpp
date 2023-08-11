@@ -54,6 +54,11 @@ void Node::setParent(Node *parent) {
 }
 
 void Node::setClassName(QString namespaceName, QString className) {
+    // Remove namespace from class name
+    QStringList parts = className.split("::");
+    if (parts.size() > 1)
+        className = parts.last();
+    // Add pedigree
     const auto type = Type{namespaceName, className};
     if (!_pedigree.contains(type))
         _pedigree.append(type);

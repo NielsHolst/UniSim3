@@ -2,8 +2,11 @@ body {
   font-family: Cambria, Georgia, "Times New Roman", Times, serif;
 }
 .file-path {
-  font-family: system-ui, sans-serif;;
-  text-decoration: underline dashed;
+  /* font-family: system-ui, sans-serif;; */
+  /* text-decoration: underline; */
+}
+.plugin {
+  font-weight: 900;
 }
 p, li {
   line-height: 1.5; 
@@ -22,6 +25,9 @@ h1,h2 {
   /* border: 1px solid red; */
   margin-top: -0.5em;
 }
+/* h2>p { */
+  /* padding-top: 1em; */
+/* } */
 h3 {
   font-weight: 600;
   font-size: 100%;
@@ -48,6 +54,7 @@ table {
   /* font-size: smaller; */
   margin-top:    0.6em;
   margin-bottom: 0.6em;
+  border-top: 2px solid black;
   border-bottom: 2px solid black;
   border-radius: 0;
 }
@@ -55,9 +62,10 @@ table code {
   font-size: 100%;
 }
 th {
-  border-top   : 2px solid black;
+  /* border-top   : 1px solid black; */
   border-bottom: 1px solid black;
   border-radius: 0;
+  text-align: left;
 }
 tbody tr:nth-child(odd) {
   background: var(--col-pink-l);
@@ -87,7 +95,11 @@ table#table-profile tbody td:nth-child(4) {
 }
 table#table-boxscript tbody td:nth-child(1),
 table#table-boxscript tbody td:nth-child(2),
-table#table-conversions tbody td:nth-child(1)
+table#table-conversions tbody td:nth-child(1),
+table#table-interface tbody td:nth-child(1),
+table#table-interface tbody td:nth-child(2),
+table#table-interface tbody td:nth-child(3),
+.table-interface-code
  {
   font-family: "Courier New", monospace;
   color: var(--col-brown);
@@ -133,27 +145,25 @@ a {
 h1>a {
   color: black;
 }
-a:hover, a:focus, a:active {
+a:hover {
   color: var(--col-violet);
   text-decoration: underline;
 }
 a:visited {
-  text-decoration: underline dotted;
+  text-decoration: none;
 }
 nav a {
   color: var(--col-blue);
   text-decoration: none;
   border-top:    1px solid #00000000;
   border-bottom: 1px solid #00000000;
+  border-radius: 6px;
 }
 nav a:hover, nav a:focus, nav a:active {
   color: var(--col-blue);
   text-decoration: none;
   border-top:    1px solid var(--col-blue);
   border-bottom: 1px solid var(--col-blue);
-}
-a:visited {
-  text-decoration: none;
 }
 
 html {
@@ -275,8 +285,10 @@ nav a {
 
 .left {
   order: var(--order-left);
-  /* overflow: auto; */
-  /* height: calc(100vh - 15rem); */
+}
+.left>ul {
+  overflow: auto; 
+  max-height: calc(100vh - 12rem);
 }
 .right {
   order: var(--order-right);
@@ -295,7 +307,6 @@ nav a {
   list-style: none;
   line-height: 1.35;
   padding: 0;
-  /* border: 1px solid violet; */
 }
 .left li {
   padding-top:    0.1em;

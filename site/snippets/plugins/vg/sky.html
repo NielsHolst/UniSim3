@@ -1,0 +1,27 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>intercept</td><td>double</td><td>0.732</td><td>Emissivity intercept on dew point temperature [0;1]</td></tr>
+<tr><td>slope</td><td>double</td><td>0.00635 /K</td><td>Emissivity slope on dew point temperature</td></tr>
+<tr><td>airTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">outdoors[temperature]</span></td></tr>
+<tr><td>rh</td><td>double</td><td>-</td><td>&larr; <span class="table-interface-code">outdoors[rh]</span></td></tr>
+<tr><td>Tsky</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">if exists(outdoors[Tsky]) then outdoors[Tsky] else -273.0</span> (Sky temperature taken from records otherwise computed)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Sky temperature</td></tr>
+</tbody></table>
+<div class="end macro"></div>

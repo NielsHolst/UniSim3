@@ -1,0 +1,35 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>parEmissionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[parEmissionBottom]</span></td></tr>
+<tr><td>swEmissionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[swEmissionBottom]</span></td></tr>
+<tr><td>lwEmissionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[lwEmissionBottom]</span></td></tr>
+<tr><td>lwEmissionTopLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[lwEmissionTop]</span></td></tr>
+<tr><td>convectionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[convectionBottom]</span></td></tr>
+<tr><td>convectionTopLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[convectionTop]</span></td></tr>
+<tr><td>powerUsageLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[powerUsage]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>parEmissionBottom</td><td>double</td><td>0.0 micromole PAR/m2/s</td><td>PAR emission downwards</td></tr>
+<tr><td>swEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Short-wave emission downwards</td></tr>
+<tr><td>lwEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission downwards</td></tr>
+<tr><td>lwEmissionTop</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission upwards</td></tr>
+<tr><td>convectionBottom</td><td>double</td><td>0.0 W/m2</td><td>Convective heat downwards</td></tr>
+<tr><td>convectionTop</td><td>double</td><td>0.0 W/m2</td><td>Convective heat upwards</td></tr>
+<tr><td>powerUsage</td><td>double</td><td>0.0 W/m2</td><td>Current power usage</td></tr>
+</tbody></table>
+<div class="end macro"></div>

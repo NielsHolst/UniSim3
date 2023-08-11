@@ -1,0 +1,40 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>myAreas</td><td>vec_double</td><td>c() </td><td></td></tr>
+<tr><td>myWeights</td><td>vec_double</td><td>c() </td><td></td></tr>
+<tr><td>allAreas</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[area]</span></td></tr>
+<tr><td>allWeights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[weight]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+</tbody></table>
+<div class="end macro"></div>

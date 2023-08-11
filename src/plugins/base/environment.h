@@ -76,6 +76,8 @@ public:
 
     void option(QString name, QVariant value);
     QVariant option(QString name);
+
+    static QDir makeDirAsNeeded(QDir dirNeeded);
 private:
     // Data
     Box *_current;
@@ -96,7 +98,6 @@ private:
     QDir findNotepadDir() const;
     QDir findGraphvizDir() const;
     void getDirSettings();
-    static QDir makeDirAsNeeded(QDir dirNeeded);
 };
 
 Environment& environment();

@@ -10,9 +10,9 @@ PhysiologicalTime::PhysiologicalTime(QString name, Box *parent)
     : Box(name, parent) {
     Input(T).unit("oC").imports("weather[Tavg]");
     Input(timeStepDays).unit("d").imports("calendar[timeStepDays]");
-    Input(resetTotal).equals(false).help("Reset total to zero?");
-    Input(isTicking).equals(true).help("Is the physiological time running? Else step will be zero");
-    Output(step).unit("PTU").help("Increment in physiological time units");
+    Input(resetTotal).equals(false).help("Reset `total` zero?");
+    Input(isTicking).equals(true).help("Is the physiological time running? Else `step` will be zero");
+    Output(step).unit("PTU").help("Increment in physiological time units (PTU)");
     Output(total).unit("PTU").help("Total time since reset");
 }
 

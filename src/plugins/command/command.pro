@@ -27,6 +27,9 @@ HEADERS +=  \
 #    graph.h \
     head.h \
     help.h \
+    help_class_base.h \
+    help_class_html.h \
+    help_class_plain.h \
     ht.h \
     latest.h \
     libr.h \
@@ -71,6 +74,9 @@ SOURCES +=  \
 #    graph.cpp \
     head.cpp \
     help.cpp \
+    help_class_base.cpp \
+    help_class_html.cpp \
+    help_class_plain.cpp \
     ht.cpp \
     latest.cpp \
     libr.cpp \

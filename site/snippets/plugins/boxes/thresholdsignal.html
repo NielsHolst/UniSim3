@@ -1,0 +1,17 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
+<tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
+<tr><td>input</td><td>double</td><td>0.0 </td><td>Input that is compared to threshold</td></tr>
+<tr><td>threshold</td><td>double</td><td>0.0 </td><td>Threshold value</td></tr>
+<tr><td>flagAbove</td><td>bool</td><td>TRUE </td><td>Raise flag when input is at or above threshold?</td></tr>
+<tr><td>signalFlagged</td><td>double</td><td>1.0 </td><td>Signal when flagged</td></tr>
+<tr><td>signalUnflagged</td><td>double</td><td>0.0 </td><td>Signal when not flagged</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the signal on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the signal just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the signal just set off?</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
+</tbody></table>
+<div class="end macro"></div>

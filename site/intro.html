@@ -125,7 +125,7 @@ Executable R snippet copied to clipboard!
 <p class='hidden-anchor' id='objects'>xxx</p><div class='border-grey'>
 <h2>Objects</h2>
 <p>Object-oriented design invites the use of natural language for very specific meanings. Thus we will use &#39;node&#39; to mean a <code>Node</code> object, &#39;box&#39; to mean a <code>Box</code> object and &#39;port&#39; to mean a <code>Port</code> object. Plural forms mean many such objects, e.g., &#39;boxes&#39; mean some number of <code>Box</code> objects.</p>
-<p>In the <span class="file-path">hello_world2.box</span> script above, we created one <code>Simulation</code> box called <code>sim</code> and one <code>OutputText</code> box, which we left unnamed. We consider the latter the <strong>child</strong> of the former, its <strong>parent</strong>. They are both parts of this object diagram:</p>
+<p>In the <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world2.box">hello_world2.box&#8681;</a> script above, we created one <code>Simulation</code> box called <code>sim</code> and one <code>OutputText</code> box, which we left unnamed. We consider the latter the <strong>child</strong> of the former, its <strong>parent</strong>. They are both parts of this object diagram:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/getting-started-object-diagram.svg" style="zoom:50%;" /></p>
 <p>The diagram shows five children of the <code>sim</code> box and two children of the <code>OutputText</code> box. There are three types of ports:</p>
 <ul>
@@ -139,7 +139,7 @@ Executable R snippet copied to clipboard!
 <p>You can use the <strong>help</strong> command together with a class name to see the input and output ports belonging to a class:</p>
 <pre><code class="command">&gt; help Simulation</code></pre>
 <p><code>help</code> will list the ports together with their <a href='#port-types'>type</a>, their default value (inputs only), their unit (in brackets, may be unitless) and description. If the port defaults to an <a href='#expressions'>expression</a>, the expression will be shown.</p>
-<p>If you want to change the default value of an input port, you precede its name by a period and write its value, as seen in the <span class="file-path">hello_world2.box</span> script:</p>
+<p>If you want to change the default value of an input port, you precede its name by a period and write its value, as seen in the <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world2.box">hello_world2.box&#8681;</a> script:</p>
 <pre><code class="listing">Simulation sim {
   .steps = 3
 }
@@ -161,7 +161,7 @@ Executable R snippet copied to clipboard!
         
 <p class='hidden-anchor' id='demo-boxscripts'>xxx</p><div class='border-grey'>
 <h2>Demo boxscripts</h2>
-<p>First time you run Universal Simulator (or whenever you have installed a new version and the first time you run that), it will give birth to a new folder <span class="file-path">UniversalSimulatorHome</span> inside your home folder. The home folder is easily found on a Mac or in Linux but is well hidden on Windows (where it seemingly doesn&#39;t feel right at home). On Windows you will find it inside <span class="file-path">C:\users\your_name</span>.</p>
+<p>First time you run Universal Simulator (or whenever you have installed a new version and the first time you run that), it will give birth to a new folder <em>UniversalSimulatorHome</em> inside your home folder. The home folder is easily found on a Mac or in Linux but is well hidden on Windows (where it seemingly doesn&#39;t feel right at home). On Windows you will find it inside <em>C:\users\your_name</em>.</p>
 <p>You are told as much in the Welcome that greets you whenever you start Universal Simulator, here on a Windows computer:</p>
 <pre><code class="output">Work folder:
   absolute path &#39;C:/Users/your_name/UniversalSimulatorHome&#39;
@@ -172,19 +172,18 @@ Output folder:
 </code></pre>
 <p>You can also retrieve this information with the  <a href='#get-folders'>get folders</a> command:</p>
 <pre><code class="command">&gt; get folders</code></pre>
-<p>For a start, <span class="file-path">UniversalSimulatorHome</span> is set as your <em>work folder</em>. Inside the work folder, you&#39;ve always got two sub-folders, the <em>input folder</em> and the <em>output folder</em>, aptly named <span class="file-path">input</span> and <span class="file-path">output</span> by default. </p>
-<p>The <span class="file-path">UniversalSimulatorHome/input</span> folder will be filled with all the example boxscripts found on this site and referred to in any publications that used Universal Simulator. You will find them in the <span class="file-path">input/demo</span> and <span class="file-path">input/papers</span> folders, respectively.</p>
+<p>For a start, <em>UniversalSimulatorHome</em> is set as your <em>work folder</em>. Inside the work folder, you&#39;ve always got two sub-folders, the <em>input folder</em> and the <em>output folder</em>, aptly named <em>input</em> and <em>output</em> by default. </p>
+<p>The <em>UniversalSimulatorHome/input</em> folder will be filled with all the example boxscripts found on this site and referred to in any publications that used Universal Simulator. You will find them in the <em>input/demo</em> and <em>input/papers</em> folders, respectively.</p>
     </div>
         
 <p class='hidden-anchor' id='user-boxscripts'>xxx</p><div class='border-grey'>
 <h2>User boxscripts</h2>
-<p>It is recommended that you create your own <em>work folder</em> for your models. Create a folder, maybe as a sub-folder of your <span class="file-path">Documents</span> folder. You can call it, for instance, <span class="file-path">BoxModels</span>. Inside that create a folder called <span class="file-path">input</span>. You&#39;ve now got these two empty folders:</p>
+<p>It is recommended that you create your own <em>work folder</em> for your models. Create a folder, maybe as a sub-folder of your <em>Documents</em> folder. You can call it, for instance, <em>BoxModels</em>. Inside that create a folder called <em>input</em>. You&#39;ve now got these two empty folders:</p>
 <ul>
-<li><span class="file-path">Documents/BoxModels</span></li>
-<li><span class="file-path">Documents/BoxModels/input</span></li>
-
+<li><em>Documents/BoxModels</em></li>
+<li><em>Documents/BoxModels/input</em></li>
 </ul>
-<p>Next, you need to tell Universal Simulator that <span class="file-path">BoxModels</span> is your work folder. First, find the absolute path to your work folder. On Windows, use File Explorer: Right-click the <span class="file-path">BoxModels</span> folder, choose Properties on the pop-up menu, select and copy the Location path. Paste this path as an argument to the <a href='#set-folder-work'>set folder work</a> command:</p>
+<p>Next, you need to tell Universal Simulator that <em>BoxModels</em> is your work folder. First, find the absolute path to your work folder. On Windows, use File Explorer: Right-click the <em>BoxModels</em> folder, choose Properties on the pop-up menu, select and copy the Location path. Paste this path as an argument to the <a href='#set-folder-work'>set folder work</a> command:</p>
 <pre><code class="command">&gt; set folder work C:/Users/your_name/Documents/BoxModels</code>
 <code class="output">Work folder:
   absolute path &#39;C:/Users/your_name/Documents/BoxModels&#39;
@@ -193,7 +192,7 @@ Input folder:
 Output folder:
   relative path &#39;output&#39; resolves to &#39;C:/Users/your_name/Documents/BoxModels/output&#39;
 </code></pre>
-<p>Now, you are ready to keep your own boxscripts in the <span class="file-path">BoxModels</span> folder. Create sub-folders inside BoxModels to organize your boxscripts as you wish.</p>
+<p>Now, you are ready to keep your own boxscripts in the <em>BoxModels</em> folder. Create sub-folders inside BoxModels to organize your boxscripts as you wish.</p>
 <p>If you need to revert to the default work folder (maybe to find the demo boxscripts more easily), use <a href='#set-folder-work-home'>HOME</a> as a magic folder name:</p>
 <pre><code class="command">&gt; set folder work HOME</code>
 <code class="output">Work folder:
@@ -260,7 +259,7 @@ Finished after 266 msecs in step 152/152
 <h2>Seeing and editing a boxscript</h2>
 <p>To have a look at the current boxscript simply type</p>
 <pre><code class="command">edit</code></pre>
-<p>This will show the boxscript code in the editor set up to edit boxscripts. First time off, no editor has been set up, so your operating system (Windows/OS X/Linux) will prompt you to choose an editor for this purpose. Any pure text editor will work (e.g., on Windows Notepad, or even better, <a href='https://notepad-plus-plus.org/'>Notepad++</a> but do not choose a word processor. Here, is the BoxScript code that you will see for the <span class="file-path">butterfly1</span> boxscript:</p>
+<p>This will show the boxscript code in the editor set up to edit boxscripts. First time off, no editor has been set up, so your operating system (Windows/OS X/Linux) will prompt you to choose an editor for this purpose. Any pure text editor will work (e.g., on Windows Notepad, or even better, <a href='https://notepad-plus-plus.org/'>Notepad++</a> but do not choose a word processor. Here, is the BoxScript code that you will see for the <a href="https://tildeweb.au.dk/au152367/input/demo/butterfly1.box">butterfly1.box&#8681;</a> script:
 <pre><code class="listing">// butterfly1.box
 Simulation sim {
   Calendar calendar {
@@ -382,7 +381,7 @@ Simulation sim {
   &gt;totalTime = 0 int
   &gt;totalDays = 0.0 d
   &gt;dayOfYear = 0 [1;366]</code></pre>
-<p>Here, the input ports are preceded by a period <code>.</code> and the output ports by a <code>&gt;</code>. For each port you see its current value, often follow by its type or an indication of its legal values. The command above was issued just after loading the <span class="file-path">butterfly1</span> boxscript. That&#39;s why the output ports carry their initial values, and the date, time and dateTime ports even appear empty (because their values are yet undefined). If we run the model and repeat the command, we get</p>
+<p>Here, the input ports are preceded by a period <code>.</code> and the output ports by a <code>&gt;</code>. For each port you see its current value, often follow by its type or an indication of its legal values. The command above was issued just after loading the <a href="https://tildeweb.au.dk/au152367/input/demo/butterfly1.box">butterfly1.box&#8681;</a> script. That&#39;s why the output ports carry their initial values, and the date, time and dateTime ports even appear empty (because their values are yet undefined). If we run the model and repeat the command, we get</p>
 <pre><code class="command">&gt; list calendar p</code>
 <code class="output">Calendar calendar
   .latitude = 52.0 [-90,90] const
@@ -474,7 +473,7 @@ Simulation sim {
 <pre><code class="listing">.scripts = c(&quot;general/setup.R&quot;, &quot;analysis/briere.R&quot;, &quot;figures/briere3.R&quot;)
 </code></pre>
 <p>The R scripts will be carried out (in the given order) when you paste the clipboard at the R prompt after having run your boxscript.</p>
-<p>Before your R scripts, another R script has been executed providing you with useful <em>hooks</em> to the output produced by your script. This script is the <span class="file-path">begin.R</span>, which is one of the standard scripts  residing in the <span class="file-path">inputs/scripts</span> folder of the Universal Simulator home folder. It sets up the following <em>variables</em>:</p>
+<p>Before your R scripts, another R script has been executed providing you with useful <em>hooks</em> to the output produced by your script. This script is the <a href="https://tildeweb.au.dk/au152367/input/scripts/begin.R">begin.R&#8681;</a> script, which is one of the standard scripts  residing in the <em>inputs/scripts</em> folder of the Universal Simulator home folder. It sets up the following <em>variables</em>:</p>
 <ul>
 <li>Colours named <code>red</code>, <code>blue</code>, <code>green</code>, <code>violet</code>, <code>orange</code>, <code>brown</code>, <code>pink</code>, <code>grey</code>. These colours can be used individually but they have also been set up to replace the default colour scales of <code>ggplot</code>.</li>
 <li>A data frame <code>sim</code> with all outputs from the boxscript.</li>
@@ -491,7 +490,7 @@ Simulation sim {
 <li><code>open_plot_window(width=7, height=7)</code> opens a pop-up window to show you plot. It uses different methods to create the windows depending on the platform (Mac, Windows or Linux).</li>
 
 </ul>
-<p>Here is the full <span class="file-path">briere1.R</span> script referred to in the boxscript above. It demonstrates how to compare boxscript outputs with observations:</p>
+<p>Here is the full <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.R">briere1.R&#8681;</a> script referred to in the boxscript above. It demonstrates how to compare boxscript outputs with observations:</p>
 <pre><code class="listing"># briere1.R
 sim = sim[1:3]
 colnames(sim) = c(&quot;Temperature&quot;, &quot;DayDegrees&quot;, &quot;Briere&quot;)

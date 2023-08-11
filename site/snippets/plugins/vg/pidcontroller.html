@@ -1,0 +1,18 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>sensedValue</td><td>double</td><td>0.0 </td><td>The sensed value</td></tr>
+<tr><td>desiredValue</td><td>double</td><td>0.0 </td><td>The desired value (setpoint)</td></tr>
+<tr><td>Kprop</td><td>double</td><td>0.1 </td><td>The proportional gain</td></tr>
+<tr><td>Kint</td><td>double</td><td>0.0 /min</td><td>The integral gain</td></tr>
+<tr><td>Kderiv</td><td>double</td><td>0.0 min</td><td>The derivative gain</td></tr>
+<tr><td>lookAhead</td><td>double</td><td>0.0 min</td><td>Computed error from predicted sensed value this time ahead</td></tr>
+<tr><td>minimum</td><td>double</td><td>-1.79769e+308 </td><td>Minimum allowed value of control variable</td></tr>
+<tr><td>maximum</td><td>double</td><td>1.79769e+308 </td><td>Maximum allowed value of control variable</td></tr>
+<tr><td>timeStep</td><td>double</td><td>- s</td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>controlVariable</td><td>double</td><td>0.0 </td><td>The control variable; tends to zero when all three error terms summed tend to zero</td></tr>
+<tr><td>error</td><td>double</td><td>0.0 </td><td>The error</td></tr>
+<tr><td>integral</td><td>double</td><td>0.0 min</td><td>The integral error</td></tr>
+<tr><td>derivative</td><td>double</td><td>0.0 /min</td><td>The derivative of the approach of sensed towards target value</td></tr>
+</tbody></table>
+<div class="end macro"></div>

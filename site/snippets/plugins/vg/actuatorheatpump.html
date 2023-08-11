@@ -1,0 +1,20 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">construction/geometry[groundArea]</span></td></tr>
+<tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
+<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors/humidity[rh]</span></td></tr>
+<tr><td>state</td><td>double</td><td>-</td><td>&larr; <span class="table-interface-code">setpoints/elementary/heatPumpsOn[value]</span> (Running state relative to full effect)</td></tr>
+<tr><td>number</td><td>int</td><td>1 0,1,2,...</td><td>Number of heat pumps</td></tr>
+<tr><td>maxCoolingPower</td><td>double</td><td>78.4 kW</td><td>Maximum cooling power</td></tr>
+<tr><td>coolingEfficiency</td><td>double</td><td>0.69</td><td>Effective proportion of cooling power [0;1]</td></tr>
+<tr><td>maxFlowRate</td><td>double</td><td>2.5 m3/s</td><td>Maximum air flow rate</td></tr>
+<tr><td>maxPowerUserParasitic</td><td>double</td><td>2.2 kW</td><td>Maximum basic power use</td></tr>
+<tr><td>coolingTemperature</td><td>double</td><td>10.0 oC</td><td>Temperature of the cooling aggregate</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>condensationRate</td><td>double</td><td>0.0 kg/m2/s</td><td>Rate of water condensed in the unit</td></tr>
+<tr><td>powerUseCooling</td><td>double</td><td>0.0 kW/m2</td><td>Power used for cooling</td></tr>
+<tr><td>powerUserParasitic</td><td>double</td><td>0.0 kW/m2</td><td>Power lost</td></tr>
+<tr><td>powerUse</td><td>double</td><td>0.0 kW/m2</td><td>Power used (total)</td></tr>
+<tr><td>heat</td><td>double</td><td>0.0 kW/m2</td><td>Heat generated</td></tr>
+</tbody></table>
+<div class="end macro"></div>

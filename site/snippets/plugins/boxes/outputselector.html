@@ -1,0 +1,16 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>beginStep</td><td>int</td><td>0 int</td><td>Output is written when this step is reached</td></tr>
+<tr><td>beginDateTime</td><td>datetime</td><td>null DateTime</td><td>Output is written when this time point is reached (optional)</td></tr>
+<tr><td>step</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[step]</span></td></tr>
+<tr><td>dateTime</td><td>datetime</td><td>- </td><td>&larr; <span class="table-interface-code">Calendar::*[dateTime]</span></td></tr>
+<tr><td>period</td><td>int</td><td>1 int>0</td><td>If >1: A row of output will be produced with this period</td></tr>
+<tr><td>summary</td><td>string</td><td>"average" string</td><td>If period>1 then either'current or 'average' value</td></tr>
+<tr><td>final</td><td>bool</td><td>FALSE </td><td>Overrules 'period'</td></tr>
+<tr><td>useLocalDecimalChar</td><td>bool</td><td>FALSE </td><td>Use local decimal character in output?</td></tr>
+<tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">!exists(OutputR::*[skipFormats])</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>isActive</td><td>bool</td><td>FALSE </td><td>Should output be written?</td></tr>
+<tr><td>isSkipping</td><td>bool</td><td>FALSE </td><td>Are lines being skipped?</td></tr>
+</tbody></table>
+<div class="end macro"></div>

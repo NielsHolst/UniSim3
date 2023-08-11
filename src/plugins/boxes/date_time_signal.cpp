@@ -19,9 +19,9 @@ DateTimeSignal::DateTimeSignal(QString name, Box *parent)
     Input(endDate).equals(BareDate(12,31)).help("The end of the date interval");
     Input(beginTime).equals(QTime(0,0)).help("The beginning of the time interval");
     Input(endTime).equals(QTime(0,0)).help("The end of the time interval");
-    Input(signalInside).equals(1.).help("Resulting signal when day and time are inside the day and time intervals");
-    Input(signalOutside).equals(0.).help("Resulting signal when day and time are outside the day and time intervals");
-    Input(circadian).equals(true).help("Tells whether signal follows a daily rythm");
+    Input(signalInside).equals(1.).help("Resulting `signal` when day and time are inside the day and time intervals");
+    Input(signalOutside).equals(0.).help("Resulting `signal` when day and time are outside the day and time intervals");
+    Input(circadian).equals(true).help("Tells whether `signal` follows a daily rythm");
 }
 
 bool DateTimeSignal::computeFlag() {

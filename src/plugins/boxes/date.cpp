@@ -20,7 +20,7 @@ Date::Date(QString name, Box *parent)
     Input(month).equals(1).help("Month").unit("[1;12]");
     Input(year).equals(2000).help("Year");
     Output(date).help("The date constructed");
-    NamedOutput("value", date).help("Synonym for 'date'");
+    NamedOutput("value", date).help("Synonym for `date`");
 }
 
 

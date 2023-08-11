@@ -33,7 +33,7 @@ img {
 * {
   margin: 0;
   padding: 0;
-  border-radius: 6px;
+  /* border-radius: 6px; */
   box-sizing: border-box;
 }
 
@@ -43,50 +43,54 @@ img {
   background-color: var(--col-red-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-blue {
   border: var(--border-width) solid var(--col-blue);
   background-color: var(--col-blue-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-green {
   border: var(--border-width) solid var(--col-green);
   background-color: var(--col-green-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-violet {
   border: var(--border-width) solid var(--col-violet);
   background-color: var(--col-violet-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-orange {
   border: var(--border-width) solid var(--col-orange);
   background-color: var(--col-orange-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-brown {
   border: var(--border-width) solid var(--col-brown);
   background-color: var(--col-brown-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-pink {
   border: var(--border-width) solid var(--col-pink);
   background-color: var(--col-pink-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
+  border-radius: 6px;
 }
 .border-grey {
   border: var(--border-width) solid var(--col-grey);
   background-color: var(--col-grey-l);
   padding: var(--border-padding);
   margin: var(--border-margin);
-  /* margin-left: var(--border-margin); */
-  /* margin-right: var(--border-margin); */
-  /* margin-top: calc(var(--border-margin) - 3px); */
-  /* margin-bottom: calc(var(--border-margin) - 3px); */
+  border-radius: 6px;
 }

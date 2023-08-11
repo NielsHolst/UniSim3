@@ -17,12 +17,12 @@ Accumulator::Accumulator(QString name, Box *parent)
     : Box(name, parent)
 {
     help("accumulates values");
-    Input(initial).help("Initial value at reset");
-    Input(change).help("Change added to value");
-    Input(minValue).equals(std::numeric_limits<double>::lowest()).help("Minimum possible value");
-    Input(maxValue).equals(std::numeric_limits<double>::max()).help("Maximum possible value");
+    Input(initial).help("Initial `value` at reset");
+    Input(change).help("Change added to `value`");
+    Input(minValue).equals(std::numeric_limits<double>::lowest()).help("Minimum possible `value`");
+    Input(maxValue).equals(std::numeric_limits<double>::max()).help("Maximum possible `value`");
     Output(value).help("Accumulated value");
-    NamedOutput("signal", value).help("Synonym for 'value'");
+    NamedOutput("signal", value).help("Synonym for `value`");
 }
 
 void Accumulator::reset() {

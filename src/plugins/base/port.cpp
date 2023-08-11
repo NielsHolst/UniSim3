@@ -45,7 +45,8 @@ Port& Port::acceptNull() {
 }
 
 Port& Port::unit(QString value) {
-    _unit = value;
+    if (value.toLower() != "bool") // obsolete unit
+        _unit = value;
     return *this;
 }
 

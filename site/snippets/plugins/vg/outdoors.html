@@ -1,0 +1,14 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>co2</td><td>double</td><td>400.0 ppm</td><td>Outdoors CO2 concentration</td></tr>
+<tr><td>temperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">./records[Tair]</span> (Outdoors ambient temperature)</td></tr>
+<tr><td>rh</td><td>double</td><td>-</td><td>&larr; <span class="table-interface-code">./records[Rhair]</span> (Outdoors ambient relative humidity)</td></tr>
+<tr><td>radiation</td><td>double</td><td>- W/m2</td><td>&larr; <span class="table-interface-code">./records[GlobRad]</span> (Total sunlight irradiation)</td></tr>
+<tr><td>propPar</td><td>double</td><td>0.45</td><td>Proportion of PAR in radiation [0;1]</td></tr>
+<tr><td>propUv</td><td>double</td><td>0.07</td><td>Proportion of UV in radiation [0;1]</td></tr>
+<tr><td>windSpeed</td><td>double</td><td>- m/s</td><td>&larr; <span class="table-interface-code">./records[Windspeed]</span> (Outdoors wind speed)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>par</td><td>double</td><td>0.0 mymol PAR/m2/s</td><td>Sunlight PAR</td></tr>
+<tr><td>soilTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">./soilTemperature[value]</span></td></tr>
+</tbody></table>
+<div class="end macro"></div>

@@ -15,13 +15,13 @@ BaseSignal::BaseSignal(QString name, Box *parent)
 {
     setClassName("base", "BaseSignal");
     help("is a base class classes that compute signal");
-    Input(initialSignal).help("Value of signal at reset");
+    Input(initialSignal).help("Value of `signal` at reset");
     Input(initialFlag).equals(false).help("Value of flag at reset");
     Output(signal).help("Value of the signal");
-    Output(flagIsUp).help("Is the signal on?");
-    Output(flagJustRaised). help("Was the signal just set on?");
-    Output(flagJustLowered).help("Was the signal just set off?");
-    NamedOutput("value", signal).help("Synonym for signal");
+    Output(flagIsUp).help("Is the `signal` on?");
+    Output(flagJustRaised). help("Was the `signal` just set on?");
+    Output(flagJustLowered).help("Was the `signal` just set off?");
+    NamedOutput("value", signal).help("Synonym for `signal`");
 }
 
 void BaseSignal::reset() {

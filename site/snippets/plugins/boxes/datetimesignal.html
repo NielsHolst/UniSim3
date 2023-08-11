@@ -1,0 +1,20 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
+<tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
+<tr><td>currentDateTime</td><td>datetime</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[dateTime]</span></td></tr>
+<tr><td>beginDate</td><td>baredate</td><td>1/1 </td><td>The beginning of the date interval</td></tr>
+<tr><td>endDate</td><td>baredate</td><td>31/12 </td><td>The end of the date interval</td></tr>
+<tr><td>beginTime</td><td>time</td><td>00:00:00 </td><td>The beginning of the time interval</td></tr>
+<tr><td>endTime</td><td>time</td><td>00:00:00 </td><td>The end of the time interval</td></tr>
+<tr><td>signalInside</td><td>double</td><td>1.0 </td><td>Resulting signal when day and time are inside the day and time intervals</td></tr>
+<tr><td>signalOutside</td><td>double</td><td>0.0 </td><td>Resulting signal when day and time are outside the day and time intervals</td></tr>
+<tr><td>circadian</td><td>bool</td><td>TRUE </td><td>Tells whether signal follows a daily rythm</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the signal on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the signal just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the signal just set off?</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
+</tbody></table>
+<div class="end macro"></div>

@@ -38,14 +38,14 @@ Calendar::Calendar(QString name, Box *parent)
     Output(date).help("Current date");
     Output(time).help("Current time of the day");
     Output(dateTime).help("Current date and time");
-    Output(atMidnight).unit("bool").help("Just past midnight?");
+    Output(atMidnight)  .help("Just past midnight?");
     Output(timeStepSecs).help("Time step duration").unit("s");
     Output(timeStepDays).help("Time step duration").unit("d");
     Output(totalTimeSteps).help("Total number of time steps since calendar was reset");
-    Output(totalTime).help("Total time since calendar was reset; in units of timeUnit").unit(port("timeUnit")->value<QString>());
-    Output(totalDays).help("Total time since calendar was reset").unit("d");
+    Output(totalTime).help("Total time since calendar was reset; in units of `timeUnit`");
+    Output(totalDays).help("Total time since calendar was reset in days").unit("d");
     Output(dayOfYear).help("Julian day").unit("[1;366]");
-    Output(bareDate).help("'date' as a bare date");
+    Output(bareDate).help("`date` as a bare date");
 }
 
 void Calendar::initialize() {

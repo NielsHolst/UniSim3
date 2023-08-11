@@ -1,0 +1,37 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>swAbsorptivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swAbsorptivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>swAbsorptivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swAbsorptivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>swReflectivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swReflectivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>swReflectivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swReflectivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>swTransmissivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swTransmissivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>swTransmissivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swTransmissivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>lwAbsorptivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwAbsorptivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>lwAbsorptivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwAbsorptivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>lwReflectivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwReflectivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>lwReflectivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwReflectivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>lwTransmissivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwTransmissivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>lwTransmissivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwTransmissivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>Utops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[UtopAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>Ubottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[UbottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>heatCapacitys</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[heatCapacityAdj]</span> (Vector of materials' adjusted values)</td></tr>
+<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[groundArea]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
+<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+</tbody></table>
+<div class="end macro"></div>

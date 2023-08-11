@@ -59,7 +59,9 @@ extract_headers = function(lines) {
       level = substr(lines[i],level,level)
       caption = substr(lines[i], from, to) |> str_trim()
       id = str_to_lower(caption) |>             # all characters lowercase
+           # str_replace_all("&shy;", "_SHY_") |> # recode soft hyphens
            str_replace_all("&[^;]*;", "") |>    # remove character codes
+           # str_replace_all("_SHY_", "&shy;") |> # re-establish soft hyphens
            str_replace_all("<[^>]*>", "") |>    # remove HTML tags
            str_trim() |>                        # remove leading and trailing whitespace
            str_replace_all("[^A-Za-z0-9]+","-") # replace all non-alphanumeric characters with a "-"

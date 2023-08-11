@@ -1,0 +1,41 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>radPrecision</td><td>double</td><td>0.1 W/m2|mumol/m2/s</td><td>Precision of numerical solution to radiation budget</td></tr>
+<tr><td>tempPrecision</td><td>double</td><td>0.5 K</td><td>Max. allowed temperature change in a sub-step among layers</td></tr>
+<tr><td>thresholdPrecision</td><td>double</td><td>0.1 K</td><td>Precision of temperature thresholds for climate control</td></tr>
+<tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
+<tr><td>averageHeight</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[averageHeight]</span></td></tr>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>outdoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[temperature]</span></td></tr>
+<tr><td>outdoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[rh]</span></td></tr>
+<tr><td>outdoorsCo2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[co2]</span></td></tr>
+<tr><td>transpirationRate</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">plant[transpiration]</span></td></tr>
+<tr><td>Pn</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">plant[Pn]</span></td></tr>
+<tr><td>co2Injection</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/co2[value]</span></td></tr>
+<tr><td>heatPipeFlux</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/heatPipes[heatFlux]</span></td></tr>
+<tr><td>ventilationThreshold</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">controllers/ventilation/temperatureThreshold[value]</span></td></tr>
+<tr><td>ventilationCostThreshold</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">controllers/ventilation/maxHeatingCost[value]</span></td></tr>
+<tr><td>heatingThreshold</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">controllers/heating[value]</span></td></tr>
+<tr><td>heatPipesOn</td><td>vec_bool</td><td>- </td><td>&larr; <span class="table-interface-code">heatPipes/*[isHeating]</span></td></tr>
+<tr><td>ventilationOn</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/ventilation[isVentilating]</span></td></tr>
+<tr><td>deltaVentControl</td><td>double</td><td>0.3 /h/min</td><td>Control increment of ventilation flux</td></tr>
+<tr><td>deltaVentControlRelative</td><td>double</td><td>0.2 /min</td><td>Relative control of ventilation flux</td></tr>
+<tr><td>deltaHeatingControl</td><td>double</td><td>4.0 K/min</td><td>Control increment in heating temperature</td></tr>
+<tr><td>babyTimeStep</td><td>double</td><td>1.0 s</td><td>Length of first time step after climate control action</td></tr>
+<tr><td>step</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">sim[step]</span></td></tr>
+<tr><td>dateTime</td><td>datetime</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[dateTime]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>subSteps</td><td>int</td><td>0 int</td><td>Number of sub-steps taken to resolve the whole budget</td></tr>
+<tr><td>radIterations</td><td>int</td><td>0 int</td><td>Number of iterations taken to resolve radiation budget</td></tr>
+<tr><td>maxDeltaT</td><td>double</td><td>0.0 K</td><td>Max. temperature change in a sub-step</td></tr>
+<tr><td>controlCode</td><td>int</td><td>0 int</td><td>Code for the control option needed</td></tr>
+<tr><td>actionCode</td><td>int</td><td>0 int</td><td>Code for the control action taken</td></tr>
+<tr><td>transpiration</td><td>double</td><td>0.0 kg/m2</td><td>Plant transpiration</td></tr>
+<tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation on cover</td></tr>
+<tr><td>ventedWater</td><td>double</td><td>0.0 kg/m2</td><td>Water loss by ventilation</td></tr>
+<tr><td>latentHeatBalance</td><td>double</td><td>0.0 W/m2</td><td>Latent heat of water balance</td></tr>
+<tr><td>ventilationHeatLoss</td><td>double</td><td>0.0 W/m2</td><td>Sensible heat lost by ventilation</td></tr>
+<tr><td>indoorsSensibleHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of change in indoors air sensible heat</td></tr>
+<tr><td>indoorsLatentHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of change in indoors air latent heat</td></tr>
+</tbody></table>
+<div class="end macro"></div>
