@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Ecological Modelling Laboratory</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="description" content=""/>
-    <link rel="icon" href="media/squirrel-32x32.ico">
-    <link rel="stylesheet" type="text/css" href="basic.css"/>
-    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
-  </head>
+  <div class="insert macro">#head.html</div>
+  <div class="begin macro"></div>
+      <head>
+      <meta charset="UTF-8"/>
+      <title>EcolMod Lab</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <meta name="description" content=""/>
+      <link rel="icon" href="media/squirrel-32x32.ico">
+      <link rel="stylesheet" type="text/css" href="basic.css"/>
+      <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    </head>
+  <div class="end macro"></div>
   <body>
   <div class="insert macro">#header.html#download#An offer you can't refuse</div>
   <div class="begin macro"></div>
@@ -34,25 +39,96 @@
     <div class="wide-panel">
       <div class="begin-index-headers"></div>
       <div class="central">
-<p class='hidden-anchor' id='motivation'>xxx</p><div class='border-grey'>
-<h1>Motivation</h1>
-          <p>You want to create a mathematical model of sorts. Well, not that mathematical maybe. More, like computational. You have this image in your mind, which you just put down on paper. Maybe it looks like this:</p>
-          
-        </div>
-<p class='hidden-anchor' id='what-s-boxscript'>xxx</p><div class='border-grey'>
-<h1>What's BoxScript?</h1>
-<p>Enough talk. Let&#39;s see what a real boxscript looks like. Here&#39;s one:</p>
-        </div>
-<p class='hidden-anchor' id='what-s-the-universal-simulator'>xxx</p><div class='border-grey'>
-<h1>What’s the Universal Simulator?</h1>
-<p>The Universal Simulator provides a <em>prompt</em> as the user interface. Under the hood, it contains the <em>BoxScript Engine</em>, which carries out the actual simulations. It collaborates smoothly with <em>R</em> to produce simulation outputs. This is the overall process:</p>
+<p class='hidden-anchor' id='download-universal-simulator'>xxx</p><div class='border-grey'>
+<h1>Download Universal Simulator</h1>
+<p>Download Universal Simulator for</p>
+<ul>
+<li><p><a href='https://tildeweb.au.dk/au152367/download/UniversalSimulator-3.0.6-windows-x64-installer.exe'>Universal Simulator 3.0.6 for Windows</a> (23 September 2022). </p>
+</li>
+<li><p>MacOS (working on that)</p>
+<ul>
+<li>Note: The MacOS version awaits that my Apple Developers Licence becomes functional. So far, I&#39;ve had no luck.</li>
 
+</ul>
+</li>
+<li><p>Linux (working on that)</p>
+</li>
+
+</ul>
+<p>Double-click the downloaded file to install Universal Simulator and then follow the <a href='https://www.ecolmod.org/docs/#11-getting-started'>getting started</a> instructions.</p>          
         </div>
+        
+<p class='hidden-anchor' id='additional-software'>xxx</p><div class='border-grey'>
+<h1>Additional software</h1>
+<p>You will also need</p>
+<ul>
+<li><a href='https://www.r-project.org/'>R</a></li>
+<li>or <a href='https://www.rstudio.com/'>R Studio</a></li>
+
+</ul>
+<p>At the Universal Simulator prompt, type <code>libr l</code> to get a list of the R packages that you will need to have installed to handle output from Universal Simulator: </p>
+<pre><code>&gt; libr l
+# R packages needed by Universal Simulator
+library(&quot;colorspace&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggpubr&quot;)
+library(&quot;gridExtra&quot;)
+library(&quot;lubridate&quot;)
+library(&quot;plyr&quot;)
+library(&quot;reshape2&quot;)
+library(&quot;scales&quot;)
+library(&quot;splines&quot;)
+library(&quot;stringr&quot;)
+</code></pre>
+<p>Copy and paste the lines above into R to pinpoint any packages missing. Then type <code>libr i</code> and copy and paste into R the lines needed to install any missing packages:</p>
+<pre><code>&gt; libr i
+# R packages needed by Universal Simulator
+install.packages(&quot;colorspace&quot;)
+install.packages(&quot;ggplot2&quot;)
+install.packages(&quot;ggpubr&quot;)
+install.packages(&quot;gridExtra&quot;)
+install.packages(&quot;lubridate&quot;)
+install.packages(&quot;plyr&quot;)
+install.packages(&quot;reshape2&quot;)
+install.packages(&quot;scales&quot;)
+install.packages(&quot;splines&quot;)
+install.packages(&quot;stringr&quot;)
+</code></pre>
+<p>On Windows, it is convenient to use the Notepad++ editor to edit boxscripts:</p>
+<ul>
+<li><a href='https://notepad-plus-plus.org/downloads/'>Notepad++</a></li>
+
+</ul>
+</div>
+        
+<p class='hidden-anchor' id='source-code'>xxx</p><div class='border-grey'>
+<h1>Source code</h1>
+<p>The Universal Simulator source code can be found on</p>
+<ul>
+<li><a href='https://github.com/NielsHolst/UniSim3'>GitHub/NielsHolst/UniSim3</a> </li>
+
+</ul>
+<p>Click the <span style='color: var(--col-green); border: 1px solid var(--col-green); padding: 0 0.3em; border-radius:0.5em'>Latest</span> button and follow the link to download all the source code (C++, boxscripts, R, Qt make) as a zip file; or if you are a hacker, apply your git magic.</p>
+
+</div>
+
+
+<p class='hidden-anchor' id='qt-creator'>xxx</p><div class='border-grey'>
+<h1>Qt Creator</h1>
+<p>The Universal Simulator source code is tailored for the Qt Creator IDE (Integrated Development Environment). As we are making open-source software only, we are entitled to use the free version:</p>
+<ul>
+<li><a href='https://www.qt.io/download'>Qt Creator</a></li>
+
+</ul>
+<p>Follow this excellent video, how to <a href='https://www.youtube.com/watch?v=nscgFv4l53w'>install Qt Creator</a> on Linux, Mac and Windows.</p>
+<p>On a Mac, as shown in the video, you need to install XCode besides Qt Creator. If the installation of XCode seems to take forever, leave it working overnight! See discussion on <a href='https://stackoverflow.com/questions/67900692/latest-version-of-xcode-stuck-on-installation-12-5'>lengthy XCode installation</a>.</p>
+</div>
+
       </div>
       <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#motivation">Motivation</a></li><li><a href="#what-s-boxscript">What's BoxScript?</a></li><li><a href="#what-s-the-universal-simulator">What’s the Universal Simulator?</a></li></ul>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#download-universal-simulator">Download Universal Simulator</a></li><li><a href="#additional-software">Additional software</a></li><li><a href="#source-code">Source code</a></li><li><a href="#qt-creator">Qt Creator</a></li></ul>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>
@@ -66,7 +142,7 @@
         </div>
         <div class="border-orange">
           <h2>Contact</h2>
-          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write me</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-violet">

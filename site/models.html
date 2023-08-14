@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Ecological Modelling Laboratory</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="description" content=""/>
-    <link rel="icon" href="media/squirrel-32x32.ico">
-    <link rel="stylesheet" type="text/css" href="basic.css"/>
-    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-  </head>
+  <div class="insert macro">#head.html</div>
+  <div class="begin macro"></div>
+      <head>
+      <meta charset="UTF-8"/>
+      <title>EcolMod Lab</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <meta name="description" content=""/>
+      <link rel="icon" href="media/squirrel-32x32.ico">
+      <link rel="stylesheet" type="text/css" href="basic.css"/>
+      <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    </head>
+  <div class="end macro"></div>
   <body>
   <div class="insert macro">#header.html#models#Let's sharpen the questions</div>
   <div class="begin macro"></div>
@@ -54,7 +57,7 @@
 <p>This is a tri-trophic model of the winter wheat-cereal aphid (<em>Sitobion avenae</em>)-fungus (<em>Pandora neoaphidis</em>) system, simulating the dynamics of aphid and fungus from spring until harvest. The winter wheat model is rudimentary; the crop is only represented as a growth stage modelled by a regression model fitted to Norwegian growing conditions. Weather data (daily average temperature and maximum relative humidity) drives the model. Optionally, the winter wheat model can be left out, and the crop growth stage instead supplied as an additional column in the weather file. A scientific paper (Stéphanie Saussure et al.) presenting the model is currently (2022) under review.</p>
 <p>Below you will find models of increasing complexity, building up to the full model found in the scientific paper. The models are composed of building blocks, implemented as C++ <a href='#'>classes</a>. The functionality of model building blocks were implemented in C++. If you really want to get the depth of that, you can download the <a href='https://www.ecolmod.org/download/#source-code'>source code</a>. The classes specific to this model is found in the <code>src/plugins/aphid</code> source code folder.</p>
 <p>Each model building block was designed to solve a particular task. The model was constructed from building blocks included in the standard plugin (<a href='#'>boxes</a>), together with building blocks developed specifically for this model (in the <a href='#'>aphid</a> plugin). </p>
-<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='#'>install Universal Simulator</a>. For example, to run the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model.box">crop-aphid-model.box&cudarrr;</a> script, you write at the Universal Simulator prompt:</p>
+<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='#'>install Universal Simulator</a>. For example, to run the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model.box">crop-aphid-model.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
 <pre><code class="command">> run models/aphid/crop-aphid-model.box
 </code></pre>
 <p>Paste the clipboard at the R prompt to see the output as described in <a href='#'>Running simulations</a>.</p>
@@ -65,7 +68,7 @@
 <p>The crop model can either be weather-driven (by a weather file) or data-driven (by recorded wheat growth stages).</p>
 <h3><li>Weather-driven</li></h3>
 <p>The weather-driven crop model makes use of the <a href='#'>CropGrowthStage</a> and <a href='#'>CropIsGrowing</a> models, tailored for Norwegian conditions, together with the generic <a href='#'>DayDegrees</a> model. A <a href='#'>Calendar</a> and <a href='#'>Records</a> box provides the driving data:</p>
-<pre><code><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-model-weather-driven.box.box">// crop-model-weather-driven.box&cudarrr;</a>
+<pre><code><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-model-weather-driven.box">// crop-model-weather-driven.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/04/2004
@@ -108,7 +111,7 @@ Simulation sim {
 <p>&nbsp;</p>
 <h3 id='optionally-data-driven'><li>Optionally data-driven</li></h3>
 <p>The crop sub-model used in the final, complete model is flexible. It will pick the growth stage from the weather file, if a <code>CropGrowthStage</code> column is available. Otherwise, it uses the value provided by the weather-driven model. This feature was needed for the validation runs of the model, because the field observations were not from Norway. In those cases, the <code>CropGrowthStage</code> model cannot be expected to hold; it is more accurate to use the observed crop growth stages. Here is the boxscript to demonstrate a data-driven crop growth stage:</p>
-<pre><code><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-model-data-driven.box">// crop-model-data-driven.box&cudarrr;</a>
+<pre><code><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-model-data-driven.box">// crop-model-data-driven.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/04/1995
@@ -217,7 +220,7 @@ Simulation sim {
 </code></pre>
 <p>The <code>aphid</code> box is just a <code>Box</code>, which means it acts as a simple container of other boxes. Since we are anticipating a model including the fungus soon, we have put the <code>nymph</code> and <code>adult</code> stages inside a <code>susceptible</code> box (&#39;susceptible&#39; means &#39;uninfected&#39; in epidemiologist speak). Both are further divided into sub-populations of <code>apterous</code> and <code>alate</code> morphs. The <code>adult</code> box holds boxes inside for the individuals (<code>apterous</code> and <code>alate</code>) and their respective reproduction (<code>fecundity</code>).</p>
 <p>The <code>param</code> box holds parameter values that must be the same across several boxes, as seen in the boxscript below.</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model.box">// crop-aphid-model.box&cudarrr;</a>
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model.box">// crop-aphid-model.box&#9207;</a>
 Simulation sim {
   Box param {
     &amp;k = 15
@@ -356,7 +359,7 @@ Simulation sim {
 <p class='hidden-anchor' id='crop-aphid-model-with-uncertainty'>xxx</p><div class='border-grey'>
 <h2>Crop-aphid model with uncertainty</h2>
 <p>In this extension of the model above, we include uncertainty on weather and a few model parameters. Every time you run the model, you will get a different output. In this boxscript listing, only the additional boxes and major changes are shown (left-out parts shown as <code>...</code>):</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model-ua.box">// crop-aphid-model-ua.box&cudarrr;</a>
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model-ua.box">// crop-aphid-model-ua.box&#9207;</a>
 Simulation sim {
   .iterations = 30
   .silent = TRUE
@@ -450,7 +453,7 @@ RandomUniformInt k
 <p><code>fileNumber</code> represents a bit of a hack to choose at random, a file with suffix <code>txt</code> within the <code>weather</code> sub-folder. Two <code>SelectFile</code> boxes do the trick. The first one (<code>weatherFiles</code>) is queried by <code>fileNumber</code> about the total number of candidate files. The second one (<code>files</code>) is used to pick a file by the random number (the files are considered numbered alphabetically), which ultimately is the one opened by <code>weather</code>.</p>
 <p><code>iterations</code> have been set to <code>30</code>, which means the model will be running 30 times. To avoid an avalanche of status messages on the screen, <code>silent</code> has been set to <code>TRUE</code>. You should try setting it to <code>FALSE</code> (its default value), just to notice the difference.</p>
 <p>The <code>OutputR</code> box has been set to run a dedicated R script to process the simulation output:</p>
-<pre><code class='listing'><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model-ua.R"># crop-aphid-model-ua.R&cudarrr;</a>
+<pre><code class='listing'><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-model-ua.R"># crop-aphid-model-ua.R&#9207;</a>
 densities = colnames(sim)[3:9]
 
 M = melt(sim, id.vars=c(&quot;iteration&quot;, &quot;date&quot;), measure.vars=densities, 
@@ -494,7 +497,7 @@ print(P)
 </ul>
 <p>Remember that exposed means &#39;infected&#39;. Furthermore, note that we call nymphs, that will develop into alate adults, &#39;alate&#39;; the correct word is &#39;alatiform&#39; but we ignore that distinction in the code to make our boxscripts more readable.</p>
 <p>Here is the complete boxscript. It has been broken into pieces to allow comments as we go:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-fungus-model.box">// crop-aphid-fungus-model.box&cudarrr;</a>
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/crop-aphid-fungus-model.box">// crop-aphid-fungus-model.box&#9207;</a>
 Simulation sim {
   Box param {
     &amp;k = 15
@@ -846,7 +849,7 @@ Box infectious {
 
 <p class='hidden-anchor' id='biocontrol-model-with-uncertainty-analysis'>xxx</p><div class='border-grey'>
 <h2>Biocontrol model with uncertainty analysis</h2>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">biocontrol-model.box&cudarrr;</a> script adds uncertain parameters, as we already saw in <a href='#crop-aphid-model-with-uncertainty'>Crop-aphid model with uncertainty</a>, but with even more uncertain parameters, most of them pertaining to the fungus. These are the exact same uncertain 11 parameters that also appear in the scientific paper on the model (Saussure et al., submitted 2022). Here is the <code>random</code> box from the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol.box">biocontrol.box&cudarrr;</a> script:</p>
+<p>The <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script adds uncertain parameters, as we already saw in <a href='#crop-aphid-model-with-uncertainty'>Crop-aphid model with uncertainty</a>, but with even more uncertain parameters, most of them pertaining to the fungus. These are the exact same uncertain 11 parameters that also appear in the scientific paper on the model (Saussure et al., submitted 2022). Here is the <code>random</code> box from the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script:</p>
 <pre><code = class="listing">...
 Box random {
   RandomiserStratified randomiser {
@@ -952,7 +955,7 @@ RandomNormal transmissionEfficiency
     &gt;&gt; sim/system/withFungus/infectious/infectionRate[transmissionEfficiency]
 &gt; 
 </code></pre>
-<p>A <code>Biocontrol</code> box has been added near the end of the boxscript, and the output is now sent to a dedicated R script (<a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol.R">biocontrol.R&cudarrr;</a>): 
+<p>A <code>Biocontrol</code> box has been added near the end of the boxscript, and the output is now sent to a dedicated R script (<a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol.R">biocontrol.R&#9207;</a>): 
 <pre><code class="listing">...
 Biocontrol biocontrol {
   .aphidPressureWithoutF = withoutFungus/diagnostics/aphidDays[value] 
@@ -977,7 +980,7 @@ OutputR {
 <pre><code class="command">> run models/aphid/biocontrol-model.box
 </code></pre>
 <p>it will run for 30 iterations. However, here I have changed it to just one iteration</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">// biocontrol-model.box&cudarrr;</a>
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">// biocontrol-model.box&#9207;</a>
 Simulation sim {
   .iterations = 1
   ...
@@ -1004,8 +1007,8 @@ Simulation sim {
 <p class='hidden-anchor' id='setting-up-the-analysis'>xxx</p><p class='hidden-anchor' id='biocontrol-with-sensitivity-analysis'>xxx</p><div class='border-grey'>
 <h2>Biocontrol with sensitivity analysis</h2>
 <h3><li>Setting up the analysis</li></h3>
-<p>It will take us only a little editing of the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">biocontrol-model.box&cudarrr;</a> script to add sensitivity analysis (SA). First, you should realise that SA is very computing intensive, so we need to optimise our sampling strategy for the random numbers. We will shift from stratified random sampling (which optimises the random sampling inside the distribution of each model parameter)  to Sobol&#39; quasi-random numbers (which optimise the random sampling inside the 11-dimensional distribution across all 11 model parameters). This is set up at the top of the boxscript, where we replace <code>RandomiserStratified</code> with <code>RandomiserSobolSequence</code>:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa.box">// biocontrol-model-sa.box&cudarrr;</a>
+<p>It will take us only a little editing of the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script to add sensitivity analysis (SA). First, you should realise that SA is very computing intensive, so we need to optimise our sampling strategy for the random numbers. We will shift from stratified random sampling (which optimises the random sampling inside the distribution of each model parameter)  to Sobol&#39; quasi-random numbers (which optimise the random sampling inside the 11-dimensional distribution across all 11 model parameters). This is set up at the top of the boxscript, where we replace <code>RandomiserStratified</code> with <code>RandomiserSobolSequence</code>:</p>
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa.box">// biocontrol-model-sa.box&#9207;</a>
 Simulation sim {
   .iterations = 832 // 832 (for demonstration) or 1703936 (for analysis)
   .silent = TRUE
@@ -1139,7 +1142,7 @@ PageR {
 </ul>
 <p>where <em>nnnn</em> is some running number. The output folder is not a safe place for files (you should empty it now and then). Copy those two files to another folder for safe-keeping.</p>
 <p>You must write your own R script to process the two files but there is an R script to get you started residing in the same folder as the <code>biocontrol-model-sa.box</code> script:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa-restore.R"># biocontrol-model-sa-restore.R&cudarrr;</a>
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa-restore.R"># biocontrol-model-sa-restore.R&#9207;</a>
 rm(list=ls(all=TRUE))
 
 # Load standard scripts
@@ -1151,11 +1154,11 @@ setwd(&quot;&lt;path to your own folder&gt;&quot;)
 load(&quot;biocontrol-model-sa_nnnn.Rdata&quot;)
 load(&quot;biocontrol-model-sa_nnnn-S.Rdata&quot;)
 </code></pre>
-<p>The first line clears R memory just to be certain that we are working on the restored data. The scripts <a href="https://tildeweb.au.dk/au152367/input/scripts/begin.R">begin.R&cudarrr;</a> and <a href="https://tildeweb.au.dk/au152367/input/scripts/begin-sobol.R">begin-sobol.R&cudarrr;</a> are standard scripts with various useful functions found in the <code>scripts</code> sub-folder inside your input folder. Find out where your input folder is by the  <a href='#'>get folders</a> command:</p>
+<p>The first line clears R memory just to be certain that we are working on the restored data. The scripts <a href="https://tildeweb.au.dk/au152367/input/scripts/begin.R">begin.R&#9207;</a> and <a href="https://tildeweb.au.dk/au152367/input/scripts/begin-sobol.R">begin-sobol.R&#9207;</a> are standard scripts with various useful functions found in the <code>scripts</code> sub-folder inside your input folder. Find out where your input folder is by the  <a href='#'>get folders</a> command:</p>
 <pre><code class="command">> get folders
 </code></pre>
 <p>The two calls of <code>load</code> will create the data frames <code>sim</code> and <code>S</code> in R. You can inspect them and find them pretty self-explanatory, except that in the <code>S</code> data frame, we recommend using the bootstrap-estimated confidence limits (<code>LowerPercentile</code> and <code>HigherPercentile</code>) rather than the estimated standard error (<code>EffectSE</code>).</p>
-<p>You can treat these data however you want but the final lines in the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa-restore.R">biocontrol-model-sa-restore.R&cudarrr;</a> script shows you how to re-create the three plots produced by your original <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa.box">biocontrol-model-sa.box&cudarrr;</a> script:</p>
+<p>You can treat these data however you want but the final lines in the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa-restore.R">biocontrol-model-sa-restore.R&#9207;</a> script shows you how to re-create the three plots produced by your original <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model-sa.box">biocontrol-model-sa.box&#9207;</a> script:</p>
 <pre><code class="listing">...
 # Prepare analysis
 sobol_k = length(unique(S$Input)) - 1
@@ -1189,7 +1192,7 @@ ggarrange(
 <p>First, find the location of the input folder using the  <a href='#'>get folders</a> command:</p>
 <pre><code class="command">> get folders
 </code></pre>
-<p>and open the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-3.R">figure-3.R&cudarrr;</a> script found there (or download it through the provided &cudarrr; link).</p>
+<p>and open the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-3.R">figure-3.R&#9207;</a> script found there (or download it through the provided &#9207; link).</p>
 <p>You will have to change three variables, all clearly marked at the top of the R script, designating</p>
 <ul>
 <li>the file name and path of either your <code>sim</code> or <code>S</code> data frame</li>
@@ -1210,36 +1213,36 @@ output_folder = &quot;~/ipm/figures&quot;
 Note: The tilde <code>~</code> is a shorthand for your <code>Documents</code> folder. It works even on Windows!</p>
 <p>Now save and run the R script.</p>
 <h3 id='figure-2'><li>Figure 2</li></h3>
-<p>You create this figure by running a script that is nearly identical to the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol.box">biocontrol.box&cudarrr;</a> script. Here goes</p>
+<p>You create this figure by running a script that is nearly identical to the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script. Here goes</p>
 <pre><code class="command">> run models/aphid/figure-2.box
 </code></pre>
-<p>The script creates four figures, two on the screen (one in colours, one in grey tones) and two in graphics files (one PNG and one EPS). The <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-2.R">figure-2.R&cudarrr;</a> script creates the figures, writing the graphics files to your Universal Simulator output folder; the precise location is reported by the R script, so that you can easily retrieve them. Here is the PNG file:</p>
+<p>The script creates four figures, two on the screen (one in colours, one in grey tones) and two in graphics files (one PNG and one EPS). The <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-2.R">figure-2.R&#9207;</a> script creates the figures, writing the graphics files to your Universal Simulator output folder; the precise location is reported by the R script, so that you can easily retrieve them. Here is the PNG file:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-2-bw.png" style="width:50%;" /></p>
 <p>Since the boxscript contains uncertain parameter values, you will get different results every time you run the script.</p>
 <h3 id='figure-3'><li>Figure 3</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-3.R">figure-3.R&cudarrr;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-3.R">figure-3.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-3-bw.png" style="width:50%;" /></p>
 <h3 id='figure-4'><li>Figure 4</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-4.R">figure-4.R&cudarrr;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-4.R">figure-4.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-4-bw.png" style="width:50%;" /></p>
 <h3 id='figure-5'><li>Figure 5</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-5.R">figure-5.R&cudarrr;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-5.R">figure-5.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-5-bw.png" style="width:50%;" /></p>
-<p>Hey, wait. That didn&#39;t quite work out like that. The figure you generated is missing all the labels. That&#39;s because we handicrafted them afterwards, as we found it impossible to get these nice-looking labels in R. For proper labelling, you will find a text file with all figure data in <a href="https://tildeweb.au.dk/au152367/input/models/aphid/fig-5-bw-table.txt">fig-5-bw-table.txt&cudarrr;</a>, which was written to the output_folder by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-5.R">figure-5.R&cudarrr;</a> script.</p>
+<p>Hey, wait. That didn&#39;t quite work out like that. The figure you generated is missing all the labels. That&#39;s because we handicrafted them afterwards, as we found it impossible to get these nice-looking labels in R. For proper labelling, you will find a text file with all figure data in <em>fig-5-bw-table.txt</em>, which was written to the output_folder by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-5.R">figure-5.R&#9207;</a> script.</p>
 <p>The figure depicts Sobol’ indices \((S_{Ti}\): dark grey; \(S_i\) : light grey\()\) showing model sensitivity to the nine uncertain model parameters, in terms of three model outcomes: (a) peak prevalence of exposed aphids, (b) peak prevalence of cadavers, and (c) yield improvement due to biocontrol. The model parameters are listed in order of importance for each outcome according to \(S_{Ti}\).</p>
 <h3 id='figure-6'><li>Figure 6</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-6.R">figure-6.R&cudarrr;</a> script. You need to have the <code>mgcv</code> package installed in R before you run the script. Otherwise,  follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-6.R">figure-6.R&#9207;</a> script. You need to have the <code>mgcv</code> package installed in R before you run the script. Otherwise,  follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-6-bw.png" style="width:90%;" /></p>
-<p>If you study the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-6.R">figure-6.R&cudarrr;</a> script, you will find that many a trick was pulled to produce this figure! The mathematical symbols were added afterwards outside R. </p>
+<p>If you study the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-6.R">figure-6.R&#9207;</a> script, you will find that many a trick was pulled to produce this figure! The mathematical symbols were added afterwards outside R. </p>
 <p>The figure depicts the response of three model outcomes to variation in the seven most influential model parameters (excluding weather). </p>
 <h3 id='figure-7'><li>Figure 7</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-7.R">figure-7.R&cudarrr;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-7.R">figure-7.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-7-bw.png" style="width:50%;" /></p>
 <h3 id='figure-8'><li>Figure 8</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-8.R">figure-8.R&cudarrr;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-8.R">figure-8.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-8-colour.png" style="width:80%;" /></p>
 <h3 id='figure-9'><li>Figure 9</li></h3>
-<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-9.R">figure-9.R&cudarrr;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p>This figure is generated by the <a href="https://tildeweb.au.dk/au152367/input/models/aphid/figure-9.R">figure-9.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/models/aphid/fig-9-colour.png" style="width:90%;" /></p>
 <h3 id='figure-10'><li>Figure 10</li></h3>
 <p>You create this figure by running the boxscript,</p>
@@ -1276,7 +1279,7 @@ Note: The tilde <code>~</code> is a shorthand for your <code>Documents</code> fo
         </div>
         <div class="border-orange">
           <h2>Contact</h2>
-          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write me</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-violet">

@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Ecological Modelling Laboratory</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="description" content=""/>
-    <link rel="icon" href="squirrel-32x32.ico">
-    <link rel="stylesheet" type="text/css" href="basic.css"/>
-    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
-  </head>
+  <div class="insert macro">#head.html</div>
+  <div class="begin macro"></div>
+      <head>
+      <meta charset="UTF-8"/>
+      <title>EcolMod Lab</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <meta name="description" content=""/>
+      <link rel="icon" href="media/squirrel-32x32.ico">
+      <link rel="stylesheet" type="text/css" href="basic.css"/>
+      <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    </head>
+  <div class="end macro"></div>
   <body>
   <div class="insert macro">#header.html#home#Do-it-yourself, open-source modelling</div>
   <div class="begin macro"></div>
@@ -74,7 +79,7 @@
 <p class='hidden-anchor' id='what-s-boxscript'>xxx</p><div class='border-grey'>
 <h1>What's BoxScript?</h1>
 <p>Enough talk. Let&#39;s see what a real boxscript looks like. Here&#39;s one:</p>
-<pre><code class="listing">// Butterfly model
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/butterfly.box">// butterfly.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2009
@@ -164,7 +169,7 @@ egg[inflow]
 <p>All box inputs will have a sensible default value, which they will keep unless you change the input value in the boxscript. Thus the <code>calendar</code> box in the butterfly boxscript have many inputs besides the <code>begin</code> and <code>end</code> inputs, which were set explicitly. One of them is <code>timeStep</code> which defaults to a value of <code>1</code>, another is <code>timeUnit</code> which defaults to <code>&quot;d&quot;</code> for days. You can look up the default values for all inputs in the class documentation.</p>
 <p>Most often you would like to see model outputs as time series in a figure. You specify this with an <code>OutputR</code> box (not more than one), which can contain one or more <code>PageR</code> boxes (each will produce one page of output in R), which again each may contain one or more <code>PlotR</code> boxes (each producing one plot on the page). All plots on a page have the same x-axis. </p>
 <p>Here is the page, consisting of two plots, produced by the boxscript :</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/butterfly.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/butterfly.png" referrerpolicy="no-referrer" alt="Image"></p>
 <p>We chose to put date on the x-axis:</p>
 <pre><code> .xAxis = calendar[date]
 </code></pre>
@@ -226,7 +231,7 @@ egg[inflow]
         </div>
         <div class="border-orange">
           <h2>Contact</h2>
-          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write me</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-violet">

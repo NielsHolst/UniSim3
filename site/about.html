@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Ecological Modelling Laboratory</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="description" content=""/>
-    <link rel="icon" href="media/squirrel-32x32.ico">
-    <link rel="stylesheet" type="text/css" href="basic.css"/>
-    <link rel="stylesheet" type="text/css" href="my-flex.css"/>
-  </head>
+  <div class="insert macro">#head.html</div>
+  <div class="begin macro"></div>
+      <head>
+      <meta charset="UTF-8"/>
+      <title>EcolMod Lab</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <meta name="description" content=""/>
+      <link rel="icon" href="media/squirrel-32x32.ico">
+      <link rel="stylesheet" type="text/css" href="basic.css"/>
+      <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    </head>
+  <div class="end macro"></div>
   <body>
   <div class="insert macro">#header.html#about#Don't follow leaders</div>
   <div class="begin macro"></div>
@@ -34,25 +39,37 @@
     <div class="wide-panel">
       <div class="begin-index-headers"></div>
       <div class="central">
-<p class='hidden-anchor' id='motivation'>xxx</p><div class='border-grey'>
-<h1>Motivation</h1>
-          <p>You want to create a mathematical model of sorts. Well, not that mathematical maybe. More, like computational. You have this image in your mind, which you just put down on paper. Maybe it looks like this:</p>
+<p class='hidden-anchor' id='about-the-lab'>xxx</p><div class='border-grey'>
+<h1>About the lab</h1>
+          <p>My lab has no walls. We create models together, either connected by the web, or more closely when co-modellers (that's you!) come and visit for a day, a few days or weeks, or several months. You are always welcome but I can only rarely find funds for your subsistence here.
+
+My office door is always open for statistical first-aid, scientific discussions, or ramblings about the world at large. When the door is closed, I am zooming, or maybe sweating over recording a do-it-yourself video on modelling.</p>
           
         </div>
-<p class='hidden-anchor' id='what-s-boxscript'>xxx</p><div class='border-grey'>
-<h1>What's BoxScript?</h1>
-<p>Enough talk. Let&#39;s see what a real boxscript looks like. Here&#39;s one:</p>
+<p class='hidden-anchor' id='about-me-and-some-of-you'>xxx</p><div class='border-grey'>
+<h1>About me (and some of you)</h1>
+<p><img style="display: inline; float:left; margin:0.3em 0.6em 0.3em 0.3em" src="https://tildeweb.au.dk/au152367/media/nho-100x130-1.jpg" referrerpolicy="no-referrer" alt="Portrait">
+Hello, my name is Niels Holst and I am the leader of this lab. Way back, I graduated from University of Copenhagen with an MSc in Biology and a BSc in Computer Science. My lecturers and later supervisors, <a href='https://www.researchgate.net/profile/Goesta-Nachman'>Assoc. Prof. Gösta Nachman</a> and Assoc. Prof. Michael Münster-Swendsen (✞), got me hooked on modelling insect population dynamics in tri-trophic systems. Biology + Numbers + Code + Statistics. That was the perfect mix for me!</p>
+<p>For my MSc thesis, I developed a metapopulation model of the predatory mites/spider mites/cucumber system. That was way before PCs became widespread (not to mention Internet and e-mail). I remember writing code to draw lines on the screen (turning on and off the right pixels). The code was all in Borland Pascal. The final report was not brilliant (nor the grade) but reflected a learning experience.</p>
+<p>Onwards with a four-year PhD project, modelling the multitrophic interactions in the natural enemies/aphids/winter wheat system. Lessons learnt, I realised that I had to start out creating a tool to build the model, before actually building the very model itself (if you can feel an anticlimax coming up, I can only compliment you on your good intuition). I switched to C++ and Qt Creator and climbed that steep learning curve. It paid off, as I have used those tools ever since, spending 20,000+ working hours. It took me two years before I had something functional. The design goals were very much inspired by my external supervisor, <a href='http://www.casasglobal.org/casas-members/'>Prof. Andy Gutierrez</a> (his sound and simple modelling approach is reflected in all of my models). However, in the end, I only managed to publish a paper on the design of my modelling tool; the actual model never saw the light of day. The final thesis was not brilliant (though it somehow survived the scrutiny of Prof. A.F.G. Dixon) but reflected yet another learning experience.</p>
+<p>So, I never got around to use my modelling tool during my PhD but near its closing time, <a href='https://www.ars.usda.gov/pacific-west-area/tucson-az/carl-hayden-bee-research-center/people/william-meikle/'>Research Entomologist William Meikle</a> showed up out of West Africa. The two of us got cranking on modelling grain storage pests, and we never looked back. He was the first of many collaborators, who threw modelling projects at me. With every new challenge, I had to elaborate on my tool until it got so unwieldly that I had to rewrite it all again. In the end, I arrived at the current versions of Universal Simulator and BoxScript (which replaced XML eight years ago). These versions I regard as stable. Now extensions will come not as big rewrites but only as incremental improvements (your suggestions are welcome!).</p>
+<p>In addition to the good people mentioned above, I thank <a href='https://www.igzev.de/portfolio_type/portfolio-oliver_koerner/'>Dr. Oliver Körner</a> and <a href='https://www.hortiadvice.dk/medarbejdere'>Consultant Jesper Mazanti Aaslyng</a> for introducing me to the world of greenhouse microclimate modelling. Much of the funding that went into the development of Universal Simulator came from greenhouse modelling funds.</p>
+<p>Thanks to <a href='http://www.andreasaltelli.eu'>Prof. Antonio Saltelli</a> for supervising me on uncertainty and sensitivity analysis. With his guidance on the mathematical details, both techniques are now fully integrated into Universal Simulator.</p>
+<p>Thanks to <a href='https://www.luke.fi/en/experts/stephanie-saussure'>Dr. Stéphanie Saussure</a> for our collaboration on entomopathogens in cereal aphids. Maybe I can now finally complete that deliverable of my PhD project!</p>
+<p>Thanks to <a href='https://pure.au.dk/portal/en/persons/teis-boderskov(c63d7c51-d48b-4a3f-a126-3b71bd450fc6).html'>Dr. Teis Boderskov</a> for introducing me to kelp. What an interesting plant to model, and we have even just begun!</p>
+<p>Thanks to all students who have come to work in my lab. You have really kept me going - and laughing!</p>
         </div>
-<p class='hidden-anchor' id='what-s-the-universal-simulator'>xxx</p><div class='border-grey'>
-<h1>What’s the Universal Simulator?</h1>
-<p>The Universal Simulator provides a <em>prompt</em> as the user interface. Under the hood, it contains the <em>BoxScript Engine</em>, which carries out the actual simulations. It collaborates smoothly with <em>R</em> to produce simulation outputs. This is the overall process:</p>
-
+<p class='hidden-anchor' id='contact'>xxx</p><div class='border-grey'>
+<h1>Contact</h1>
+<p>You can find me by <a href='mailto:niels.holst@agro.au.dk'>e-mail</a>, on Messenger, or WhatsApp. My mobile number is +45 22 28 33 40.</p>
+<p>My publications are available in chronological order on <a href='https://orcid.org/my-orcid?orcid=0000-0002-8414-6773'>ORCID </a> and in citation order on <a href='https://scholar.google.com/citations?user=EROHQX4AAAAJ&amp;hl=en'>Google Scholar</a>. </p>
+<p>Here is <a href='https://agro.au.dk/en/'>my department</a> and <a href='https://www.google.com/maps/place/Aarhus+Universitet+Flakkebjerg/@55.325355,11.391283,15z/data=!4m5!3m4!1s0x0:0xd66b0a6294ae5e30!8m2!3d55.3253836!4d11.3914526'>the location</a> of my office.</p>
         </div>
       </div>
       <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#motivation">Motivation</a></li><li><a href="#what-s-boxscript">What's BoxScript?</a></li><li><a href="#what-s-the-universal-simulator">What’s the Universal Simulator?</a></li></ul>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#about-the-lab">About the lab</a></li><li><a href="#about-me-and-some-of-you">About me (and some of you)</a></li><li><a href="#contact">Contact</a></li></ul>
         <div class="end-menu"></div>
       </div>
       <div class="insert macro">#right.html</div>
@@ -65,7 +82,7 @@
         </div>
         <div class="border-orange">
           <h2>Contact</h2>
-          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write me</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-violet">
