@@ -125,7 +125,7 @@ Executable R snippet copied to clipboard!
 <p class='hidden-anchor' id='objects'>xxx</p><div class='border-grey'>
 <h2>Objects</h2>
 <p>Object-oriented design invites the use of natural language for very specific meanings. Thus we will use &#39;node&#39; to mean a <code>Node</code> object, &#39;box&#39; to mean a <code>Box</code> object and &#39;port&#39; to mean a <code>Port</code> object. Plural forms mean many such objects, e.g., &#39;boxes&#39; mean some number of <code>Box</code> objects.</p>
-<p>In the <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world2.box">hello_world2.box&#8681;</a> script above, we created one <code>Simulation</code> box called <code>sim</code> and one <code>OutputText</code> box, which we left unnamed. We consider the latter the <strong>child</strong> of the former, its <strong>parent</strong>. They are both parts of this object diagram:</p>
+<p>In the <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world2.box">hello_world2.box&cudarrr;</a> script above, we created one <code>Simulation</code> box called <code>sim</code> and one <code>OutputText</code> box, which we left unnamed. We consider the latter the <strong>child</strong> of the former, its <strong>parent</strong>. They are both parts of this object diagram:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/getting-started-object-diagram.svg" style="zoom:50%;" /></p>
 <p>The diagram shows five children of the <code>sim</code> box and two children of the <code>OutputText</code> box. There are three types of ports:</p>
 <ul>
@@ -139,7 +139,7 @@ Executable R snippet copied to clipboard!
 <p>You can use the <strong>help</strong> command together with a class name to see the input and output ports belonging to a class:</p>
 <pre><code class="command">&gt; help Simulation</code></pre>
 <p><code>help</code> will list the ports together with their <a href='#port-types'>type</a>, their default value (inputs only), their unit (in brackets, may be unitless) and description. If the port defaults to an <a href='#expressions'>expression</a>, the expression will be shown.</p>
-<p>If you want to change the default value of an input port, you precede its name by a period and write its value, as seen in the <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world2.box">hello_world2.box&#8681;</a> script:</p>
+<p>If you want to change the default value of an input port, you precede its name by a period and write its value, as seen in the <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world2.box">hello_world2.box&cudarrr;</a> script:</p>
 <pre><code class="listing">Simulation sim {
   .steps = 3
 }
@@ -259,7 +259,7 @@ Finished after 266 msecs in step 152/152
 <h2>Seeing and editing a boxscript</h2>
 <p>To have a look at the current boxscript simply type</p>
 <pre><code class="command">edit</code></pre>
-<p>This will show the boxscript code in the editor set up to edit boxscripts. First time off, no editor has been set up, so your operating system (Windows/OS X/Linux) will prompt you to choose an editor for this purpose. Any pure text editor will work (e.g., on Windows Notepad, or even better, <a href='https://notepad-plus-plus.org/'>Notepad++</a> but do not choose a word processor. Here, is the BoxScript code that you will see for the <a href="https://tildeweb.au.dk/au152367/input/demo/butterfly1.box">butterfly1.box&#8681;</a> script:
+<p>This will show the boxscript code in the editor set up to edit boxscripts. First time off, no editor has been set up, so your operating system (Windows/OS X/Linux) will prompt you to choose an editor for this purpose. Any pure text editor will work (e.g., on Windows Notepad, or even better, <a href='https://notepad-plus-plus.org/'>Notepad++</a> but do not choose a word processor. Here, is the BoxScript code that you will see for the <a href="https://tildeweb.au.dk/au152367/input/demo/butterfly1.box">butterfly1.box&cudarrr;</a> script:
 <pre><code class="listing">// butterfly1.box
 Simulation sim {
   Calendar calendar {
@@ -381,7 +381,7 @@ Simulation sim {
   &gt;totalTime = 0 int
   &gt;totalDays = 0.0 d
   &gt;dayOfYear = 0 [1;366]</code></pre>
-<p>Here, the input ports are preceded by a period <code>.</code> and the output ports by a <code>&gt;</code>. For each port you see its current value, often follow by its type or an indication of its legal values. The command above was issued just after loading the <a href="https://tildeweb.au.dk/au152367/input/demo/butterfly1.box">butterfly1.box&#8681;</a> script. That&#39;s why the output ports carry their initial values, and the date, time and dateTime ports even appear empty (because their values are yet undefined). If we run the model and repeat the command, we get</p>
+<p>Here, the input ports are preceded by a period <code>.</code> and the output ports by a <code>&gt;</code>. For each port you see its current value, often follow by its type or an indication of its legal values. The command above was issued just after loading the <a href="https://tildeweb.au.dk/au152367/input/demo/butterfly1.box">butterfly1.box&cudarrr;</a> script. That&#39;s why the output ports carry their initial values, and the date, time and dateTime ports even appear empty (because their values are yet undefined). If we run the model and repeat the command, we get</p>
 <pre><code class="command">&gt; list calendar p</code>
 <code class="output">Calendar calendar
   .latitude = 52.0 [-90,90] const
@@ -473,7 +473,7 @@ Simulation sim {
 <pre><code class="listing">.scripts = c(&quot;general/setup.R&quot;, &quot;analysis/briere.R&quot;, &quot;figures/briere3.R&quot;)
 </code></pre>
 <p>The R scripts will be carried out (in the given order) when you paste the clipboard at the R prompt after having run your boxscript.</p>
-<p>Before your R scripts, another R script has been executed providing you with useful <em>hooks</em> to the output produced by your script. This script is the <a href="https://tildeweb.au.dk/au152367/input/scripts/begin.R">begin.R&#8681;</a> script, which is one of the standard scripts  residing in the <em>inputs/scripts</em> folder of the Universal Simulator home folder. It sets up the following <em>variables</em>:</p>
+<p>Before your R scripts, another R script has been executed providing you with useful <em>hooks</em> to the output produced by your script. This script is the <a href="https://tildeweb.au.dk/au152367/input/scripts/begin.R">begin.R&cudarrr;</a> script, which is one of the standard scripts  residing in the <em>inputs/scripts</em> folder of the Universal Simulator home folder. It sets up the following <em>variables</em>:</p>
 <ul>
 <li>Colours named <code>red</code>, <code>blue</code>, <code>green</code>, <code>violet</code>, <code>orange</code>, <code>brown</code>, <code>pink</code>, <code>grey</code>. These colours can be used individually but they have also been set up to replace the default colour scales of <code>ggplot</code>.</li>
 <li>A data frame <code>sim</code> with all outputs from the boxscript.</li>
@@ -490,7 +490,7 @@ Simulation sim {
 <li><code>open_plot_window(width=7, height=7)</code> opens a pop-up window to show you plot. It uses different methods to create the windows depending on the platform (Mac, Windows or Linux).</li>
 
 </ul>
-<p>Here is the full <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.R">briere1.R&#8681;</a> script referred to in the boxscript above. It demonstrates how to compare boxscript outputs with observations:</p>
+<p>Here is the full <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.R">briere1.R&cudarrr;</a> script referred to in the boxscript above. It demonstrates how to compare boxscript outputs with observations:</p>
 <pre><code class="listing"># briere1.R
 sim = sim[1:3]
 colnames(sim) = c(&quot;Temperature&quot;, &quot;DayDegrees&quot;, &quot;Briere&quot;)

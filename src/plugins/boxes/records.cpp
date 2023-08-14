@@ -38,7 +38,7 @@ Records::Records(QString name, Box *parent)
     Output(nextDate).help("Date stamp of the next outputs");
     Output(currentTime).help("Time stamp of the current outputs");
     Output(nextTime).help("Time stamp of the next outputs");
-    additionalOutputs("One output port created for each column (except date and time)");
+    additionalOutputs("One output port is created for each column in the input file (`fileName`), except for the date and time columns");
     _currentColumnValues = new QVector<double>;
     _nextColumnValues = new QVector<double>;
 }

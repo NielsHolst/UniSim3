@@ -51,9 +51,10 @@
 <li>A box declaration always begins with a box <strong>class name</strong> optionally followed by an <strong>object name</strong>.</li>
 <li>A port declaration begins with a <strong>period</strong> (for an input port) or an <strong>ampersand</strong> (for an auxilliary port) followed by a port name, an equal sign and an <strong>expression</strong>. </li>
 <li>A <strong>comment</strong> runs from <code>//</code> to the end of the line.</li>
+
 </ul>
-<p>The <em>Hello world!</em> boxscript exemplifies most of the BoxScript syntax:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/hello_world1.box">// hello_world1.box&cudarrr;</a>
+<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/hello_world1.box">hello_world1.box&cudarrr;</a> script exemplifies most of the BoxScript syntax:</p>
+<pre><code class="listing">// hello_world1.box
 Simulation sim {
   .steps = 3
   OutputText {
@@ -215,7 +216,7 @@ Simulation sim {
     .ports = *[a]
   }
 }</code></pre>
-<p>Inspect the output by the <code>head</code> command and you will see that the first couple lines contain null values, which are always shown as the text <code class="output">null</code>:</p>
+<p>Inspect the output by the <code>head</code> command and you will see that the first couple lines contain null values, which are always shown as the text <code>null</code>:</p>
 <pre><code class="command">&gt; head</code>
 <code class="output">...
  A.a  B.a C.a D.a E.a F.a iteration step
@@ -497,7 +498,7 @@ Simulation sim</code>
 
 <h3 id='usage'>Usage</h3>
 <p>The Accumulator box keeps track of an accumulated sum. For every simulation step, <code>change</code> (can be negative) is added to its <code>value</code>. This boxscript calculates the day-degrees above a threshold of 10 °C (a <a href='#daydegrees'>DayDegrees</a> box would allow you more control with less BoxScript code):</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/accumulator/accumulator1.box">// accumulator1.box&cudarrr;</a>
+<pre><code class="listing">// accumulator1.box
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2009
@@ -545,15 +546,10 @@ Simulation sim {
 <p>When the <code>signal</code> is used as a binary response (<code>signal</code> is either on or off), the various <code>flag</code> ports may provide more legible code. The description above should suffice to understand their use. </p>
 <p>Please find concrete examples of usage in the derived classes listed above.</p>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='briere'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='briere'>xxx</p><div class='border-grey'>
 <h2>Briere</h2>
-<p><code>Briere</code> is derived from <a href='#physiologicaltime'>PhysiologicalTime</a>.</p>
-<ul class="h3-links">
-  <li><a href='#briere-background'>Background</a></li>
-  <li><a href='#briere-parameter-estimation'>Parameter estimation</a></li>
-  <li><a href='#briere-usage'>Usage</a></li>
-</ul>
-<h3 id='interface'>Interface</h3>
+<p>Derived from <a href='#physiologicaltime'>PhysiologicalTime</a>.</p>
+<h3>Interface</h3>
   <div class="insert macro">#plugins/boxes/briere.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -570,7 +566,7 @@ Simulation sim {
 </tbody></table>
 <div class="end macro"></div>
 
-<h3 id='background'><li>Background</li></h3>
+<h3 id='background'>Background</h3>
 <p>The <code>Briere</code> box implements the non-linear model for physiological development of <a href='https://www.doi.org/10.1093/ee/28.1.22'>Briere et al. (1999)</a>, defined by three parameters <code>T0</code>, <code>Tmax</code> and <code>a</code>. They designate the lower and upper threshold for development, respectively, and a scaling parameter with no biological meaning.  The equation for development rate is</p>
 $$
 1/L = aT(T-T_0)\sqrt{T_{max}-T}
@@ -584,7 +580,7 @@ $$
 T_{max} = \frac {T_{opt}(5T_{opt} - 3T_0)}{4T_{opt} - 2T_0}
 $$
 
-<h3 id='parameter-estimation'><li>Parameter estimation</li></h3>
+<h3 id='parameter-estimation'>Parameter estimation</h3>
 <p>The three parameters of the curve can be estimated by non-linear regression. Here is a typical data set for temperature-dependent insect development rate. It shows the development time (<em>L</em>) and rate (1/<em>L</em>) at different temperatures (<em>T</em>) for brown marmorated stink bug (<em>Halyomorpha halys</em>) (from <a href='https://pubmed.ncbi.nlm.nih.gov/18419906/'>Nielsen
 et al. (2008)</a>):</p>
 <figure class='table-figure'><table>
@@ -593,8 +589,7 @@ et al. (2008)</a>):</p>
 <tbody><tr><td>15</td><td>&infin;</td><td>0.0000</td></tr><tr><td>17</td><td>121.50</td><td>0.0082</td></tr><tr><td>20</td><td>81.07</td><td>0.0123</td></tr><tr><td>25</td><td>44.65</td><td>0.0224</td></tr><tr><td>27</td><td>36.67</td><td>0.0273</td></tr><tr><td>30</td><td>33.73</td><td>0.0296</td></tr><tr><td>33</td><td>37.67</td><td>0.0265</td></tr><tr><td>35</td><td>&infin;</td><td>0.0000</td></tr></tbody>
 </table></figure>
 <p> Using R <em>nls</em> we arrive at the estimates, T0=14.2&#176;C, Tmax=35.0&#176;C and a=2.836 × 10<sup>−5</sup> d<sup>−1</sup> that we can plug into this boxscript, which also shows two alternative models (simple linear and the <a href='#daydegrees'>DayDegrees</a> box, which features a breakpoint at the optimum temperature):</p>
-<pre><code class="listing">
-<a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.box">// briere1.box&cudarrr;</a>
+<pre><code class="listing">// briere1.box
 Simulation sim {
   .steps = temperature[steps]
   SequenceByStep temperature {
@@ -626,9 +621,9 @@ Simulation sim {
 </code></pre>
 <p>This is the plot produced:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/briere1.png" referrerpolicy="no-referrer"></p>
-<h3 id='usage'><li>Usage</li></h3>
+<h3 id='usage'>Usage</h3>
 <p>In practical usage, you often want to turn the ticking of the physiological clock on and off. Sometimes, you may want to reset it to zero too. This is what the two remaining input ports (<code>isTicking</code> and <code>resetTotal</code>) are for. They are both of the boolean type. In this script, the clock is only ticking in the period 1 May to 1 October. Moreover, it is reset to zero on 1 May and 1 July:</p>
-<pre><code><a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere2.box">// briere2.box&cudarrr;</a>
+<pre><code class="listing">// briere2.box
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2009
@@ -668,14 +663,9 @@ Simulation sim {
 <p>The output shows two years worth of data, identical since the weather of 2009 is used for both years:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/briere2.png" referrerpolicy="no-referrer"></p>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='calendar'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='calendar'>xxx</p><div class='border-grey'>
 <h2>Calendar</h2>
-<ul class="h3-links">
-  <li><a href='#daily-time-step'>Daily time step</a></li>
-  <li><a href='#changing-the-time-step'>Changing the time step</a></li>
-  <li><a href='#setting-the-time-period-of-the-simulation'>Setting the time period of the simulation</a></li>
-</ul>
-<h3 id='interface'>Interface</h3>
+<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/calendar.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -702,9 +692,9 @@ Simulation sim {
 </tbody></table>
 <div class="end macro"></div>
 
-<h3 id='daily-time-step'><li>Daily time step</li></h3>
+<h3 id='daily-time-step'>Daily time step</h3>
 <p>It is common to include a <code>Date</code> box in your boxscript. Its logical place is at the very top because for every time step, you will usually want update the current time before everything else:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/calendar/calendar1.box">// calendar1.box&cudarrr;</a>
+<pre><code class="listing">// calendar1.box
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -731,9 +721,9 @@ Simulation sim {
 2022/12/18 00:00:00 2022/12/18T00:00:00         1    3
 </code></pre>
 <p>You will often use <code>date</code>, <code>time</code> or <code>dateTime</code> to put on the x-axis in the output plots. They can also be used as inputs to boxes that depends on the date or the hour of the day.</p>
-<h3 id='changing-the-time-step'><li>Changing the time step</li></h3>
+<h3 id='changing-the-time-step'>Changing the time step</h3>
 <p>You can change the time step. Here we also chose to set the specific time of the day for the simulation to start:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/calendar/calendar2.box">// calendar2.box&cudarrr;</a>
+<pre><code class="listing">// calendar2.box
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -751,9 +741,9 @@ Simulation sim {
 2022/12/15 17:34:00 2022/12/15T17:34:00         1    2
 2022/12/15 17:36:00 2022/12/15T17:36:00         1    3
 </code></pre>
-<h3 id='setting-the-time-period-of-the-simulation'><li>Setting the time period of the simulation</li></h3>
+<h3 id='setting-the-time-period-of-the-simulation'>Setting the time period of the simulation</h3>
 <p>Maybe you prefer to specify the simulation period by date (maybe by date and time) rather then by the number of steps. That is easily done:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/calendar/calendar3.box">// calendar3.box&cudarrr;</a>
+<pre><code class="listing">// calendar3.box
 Simulation sim {
   Calendar calendar {
     .begin = 15/12/2022
@@ -773,7 +763,7 @@ Simulation sim {
 2024/05/01 00:00:00 2024/05/01T00:00:00         1  503
 </code></pre>
 <p>How did that happend you might ask? It seems as if <code>sim[steps]</code> was magically set to 503, so that we would end up on 5 May 2024. Well, if we inspect the final values of the <code>calendar</code> ports, we will find among them an outport called <code>steps</code>:</p>
-<pre><code class="command">&gt; list calendar p</code>
+<pre><code class="listing">&gt; list calendar p</code>
 <code class="output">...
 &gt;steps = 503
 ...
@@ -789,7 +779,7 @@ Simulation sim {
 <div class="insert macro">#plugins/boxes/computation.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+none
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>step</td><td>string</td><td>"ready" </td><td>Name of current computation step</td></tr>
 </tbody></table>
@@ -809,7 +799,7 @@ Simulation sim {
 
 </ul>
 <p>It can be useful when learning BoxScript. Here is a simple boxscript for exponential growth:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/computation/computation1.box">// computation1.box&cudarrr;</a>
+<pre><code class="listing">// computation1.box
 Simulation sim {
   .iterations = 2
   .steps = 3
@@ -861,13 +851,13 @@ comp.step    r density iteration sim.step
 <tr><td>year</td><td>int</td><td>2000 </td><td>Year</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>date</td><td>date</td><td>null </td><td>The date constructed</td></tr>
-<tr><td>value</td><td>date</td><td>null </td><td>Synonym for <span class="table-interface-code">date</span></td></tr>
+<tr><td>value</td><td>date</td><td>null </td><td>Synonym for 'date'</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 
 <h3 id='usage'>Usage</h3>
 <p>Use this box to construct a date from <code>day</code>, <code>month</code> and <code>year</code>. Here is an example:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/computation/date1.box">// date1.box&cudarrr;</a>
+<pre><code class="listing">// date1.box
 Simulation sim {
   .steps = 3
   Date date {
@@ -908,7 +898,7 @@ Simulation sim {
 
 <h3 id='usage'>Usage</h3>
 <p>You use the <code>DateSplit</code> box to split a <code>date</code> variable into <code>day</code>, <code>month</code> and <code>year</code>. If you are trying to do something complicated then consider instead moving the complications to an R script that can be executed after the simulation has run (see <a href='#outputr'>OutputR</a>). This simple R script demonstrates the functionality:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/date_split/date_split1.box">// date_split1.box&cudarrr;</a>
+<pre><code class="listing">// date_split1.box
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -955,14 +945,14 @@ day month year iteration step
 <tr><td>endDate</td><td>baredate</td><td>31/12 </td><td>The end of the date interval</td></tr>
 <tr><td>beginTime</td><td>time</td><td>00:00:00 </td><td>The beginning of the time interval</td></tr>
 <tr><td>endTime</td><td>time</td><td>00:00:00 </td><td>The end of the time interval</td></tr>
-<tr><td>signalInside</td><td>double</td><td>1.0 </td><td>Resulting <span class="table-interface-code">signal</span> when day and time are inside the day and time intervals</td></tr>
-<tr><td>signalOutside</td><td>double</td><td>0.0 </td><td>Resulting <span class="table-interface-code">signal</span> when day and time are outside the day and time intervals</td></tr>
-<tr><td>circadian</td><td>bool</td><td>TRUE </td><td>Tells whether <span class="table-interface-code">signal</span> follows a daily rythm</td></tr>
+<tr><td>signalInside</td><td>double</td><td>1.0 </td><td>Resulting signal when day and time are inside the day and time intervals</td></tr>
+<tr><td>signalOutside</td><td>double</td><td>0.0 </td><td>Resulting signal when day and time are outside the day and time intervals</td></tr>
+<tr><td>circadian</td><td>bool</td><td>TRUE </td><td>Tells whether signal follows a daily rythm</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
-<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the <span class="table-interface-code">signal</span> on?</td></tr>
-<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set on?</td></tr>
-<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set off?</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the signal on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the signal just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the signal just set off?</td></tr>
 <tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
@@ -973,7 +963,7 @@ day month year iteration step
 <p>If <code>circadian</code> is <code>FALSE</code> then <code>currentDateTime</code> is considered inside the limits, if it falls inside the period from <code>beginTime</code> on <code>beginDate</code> to <code>endTime</code> on <code>endDate</code> (specifying a single signal). </p>
 <h3 id='circadian-signals'><li>Circadian signals</li></h3>
 <p>The difference that <code>circadian</code> makes is easier to understand by example. First we demonstrate a circadian signal:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/date_time_signal/date_time_signal1.box">// date_time_signal1.box&cudarrr;</a>
+<pre><code class="listing">// date_time_signal1.box
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2001T12:00
@@ -1124,7 +1114,7 @@ Simulation sim {
 <p>Here, the brown line shows a pure linear model, while the broken green line shows how DayDegrees work. The lower threshold for development (<code>T0</code>) was set to 14.2&#176;C in this example with optimum temperature (<code>Topt</code>) at 29.0&#176;C and maximum temperature (<code>Tmax</code>) at 35.0&#176;C. </p>
 <p>If you choose only to set <code>T0</code> in your boxscsript, while keeping the default values of <code>Topt</code> and <code>Tmax</code>, you will achiece the pure linear model (brown line).</p>
 <p>This boxscript is identical to the <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere2.box">briere2.box&cudarrr;</a> script, except a <code>DayDegree</code> box has replaced the <code>Briere</code> box:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/day_degrees/day_degrees1.box">// day_degrees1.box&cudarrr;</a>
+<pre><code>// day_degrees1.box
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2009
@@ -1169,16 +1159,16 @@ Simulation sim {
 <tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
-<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the <span class="table-interface-code">signal</span> on?</td></tr>
-<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set on?</td></tr>
-<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set off?</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the signal on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the signal just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the signal just set off?</td></tr>
 <tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
 
 <h3 id='usage'>Usage</h3>
 <p>The <code>FixedSignal</code> simply fixes the signal at the value given as <code>initialSignal</code>. It is useful when you have a group of boxes (e.g., of sibling boxes) from which you want to select all the boxes of type <code>BaseSignal</code>. Here is the beginning of a boxscript. It does not yet produce any output:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/fixed_signal/fixed_signal1.box">// fixed_signal1.box&cudarrr;</a>
+<pre><code><a href="https://tildeweb.au.dk/au152367/input/demo/fixed_signal/fixed_signal1.box">// fixed_signal1.box&cudarrr;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2001
@@ -1333,22 +1323,16 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maximumat'>xxx</p><div class='border-grey'>
 <h2>MaximumAt</h2>
 <h3>Interface</h3>
-<div class="insert macro">#plugins/boxes/maximumat.html</div>
-<div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>step</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[step]</span></td></tr>
-<tr><td>track</td><td>double</td><td>0.0 </td><td>Value to track for max value</td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>at</td><td>int</td><td>0 </td><td>Step in which maximum value was attained</td></tr>
-<tr><td>value</td><td>double</td><td>0.0 </td><td>The maximum value attained</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-
+<figure class='table-figure'><table>
+<thead>
+<tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody><tr><td>step</td><td>int</td><td><em>computed</em> []</td><td><em>/.[step]</em></td></tr><tr><td>value</td><td>double</td><td>0.0 []</td><td>Value to track for max value</td></tr><tr><td><strong>Outputs</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>at</td><td>int</td><td>[]</td><td>Step in which maximum value was attained</td></tr><tr><td>max</td><td>double</td><td>[]</td><td>The maximum value attained</td></tr></tbody>
+</table></figure>
 <h3 id='background'>Background</h3>
 <p>If you need to summarise the trend of a port by the maximum value it attained and in which step it happened, you can use a <a href="#maximumat">MaximumAt</a> box. The interface is simple. Just watch the example below. If you run the simulation for several iterations, the outputs <code>at</code> and <code>max</code> may differ between iterations.</p>
 <h3 id='usage'>Usage</h3>
 <p> We will use a <a href='#hump'>Hump</a> box for demonstration since we now the position of its maximum value:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maximum_at/maximum_at1.box">// maximum_at1.box&cudarrr;</a>
+<pre><code>// maximum_at1.box
 Simulation sim {
   .steps = 50
   Hump hump {
@@ -1371,13 +1355,13 @@ Simulation sim {
 }
 </code></pre>
 <p>With this parameter setting we expect to find the maximum in the point (34, 150). This is confirmed when we run the script,</p>
-<pre><code class="command">> run demo/maximum_at/maximum_at1.box
+<pre><code>run demo/maximum_at/maximum_at1.box
 </code></pre>
 <p>and study the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/maximum-at1.png" style="width:60%;" /></p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/maximum-at1.png" style="zoom:50%;" /></p>
 <p>Further confirmation can be gotten by the <a href='#'>tail</a> command:</p>
-<pre><code class="command">&gt; tail 3</code>
-<code class="output">...
+<pre><code>&gt; tail 3
+...
 hump at maxValue iteration step
  0.0 34    150.0         1   48
  0.0 34    150.0         1   49
@@ -1390,42 +1374,20 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='outputr'>xxx</p><div class='border-grey'>
 <h2>OutputR</h2>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='outputselector'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='outputselector'>xxx</p><div class='border-grey'>
 <h2>OutputSelector</h2>
-<ul class="h3-links">
-  <li><a href="#loutput-selector-usage">Usage</a></li>
-  <li><a href="#skip-a-number-of-lines">Skip a number of lines</a></li>
-  <li><a href="#skip-lines-until-a-certain-time">Skip lines until a certain time</a></li>
-  <li><a href="#periodic-output">Periodic output</a></li>
-  <li><a href="#final-output">Final output</a></li>
-</ul>
-
-<h3 id='interface'>Interface</h3>
-<div class="insert macro">#plugins/boxes/outputselector.html</div>
-<div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>beginStep</td><td>int</td><td>0 int</td><td>Output is written when this step is reached</td></tr>
-<tr><td>beginDateTime</td><td>datetime</td><td>null DateTime</td><td>Output is written when this time point is reached (optional)</td></tr>
-<tr><td>step</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[step]</span></td></tr>
-<tr><td>dateTime</td><td>datetime</td><td>- </td><td>&larr; <span class="table-interface-code">Calendar::*[dateTime]</span></td></tr>
-<tr><td>period</td><td>int</td><td>1 </td><td>If >1: A row of output will be produced with this period</td></tr>
-<tr><td>summary</td><td>string</td><td>"average" </td><td>Either <span class="table-interface-code">"average"</span> or <span class="table-interface-code">"current"</span>; how values are summarized over the given <span class="table-interface-code">period</span></td></tr>
-<tr><td>final</td><td>bool</td><td>FALSE </td><td>Overrules <span class="table-interface-code">period</span></td></tr>
-<tr><td>useLocalDecimalChar</td><td>bool</td><td>FALSE </td><td>Use local decimal character in output?</td></tr>
-<tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">!exists(OutputR::*[skipFormats])</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>isActive</td><td>bool</td><td>FALSE </td><td>Should output be written?</td></tr>
-<tr><td>isSkipping</td><td>bool</td><td>FALSE </td><td>Are lines being skipped?</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-
-<h3 id='usage'><li>Usage</li></h3>
+<h3>Interface</h3>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody><tr><td>beginStep</td><td>int</td><td>0 [int]</td><td>Output is written when this step is reached</td></tr><tr><td>beginDateTime</td><td>datetime</td><td>null [DateTime]</td><td>Output is written when this time point is reached (optional)</td></tr><tr><td>step</td><td>int</td><td><em>computed</em> []</td><td><em>/.[step]</em></td></tr><tr><td>dateTime</td><td>datetime</td><td><em>computed</em> []</td><td><em>if exists(Calendar&#58;&#58;*[dateTime]) then Calendar&#58;&#58;*[dateTime] else .[beginDateTime]</em></td></tr><tr><td>period</td><td>int</td><td>1 [int&gt;0]</td><td>If &#62;1&#58; A row of output will be produced with this period</td></tr><tr><td>final</td><td>bool</td><td>FALSE [bool]</td><td>Overrules &#39;period&#39;</td></tr><tr><td>useLocalDecimalChar</td><td>bool</td><td>FALSE [bool]</td><td>Use local decimal character in output?</td></tr><tr><td>skipFormats</td><td>bool</td><td><em>computed</em> [bool]</td><td><em>!exists(OutputR&#58;&#58;*[skipFormats])</em></td></tr><tr><td><strong>Outputs</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>isActive</td><td>bool</td><td>[bool]</td><td>Should output be written?</td></tr><tr><td>isSkipping</td><td>bool</td><td>[bool]</td><td>Are lines being skipped?</td></tr></tbody>
+</table></figure>
+<h3 id='usage'>Usage</h3>
 <p>The <code>OutputSelector</code> box determines when output should be produced by the <code>OutputWriter</code> box. Hence, if you do not include an <code>OutputSelector</code> box in your boxscript then the <code>OutputWriter</code> box will create one for you. The default behaviour of <code>OutputSelector</code> is to write one line of output for every <em>reset</em> and <em>update</em> step during the simulation (see <a href='#'>Computationel model</a>). The <code>useLocalDecimalChar</code> and <code>skipFormats</code> define different features of the output file as explained for <a href='#outputwriter'>OutputWriter</a>.</p>
 <p>If you want to change the default behaviour of <code>OutputSelector</code>, you must include an <code>OutputSelector</code> box in your boxscript. The right place to put it is as a child box of the <code>OutputText</code> (as exemplified below) or <code>OutputR</code> box, since <code>OutputSelector</code> affects the output produced by <code>OutputText</code> and <code>OutputR</code>.</p>
-
-<h3 id='skip-a-number-of-lines'><li>Skip a number of lines</li></h3>
+<h4 id='skip-a-number-of-lines'>Skip a number of lines</h4>
 <p>You can set the number <code>steps</code> and <code>iterations</code> a  simulation is running in the <a href='#simulation'>Simulation</a> object. That will by itself result in <code>iterations</code> * (<code>steps</code> + 1) lines in the output file (adding one for each iteration because a line is written also in the reset step). You can skip a number of initial lines in each iteration by setting the <code>beginStep</code> of the <code>OutputSelector</code> box. Maybe the model needs some warming up before it produces reliable or relevant output. Here is one simple example:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector1.box">// output_selector1.box&cudarrr;</a>
+<pre><code>// output_selector1.box
 Simulation sim {
   .iterations = 2
   .steps = 12
@@ -1440,11 +1402,11 @@ Simulation sim {
 }
 </code></pre>
 <p>When you run it</p>
-<pre><code class="command">> run demo/output_selector/output_selector1.box
+<pre><code>run demo/output_selector/output_selector1.box
 </code></pre>
-<p>and subsequently inspect the few lines produced with the <code class="command">head</code> command, you won&#39;t be surprised:</p>
-<pre><code class="command">&gt; head</code>
-<code class="output">Showing C:/Users/au152367/Documents/QDev/UniSim3/output/output_selector1_0001.txt
+<p>and subsequently inspect the few lines produced with the <code>head</code> command, you won&#39;t be surprised:</p>
+<pre><code>&gt; head
+Showing C:/Users/au152367/Documents/QDev/UniSim3/output/output_selector1_0001.txt
       date iteration step
 2000/01/11         1   10
 2000/01/12         1   11
@@ -1452,11 +1414,12 @@ Simulation sim {
 2000/01/11         2   10
 2000/01/12         2   11
 2000/01/13         2   12
+&gt;
 </code></pre>
 <p>Well, unless you had not anticipated that <code>beginStep</code> is acting on every <code>iteration</code>.</p>
-<h3 id='skip-lines-until-a-certain-time'><li>Skip lines until a certain time</li></h3>
+<h4 id='skip-lines-until-a-certain-time'>Skip lines until a certain time</h4>
 <p>As an alternative to <code>beginStep</code>, you can set <code>beginDateTime</code> to commence output at a certain date-time. You can combine them both, which will postpone output until both a certain step and a certain date-time is reached, though I never found the need to do so. Here is a simple example, working in 5-minute time steps</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector2.box">// output_selector2.box&cudarrr;</a>
+<pre><code>// output_selector2.box
 Simulation sim {
   .iterations = 2
   Calendar calendar {
@@ -1474,11 +1437,11 @@ Simulation sim {
 }
 </code></pre>
 <p>Run the simulation</p>
-<pre><code class="command">run demo/output_selector/output_selector2.box
+<pre><code>run demo/output_selector/output_selector2.box
 </code></pre>
-<p>and again use <code class="command">head</code> to see the expected output:</p>
-<pre><code class="command">&gt; head</code>
-<code class="output">...
+<p>and again use <code>head</code> to see the expected output:</p>
+<pre><code>&gt; head
+...
            dateTime iteration step
 2022/08/01T12:30:00         1    6
 2022/08/01T12:35:00         1    7
@@ -1487,9 +1450,9 @@ Simulation sim {
 2022/08/01T12:35:00         2    7
 2022/08/01T12:40:00         2    8
 </code></pre>
-<h3 id='periodic-output'><li>Periodic output</li></h3>
-<p>You can write only every other line by setting <code>period = 2</code>, every third line by <code>period = 3</code>, and so forth. This can be combined with <code>beginStep</code> and <code>beginDateTime</code> as you wish:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector3.box">// output_selector3.box&cudarrr;</a>
+<h4 id='periodic-output'>Periodic output</h4>
+<p>You can write only every other line by setting <code>period</code> = 2, every third line by <code>period</code> = 3, and so forth. This can be combined with <code>beginStep</code> and <code>beginDateTime</code> as you wish:</p>
+<pre><code>// output_selector3.box
 Simulation sim {
   .iterations = 2
   .steps = 25
@@ -1505,8 +1468,8 @@ Simulation sim {
 }
 </code></pre>
 <p>Notice that the final output written for each iteration is in step 22, even though an iteration lasts 25 steps. Note also that the period counts from the first line written in each iteration (in step 10), not from the beginning of the simulation in each iteration (step 0):</p>
-<pre><code class="command">&gt; head</code>
-<code class="output">...
+<pre><code>&gt; head
+...
       date iteration step
 2000/01/11         1   10
 2000/01/17         1   16
@@ -1515,9 +1478,9 @@ Simulation sim {
 2000/01/17         2   16
 2000/01/23         2   22
 </code></pre>
-<h3 id='final-output'><li>Final output</li></h3>
+<h4 id='final-output'>Final output</h4>
 <p>If you want only the final values to appear in the output, i.e. those in the last step, then you set <code>final</code> to <code>TRUE</code>. This will overrule any of the settings on <code>beginStep</code>, <code>beginDateTime</code> and <code>period</code>. Here is a simple boxscript:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector4.box">// output_selector4.box&cudarrr;</a>
+<pre><code>// output_selector4.box
 Simulation sim {
   .iterations = 3
   .steps = 25
@@ -1532,11 +1495,11 @@ Simulation sim {
 }
 </code></pre>
 <p>When you run the script,</p>
-<pre><code class="command">> run demo/output_selector/output_selector4.box
+<pre><code>run demo/output_selector/output_selector4.box
 </code></pre>
 <p>and look at the output, you will find that only the final step 25 of each of the three iterations appears in the output:</p>
-<pre><code class="command">&gt; head 20</code>
-<code  class="output">...
+<pre><code>&gt; head 20
+...
       date iteration step
 2000/01/26         1   25
 2000/01/26         2   25
@@ -1548,42 +1511,24 @@ Simulation sim {
 <p class='hidden-anchor' id='outputtext'>xxx</p><div class='border-grey'>
 <h2>OutputText</h2>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='outputwriter'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='outputwriter'>xxx</p><div class='border-grey'>
 <h2>OutputWriter</h2>
-<ul class="h3-links">
-  <li><a href="#output-writer-usage">Usage</a></li>
-  <li><a href="#output-folder">Output folder</a></li>
-  <li><a href="#output-file-format">Output file format</a></li>
-</ul>
-
-<h3 id='interface'>Interface</h3>
-<div class="insert macro">#plugins/boxes/outputwriter.html</div>
-<div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>showPorts</td><td>bool</td><td>FALSE </td><td>Shows a table of the ports to be written</td></tr>
-<tr><td>ports</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iteration] | /.[step] | OutputText::*[ports] | OutputR::*[ports]</span></td></tr>
-<tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[skipFormats]</span></td></tr>
-<tr><td>useLocalDecimalChar</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[useLocalDecimalChar]</span></td></tr>
-<tr><td>isSkipping</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[isSkipping]</span></td></tr>
-<tr><td>isActive</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[isActive]</span></td></tr>
-<tr><td>period</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[period]</span></td></tr>
-<tr><td>summary</td><td>string</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[summary]</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>filePath</td><td>string</td><td>"" </td><td>Name of output file including absolute path</td></tr>
-<tr><td>decimalChar</td><td>string</td><td>"" </td><td>Decimal character used in output</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-
-<h3 id='usage'><li>Usage</li></h3>
+<h3>Interface</h3>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody><tr><td>ports</td><td>path</td><td><em>computed</em> []</td><td><em>/.[iteration] &#124; /.[step] &#124; OutputText&#58;&#58;*[ports] &#124; OutputR&#58;&#58;*[ports]</em></td></tr><tr><td>skipFormats</td><td>bool</td><td><em>computed</em> []</td><td><em>OutputSelector&#58;&#58;*[skipFormats]</em></td></tr><tr><td>useLocalDecimalChar</td><td>bool</td><td><em>computed</em> []</td><td><em>OutputSelector&#58;&#58;*[useLocalDecimalChar]</em></td></tr><tr><td>isActive</td><td>bool</td><td><em>computed</em> []</td><td><em>OutputSelector&#58;&#58;*[isActive]</em></td></tr><tr><td><strong>Outputs</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>filePath</td><td>string</td><td>[]</td><td>Name of output file including absolute path</td></tr><tr><td>decimalChar</td><td>string</td><td>[]</td><td>Decimal character used in output</td></tr></tbody>
+</table></figure>
+<h3 id='usage'>Usage</h3>
 <p>You&#39;ll never need to include an <code>OutputWriter</code> box in a boxscript explicitly. It will be created automaticall by boxes that need it, such as <a href='#outputr'>OutputR</a> and <a href='#outputtext'>OutputText</a>. It is the sole responsibility of <code>OutputWriter</code> to write the simulation output to a file. All of its inputshas been given default expressions, which look up the relevant data in other boxes. You set <em>what</em> to change what is written in the <a href='#outputr'>OutputR</a> or <a href='#outputtext'>OutputText</a> box and you can change <em>how</em> it is written in the <a href='#outputselector'>OutputSelector</a> box.</p>
 <p><code>OutputWriter</code> depends much on <code>OutputSelector</code>, in fact, so much that if no <code>OutputSelector</code> box is present in the boxscript then the <code>OutputWriter</code> box will create an <code>OutputSelector</code> as a child box. </p>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/sun/sun1.box">sun1.box&cudarrr;</a> script, for example, includes an <code>OutputR</code> box explicitly in the script. In a chain reaction, the <code>OutputR</code> box creates an <code>OutputWriter</code> box, which again creates an <code>OutputSelector</code> box:</p>
-<pre><code class="command">&gt; load demo/sun/sun1.box</code>
-<code class="output">Constructing...
+<p>The <code>sun1.box</code> script, for example, includes an <code>OutputR</code> box explicitly in the script. In a chain reaction, the <code>OutputR</code> box creates an <code>OutputWriter</code> box, which again creates an <code>OutputSelector</code> box:</p>
+<pre><code>&gt; load demo/sun/sun1.box
+Constructing...
 Amending...
-8 boxes created</code>
-<code class="command">&gt; list</code>
-<code class="output">Simulation sim
+8 boxes created
+&gt; list
+Simulation sim
   Calendar calendar
   Sun sun
   OutputR 
@@ -1591,15 +1536,16 @@ Amending...
       PlotR 
   OutputWriter outputWriter
     OutputSelector selector
+&gt;
 </code></pre>
 <p>Most often you are not interested in the output file, as Universal Simulator does its best to handle all output automatically behind the scenes but, anyway, here are the details.</p>
-<h3 id='output-folder'><li>Output folder</li></h3>
+<h4 id='the-output-folder'>The output folder</h4>
 <p>The output file will be written to your output folder, which you can locate with the  <a href='#'>get folders</a> command:</p>
-<pre><code class="command">> get folders
+<pre><code>get folders
 </code></pre>
 <p>The name of the output file will be the same as the boxscript that produced it, just with a four-digit running number at the end. As a pure text file, its suffix (also known as its file type) is &quot;txt&quot;. The file consists of tab-separated columns, separated by tab characters (no, you cannot change the separator character to something else than a tab). </p>
 <p>The output folder will grow slowly for every run you make. Therefore, you should sometimes empty it.</p>
-<h3 id='output-file-format'><li>Output file format</li></h3>
+<h4 id='output-file-format'>Output file format</h4>
 <p>The first line contains unique column names constructed from the names of the <code>ports</code> included. The column names have been shortened as much as possible while keeping them unique. Ports named <code>value</code> will have a column name without the port part if possible; they will be named after their parent box instead (&quot;value&quot; is not an informative label).</p>
 <p>If <code>skipFormats</code> is <code>FALSE</code>, which it defaults to because that&#39;s the default value imported from <a href='#outputselector'>OutputSelector</a>, then the second line in the output file will be information about the format of the values in the column. These format specifications are used when the file is read into R as a data frame. If you want to do all the handling of the output file yourself then set <code>skipFormats</code> to <code>TRUE</code> in the <code>OutputSelector</code> box.</p>
 <p>If you want to use the decimal character specific to the language settings on your computer then set <code>useLocalDecimalChar</code> to <code>TRUE</code> in the <code>OutputSelector</code> box; otherwise a decimal point will be used.</p>
@@ -1650,7 +1596,7 @@ Amending...
 <tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
 <tbody><tr><td>iteration</td><td>int</td><td><em>computed</em> []</td><td><em>/.[iteration]</em></td></tr><tr><td>iterations</td><td>int</td><td><em>computed</em> []</td><td><em>/.[iterations]</em></td></tr><tr><td>doSensitivityAnalysis</td><td>bool</td><td>FALSE []</td><td>Carry out a sensitivity analysis?</td></tr><tr><td>bootstrapSize</td><td>int</td><td>1000 []</td><td>Size of bootstrap sample (cheap in computation time); only used in sensitivity analysis</td></tr><tr><td>seed</td><td>int</td><td>0 []</td><td>Seed for random numbers; if this is zero a random seed value will be used</td></tr><tr><td>drawAtInitialize</td><td>bool</td><td>FALSE []</td><td>Draw a value when a box is initialized?</td></tr><tr><td>drawAtReset</td><td>bool</td><td>TRUE []</td><td>Draw a value when a box is reset?</td></tr><tr><td>drawAtUpdate</td><td>bool</td><td>FALSE []</td><td>Draw a value when a box is updated?</td></tr><tr><td><strong>Outputs</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>numVariables</td><td>int</td><td>[0;inf)</td><td>Number of variables which are randomised</td></tr></tbody>
 </table></figure>
-<h3 id='background'><li>Background</li></h3>
+<h3 id='background'>Background</h3>
 <p>There will be only one source of random numbers in your boxscript. This will be a box of one of the classes:</p>
 <ul>
 <li><a href='#randomisermontecarlo'>RandomiserMonteCarlo</a></li>
@@ -1661,25 +1607,25 @@ Amending...
 <p>These box class have the same interface defined by <code>RandomiserBase</code>. You cannot use <code>RandomiserBase</code> directly in your boxscript (in C++ parlance it is virtual); it only serves as a base class for the three classes above, which you can use&#8212;but only one of them and only once in a boxscript.</p>
 <p>You can change the <code>seed</code> to a positive value, if you want the same sequence of pseudo-random numbers every time you run the boxscript. For a <code>RandomiserSobolSequence</code> box, though, the <code>seed</code> has no effect because this box will produce the same sequence of quasi-random numbers always.</p>
 <p>By default random numbers will be drawn in every <strong>reset</strong> step (see <a href='#'>computational model</a>), as indicated by <code>drawAtReset</code>. Other options (they can be combined) are <code>drawAtInitialize</code> and <code>drawAtUpdate</code>. If you choose to draw random numbers at every <strong>update</strong>, you will end up with a <strong>stochastic model</strong>. The default setting will change model behaviour for every iteration that you run the model. This is useful for <strong>uncertainty analysis</strong> and <strong>sensitivity analysis</strong>. If you want to carry out a sensitivity analysis then set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and consider changing <code>bootstrapSize</code> to 10,000 for serious use.</p>
-<p>The single output <code>numVariables</code> is mysterious. It tells you how many variables are randomised, yet there are no inputs to indicate which variables to randomise? That&#39;s because a certain structure of boxes is assumed, as exemplified by this boxscript:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser1.box">// randomiser1.box&cudarrr;</a> 
-Box random {
-  RandomiserMonteCarlo randomiser {
+<p>The single output <code>numVariables</code> is mysterious. It tells you how many variables are randomised, yet there are no inputs to indicate which variables to randomise? That&#39;s because a certain structure of boxes is assumed, as exemplified by this box from the <code>randomiser1.box</code> script:</p>
+<pre><code>  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniformInt k {
+      .min = 10
+      .max = 30
+    }
+    RandomNormal r {
+      .min = 10
+      .max = 30 
+    }
   }
-  RandomUniformInt k {
-    .min = 10
-    .max = 30
-  }
-  RandomNormal r {
-    .min = 10
-    .max = 30 
-  }
-}
 </code></pre>
 <p>The box names (<code>random</code>, <code>randomiser</code>, <code>k</code> and <code>r</code>) are all up to you to choose but are used here for reference. There must be one <code>randomiser</code> box with any number of sibling boxes. The sibling boxes of classes derived from <a href='#randombase'>RandomBase</a> represent the random variables. Here there are two, <code>k</code> and <code>r</code>. There can be other sibling boxes beside that but you should always have the randomiser as the top-most child. Arrange it all neatly within a common parent box, here <code>random</code>.</p>
-<h3 id='stochastic-modelling'><li>Stochastic modelling</li></h3>
-<p>It is easiest to understand how to set up a stochastic model by starting out with one that is not stochastic, yet makes use of random numbers. This is exemplified by this boxscript:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser1.box">// randomiser1.box&cudarrr;</a> 
+<h3 id='usage'>Usage</h3>
+<h4 id='stochastic-modelling'>Stochastic modelling</h4>
+<p>It is easiest to understand how to set up a stochastic model by starting out with one that is not stochastic, yet makes use of random numbers. This is exemplified by the <code>randomiser1.box</code> script:</p>
+<pre><code>// randomiser1.box
 Simulation sim {
   .iterations = 4
   .steps = 5
@@ -1707,13 +1653,13 @@ Simulation sim {
 }
 </code></pre>
 <p>Run the model,</p>
-<pre><code class="command">> run demo/randomiser/randomiser1.box
+<pre><code>run demo/randomiser/randomiser1.box
 </code></pre>
 <p>and study the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser1.png" style="width:60%;" /></p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser1.png" style="zoom:50%;" /></p>
 <p>The four panels show the four iterations of the model. Within each iteration the variables remain constant. It is only from one iteration to the next that they attain new values inside their designated intervals (which happens to be [10;30] for both of them). This set-up of the random variables are useful for an uncertainty or a sensitivity analysis.</p>
 <p>Only little changed in the next boxscript. Most importantly, we are now drawing random numbers for every simulation update:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser2.box">// randomiser2.box&cudarrr;</a> 
+<pre><code>// randomiser2.box
 Simulation sim {
   .iterations = 4
   .steps = 100
@@ -1741,15 +1687,14 @@ Simulation sim {
 }
 </code></pre>
 <p>Run the model,</p>
-<pre><code class="command">> run demo/randomiser/randomiser2.box
+<pre><code>run demo/randomiser/randomiser2.box
 </code></pre>
 <p>and marvel at the changed behaviour of the model. We are now running each of the four iterations for 100 steps to highligh the dynamics:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser2.png" style="width:60%;" /></p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser2.png" style="zoom:50%;" /></p>
 <p>This shows the behaviour of a stochastic model. Use those two variables elsewhere in your model as inputs to other boxes, and your model will behave erratically, hopefully within meaningful boundaries. You would refer to the current values by <code>random/k[value]</code> and <code>random/r[value]</code>.</p>
-<h3 id='uncertainty-analysis'><li>Uncertainty analysis</li></h3>
-<p>In uncertainty analysis we study  the uncertainty on model outputs induced by uncertainty in model parameters. We have take the introductory
-<a href="https://tildeweb.au.dk/au152367/input/demo/butterfly.box">butterfly.box&cudarrr;</a> script and made two of the model parameters uncertain:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser3.box">// randomiser3.box&cudarrr;</a> 
+<h4 id='uncertainty-analysis'>Uncertainty analysis</h4>
+<p>In uncertainty analysis we study  the uncertainty on model outputs induced by uncertainty in model parameters. We have take the introductory <code>demo/butterfly.box</code> script and made two of the model parameters uncertain, here in <code>randomiser3.box</code></p>
+<pre><code>// randomiser3.box
 Simulation sim {
   .iterations = 4
   Calendar calendar {
@@ -1812,18 +1757,18 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>The parameters chosen to be uncertain are <code>k</code> used as input to the <a href='#stage'>Stage</a> boxes and ambient temperature. Temperature enters the model from the <a href='#records'>Records</a> box, which reads it from a weather file. Assuming the ambient temperature is an uncertain measure for the microclimate experienced by all life stages of the butterfly population, an uncertainty of &plusmn;3&#8451; was added to the temperate. This is represented by the <a href='#randomuniform'>RandomUniform</a> variable <code>deltaT</code> (well,  more precisely, <code>deltaT</code> is a box; the variable value is provided by its <code>value</code> output).</p>
+<p>The parameters chosen to be uncertain are <code>k</code> used as input to the <a href='#stage'>Stage</a> boxes and ambient temperature. Temperature enters the model from the <a href='#records'>Records</a> box, which reads it from a weather file. Assuming the ambient temperature is an uncertain measure for the microclimate experienced by all life stages of the butterfly population, an uncertainty of &plusmn;3&#8451; was added to the temperate. This is represented by the <a href='#randomuniform'>RandomUniform</a> variable <code>deltaT</code> (well,  more precisely,<code>deltaT</code> is a box; the variable value is provided by its <code>value</code> output).</p>
 <p>You can run the boxscript,</p>
-<pre><code class="command">> run demo/randomiser/randomiser3.box
+<pre><code>run demo/randomiser/randomiser3.box
 </code></pre>
 <p>and study the uncertainty in the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser3.png" style="width:60%;" /></p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser3.png" style="zoom:50%;" /></p>
 <p>An alternative presentation of the uncertainty is shown in the next boxscript, running 30 iterations:</p>
-<pre><code class="command">> run demo/randomiser/randomiser4.box
+<pre><code>run demo/randomiser/randomiser4.box
 </code></pre>
 <p>There are 30 curves in each panel, representing the course of life stages phenology for each of the 30 iterations:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser4.png" style="width:80%;" /></p>
-<p>How about summarising the 30 curves in the panels for larva, pupa and adult by the date of their maximum? Then we could show the distribution of these dates as ann alternative illustration of the uncertainty. That&#39;s what we&#39;ll do in the next script. Here are the final lines of the <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser5.box">randomiser5.box&cudarrr;</a> script:</p>
+<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser4.png" style="zoom:60%;" /></p>
+<p>How about summarising the 30 curves in the panels for larva, pupa and adult by the date of their maximum? Then we could show the distribution of these dates as ann alternative illustration of the uncertainty. That&#39;s what we&#39;ll do in the next script. Here are the final lines of the <code>randomiser5.box</code> script:</p>
 <pre><code>Box max {
   MaximumAt larva {
     .track = butterfly/larva[value]
@@ -1845,15 +1790,15 @@ OutputR {
   }
 }
 </code></pre>
-<p>We use three <a href='#maxat'>MaxAt</a> boxes to catch the simulation step, in which the maximum is reached. By setting <code>final</code> to <code>TRUE</code> in the <a href='#outputselector'>OutputSelector</a>, we get only one line of out from each simulation iteration. Let&#39;s run that,</p>
-<pre><code class="command">> run demo/randomiser/randomiser5.box
+<p>We use three <a href='#maxat'>MaxAt</a> boxes to catch the simulation step, in which their maximum is reached. By setting <code>final</code> to <code>TRUE</code> in the <a href='#outputselector'>OutputSelector</a>, we get only one line of out from each simulation iteration. Let&#39;s run that,</p>
+<pre><code>run demo/randomiser/randomiser5.box
 </code></pre>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser5.R">randomiser5.R&cudarrr;</a> script grabbed the output to show these <code>geom_density</code> plots:
-<img src="https://tildeweb.au.dk/au152367/media/demo/randomiser5.png" style="width:60%;" /></p>
+<p>The <code>randomiser5.R</code> script grabbed the output to show these <code>geom_density</code> plots:
+<img src="https://tildeweb.au.dk/au152367/media/demo/randomiser5.png" style="zoom:60%;" /></p>
 <p>That&#39;s a lot of uncertainty! The expected date of maximum occurence stretches over a month for all three life stages. The question is, which of the two uncertain parameters <code>k</code> or <code>deltaT</code> is the main cause of this uncertainty? That&#39;s what we&#39;ll find out next in the sensitivity analysis.</p>
-<h3 id='sensitivity-analysis'><li>Sensitivity analysis</li></h3>
-<p>Sensitivity analysis demands many simulation iterations. Therefore, you should use the randomiser that most efficiently explores the <em>n</em>-dimensional space formed by your <em>n</em> uncertain model parameters. That means you should use <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>. This has been set up in the next script like so:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser6.box">// randomiser6.box&cudarrr;</a> 
+<h4 id='sensitivity-analysis'>Sensitivity analysis</h4>
+<p>Sensitivity analysis demands many simulation iterations. Therefore, you should use the randomiser that most efficiently explores the <em>n</em>-dimensional space formed by your <em>n</em> uncertain model parameters. That means you should use <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>. This has been set up in the <code>randomiser6.box</code> script like so:</p>
+<pre><code>// randomiser6.box
 Simulation sim {
   .iterations = 1024
   .silent = TRUE
@@ -1878,20 +1823,14 @@ Simulation sim {
       .max =  3.0
     }
   }
+
 </code></pre>
-<p>When we are using Sobol&#39; numbers we should be careful to make a balanced sampling of parameter space. To obtain that, the number of simulation <code>iterations</code> must equal \(N(p+2)\) with \(N=2^n\), where \(n\) is a whole, positive number, and \(p\) is the number of parameters sampled (we've got 2). \(N\) is known as the sample size of the sensitivity analysis. These are all valid options for \(p=2\): 
-$$
-\begin{align*}
-2^1\cdot(2+2) &= 8 \\
-2^2\cdot(2+2) &= 16 \\
-2^3\cdot(2+2) &= 32 \\
-\ldots \\
-\end{align*}
-$$
-<p>If you set <code>iterations</code> to an invalid number (which depends only on your value of \(p\)), the simulation will stop immediately if you try to run it. As a service, you will get suggestions to valid values for <code>iterations</code> near the number you picked. So, if you want in the range of, say, 50,000 iterations, write that, and you will be told nearby valid numbers.</p>
+<p>When we are using Sobol&#39; numbers we should be careful to make a balanced sampling of parameter space. To obtain that, the number of simulation <code>iterations</code> must equal  <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="8.804ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3891.4 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.566ex;"><defs><path id="MJX-420-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-420-TEX-N-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path id="MJX-420-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path><path id="MJX-420-TEX-N-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path><path id="MJX-420-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-420-TEX-N-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-420-TEX-I-1D441"></use></g><g data-mml-node="mo" transform="translate(888,0)"><use data-c="28" xlink:href="#MJX-420-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(1277,0)"><use data-c="1D45D" xlink:href="#MJX-420-TEX-I-1D45D"></use></g><g data-mml-node="mo" transform="translate(2002.2,0)"><use data-c="2B" xlink:href="#MJX-420-TEX-N-2B"></use></g><g data-mml-node="mn" transform="translate(3002.4,0)"><use data-c="32" xlink:href="#MJX-420-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(3502.4,0)"><use data-c="29" xlink:href="#MJX-420-TEX-N-29"></use></g></g></g></svg></mjx-container><script type="math/tex">N(p+2)</script> with <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="7.305ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 3228.8 765" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><defs><path id="MJX-421-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-421-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-421-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-421-TEX-I-1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-421-TEX-I-1D441"></use></g><g data-mml-node="mo" transform="translate(1165.8,0)"><use data-c="3D" xlink:href="#MJX-421-TEX-N-3D"></use></g><g data-mml-node="msup" transform="translate(2221.6,0)"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-421-TEX-N-32"></use></g><g data-mml-node="mi" transform="translate(533,363) scale(0.707)"><use data-c="1D45B" xlink:href="#MJX-421-TEX-I-1D45B"></use></g></g></g></g></svg></mjx-container><script type="math/tex">N=2^n</script>, where  <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.357ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 600 453" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.025ex;"><defs><path id="MJX-422-TEX-I-1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45B" xlink:href="#MJX-422-TEX-I-1D45B"></use></g></g></g></svg></mjx-container><script type="math/tex">n</script> is a whole, positive number, and  <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.138ex" height="1.439ex" role="img" focusable="false" viewBox="0 -442 503 636" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.439ex;"><defs><path id="MJX-426-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45D" xlink:href="#MJX-426-TEX-I-1D45D"></use></g></g></g></svg></mjx-container><script type="math/tex">p</script> is the number of parameters sampled (we&#39;ve got 2). <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="2.009ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 888 683" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: 0px;"><defs><path id="MJX-428-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-428-TEX-I-1D441"></use></g></g></g></svg></mjx-container><script type="math/tex">N</script> is known as the sample size of the sensitivity analysis. These are all valid options for <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="5.286ex" height="1.946ex" role="img" focusable="false" viewBox="0 -666 2336.6 860" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.439ex;"><defs><path id="MJX-425-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path><path id="MJX-425-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-425-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45D" xlink:href="#MJX-425-TEX-I-1D45D"></use></g><g data-mml-node="mo" transform="translate(780.8,0)"><use data-c="3D" xlink:href="#MJX-425-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1836.6,0)"><use data-c="32" xlink:href="#MJX-425-TEX-N-32"></use></g></g></g></svg></mjx-container><script type="math/tex">p=2</script>:</p>
+<div contenteditable="false" spellcheck="false" class="mathjax-block md-end-block md-math-block md-rawblock" id="mathjax-n3241" cid="n3241" mdtype="math_block" data-math-tag-before="22" data-math-tag-after="22" data-math-labels="[]"><div class="md-rawblock-container md-math-container" tabindex="-1"><mjx-container class="MathJax" jax="SVG" display="true" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="15.821ex" height="11.993ex" role="img" focusable="false" viewBox="0 -2900.5 6993 5301.1" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -5.431ex;"><defs><path id="MJX-73-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-73-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-73-TEX-N-22C5" d="M78 250Q78 274 95 292T138 310Q162 310 180 294T199 251Q199 226 182 208T139 190T96 207T78 250Z"></path><path id="MJX-73-TEX-N-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path><path id="MJX-73-TEX-N-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path><path id="MJX-73-TEX-N-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path><path id="MJX-73-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-73-TEX-N-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path><path id="MJX-73-TEX-N-36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path><path id="MJX-73-TEX-N-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path id="MJX-73-TEX-N-2026" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60ZM525 60Q525 84 542 102T585 120Q609 120 627 104T646 61Q646 36 629 18T586 0T543 17T525 60ZM972 60Q972 84 989 102T1032 120Q1056 120 1074 104T1093 61Q1093 36 1076 18T1033 0T990 17T972 60Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mtable"><g data-mml-node="mtr" transform="translate(0,2016.6)"><g data-mml-node="mtd"><g data-mml-node="msup"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mn" transform="translate(533,413) scale(0.707)"><use data-c="31" xlink:href="#MJX-73-TEX-N-31"></use></g></g><g data-mml-node="mo" transform="translate(1158.8,0)"><use data-c="22C5" xlink:href="#MJX-73-TEX-N-22C5"></use></g><g data-mml-node="mo" transform="translate(1659,0)"><use data-c="28" xlink:href="#MJX-73-TEX-N-28"></use></g><g data-mml-node="mn" transform="translate(2048,0)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(2770.2,0)"><use data-c="2B" xlink:href="#MJX-73-TEX-N-2B"></use></g><g data-mml-node="mn" transform="translate(3770.4,0)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(4270.4,0)"><use data-c="29" xlink:href="#MJX-73-TEX-N-29"></use></g></g><g data-mml-node="mtd" transform="translate(4659.4,0)"><g data-mml-node="mi"></g><g data-mml-node="mo" transform="translate(277.8,0)"><use data-c="3D" xlink:href="#MJX-73-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1333.6,0)"><use data-c="38" xlink:href="#MJX-73-TEX-N-38"></use></g></g></g><g data-mml-node="mtr" transform="translate(0,582.7)"><g data-mml-node="mtd"><g data-mml-node="msup"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mn" transform="translate(533,413) scale(0.707)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g></g><g data-mml-node="mo" transform="translate(1158.8,0)"><use data-c="22C5" xlink:href="#MJX-73-TEX-N-22C5"></use></g><g data-mml-node="mo" transform="translate(1659,0)"><use data-c="28" xlink:href="#MJX-73-TEX-N-28"></use></g><g data-mml-node="mn" transform="translate(2048,0)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(2770.2,0)"><use data-c="2B" xlink:href="#MJX-73-TEX-N-2B"></use></g><g data-mml-node="mn" transform="translate(3770.4,0)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(4270.4,0)"><use data-c="29" xlink:href="#MJX-73-TEX-N-29"></use></g></g><g data-mml-node="mtd" transform="translate(4659.4,0)"><g data-mml-node="mi"></g><g data-mml-node="mo" transform="translate(277.8,0)"><use data-c="3D" xlink:href="#MJX-73-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1333.6,0)"><use data-c="31" xlink:href="#MJX-73-TEX-N-31"></use><use data-c="36" xlink:href="#MJX-73-TEX-N-36" transform="translate(500,0)"></use></g></g></g><g data-mml-node="mtr" transform="translate(0,-850.5)"><g data-mml-node="mtd"><g data-mml-node="msup"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mn" transform="translate(533,413) scale(0.707)"><use data-c="33" xlink:href="#MJX-73-TEX-N-33"></use></g></g><g data-mml-node="mo" transform="translate(1158.8,0)"><use data-c="22C5" xlink:href="#MJX-73-TEX-N-22C5"></use></g><g data-mml-node="mo" transform="translate(1659,0)"><use data-c="28" xlink:href="#MJX-73-TEX-N-28"></use></g><g data-mml-node="mn" transform="translate(2048,0)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(2770.2,0)"><use data-c="2B" xlink:href="#MJX-73-TEX-N-2B"></use></g><g data-mml-node="mn" transform="translate(3770.4,0)"><use data-c="32" xlink:href="#MJX-73-TEX-N-32"></use></g><g data-mml-node="mo" transform="translate(4270.4,0)"><use data-c="29" xlink:href="#MJX-73-TEX-N-29"></use></g></g><g data-mml-node="mtd" transform="translate(4659.4,0)"><g data-mml-node="mi"></g><g data-mml-node="mo" transform="translate(277.8,0)"><use data-c="3D" xlink:href="#MJX-73-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(1333.6,0)"><use data-c="33" xlink:href="#MJX-73-TEX-N-33"></use><use data-c="32" xlink:href="#MJX-73-TEX-N-32" transform="translate(500,0)"></use></g></g></g><g data-mml-node="mtr" transform="translate(0,-2150.5)"><g data-mml-node="mtd" transform="translate(3487.4,0)"><g data-mml-node="mo"><use data-c="2026" xlink:href="#MJX-73-TEX-N-2026"></use></g></g></g></g></g></g></svg></mjx-container></div></div>
+<p>If you set <code>iterations</code> to an invalid number (which depends only on your value of <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.138ex" height="1.439ex" role="img" focusable="false" viewBox="0 -442 503 636" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.439ex;"><defs><path id="MJX-426-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45D" xlink:href="#MJX-426-TEX-I-1D45D"></use></g></g></g></svg></mjx-container><script type="math/tex">p</script>), the simulation will stop immediately if you try to run it. As a service, you will get suggestions to valid values for <code>iterations</code> near the number you picked. So, if you want in the range of, say, 50,000 iterations, write that, and you will be told nearby valid numbers.</p>
 <p>To carry out the sensitivity analysis on the simulation output, we must set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and choose a reasonable <code>bootstrapSize</code> to do statistics on the sensitivity indices. A <code>bootstrapSize</code> of 10,000 seems to be a standard choice in literature but here we&#39;ll use 1000 for demonstration.</p>
-<p>The <a href='#outputr'>OutputR</a> box  in the <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser6.box">randomiser6.box&cudarrr;</a>  script will show three pages of output produced by <a href='#pager'>PageR</a> boxes:</p>
-<pre><code class="listing">OutputR {
+<p>The <a href='#outputr'>OutputR</a> box  in the <code>randomiser6.box</code> script will show three pages of output produced by <a href='#pager'>PageR</a> boxes:</p>
+<pre><code>OutputR {
   OutputSelector {
     .final = TRUE
   }
@@ -1920,20 +1859,20 @@ $$
 }
 </code></pre>
 <p>We invoke the <a href='#outputselector'>OutputSelector</a> to write only the <code>final</code> values of each iteration. For each of the <code>PageR</code> boxes, you must put all the uncertain parameters on the <code>xAxis</code>. You can use the <a href='#'>find</a> command to check whether you got it right:</p>
-<pre><code class="command">>&gt; load demo/randomiser/randomiser6.box</code>
-<code class="output">...</code>
-<code class="command">&gt; find random/*[value]</code>
-<code class="output">Port int    sim/random/k[value]
+<pre><code>&gt; load demo/randomiser/randomiser6.box
+...
+&gt; find random/*[value]
+Port int    sim/random/k[value]
 Port double sim/random/deltaT[value]
 </code></pre>
 <p>Likewise, you must put all the model response variables into the <code>ports</code> of the <a href='#plotr'>PlotR</a> boxes:</p>
-<pre><code class="command">&gt; find max/*[at]</code>
-<code class="output">Port int sim/max/larva[at]
+<pre><code>&gt; find max/*[at]
+Port int sim/max/larva[at]
 Port int sim/max/pupa[at]
 Port int sim/max/adult[at]
 </code></pre>
 <p>Now, it&#39;s time to run the model,</p>
-<pre><code class="command">> run demo/randomiser/randomiser6.box
+<pre><code>run demo/randomiser/randomiser6.box
 </code></pre>
 <p>The 1024 iterations took 31 seconds on my machine. Paste into R and wait for the 1000 bootstraps statistics to finish. That took 14 seconds for me. For larger models, you might need &gt;100,000 iterations while 10,000 bootstraps should suffice. For hours&#39; long simulation, you should <code>unattended</code> to <code>TRUE</code> in the <a href='#simulation'>Simulation</a> box.</p>
 <p>The first plot represents each iteration result asa dot in each. Remember that the model responses on the y-axis is the simulation step (i.e., days after 30 April), when the maximum value was attained:</p>
@@ -1941,44 +1880,20 @@ Port int sim/max/adult[at]
 <p>Clearly, <code>k</code> had no influence, while <code>deltaT</code>  had a very clear-cut influence. Don&#39;t expect such simplicity coming out of more complex models!</p>
 <p>The second plot shows you the increased precision of the estimates of the Sobol&#39; indices:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6b.png" referrerpolicy="no-referrer"></p>
-<p>We had sample size \(N=256\). The plot shows what would have happened with smaller \(N\). The estimates, shown for <code>deltaT</code>, <code>k</code> and their sum, are clearly converging and not changing much from \(N=128\) to \(N=256\). We conclude that we don&#39;t need to increase the sample size.</p>
+<p>We had sample size <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="8.42ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 3721.6 765" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><defs><path id="MJX-430-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-430-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-430-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-430-TEX-N-35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path><path id="MJX-430-TEX-N-36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-430-TEX-I-1D441"></use></g><g data-mml-node="mo" transform="translate(1165.8,0)"><use data-c="3D" xlink:href="#MJX-430-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(2221.6,0)"><use data-c="32" xlink:href="#MJX-430-TEX-N-32"></use><use data-c="35" xlink:href="#MJX-430-TEX-N-35" transform="translate(500,0)"></use><use data-c="36" xlink:href="#MJX-430-TEX-N-36" transform="translate(1000,0)"></use></g></g></g></svg></mjx-container><script type="math/tex">N=256</script>. The plot shows what would have happened with smaller <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="2.009ex" height="1.545ex" role="img" focusable="false" viewBox="0 -683 888 683" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: 0px;"><defs><path id="MJX-428-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-428-TEX-I-1D441"></use></g></g></g></svg></mjx-container><script type="math/tex">N</script>. The estimates, shown for <code>deltaT</code>, <code>k</code> and their sum, are clearly converging and not changing much from <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="8.42ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 3721.6 765" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><defs><path id="MJX-429-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-429-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-429-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-429-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-429-TEX-N-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-429-TEX-I-1D441"></use></g><g data-mml-node="mo" transform="translate(1165.8,0)"><use data-c="3D" xlink:href="#MJX-429-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(2221.6,0)"><use data-c="31" xlink:href="#MJX-429-TEX-N-31"></use><use data-c="32" xlink:href="#MJX-429-TEX-N-32" transform="translate(500,0)"></use><use data-c="38" xlink:href="#MJX-429-TEX-N-38" transform="translate(1000,0)"></use></g></g></g></svg></mjx-container><script type="math/tex">N=128</script> top <mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="8.42ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 3721.6 765" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><defs><path id="MJX-430-TEX-I-1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path id="MJX-430-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path><path id="MJX-430-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-430-TEX-N-35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path><path id="MJX-430-TEX-N-36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D441" xlink:href="#MJX-430-TEX-I-1D441"></use></g><g data-mml-node="mo" transform="translate(1165.8,0)"><use data-c="3D" xlink:href="#MJX-430-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(2221.6,0)"><use data-c="32" xlink:href="#MJX-430-TEX-N-32"></use><use data-c="35" xlink:href="#MJX-430-TEX-N-35" transform="translate(500,0)"></use><use data-c="36" xlink:href="#MJX-430-TEX-N-36" transform="translate(1000,0)"></use></g></g></g></svg></mjx-container><script type="math/tex">N=256</script>. We conclude that we don&#39;t need to increase the sample size.</p>
 <p>The final plot shows the Sobol&#39; indices for each of the model responses:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6c.png" referrerpolicy="no-referrer"></p>
 <p>The uncertain model parameters are sorted for each model response in decreasing order of importance. We are not surprised that the sensitivity indices for <code>k</code> are both nil, while they are both 1 for <code>deltaT</code>. This stresses that <code>deltaT</code> is not interacting with <code>k</code> to determine model uncertainty. In the cereal aphid-fungus model, you can find <a href='#'>a more complicated sensitivity analysis</a>.</p>
 <p>Since the simulation and bootstrapping computations may take a very long time, you should be aware how to save the results. How to do that is described for the cereal aphid-fungus model under <a href='#'>Saving and restoring the analysis</a>.</p>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomisermontecarlo'>xxx</p><div class='border-grey'>
-<h2>RandomiserMonteCarlo</h2>
-<p>See <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomiserstratified'>xxx</p><div class='border-grey'>
-<h2>RandomiserStratified</h2>
-<p>See <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='background'>xxx</p><p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><div class='border-grey'>
 <h2>Randomiser&shy;SobolSequence</h2>
-<p><code>RandomiserSobolSequence</code> is derived from <a href='#randomiserbase'>RandomiserBase</a>.</p>
 <h3>Interface</h3>
-<div class="insert macro">#plugins/boxes/randomisersobolsequence.html</div>
-<div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>iteration</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iteration]</span></td></tr>
-<tr><td>iterations</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iterations]</span></td></tr>
-<tr><td>doSensitivityAnalysis</td><td>bool</td><td>FALSE </td><td>Carry out a sensitivity analysis?</td></tr>
-<tr><td>bootstrapSize</td><td>int</td><td>1000 </td><td>Size of bootstrap sample (cheap in computation time); only used in sensitivity analysis</td></tr>
-<tr><td>seed</td><td>int</td><td>0 </td><td>Seed for random numbers; if this is zero a random seed value will be used</td></tr>
-<tr><td>drawAtInitialize</td><td>bool</td><td>FALSE </td><td>Draw a value when a box is initialized?</td></tr>
-<tr><td>drawAtReset</td><td>bool</td><td>TRUE </td><td>Draw a value when a box is reset?</td></tr>
-<tr><td>drawAtUpdate</td><td>bool</td><td>FALSE </td><td>Draw a value when a box is updated?</td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>numVariables</td><td>int</td><td>0</td><td>Number of variables which are randomised [0;inf)</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-
-<h3 id='usage'>Usage</h3>
+<p>See <a href='#randomiserbase'>RandomiserBase</a>.</p>
+<h3>Background</h3>
 <p>You can use <code>RandomiserMonteCarlo</code> for stochastic modelling and uncertainty analysis, but <a href='#randomiserstratified'>RandomiserStratified</a> will explore the parameter space more efficiently. For sensitivity analysis, <a href='#randomisersobolsequence'>RandomiserSobolSequence</a> is the preferred choice because it is the most effective of the three in covering all of the parameter space.</p>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser7.box">randomiser7.box&cudarrr;</a> script shows the differences, subtle but important, between the three randomisers. The boxscript breaks the general rule not to put more than one randomiser box into a script. The only good reason would be for a direct comparison like here. Each of the three randomisers is the source of random numbers used to generate random numbers for two variables <code>x</code> and  <code>y</code>, both with a uniform distribution of  numbers in the interval [20;40) (see <a href='#randomuniform'>RandomUniform</a>).</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser7.box">// randomiser7.box&cudarrr;</a> 
+<p>The <code>randomiser7.box</code> script shows the differences, subtle but important, between the three randomisers. The boxscript breaks the general rule not to put more than one randomiser box into a script. The only good reason would be for a direct comparison like here. Each of the three randomisers is the source of random numbers used to generate random numbers for two variables <code>x</code> and  <code>y</code>, both with a uniform distribution of  numbers in the interval [20;40) (see <a href='#randomuniform'>RandomUniform</a>).</p>
+<pre><code>// randomiser7.box
 Simulation sim {
   .iterations = 32
   .steps = 1
@@ -2031,7 +1946,7 @@ Simulation sim {
 }
 </code></pre>
 <p>Run the boxscript,</p>
-<pre><code class="command">>run demo/randomiser/randomiser7.box
+<pre><code>run demo/randomiser/randomiser7.box
 </code></pre>
 <p>and study the output:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser7.png" referrerpolicy="no-referrer"></p>
@@ -2045,7 +1960,15 @@ Simulation sim {
 <p>At the bottom you see the distribution of <code>x</code>. The Monte Carlo method yielded the least uniform and the Sobol&#39; sequence the most uniform distribution.</p>
 <p>At the top you see the joint distribution, where the Sobol&#39; sequence stands out with the best coverage of the 2-dimensional variable space; this is what Sobol&#39; designed his sequence for. Moreover, the good coverage of Sobol&#39; numbers is still obtained with many variables in n-dimensional space.</p>
 <p>The <code>randomiser</code> box is ignorant about the statistical distributions that are generated from. Behind the scenes it just produces random numbers in the interval [0;1], which are then grabbed by its sibling random boxes (in this example <a href='#randomuniform'>RandomUniform</a>) and transformed into the appropriate distribution. For another distribution than uniform, you can check out <a href='#randomnormal'>RandomNormal</a>, for example.</p>
-<p>Find more examples in <a href='#randomiserbase'>RandomiserBase</a>.</p>
+<h3 id='usages'>Usages</h3>
+<p> See examples in <a href='#randomiserbase'>RandomiserBase</a>.</p>
+      </div> <!-- border-grey-->
+<div class='border-grey'>
+<p>See <a href='#randomisermontecarlo'>Randomiser&shy;MonteCarlo</a>.</p>
+      </div> <!-- border-grey-->
+<p class='hidden-anchor' id='randomiserstratified'>xxx</p><div class='border-grey'>
+<h2>RandomiserStratified</h2>
+<p>See <a href='#randomisermontecarlo'>RandomiserMonteCarlo</a>.</p>
       </div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randombase'>xxx</p><div class='border-grey'>
 <h2>RandomBase</h2>
@@ -2073,23 +1996,16 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randombinomial'>xxx</p><div class='border-grey'>
 <h2>RandomBinomial</h2>
 <h3>Interface</h3>
-<div class="insert macro">#plugins/boxes/randombinomial.html</div>
-<div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>P</td><td>double</td><td>0.5</td><td>Probability of event [0;1]</td></tr>
-<tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
-<tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
-<tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
-<tr><td>min</td><td>bool</td><td>FALSE </td><td>Not used</td></tr>
-<tr><td>max</td><td>bool</td><td>TRUE </td><td>Not used</td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>value</td><td>bool</td><td>FALSE </td><td>The most recently drawn value</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-
-<h3 id='usage'>Usage</h3>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody><tr><td>P</td><td>double</td><td>0.5 [0;1]</td><td>Probability of event</td></tr><tr><td><strong>Outputs</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>value</td><td>bool</td><td>[]</td><td>The most recently drawn value</td></tr></tbody>
+</table></figure>
+<h3 id='background'>Background</h3>
 <p><code>RandomBinomial</code> produces numbers from the binomial distribution. <code>value</code> will be <code>TRUE</code> with probability <code>P</code>.</p>
-<pre><code><a href="https://tildeweb.au.dk/au152367/input/demo/random_binomial/random_binomial1.box">// random_binomial1.box&cudarrr;</a>
+<h3 id='usage'>Usage</h3>
+<p>&nbsp;</p>
+<pre><code>// random_binomial1.box
 Simulation sim {
   .steps = 100
   Box random {
@@ -2118,12 +2034,12 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>Run the boxscript:</p>
-<pre><code class="Command">> run demo/random_binomial/random_binomial1.box
+<p>xx</p>
+<pre><code>run demo/random_binomial/random_binomial1.box
 </code></pre>
-<p>The final lines of the output show how <code>x</code> approaches 60% and <code>y</code> approaches 90%, as expected:</p>
-<pre><code class="command">&gt; tail</code>
-<code class="output">...
+<p>xx</p>
+<pre><code>&gt; tail
+...
 random.x random.y positive.x positive.y iteration step
        1        1       53.0       88.0         1   95
        1        0       54.0       88.0         1   96
@@ -2148,43 +2064,17 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='randomuniformint'>xxx</p><div class='border-grey'>
 <h2>RandomUniformInt</h2>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='records'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='records'>xxx</p><div class='border-grey'>
 <h2>Records</h2>
-<ul class="h3-links">
-  <li><a href='#daily-readings'>Daily readings</a></li>
-  <li><a href='#interpolation'>Interpolation</a></li>
-  <li><a href='#hourly-readings'>Hourly readings</a></li>
-  <li><a href='#ignoring-the-year'>Ignoring the year</a></li>
-  <li><a href='#extrapolation'>Extrapolation</a></li>
-  <li><a href='#recycling-the-year'>Recycling the year</a></li>
-</ul>
-<h3 id='interface'>Interface</h3>
-<div class="insert macro">#plugins/boxes/records.html</div>
-<div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>fileName</td><td>string</td><td>"records.txt" </td><td>Name of file with records; columns separated by white space</td></tr>
-<tr><td>dateColumnName</td><td>string</td><td>"Date" </td><td>Name of column with date</td></tr>
-<tr><td>timeColumnName</td><td>string</td><td>"Time" </td><td>Name of column with time</td></tr>
-<tr><td>cycle</td><td>bool</td><td>FALSE </td><td>Cycle back to start at end of file? Forces ignoreYear=true</td></tr>
-<tr><td>ignoreYear</td><td>bool</td><td>FALSE </td><td>Ignore year when synchronising with the calendar</td></tr>
-<tr><td>calendarDateTime</td><td>datetime</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[dateTime]</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>firstDateTime</td><td>datetime</td><td>null </td><td>Date-time stamp of the first line in the file</td></tr>
-<tr><td>lastDateTime</td><td>datetime</td><td>null </td><td>Date-time stamp of the last line in the file</td></tr>
-<tr><td>currentDateTime</td><td>datetime</td><td>null </td><td>Date-time stamp of the current outputs</td></tr>
-<tr><td>nextDateTime</td><td>datetime</td><td>null </td><td>Date-time stamp of the next outputs</td></tr>
-<tr><td>currentDate</td><td>date</td><td>null </td><td>Date stamp of the current outputs</td></tr>
-<tr><td>nextDate</td><td>date</td><td>null </td><td>Date stamp of the next outputs</td></tr>
-<tr><td>currentTime</td><td>time</td><td>null </td><td>Time stamp of the current outputs</td></tr>
-<tr><td>nextTime</td><td>time</td><td>null </td><td>Time stamp of the next outputs</td></tr>
-<tr><th>Additionally</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td colspan=4><span class="table-interface-normal">One output port is created for each column in the input file (<span class="table-interface-code">fileName</span>), except for the date and time columns</span></td></tr>
-</tbody></table>
-<div class="end macro"></div>
-
-<h3 id='daily-readings'><li>Daily readings</li></h3>
-<p>You  use a <code>Records</code> box to read logged data, i.e., data with a time stamp, typically a weather file. Here is one example showing the first and last lines of <a href="https://tildeweb.au.dk/au152367/input/demo/weather/flakkebjerg 2005.txt">flakkebjerg 2005.txt&cudarrr;</a>:
-<pre><code class="listing">      Date        Tmin Tmax  Tavg  I
+<h3>Interface</h3>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose</th></tr></thead>
+<tbody><tr><td>fileName</td><td>string</td><td>&quot;records.txt&quot; []</td><td>Name of file with records; columns separated by white space</td></tr><tr><td>dateColumnName</td><td>string</td><td>&quot;Date&quot; []</td><td>Name of column with date</td></tr><tr><td>timeColumnName</td><td>string</td><td>&quot;Time&quot; []</td><td>Name of column with time</td></tr><tr><td>cycle</td><td>bool</td><td>FALSE []</td><td>Cycle back to start at end of file? Forces ignoreYear=true</td></tr><tr><td>ignoreYear</td><td>bool</td><td>FALSE []</td><td>Ignore year when synchronising with the calendar</td></tr><tr><td>calendarDateTime</td><td>datetime</td><td><em>computed</em></td><td>= calendar[dateTime]</td></tr><tr><td><strong>Outputs</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>firstDateTime</td><td>datetime</td><td>[]</td><td>Date-time stamp of the first line in the file</td></tr><tr><td>lastDateTime</td><td>datetime</td><td>[]</td><td>Date-time stamp of the last line in the file</td></tr><tr><td>currentDateTime</td><td>datetime</td><td>[]</td><td>Date-time stamp of the current outputs</td></tr><tr><td>nextDateTime</td><td>datetime</td><td>[]</td><td>Date-time stamp of the next outputs</td></tr><tr><td>currentDate</td><td>date</td><td>[]</td><td>Date stamp of the current outputs</td></tr><tr><td>nextDate</td><td>date</td><td>[]</td><td>Date stamp of the next outputs</td></tr><tr><td>currentTime</td><td>time</td><td>[]</td><td>Time stamp of the current outputs</td></tr><tr><td>nextTime</td><td>time</td><td>[]</td><td>Time stamp of the next outputs</td></tr><tr><td><em>additional</em></td><td>&nbsp;</td><td>&nbsp;</td><td>One output port created for each column (except date and time)</td></tr></tbody>
+</table></figure>
+<h3 id='daily-readings'>Daily readings</h3>
+<p>You  use a <code>Records</code> box to read logged data, i.e., data with a time stamp, typically a weather file. Here is one example (<code>demo/weather/flakkebjerg 2005.txt</code>):</p>
+<pre><code>Date        Tmin Tmax  Tavg  I
 01/01/2005  0    4.7   2.8   1.4
 02/01/2005  0.7  6.2   3.6   1.3
 03/01/2005  1.4  7     4.1   2
@@ -2195,7 +2085,7 @@ random.x random.y positive.x positive.y iteration step
 </code></pre>
 <p>The input file must be a column-oriented text file with columns separated by whitespace (any number of blanks and tab stops between each column) and one row for each records. Columns must be complete; you cannot have an empty value. Rows, on the other hand, need not be complete. If some records are missing, say a few days due to a malfunctioning weather station, then the <code>Records</code> box will automatically interpolate (linearly) between neighboring records.</p>
 <p>The <code>Records</code> box must be accompanied by a <code>Calendar</code> box. It is the <code>Calendar</code> box that keeps track of time during a simulation, not the <code>Records</code> box. In this example, the simulation runs through three days in December:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records1.box">// records1.box&cudarrr;</a>
+<pre><code>// records1.box
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -2212,12 +2102,12 @@ Simulation sim {
 }
 </code></pre>
 <p>We get this output from the simulation, as we would expect:</p>
-<pre><code class="command">&gt; load demo/records/records1.box</code>
-<code class="output">...</code>
-<code class="command">&gt; run</code>
-<code class="output">...</code>
-<code class="command">&gt; head</code>
-<code class="output">...
+<pre><code>&gt; load demo/records/records1.box
+...
+&gt; run
+...
+&gt; head
+...
       date Tmin Tmax iteration step
 2005/12/15  2.7  8.1         1    0
 2005/12/16  1.3  4.5         1    1
@@ -2225,9 +2115,9 @@ Simulation sim {
 2005/12/18 -2.8  1.6         1    3
 </code></pre>
 <p>Each of the columns in the input file produces an output port with the same name as the column heading. </p>
-<h3 id='interpolation'><li>Interpolation</li></h3>
+<h3 id='interpolation'>Interpolation</h3>
 <p>The temperatures are daily estimates, which for interpolation purposes are assumed to have occured at midnight. We can explore this by changing the time step to 8 hours:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records2.box">// records2.box&cudarrr;</a>
+<pre><code>// records2.box
 Simulation sim {
   .steps = 6
   Calendar calendar {
@@ -2245,10 +2135,8 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>The output hits the same values as before every midnight (<code class="command">head</code> shows only the first 6 rows of output, write <code class="command">head 10</code> to see up to ten lines):</p>
-<pre>
-<code class="command">> head 10</code>
-<code class="output">           dateTime      Tmin    Tmax iteration step
+<p>The output hits the same values as before every midnight (<code>head</code> shows only the first 6 rows of output, write <code>head 10</code> to see ten lines or fewer):</p>
+<pre><code>           dateTime      Tmin    Tmax iteration step
 2005/12/15T00:00:00       2.7     8.1         1    0
 2005/12/15T08:00:00   2.23333     6.9         1    1
 2005/12/15T16:00:00   1.76667     5.7         1    2
@@ -2257,10 +2145,10 @@ Simulation sim {
 2005/12/16T16:00:00  -2.36667 1.96667         1    5
 2005/12/17T00:00:00      -4.2     0.7         1    6
 </code></pre>
-<p><em>Pitfalls</em>. Plants and animals have a diurnal rythm. Be careful that your model makes sense, if you decrease the time step to less than 1 day. If use a daily accumulated variable like precipitation, you need to transform the data. If your time step is 1 hour, for example, then you must divide the precipitation data in the input file by 24 before using it in a <code>Records</code> box.</p>
-<h3 id='hourly-readings'><li>Hourly readings</li></h3>
-<p>If you model runs on a finer time scale, you may have records at an hourly interval, or even down to seconds, corresponding to the smallest time step supported by <code>Calendar</code> (1 second). You may also have records at irregular intervals with a time stamp of date and time. In any case, you provide the time of the day in a separate column, as exemplified by the file <a href="https://tildeweb.au.dk/au152367/input/demo/weather/copenhagen-may-hourly.txt">copenhagen-may-hourly.txt&cudarrr;</a>, which contains hourly data for the first half of May:</p>
-<pre><code class="listing">Date       Time  Tair Rhair GlobRad DifRad Windspeed
+<p><strong>Pitfalls</strong> Plants and animals have a diurnal rythm. Be careful that your model makes sense, if you decrease the time step to less than 1 day. If use a daily accumulated variable like precipitation, you need to transform the data. If your time step is 1 hour, for example, then you must divide the precipitation data in the input file by 24 before using it in a <code>Records</code> box.</p>
+<h3 id='hourly-readings'>Hourly readings</h3>
+<p>If you model runs on a finer time scale, you may have records at an hourly interval, or even down to seconds, corresponding to the smallest time step supported by <code>Calendar</code> (1 second). You may also have records at irregular intervals with a time stamp of date and time. In any case, you provide the time of the day in a separate column, as exemplified by the file <code>weather/copenhagen-may-hourly.txt</code>, which contains hourly data for the first half of May:</p>
+<pre><code>Date       Time  Tair Rhair GlobRad DifRad Windspeed
 01-05-2001 00:00 4.7  85     0      0      2.6
 01-05-2001 01:00 4.1  84     0      0      2.6
 01-05-2001 02:00 3.8  84     0      0      2.6
@@ -2269,8 +2157,8 @@ Simulation sim {
 15-05-2001 23:00 6.7  84     0      0      5.5
 16-05-2001 00:00 6.1  85     0      0      5.1
 </code></pre>
-<p>In our boxscript, we specify the period of the simulation in the <code>Calendar</code> box:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records3.box">// records3.box&cudarrr;</a>
+<p>In our boxscript, we specify the period of the simulation in the Calendar box:</p>
+<pre><code>// records3.box
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2001T00:00
@@ -2291,10 +2179,8 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>We let the simulation run with a 15-minute time step, which is a finer time resolution than given in the weather file. The <code>Records</code> box will oblige by interpolating the missing data, as you can see here:</p>
-<pre><code class="command">> ht 3</code>
-<code class="output">...
-           dateTime Tair GlobRad Windspeed iteration step
+<p>We let the simulation run with a 15-minute time step, which is a finer time resolution than given in the weather file. The Records box will oblige by interpolating the missing data, as you can see here:</p>
+<pre><code>           dateTime Tair GlobRad Windspeed iteration step
 2001/05/01T00:00:00  4.7     0.0       2.6         1    0
 2001/05/01T00:15:00 4.55     0.0       2.6         1    1
 2001/05/01T00:30:00  4.4     0.0       2.6         1    2
@@ -2306,10 +2192,11 @@ Simulation sim {
 <p>The plot looks like this:</p>
 <p>&nbsp;</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/records3.png" referrerpolicy="no-referrer"></p>
-<p><em>The two flavours of midnight</em>. The time stamps 2001/05/06T24:00:00 and 2001/05/07T00:00:00 are equivalent because 24 hours is translated into 0 hours (midnight) on the following day.</p>
-<h3 id='ignoring-the-year'><li>Ignoring the year</li></h3>
+<p><strong>The two flavours of midnight</strong> The time stamps 2001/05/06T24:00:00 and 2001/05/07T00:00:00 are equivalent because 24 hours is translated into 0 hours (midnight) on the following day.</p>
+<h3 id='ignore-the-year'>Ignore the year</h3>
 <p>It happens quite often that you want to use a weather file without regards to the year noted in the time stamp. This is the purpose of <code>ignoreYear</code>, which defaults to <code>FALSE</code> but here set it to <code>TRUE</code>:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records4.box">// records4.box&cudarrr;</a>Simulation sim {
+<pre><code>// records4.box
+Simulation sim {
   .steps = 3
   Calendar calendar {
     .begin = 15/12/2022
@@ -2323,15 +2210,15 @@ Simulation sim {
 </code></pre>
 <p>The Calendar box sets the simulation to begin on 15 December 2022. In response, the Records box will begin producing output from the first row that has a time stamp of 15 December. In this case, it wll be ignoring the time stamp&#39;s year (2005). As a result we get this output:</p>
 <p>We do get the same output as previously, except the year now follows the <code>Calendar</code> box:</p>
-<pre><code class="output">      date Tmin Tmax iteration step
+<pre><code>      date Tmin Tmax iteration step
 2022/12/15  2.7  8.1         1    0
 2022/12/16  1.3  4.5         1    1
 2022/12/17 -4.2  0.7         1    2
 2022/12/18 -2.8  1.6         1    3
 </code></pre>
-<h3 id='extrapolation'><li>Extrapolation</li></h3>
+<h3 id='extrapolation'>Extrapolation</h3>
 <p>What happens if we run past the end of the weather file? Consider this:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records6.box">// records6.box&cudarrr;</a>
+<pre><code>// records5.box
 Simulation sim {
   .steps = 5
   Calendar calendar {
@@ -2343,8 +2230,8 @@ Simulation sim {
   ...
 }
 </code></pre>
-<p>The <code>Records</code> box responds by extrapolating the final reading:</p>
-<pre><code class="output">      date Tmin Tmax iteration step
+<p>The <code>Records</code> box responds by extrapolation the final reading:</p>
+<pre><code>      date Tmin Tmax iteration step
 2005/12/28 -3.2 -1.4         1    0
 2005/12/29 -3.6 -0.9         1    1
 2005/12/30 -2.4  1.3         1    2
@@ -2352,10 +2239,10 @@ Simulation sim {
 2006/01/01 -3.0 -0.8         1    4
 2006/01/02 -3.0 -0.8         1    5
 </code></pre>
-<h3 id='recycling-the-year'><li>Recycling the year</li></h3>
+<h3 id='recycling-the-calendar-year'>Recycling the calendar year</h3>
 <p>If your weather file goes from 1 January to 31 December, or if it otherwise forms a whole year from beginning to end, e.g. from 21 March one year to 20 March the following year, then you can ask the Records box to recycle the readings. In that way, you can use one year&#39;s weather data to simulate several years. All right, that&#39;s a quick and dirty way of doing it, but sometimes we just want it like that. </p>
 <p>You achieve this behaviour by setting the <code>cycle</code> flag <code>TRUE</code> (it defaults to <code>FALSE</code>). If <code>cycle</code> is <code>TRUE</code> then <code>ignoreYear</code> will always be forced to <code>TRUE</code> as well, since the year registered in the input file has become irrelevant. Let&#39;s try it:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records7.box">// records7.box&cudarrr;</a>
+<pre><code>// records6.box
 Simulation sim {
   .steps = 5
   Calendar calendar {
@@ -2369,7 +2256,7 @@ Simulation sim {
 }
 </code></pre>
 <p>We have set the calendar to reach past the end of the year. The output shows that we have successfully achieved to wrap around the weather file on 31 December and cycle back to its beginning on 1 January:</p>
-<pre><code class="output">      date Tmin Tmax iteration step
+<pre><code>      date Tmin Tmax iteration step
 2022/12/30 -2.4  1.3         1    0
 2022/12/31 -3.0 -0.8         1    1
 2023/01/01  0.0  4.7         1    2
@@ -2381,7 +2268,7 @@ Simulation sim {
       <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#physiologicaltime">PhysiologicalTime</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randomiserbase">RandomiserBase</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#records">Records</a>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#physiologicaltime">PhysiologicalTime</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randomiserbase">RandomiserBase</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#records">Records</a>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>

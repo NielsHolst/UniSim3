@@ -1,4 +1,4 @@
-// records6.box
+// records7.box
 Simulation sim {
   .steps = 5
   Calendar calendar {
@@ -6,6 +6,7 @@ Simulation sim {
   }
   Records weather { 
     .fileName = "../weather/flakkebjerg 2005.txt"
+    .cycle = TRUE
   }
   OutputR {
      OutputText {

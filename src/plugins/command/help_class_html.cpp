@@ -87,25 +87,31 @@ QStringList HelpClassHtml::portLines(PortType type) const {
             list << "<tr>" + cells.join("") + "</tr>";
         }
     }
-    if (list.isEmpty())
-        list << "none";
     return list;
 }
 
 
 QString HelpClassHtml::inputPorts() const {
-    return portLines(PortType::Input).join("\n") + "\n";
+    QStringList inputs = portLines(PortType::Input);
+    return inputs.isEmpty() ?
+        "<tr><td colspan=4><span class=\"table-interface-normal\"><em>None</em></span></td></tr>\n" :
+        (inputs.join("\n") + "\n");
 }
 
 QString HelpClassHtml::outputPorts() const {
-    return "<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n" +
-           portLines(PortType::Output).join("\n") + "\n";
+    QString s = "<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
+    QStringList outputs = portLines(PortType::Output);
+    s += outputs.isEmpty() ?
+        "<tr><td colspan=4><span class=\"table-interface-normal\"><em>None</em></span></td></tr>\n" :
+        (outputs.join("\n") + "\n");
+    return s;
 }
 
 QString HelpClassHtml::additionalOutputPorts() const {
     QString additional = _box->additionalOutputs();
     return additional.isEmpty() ? "" :
-        ("<tr><th>Outputs</th><td colspan=3>" + additional + "</td></tr>\n");
+        ("<tr><th>Additionally</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n"
+        "<tr><td colspan=4><span class=\"table-interface-normal\">" + replaceBackticks(additional) + "</span></td></tr>\n");
 }
 
 QString HelpClassHtml::footer() const {

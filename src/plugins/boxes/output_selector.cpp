@@ -21,9 +21,9 @@ OutputSelector::OutputSelector(QString name, Box *parent)
     Input(beginDateTime).equals(QDateTime()).help("Output is written when this time point is reached (optional)").unit("DateTime");
     Input(step).imports("/.[step]");
     Input(dateTime).imports("Calendar::*[dateTime]");
-    Input(period).equals(1).help("If >1: A row of output will be produced with this period").unit("int>0");
-    Input(summary).equals("average").unit("string").help("If period>1 then either'current or 'average' value");
-    Input(final).equals(false).help("Overrules 'period'").unit("bool");
+    Input(period).equals(1).help("If >1: A row of output will be produced with this period");
+    Input(summary).equals("average").help("Either `\"average\"` or `\"current\"`; how values are summarized over the given `period`");
+    Input(final).equals(false).help("Overrules `period`");
     Input(useLocalDecimalChar).equals(false).help("Use local decimal character in output?").unit("bool");
     Input(skipFormats).computes("!exists(OutputR::*[skipFormats])").unit("bool");
     Output(isActive).help("Should output be written?").unit("bool");
