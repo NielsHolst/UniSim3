@@ -473,18 +473,18 @@ Simulation sim</code>
 </code></pre>
 
       </div>
+<p class='hidden-anchor' id='computations-steps'>xxx</p><div class='border-grey'>
+<h2>Computations steps</h2>
+  <p class="to-do">To be written.</p>
+</div>
 <p class='hidden-anchor' id='standard-boxes'>xxx</p><div class='border-grey'>
 <h1>Standard boxes</h1>
-<p>The <span class="plugin">boxes</span> plugin contains model building blocks of general utility. The functionality of these building blocks (<a href='#'>classes</a>) is described below</p>
-<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='#'>install Universal Simulator</a>. For example, to run the <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.box">briere1.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
+<p>The <span class="plugin">boxes</span> plugin contains model building blocks of general utility. The functionality of these building blocks (<a href='https://tildeweb.au.dk/au152367/intro.html#classes'>classes</a>) is described below</p>
+<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='https://tildeweb.au.dk/au152367/download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.box">briere1.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
 <pre><code class="command">> run demo/briere/briere1.box</code></pre>
 <p>Paste the clipboard at the R prompt to see the output as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
 <p>You can download particular boxscripts and R scripts whereever you see the &#9207; download symbol, if you want to study them further. But you don't need to to run the examples, since all necessary scripts are included with the Universal Simulator installation.</p>
       </div> <!-- border-grey-->
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='accumulator'>xxx</p><div class='border-grey'>
-<h2>Computation steps</h2>
-<p class="to-do">To be written.</p>
-</div>
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='accumulator'>xxx</p><div class='border-grey'>
 <h2>Accumulator</h2>
 <h3>Interface</h3>
@@ -803,7 +803,7 @@ Simulation sim {
 <div class="end macro"></div>
 
 <h3 id='usage'>Usage</h3>
-<p>The <code>Computation</code> box simply has a string output telling you the current <a href='#'>computation step</a>. The possible values are</p>
+<p>The <code>Computation</code> box simply has a string output telling you the current <a href='#computation-steps'>computation step</a>. The possible values are</p>
 <ul>
 <li><code>&quot;ready&quot;</code> </li>
 <li><code>&quot;construct&quot;</code> </li>
@@ -835,7 +835,7 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>The simulation will run for two iterations, three steps each as governed by the inputs to <code>sim</code>. The Computation box is simply declared without any input values (it has no inputs). The <code>pop</code> box is of the generic (empty) type <code>Box</code>. We equip it with <a href='#'>auxiliary ports</a> using the ampersand designator (<code>&#38;</code>). Here we have set the growth rate <code>r</code> to 5% per step. The <code>density</code> is set to <code>100.0</code> in the <em>reset</em> step. In the <em>update</em> step the 5% growth is applied, while in all other steps it just keeps its value.</p>
+<p>The simulation will run for two iterations, three steps each as governed by the inputs to <code>sim</code>. The Computation box is simply declared without any input values (it has no inputs). The <code>pop</code> box is of the generic (empty) type <code>Box</code>. We equip it with <a href='https://tildeweb.au.dk/au152367/intro.html#objects'>auxiliary ports</a> using the ampersand designator (<code>&#38;</code>). Here we have set the growth rate <code>r</code> to 5% per step. The <code>density</code> is set to <code>100.0</code> in the <em>reset</em> step. In the <em>update</em> step the 5% growth is applied, while in all other steps it just keeps its value.</p>
 <p>BoxScript tricks work noting:</p>
 <ul>
 <li>We include the decimal point <code>100.0</code> to set the <code>density</code> port to be of <code>double</code> type. A value of <code>100</code> would have set it to an <code>int</code>.</li>
@@ -1382,7 +1382,7 @@ Simulation sim {
 </code></pre>
 <p>and study the output:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/maximum-at1.png" style="width:60%;" /></p>
-<p>Further confirmation can be gotten by the <a href='#'>tail</a> command:</p>
+<p>Further confirmation can be gotten by the <a href='https://tildeweb.au.dk/au152367/commands.html#tail'>tail</a> command:</p>
 <pre><code class="command">&gt; tail 3</code>
 <code class="output">...
 hump at maxValue iteration step
@@ -1427,7 +1427,7 @@ hump at maxValue iteration step
 <div class="end macro"></div>
 
 <h3 id='usage'><li>Usage</li></h3>
-<p>The <code>OutputSelector</code> box determines when output should be produced by the <code>OutputWriter</code> box. Hence, if you do not include an <code>OutputSelector</code> box in your boxscript then the <code>OutputWriter</code> box will create one for you. The default behaviour of <code>OutputSelector</code> is to write one line of output for every <em>reset</em> and <em>update</em> step during the simulation (see <a href='#'>Computationel model</a>). The <code>useLocalDecimalChar</code> and <code>skipFormats</code> define different features of the output file as explained for <a href='#outputwriter'>OutputWriter</a>.</p>
+<p>The <code>OutputSelector</code> box determines when output should be produced by the <code>OutputWriter</code> box. Hence, if you do not include an <code>OutputSelector</code> box in your boxscript then the <code>OutputWriter</code> box will create one for you. The default behaviour of <code>OutputSelector</code> is to write one line of output for every <em>reset</em> and <em>update</em> step during the simulation (see <a href='computation-steps'>Computationel model</a>). The <code>useLocalDecimalChar</code> and <code>skipFormats</code> define different features of the output file as explained for <a href='#outputwriter'>OutputWriter</a>.</p>
 <p>If you want to change the default behaviour of <code>OutputSelector</code>, you must include an <code>OutputSelector</code> box in your boxscript. The right place to put it is as a child box of the <code>OutputText</code> (as exemplified below) or <code>OutputR</code> box, since <code>OutputSelector</code> affects the output produced by <code>OutputText</code> and <code>OutputR</code>.</p>
 
 <h3 id='skip-a-number-of-lines'><li>Skip a number of lines</li></h3>
@@ -1601,7 +1601,7 @@ Amending...
 </code></pre>
 <p>Most often you are not interested in the output file, as Universal Simulator does its best to handle all output automatically behind the scenes but, anyway, here are the details.</p>
 <h3 id='output-folder'><li>Output folder</li></h3>
-<p>The output file will be written to your output folder, which you can locate with the  <a href='#'>get folders</a> command:</p>
+<p>The output file will be written to your output folder, which you can locate with the  <a href='https://tildeweb.au.dk/au152367/commands.html#get-folders'>get folders</a> command:</p>
 <pre><code class="command">> get folders
 </code></pre>
 <p>The name of the output file will be the same as the boxscript that produced it, just with a four-digit running number at the end. As a pure text file, its suffix (also known as its file type) is &quot;txt&quot;. The file consists of tab-separated columns, separated by tab characters (no, you cannot change the separator character to something else than a tab). </p>
@@ -1667,7 +1667,7 @@ Amending...
 </ul>
 <p>These box class have the same interface defined by <code>RandomiserBase</code>. You cannot use <code>RandomiserBase</code> directly in your boxscript (in C++ parlance it is virtual); it only serves as a base class for the three classes above, which you can use&#8212;but only one of them and only once in a boxscript.</p>
 <p>You can change the <code>seed</code> to a positive value, if you want the same sequence of pseudo-random numbers every time you run the boxscript. For a <code>RandomiserSobolSequence</code> box, though, the <code>seed</code> has no effect because this box will produce the same sequence of quasi-random numbers always.</p>
-<p>By default random numbers will be drawn in every <strong>reset</strong> step (see <a href='#'>computational model</a>), as indicated by <code>drawAtReset</code>. Other options (they can be combined) are <code>drawAtInitialize</code> and <code>drawAtUpdate</code>. If you choose to draw random numbers at every <strong>update</strong>, you will end up with a <strong>stochastic model</strong>. The default setting will change model behaviour for every iteration that you run the model. This is useful for <strong>uncertainty analysis</strong> and <strong>sensitivity analysis</strong>. If you want to carry out a sensitivity analysis then set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and consider changing <code>bootstrapSize</code> to 10,000 for serious use.</p>
+<p>By default random numbers will be drawn in every <strong>reset</strong> step (see <a href='#computation-steps'>computational model</a>), as indicated by <code>drawAtReset</code>. Other options (they can be combined) are <code>drawAtInitialize</code> and <code>drawAtUpdate</code>. If you choose to draw random numbers at every <strong>update</strong>, you will end up with a <strong>stochastic model</strong>. The default setting will change model behaviour for every iteration that you run the model. This is useful for <strong>uncertainty analysis</strong> and <strong>sensitivity analysis</strong>. If you want to carry out a sensitivity analysis then set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and consider changing <code>bootstrapSize</code> to 10,000 for serious use.</p>
 <p>The single output <code>numVariables</code> is mysterious. It tells you how many variables are randomised, yet there are no inputs to indicate which variables to randomise? That&#39;s because a certain structure of boxes is assumed, as exemplified by this boxscript:</p>
 <pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser1.box">// randomiser1.box&#9207;</a> 
 Box random {
@@ -1926,7 +1926,7 @@ $$
   }
 }
 </code></pre>
-<p>We invoke the <a href='#outputselector'>OutputSelector</a> to write only the <code>final</code> values of each iteration. For each of the <code>PageR</code> boxes, you must put all the uncertain parameters on the <code>xAxis</code>. You can use the <a href='#'>find</a> command to check whether you got it right:</p>
+<p>We invoke the <a href='#outputselector'>OutputSelector</a> to write only the <code>final</code> values of each iteration. For each of the <code>PageR</code> boxes, you must put all the uncertain parameters on the <code>xAxis</code>. You can use the <a href='https://tildeweb.au.dk/au152367/commands.html#find'>find</a> command to check whether you got it right:</p>
 <pre><code class="command">>&gt; load demo/randomiser/randomiser6.box</code>
 <code class="output">...</code>
 <code class="command">&gt; find random/*[value]</code>
@@ -1951,8 +1951,8 @@ Port int sim/max/adult[at]
 <p>We had sample size \(N=256\). The plot shows what would have happened with smaller \(N\). The estimates, shown for <code>deltaT</code>, <code>k</code> and their sum, are clearly converging and not changing much from \(N=128\) to \(N=256\). We conclude that we don&#39;t need to increase the sample size.</p>
 <p>The final plot shows the Sobol&#39; indices for each of the model responses:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6c.png" referrerpolicy="no-referrer"></p>
-<p>The uncertain model parameters are sorted for each model response in decreasing order of importance. We are not surprised that the sensitivity indices for <code>k</code> are both nil, while they are both 1 for <code>deltaT</code>. This stresses that <code>deltaT</code> is not interacting with <code>k</code> to determine model uncertainty. In the cereal aphid-fungus model, you can find <a href='#'>a more complicated sensitivity analysis</a>.</p>
-<p>Since the simulation and bootstrapping computations may take a very long time, you should be aware how to save the results. How to do that is described for the cereal aphid-fungus model under <a href='#'>Saving and restoring the analysis</a>.</p>
+<p>The uncertain model parameters are sorted for each model response in decreasing order of importance. We are not surprised that the sensitivity indices for <code>k</code> are both nil, while they are both 1 for <code>deltaT</code>. This stresses that <code>deltaT</code> is not interacting with <code>k</code> to determine model uncertainty. In the cereal aphid-fungus model, you can find <a href='https://tildeweb.au.dk/au152367/models.html#biocontrol-with-sensitivity-analysis'>a more complicated sensitivity analysis</a>.</p>
+<p>Since the simulation and bootstrapping computations may take a very long time, you should be aware how to save the results. How to do that is described for the cereal aphid-fungus model under <a href='https://tildeweb.au.dk/au152367/models.html#reproducing-figures-from-saved-data'>Saving and restoring the analysis</a>.</p>
       </div> <!-- border-grey-->
 <p class='hidden-anchor' id='randomisermontecarlo'>xxx</p><div class='border-grey'>
 <h2>RandomiserMonteCarlo</h2>
@@ -2388,7 +2388,7 @@ Simulation sim {
       <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#physiologicaltime">PhysiologicalTime</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randomiserbase">RandomiserBase</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#records">Records</a>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li><li><a href="#computations-steps">Computations steps</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#physiologicaltime">PhysiologicalTime</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randomiserbase">RandomiserBase</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#records">Records</a>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>
@@ -2397,23 +2397,22 @@ Simulation sim {
       <div class="right">
         <div class="border-red">
           <h2>Try it!</h2>
-          <p>Download the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
-          <p class="date">2 Aug 2023</p>
-        </div>
-        <div class="border-orange">
-          <h2>Contact</h2>
-          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write me</a>.</p>
+          <p><a href="https://tildeweb.au.dk/au152367/download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-violet">
           <h2>Model just published</h2>
-          <p>Read our paper on the Cereal Aphid-Fungus model and study the detailed documentation. Any questions? Write us.</p>
+          <p>Read <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">our paper</a> on the Cereal Aphid-Fungus model and study the <a href="https://tildeweb.au.dk/au152367/models.html">detailed documentation</a>. Any questions? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-pink">
           <h2>Home page overhaul</h2>
-          <p>We remain candy-coloured until further notice. Barbie goes from model to modeller!</p>
+          <p>We remain candy-coloured until further notice.</p>
           <p class="date">1 Aug 2023</p>
+        </div>
+        <div class="border-orange">
+          <h2>Contact</h2>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
         </div>
       </div>
       <div class="end macro"></div>

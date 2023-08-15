@@ -1,0 +1,14 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>cropGrowthStage</td><td>double</td><td>0.0 Zadoks</td><td>Current crop growth stage</td></tr>
+<tr><td>fromCropGrowthStage</td><td>double</td><td>31.0 Zadoks</td><td>Immigration begins as this growth stage</td></tr>
+<tr><td>toCropGrowthStage</td><td>double</td><td>80.0 Zadoks</td><td>Immigration ends as this growth stage</td></tr>
+<tr><td>immigrationRate</td><td>double</td><td>0.0 per tiller d-1</td><td>Immigration rate in the season</td></tr>
+<tr><td>propExposedImmigrants</td><td>double</td><td>0.0</td><td>Proportion of infected immigrants [0;1]</td></tr>
+<tr><td>k</td><td>int</td><td>0 positive int</td><td>Has to match <span class="table-interface-code">k</span> of the receiving <span class="table-interface-code">StageAndPhase</span> box</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>total</td><td>double</td><td>0.0 per tiller d-1</td><td>Total immigration rate</td></tr>
+<tr><td>susceptible</td><td>double</td><td>0.0 per tiller d-1</td><td>Immigration rate of susceptible aphids</td></tr>
+<tr><td>exposed</td><td>vec_double</td><td>c() per tiller d-1</td><td>Immigration rate of exposed aphids</td></tr>
+</tbody></table>
+<div class="end macro"></div>

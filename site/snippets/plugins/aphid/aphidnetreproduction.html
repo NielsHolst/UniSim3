@@ -1,0 +1,22 @@
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>R0opt</td><td>double</td><td>51.6 per capita</td><td>Optimum net reproduction \((R_0^{opt})\)</td></tr>
+<tr><td>Tmin</td><td>double</td><td>3.0 oC</td><td>Minimum temperature under which no reproduction occur \((T_{min})\)</td></tr>
+<tr><td>Tmax</td><td>double</td><td>30.0 oC</td><td>Maximum temperature over which no reproduction occur anymore \((T_{max})\)</td></tr>
+<tr><td>Topt</td><td>double</td><td>16.1 oC</td><td>Optimum temperature for reproduction \((T_{opt})\)</td></tr>
+<tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Daily average temperature \((T)\)</td></tr>
+<tr><td>cropGrowthStage</td><td>double</td><td>0.0 Zadoks</td><td>Crop growth stage \((G)\)</td></tr>
+<tr><td>optimumCropGrowthStageMin</td><td>double</td><td>0.0 Zadoks</td><td>The crop is optimal for reproduction from this growth stage \((G_{min})\)</td></tr>
+<tr><td>optimumCropGrowthStageMax</td><td>double</td><td>0.0 Zadoks</td><td>The crop is optimal for reproduction until this growth stage \((G_{max})\)</td></tr>
+<tr><td>optimumCropFactor</td><td>double</td><td>0.0 unitless</td><td>Fecundity increased by this factor when crop is optimal \((c_{crop})\)</td></tr>
+<tr><td>alateFactor</td><td>double</td><td>0.0 unitless</td><td>Factor to correct alate relative to apterous fecundity \((c_{alate})\)</td></tr>
+<tr><td>aphidDensity</td><td>double</td><td>0.0 per tiller</td><td>Aphid density \((N)\)</td></tr>
+<tr><td>aphidDensityThreshold</td><td>double</td><td>0.0 per tiller</td><td>Density threshold when net reproduction is zero \((N_{max})\)</td></tr>
+<tr><td>immunityCost</td><td>double</td><td>0.0</td><td>Relative reduction in reproduction when exposed \((\nu)\) [0;1]</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>apterous</td><td>double</td><td>0.0 per capita</td><td>Net reproduction for susceptible apterous aphids \((R_0^{aptS})\)</td></tr>
+<tr><td>alate</td><td>double</td><td>0.0 per capita</td><td>Net reproduction for susceptible alate aphids \((R_0^{alaS})\)</td></tr>
+<tr><td>apterousExposed</td><td>double</td><td>0.0 per capita</td><td>Net reproduction for infected apterous aphids \((R_0^{aptE})\)</td></tr>
+<tr><td>alateExposed</td><td>double</td><td>0.0 per capita</td><td>Net reproduction for infected alate aphids \((R_0^{alaE})\)</td></tr>
+</tbody></table>
+<div class="end macro"></div>

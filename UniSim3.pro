@@ -27,10 +27,10 @@ unisim.depends = command
 # Simulation model modules
 #
 
-#SUBDIRS += aphid
-#aphid.subdir = src/plugins/aphid
-#aphid.depends = base
-#unisim.depends = aphid
+SUBDIRS += aphid
+aphid.subdir = src/plugins/aphid
+aphid.depends = base
+unisim.depends = aphid
 
 #SUBDIRS += cmbp
 #cmbp.subdir = src/plugins/cmbp

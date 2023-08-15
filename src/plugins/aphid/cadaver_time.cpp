@@ -20,9 +20,9 @@ CadaverTime::CadaverTime(QString name, Box *parent)
 {
     help("computes day-degree time step accelerated by high RH");
     Input(isSporulating).help("Are cadavers sporulating?").unit("boolean");
-    Input(timeStep).help("Time step").unit("DD");
-    Input(rhAccelaration).help("Acceleration factor above RH threshold").unit("-");
-    Output(step).help("RH-corrected time step").unit("DD");
+    Input(timeStep).help("Time step $(\\tau)$").unit("DD");
+    Input(rhAccelaration).help("Acceleration factor above RH threshold $(h)$").unit("-");
+    Output(step).help("RH-corrected time step $(\\tau_{corrected})$").unit("DD");
     Output(total).help("Accumulated RH-corrected time steps since reset").unit("DD");
 }
 

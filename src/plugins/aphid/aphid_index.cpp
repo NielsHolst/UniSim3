@@ -17,9 +17,9 @@ AphidIndex::AphidIndex(QString name, Box *parent)
     : Box(name, parent)
 {
     help("calculates Entwistle-Dixon-Wratten density index ");
-    Input(nymphs).help("Aphid nymph density").unit("per tiller");
-    Input(adults).help("Aphid adult density").unit("per tiller");
-    Output(value).help("Index value");
+    Input(nymphs).help("Aphid nymph density \\((N_{nymph})\\)").unit("per tiller");
+    Input(adults).help("Aphid adult density \\((N_{adult})\\)").unit("per tiller");
+    Output(value).help("Index value \\(y\\)");
 }
 
 void AphidIndex::reset() {

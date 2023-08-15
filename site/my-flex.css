@@ -232,7 +232,8 @@ body {
   font-weight: normal;
   letter-spacing: 1px;
 }
-#title .slogan {
+/* #title  */
+.slogan {
   font-family: Tangerine, serif;
   font-size: xxx-large;
   line-height: 1; 
@@ -337,6 +338,9 @@ nav a {
   font-size: 5px;
   margin: -5px 0 0 0;
   padding: 0;
+}
+.to-do {
+  text-decoration: var(--col-pink) wavy underline;
 }
 /* * { */
   /* border: 1px solid red; */

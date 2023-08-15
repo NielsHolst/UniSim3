@@ -55,6 +55,27 @@ namespace {
         }
         return s;
     }
+
+    QString replaceDollars(QString s) {
+        QRegularExpression re("\\$[^\\$]+\\$");
+        for (;true;) {
+            auto match = re.match(s);
+            if (match.hasMatch()) {
+                QString captured = match.capturedTexts().at(0),
+                        replacedText = "\\(" + captured.mid(1, captured.size() - 2) + "\\)";
+                int leftEnd = match.capturedStart(0),
+                    rightStart = match.capturedEnd(0);
+                s = s.left(leftEnd) +
+                    replacedText +
+                    s.mid(rightStart);
+            }
+            else {
+                break;
+            }
+
+        }
+        return s;
+    }
 }
 
 QStringList HelpClassHtml::portLines(PortType type) const {
@@ -66,7 +87,7 @@ QStringList HelpClassHtml::portLines(PortType type) const {
                 value += " " + port->unit();
 
             QString desc,
-                    portHelp = replaceBackticks(port->help());
+                    portHelp = replaceDollars( replaceBackticks(port->help()) );
 
 
             if (isConstant(port)) {

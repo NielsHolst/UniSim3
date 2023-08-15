@@ -19,23 +19,23 @@ AphidNetReproduction::AphidNetReproduction(QString name, Box *parent)
     : Box(name, parent)
 {
     help("computes net reproduction capacity for S. avenae");
-    Input(R0opt).equals(51.6).help("Optimum net reproduction").unit("per capita");
-    Input(Tmin).equals(3).help("Minimum temperature under which no reproduction occur").unit("oC");
-    Input(Tmax).equals(30).help("Maximum temperature over which no reproduction occur anymore").unit("oC");
-    Input(Topt).equals(16.1).help("Optimum temperature for reproduction").unit("oC");
-    Input(temperature).equals(0).help("Daily average temperature").unit("oC");
-    Input(cropGrowthStage).help("Crop growth stage").unit("Zadoks");
-    Input(optimumCropGrowthStageMin).help("The crop is optimal for reproduction from this growth stage ").unit("Zadoks");
-    Input(optimumCropGrowthStageMax).help("The crop is optimal for reproduction until this growth stage ").unit("Zadoks");
-    Input(optimumCropFactor).help("Fecundity increased by this factor when crop is optimal").unit("unitless");
-    Input(alateFactor).help("Factor to correct alate relative to apterous fecundity").unit("unitless");
-    Input(aphidDensity).help("Aphid density").unit("per tiller");
-    Input(aphidDensityThreshold).help("Density threshold when net reproduction is zero").unit("per tiller");
-    Input(immunityCost).help("Relative reduction in reproduction when exposed").unit("[0;1]");
-    Output(apterous).help("Net reproduction for susceptible apterous aphids").unit("per capita");
-    Output(alate).help("Net reproduction for susceptible alate aphids").unit("per capita");
-    Output(apterousExposed).help("Net reproduction for infected apterous aphids").unit("per capita");
-    Output(alateExposed).help("Net reproduction for infected alate aphids").unit("per capita");
+    Input(R0opt).equals(51.6).help("Optimum net reproduction $(R_0^{opt})$").unit("per capita");
+    Input(Tmin).equals(3).help("Minimum temperature under which no reproduction occur $(T_{min})$").unit("oC");
+    Input(Tmax).equals(30).help("Maximum temperature over which no reproduction occur anymore $(T_{max})$").unit("oC");
+    Input(Topt).equals(16.1).help("Optimum temperature for reproduction $(T_{opt})$").unit("oC");
+    Input(temperature).equals(0).help("Daily average temperature $(T)$").unit("oC");
+    Input(cropGrowthStage).help("Crop growth stage $(G)$").unit("Zadoks");
+    Input(optimumCropGrowthStageMin).help("The crop is optimal for reproduction from this growth stage $(G_{min})$").unit("Zadoks");
+    Input(optimumCropGrowthStageMax).help("The crop is optimal for reproduction until this growth stage $(G_{max})$").unit("Zadoks");
+    Input(optimumCropFactor).help("Fecundity increased by this factor when crop is optimal $(c_{crop})$").unit("unitless");
+    Input(alateFactor).help("Factor to correct alate relative to apterous fecundity $(c_{alate})$").unit("unitless");
+    Input(aphidDensity).help("Aphid density $(N)$").unit("per tiller");
+    Input(aphidDensityThreshold).help("Density threshold when net reproduction is zero $(N_{max})$").unit("per tiller");
+    Input(immunityCost).help("Relative reduction in reproduction when exposed $(\\nu)$").unit("[0;1]");
+    Output(apterous).help("Net reproduction for susceptible apterous aphids $(R_0^{aptS})$").unit("per capita");
+    Output(alate).help("Net reproduction for susceptible alate aphids $(R_0^{alaS})$").unit("per capita");
+    Output(apterousExposed).help("Net reproduction for infected apterous aphids $(R_0^{aptE})$").unit("per capita");
+    Output(alateExposed).help("Net reproduction for infected alate aphids $(R_0^{alaE})$").unit("per capita");
 } 
 
 void AphidNetReproduction::update() {

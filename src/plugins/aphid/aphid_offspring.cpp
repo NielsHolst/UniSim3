@@ -18,12 +18,12 @@ AphidOffspring::AphidOffspring(QString name, Box *parent)
     : Box(name, parent)
 {
     help("splits new offspring into apterous and alate morphs");
-    Input(offspringTotal).help("Total no. of offspring produced by susceptible aphids").unit("per tiller");
-    Input(aphidDensity).help("Aphid density").unit("per tiller");
-    Input(cropGrowthStage).help("Crop growth stage").unit("Zadoks");
-    Output(apterous).help("Total no. of apterous offspring produced").unit("per tiller");
-    Output(alate).help("Total no. of alate offspring produced").unit("per tiller");
-    Output(alateProportion).help("Proportion of alate offspring").unit("[0;1]");
+    Input(offspringTotal).help("Total no. of offspring produced by susceptible aphids $(n_{total})$").unit("per tiller");
+    Input(aphidDensity).help("Aphid density $(N)$").unit("per tiller");
+    Input(cropGrowthStage).help("Crop growth stage $(G)$").unit("Zadoks");
+    Output(apterous).help("Total no. of apterous offspring produced $(n_{apt})$").unit("per tiller");
+    Output(alate).help("Total no. of alate offspring produced $(n_{ala})$").unit("per tiller");
+    Output(alateProportion).help("Proportion of alate offspring $(p_{ala})$").unit("[0;1]");
 }
 
 void AphidOffspring::update() {
