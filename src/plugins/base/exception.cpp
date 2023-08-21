@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QDateTime>
 #include "box.h"
+#include "computation.h"
 #include "exception.h"
 #include "node.h"
 
@@ -16,6 +17,7 @@ Exception::Exception(QString message)
     : _message(message), _caller(Caller())
 {
     ++_count;
+    Computation::changeStep(Computation::Step::Ready);
 }
 
 Exception& Exception::file(const char *s) {

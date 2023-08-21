@@ -150,7 +150,13 @@ void HelpClassHtml::done(QString info) {
     QFile file(filePath);
     if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         ThrowException("Cannot open file for output").value(filePath);
-    file.write(qPrintable("<div class=\"begin macro\"></div>\n" + info + "\n<div class=\"end macro\"></div>\n"));
+    file.write(qPrintable(
+                   "<h2>" + className() + "</h2>\n" +
+                   "<h3>Interface</h3>" +
+                   "<div class=\"insert macro\">#plugins/" + pluginName() + "/" + className().toLower() + ".html</div>\n" +
+                   "<div class=\"begin macro\"></div>\n" +
+                   info +
+                   "\n<div class=\"end macro\"></div>\n"));
     file.close();
     dialog().information(filePath + " written");
 }
@@ -175,10 +181,8 @@ QString HelpClassHtml::outputFilePath() const {
     cdSubDir(dir, "site");
     cdSubDir(dir, "snippets");
     cdSubDir(dir, "plugins");
-    QString plugin    = _box->pedigree().last().namespaceName,
-            className = _box->pedigree().last().className;
-    cdSubDir(dir, plugin);
-    return dir.absoluteFilePath(className.toLower()) + ".html";
+    cdSubDir(dir, pluginName());
+    return dir.absoluteFilePath(className().toLower()) + ".html";
 }
 
 }

@@ -60,7 +60,6 @@ void Simulation::reset() {
 }
 
 void Simulation::run() {
-    Computation::changeStep(Computation::Step::Ready);
     dialog().resetProgress();
     environment().isSilent(silent);
     if (silent)
@@ -109,6 +108,7 @@ void Simulation::run() {
     dialog().finishProgress();
     executionTime = boost::numeric_cast<int>(time.elapsed());
     hasRun = true;
+    Computation::changeStep(Computation::Step::Ready);
 }
 
 void Simulation::show(QElapsedTimer time) {

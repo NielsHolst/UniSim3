@@ -34,6 +34,7 @@ private:
         powerUsage;
     // Methods
     void noLight();
+    void checkProp(double prop, QString name);
 };
 } //namespace
 

@@ -14,25 +14,10 @@ using namespace base;
 
 namespace command {
 
-WriteOutput::WriteOutput(Box *root)
-    : WriteOutput(root, WriteOptionSet() << WriteOption::Source)
+WriteOutput::WriteOutput(Box *root, Option option)
+    : _root(root), _option(option)
 {
 }
-
-WriteOutput::WriteOutput(Box *root, WriteOptionSet options)
-    : _root(root), _options(options)
-{
-    _writeInputs  = _options.contains(WriteOption::Ports) ||
-                    _options.contains(WriteOption::Inputs);
-
-    _writeOutputs = _options.contains(WriteOption::Ports) ||
-                    _options.contains(WriteOption::Outputs);
-
-    _writeAux     = _options.contains(WriteOption::Ports)||
-                    _options.contains(WriteOption::Auxiliary);
-    _writeSource  = _options.contains(WriteOption::Source);
-    _writeFlags   = _options.contains(WriteOption::Flags);
- }
 
 QString WriteOutput::toString() {
     toString(_root, 0);
@@ -40,6 +25,10 @@ QString WriteOutput::toString() {
 }
 
 void WriteOutput::toString(Box *box, int level) {
+    // Skip this box
+    if (!box->doWriteOnCommand())
+        return;
+
     // Write box
     _s += QString().fill(' ', 2*level) +
           box->className() + " " +
@@ -47,13 +36,15 @@ void WriteOutput::toString(Box *box, int level) {
 
     // Write ports
     for (Port *port : box->portsInOrder()) {
-        if ((_writeInputs  && port->type() == PortType::Input) ||
-            (_writeOutputs && port->type() == PortType::Output) ||
-            (_writeAux     && port->type() == PortType::Auxiliary) ||
-            (_writeSource  && isSource(port)))
-        {
-            toString(port, level+1);
+        bool drop = false;
+        if (_option == WriteOutput::Option::WriteUserScript) {
+            if (port->type() == PortType::Output)
+                drop = true;
+            else if (port->type() == PortType::Input && port->status() != PortStatus::UserDefined)
+                drop = true;
         }
+        if (!drop)
+            toString(port, level+1);
     }
 
     // Write child boxes
@@ -64,17 +55,12 @@ void WriteOutput::toString(Box *box, int level) {
     _s += QString().fill(' ', 2*level) + "}\n";
 }
 
-bool WriteOutput::isSource(Port *port) {
-    return port->status() == PortStatus::Redefined;
-}
 
 void WriteOutput::toString(Port *port, int level) {
-
     QString fill = QString().fill(' ', 2*level);
-
     _s += fill + prefixString(port) + port->objectName() +
           " = " + assignmentString(port);
-    if (_writeFlags)
+    if (_option == WriteOutput::Option::WriteAll)
         _s += " " + flags(port);
     _s += "\n";
 }
@@ -82,26 +68,35 @@ void WriteOutput::toString(Port *port, int level) {
 QString WriteOutput::prefixString(Port *port) {
     QMap<PortType, QString> prefix = {
         {PortType::Input    , "."},
-        {PortType::Output   , ">"},
+        {PortType::Output   , "//"},
         {PortType::Auxiliary, "&"}
     };
     return prefix.value(port->type());
 }
 
 QString WriteOutput::assignmentString(Port *port) {
-    return
-        port->unparsedExpression().isEmpty() ?
+    QString s =
+        (port->isConstant() || port->type() == PortType::Output) ?
         port->value().asString() :
         port->unparsedExpression();
+    return s.isNull() ? "" : s;
 }
 
 QString WriteOutput::flags(Port *port) {
-    QString s = "// " + convert<QString>(port->status());
-    if (port->isConstant())
-        s += " const";
-    if (!s.isEmpty())
-        s = "// " + s;
-    return s;
+    QString info;
+    switch (port->type()) {
+    case PortType::Input:
+        info = convert<QString>(port->status());
+        break;
+    case PortType::Output:
+        info = "output";
+        break;
+    case PortType::Auxiliary:
+        info = "aux";
+        break;
+    }
+    return "// " + info + " " +
+           (port->isConstant() ? "constant" : "variable");
 }
 
 }

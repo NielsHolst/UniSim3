@@ -11,8 +11,8 @@ template<> QString convert(PortStatus status) {
     {
         {PortStatus::Unknown,             "unknown"},
         {PortStatus::TypeDefault,         "type-default"},
-        {PortStatus::ConstructionDefault, "construction-default"},
-        {PortStatus::Redefined,           "redefined"}
+        {PortStatus::ConstructionDefault, "construction-defined"},
+        {PortStatus::UserDefined,         "user-defined"}
     };
     return map.value(status);
 }

@@ -18,6 +18,7 @@ PUBLISH(BudgetVolume)
 BudgetVolume::BudgetVolume(QString name, base::Box *parent)
     : Box(name, parent)
 {
+    doWriteOnCommand(false);
     Input(initTemperature).equals(20.).unit("oC").help("Initial temperature");
     Input(initRh).equals(70.).unit("%").help("Initial relative humidity");
     Input(initCo2).equals(400.).unit("ppm").help("Initial CO2 concentration");

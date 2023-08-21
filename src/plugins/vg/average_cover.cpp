@@ -42,6 +42,12 @@ void AverageCover::amend() {
         materials << material;
     }    
 
+    // If materials box already exists then remove it from boxscript
+    Box *materialsBox = findMaybeOne<Box*>("./materials");
+    if (materialsBox)
+        ThrowException("Cover materials cannot be included in script. Please delete materials from boxscript and load it again").
+                value(materialsBox->fullName()).context(this);
+
     // Build materials box with a box for each material used
     // and vectors of areas and weights of the faces that use each material
     BoxBuilder builder(this);

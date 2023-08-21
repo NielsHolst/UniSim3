@@ -41,6 +41,17 @@ ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
 }
 
 void ActuatorGrowthLight::reset() {
+    checkProp(propSw, "propSw");
+    checkProp(propLw, "propLw");
+    checkProp(propConv, "propConv");
+    checkProp(propBallastLw, "propBallastLw");
+    checkProp(propBallastConv, "propBallastConv");
+    const double propSum = propSw + propLw + propConv;
+    if (TestNum::ne(propSum, 1.0))
+        ThrowException("Energy proportions sum (propSw+propLw+propConv) must be 1").value(propSum).context(this);
+    const double propSum2 = propBallastLw + propBallastConv;
+    if (TestNum::ne(propSum2, 1.0))
+        ThrowException("Energy proportions sum (propBallastLw+propBallastConv) must be 1").value(propSum2).context(this);
     noLight();
 }
 
@@ -68,5 +79,11 @@ void ActuatorGrowthLight::noLight() {
     powerUsage = 0.;
 
 }
+
+void ActuatorGrowthLight::checkProp(double prop, QString name) {
+    if (prop < 0. || prop > 1)
+        ThrowException("Proportion must be inside [0;1] interval").value(name).value2(prop).context(this);
+}
+
 } //namespace
 

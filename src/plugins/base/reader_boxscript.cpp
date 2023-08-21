@@ -18,9 +18,6 @@ ReaderBoxScript::ReaderBoxScript(BoxBuilder *builder)
 }
 
 void ReaderBoxScript::parse(QString filePath) {
-    // Change the computation step
-    Computation::changeStep(Computation::Step::Construct);
-
     // Read and pre-process boxscript
     BoxScriptPreprocessor preprocessor;
     QString source = preprocessor.preprocess(filePath);

@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include <base/box.h>
 #include <base/command_help.h>
+#include <base/computation.h>
 #include <base/dialog_base.h>
 #include <base/environment.h>
 #include <base/exception.h>
@@ -24,21 +25,33 @@ PUBLISH(write)
 HELP(write, "write", "writes box script")
 
 write::write(QString name, Box *parent)
-    : Command(name, parent)
+    : Command(name, parent), _option(WriteOutput::Option::WriteUserScript), _doEdit(true)
 {
+}
+
+write::~write() {
+    Computation::changeStep(Computation::Step::Ready);
 }
 
 void write::doExecute() {
     _args.removeAt(0);
-    extractOptions();
+    extractArgs();
     writeFile();
-    if (_options.contains(WriteOption::Edit))
+    if (_doEdit)
         edit();
 }
 
-void write::extractOptions() {
-    QString ops = _args.join("");
-    _options = convert<WriteOptionSet>(ops);
+void write::extractArgs() {
+    QString s = _args.join("");
+    for (int i = 0; i < s.size(); ++i) {
+        auto ch = s.at(i);
+        if (ch == 'a')
+            _option = WriteOutput::Option::WriteAll;
+        else if (ch == 'n')
+            _doEdit = false;
+        else
+            ThrowException("Unknown write option. Only 'a' (all) and 'n' (no edit) are valid").value(qPrintable(ch));
+    }
 }
 
 void write::writeFile() {
@@ -49,7 +62,7 @@ void write::writeFile() {
         QFile file;
         environment().openOutputFile(file, ".box");
         QTextStream text(&file);
-        WriteOutput output(root, _options);
+        WriteOutput output(root, _option);
         text << output.toString();
 
         _filePath = environment().outputFilePath(".box");

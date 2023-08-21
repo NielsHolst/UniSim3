@@ -18,7 +18,7 @@ Ratio::Ratio(QString name, Box *parent)
     Input(denominator).help("Number to be divided");
     Input(divisor).help("The divisor");
     Input(zeroTolerance).help("Used for infinity check");
-    Input(allowInfinityResult).equals(true).help("Will yield an error of divisor<=zeroTolerance");
+    Input(allowInfinityResult).equals(true).help("Will yield an error if `divisor < zeroTolerance`");
     Output(value).help("The ratio");
 }
 
@@ -30,7 +30,7 @@ void Ratio::update() {
     if (denominator == 0.)
         value = 0.;
     else {
-        if (!allowInfinityResult && divisor<=zeroTolerance)
+        if (!allowInfinityResult && divisor<zeroTolerance)
             ThrowException("Divisor too close to zero tolerance")
                     .value(divisor).value1("is <=").value2(zeroTolerance);
         value =  denominator/divisor;

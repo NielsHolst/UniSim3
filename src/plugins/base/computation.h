@@ -13,7 +13,7 @@ class Node;
 
 class Computation {
 public:
-    enum class Step {Ready, Construct, Amend, Initialize, Reset, Update, Cleanup, Debrief, Scratch};
+    enum class Step {Ready, Construct, Modify, Amend, Initialize, Reset, Update, Cleanup, Debrief, Scratch};
     static Step lookup(QString step, Node *context=nullptr);
     static QString toString(Step step);
     static void changeStep(Step step);
@@ -25,6 +25,7 @@ public:
 private:
     static Step _currentStep;
     static QStack<Step> _stack;
+    static bool _hasShownConstruct, _hasShownAmend;
 };
 
 inline bool operator<(Computation::Step a, Computation::Step b)

@@ -196,23 +196,23 @@ void help::showPlugin() {
 
 void help::updateHtmlFiles() {
     for (auto factory : MegaFactory::factories()) {
+        if (factory->id() == "command")
+            continue;
         for (QString name : factory->inventory()) {
-            if (factory->id() == "command")
-                continue;
             QString qualName = factory->id() + "::" + name;
             auto box = std::unique_ptr<Box>(MegaFactory::create<Box>(qualName, "helpObject"));
             if (!box)
                 ThrowException("Cannot create object of class '" + name + "'");
             auto helpClass = std::make_unique<HelpClassHtml>(box.get());
             Q_ASSERT(helpClass);
-            helpClass->showClassInfo(box.get());
+            helpClass->showClassInfo();
         }
     }
 }
 
 void help::showClass() {
     createHelpProcessor();
-    _helpClass->showClassInfo(_box);
+    _helpClass->showClassInfo();
 //    setColWidths();
 //    QString msg = header();
 //    msg += portLines(PortType::Input).join("\n");

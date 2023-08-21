@@ -43,7 +43,7 @@
 <p class='hidden-anchor' id='the-boxscript-language'>xxx</p><div class='border-grey'>
 <h1>The BoxScript language</h1>
 <p>A boxscript is a text file written in the BoxScript language . BoxScript was designed as a declarative language. You use it mainly to declare how your model is constructed (which building blocks it is made of and how they are related). You do not use it to define the behaviour of the  building blocks themselves. That behaviour is coded in C++ as described in the <a href='#boxscript-developer'>BoxScript Developer</a> section.</p>
-<p style="color: var(--col-red)">Note: The BoxScript documentation is still incomplete - <em>9 Aug 2023</em>.</p>
+
 </div>
 <p class='hidden-anchor' id='boxscript-design'>xxx</p><div class='border-grey'>
 <h2>BoxScript design</h2>
@@ -484,10 +484,9 @@ Simulation sim</code>
 <pre><code class="command">> run demo/briere/briere1.box</code></pre>
 <p>Paste the clipboard at the R prompt to see the output as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
 <p>You can download particular boxscripts and R scripts whereever you see the &#9207; download symbol, if you want to study them further. But you don't need to to run the examples, since all necessary scripts are included with the Universal Simulator installation.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='accumulator'>xxx</p><div class='border-grey'>
-<h2>Accumulator</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/accumulator.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -528,17 +527,22 @@ Simulation sim {
 }</code></pre>
 <p>Note that in the output a port named <code>value</code> is by default labelled after its parent (here <code>dd18</code>):</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/accumulator1.png" referrerpolicy="no-referrer"></p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='basesignal'>xxx</p><div class='border-grey'>
 <h2>BaseSignal</h2>
 <h3>Interface</h3>
-<table id="table-interface">
-<thead>
-<tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-<tbody><tr><td>initialSignal</td><td>double</td><td>0.0 []</td><td>Value of signal at reset</td></tr><tr><td>initialFlag</td><td>bool</td><td>FALSE []</td><td>Value of flag at reset</td></tr><tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>signal</td><td>double</td><td>[]</td><td>Value of the signal</td></tr><tr><td>flagIsUp</td><td>bool</td><td>[]</td><td>Is the signal on?</td></tr><tr><td>flagJustRaised</td><td>bool</td><td>[]</td><td>Was the signal just set on?</td></tr><tr><td>flagJustLowered</td><td>bool</td><td>[]</td><td>Was the signal just set off?</td></tr><tr><td>value</td><td>double</td><td>[]</td><td>Synonym for signal</td></tr></tbody>
-</table>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
+<tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the <span class="table-interface-code">signal</span> on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set off?</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
+</tbody></table>
 <h3 id='usage'>Usage</h3>
-<p><code>BaseSignal</code> is the base class for several derived <code>Box</code> classes:</p>
+<p><code>BaseSignal</code> is the base class for several derived classes:</p>
 <ul>
 <li><a href='#datetimesignal'>DateTimeSignal</a></li>
 <li><a href='#fixedsignal'>FixedSignal</a></li>
@@ -551,7 +555,7 @@ Simulation sim {
 <p>The <code>signal</code> output reflects the status of other inputs (defined in the derived class). As a convenience <code>signal</code> has the synonym <code>value</code>. When the box is reset it will start out with the <code>initialSignal</code>.</p>
 <p>When the <code>signal</code> is used as a binary response (<code>signal</code> is either on or off), the various <code>flag</code> ports may provide more legible code. The description above should suffice to understand their use. </p>
 <p>Please find concrete examples of usage in the derived classes listed above.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='briere'>xxx</p><div class='border-grey'>
 <h2>Briere</h2>
 <p><code>Briere</code> is derived from <a href='#physiologicaltime'>PhysiologicalTime</a>.</p>
@@ -560,8 +564,7 @@ Simulation sim {
   <li><a href='#briere-parameter-estimation'>Parameter estimation</a></li>
   <li><a href='#briere-usage'>Usage</a></li>
 </ul>
-<h3 id='interface'>Interface</h3>
-  <div class="insert macro">#plugins/boxes/briere.html</div>
+<div class="insert macro">#plugins/boxes/briere.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>T</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">weather[Tavg]</span></td></tr>
@@ -674,15 +677,30 @@ Simulation sim {
 </ul>
 <p>The output shows two years worth of data, identical since the weather of 2009 is used for both years:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/briere2.png" referrerpolicy="no-referrer"></p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='calendar'>xxx</p><div class='border-grey'>
+</div> <!-- border-grey-->
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='buffer'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/buffer.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>initial</td><td>double</td><td>0.0 </td><td>Initial amount at first place in buffer</td></tr>
+<tr><td>input</td><td>double</td><td>0.0 </td><td>Input to next place in buffer</td></tr>
+<tr><td>increment</td><td>double</td><td>0.0 </td><td>Increment added to every place in buffer</td></tr>
+<tr><td>size</td><td>int</td><td>100 </td><td>Number of places in buffer</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>sum</td><td>double</td><td>0.0 </td><td>Total amount in buffer</td></tr>
+<tr><td>average</td><td>double</td><td>0.0 </td><td>Average amount of places used in buffer</td></tr>
+<tr><td>buffer</td><td>vec_double</td><td>c() </td><td>The buffer itself</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div>
+
+<p class='hidden-anchor' id='calendar'>xxx</p><p class='hidden-anchor' id='buffer'>xxx</p><div class='border-grey'>
 <h2>Calendar</h2>
 <ul class="h3-links">
   <li><a href='#daily-time-step'>Daily time step</a></li>
   <li><a href='#changing-the-time-step'>Changing the time step</a></li>
   <li><a href='#setting-the-time-period-of-the-simulation'>Setting the time period of the simulation</a></li>
 </ul>
-<h3 id='interface'>Interface</h3>
 <div class="insert macro">#plugins/boxes/calendar.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -789,16 +807,14 @@ Simulation sim {
 <pre><code class='listing'>Input(steps).computes("if exists(Calendar::*[steps]) 
                        then Calendar::*[steps] else 1");
 </code></pre>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='computation'>xxx</p><div class='border-grey'>
-<h2>Computation</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/computation.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>step</td><td>string</td><td>"ready" </td><td>Name of current computation step</td></tr>
+<tr><td>step</td><td>string</td><td>"amend" </td><td>Name of current computation step</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 
@@ -856,10 +872,8 @@ comp.step    r density iteration sim.step
    update 1.05 115.762         2        3	
 </code></pre>
 <p>You can see that <a href="#outputtext">OutputText</a> by default writes one line of output for every <em>reset</em> and <em>update</em> step.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='date'>xxx</p><div class='border-grey'>
-<h2>Date</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/date.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -898,10 +912,8 @@ Simulation sim {
 2000/05/13         1    3
 </code></pre>
 <p>&nbsp;</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='datesplit'>xxx</p><div class='border-grey'>
-<h2>DateSplit</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/datesplit.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -941,7 +953,7 @@ day month year iteration step
  27    12 2018         1    3
 </code></pre>
 <p>&nbsp;</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='datetimesignal'>xxx</p><div class='border-grey'>
 <h2>DateTimeSignal</h2>
 <p><code>DateTimeSignal</code> is derived from the <a href='#basesignal'>BaseSignal</a> box.</p>
@@ -951,7 +963,6 @@ day month year iteration step
   <li><a href="#non-circadian-signals">Non-circadian signals</a></li>
 </ul>
 
-<h3 id='interface'>Interface</h3>
 <div class="insert macro">#plugins/boxes/datetimesignal.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1104,11 +1115,10 @@ Simulation sim {
 2001/01/08T00:00:00        0              0               1   50.0         1  624
 2001/01/08T00:15:00        0              0               0   50.0         1  625
 </code></pre>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='daydegrees'>xxx</p><div class='border-grey'>
+</div> <!-- border-grey-->
+<p class='hidden-anchor' id='daydegrees'>xxx</p><div class='border-grey'>
 <h2>DayDegrees</h2>
 <p><code>DayDegrees</code> is derived from the <a href='#physiologicaltime'>PhysiologicalTime</a> box.</p>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/daydegrees.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1164,11 +1174,23 @@ Simulation sim {
 <p>The output of the boxscript is much the same as that of the <code>briere2.box</code> script, because ambient temperature remained mostly in the linear part of the temperature response:</p>
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/day_degrees1.png" referrerpolicy="no-referrer"></p>
 <p>For further explanation of the output, please see <a href='#briere'>Briere</a>.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='fixedsignal'>xxx</p><div class='border-grey'>
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='dewpoint'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/dewpoint.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Air temperature</td></tr>
+<tr><td>rh</td><td>double</td><td>0.0 %</td><td>Air relative humidity</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 oC</td><td>Dew point temperature</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div>
+
+<p class='hidden-anchor' id='fixedsignal'>xxx</p><div class='border-grey'>
 <h2>FixedSignal</h2>
 <p><code>FixedSignal</code> is derived from <a href='#basesignal'>BaseSignal</a>.
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/fixedsignal.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1232,10 +1254,28 @@ DateTimeSignal sim/vivacity/summer
 DateTimeSignal sim/vivacity/autumn
 FixedSignal    sim/vivacity/anyTime
 </code></pre>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='functionalresponse'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/functionalresponse.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>attacker</td><td>double</td><td>0.0 #predators</td><td>Attacker density</td></tr>
+<tr><td>prey</td><td>double</td><td>0.0 #prey</td><td>Resource density</td></tr>
+<tr><td>demandGross</td><td>double</td><td>0.0 #prey</td><td>Gross demand of attacker</td></tr>
+<tr><td>attackRate</td><td>double</td><td>0.0 </td><td>#attacks per #prey per #predator per time unit</td></tr>
+<tr><td>timeStep</td><td>double</td><td>1.0 Time unit</td><td>Time step</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>supplyGross</td><td>double</td><td>0.0 #prey</td><td>Gross supply (number of prey attacked)</td></tr>
+<tr><td>propPreyAttacked</td><td>double</td><td>0.0</td><td>The proportion of prey attacked [0;1]</td></tr>
+<tr><td>searchEfficacy</td><td>double</td><td>0.0 </td><td>Efficacy in finding prey [0;1]</td></tr>
+<tr><td>sdRatioGross</td><td>double</td><td>0.0</td><td>Predator's gross supply/demand ratio [0;1]</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div>
+
+
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='hump'>xxx</p><div class='border-grey'>
-<h2>Hump</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/hump.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1333,13 +1373,33 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
        34.0      0.0       20.0   100.0       100.0         1   78
        34.5      0.0       20.0   100.0       100.0         1   79
 </code></pre>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='maker'>xxx</p><div class='border-grey'>
-<h2>Maker</h2>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maker'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/maker.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>replicates</td><td>int</td><td>1 </td><td>Supply either, (1) then number of clones to replicate from child boxes;</td></tr>
+<tr><td>names</td><td>vec_string</td><td>c() </td><td>or (2) the names of clones;</td></tr>
+<tr><td>fileName</td><td>string</td><td>"" </td><td>or (3) a file; each line specifies a clone; column headings label inputs to each clone.</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maximum'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/maximum.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>values</td><td>vec_double</td><td>c() </td><td>Input values</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Maximum of inputs; zero if no inputs</td></tr>
+<tr><td>count</td><td>int</td><td>0 </td><td>Number of inputs</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maximumat'>xxx</p><div class='border-grey'>
-<h2>MaximumAt</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/maximumat.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1390,13 +1450,142 @@ hump at maxValue iteration step
  0.0 34    150.0         1   49
  0.0 34    150.0         1   50
 </code></pre>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='onoff'>xxx</p><div class='border-grey'>
-<h2>OnOff</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='outputr'>xxx</p><div class='border-grey'>
-<h2>OutputR</h2>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='mean'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/mean.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>values</td><td>vec_double</td><td>c() </td><td>Input values</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Average of inputs; zero if no inputs</td></tr>
+<tr><td>count</td><td>int</td><td>0 </td><td>Number of inputs</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='message'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/message.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>text</td><td>string</td><td>"" </td><td>Text message to print</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='minimum'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/minimum.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>values</td><td>vec_double</td><td>c() </td><td>Input values</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Minimum of inputs; zero if no inputs</td></tr>
+<tr><td>count</td><td>int</td><td>0 </td><td>Number of inputs</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='multiplum'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/multiplum.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>factors</td><td>vec_double</td><td>c() </td><td>Input factors</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>The multiplum</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='numberedfile'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/numberedfile.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>fileName</td><td>string</td><td>"" </td><td>File name with extension, with/without a path</td></tr>
+<tr><td>evaluationOrder</td><td>int</td><td>0 </td><td>Number to append to file name</td></tr>
+<tr><td>numberWidth</td><td>int</td><td>0 </td><td>Number will be left-filled with zero up to this width</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>string</td><td>"" </td><td>File name with number</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='offsetdatetime'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/offsetdatetime.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>dateTime</td><td>datetime</td><td>null </td><td>Date-time that will be offset</td></tr>
+<tr><td>days</td><td>int</td><td>0 d</td><td>Offset (negative or positive)</td></tr>
+<tr><td>hours</td><td>int</td><td>0 h</td><td>Offset (negative or positive)</td></tr>
+<tr><td>minutes</td><td>int</td><td>0 m</td><td>Offset (negative or positive)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>datetime</td><td>null </td><td>Offset date-time</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='onoff'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/onoff.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>x</td><td>double</td><td>0.0 </td><td>x-value at which to calculate value</td></tr>
+<tr><td>xOn</td><td>double</td><td>0.0 </td><td>Lower threshold</td></tr>
+<tr><td>xOff</td><td>double</td><td>0.0 </td><td>Upper threshold</td></tr>
+<tr><td>valueOn</td><td>double</td><td>1.0 </td><td>Value inside [xOn,xOff] interval</td></tr>
+<tr><td>valueOff</td><td>double</td><td>0.0 </td><td>Value outside [xOn,xOff] interval</td></tr>
+<tr><td>isSticky</td><td>bool</td><td>FALSE </td><td>Should remain on when switched on?</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Current on or off value</td></tr>
+<tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is switch on?</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='onoffbydate'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/onoffbydate.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>x</td><td>date</td><td>null date</td><td>x-value at which to calculate value</td></tr>
+<tr><td>xOn</td><td>baredate</td><td>null Bare date</td><td>Lower threshold</td></tr>
+<tr><td>xOff</td><td>baredate</td><td>null Bare date</td><td>Upper threshold</td></tr>
+<tr><td>valueOn</td><td>double</td><td>1.0 </td><td>Value inside [xOn,xOff] interval</td></tr>
+<tr><td>valueOff</td><td>double</td><td>0.0 </td><td>Value outside [xOn,xOff] interval</td></tr>
+<tr><td>isSticky</td><td>bool</td><td>FALSE </td><td>Should remain on when switched on?</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Current on or off value</td></tr>
+<tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is switch on?</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+ 
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='outputr'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/outputr.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>keepPlots</td><td>bool</td><td>TRUE </td><td>Keep previous plots before showing new plots in R?</td></tr>
+<tr><td>clearMemory</td><td>bool</td><td>FALSE </td><td>Clear R memory?</td></tr>
+<tr><td>showPlots</td><td>bool</td><td>TRUE </td><td>Show plots in R?</td></tr>
+<tr><td>showLines</td><td>int</td><td>0 </td><td>Number of lines to show at the prompt</td></tr>
+<tr><td>popUp</td><td>bool</td><td>FALSE </td><td>Show plots in pop-up windows?</td></tr>
+<tr><td>width</td><td>double</td><td>7.0 </td><td>Width of pop-up windows (only used if popUp is set)</td></tr>
+<tr><td>height</td><td>double</td><td>7.0 </td><td>Height of pop-up windows (only used if popUp is set)</td></tr>
+<tr><td>maximizeWindow</td><td>bool</td><td>FALSE </td><td>Maximize plot window size?</td></tr>
+<tr><td>fontSize</td><td>double</td><td>0.0 </td><td>Only used if >0</td></tr>
+<tr><td>plotAsList</td><td>bool</td><td>FALSE </td><td>Put plots into an R list?</td></tr>
+<tr><td>saveDataFrame</td><td>bool</td><td>FALSE </td><td>Save output as R data frame?</td></tr>
+<tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputWriter::*[skipFormats]</span></td></tr>
+<tr><td>code</td><td>string</td><td>"" </td><td>R code to be run before 'scripts'</td></tr>
+<tr><td>scripts</td><td>vec_string</td><td>c() </td><td>R scripts to be run at the end</td></tr>
+<tr><td>plotTypes</td><td>vec_string</td><td>- </td><td>&larr; <span class="table-interface-code">PlotR::*[type]</span></td></tr>
+<tr><td>clearPlots</td><td>bool</td><td>FALSE </td><td>Deprecated</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>ports</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">./PageR::*[xAxis] | ./*/PlotR::*[ports]</span> (Path to all ports used by my pages and plots)</td></tr>
+<tr><td>numPages</td><td>int</td><td>0 </td><td>Number of pages in this output</td></tr>
+</tbody></table>Note the side effects: writes an R script to the output folder
+copies an R script to the clipboard
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
 <p class='hidden-anchor' id='outputselector'>xxx</p><div class='border-grey'>
 <h2>OutputSelector</h2>
 <ul class="h3-links">
@@ -1407,7 +1596,6 @@ hump at maxValue iteration step
   <li><a href="#final-output">Final output</a></li>
 </ul>
 
-<h3 id='interface'>Interface</h3>
 <div class="insert macro">#plugins/boxes/outputselector.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1551,10 +1739,19 @@ Simulation sim {
 &gt; 
 </code></pre>
 <p>If you run an uncertainty or sensitivity analysis, you will usually set <code>final</code> to <code>TRUE</code>.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='outputtext'>xxx</p><div class='border-grey'>
-<h2>OutputText</h2>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='outputtext'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/outputtext.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>ports</td><td>path</td><td> </td><td>Path to port(s) to output</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
 <p class='hidden-anchor' id='outputwriter'>xxx</p><div class='border-grey'>
 <h2>OutputWriter</h2>
 <ul class="h3-links">
@@ -1562,8 +1759,6 @@ Simulation sim {
   <li><a href="#output-folder">Output folder</a></li>
   <li><a href="#output-file-format">Output file format</a></li>
 </ul>
-
-<h3 id='interface'>Interface</h3>
 <div class="insert macro">#plugins/boxes/outputwriter.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -1610,19 +1805,81 @@ Amending...
 <p>The first line contains unique column names constructed from the names of the <code>ports</code> included. The column names have been shortened as much as possible while keeping them unique. Ports named <code>value</code> will have a column name without the port part if possible; they will be named after their parent box instead (&quot;value&quot; is not an informative label).</p>
 <p>If <code>skipFormats</code> is <code>FALSE</code>, which it defaults to because that&#39;s the default value imported from <a href='#outputselector'>OutputSelector</a>, then the second line in the output file will be information about the format of the values in the column. These format specifications are used when the file is read into R as a data frame. If you want to do all the handling of the output file yourself then set <code>skipFormats</code> to <code>TRUE</code> in the <code>OutputSelector</code> box.</p>
 <p>If you want to use the decimal character specific to the language settings on your computer then set <code>useLocalDecimalChar</code> to <code>TRUE</code> in the <code>OutputSelector</code> box; otherwise a decimal point will be used.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='pager'>xxx</p><div class='border-grey'>
-<h2>PageR</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='plotr'>xxx</p><div class='border-grey'>
-<h2>PlotR</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='popup'>xxx</p><div class='border-grey'>
-<h2>PopUp</h2>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='pager'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/pager.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>xAxis</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">/.[step]</span> (Port(s) on x-axis)</td></tr>
+<tr><td>title</td><td>string</td><td>"" </td><td>Title shown on page</td></tr>
+<tr><td>ncol</td><td>int</td><td>-1 </td><td>No. of columns to arrange plots in</td></tr>
+<tr><td>nrow</td><td>int</td><td>-1 </td><td>No. of rows to arrange plots in</td></tr>
+<tr><td>commonLegend</td><td>bool</td><td>FALSE </td><td>Collate legends of blots into one common legend</td></tr>
+<tr><td>legendPosition</td><td>string</td><td>"bottom" </td><td>If 'commonLegend' then place legend here</td></tr>
+<tr><td>width</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">..[width]</span></td></tr>
+<tr><td>height</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">..[height]</span></td></tr>
+<tr><td>maximizeWindow</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">..[maximizeWindow]</span></td></tr>
+<tr><td>fontSize</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">..[fontSize]</span></td></tr>
+<tr><td>plotAsList</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">..[plotAsList]</span></td></tr>
+<tr><td>popUp</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">..[popUp]</span></td></tr>
+<tr><td>numPages</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">..[numPages]</span></td></tr>
+<tr><td>layouts</td><td>vec_string</td><td>- </td><td>&larr; <span class="table-interface-code">./PlotR::*[layout]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='plotr'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/plotr.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>ports</td><td>path</td><td> </td><td>Port(s) on y-axis</td></tr>
+<tr><td>layout</td><td>string</td><td>"facetted" </td><td>Either "merged" or "facetted"</td></tr>
+<tr><td>type</td><td>string</td><td>"default" </td><td>Type of plot (default|density|histogram(nbins)|SobolConvergence|SobolIndices)</td></tr>
+<tr><td>guideTitle</td><td>string</td><td>"" </td><td>Title of guide legends</td></tr>
+<tr><td>ggplot</td><td>string</td><td>"" </td><td>R code that will be added to the ggplot</td></tr>
+<tr><td>end</td><td>string</td><td>"" </td><td>Deprecated</td></tr>
+<tr><td>endCode</td><td>string</td><td>"" </td><td>Deprecated</td></tr>
+<tr><td>maxData</td><td>int</td><td>0 </td><td>Max. number of data rows to plot; ignored if zero</td></tr>
+<tr><td>ncol</td><td>int</td><td>-1 </td><td>Number of columns in arrangement of plots; -1 keeps default</td></tr>
+<tr><td>nrow</td><td>int</td><td>-1 </td><td>Number of rows in arrangement of plots; -1 keeps default</td></tr>
+<tr><td>direction</td><td>string</td><td>"row" </td><td>Fill in plots by 'row' or 'col'</td></tr>
+<tr><td>iteration</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iteration]</span></td></tr>
+<tr><td>xAxis</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">..[xAxis]</span></td></tr>
+<tr><td>width</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">..[width]</span></td></tr>
+<tr><td>height</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">..[height]</span></td></tr>
+<tr><td>fontSize</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">..[fontSize]</span></td></tr>
+<tr><td>plotAsList</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">..[plotAsList]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='popup'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/popup.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>title</td><td>string</td><td>"" </td><td>Title</td></tr>
+<tr><td>text</td><td>string</td><td>"" </td><td>Short informative text</td></tr>
+<tr><td>details</td><td>string</td><td>"" </td><td>Further details</td></tr>
+<tr><td>buttons</td><td>vec_string</td><td>c("OK") </td><td>Vector of buttons to show: (OK Yes No)</td></tr>
+<tr><td>defaultButton</td><td>string</td><td>"OK" </td><td>Button assumed when Return is typed</td></tr>
+<tr><td>escapeButton</td><td>string</td><td>"OK" </td><td>Button assumed when Esc is typed</td></tr>
+<tr><td>icon</td><td>string</td><td>"information" </td><td>Icon to show</td></tr>
+<tr><td>when</td><td>string</td><td>"initialize" </td><td>In which step to show message, e.g., "initialize" or "debrief"</td></tr>
+<tr><td>show</td><td>bool</td><td>TRUE </td><td>Determines whether pop-up will be shown</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>answer</td><td>string</td><td>"" </td><td>Name of button pushed</td></tr>
+<tr><td>accepted</td><td>bool</td><td>FALSE </td><td>Question accepted?</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='physiologicaltime'>xxx</p><div class='border-grey'>
-<h2>PhysiologicalTime</h2>
-<h3>Interface</h3>
 <figure class='table-figure'><table>
 <thead>
 <tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
@@ -1639,19 +1896,50 @@ Amending...
 <p>The temperature <code>T</code> defaults to the <code>Tavg</code> port of a <code>weather</code>, which would typically be a <code>Records</code> box reading a weather log with a column labelled <code>Tavg</code>. Feel free to change it in your boxscript.</p>
 <p>It is necessary to know the time step of the simulation to calculate the time step in physiological time units. The <code>timeStepDays</code> input acquires this information from the <code>calendar</code> box. You should change this in your boxscript, only if you have no <code>calendar</code> box.</p>
 <p>In practical usage, you may want to turn the ticking of a physiological clock on and off. Sometimes, you may also want to reset it to zero too. This is what the input ports <code>isTicking</code> and <code>resetTotal</code>, respectively, are for. You can find examples of this under <a href='#briere'>Briere</a>.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='prioritysignal'>xxx</p><div class='border-grey'>
-<h2>PrioritySignal</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='proportionalsignal'>xxx</p><div class='border-grey'>
-<h2>ProportionalSignal</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randombase'>xxx</p><div class='border-grey'>
-<h2>RandomBase</h2>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='prioritysignal'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/prioritysignal.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
+<tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
+<tr><td>myFlags</td><td>vec_bool</td><td>- </td><td>&larr; <span class="table-interface-code">./BaseSignal::*[flagIsUp]</span></td></tr>
+<tr><td>mySignals</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./BaseSignal::*[signal]</span></td></tr>
+<tr><td>reverseOrder</td><td>bool</td><td>FALSE y|n</td><td>Find first signal!=0 from top (false) or bottom (true)?</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the <span class="table-interface-code">signal</span> on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set off?</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='proportionalsignal'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/proportionalsignal.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
+<tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
+<tr><td>input</td><td>double</td><td>25.0 </td><td>Value determining the signal</td></tr>
+<tr><td>threshold</td><td>double</td><td>25.0 </td><td>Input threshold above which the signal is changing</td></tr>
+<tr><td>thresholdBand</td><td>double</td><td>5.0 </td><td>Interval of the input over which the signal is changing</td></tr>
+<tr><td>minSignal</td><td>double</td><td>0.0 </td><td>Minimum possible signal</td></tr>
+<tr><td>maxSignal</td><td>double</td><td>100.0 </td><td>Maximum possible signal</td></tr>
+<tr><td>increasingSignal</td><td>bool</td><td>TRUE y|n</td><td>Is the signal increasing inside the threshold band?</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>signal</td><td>double</td><td>0.0 </td><td>Value of the signal</td></tr>
+<tr><td>flagIsUp</td><td>bool</td><td>FALSE </td><td>Is the <span class="table-interface-code">signal</span> on?</td></tr>
+<tr><td>flagJustRaised</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set on?</td></tr>
+<tr><td>flagJustLowered</td><td>bool</td><td>FALSE </td><td>Was the <span class="table-interface-code">signal</span> just set off?</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Synonym for <span class="table-interface-code">signal</span></td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomiserbase'>xxx</p><div class='border-grey'>
-<h2>RandomiserBase</h2>
-<h3>Interface</h3>
 <figure class='table-figure'><table>
 <thead>
 <tr><th>Inputs</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
@@ -1953,19 +2241,19 @@ Port int sim/max/adult[at]
 <p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6c.png" referrerpolicy="no-referrer"></p>
 <p>The uncertain model parameters are sorted for each model response in decreasing order of importance. We are not surprised that the sensitivity indices for <code>k</code> are both nil, while they are both 1 for <code>deltaT</code>. This stresses that <code>deltaT</code> is not interacting with <code>k</code> to determine model uncertainty. In the cereal aphid-fungus model, you can find <a href='https://tildeweb.au.dk/au152367/models.html#biocontrol-with-sensitivity-analysis'>a more complicated sensitivity analysis</a>.</p>
 <p>Since the simulation and bootstrapping computations may take a very long time, you should be aware how to save the results. How to do that is described for the cereal aphid-fungus model under <a href='https://tildeweb.au.dk/au152367/models.html#reproducing-figures-from-saved-data'>Saving and restoring the analysis</a>.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='randomisermontecarlo'>xxx</p><div class='border-grey'>
 <h2>RandomiserMonteCarlo</h2>
 <p>See <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='randomiserstratified'>xxx</p><div class='border-grey'>
 <h2>RandomiserStratified</h2>
 <p>See <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>.</p>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><div class='border-grey'>
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><div class='border-grey'>
 <h2>Randomiser&shy;SobolSequence</h2>
 <p><code>RandomiserSobolSequence</code> is derived from <a href='#randomiserbase'>RandomiserBase</a>.</p>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/randomisersobolsequence.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -2053,7 +2341,7 @@ Simulation sim {
 <p>At the top you see the joint distribution, where the Sobol&#39; sequence stands out with the best coverage of the 2-dimensional variable space; this is what Sobol&#39; designed his sequence for. Moreover, the good coverage of Sobol&#39; numbers is still obtained with many variables in n-dimensional space.</p>
 <p>The <code>randomiser</code> box is ignorant about the statistical distributions that are generated from. Behind the scenes it just produces random numbers in the interval [0;1], which are then grabbed by its sibling random boxes (in this example <a href='#randomuniform'>RandomUniform</a>) and transformed into the appropriate distribution. For another distribution than uniform, you can check out <a href='#randomnormal'>RandomNormal</a>, for example.</p>
 <p>Find more examples in <a href='#randomiserbase'>RandomiserBase</a>.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randombase'>xxx</p><div class='border-grey'>
 <h2>RandomBase</h2>
 <h3>Interface</h3>
@@ -2076,10 +2364,9 @@ Simulation sim {
 <p>They all share the interface of <code>RandomBase</code>. Of the four inputs, you should only ever use <code>P</code> in your boxscripts. If you want to change when random numbers are drawn, you should do so in the <a href='#randomiserbase'>RandomiserBase</a> box. For this reason the three inputs (<code>drawAtInitialize</code>, <code>drawAtReset</code> and <code>drawAtUpdate</code>) will not be listed among the inputs for the boxes derived from <code>RandomBase</code> below.</p>
 <h3 id='usage'>Usage</h3>
 <p>You can have as many of these different kinds of <strong>random</strong> boxes  as you want, but you should always keep as siblings inside one common parent box, together with one <strong>randomiser</strong> box, as described for <a href='#randomiserbase'>RandomiserBase</a>.</p>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randombinomial'>xxx</p><div class='border-grey'>
-<h2>RandomBinomial</h2>
-<h3>Interface</h3>
 <div class="insert macro">#plugins/boxes/randombinomial.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -2139,22 +2426,102 @@ random.x random.y positive.x positive.y iteration step
        0        1       55.0       90.0         1   99
        1        1       56.0       91.0         1  100
 </code></pre>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomlognormal'>xxx</p><div class='border-grey'>
-<h2>RandomLogNormal</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomloguniform'>xxx</p><div class='border-grey'>
-<h2>RandomLogUniform</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomnormal'>xxx</p><div class='border-grey'>
-<h2>RandomNormal</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomuniform'>xxx</p><div class='border-grey'>
-<h2>RandomUniform</h2>
-      </div> <!-- border-grey-->
-<p class='hidden-anchor' id='randomuniformint'>xxx</p><div class='border-grey'>
-<h2>RandomUniformInt</h2>
-      </div> <!-- border-grey-->
+</div> <!-- border-grey-->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomlognormal'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/randomlognormal.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>P</td><td>double</td><td>0.95</td><td>Range of the distribution covered by the [minValue;maxValue] range [0;1]</td></tr>
+<tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
+<tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
+<tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
+<tr><td>min</td><td>double</td><td>0.0 </td><td>Minimum value (included)</td></tr>
+<tr><td>max</td><td>double</td><td>1.0 </td><td>Maximum value (excluded)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>The most recently drawn value</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomloguniform'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/randomloguniform.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used for this distribution [0;1]</td></tr>
+<tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
+<tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
+<tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
+<tr><td>min</td><td>double</td><td>0.0 </td><td>Minimum value (included)</td></tr>
+<tr><td>max</td><td>double</td><td>1.0 </td><td>Maximum value (excluded)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>The most recently drawn value</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomnormal'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/randomnormal.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>P</td><td>double</td><td>0.95</td><td>Range of the distribution covered by the [minValue;maxValue] range [0;1]</td></tr>
+<tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
+<tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
+<tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
+<tr><td>min</td><td>double</td><td>0.0 </td><td>Minimum value (included)</td></tr>
+<tr><td>max</td><td>double</td><td>1.0 </td><td>Maximum value (excluded)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>The most recently drawn value</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomuniform'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/randomuniform.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used for this distribution [0;1]</td></tr>
+<tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
+<tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
+<tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
+<tr><td>min</td><td>double</td><td>0.0 </td><td>Minimum value (included)</td></tr>
+<tr><td>max</td><td>double</td><td>1.0 </td><td>Maximum value (excluded)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>The most recently drawn value</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomuniformint'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/randomuniformint.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used for this distribution [0;1]</td></tr>
+<tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
+<tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
+<tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
+<tr><td>min</td><td>int</td><td>0 </td><td>Minimum value (included)</td></tr>
+<tr><td>max</td><td>int</td><td>1 </td><td>Maximum value (included)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>int</td><td>0 </td><td>The most recently drawn value</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='ratio'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/boxes/ratio.html</div>
+<div class="begin macro"></div>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>denominator</td><td>double</td><td>0.0 </td><td>Number to be divided</td></tr>
+<tr><td>divisor</td><td>double</td><td>0.0 </td><td>The divisor</td></tr>
+<tr><td>zeroTolerance</td><td>double</td><td>0.0 </td><td>Used for infinity check</td></tr>
+<tr><td>allowInfinityResult</td><td>bool</td><td>TRUE </td><td>Will yield an error if <span class="table-interface-code">divisor < zeroTolerance</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>The ratio</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
 <p class='hidden-anchor' id='records'>xxx</p><div class='border-grey'>
 <h2>Records</h2>
 <ul class="h3-links">
@@ -2165,7 +2532,6 @@ random.x random.y positive.x positive.y iteration step
   <li><a href='#extrapolation'>Extrapolation</a></li>
   <li><a href='#recycling-the-year'>Recycling the year</a></li>
 </ul>
-<h3 id='interface'>Interface</h3>
 <div class="insert macro">#plugins/boxes/records.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
@@ -2388,7 +2754,7 @@ Simulation sim {
       <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li><li><a href="#computations-steps">Computations steps</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#physiologicaltime">PhysiologicalTime</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randomiserbase">RandomiserBase</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#records">Records</a>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li><li><a href="#computations-steps">Computations steps</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#briere">Briere</a></li><li><a href="#buffer">Buffer</a></li><li><a href="#buffer">Buffer</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#dewpoint">DewPoint</a></li><li><a href="#dewpoint">DewPoint</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#functionalresponse">FunctionalResponse</a></li><li><a href="#functionalresponse">FunctionalResponse</a></li><li><a href="#hump">Hump</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximum">Maximum</a></li><li><a href="#maximum">Maximum</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#mean">Mean</a></li><li><a href="#mean">Mean</a></li><li><a href="#message">Message</a></li><li><a href="#message">Message</a></li><li><a href="#minimum">Minimum</a></li><li><a href="#minimum">Minimum</a></li><li><a href="#multiplum">Multiplum</a></li><li><a href="#multiplum">Multiplum</a></li><li><a href="#numberedfile">NumberedFile</a></li><li><a href="#numberedfile">NumberedFile</a></li><li><a href="#offsetdatetime">OffsetDateTime</a></li><li><a href="#offsetdatetime">OffsetDateTime</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#onoffbydate">OnOffByDate</a></li><li><a href="#onoffbydate">OnOffByDate</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#popup">PopUp</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randomisersobolsequence">RandomiserSobolSequence</a></li><li><a href="#randomisersobolsequence">RandomiserSobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#ratio">Ratio</a></li><li><a href="#ratio">Ratio</a></li><li><a href="#records">Records</a></li><li><a href="#records">Records</a>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>

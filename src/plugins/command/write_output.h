@@ -5,7 +5,6 @@
 #ifndef WRITE_OUTPUT_H
 #define WRITE_OUTPUT_H
 #include <QVector>
-#include "write_options.h"
 
 namespace base {
     class Box;
@@ -16,17 +15,15 @@ namespace command {
 
 class WriteOutput{
 public:
-    WriteOutput(base::Box *root);
-    WriteOutput(base::Box *root, WriteOptionSet options);
+    enum class Option{WriteUserScript, WriteAll};
+    WriteOutput(base::Box *root, Option option);
     QString toString();
 private:
     // Data
     base::Box *_root;
-    WriteOptionSet _options;
+    Option _option;
     QString _s;
-    bool _writeInputs, _writeOutputs, _writeAux, _writeSource, _writeFlags;
     // Methods
-    bool isSource(base::Port *port);
     void toString(base::Box *box, int level);
     void toString(base::Port *port, int level);
     QString prefixString(base::Port *port);

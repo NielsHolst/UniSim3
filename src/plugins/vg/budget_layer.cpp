@@ -23,6 +23,7 @@ PUBLISH(BudgetLayer)
 BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     : Box(name, parent)
 {
+    doWriteOnCommand(false);
     Input(initTemperature).equals(20.).unit("oC").help("Initial temperature");
     Output(temperature);
     Output(swEmissionTop);
@@ -77,10 +78,10 @@ void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVo
 
 void BudgetLayer::reset() {
     temperature = initTemperature;
-    lwEmissionTopUpdatedExternally    = (port("lwEmissionTop")->status()    == PortStatus::Redefined);
-    lwEmissionBottomUpdatedExternally = (port("lwEmissionBottom")->status() == PortStatus::Redefined);
-    convectionTopUpdatedExternally    = (port("convectionTop")->status()    == PortStatus::Redefined);
-    convectionBottomUpdatedExternally = (port("convectionBottom")->status() == PortStatus::Redefined);
+    lwEmissionTopUpdatedExternally    = (port("lwEmissionTop")->status()    == PortStatus::UserDefined);
+    lwEmissionBottomUpdatedExternally = (port("lwEmissionBottom")->status() == PortStatus::UserDefined);
+    convectionTopUpdatedExternally    = (port("convectionTop")->status()    == PortStatus::UserDefined);
+    convectionBottomUpdatedExternally = (port("convectionBottom")->status() == PortStatus::UserDefined);
     if (convectionTopUpdatedExternally && !temperatureVolumeTop)
         ThrowException("Volume on top is missing").context(this);
     if (convectionBottomUpdatedExternally && !temperatureVolumeBottom)

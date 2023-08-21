@@ -16,6 +16,7 @@ class Summary : public base::Box
 {
 public:
     Summary(QString name, Box *parent);
+    void reset();
     void update();
 private:
     // Input
@@ -23,6 +24,9 @@ private:
     bool isSkipping;
     // Output
     double heatingCost, lampCost, co2Cost;
+    // Data
+    double _heatingSum, _lampSum, _co2Sum;
+    int _n;
 };
 
 } //namespace

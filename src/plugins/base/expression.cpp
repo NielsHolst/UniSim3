@@ -781,7 +781,7 @@ QString Expression::typeName(const Element& el) {
 }
 
 QString Expression::originalAsString(bool showType) const {
-    return toString(_isClosed ? original() : stack(), "", showType);
+    return toString(_isClosed ? original() : stack(), " ", showType);
 }
 
 QString Expression::stackAsString(bool showType) const {
@@ -803,7 +803,11 @@ QString Expression::toString(const Stack &stack, QString separator, bool showTyp
     QStringList str;
     for (auto &element : stack)
         str << toString(element, showType);
-    return str.join(separator);
+    QString result = str.join(separator);
+    return result.
+            replace("( ", "(").
+            replace(" ,", ",").
+            replace(", )", ")");
 }
 
 QString Expression::toString(const Element &element, bool showType) {
@@ -817,9 +821,12 @@ QString Expression::toString(const Element &element, bool showType) {
     case Type::Path:        s = get<Path>(element).toString(); break;
     case Type::FunctionCall:
         func = get<FunctionCall>(element);
-        s = func.name + "[" + QString::number(func.arity) + "]";
+        s = func.name;
+        if (showType)
+            s += "[" + QString::number(func.arity) + "]";
+        s += "(";
         break;
-    case Type::FunctionCallEnd: s = "end"; break;
+    case Type::FunctionCallEnd: s = ")"; break;
     case Type::Conditional:     s = conditionalToString(get<Conditional>(element)); break;
     case Type::BoxPtrs       : s = "PortPointers"; break;
     }

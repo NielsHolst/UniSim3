@@ -30,6 +30,9 @@ h3 li {
   list-style: disclosure-closed;
   list-style-position: inside;
 }
+/* #models img { */
+  /* margin-left: -1em; */
+/* } */
 .h3-links li {
   list-style: disclosure-closed;
 }
@@ -341,6 +344,9 @@ nav a {
 }
 .to-do {
   text-decoration: var(--col-pink) wavy underline;
+}
+.border-grey h2:nth-of-type(2) { /* Sometimes a macro places a second, superflous h2 */
+  display: none;
 }
 /* * { */
   /* border: 1px solid red; */

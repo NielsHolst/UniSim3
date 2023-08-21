@@ -13,12 +13,15 @@ namespace base {
 
 Computation::Step Computation::_currentStep = Computation::Step::Ready;
 QStack<Computation::Step> Computation::_stack;
+bool Computation::_hasShownConstruct = false,
+     Computation::_hasShownAmend = false;
 
 Computation::Step Computation::lookup(QString step, Node *context) {
     static QMap<QString, Computation::Step> map =
     {
         {"ready"     , Step::Ready     },
         {"construct" , Step::Construct },
+        {"modify"    , Step::Modify    },
         {"amend"     , Step::Amend     },
         {"initialize", Step::Initialize},
         {"reset"     , Step::Reset     },
@@ -40,6 +43,7 @@ QString Computation::toString(Computation::Step step) {
     {
         {Step::Ready     , "ready"     },
         {Step::Construct , "construct" },
+        {Step::Modify    , "modify"    },
         {Step::Amend     , "amend"     },
         {Step::Initialize, "initialize"},
         {Step::Reset     , "reset"     },
@@ -56,6 +60,7 @@ void Computation::changeStep(Step step) {
     {
         {Step::Ready     , "Ready..."       },
         {Step::Construct , "Constructing..."},
+        {Step::Modify    , "Modifying..."   },
         {Step::Amend     , "Amending..."    },
         {Step::Initialize, "Initializing..."},
         {Step::Reset     , "Resetting..."   },
@@ -64,9 +69,26 @@ void Computation::changeStep(Step step) {
         {Step::Debrief   , "Debriefing..."  },
         {Step::Scratch   , "Scratch..."   }
     };
-    if (step != Step::Ready && !environment().isSilent())
-        dialog().information(map.value(step));
+    if (!(environment().isSilent())) {
+        bool messageOnly = (step == Step::Construct && _hasShownConstruct) ||
+                           (step == Step::Amend && _hasShownAmend) ||
+                           (step == Step::Modify) ||
+                           (step == Step::Ready) ||
+                           (step == Step::Scratch);
+        dialog().message(map.value(step));
+        if (!messageOnly) {
+            dialog().information(map.value(step));
+            if (step == Step::Construct)
+                _hasShownConstruct = true;
+            if (step == Step::Amend)
+                _hasShownAmend = true;
+        }
+    }
     _currentStep = step;
+    if (step == Step::Ready) {
+        _hasShownConstruct = false;
+        _hasShownAmend = false;
+    }
     if (step <= Step::Amend)
         ResolvedReferences::clear();
 }

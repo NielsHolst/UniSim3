@@ -19,21 +19,32 @@ Summary::Summary(QString name, Box *parent)
 	: Box(name, parent)
 {
     help("summarises greenhouse budget");
-    Input(heatPipesHeatFlux).imports("actuators/heatPipes[heatFlux]");
-    Input(lampsPowerUsage).imports("actuators/growthLights[powerUsage]");
-    Input(co2Injection).imports("actuators/co2[value]");
+    Input(heatPipesHeatFlux).imports("actuators/heatPipes[heatFlux]").unit("W/m2");
+    Input(lampsPowerUsage).imports("actuators/growthLights[powerUsage]").unit("W/m2");
+    Input(co2Injection).imports("actuators/co2[value]").unit("g/m2/h");
     Input(isSkipping).imports("output/*[isSkipping]");
     Input(timeStep).imports("calendar[timeStepSecs]");
-    Output(heatingCost).unit("MJ/m2");
-    Output(lampCost).unit("MJ/m2");
-    Output(co2Cost).unit("kg CO2/m2");
+    Output(heatingCost).unit("MWh/m2/y");
+    Output(lampCost).unit("MWh/m2/y");
+    Output(co2Cost).unit("kg CO2/m2/y");
+}
+
+void Summary::reset() {
+    _heatingSum = _lampSum = _co2Sum = 0.;
+    _n = 0;
 }
 
 void Summary::update() {
     if (!isSkipping) {
-        heatingCost += heatPipesHeatFlux*timeStep*1e-6;
-        lampCost    += lampsPowerUsage  *timeStep*1e-6;
-        co2Cost     += co2Injection     *timeStep/3600.*1e-3;
+        // Update sums
+        ++_n;
+        _heatingSum += heatPipesHeatFlux;
+        _lampSum    += lampsPowerUsage;
+        _co2Sum     += co2Injection;
+        // Update costs
+        heatingCost = _heatingSum/_n*24*365*1e-6;
+        lampCost    = _lampSum/_n   *24*365*1e-6;
+        co2Cost     = _co2Sum/_n    *24*365*1e-3;
     }
 }
 

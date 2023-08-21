@@ -75,12 +75,14 @@ void load::readFile(QString fileName) {
     }
     catch (const Exception &ex) {
         dialog().error(ex.what());
-        Computation::changeStep(Computation::Step::Ready);
-    }
+    }    
 
     // Report on created model
     int n = Box::root()->findMany<Box*>("*").size();
     dialog().information(QString("%1 boxes created").arg(n));
+
+    // Ready for any action
+    Computation::changeStep(Computation::Step::Ready);
 }
 
 

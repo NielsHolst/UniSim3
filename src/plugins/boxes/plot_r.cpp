@@ -21,7 +21,7 @@ PlotR::PlotR(QString name, Box *parent)
     help("produces an R plot");
     Input(ports).help("Port(s) on y-axis");
     Input(layout).equals("facetted").help("Either \"merged\" or \"facetted\"");
-    Input(type).equals("default").help("Type of plot").unit("default|density|histogram(nbins)|SobolConvergence|SobolIndices");
+    Input(type).equals("default").help("Type of plot (default|density|histogram(nbins)|SobolConvergence|SobolIndices)");
     Input(guideTitle).help("Title of guide legends");
     Input(ggplot).help("R code that will be added to the ggplot");
     Input(end).help("Deprecated");

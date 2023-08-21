@@ -5,7 +5,7 @@
 #ifndef WRITE_H
 #define WRITE_H
 #include <base/command.h>
-#include "write_options.h"
+#include "write_output.h"
 
 namespace command {
 
@@ -13,15 +13,17 @@ class write : public base::Command
 {
 public:
     write(QString name, base::Box *parent);
+    ~write();
 private:
     // Methods
     void doExecute();
-    void extractOptions();
+    void extractArgs();
     void writeFile();
     void edit();
     // Data
     QString _filePath;
-    WriteOptionSet _options;
+    WriteOutput::Option _option;
+    bool _doEdit;
 };
 
 }

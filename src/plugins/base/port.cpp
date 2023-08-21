@@ -16,7 +16,7 @@ namespace base {
 Port::Port(QString name, PortType type, Node *parent)
     : Node(name, parent),
       _type(type),
-      _status(PortStatus::Unknown),
+      _status(PortStatus::TypeDefault),
       _acceptNull(false),
       _isConstant(false),
       _unparsedExpression(""),
@@ -96,11 +96,17 @@ void Port::define() {
         ThrowException("Change of port definition only allowed until amend step").
                 value(Computation::toString(step)).context(this);
 
-    // Register re-definition
-    _status = PortStatus::Redefined;
-
-    // Reconsider whether it is constant
-    _isConstant = false;
+    // Register definition
+    switch (step) {
+    case Computation::Step::Construct:
+        _status = PortStatus::ConstructionDefault;
+        break;
+    case Computation::Step::Modify:
+        _status = PortStatus::UserDefined;
+        break;
+    default:
+        break;
+    }
 
     // Set me as parent of the expression and of any paths in the expression
     _expression.setParent(this);
@@ -133,23 +139,24 @@ void Port::define() {
             noClear();
     }
     // Evaluation may not complete but try to evaluate value, except Path ports needs no evaluation
+    _isConstant = false;
     if (_value.type() != Value::Type::Path)
         touch();
 }
 
 void Port::setDefaultStatus() {
-    switch (_status) {
-    case PortStatus::Unknown:
-        _status = PortStatus::TypeDefault;
-        _isConstant = (_type==PortType::Input && _status==PortStatus::TypeDefault);
-        break;
-    case PortStatus::Redefined:
-        _status = PortStatus::ConstructionDefault;
-        break;
-    case PortStatus::TypeDefault:
-    case PortStatus::ConstructionDefault:
-        ThrowException("Invalid status prior to setting default status").value(convert<QString>(_status)).context(this);
-    }
+//    switch (_status) {
+//    case PortStatus::Unknown:
+//        _status = PortStatus::TypeDefault;
+//        _isConstant = (_type==PortType::Input);
+//        break;
+//    case PortStatus::Redefined:
+//        _status = PortStatus::ConstructionDefault;
+//        break;
+//    case PortStatus::TypeDefault:
+//    case PortStatus::ConstructionDefault:
+//        ThrowException("Invalid status prior to setting default status").value(convert<QString>(_status)).context(this);
+//    }
 }
 
 Port& Port::equals(const Value &value) {
@@ -161,28 +168,24 @@ Port& Port::equals(const Value &value) {
 }
 
 Port& Port::equals(const Expression &expression) {
-    if (_unparsedExpression.isEmpty())
-        _unparsedExpression = expression.originalAsString();
     _expression = expression;
+    _unparsedExpression = expression.originalAsString();
     define();
     return *this;
 }
 
 Port& Port::imports(QString pathToPort, Caller caller) {
-    _unparsedExpression = pathToPort;
-    _isConstant = false;
-    _importCaller = caller;
     _expression.clear();
     _expression.push(Path(pathToPort, this));
+    _unparsedExpression = pathToPort;
+    _importCaller = caller;
     define();
     return *this;
 }
 
 Port& Port::computes(QString expression) {
-    _unparsedExpression = expression;
-    _isConstant = false;
-    Expression e = boxscript::parser::parseExpression(this, expression);
-    return equals(e);
+    Expression expr = boxscript::parser::parseExpression(this, expression);
+    return equals(expr);
 }
 
 void Port::setConstness(bool isConstant) {
@@ -192,21 +195,24 @@ void Port::setConstness(bool isConstant) {
 void Port::updateConstness() {
     // If a port is const or it's an output, there is nothing to do ,
     // an output will keep its constness (which is nearly always false)
-    if (_isConstant || _type==PortType::Output)
-        return;
-    // An unresolved expression is not constant
-    if (!_expression.isResolved()) {
-        _isConstant = false;
-        return;
-    }
-    // If any imported port is non-const, neither is this one
-    auto imports = importPortsLeaves();
-    for (auto imported : imports) {
-        if (!imported->isConstant())
-            return;
-    }
-    // All imports were constant; upgrade this to be constant
-    _isConstant = true;
+//    if (!_isConstant && _type!=PortType::Output)
+//        _isConstant = _expression.isConstant();
+
+//    if (_isConstant || _type==PortType::Output)
+//        return;
+//    // An unresolved expression is not constant
+//    if (!_expression.isResolved()) {
+//        _isConstant = false;
+//        return;
+//    }
+//    // If any imported port is non-const, neither is this one
+//    auto imports = importPortsLeaves();
+//    for (auto imported : imports) {
+//        if (!imported->isConstant())
+//            return;
+//    }
+//    // All imports were constant; upgrade this to be constant
+//    _isConstant = true;
 }
 
 //
@@ -227,10 +233,6 @@ void Port::touch() {
 }
 
 void Port::evaluate() {
-//    if (name() == "latitude") {
-//        dialog().information("latitude is const" + convert<QString>(_isConstant));
-//    }
-
     // A constant port, a port with an empty expression, or a port to path needs no evaluation
     if (_isConstant || _expression.isEmpty() || _value.type() == Value::Type::Path)
         return;
@@ -247,9 +249,6 @@ void Port::evaluate() {
         // in the C++ code; the expression's type will be converted to the value's types
         // For aux ports, all references have now been resolved and the value's type thereby fixed        
         Value evaluation = _expression.evaluate();
-//        if (name() == "latitude") {
-//            dialog().information("latitude is null " + convert<QString>(evaluation.isNull()));
-//        }
         if  (evaluation.isNull() && !_acceptNull)
             ++_nullCount;
         bool vectorError = evaluation.isVector() && !_value.isVector(),
@@ -267,7 +266,7 @@ void Port::evaluate() {
 
     // Register if the value will remain constant after reset
     // Ensure outputs are never constant; otherwise Output(x).equals(1) would mean x remains constant forever
-    if (Computation::currentStep() == Computation::Step::Reset && _type != PortType::Output)
+    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output)
         _isConstant = _expression.isConstant();
 }
 

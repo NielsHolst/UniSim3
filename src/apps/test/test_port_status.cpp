@@ -51,7 +51,7 @@ void TestPortStatus::testAuxDefinesExpr() {
     UNEXPECTED_EXCEPTION;
 
     Port *port = root->findOne<Port*>("a[new]");
-    QVERIFY(port->status() == PortStatus::Redefined);
+    QVERIFY(port->status() == PortStatus::UserDefined);
 }
 
 void TestPortStatus::testAuxDefinesValue() {
@@ -71,7 +71,7 @@ void TestPortStatus::testAuxDefinesValue() {
     UNEXPECTED_EXCEPTION;
 
     Port *port = root->findOne<Port*>("a[new]");
-    QVERIFY(port->status() == PortStatus::Redefined);
+    QVERIFY(port->status() == PortStatus::UserDefined);
 }
 
 void TestPortStatus::testExprRedefinesExpr() {
@@ -91,7 +91,7 @@ void TestPortStatus::testExprRedefinesExpr() {
     UNEXPECTED_EXCEPTION;
 
     Port *port = root->findOne<Port*>("sim[steps]");
-    QVERIFY(port->status() == PortStatus::Redefined);
+    QVERIFY(port->status() == PortStatus::UserDefined);
 }
 
 void TestPortStatus::testExprRedefinesValue() {
@@ -111,7 +111,7 @@ void TestPortStatus::testExprRedefinesValue() {
     UNEXPECTED_EXCEPTION;
 
     Port *port = root->findOne<Port*>("sim[iterations]");
-    QVERIFY(port->status() == PortStatus::Redefined);
+    QVERIFY(port->status() == PortStatus::UserDefined);
 }
 
 void TestPortStatus::testValueRedefinesExpr() {
@@ -131,7 +131,7 @@ void TestPortStatus::testValueRedefinesExpr() {
     UNEXPECTED_EXCEPTION;
 
     Port *port = root->findOne<Port*>("sim[steps]");
-    QVERIFY(port->status() == PortStatus::Redefined);
+    QVERIFY(port->status() == PortStatus::UserDefined);
 }
 
 void TestPortStatus::testValueRedefinesValue() {
@@ -150,7 +150,7 @@ void TestPortStatus::testValueRedefinesValue() {
     UNEXPECTED_EXCEPTION;
 
     Port *port = root->findOne<Port*>("sim[iterations]");
-    QVERIFY(port->status() == PortStatus::Redefined);
+    QVERIFY(port->status() == PortStatus::UserDefined);
 }
 
 void TestPortStatus::testValueRedefinesDefault() {
@@ -183,8 +183,8 @@ void TestPortStatus::testValueRedefinesDefault() {
 
     QCOMPARE(a_ints->status(), PortStatus::TypeDefault);
     QCOMPARE(a_strings->status(), PortStatus::ConstructionDefault);
-    QCOMPARE(b_ints->status(), PortStatus::Redefined);
-    QCOMPARE(b_strings->status(), PortStatus::Redefined);
+    QCOMPARE(b_ints->status(), PortStatus::UserDefined);
+    QCOMPARE(b_strings->status(), PortStatus::UserDefined);
 
     // Test values as well
     QVector<int>

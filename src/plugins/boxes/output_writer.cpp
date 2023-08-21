@@ -25,6 +25,7 @@ OutputWriter::OutputWriter(QString name, Box *parent)
     : Box(name, parent)
 {
     help("writes the output text file");
+    doWriteOnCommand(false);
     Input(showPorts).equals(false).help("Shows a table of the ports to be written");
     Input(ports).computes("/.[iteration] | /.[step] | OutputText::*[ports] | OutputR::*[ports]");
     Input(skipFormats).imports("OutputSelector::*[skipFormats]");

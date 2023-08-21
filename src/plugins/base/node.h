@@ -49,12 +49,15 @@ public:
     template <class T=Node*> static QStringList names    (const QVector<      T *> &nodes);
 
     QString className(Namespace ns = Namespace::Exclude) const;
-    const Pedigree & pedigree() const { return _pedigree; };
+    const Pedigree & pedigree() const { return _pedigree; }
     QString pedigreeAsString(Namespace ns = Namespace::Exclude) const;
     bool isType(QString name) const;
 
     int order() const       { return _order; }
     const QMap<QString, QString> & attributes() const { return _attributes; }
+
+    bool doWriteOnCommand() const { return _doWriteOnCommand; }
+    void doWriteOnCommand(bool doWrite) { _doWriteOnCommand = doWrite; }
 
     static void setCurrent(const Node *node) { _current = node; }
     static const Node *current() { return _current; }
@@ -67,6 +70,7 @@ private:
     QVector<Node*> _children;
     int _order;
     QMap<QString, QString> _attributes;
+    bool _doWriteOnCommand;
     static const Node *_current;
     // Methods
     void addChild(Node *child);

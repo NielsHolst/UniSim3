@@ -48,6 +48,7 @@ HEADERS +=  \
     shading.h \
     shading_agent.h \
     shelter.h \
+    shelter_layers.h \
     sky.h \
     soil_temperature.h \
     summary.h \
@@ -94,6 +95,7 @@ SOURCES += \
     shading.cpp \
     shading_agent.cpp \
     shelter.cpp \
+    shelter_layers.cpp \
     sky.cpp \
     summary.cpp \
     soil_temperature.cpp \

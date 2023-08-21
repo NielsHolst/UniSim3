@@ -14,7 +14,7 @@ namespace base {
 const Node *Node::_current = nullptr;
 
 Node::Node(QString name, Node *parent)
-    : _objectName(name), _parent(parent), _order(-1)
+    : _objectName(name), _parent(parent), _order(-1), _doWriteOnCommand(true)
 {
     _current = this;
     if (parent)

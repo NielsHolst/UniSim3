@@ -120,7 +120,6 @@ void ListOutput::listExports(QVector<base::Port*> ports, int level) {
 void ListOutput::toString(base::Port *port, int level) {
 
     QString fill = QString().fill(' ', 2*level);
-
     _s += fill + prefixString(port) + port->objectName() +
           " = " + port->value().asString();
     if (!port->unit().isEmpty())

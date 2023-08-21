@@ -125,7 +125,8 @@ Path::Node::Node(std::vector<std::string> names) {
 }
 
 QString Path::Node::toString() const {
-    QString result = (_directive == Directive::Any) ? "" : (nodeDirToString.value(_directive) + "::");
+    bool showDirective = (_directive != Directive::Any && _directive != Directive::Children);
+    QString result = showDirective ? (nodeDirToString.value(_directive) + "::") : "";
     if (!_className.isEmpty())
         result += _className + "::";
     return result + _objectName;

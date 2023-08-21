@@ -66,8 +66,11 @@ extract_headers = function(lines) {
       n = nchar(id)
       if (substr(id,n,n) == "-") 
         id = substr(id, 1, n-1)
-
-      headers = rbind(headers, c(i, level, caption, id))
+      include_header = TRUE
+      h = nrow(headers)
+      if (h > 0) if (caption == headers[h,3]) include_header = FALSE # Avoid adding superflous, second repeat of caption
+      if (include_header)
+        headers = rbind(headers, c(i, level, caption, id))
     }
   }
   colnames(headers) = c("Line", "Level", "Caption", "Id")
@@ -188,14 +191,15 @@ update_file = function(file_name) {
   n = length(lines)
   menu = paste0(headers$Menu, collapse="")
 
-  lines = c(lines[1:menu_begin], menu, lines[menu_end:n])
+  if (length(menu_begin) > 0)
+    lines = c(lines[1:menu_begin], menu, lines[menu_end:n])
 
   # Write file
-  write_file(file_name, lines)
-  # write_file("ud.html", lines)
+  # write_file(file_name, lines)
+  write_file("ud.html", lines)
 }
 
-# update_file(file_name = "boxscript.html")
+update_file(file_name = "boxscript.html")
 
 files = c(
   "index.html",
@@ -203,6 +207,9 @@ files = c(
   "commands.html",
   "boxscript.html",
   "models.html",
+  "cereal-aphids.html",
+  "vg.html",
+  "saccharina.html",
   "download.html",
   "about.html"
 )

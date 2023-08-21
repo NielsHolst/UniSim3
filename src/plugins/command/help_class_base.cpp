@@ -18,7 +18,7 @@ HelpClassBase::HelpClassBase(Box *box)
     Q_ASSERT(box);
 }
 
-void HelpClassBase::showClassInfo(Box *box) {
+void HelpClassBase::showClassInfo() {
     setColWidths();
     QString info =
         header() +
@@ -52,6 +52,16 @@ bool HelpClassBase::isConstant(const Port *port) const {
 
 bool HelpClassBase::hasIntervalAsUnit(const Port *port) const {
     return port->unit().startsWith("[") || port->unit().startsWith("<") || port->unit().startsWith(">");
+}
+
+QString HelpClassBase::pluginName() const {
+    Q_ASSERT(_box);
+    return _box->pedigree().last().namespaceName;
+}
+
+QString HelpClassBase::className() const {
+    Q_ASSERT(_box);
+    return _box->pedigree().last().className;
 }
 
 }

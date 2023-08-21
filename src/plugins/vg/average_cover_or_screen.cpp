@@ -26,6 +26,7 @@ AverageCoverOrScreen::AverageCoverOrScreen(QString name, Box *parent)
       LayerAdjusted(name, parent)
 {
     help("computes average cover radiation and heat parameters");
+    doWriteOnCommand(false);
     INPUT_MATERIALS(swAbsorptivityTop);
     INPUT_MATERIALS(swAbsorptivityBottom);
     INPUT_MATERIALS(swReflectivityTop);

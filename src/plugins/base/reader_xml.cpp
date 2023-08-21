@@ -55,9 +55,6 @@ ReaderXml::ReaderXml(BoxBuilder *builder)
 }
 
 void ReaderXml::parse(QString filePath) {
-    // Change the computation step
-    Computation::changeStep(Computation::Step::Construct);
-
     // Open XML reader
     openReader(filePath);
 
@@ -370,7 +367,7 @@ void ReaderXml::readVirtualGreenhouse() {
                 endbox().
             endbox().
             box("OutputSelector").name("selector").
-                port("beginDateTime").equals(_doc->find("Description/StartTime")->value()).
+                port("beginDateTime").imports("global[beginDate]").
                 port("period").equals(_doc->find("Output/Period")->toInt()).
                 port("useLocalDecimalChar").equals(_doc->find("Output/UseLocalDecimalChar")->toBool()).
                 port("skipFormats").equals(_doc->find("Output/SkipFormats")->toBool()).
@@ -719,7 +716,6 @@ BoxBuilder& ReaderXml::actuatorsHeatPipes() {
             port("propLw").equals(heatPipe.find("PropLw")->toDouble()).
             port("minTemperature").imports("setpoints/heating/minTemperature[value]").
             port("maxTemperature").equals(heatPipe.find("CommonFlowTemperature")->toDouble()).
-            port("inflowTemperature").equals(50).
             port("indoorsTemperature").imports("indoors[temperature]").
         endbox();
     }

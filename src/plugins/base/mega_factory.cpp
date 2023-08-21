@@ -11,6 +11,7 @@
 #include <QSettings>
 #include <QStringList>
 #include "box.h"
+#include "computation.h"
 #include "dialog.h"
 #include "exception.h"
 #include "factory_plug_in.h"
@@ -36,7 +37,7 @@ MegaFactory::MegaFactory() {
         QPluginLoader loader(filePath);
         FactoryPlugIn *factory = qobject_cast<FactoryPlugIn*>(loader.instance());
         if (factory) {
-            dialog().message("loading " + filePath +"...");
+            dialog().information("loading " + filePath +"...");
             _factories << factory;
             for (QString id : factory->inventory()) {
                 productIndex.insert(id, factory);
@@ -70,6 +71,7 @@ Node *MegaFactory::createObject(QString className, QString objectName, Box *pare
     QStringList classNameParts = className.split("::");
     QString classNameProper = (classNameParts.size() == 1) ? className : classNameParts.at(1),
             namespaceName;
+    bool showStep;
 
     // Box objects are not created by a factory, because the Box class is defined in the base plug-in
     if (className == "Box" || className == "base::Box") {
@@ -85,7 +87,12 @@ Node *MegaFactory::createObject(QString className, QString objectName, Box *pare
         case 1:
             // Success: Create object
             factory = me().productIndex.value(className);
+            showStep = (factory->id() != "command");
+            if (showStep)
+                Computation::changeStep(Computation::Step::Construct);
             creation = factory->create(classNameProper, objectName, parent);
+            if (showStep)
+                Computation::changeStep(Computation::Step::Modify);
             namespaceName = factory->id();
             break;
         default:

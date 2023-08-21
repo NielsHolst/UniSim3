@@ -1,9 +1,11 @@
+<h2>Ratio</h2>
+<h3>Interface</h3><div class="insert macro">#plugins/boxes/ratio.html</div>
 <div class="begin macro"></div>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>denominator</td><td>double</td><td>0.0 </td><td>Number to be divided</td></tr>
 <tr><td>divisor</td><td>double</td><td>0.0 </td><td>The divisor</td></tr>
 <tr><td>zeroTolerance</td><td>double</td><td>0.0 </td><td>Used for infinity check</td></tr>
-<tr><td>allowInfinityResult</td><td>bool</td><td>TRUE </td><td>Will yield an error of divisor<=zeroTolerance</td></tr>
+<tr><td>allowInfinityResult</td><td>bool</td><td>TRUE </td><td>Will yield an error if <span class="table-interface-code">divisor < zeroTolerance</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>value</td><td>double</td><td>0.0 </td><td>The ratio</td></tr>
 </tbody></table>

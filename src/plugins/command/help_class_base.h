@@ -19,7 +19,7 @@ class HelpClassBase
 public:
     HelpClassBase(base::Box *box);
     virtual ~HelpClassBase() {}
-    void showClassInfo(base::Box *box);
+    void showClassInfo();
 protected:
     #if QT_VERSION < 0x060000
         int       _colWidthName, _colWidthType, _colWidthValue, _colWidthUnit;
@@ -30,6 +30,8 @@ protected:
     base::Box *_box;
     bool isConstant(const base::Port *port) const;
     bool hasIntervalAsUnit(const base::Port *port) const;
+    QString pluginName() const;
+    QString className() const;
 private:
     // methods
     virtual QString header() const = 0;

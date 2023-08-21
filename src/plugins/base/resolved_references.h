@@ -33,7 +33,7 @@ public:
     static bool checkOrder();
 //    static QStringList dump(QString text);
 private:
-    ResolvedReferences(){};
+    ResolvedReferences() {}
     static std::unique_ptr<ResolvedReferences> _singleton;
     static ResolvedReferences& my();
 

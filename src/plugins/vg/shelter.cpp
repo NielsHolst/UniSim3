@@ -47,10 +47,13 @@ void Shelter::amend() {
         screenNamesByFace << screenNames;
     }
 
+    // Build shelter layers; must be unique
+    if (findMaybeOne<Box*>("./layers"))
+        ThrowException("Child box called \"layers\" is not allowed in Shelter box").context(this);
 
     BoxBuilder builder(this);
     builder.
-    box().name("layers").
+    box("ShelterLayers").name("layers").
         box("AverageCover").name("cover").
         endbox().
         box().name("screens");

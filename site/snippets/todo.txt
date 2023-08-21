@@ -1,0 +1,4 @@
+XML-fil i fejlmeddelelse
+eksempel på formel i XML-fil
+automatisere kalibrering af gardin Uinsolation
+gennemsnitsstyring

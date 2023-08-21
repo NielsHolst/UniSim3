@@ -12,7 +12,7 @@ enum class PortStatus {
     Unknown,
     TypeDefault,
     ConstructionDefault,
-    Redefined
+    UserDefined
 };
 
 template<> QString convert(PortStatus status);

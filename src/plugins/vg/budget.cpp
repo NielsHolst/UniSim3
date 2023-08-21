@@ -85,6 +85,10 @@ Budget::Budget(QString name, base::Box *parent)
 }
 
 void Budget::amend() {
+    auto childBoxes = findMany<Box*>("./*");
+    if (!childBoxes.isEmpty())
+        ThrowException("Budget must be declared empty in the boxscript, i.e. as \"Budget budget{ }\"").
+                value("\n" + Node::fullNames(childBoxes).join("\n")).context(this);
     addVolumes();
     addLayers();
     addState();

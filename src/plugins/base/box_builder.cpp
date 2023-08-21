@@ -5,6 +5,7 @@
 #include "box.h"
 #include "box_builder.h"
 #include "computation.h"
+#include "dialog.h"
 #include "mega_factory.h"
 #include "value.h"
 
@@ -26,15 +27,14 @@ BoxBuilder::BoxBuilder(Box *parent)
 //}
 
 BoxBuilder& BoxBuilder::box(QString className) {
-    Computation::pushStep(Computation::Step::Construct);
     // The parent of the new box is the current box if such exists,
     // otherwise is is the parent given to BoxBuilder
     Box *parentToNewBox = currentBox() ? currentBox() : _parent;
     _stack.push( MegaFactory::create<Box>(className, "", parentToNewBox) );
 
-    // Set default status of ports in box just built
-    for (auto port : _stack.top()->portsInOrder())
-        port->setDefaultStatus();
+//    // Set default status of ports in box just built
+//    for (auto port : _stack.top()->portsInOrder())
+//        port->setDefaultStatus();
 
     // The first box constructed becomes the root
     if (_finished || !_root) {
@@ -42,7 +42,6 @@ BoxBuilder& BoxBuilder::box(QString className) {
         _root = currentBox();
     }
     _currentPort = nullptr;
-    Computation::popStep();
     return *this;
 }
 
@@ -72,6 +71,18 @@ BoxBuilder& BoxBuilder::endbox() {
     }
     return *this;
 }
+
+//namespace {
+//void log(QString s, Port *port) {
+//    if (port->name() == "begin")
+//        dialog().information(port->fullName() +
+//                             " " + s +
+//                             " " + port->value().asString() +
+//                             " " + convert<QString>(port->status()) +
+//                             (port->isConstant() ? " const" : " variable")
+//                             );
+//}
+//}
 
 BoxBuilder& BoxBuilder::port(QString name) {
     if (!currentBox())
