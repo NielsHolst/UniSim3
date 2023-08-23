@@ -199,7 +199,7 @@ update_file = function(file_name) {
   write_file("ud.html", lines)
 }
 
-update_file(file_name = "boxscript.html")
+update_file(file_name = "vg.html")
 
 files = c(
   "index.html",

@@ -18,7 +18,7 @@ Port::Port(QString name, PortType type, Node *parent)
       _type(type),
       _status(PortStatus::TypeDefault),
       _acceptNull(false),
-      _isConstant(false),
+      _isConstant(type == PortType::Input),
       _unparsedExpression(""),
       _expression(this)
 {
@@ -75,6 +75,9 @@ Port& Port::initialize(Value value) {
 }
 
 void Port::define() {
+    // Constness must be considered
+    _isConstant = false;
+
     // Get computation step
     auto step = Computation::currentStep();
 
@@ -139,7 +142,6 @@ void Port::define() {
             noClear();
     }
     // Evaluation may not complete but try to evaluate value, except Path ports needs no evaluation
-    _isConstant = false;
     if (_value.type() != Value::Type::Path)
         touch();
 }
@@ -161,7 +163,18 @@ void Port::setDefaultStatus() {
 
 Port& Port::equals(const Value &value) {
     _expression.clear();
-    _expression.push(value);
+
+    bool portTypeHasBeenSet = (_value.type() != Value::Type::Uninitialized);
+    if (portTypeHasBeenSet) {
+        // Keep known type of _value
+        _value = Value(value);
+        _expression.push(_value);
+    }
+    else {
+        // Let _expression deduce type from value
+        _expression.push(value);
+    }
+
     _unparsedExpression = _expression.originalAsString();
     define();
     return *this;
@@ -266,8 +279,11 @@ void Port::evaluate() {
 
     // Register if the value will remain constant after reset
     // Ensure outputs are never constant; otherwise Output(x).equals(1) would mean x remains constant forever
-    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output)
+    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output) {
+        if (name() == "values")
+            dialog().information("debug Port::evaluate values");
         _isConstant = _expression.isConstant();
+    }
 }
 
 //

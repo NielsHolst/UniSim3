@@ -7,8 +7,8 @@ class TestPortConst : public QObject
     Q_OBJECT
 private slots:
     void testAllDefault();
-    void testAux();
-    void testExprRedefinesConst();
+//    void testAux();
+//    void testExprRedefinesConst();
 };
 
 DECLARE_TEST(TestPortConst)

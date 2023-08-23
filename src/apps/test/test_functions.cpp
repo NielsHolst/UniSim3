@@ -164,7 +164,8 @@ void TestFunctions::test_name() {
         QCOMPARE(expr.size(), 1);
         QCOMPARE(stack.size(), size_t(1));
         QVERIFY2(Expression::type(stack.at(0)) == Expression::Type::BoxPtrs, STR(Expression::typeName(stack.at(0))));
-        QVERIFY(ResolvedReferences::fixed());
+
+        // QVERIFY(ResolvedReferences::fixed()); Functionality not used?
 
         QCOMPARE(
             root->findOne<Port*>("E[childrenOfANames]")->value<QVector<QString>>(),

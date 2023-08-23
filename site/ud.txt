@@ -1,7 +1,22 @@
-<h2>ActuatorGrowthLight</h2>
-<h3>Interface</h3><div class="insert macro">#plugins/vg/actuatorgrowthlight.html</div>
+<p class='hidden-anchor' id='virtual-greenhouse'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/vg/actuatorchalk.html</div>
 <div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<h2>ActuatorChalk</h2>
+<h3>Interface</h3><table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>state</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">setpoints/chalk[value]</span></td></tr>
+<tr><td>swReflectivity</td><td>double</td><td>0.0</td><td>Short-wave reflectivity potentially added to cover [0;1]</td></tr>
+<tr><td>lwReflectivity</td><td>double</td><td>0.0</td><td>Long-wave reflectivity potentially added to cover [0;1]</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>swReflectivityValue</td><td>double</td><td>0.0</td><td>Short-wave reflectivity actually added to cover [0;1]</td></tr>
+<tr><td>lwReflectivityValue</td><td>double</td><td>0.0</td><td>Long-wave reflectivity actually added to cover [0;1]</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+<p class='hidden-anchor' id='virtual-greenhouse'>xxx</p><div class='border-grey'>
+<div class="insert macro">#plugins/vg/actuatorgrowthlight.html</div>
+<div class="begin macro"></div>
+<h2>ActuatorGrowthLight</h2>
+<h3>Interface</h3><table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is light currently switched on?</td></tr>
 <tr><td>power</td><td>double</td><td>0.0 W/m2</td><td>Power of installed lamps per greenhouse area</td></tr>
 <tr><td>ballast</td><td>double</td><td>0.0 W/m2</td><td>Power used by lamp ballast</td></tr>
@@ -22,3 +37,4 @@
 <tr><td>powerUsage</td><td>double</td><td>0.0 W/m2</td><td>Current power usage</td></tr>
 </tbody></table>
 <div class="end macro"></div>
+</div> <!-- border-grey -->

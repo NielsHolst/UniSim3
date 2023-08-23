@@ -113,3 +113,20 @@ void TestPath::testLookInChildrenNotSelf() {
     QCOMPARE(x.at(0)->value<int>(), 20);
     QCOMPARE(x.at(1)->value<int>(), 30);
 }
+
+void TestPath::testFindBoxVsPort() {
+    bool excepted(false);
+    using Boxes = QVector<Box*>;
+    using Ports = QVector<Port*>;
+    Computation::changeStep(Computation::Step::Construct);
+
+    BoxBuilder builder;
+    try {
+        builder.
+            box("Simulation").name("S").
+                box().name("A").endbox().
+                box("Stage").name("B").endbox().
+            endbox();
+    }
+    UNEXPECTED_EXCEPTION;
+}

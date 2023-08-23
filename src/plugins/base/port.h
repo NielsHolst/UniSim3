@@ -136,10 +136,10 @@ template <class T> Port& Port::initialize(T fixedValue) {
 
 template <class T> Port& Port::equals(T fixedValue)
 {
-    bool portTypeHasBeenSet = (_value.type() != Value::Type::Uninitialized);
-    if (portTypeHasBeenSet)
-        _value = Value(fixedValue);
-    else // deduce port type from T
+//    bool portTypeHasBeenSet = (_value.type() != Value::Type::Uninitialized);
+//    if (portTypeHasBeenSet)
+//        _value = Value(fixedValue);
+//    else // deduce port type from T
         equals(Value(fixedValue));
     return *this;
 }

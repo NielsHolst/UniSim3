@@ -75,8 +75,12 @@ QString WriteOutput::prefixString(Port *port) {
 }
 
 QString WriteOutput::assignmentString(Port *port) {
+    auto expr = port->expression();
+    auto stack = expr.stack();
+    bool portHoldsOnlyBoxPtrs = (stack.size() == 1 && expr.type(0) == Expression::Type::BoxPtrs);
     QString s =
-        (port->isConstant() || port->type() == PortType::Output) ?
+        (!portHoldsOnlyBoxPtrs &&
+        (port->isConstant() || port->type() == PortType::Output)) ?
         port->value().asString() :
         port->unparsedExpression();
     return s.isNull() ? "" : s;

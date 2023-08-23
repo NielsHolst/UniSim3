@@ -27,6 +27,9 @@ void TestPortStatus::testAllDefault() {
     Port *port = root->findOne<Port*>("sim[steps]");
     QVERIFY(port->status() == PortStatus::ConstructionDefault);
 
+    port = root->findOne<Port*>("sim[step]");
+    QVERIFY(port->status() == PortStatus::TypeDefault);
+
     port = root->findOne<Port*>("sim[iterations]");
     QVERIFY(port->status() == PortStatus::ConstructionDefault);
 

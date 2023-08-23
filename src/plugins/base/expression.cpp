@@ -7,6 +7,7 @@
 #include "box.h"
 #include "convert_operator.h"
 #include "convert.h"
+#include "dialog.h"
 #include "exception.h"
 #include "expression.h"
 #include "operate.h"
@@ -14,6 +15,8 @@
 #include "port.h"
 #include "resolved_references.h"
 #include "value_collection.h"
+
+#include "computation.h"
 
 using std::get;
 
@@ -54,13 +57,41 @@ void Expression::clear() {
 }
 
 bool Expression::isConstant() const {
-    // The expression is constant if it is not empty and it contains no references
-    // This can be improved to consider if the references referred to are also constant
-    for (const Element &element : _stack) {
-        if (type(element) == Type::ValuePtr || type(element) == Type::Path)
-            return false;
+    QString comp = Computation::toString(Computation::currentStep());
+    const Port *p = parent();
+    if (p && p->name() == "childrenOfA")
+        dialog().information(comp + " A " + p->fullName() + " " + QString::number(p->isConstant()));
+
+    bool result = true;
+    // If expression has been resolved then check all imports for constness
+    if (_isResolved) {
+        for (auto port : _importPorts) {
+            if (!port->isConstant()) {
+                result = false;
+                break;
+            }
+        }
     }
-    return !_stack.empty();
+    // Else any path is suspect of beging non-const
+    else {
+        for (const Element &element : _stack) {
+            if (type(element) == Type::Path) {
+                result = false;
+                break;
+            }
+        }
+    }
+    if (p && p->name() == "childrenOfA")
+        dialog().information(comp + " Z " + p->fullName() + " " + QString::number(result));
+    return result;
+
+    //    // The expression is constant if it is not empty and it contains no references
+//    // This can be improved to consider if the references referred to are also constant
+//    for (const Element &element : _stack) {
+//        if (type(element) == Type::ValuePtr || type(element) == Type::Path)
+//            return false;
+//    }
+//    return !_stack.empty();
 }
 
 bool Expression::isResolved() const {
@@ -751,7 +782,7 @@ void Expression::resolveReferences() {
     }
 }
 
-Port *Expression::parent() {
+Port *Expression::parent() const {
     return _parent;
 }
 

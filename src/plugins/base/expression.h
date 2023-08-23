@@ -71,7 +71,7 @@ public:
     void resolveReferences();
     Value evaluate();
 
-    Port *parent();
+    Port *parent() const;
     const Stack& original() const;
     const Stack& stack() const;
     const Element& at(int i) const { return _stack.at(i); }

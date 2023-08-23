@@ -10,6 +10,8 @@ private slots:
     void testFindBox();
     void testFindClassName();
     void testLookInChildrenNotSelf();
+    void testFindBoxVsPort();
+
 };
 
 DECLARE_TEST(TestPath)

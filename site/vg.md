@@ -6,9 +6,7 @@ $$
 $$
 # Virtual greenhouse model
 
-*Niels Holst, Aarhus University, Denmark, 25 May 2023.*
-
-
+*Niels Holst, Aarhus University, Denmark, 22 August 2023.*
 
 ## R scripts
 
@@ -2814,4 +2812,60 @@ $$
 \end{split}
 $$
 where the default rates of change are $\dot{T}_{pipe}$ (&deg;C/s) and $\dot{v}$ (h$^{-1}$s$^{-1}$). 
+
+# Model outputs
+
+## Whole-year summary
+
+The performance of the greenhouse over a whole year is summarised in terms of inputs and outputs:
+
+|             | Inputs                        | Outputs                | Balance                                            |
+| ----------- | ----------------------------- | ---------------------- | -------------------------------------------------- |
+| **Energy**  | heating system                |                        | radiative heat (long waved, over greenhouse cover) |
+|             | growth lights                 |                        | convective heat (over greenhouse cover)            |
+|             | sun irradiation (short waved) |                        | conductive heat (by soil contact)                  |
+|             |                               |                        | advective heat (by air exchange)                   |
+|             |                               |                        | latent heat (by air exchange)                      |
+| **Water**   | plant transpiration           |                        | condensation (on greenhouse cover)                 |
+|             |                               |                        | exhaust (by air exchange)                          |
+|             |                               |                        |                                                    |
+| **CO~2~**   | dispensation                  |                        | exhaust (by air exchange)                          |
+|             |                               | fixation (by plants)   |                                                    |
+| **Biomass** |                               | production (by plants) |                                                    |
+
+* Energy (MWh/m^2^/y)
+  * Inputs
+    * heating system
+    * growth lights
+    * short waved irradiation (from sun)
+  * Balances
+    * radiative heat (over greenhouse cover)
+    * convective heat (over greenhouse cover)
+    * conductive heat (on soil interface)
+    * advective heat (by air exchange)
+    * latent heat (by air exchange)
+* Water (kg/m^2^/y)
+  * Inputs
+    * plant transpiration
+  * Balances
+    * condensation (on greenhouse cover)
+    * exhaust (by air exchange)
+* CO~2~  (kg/m^2^/y)
+  * Inputs
+    * dispensation
+  * Balances
+    * fixation (by plants)
+    * exhaust (by air exchange)
+* Biomass (kg/m^2^/y)
+  * Balances
+    * production (by plants)
+* Climate
+  * Temperature ($^{\circ}$C)
+    * Air (quantiles: 1%, 5%, 25%, 50%, 75%, 95%, 99%)
+    * Leaves (quantiles: 1%, 5%, 25%, 50%, 75%, 95%, 99%)
+  * Humidity (%)
+    * Air (quantiles: 1%, 5%, 25%, 50%, 75%, 95%, 99%)
+* Climate control
+  * Heating system (%)
+    * time spent running
 
