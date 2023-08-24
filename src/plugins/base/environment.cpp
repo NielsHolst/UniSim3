@@ -33,7 +33,7 @@ Environment& environment() {
 }
 
 Environment::Environment()
-    : _current(nullptr), _isSilent(false), _isUnattended(false)
+    : _runMode(RunMode::Unknown),_current(nullptr), _isSilent(false), _isUnattended(false)
 {
     QSettings settings;
     _isFirstInstallation = !QDir(homePath()).exists();
@@ -77,6 +77,14 @@ Environment::~Environment() {
         settings.setValue(key, value);
       unique << value;
     }
+}
+
+void Environment::runMode(Environment::RunMode mode) {
+    _runMode = mode;
+}
+
+Environment::RunMode Environment::runMode() const {
+    return _runMode;
 }
 
 QString Environment::homePath() const {

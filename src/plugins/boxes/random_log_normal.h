@@ -13,6 +13,7 @@ class RandomLogNormal : public RandomBaseTyped<double>
 public: 
     RandomLogNormal(QString name, Box *parent);
 private:
+    void checkInputs(QString text);
     void drawValue();
 };
 

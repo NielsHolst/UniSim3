@@ -20,12 +20,21 @@ public:
     void update();
 private:
     // Input
-    double heatPipesHeatFlux, lampsPowerUsage, co2Injection, timeStep;
+    double heatPipesHeatFlux, lampsPowerUsage, co2Injection,
+        transpirationFinite, condensationFinite, ventedWaterFinite,
+        screenState1, screenState2, screenState3,
+        lightState1, lightState2, lightState3;
     bool isSkipping;
     // Output
-    double heatingCost, lampCost, co2Cost;
+    double heatingCost, lampCost, co2Cost,
+        transpiration, condensation, ventedWater,
+        screen1, screen2, screen3,
+        light1, light2, light3;
     // Data
-    double _heatingSum, _lampSum, _co2Sum;
+    double _heatingSum, _lampSum, _co2Sum,
+        _screenState1Sum, _screenState2Sum, _screenState3Sum,
+        _lightState1Sum, _lightState2Sum, _lightState3Sum,
+        _transpiration, _condensation, _ventedWater;
     int _n;
 };
 

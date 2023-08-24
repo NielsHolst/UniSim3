@@ -279,11 +279,8 @@ void Port::evaluate() {
 
     // Register if the value will remain constant after reset
     // Ensure outputs are never constant; otherwise Output(x).equals(1) would mean x remains constant forever
-    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output) {
-        if (name() == "values")
-            dialog().information("debug Port::evaluate values");
+    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output)
         _isConstant = _expression.isConstant();
-    }
 }
 
 //

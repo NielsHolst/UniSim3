@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include "box.h"
 #include "computation.h"
+#include "environment.h"
 #include "exception.h"
 #include "node.h"
 
@@ -60,14 +61,22 @@ QString Exception::id() const {
 }
 
 QString Exception::what() const {
-    QString text = QString{"Error: %1"}.arg(_message),
-            description;
-    if (!_contextDescription.isEmpty())
-        description = _contextDescription;
-    // This will crash if current() is invalid
-    // but that should be impossible (see ~Node()), so we risk it
-    else if (Box::current())
-        description = Box::current()->fullName();
+    QString text;
+
+    if (environment().runMode() == Environment::RunMode::WithoutDialog)
+        text = "In file: " + environment().latestLoadArg() + "\n";
+
+    text += QString{"Error: %1"}.arg(_message);
+
+    QString description;
+    if (_contextDescription.isEmpty()) {
+        if (Box::current())
+            description += Box::current()->fullName();
+        else
+            description += "Unknown context";
+    }
+    else
+        description += _contextDescription;
 
     if (!_value.isNull())
         text += QString("\nValue: '%1'").arg(_value);
@@ -75,8 +84,7 @@ QString Exception::what() const {
         text += QString("\nValue1: '%1'").arg(_value1);
     if (!_value2.isNull())
         text += QString("\nValue2: '%1'").arg(_value2);
-    if (!description.isEmpty())
-        text += QString("\nObject: %1").arg(description);
+    text += QString("\nObject: %1").arg(description);
     if (!_hint.isEmpty())
         text += "\nHint: " + _hint;
     if (!_file.isEmpty())

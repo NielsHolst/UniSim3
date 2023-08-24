@@ -1,32 +1,66 @@
 Simulation sim{
-  .iterations = 40
+  .iterations = 20
   .silent = TRUE
   .unattended = TRUE
   Box global{
-    &beginDate = 2023/01/01
+    &beginDate = 01/01/2023
+    &endDate   = 31/12/2023
   }
   Box random {
-    RandomiserSobolSequence randomiser {
+    // RandomiserSobolSequence randomiser {
+    // }
+    RandomiserStratified randomiser {
     }
     RandomUniform lightPropLw {
-      .min = 0
-      .max = 0.8
+      .min = 0.1
+      .max = 0.2
     }
     RandomUniform ballastPropLw {
+      .min = 0.2
+      .max = 0.8
+    }
+    RandomUniform heatPipePropLw {
+      .min = 0.1
+      .max = 0.5
+    }
+    RandomUniform screenTransmission {
+      .min = 0.2
+      .max = 0.4
+    }
+    RandomUniform screenReflectionOutwards {
+      .min = 0.2
+      .max = 0.6
+    }
+    RandomUniform screenReflectionInwards {
+      .min = 0.2
+      .max = 0.6
+    }
+    RandomUniform screenInsulationU {
+      .min = 0.1
+      .max = 4.0
+    }
+    RandomUniform screenU {
+      .min = 0.1
+      .max = 4.0
+    }
+    RandomUniform screenHeatCapacity {
+      .min = 20
+      .max = 200
+    }
+    RandomLogUniform leakage {
       .min = 0
       .max = 1
     }
-    RandomUniform heatPipePropLw {
+    RandomUniform UwindSlope {
       .min = 0
-      .max = 1
+      .max = 4
     }
   }
   Calendar calendar{
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/12/31T00:00:00
-    // .end = 2023/01/31
+    .end = global[endDate]
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -51,11 +85,11 @@ Simulation sim{
       .roofPitch = 26.0
     }
     LeakageVentilation leakage{
-      .leakage = 0.1
+      .leakage = random/leakage[value]
     }
     Shelter shelter{
       UWind Utop{
-        .UwindSlope = 1.2
+        .UwindSlope = random/UwindSlope[value]
       }
       Shading shading{
         ShadingAgent test{
@@ -88,23 +122,23 @@ Simulation sim{
       }
       Box screens{
         Screen layer1_Bonar_PhormiTex_55_B1{
-          .swAbsorptivityTop = 0.53
-          .swReflectivityTop = 0.02
-          .swTransmissivityTop = 0.45
-          .swAbsorptivityBottom = 0.0
-          .swReflectivityBottom = 0.55
-          .swTransmissivityBottom = 0.45
-          .lwAbsorptivityTop = 0.53
-          .lwReflectivityTop = 0.02
-          .lwTransmissivityTop = 0.45
-          .lwAbsorptivityBottom = 0.0
-          .lwReflectivityBottom = 0.55
-          .lwTransmissivityBottom = 0.45
-          .Utop = 0.6
-          .Ubottom = 0.6
-          .heatCapacity = 80.0
+          .swAbsorptivityTop = 1 - random/screenReflectionOutwards[value] - random/screenTransmission[value]
+          .swReflectivityTop = random/screenReflectionOutwards[value]
+          .swTransmissivityTop = random/screenTransmission[value]
+          .swAbsorptivityBottom = 1 - random/screenReflectionInwards[value] - random/screenTransmission[value]
+          .swReflectivityBottom = random/screenReflectionInwards[value]
+          .swTransmissivityBottom = random/screenTransmission[value]
+          .lwAbsorptivityTop = 1 - random/screenReflectionOutwards[value] - random/screenTransmission[value]
+          .lwReflectivityTop = random/screenReflectionOutwards[value]
+          .lwTransmissivityTop = random/screenTransmission[value]
+          .lwAbsorptivityBottom = 1 - random/screenReflectionInwards[value] - random/screenTransmission[value]
+          .lwReflectivityBottom = random/screenReflectionInwards[value]
+          .lwTransmissivityBottom = random/screenTransmission[value]
+          .Utop = random/screenU[value]
+          .Ubottom = random/screenU[value]
+          .heatCapacity = random/screenHeatCapacity[value]
           .state = actuators/screens/layer1[state]
-          .Uinsulation = 0.3
+          .Uinsulation = random/screenInsulationU[value]
           .UinsulationEffectivity = 0.95
         }
       }
@@ -623,8 +657,8 @@ Simulation sim{
   Actuators actuators{
     HeatPipes heatPipes{
       ActuatorHeatPipe circuit2{
-        .volume = 477.836
-        .flowRate = 10.0
+        .volume = 14.0 //NH
+        .flowRate = 50.0 //NH
         .k = 0.0063
         .b = 1.25
         .propLw = random/heatPipePropLw[value]  //NH
@@ -633,8 +667,8 @@ Simulation sim{
         .indoorsTemperature = indoors[temperature]
       }
       ActuatorHeatPipe circuit1{
-        .volume = 477.836
-        .flowRate = 10.0
+        .volume = 14.0 //NH
+        .flowRate = 50.0 //NH
         .k = 0.0063
         .b = 1.25
         .propLw = random/heatPipePropLw[value]  //NH
@@ -664,7 +698,7 @@ Simulation sim{
       ActuatorGrowthLight bank3{
         .isOn = controllers/growthLights/bank3[isOn]
         .power = 0.0
-        .ballast = 50.0
+        .ballast = 10.0
         .parPhotonCoef = 2.8
         .efficiency = 1.0
         .propSw = 0.2 // NH
@@ -688,7 +722,7 @@ Simulation sim{
       ActuatorGrowthLight bank1{
         .isOn = controllers/growthLights/bank1[isOn]
         .power = 30.0
-        .ballast = 50.0
+        .ballast = 10.0
         .parPhotonCoef = 1.787
         .efficiency = 1.0
         .propSw = 0.2
@@ -740,12 +774,17 @@ Simulation sim{
   Budget budget{
   }
   Summary summary{
+    Distribution Tin {
+      .input = indoors[temperature]
+      .sections = c(10,50,90)
+    }
   }
   OutputR output{
+    .saveDataFrame = TRUE
     PageR {
       .xAxis = random/*[value]
       PlotR {
-        .ports = sim/summary[output::*]
+        .ports = sim/summary[output::*] | sim/summary/*[output::*]
       }
     }
     OutputSelector selector{

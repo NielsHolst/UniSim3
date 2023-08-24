@@ -21,9 +21,13 @@ class Environment {
 public:
     enum Folder {Work, Input, Output, Notepad, Atom, Graphviz};
     const Folder LastFolder = Graphviz;
+    enum class RunMode {Unknown, WithDialog, WithoutDialog};
 
     Environment();
     ~Environment();
+
+    void runMode(RunMode mode);
+    RunMode runMode() const;
 
     QString homePath() const;
 
@@ -80,6 +84,7 @@ public:
     static QDir makeDirAsNeeded(QDir dirNeeded);
 private:
     // Data
+    RunMode _runMode;
     Box *_current;
     QMap<Folder, QDir> _dir;
     QMap<QString,QString> _latestOutputFilePath;

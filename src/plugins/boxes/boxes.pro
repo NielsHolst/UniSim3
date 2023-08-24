@@ -28,6 +28,7 @@ HEADERS +=  \
     distributed_delay_base.h \
     distributed_delay.h \
     distributed_delay_2d.h \
+    distribution.h \
     fixed_signal.h \
     food_web.h \
     food_web_calc_base.h \
@@ -126,6 +127,7 @@ SOURCES +=  \
     distributed_delay_base.cpp \
     distributed_delay.cpp \
     distributed_delay_2d.cpp \
+    distribution.cpp \
     fixed_signal.cpp \
     food_web.cpp \
     food_web_calc_base.cpp \

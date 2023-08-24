@@ -24,3 +24,4 @@ tmp/
 debug/
 release/
 src/plugins/*/*.rc
+site/snippets/plugins/

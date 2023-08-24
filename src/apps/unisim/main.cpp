@@ -25,6 +25,7 @@ void myMsgHandler(QtMsgType, const QMessageLogContext &, const QString &msg)
 }
 
 int runWithDialog() {
+    environment().runMode(Environment::RunMode::WithDialog);
     MainWindow window;
     window.show();
     window.init();
@@ -70,11 +71,13 @@ void writeErrorToOutputFile(QString errorMessage, QString filePath) {
 }
 
 int runWithoutDialog(int argc, char *argv[]) {
+    environment().runMode(Environment::RunMode::WithoutDialog);
+
     DialogMinimal *dialog = new DialogMinimal(qApp);
     QStringList args = extractArguments(argc, argv);
 //    QStringList args = {"run",
-//                        "C:/MyDocuments/QDev/UniSim3/input/models/vg/2023-07-05-test.xml",
-//                        "C:/MyDocuments/QDev/UniSim3/output/vg.txt"};
+//                        "C:/MyDocuments/QDev/UniSim3/input/demo/butterfly.box",
+//                        "C:/MyDocuments/QDev/UniSim3/output/butterfly.txt"};
     QString
         inputFilePath  = QFileInfo(args.at(1)).absoluteFilePath(),
         outputFilePath = QFileInfo(args.at(2)).absoluteFilePath();
@@ -120,7 +123,6 @@ int main(int argc, char *argv[])
     bool hasArguments = (argc > 1);
     int result;
     try {
-//        result = runWithoutDialog(argc, argv);
         result = hasArguments ? runWithoutDialog(argc, argv) : runWithDialog();
     }
     catch (Exception &ex){

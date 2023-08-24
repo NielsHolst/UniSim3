@@ -12,6 +12,7 @@ class RandomLogUniform : public RandomBaseTyped<double>
 {
 public: 
     RandomLogUniform(QString name, Box *parent);
+    void checkInputs(QString text);
     void drawValue();
 };
 

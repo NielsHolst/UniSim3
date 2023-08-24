@@ -2782,6 +2782,8 @@ If the model is used to explore photosynthesis under different scenarios (e.g., 
 
 # Climate control
 
+## Short-term control
+
 Traditionally, greenhouse climate is controlled by two temperature [setpoints](#setpoints): one for ventilation $\sp{vent}{}$ (&deg;C) and one for heating $\sp{heat}{}$ (&deg;C):
 
 <img src="media/models/vg/climate-control.png" style="zoom:50%;" />
@@ -2804,7 +2806,7 @@ In the model, greenhouse air temperature $T_{in}$ (&deg;C) is considered to be w
   * **Keep current** pipe temperature $T_{pipe}$ and ventilation rate $v$.
 
 
-The default corrections of pipe temperature $\Delta T_{pipe}$ and ventilation rate $\Delta v$ should accomodate to the simulation time step $\Delta t$ (s) :
+The default corrections of pipe temperature $\Delta T_{pipe}$ and ventilation rate $\Delta v$ should accommodate to the simulation time step $\Delta t$ (s) :
 $$
 \begin{split}
 \Delta T_{pipe} &= \dot{T}_{pipe}\Delta t \\[4pt]
@@ -2813,25 +2815,15 @@ $$
 $$
 where the default rates of change are $\dot{T}_{pipe}$ (&deg;C/s) and $\dot{v}$ (h$^{-1}$s$^{-1}$). 
 
+## Long-term control
+
+Long-term control seeks to obtain an appropriate average indoors temperature $\sp{T}{avg}$ (&deg;C) or light sum $\sp{light}{sum}$ (mol PAR/m^2^) over a period like may 3-10 days. Average temperature control is obtained by PID regulation of the heating setpoint $\sp{heat}{}$, while light sum control is obtained by switching off growth lights for the rest of the day, as soon as the desired light sum is expected to be achieved by the end of the day. To calculate the expected sunlight for the rest of the day at any time of the day, we rely on the time course of sunlight he day before, assuming that today it will be the same. A more sophisticated approach would use the local weather forecast (maybe for today and tomorrow). Whether such sophistication would be worthwhile, taking the increased complexity of the software into account, is a topic for further research.
+
 # Model outputs
 
 ## Whole-year summary
 
-The performance of the greenhouse over a whole year is summarised in terms of inputs and outputs:
-
-|             | Inputs                        | Outputs                | Balance                                            |
-| ----------- | ----------------------------- | ---------------------- | -------------------------------------------------- |
-| **Energy**  | heating system                |                        | radiative heat (long waved, over greenhouse cover) |
-|             | growth lights                 |                        | convective heat (over greenhouse cover)            |
-|             | sun irradiation (short waved) |                        | conductive heat (by soil contact)                  |
-|             |                               |                        | advective heat (by air exchange)                   |
-|             |                               |                        | latent heat (by air exchange)                      |
-| **Water**   | plant transpiration           |                        | condensation (on greenhouse cover)                 |
-|             |                               |                        | exhaust (by air exchange)                          |
-|             |                               |                        |                                                    |
-| **CO~2~**   | dispensation                  |                        | exhaust (by air exchange)                          |
-|             |                               | fixation (by plants)   |                                                    |
-| **Biomass** |                               | production (by plants) |                                                    |
+The performance of the greenhouse over a whole year is summarised in terms of the following response variables:
 
 * Energy (MWh/m^2^/y)
   * Inputs
@@ -2855,7 +2847,7 @@ The performance of the greenhouse over a whole year is summarised in terms of in
     * dispensation
   * Balances
     * fixation (by plants)
-    * exhaust (by air exchange)
+    * vented water (by air exchange)
 * Biomass (kg/m^2^/y)
   * Balances
     * production (by plants)
@@ -2866,6 +2858,8 @@ The performance of the greenhouse over a whole year is summarised in terms of in
   * Humidity (%)
     * Air (quantiles: 1%, 5%, 25%, 50%, 75%, 95%, 99%)
 * Climate control
-  * Heating system (%)
-    * time spent running
+  * Heating system [0;1]
+    * effect (quantiles: 1%, 5%, 25%, 50%, 75%, 95%, 99%)
+  * Vents [0;1]
+    * effect (quantiles: 1%, 5%, 25%, 50%, 75%, 95%, 99%)
 

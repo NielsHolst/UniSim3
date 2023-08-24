@@ -17,7 +17,7 @@ RandomUniform::RandomUniform(QString name, Box *parent)
     : RandomBaseTyped<double>(name, parent)
 {
     help("produces random numbers from the uniform distribution");
-    port("P")->equals(0).help("Not used for this distribution");
+    port("P")->equals(0).help("Not used");
 }
 
 void RandomUniform::drawValue() {

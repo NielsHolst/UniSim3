@@ -20,6 +20,7 @@ RandomNormal::RandomNormal(QString name, Box *parent)
     : RandomBaseTyped<double>(name, parent)
 {
     help("produces random numbers from the normal distribution");
+    port("P")->equals(0).help("Not used");
 }
 
 
