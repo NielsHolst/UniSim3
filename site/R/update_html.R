@@ -195,11 +195,11 @@ update_file = function(file_name) {
     lines = c(lines[1:menu_begin], menu, lines[menu_end:n])
 
   # Write file
-  # write_file(file_name, lines)
-  write_file("ud.html", lines)
+  write_file(file_name, lines)
+  # write_file("ud.html", lines)
 }
 
-update_file(file_name = "vg.html")
+# update_file(file_name = "vg.html")
 
 files = c(
   "index.html",

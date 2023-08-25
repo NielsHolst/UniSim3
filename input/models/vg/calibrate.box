@@ -1,5 +1,5 @@
 Simulation sim{
-  .iterations = 20
+  .iterations = 320
   .silent = TRUE
   .unattended = TRUE
   Box global{
@@ -7,10 +7,10 @@ Simulation sim{
     &endDate   = 31/12/2023
   }
   Box random {
-    // RandomiserSobolSequence randomiser {
-    // }
-    RandomiserStratified randomiser {
+    RandomiserSobolSequence randomiser {
     }
+    // RandomiserStratified randomiser {
+    // }
     RandomUniform lightPropLw {
       .min = 0.1
       .max = 0.2

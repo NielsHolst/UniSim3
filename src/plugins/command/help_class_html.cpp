@@ -150,11 +150,11 @@ void HelpClassHtml::done(QString info) {
     QFile file(filePath);
     if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         ThrowException("Cannot open file for output").value(filePath);
+    //                   "<div class=\"insert macro\">#plugins/" + pluginName() + "/" + className().toLower() + ".html</div>\n" +
     file.write(qPrintable(
-                   "<div class=\"insert macro\">#plugins/" + pluginName() + "/" + className().toLower() + ".html</div>\n" +
-                   "<div class=\"begin macro\"></div>\n" +
+                   "<div class=\"begin macro\"></div>\n"
                    "<h2>" + className() + "</h2>\n" +
-                   "<h3>Interface</h3>" +
+                   "<h3>Interface</h3>\n" +
                    info +
                    "\n<div class=\"end macro\"></div>\n"));
     file.close();

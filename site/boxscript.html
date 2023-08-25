@@ -489,7 +489,8 @@ Simulation sim</code>
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='accumulator'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/accumulator.html</div>
 <div class="begin macro"></div>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<h2>Accumulator</h2>
+<h3>Interface</h3>
 <tr><td>initial</td><td>double</td><td>0.0 </td><td>Initial <span class="table-interface-code">value</span> at reset</td></tr>
 <tr><td>change</td><td>double</td><td>0.0 </td><td>Change added to <span class="table-interface-code">value</span></td></tr>
 <tr><td>minValue</td><td>double</td><td>-1.79769e+308 </td><td>Minimum possible <span class="table-interface-code">value</span></td></tr>
@@ -566,6 +567,8 @@ Simulation sim {
 </ul>
 <div class="insert macro">#plugins/boxes/briere.html</div>
 <div class="begin macro"></div>
+<h2>Briere</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>T</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">weather[Tavg]</span></td></tr>
 <tr><td>timeStepDays</td><td>double</td><td>- d</td><td>&larr; <span class="table-interface-code">calendar[timeStepDays]</span></td></tr>
@@ -681,6 +684,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='buffer'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/buffer.html</div>
 <div class="begin macro"></div>
+<h2>Buffer</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initial</td><td>double</td><td>0.0 </td><td>Initial amount at first place in buffer</td></tr>
 <tr><td>input</td><td>double</td><td>0.0 </td><td>Input to next place in buffer</td></tr>
@@ -694,7 +699,7 @@ Simulation sim {
 <div class="end macro"></div>
 </div>
 
-<p class='hidden-anchor' id='calendar'>xxx</p><p class='hidden-anchor' id='buffer'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='calendar'>xxx</p><div class='border-grey'>
 <h2>Calendar</h2>
 <ul class="h3-links">
   <li><a href='#daily-time-step'>Daily time step</a></li>
@@ -703,6 +708,8 @@ Simulation sim {
 </ul>
 <div class="insert macro">#plugins/boxes/calendar.html</div>
 <div class="begin macro"></div>
+<h2>Calendar</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>latitude</td><td>double</td><td>52.0</td><td>Latitude [-90,90]</td></tr>
 <tr><td>longitude</td><td>double</td><td>11.0</td><td>Longitiude [-180,180]</td></tr>
@@ -811,10 +818,12 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='computation'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/computation.html</div>
 <div class="begin macro"></div>
+<h2>Computation</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>step</td><td>string</td><td>"amend" </td><td>Name of current computation step</td></tr>
+<tr><td>step</td><td>string</td><td>"construct" </td><td>Name of current computation step</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 
@@ -876,6 +885,8 @@ comp.step    r density iteration sim.step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='date'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/date.html</div>
 <div class="begin macro"></div>
+<h2>Date</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>day</td><td>int</td><td>1</td><td>Day of month [1;31]</td></tr>
 <tr><td>month</td><td>int</td><td>1</td><td>Month [1;12]</td></tr>
@@ -916,6 +927,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='datesplit'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/datesplit.html</div>
 <div class="begin macro"></div>
+<h2>DateSplit</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>date</td><td>date</td><td>null </td><td>The date to split</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -965,6 +978,8 @@ day month year iteration step
 
 <div class="insert macro">#plugins/boxes/datetimesignal.html</div>
 <div class="begin macro"></div>
+<h2>DateTimeSignal</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
 <tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
@@ -1121,6 +1136,8 @@ Simulation sim {
 <p><code>DayDegrees</code> is derived from the <a href='#physiologicaltime'>PhysiologicalTime</a> box.</p>
 <div class="insert macro">#plugins/boxes/daydegrees.html</div>
 <div class="begin macro"></div>
+<h2>DayDegrees</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>T</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">weather[Tavg]</span></td></tr>
 <tr><td>timeStepDays</td><td>double</td><td>- d</td><td>&larr; <span class="table-interface-code">calendar[timeStepDays]</span></td></tr>
@@ -1179,6 +1196,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='dewpoint'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/dewpoint.html</div>
 <div class="begin macro"></div>
+<h2>DewPoint</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Air temperature</td></tr>
 <tr><td>rh</td><td>double</td><td>0.0 %</td><td>Air relative humidity</td></tr>
@@ -1193,6 +1212,8 @@ Simulation sim {
 <p><code>FixedSignal</code> is derived from <a href='#basesignal'>BaseSignal</a>.
 <div class="insert macro">#plugins/boxes/fixedsignal.html</div>
 <div class="begin macro"></div>
+<h2>FixedSignal</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
 <tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
@@ -1259,6 +1280,8 @@ FixedSignal    sim/vivacity/anyTime
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='functionalresponse'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/functionalresponse.html</div>
 <div class="begin macro"></div>
+<h2>FunctionalResponse</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>attacker</td><td>double</td><td>0.0 #predators</td><td>Attacker density</td></tr>
 <tr><td>prey</td><td>double</td><td>0.0 #prey</td><td>Resource density</td></tr>
@@ -1278,6 +1301,8 @@ FixedSignal    sim/vivacity/anyTime
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='hump'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/hump.html</div>
 <div class="begin macro"></div>
+<h2>Hump</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>x</td><td>double</td><td>0.0 </td><td>x-value at which to calculate curve value</td></tr>
 <tr><td>x0</td><td>double</td><td>0.0 </td><td>Beginning of curve</td></tr>
@@ -1377,6 +1402,8 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maker'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/maker.html</div>
 <div class="begin macro"></div>
+<h2>Maker</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>replicates</td><td>int</td><td>1 </td><td>Supply either, (1) then number of clones to replicate from child boxes;</td></tr>
 <tr><td>names</td><td>vec_string</td><td>c() </td><td>or (2) the names of clones;</td></tr>
@@ -1390,6 +1417,8 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maximum'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/maximum.html</div>
 <div class="begin macro"></div>
+<h2>Maximum</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>values</td><td>vec_double</td><td>c() </td><td>Input values</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1402,6 +1431,8 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maximumat'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/maximumat.html</div>
 <div class="begin macro"></div>
+<h2>MaximumAt</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>step</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[step]</span></td></tr>
 <tr><td>track</td><td>double</td><td>0.0 </td><td>Value to track for max value</td></tr>
@@ -1454,6 +1485,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='mean'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/mean.html</div>
 <div class="begin macro"></div>
+<h2>Mean</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>values</td><td>vec_double</td><td>c() </td><td>Input values</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1466,6 +1499,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='message'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/message.html</div>
 <div class="begin macro"></div>
+<h2>Message</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>text</td><td>string</td><td>"" </td><td>Text message to print</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1477,6 +1512,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='minimum'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/minimum.html</div>
 <div class="begin macro"></div>
+<h2>Minimum</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>values</td><td>vec_double</td><td>c() </td><td>Input values</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1489,6 +1526,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='multiplum'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/multiplum.html</div>
 <div class="begin macro"></div>
+<h2>Multiplum</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>factors</td><td>vec_double</td><td>c() </td><td>Input factors</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1500,6 +1539,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='numberedfile'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/numberedfile.html</div>
 <div class="begin macro"></div>
+<h2>NumberedFile</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>fileName</td><td>string</td><td>"" </td><td>File name with extension, with/without a path</td></tr>
 <tr><td>evaluationOrder</td><td>int</td><td>0 </td><td>Number to append to file name</td></tr>
@@ -1513,6 +1554,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='offsetdatetime'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/offsetdatetime.html</div>
 <div class="begin macro"></div>
+<h2>OffsetDateTime</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>dateTime</td><td>datetime</td><td>null </td><td>Date-time that will be offset</td></tr>
 <tr><td>days</td><td>int</td><td>0 d</td><td>Offset (negative or positive)</td></tr>
@@ -1527,6 +1570,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='onoff'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/onoff.html</div>
 <div class="begin macro"></div>
+<h2>OnOff</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>x</td><td>double</td><td>0.0 </td><td>x-value at which to calculate value</td></tr>
 <tr><td>xOn</td><td>double</td><td>0.0 </td><td>Lower threshold</td></tr>
@@ -1544,6 +1589,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='onoffbydate'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/onoffbydate.html</div>
 <div class="begin macro"></div>
+<h2>OnOffByDate</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>x</td><td>date</td><td>null date</td><td>x-value at which to calculate value</td></tr>
 <tr><td>xOn</td><td>baredate</td><td>null Bare date</td><td>Lower threshold</td></tr>
@@ -1561,6 +1608,8 @@ hump at maxValue iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='outputr'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/outputr.html</div>
 <div class="begin macro"></div>
+<h2>OutputR</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>keepPlots</td><td>bool</td><td>TRUE </td><td>Keep previous plots before showing new plots in R?</td></tr>
 <tr><td>clearMemory</td><td>bool</td><td>FALSE </td><td>Clear R memory?</td></tr>
@@ -1579,10 +1628,11 @@ hump at maxValue iteration step
 <tr><td>plotTypes</td><td>vec_string</td><td>- </td><td>&larr; <span class="table-interface-code">PlotR::*[type]</span></td></tr>
 <tr><td>clearPlots</td><td>bool</td><td>FALSE </td><td>Deprecated</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>ports</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">./PageR::*[xAxis] | ./*/PlotR::*[ports]</span> (Path to all ports used by my pages and plots)</td></tr>
+<tr><td>ports</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">./PageR::*[xAxis]|./*/PlotR::*[ports]</span> (Path to all ports used by my pages and plots)</td></tr>
 <tr><td>numPages</td><td>int</td><td>0 </td><td>Number of pages in this output</td></tr>
 </tbody></table>Note the side effects: writes an R script to the output folder
 copies an R script to the clipboard
+
 <div class="end macro"></div>
 </div> <!-- border-grey -->
 
@@ -1598,6 +1648,8 @@ copies an R script to the clipboard
 
 <div class="insert macro">#plugins/boxes/outputselector.html</div>
 <div class="begin macro"></div>
+<h2>OutputSelector</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>beginStep</td><td>int</td><td>0 int</td><td>Output is written when this step is reached</td></tr>
 <tr><td>beginDateTime</td><td>datetime</td><td>null DateTime</td><td>Output is written when this time point is reached (optional)</td></tr>
@@ -1607,7 +1659,7 @@ copies an R script to the clipboard
 <tr><td>summary</td><td>string</td><td>"average" </td><td>Either <span class="table-interface-code">"average"</span> or <span class="table-interface-code">"current"</span>; how values are summarized over the given <span class="table-interface-code">period</span></td></tr>
 <tr><td>final</td><td>bool</td><td>FALSE </td><td>Overrules <span class="table-interface-code">period</span></td></tr>
 <tr><td>useLocalDecimalChar</td><td>bool</td><td>FALSE </td><td>Use local decimal character in output?</td></tr>
-<tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">!exists(OutputR::*[skipFormats])</span></td></tr>
+<tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">! exists(OutputR::*[skipFormats])</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>isActive</td><td>bool</td><td>FALSE </td><td>Should output be written?</td></tr>
 <tr><td>isSkipping</td><td>bool</td><td>FALSE </td><td>Are lines being skipped?</td></tr>
@@ -1744,6 +1796,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='outputtext'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/outputtext.html</div>
 <div class="begin macro"></div>
+<h2>OutputText</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>ports</td><td>path</td><td> </td><td>Path to port(s) to output</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1761,9 +1815,11 @@ Simulation sim {
 </ul>
 <div class="insert macro">#plugins/boxes/outputwriter.html</div>
 <div class="begin macro"></div>
+<h2>OutputWriter</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>showPorts</td><td>bool</td><td>FALSE </td><td>Shows a table of the ports to be written</td></tr>
-<tr><td>ports</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iteration] | /.[step] | OutputText::*[ports] | OutputR::*[ports]</span></td></tr>
+<tr><td>ports</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iteration]|/.[step]|OutputText::*[ports]|OutputR::*[ports]</span></td></tr>
 <tr><td>skipFormats</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[skipFormats]</span></td></tr>
 <tr><td>useLocalDecimalChar</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[useLocalDecimalChar]</span></td></tr>
 <tr><td>isSkipping</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">OutputSelector::*[isSkipping]</span></td></tr>
@@ -1810,6 +1866,8 @@ Amending...
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='pager'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/pager.html</div>
 <div class="begin macro"></div>
+<h2>PageR</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>xAxis</td><td>path</td><td>- </td><td>&larr; <span class="table-interface-code">/.[step]</span> (Port(s) on x-axis)</td></tr>
 <tr><td>title</td><td>string</td><td>"" </td><td>Title shown on page</td></tr>
@@ -1834,6 +1892,8 @@ Amending...
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='plotr'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/plotr.html</div>
 <div class="begin macro"></div>
+<h2>PlotR</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>ports</td><td>path</td><td> </td><td>Port(s) on y-axis</td></tr>
 <tr><td>layout</td><td>string</td><td>"facetted" </td><td>Either "merged" or "facetted"</td></tr>
@@ -1861,6 +1921,8 @@ Amending...
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='popup'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/popup.html</div>
 <div class="begin macro"></div>
+<h2>PopUp</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>title</td><td>string</td><td>"" </td><td>Title</td></tr>
 <tr><td>text</td><td>string</td><td>"" </td><td>Short informative text</td></tr>
@@ -1901,6 +1963,8 @@ Amending...
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='prioritysignal'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/prioritysignal.html</div>
 <div class="begin macro"></div>
+<h2>PrioritySignal</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
 <tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
@@ -1920,6 +1984,8 @@ Amending...
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='proportionalsignal'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/proportionalsignal.html</div>
 <div class="begin macro"></div>
+<h2>ProportionalSignal</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initialSignal</td><td>double</td><td>0.0 </td><td>Value of <span class="table-interface-code">signal</span> at reset</td></tr>
 <tr><td>initialFlag</td><td>bool</td><td>FALSE </td><td>Value of flag at reset</td></tr>
@@ -2251,11 +2317,13 @@ Port int sim/max/adult[at]
 <p>See <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>.</p>
 </div> <!-- border-grey-->
 
-<p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='randomisersobolsequence'>xxx</p><div class='border-grey'>
 <h2>Randomiser&shy;SobolSequence</h2>
 <p><code>RandomiserSobolSequence</code> is derived from <a href='#randomiserbase'>RandomiserBase</a>.</p>
 <div class="insert macro">#plugins/boxes/randomisersobolsequence.html</div>
 <div class="begin macro"></div>
+<h2 id='randomisersobolsequence'>RandomiserSobolSequence</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>iteration</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iteration]</span></td></tr>
 <tr><td>iterations</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">/.[iterations]</span></td></tr>
@@ -2369,6 +2437,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randombinomial'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/randombinomial.html</div>
 <div class="begin macro"></div>
+<h2>RandomBinomial</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>P</td><td>double</td><td>0.5</td><td>Probability of event [0;1]</td></tr>
 <tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
@@ -2431,12 +2501,14 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomlognormal'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/randomlognormal.html</div>
 <div class="begin macro"></div>
+<h2>RandomLogNormal</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>P</td><td>double</td><td>0.95</td><td>Range of the distribution covered by the [minValue;maxValue] range [0;1]</td></tr>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used [0;1]</td></tr>
 <tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
 <tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
 <tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
-<tr><td>min</td><td>double</td><td>0.0 </td><td>Minimum value (included)</td></tr>
+<tr><td>min</td><td>double</td><td>0.01 </td><td>Minimum value (included)</td></tr>
 <tr><td>max</td><td>double</td><td>1.0 </td><td>Maximum value (excluded)</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>value</td><td>double</td><td>0.0 </td><td>The most recently drawn value</td></tr>
@@ -2447,12 +2519,14 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomloguniform'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/randomloguniform.html</div>
 <div class="begin macro"></div>
+<h2>RandomLogUniform</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>P</td><td>double</td><td>0.0</td><td>Not used for this distribution [0;1]</td></tr>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used [0;1]</td></tr>
 <tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
 <tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
 <tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
-<tr><td>min</td><td>double</td><td>0.0 </td><td>Minimum value (included)</td></tr>
+<tr><td>min</td><td>double</td><td>0.01 </td><td>Minimum value (included)</td></tr>
 <tr><td>max</td><td>double</td><td>1.0 </td><td>Maximum value (excluded)</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>value</td><td>double</td><td>0.0 </td><td>The most recently drawn value</td></tr>
@@ -2463,8 +2537,10 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomnormal'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/randomnormal.html</div>
 <div class="begin macro"></div>
+<h2>RandomNormal</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>P</td><td>double</td><td>0.95</td><td>Range of the distribution covered by the [minValue;maxValue] range [0;1]</td></tr>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used [0;1]</td></tr>
 <tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
 <tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
 <tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
@@ -2479,8 +2555,10 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomuniform'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/randomuniform.html</div>
 <div class="begin macro"></div>
+<h2>RandomUniform</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>P</td><td>double</td><td>0.0</td><td>Not used for this distribution [0;1]</td></tr>
+<tr><td>P</td><td>double</td><td>0.0</td><td>Not used [0;1]</td></tr>
 <tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
 <tr><td>drawAtReset</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtReset]</span></td></tr>
 <tr><td>drawAtUpdate</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtUpdate]</span></td></tr>
@@ -2495,6 +2573,8 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='randomuniformint'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/randomuniformint.html</div>
 <div class="begin macro"></div>
+<h2>RandomUniformInt</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>P</td><td>double</td><td>0.0</td><td>Not used for this distribution [0;1]</td></tr>
 <tr><td>drawAtInitialize</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">ancestors::*/RandomiserBase::*[drawAtInitialize]</span></td></tr>
@@ -2511,6 +2591,8 @@ random.x random.y positive.x positive.y iteration step
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='ratio'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/ratio.html</div>
 <div class="begin macro"></div>
+<h2>Ratio</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>denominator</td><td>double</td><td>0.0 </td><td>Number to be divided</td></tr>
 <tr><td>divisor</td><td>double</td><td>0.0 </td><td>The divisor</td></tr>
@@ -2534,6 +2616,8 @@ random.x random.y positive.x positive.y iteration step
 </ul>
 <div class="insert macro">#plugins/boxes/records.html</div>
 <div class="begin macro"></div>
+<h2>Records</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>fileName</td><td>string</td><td>"records.txt" </td><td>Name of file with records; columns separated by white space</td></tr>
 <tr><td>dateColumnName</td><td>string</td><td>"Date" </td><td>Name of column with date</td></tr>
@@ -2754,7 +2838,7 @@ Simulation sim {
       <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li><li><a href="#computations-steps">Computations steps</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#briere">Briere</a></li><li><a href="#buffer">Buffer</a></li><li><a href="#buffer">Buffer</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#dewpoint">DewPoint</a></li><li><a href="#dewpoint">DewPoint</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#functionalresponse">FunctionalResponse</a></li><li><a href="#functionalresponse">FunctionalResponse</a></li><li><a href="#hump">Hump</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximum">Maximum</a></li><li><a href="#maximum">Maximum</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#mean">Mean</a></li><li><a href="#mean">Mean</a></li><li><a href="#message">Message</a></li><li><a href="#message">Message</a></li><li><a href="#minimum">Minimum</a></li><li><a href="#minimum">Minimum</a></li><li><a href="#multiplum">Multiplum</a></li><li><a href="#multiplum">Multiplum</a></li><li><a href="#numberedfile">NumberedFile</a></li><li><a href="#numberedfile">NumberedFile</a></li><li><a href="#offsetdatetime">OffsetDateTime</a></li><li><a href="#offsetdatetime">OffsetDateTime</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#onoffbydate">OnOffByDate</a></li><li><a href="#onoffbydate">OnOffByDate</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#popup">PopUp</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randomisersobolsequence">RandomiserSobolSequence</a></li><li><a href="#randomisersobolsequence">RandomiserSobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#ratio">Ratio</a></li><li><a href="#ratio">Ratio</a></li><li><a href="#records">Records</a></li><li><a href="#records">Records</a>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#the-boxscript-language">The BoxScript language</a><ul><li><a href="#boxscript-design">BoxScript design</a></li><li><a href="#port-types">Port types</a></li><li><a href="#expressions">Expressions</a></li><li><a href="#paths">Paths</a></li><li><a href="#computations-steps">Computations steps</a></li></ul></li><li><a href="#standard-boxes">Standard boxes</a><ul><li><a href="#accumulator">Accumulator</a></li><li><a href="#basesignal">BaseSignal</a></li><li><a href="#briere">Briere</a></li><li><a href="#buffer">Buffer</a></li><li><a href="#calendar">Calendar</a></li><li><a href="#computation">Computation</a></li><li><a href="#date">Date</a></li><li><a href="#datesplit">DateSplit</a></li><li><a href="#datetimesignal">DateTimeSignal</a></li><li><a href="#daydegrees">DayDegrees</a></li><li><a href="#dewpoint">DewPoint</a></li><li><a href="#fixedsignal">FixedSignal</a></li><li><a href="#functionalresponse">FunctionalResponse</a></li><li><a href="#hump">Hump</a></li><li><a href="#maker">Maker</a></li><li><a href="#maximum">Maximum</a></li><li><a href="#maximumat">MaximumAt</a></li><li><a href="#mean">Mean</a></li><li><a href="#message">Message</a></li><li><a href="#minimum">Minimum</a></li><li><a href="#multiplum">Multiplum</a></li><li><a href="#numberedfile">NumberedFile</a></li><li><a href="#offsetdatetime">OffsetDateTime</a></li><li><a href="#onoff">OnOff</a></li><li><a href="#onoffbydate">OnOffByDate</a></li><li><a href="#outputr">OutputR</a></li><li><a href="#outputselector">OutputSelector</a></li><li><a href="#outputtext">OutputText</a></li><li><a href="#outputwriter">OutputWriter</a></li><li><a href="#pager">PageR</a></li><li><a href="#plotr">PlotR</a></li><li><a href="#popup">PopUp</a></li><li><a href="#prioritysignal">PrioritySignal</a></li><li><a href="#proportionalsignal">ProportionalSignal</a></li><li><a href="#randomisermontecarlo">RandomiserMonteCarlo</a></li><li><a href="#randomiserstratified">RandomiserStratified</a></li><li><a href="#randomisersobolsequence">Randomiser&shy;SobolSequence</a></li><li><a href="#randomisersobolsequence">RandomiserSobolSequence</a></li><li><a href="#randombase">RandomBase</a></li><li><a href="#randombinomial">RandomBinomial</a></li><li><a href="#randomlognormal">RandomLogNormal</a></li><li><a href="#randomloguniform">RandomLogUniform</a></li><li><a href="#randomnormal">RandomNormal</a></li><li><a href="#randomuniform">RandomUniform</a></li><li><a href="#randomuniformint">RandomUniformInt</a></li><li><a href="#ratio">Ratio</a></li><li><a href="#records">Records</a>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>

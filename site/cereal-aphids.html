@@ -1264,6 +1264,8 @@ Note: The tilde <code>~</code> is a shorthand for your <code>Documents</code> fo
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidimmigration'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/aphidimmigration.html</div>
 <div class="begin macro"></div>
+<h2>AphidImmigration</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>cropGrowthStage</td><td>double</td><td>0.0 Zadoks</td><td>Current crop growth stage</td></tr>
 <tr><td>fromCropGrowthStage</td><td>double</td><td>31.0 Zadoks</td><td>Immigration begins as this growth stage</td></tr>
@@ -1343,6 +1345,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidindex'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/aphidindex.html</div>
 <div class="begin macro"></div>
+<h2>AphidIndex</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>nymphs</td><td>double</td><td>0.0 per tiller</td><td>Aphid nymph density \((N_{nymph})\)</td></tr>
 <tr><td>adults</td><td>double</td><td>0.0 per tiller</td><td>Aphid adult density \((N_{adult})\)</td></tr>
@@ -1365,6 +1369,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidjuvenilesurvival'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/aphidjuvenilesurvival.html</div>
 <div class="begin macro"></div>
+<h2>AphidJuvenileSurvival</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>cropGrowthStage</td><td>double</td><td>0.0 Zadoks</td><td>Crop growth stage \((G)\)</td></tr>
 <tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Daily average temperature \((T)\)</td></tr>
@@ -1420,6 +1426,8 @@ Simulation sim {
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidnetreproduction'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/AphidNetReproduction.html</div>
 <div class="begin macro"></div>
+<h2>AphidNetReproduction</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>R0opt</td><td>double</td><td>51.6 per capita</td><td>Optimum net reproduction \((R_0^{opt})\)</td></tr>
 <tr><td>Tmin</td><td>double</td><td>3.0 oC</td><td>Minimum temperature under which no reproduction occur \((T_{min})\)</td></tr>
@@ -1544,6 +1552,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidoffspring'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/aphidoffspring.html</div>
 <div class="begin macro"></div>
+<h2>AphidOffspring</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>offspringTotal</td><td>double</td><td>0.0 per tiller</td><td>Total no. of offspring produced by susceptible aphids \((n_{total})\)</td></tr>
 <tr><td>aphidDensity</td><td>double</td><td>0.0 per tiller</td><td>Aphid density \((N)\)</td></tr>
@@ -1572,6 +1582,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='biocontrol'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/biocontrol.html</div>
 <div class="begin macro"></div>
+<h2>Biocontrol</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>aphidPressureWithoutF</td><td>double</td><td>0.0 aphid days</td><td>Accumulated aphid pressure without fungus</td></tr>
 <tr><td>aphidPressureWithF</td><td>double</td><td>0.0 aphid days</td><td>Accumulated aphid pressure with fungus</td></tr>
@@ -1601,6 +1613,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='cadaverconversion'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/cadaverconversion.html</div>
 <div class="begin macro"></div>
+<h2>CadaverConversion</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>succumbedApterousNymphs</td><td>double</td><td>0.0 per tiller</td><td>New apterous nymph cadavers</td></tr>
 <tr><td>succumbedAlateNymphs</td><td>double</td><td>0.0 per tiller</td><td>New alate nymph cadavers</td></tr>
@@ -1628,6 +1642,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='cadavertime'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/cadavertime.html</div>
 <div class="begin macro"></div>
+<h2>CadaverTime</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>isSporulating</td><td>bool</td><td>FALSE boolean</td><td>Are cadavers sporulating?</td></tr>
 <tr><td>timeStep</td><td>double</td><td>0.0 DD</td><td>Time step \((\tau)\)</td></tr>
@@ -1657,6 +1673,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='cropgrowthstage'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/cropgrowthstage.html</div>
 <div class="begin macro"></div>
+<h2>CropGrowthStage</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>valueAtStart</td><td>double</td><td>20.0 Zadoks</td><td>Growth stage at the beginning of the growth season \((G_0)\)</td></tr>
 <tr><td>dayDegrees</td><td>double</td><td>0.0 DD</td><td>Day-degrees passed since growth season started \((\tau)\)</td></tr>
@@ -1681,6 +1699,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='cropisgrowing'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/cropisgrowing.html</div>
 <div class="begin macro"></div>
+<h2>CropIsGrowing</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Daily average temperature</td></tr>
 <tr><td>T0</td><td>double</td><td>5.0 oC</td><td>Threshold that triggers crop growth</td></tr>
@@ -1698,6 +1718,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='infectionrate'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/infectionrate.html</div>
 <div class="begin macro"></div>
+<h2>InfectionRate</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>isSporulating</td><td>bool</td><td>FALSE boolean</td><td>Are cadavers sporulating?</td></tr>
 <tr><td>cadavers</td><td>double</td><td>0.0 per tiller</td><td>Sporulating cadavers \((C)\)</td></tr>
@@ -1725,6 +1747,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='prevalence'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/prevalence.html</div>
 <div class="begin macro"></div>
+<h2>Prevalence</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>aphidDensity</td><td>double</td><td>0.0 per tiller</td><td>Current total density of live aphids</td></tr>
 <tr><td>exposedDensity</td><td>double</td><td>0.0 per tiller</td><td>Current density of exposed aphids</td></tr>
@@ -1743,6 +1767,8 @@ $$
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='yield'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/aphid/yield.html</div>
 <div class="begin macro"></div>
+<h2>Yield</h2>
+<h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>cropGrowthStage</td><td>double</td><td>0.0 Zadoks</td><td>Crop growth stage \((G)\)</td></tr>
 <tr><td>aphidIndex</td><td>double</td><td>0.0 </td><td>Aphid density index of Entwistle-Dixon-Wratten \((I)\)</td></tr>
@@ -1787,7 +1813,7 @@ $$
       
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#cereal-aphid-fungus-model">Cereal aphid-fungus model</a><ul><li><a href="#background">Background</a></li><li><a href="#crop-model">Crop model</a></li><li><a href="#crop-aphid-model">Crop-aphid model</a></li><li><a href="#crop-aphid-model-with-uncertainty">Crop-aphid model with uncertainty</a></li><li><a href="#crop-aphid-fungus-model">Crop-aphid-fungus model</a></li><li><a href="#biocontrol-model-with-uncertainty-analysis">Biocontrol model with uncertainty analysis</a></li><li><a href="#biocontrol-with-sensitivity-analysis">Biocontrol with sensitivity analysis</a></li><li><a href="#reproduce-published-figures">Reproduce published figures</a></li></ul></li><li><a href="#aphid-plugin">Aphid plugin</a><ul><li><a href="#aphidimmigration">AphidImmigration</a></li><li><a href="#aphidimmigration">AphidImmigration</a></li><li><a href="#aphidindex">AphidIndex</a></li><li><a href="#aphidindex">AphidIndex</a></li><li><a href="#aphidjuvenilesurvival">AphidJuvenileSurvival</a></li><li><a href="#aphidjuvenilesurvival">AphidJuvenileSurvival</a></li><li><a href="#aphidnetreproduction">AphidNetReproduction</a></li><li><a href="#aphidnetreproduction">AphidNetReproduction</a></li><li><a href="#aphidoffspring">AphidOffspring</a></li><li><a href="#aphidoffspring">AphidOffspring</a></li><li><a href="#biocontrol">Biocontrol</a></li><li><a href="#biocontrol">Biocontrol</a></li><li><a href="#cadaverconversion">CadaverConversion</a></li><li><a href="#cadaverconversion">CadaverConversion</a></li><li><a href="#cadavertime">CadaverTime</a></li><li><a href="#cadavertime">CadaverTime</a></li><li><a href="#cropgrowthstage">CropGrowthStage</a></li><li><a href="#cropgrowthstage">CropGrowthStage</a></li><li><a href="#cropisgrowing">CropIsGrowing</a></li><li><a href="#cropisgrowing">CropIsGrowing</a></li><li><a href="#infectionrate">InfectionRate</a></li><li><a href="#infectionrate">InfectionRate</a></li><li><a href="#prevalence">Prevalence</a></li><li><a href="#prevalence">Prevalence</a></li><li><a href="#yield">Yield</a></li><li><a href="#yield">Yield</a>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#cereal-aphid-fungus-model">Cereal aphid-fungus model</a><ul><li><a href="#background">Background</a></li><li><a href="#crop-model">Crop model</a></li><li><a href="#crop-aphid-model">Crop-aphid model</a></li><li><a href="#crop-aphid-model-with-uncertainty">Crop-aphid model with uncertainty</a></li><li><a href="#crop-aphid-fungus-model">Crop-aphid-fungus model</a></li><li><a href="#biocontrol-model-with-uncertainty-analysis">Biocontrol model with uncertainty analysis</a></li><li><a href="#biocontrol-with-sensitivity-analysis">Biocontrol with sensitivity analysis</a></li><li><a href="#reproduce-published-figures">Reproduce published figures</a></li></ul></li><li><a href="#aphid-plugin">Aphid plugin</a><ul><li><a href="#aphidimmigration">AphidImmigration</a></li><li><a href="#aphidindex">AphidIndex</a></li><li><a href="#aphidjuvenilesurvival">AphidJuvenileSurvival</a></li><li><a href="#aphidnetreproduction">AphidNetReproduction</a></li><li><a href="#aphidoffspring">AphidOffspring</a></li><li><a href="#biocontrol">Biocontrol</a></li><li><a href="#cadaverconversion">CadaverConversion</a></li><li><a href="#cadavertime">CadaverTime</a></li><li><a href="#cropgrowthstage">CropGrowthStage</a></li><li><a href="#cropisgrowing">CropIsGrowing</a></li><li><a href="#infectionrate">InfectionRate</a></li><li><a href="#prevalence">Prevalence</a></li><li><a href="#yield">Yield</a>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>
