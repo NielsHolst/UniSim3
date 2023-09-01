@@ -11,6 +11,7 @@
 #include <QKeyEvent>
 #include <QMainWindow>
 #include <QProgressBar>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QStatusBar>
 #include <QTextBlock>
@@ -500,10 +501,29 @@ void DialogWidget::clearLine() {
     }
 }
 
+namespace {
+// Retrieve apostrophed argument as one argument (ignoring any spaces)
+// At most one argument can be apostrophed
+QStringList retrieveArguments(QString s) {
+    static QRegularExpression re(R"("[^"]*")");
+    QRegularExpressionMatch match = re.match(s);
+    QStringList texts = match.capturedTexts();
+    QStringList result;
+    if (match.hasMatch())
+        result << s.left(match.capturedStart()).split(" ", Qt::SkipEmptyParts)
+               << texts.at(0).mid(1, texts.at(0).size() - 2)
+               << s.mid(match.capturedEnd()).split(" ", Qt::SkipEmptyParts);
+    else
+        result = s.split(" ");
+    return result;
+}
+}
+
+
 void DialogWidget::submitCommand() {
     // Retrieve commandline
     QString line = DialogWidget::line();
-    QStringList items = line.split(" ");
+    QStringList items = retrieveArguments(line);
 
     // Move visible cursor to end of line
     QTextCursor cursor = getCursor();

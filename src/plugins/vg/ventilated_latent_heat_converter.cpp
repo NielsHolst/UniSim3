@@ -19,7 +19,7 @@ VentilatedLatentHeatConverter::VentilatedLatentHeatConverter(QString name, Box *
     : VapourFluxBase(name, parent)
 {
     help("models a latent heat converter used for humidity reduction");
-    Input(groundArea).imports("geometry[groundArea]").unit("m2");
+    Input(groundArea).imports("gh/geometry[groundArea]").unit("m2");
     Input(indoorsAh).imports("indoors/humidity[ah]").unit("kg/m3");
     Input(volumeFlowRate).equals(2.5).help("Rate of air flow through the converter").unit("m3/s");
     // Additional outputs are needed to specify the flux of latent heat gain [W/m2]

@@ -63,7 +63,7 @@ void BudgetSolver::findShelterFaces() {
 //    side2 = findOne<Box*>("side2");
 //    end1  = findOne<Box*>("end1");
 //    end2  = findOne<Box*>("end2");
-//    geometry  = findOne<Box*>("construction/geometry");
+//    geometry  = findOne<Box*>("gh/geometry");
 //    roof12Area = geometry->port("roofArea")->value<double>()/2;
 //    side12Area = geometry->port("sideArea")->value<double>()/2;
 //    end12Area  = geometry->port("endArea")->value<double>()/2;

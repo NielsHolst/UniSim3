@@ -21,7 +21,7 @@ AverageCover::AverageCover(QString name, Box *parent)
       AverageCoverOrScreen(name, parent)
 {
     help("computes average cover radiation and heat parameters");
-    Input(groundArea).imports("geometry[groundArea]");
+    Input(groundArea).imports("gh/geometry[groundArea]");
 }
 
 void AverageCover::amend() {

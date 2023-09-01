@@ -28,11 +28,11 @@ HEADERS +=  \
     budget_volume.h \
     canopy_photosynthesis.h \
     cover.h \
-    crop.h \
     face.h \
     floor.h \
     geometry.h \
     growth_light_controller.h \
+    growth_light_product.h \
     growth_lights.h \
     heat_pipes.h \
     ig_indoors_humidity.h \
@@ -76,11 +76,11 @@ SOURCES += \
     budget_volume.cpp \
     canopy_photosynthesis.cpp \
     cover.cpp \
-    crop.cpp \
     face.cpp \
     floor.cpp \
     geometry.cpp \
     growth_light_controller.cpp \
+    growth_light_product.cpp \
     growth_lights.cpp \
     heat_pipes.cpp \
     ig_indoors_humidity.cpp \

@@ -28,6 +28,7 @@ public:
     int toInt() const;
     double toDouble() const;
 
+    bool hasAttribute(QString name) const;
     QString getAttributeString(QString name) const;
     int getAttributeInt(QString name) const;
     double getAttributeDouble(QString name) const;

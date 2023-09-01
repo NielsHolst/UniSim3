@@ -20,7 +20,7 @@ PadAndFan::PadAndFan(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a pad-and-fan cooling system");
-    Input(groundArea).imports("construction/geometry[groundArea]",CA);
+    Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(outdoorsTemperature).imports("outdoors/temperature[value]",CA);
     Input(outdoorsRh).imports("outdoors[rh]",CA);
     Input(efficiency).equals(0.8).help("Efficiency at decreasing temperature to wet-bulb temperature").unit("[0;1]");

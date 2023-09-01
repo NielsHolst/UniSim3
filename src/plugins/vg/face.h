@@ -16,13 +16,15 @@ class Face : public base::Box
 {
 public: 
     Face(QString name, Box *parent);
-    void initialize();
+    void reset();
 private:
     // Inputs
     QString cover, screens;
     double area, weight;
     // Outputs
     QVector<QString> screenMaterials;
+    // Data
+    QString _prevScreens;
 };
 
 } //namespace

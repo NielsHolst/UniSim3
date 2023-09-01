@@ -1,0 +1,5 @@
+ScreenName	ScreenThreshold	Uinsulation
+LS_Harmony_4115_O_E_FR+none+none	5	0.1
+LS_Harmony_4115_O_E_FR+none+none	5	0.4
+LS_Harmony_6147_FR+none+none	5	0.1
+LS_Harmony_6147_FR+none+none	5	0.4

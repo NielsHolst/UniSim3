@@ -20,7 +20,7 @@ HeatPump::HeatPump(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a heat pump");
-    Input(groundArea).imports("construction/geometry[groundArea]",CA);
+    Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(indoorsTemperature).imports("indoors[temperature]",CA);
     Input(indoorsRh).imports("indoors[rh]",CA);
     Input(number).equals(1).help("Number of heat pumps").unit("0,1,2,...");

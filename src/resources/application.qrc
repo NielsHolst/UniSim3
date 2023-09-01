@@ -44,6 +44,10 @@
     <file>data/input/demo/honeybee1.box</file>
     <file>data/input/demo/honeybee2.box</file>
     <file>data/input/demo/hump/hump1.box</file>
+    <file>data/input/demo/maker/islands1.box</file>
+    <file>data/input/demo/maker/islands2.box</file>
+    <file>data/input/demo/maker/islands3.box</file>
+    <file>data/input/demo/maker/islands4.box</file>
     <file>data/input/demo/maximum_at/maximum_at1.box</file>
     <file>data/input/demo/output_selector/output_selector1.box</file>
     <file>data/input/demo/output_selector/output_selector2.box</file>
@@ -68,6 +72,7 @@
     <file>data/input/demo/records/records4.box</file>
     <file>data/input/demo/records/records5.box</file>
     <file>data/input/demo/records/records6.box</file>
+    <file>data/input/demo/records/records7.box</file>
     <file>data/input/demo/sun/sun1.box</file>
     <file>data/input/demo/sun/sun2.box</file>
     <file>data/input/demo/weather/braunschweig 2009.txt</file>
@@ -100,6 +105,7 @@
     <file>data/input/models/aphid/figure-3.R</file>
     <file>data/input/models/aphid/figure-4(0).R</file>
     <file>data/input/models/aphid/figure-4.R</file>
+    <file>data/input/models/aphid/figure-5-table.txt</file>
     <file>data/input/models/aphid/figure-5.R</file>
     <file>data/input/models/aphid/figure-6.R</file>
     <file>data/input/models/aphid/figure-7.R</file>
@@ -194,8 +200,15 @@
     <file>data/input/models/vg/2023-06-22-test.xml</file>
     <file>data/input/models/vg/2023-07-04-test.xml</file>
     <file>data/input/models/vg/2023-07-05-test.xml</file>
+    <file>data/input/models/vg/2023-07-06-fejl.xml</file>
+    <file>data/input/models/vg/2023-07-06-fra-jesper.xml</file>
     <file>data/input/models/vg/2023-07-06-test.xml</file>
-    <file>data/input/models/vg/DK_LED_DRW_UniSim.xml</file>
+    <file>data/input/models/vg/2023-08-30-NewBasic.box</file>
+    <file>data/input/models/vg/2023-08-30-NewBasic.xml</file>
+    <file>data/input/models/vg/2023-08-31-Watson.box</file>
+    <file>data/input/models/vg/2023-08-31-Watson.xml</file>
+    <file>data/input/models/vg/2023-09-01-standard.box</file>
+    <file>data/input/models/vg/calibrate-screens.box</file>
     <file>data/input/models/vg/DNK_Odense.txt</file>
     <file>data/input/models/vg/greenhouse.box</file>
     <file>data/input/models/vg/R/0-energy-budget-functions.R</file>
@@ -224,7 +237,12 @@
     <file>data/input/models/vg/R/verify-weighted-sum.R</file>
     <file>data/input/models/vg/R/water-budget-integral.odt</file>
     <file>data/input/models/vg/R/water-budget-integral.R</file>
-    <file>data/input/models/vg/xml-opdatering .txt</file>
+    <file>data/input/models/vg/random_lw.box</file>
+    <file>data/input/models/vg/sensitivity.box</file>
+    <file>data/input/models/vg/test all screens-all.txt</file>
+    <file>data/input/models/vg/test all screens.box</file>
+    <file>data/input/models/vg/test all screens.txt</file>
+    <file>data/input/models/vg/test all screens.xml</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>

@@ -20,7 +20,7 @@ ActuatorPadAndFan::ActuatorPadAndFan(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a pad-and-fan cooling system");
-    Input(groundArea).imports("construction/geometry[groundArea]",CA);
+    Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]",CA);
     Input(outdoorsRh).imports("outdoors[rh]",CA);
     Input(state).imports("setpoints/elementary/padAndFansOn[value]",CA).help("Running state relative to full effect").unit("[0;1]");

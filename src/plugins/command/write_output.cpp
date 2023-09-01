@@ -3,9 +3,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/box.h>
-//#include <base/command.h>
-//#include <base/computation.h>
-//#include <base/dialog.h>
+#include <base/mega_factory.h>
 #include <base/port.h>
 #include <base/port_type.h>
 #include "write_output.h"
@@ -20,6 +18,8 @@ WriteOutput::WriteOutput(Box *root, Option option)
 }
 
 QString WriteOutput::toString() {
+    if (!MegaFactory::usingPlugin().isEmpty())
+        _s = "#using " + MegaFactory::usingPlugin() + "\n";
     toString(_root, 0);
     return _s;
 }
@@ -32,7 +32,7 @@ void WriteOutput::toString(Box *box, int level) {
     // Write box
     _s += QString().fill(' ', 2*level) +
           box->className() + " " +
-          box->objectName() + "{\n";
+          box->objectName() + " {\n";
 
     // Write ports
     for (Port *port : box->portsInOrder()) {

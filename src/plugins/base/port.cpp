@@ -117,26 +117,39 @@ void Port::define() {
     // Vector type ports accept null values
     _acceptNull = _value.isVector();
 
-    // Port to a path can only be defined by a simple expression
+    // Port holds a path
     if (_value.type() == Value::Type::Path) {
+        // The expression musy hold exactly one element
         if (_expression.size() != 1)
             ThrowException("Port to a Path variable can only be defined by a path").
                 value(_expression.originalAsString()).context(this);
+
+        // Retrieve path value
+        Path path;
         const auto &el = _expression.at(0);
+        // If the element is a path then assign _value to that
         if (Expression::type(el) == Expression::Type::Path) {
-            Path path = std::get<Path>(el);
-            path.setParent(this);
-            _value.changeValue(path);
+            path = std::get<Path>(el);
         }
-        else if (Expression::type(el) == Expression::Type::Value &&
-                 std::get<Value>(el).type()  == Value::Type::String) {
-            _value.changeValue(Path(std::get<Value>(el).as<QString>(), this));
-        }
-        else {
-            ThrowException("Path or string value expected").
+        // If the element is a value, it must contain either a string or a path value
+        else if (Expression::type(el) == Expression::Type::Value) {
+            Value value = std::get<Value>(el);
+            switch (value.type()) {
+                case Value::Type::String:
+                path = Path(value.as<QString>(), this);
+                break;
+            case Value::Type::Path:
+                path = value.as<Path>();
+                break;
+            default:
+                ThrowException("Path or string value expected").
                     value1(Expression::toString(el)).value2(Expression::typeName(el)).
                     context(this);
+            }
         }
+        path.setParent(this);
+        _value.changeValue(path);
+
         // Path outputs are not cleared at reset
         if (_type == PortType::Output)
             noClear();
@@ -167,7 +180,7 @@ Port& Port::equals(const Value &value) {
     bool portTypeHasBeenSet = (_value.type() != Value::Type::Uninitialized);
     if (portTypeHasBeenSet) {
         // Keep known type of _value
-        _value = Value(value);
+        _value = value;
         _expression.push(_value);
     }
     else {

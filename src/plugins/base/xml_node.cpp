@@ -65,6 +65,10 @@ double XmlNode::toDouble() const {
     return value;
 }
 
+bool XmlNode::hasAttribute(QString name) const {
+    return _attributes.contains(name);
+}
+
 QString XmlNode::getAttributeString(QString name) const {
     return _attributes.value(name, "");
 }

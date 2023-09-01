@@ -22,6 +22,7 @@ AverageMaterial::AverageMaterial(QString name, Box *parent)
       LayerAdjusted(name, parent)
 {
     help("averages material by area and weight");
+    Input(materialName).help("Unique name of the material");
     Input(myAreas);
     Input(myWeights);
     Input(allAreas).imports("shelter/faces/*[area]");

@@ -20,8 +20,8 @@ Humidifier::Humidifier(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a humidifier (fogging)");
-    Input(groundArea).imports("construction/geometry[groundArea]",CA);
-    Input(greenhouseVolume).imports("construction/geometry[volume]",CA);
+    Input(groundArea).imports("gh/geometry[groundArea]",CA);
+    Input(greenhouseVolume).imports("gh/geometry[volume]",CA);
     Input(inflowTemperature).imports("outdoors/temperature[value]",CA);
     Input(inflowRh).imports("outdoors[rh]",CA);
     Input(efficiency).equals(0.8).help("Efficiency at decreasing temperature to wet-bulb temperature").unit("[0;1]");

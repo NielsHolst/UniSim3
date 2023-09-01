@@ -98,7 +98,7 @@ Node *MegaFactory::createObject(QString className, QString objectName, Box *pare
         default:
             // Too many candidate factories: Try again with 'using' plugin name as a qualifier
             namespaceName = _usingPluginName;
-            if (!className.contains("::"))
+            if (!(namespaceName.isEmpty() || className.contains("::")))
                 creation = createObject(namespaceName+"::"+className, objectName, parent);
             else {
                 QString msg = "Qualify class name with plug-in name as in:\n" +
@@ -129,6 +129,10 @@ QStringList MegaFactory::qualifiedClassNames(QString className) {
 
 void MegaFactory::usingPlugin(QString pluginName) {
     _usingPluginName = pluginName;
+}
+
+QString MegaFactory::usingPlugin() {
+    return _usingPluginName;
 }
 
 const QList<FactoryPlugIn*>& MegaFactory::factories() {

@@ -20,7 +20,7 @@ BudgetLayerCover::BudgetLayerCover(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
     setClassName("vg", "BudgetLayer");
-    Input(coverPerGroundArea).imports("geometry[coverPerGroundArea]");
+    Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
     Input(indoorsRh).imports("indoors[rh]");
 }
 

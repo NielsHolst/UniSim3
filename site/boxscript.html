@@ -1400,9 +1400,14 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 </code></pre>
 </div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maker'>xxx</p><div class='border-grey'>
+<h2>Maker</h2>
+<ul class="h3-links">
+  <li><a href='#make-numbered-clones'>Make numbered clones</a></li>
+  <li><a href='#make-named-clones'>Make named clones</a></li>
+  <li><a href='#make-clones-from-file'>Make clones from file</a></li>
+</ul>
 <div class="insert macro">#plugins/boxes/maker.html</div>
 <div class="begin macro"></div>
-<h2>Maker</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>replicates</td><td>int</td><td>1 </td><td>Supply either, (1) then number of clones to replicate from child boxes;</td></tr>
@@ -1412,6 +1417,288 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
+
+<h3>Usage</h3>
+You use a <code>Maker</code> box if you want to make several copies (clones) of a box in the boxscript. The clones will all be exact copies of the original box (albeit with different names), including its port values and any child boxes, recursively (i.e. the clones are deep copies). 
+
+<h3 id='#make-numbered-clones'>&#9207; Make numbered clones</h3>
+In the first example, we create want to create four box objets representing islands with populations of foxes and rabbits. The geolocation of the islands and animal densities should be random. Here is our first sketch of a model without the use of a <code>Maker</code>:
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands1.box">// islands1.box&#9207;</a>
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniform latitude {
+      .min = 10
+      .max = 20
+    }
+    RandomUniform longitude {
+      .min = -40
+      .max = -30
+    }
+    RandomUniformInt initFox {
+      .min = 10
+      .max = 20
+    }
+    RandomUniformInt initRabbit {
+      .min = 200
+      .max = 1000
+    }
+  }
+  Box island {
+    &latitude = random/latitude[value]
+    &longitude = random/longitude[value]
+    Box fox {
+      &value = random/initFox[value]
+    }
+    Box rabbit {
+      &value = random/initRabbit[value]
+    }
+  } 
+  OutputText {
+    .ports = sim[iteration] | island[*] | island/*[*]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}
+</code></pre>
+With the <code>OutputSelector</code>'s <code>final</code> port set to <code>TRUE</code>, we get only one line in the output per iteration, as we can quickly see following <code class="command">run</code>  by <code class="command">head</code>:
+<pre><code class="command">> run demo/maker/islands1.box</code>
+<code class="output">...</code>
+<code class="command">> head</code>
+<code class="output">fox rabbit latitude longitude iteration step
+ 12    725  17.8735  -32.7255         1    5
+ 16    541   13.247  -39.2857         2    5
+ 15    814  13.3161  -31.2024         3    5
+ 18    471  19.2508  -35.2724         4    5
+</code></pre>
+This boxscript will allow us to model on each island (given further elaborations of the model) <em>in sequence</em>. But if we wanted to model them <em>simultaneously</em>, maybe to include migration between the islands? For that we can use a <code>Maker</code> box:
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands2.box">// islands2.box&#9207;</a>
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniform latitude {
+      .min = 10
+      .max = 20
+    }
+    RandomUniform longitude {
+      .min = -40
+      .max = -30
+    }
+    RandomUniformInt initFox {
+      .min = 10
+      .max = 20
+    }
+    RandomUniformInt initRabbit {
+      .min = 200
+      .max = 1000
+    }
+  }
+  Maker archipelago {
+    .replicates = 3
+    Box isle {
+      &latitude = random/latitude[value]
+      &longitude = random/longitude[value]
+      Box fox {
+        &value = random/initFox[value]
+      }
+      Box rabbit {
+        &value = random/initRabbit[value]
+      }
+    } 
+  }
+  OutputText {
+    .ports = sim[iteration] | archipelago/*[*] | archipelago/*/*[*]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}
+</code></pre>
+
+Here, the <code>isle</code> is used as a template by the <code>Maker</code> (called <code>archipelago</code>) to make three clones (since <code>replicates = 3</code>, which are simply numbered. The <code class="command">list</code> shows the model structure:
+<pre><code class="command">> list</code>
+<code class="output">Simulation sim
+  Box random
+    RandomiserMonteCarlo randomiser
+    RandomUniform latitude
+    RandomUniform longitude
+    RandomUniformInt initFox
+    RandomUniformInt initRabbit
+  Maker archipelago
+    Box isle0
+      Box fox
+      Box rabbit
+    Box isle1
+      Box fox
+      Box rabbit
+    Box isle2
+      Box fox
+      Box rabbit
+  OutputText 
+    OutputSelector 
+  OutputWriter outputWriter
+</code></pre>
+If we run the model and look at the output, we are not quite there though. Take a look at the output (lines have been broken for easier reading):
+<pre><code class="command">> run demo/maker/islands2.box</code>
+<code class="output">...</code>
+<code class="command">> head</code>
+<code class="output">isle0.fox isle0.rabbit isle0.latitude isle0.longitude
+       14          786        19.8897        -38.1184
+       12          799        11.3178          -31.48
+       12          357        14.9339        -38.9938
+       11          963        16.4512        -36.3377
+isle1.fox isle1.rabbit isle1.latitude isle1.longitude
+       14          786        19.8897        -38.1184
+       12          799        11.3178          -31.48
+       12          357        14.9339        -38.9938
+       11          963        16.4512        -36.3377
+isle2.fox isle2.rabbit isle2.latitude isle2.longitude iteration step
+       14          786        19.8897        -38.1184         1    5
+       12          799        11.3178          -31.48         2    5
+       12          357        14.9339        -38.9938         3    5
+       11          963        16.4512        -36.3377         4    5
+</code></pre>
+
+In each of the four iterations, the three isles share their position (like being stacked), and they have the same densities of foxes and rabbits. We don't know the exact research questions addresses by this model but let's say that in each iteration, isles should be placed randomly and with different, random population densities. Then we need for each isle to draw its own random numbers:
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands3.box">// islands3.box&#9207;</a>
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  RandomiserMonteCarlo randomiser {
+  }
+  Maker archipelago {
+    .replicates = 3
+    Box isle {
+      &latitude = ./latitude[value]
+      &longitude = ./longitude[value]
+      RandomUniform latitude {
+        .min = 10
+        .max = 20
+      }
+      RandomUniform longitude {
+        .min = -40
+        .max = -30
+      }
+      Box fox {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 10
+          .max = 20
+        }
+      }
+      Box rabbit {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 200
+          .max = 1000
+        }
+      }
+    } 
+  }
+  OutputText {
+    .ports = sim[iteration] | archipelago/*[*] | fox[value] | rabbit[value]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}
+</code></pre>
+If we inspect <code>isle0</code>, we can see that is equipped with its own random numbers:
+<pre><code class="command">> list isle0</code>
+<code class="output">Box isle0
+  RandomUniform latitude
+  RandomUniform longitude
+  Box fox
+    RandomUniformInt init
+  Box rabbit
+    RandomUniformInt init
+</code></pre>
+This is confirmed further by the output of the model. Now the isles are different in all aspects in every iteration:
+<pre><code class="command">> head</code>
+<code class="output">isle0.fox isle0.rabbit isle0.latitude isle0.longitude
+       17          402        19.9245        -34.2778
+       16          349        12.3191        -35.1868
+       17          342         10.122        -35.4519
+       16          633        16.3812        -33.3165
+isle1.fox isle1.rabbit isle1.latitude isle1.longitude
+       11          989        18.0103        -31.8565
+       13          924        18.7218        -30.2215
+       15          880        19.4189        -36.9949
+       11          894        15.2746        -36.4758
+isle2.fox isle2.rabbit isle2.latitude isle2.longitude iteration step
+       19          547        12.5868        -36.2568         1    5
+       15          257        17.2394        -33.4497         2    5
+       12          635        15.1014        -37.7954         3    5
+       15          949        18.9858        -36.5964         4    5
+</code></pre>
+Note the there can only be one randomiser box on a boxscript. All the random variables in a boxscript draw numbers from this one source.
+<h3 id='#make-named-clones'>Make named clones</h3>
+To continue the example above, let's say that we want to model some concrete islands with known positions but still with random population densities. We can achieve this by supplying the <code>Maker</code> box with a vector of <code>names</code> in stead of just the number of replicates. In this example, we include only to islands:
+<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands4.box">// islands4.box&#9207;</a>
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  RandomiserMonteCarlo randomiser {
+  }
+  Maker azores {
+    .names = c("Faial", "Flores")
+    Box isle {
+      &latitude  = if (name(.[]) == "Faial") then 38.58 else 39.46
+      &longitude = if (name(.[]) == "Faial") then 28.70 else 31.13
+      Box fox {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 10
+          .max = 20
+        }
+      }
+      Box rabbit {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 200
+          .max = 1000
+        }
+      }
+    } 
+  }
+  OutputText {
+    .ports = sim[iteration] | archipelago/*[*] | fox[value] | rabbit[value]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}
+</code></pre>
+As you can see, we got the wished for structure of the model:
+<pre><code class="command">> list</code>
+<code class="output">Simulation sim
+  RandomiserMonteCarlo randomiser
+  Maker azores
+    Box Faial
+      Box fox
+        RandomUniformInt init
+      Box rabbit
+        RandomUniformInt init
+    Box Flores
+      Box fox
+        RandomUniformInt init
+      Box rabbit
+        RandomUniformInt init
+  OutputText 
+    OutputSelector 
+  OutputWriter outputWriter
+</code></pre>
+
+
+
+
 </div> <!-- border-grey-->
 
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maximum'>xxx</p><div class='border-grey'>

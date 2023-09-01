@@ -1,0 +1,34 @@
+// islands4.box
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  RandomiserMonteCarlo randomiser {
+  }
+  Maker azores {
+    .names = c("Faial", "Flores")
+    Box isle {
+      &latitude  = if (name(.[]) == "Faial") then 38.58 else 39.46
+      &longitude = if (name(.[]) == "Faial") then 28.70 else 31.13
+      Box fox {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 10
+          .max = 20
+        }
+      }
+      Box rabbit {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 200
+          .max = 1000
+        }
+      }
+    } 
+  }
+  OutputText {
+    .ports = sim[iteration] | archipelago/*[*] | fox[value] | rabbit[value]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}

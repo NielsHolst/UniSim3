@@ -19,20 +19,19 @@ Summary::Summary(QString name, Box *parent)
 	: Box(name, parent)
 {
     help("summarises greenhouse budget");
-    Input(heatPipesHeatFlux).imports("actuators/heatPipes[heatFlux]").unit("W/m2");
-    Input(lampsPowerUsage).imports("actuators/growthLights[powerUsage]").unit("W/m2");
-    Input(co2Injection).imports("actuators/co2[value]").unit("g/m2/h");
-    Input(transpirationFinite).imports("budget[transpiration]");
-    Input(condensationFinite).imports("budget[condensation]");
-    Input(ventedWaterFinite).imports("budget[ventedWater]");
-    Input(screenState1).imports("actuators/screens/layer1[state]");
-    Input(screenState2).imports("actuators/screens/layer2[state]");
-    Input(screenState3).imports("actuators/screens/layer3[state]");
+    Input(heatPipesHeatFlux).imports("gh/actuators/heatPipes[heatFlux]").unit("W/m2");
+    Input(lampsPowerUsage).imports("gh/actuators/growthLights[powerUsage]").unit("W/m2");
+    Input(co2Injection).imports("gh/actuators/co2[value]").unit("g/m2/h");
+    Input(transpirationFinite).imports("gh/budget[transpiration]");
+    Input(condensationFinite).imports("gh/budget[condensation]");
+    Input(ventedWaterFinite).imports("gh/budget[ventedWater]");
+    Input(screenState1).imports("gh/actuators/screens/layer1[state]");
+    Input(screenState2).imports("gh/actuators/screens/layer2[state]");
+    Input(screenState3).imports("gh/actuators/screens/layer3[state]");
     Input(isSkipping).imports("output/*[isSkipping]");
-    Input(lightState1).imports("actuators/growthLights/bank1[isOn]");
-    Input(lightState2).imports("actuators/growthLights/bank2[isOn]");
-    Input(lightState3).imports("actuators/growthLights/bank3[isOn]");
-//    Input(timeStep).imports("calendar[timeStepSecs]");
+    Input(lightState1).imports("gh/actuators/growthLights/bank1[isOn]");
+    Input(lightState2).imports("gh/actuators/growthLights/bank2[isOn]");
+    Input(lightState3).imports("gh/actuators/growthLights/bank3[isOn]");
     Output(heatingCost).unit("MWh/m2/y");
     Output(lampCost).unit("MWh/m2/y");
     Output(co2Cost).unit("kg CO2/m2/y");

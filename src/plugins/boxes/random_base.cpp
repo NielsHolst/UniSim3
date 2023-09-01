@@ -58,9 +58,18 @@ void RandomBase::update() {
 
 RandomiserBase* RandomBase::randomiser() {
     if (!_randomiser) {
-        _randomiser = findMaybeOne<RandomiserBase*>("../*");
-        if (!_randomiser)
-            ThrowException("Random box must be a child of a Randomiser box").context(this);
+        auto boxes = findMany<RandomiserBase*>("*");
+        switch (boxes.size()) {
+        case 0:
+            ThrowException("Boxscript must contain a Randomiser box").context(this);
+            break;
+        case 1:
+            _randomiser = boxes[0];
+            break;
+        default:
+            ThrowException("Boxscript must contain only one Randomiser box").
+                    value("\n" + fullNames(boxes).join("\n")).context(this);
+        }
     }
     return _randomiser;
 }

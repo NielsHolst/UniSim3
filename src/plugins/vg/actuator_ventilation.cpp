@@ -25,15 +25,15 @@ ActuatorVentilation::ActuatorVentilation(QString name, Box *parent)
     Input(desiredValue).unit("/h").help("Desired ventilation rate");
     Input(ventAreaRatio).equals(0.40).unit("int").help("Total vent area in proportion to groundarea");
     Input(windCoef).equals(50.).help("Proportionality of air flux with windspeed").unit("/h/(m/s)");
-    Input(temperatureCoef).equals(14.).help("Proportionality of air flux with temperature diffence").unit("/h/K");
+    Input(temperatureCoef).equals(14.).help("Proportionality of air flux with temperature difference").unit("/h/K");
     Input(windSpeed).imports("outdoors[windSpeed]", CA);
-    Input(leakage).imports("construction/leakage[value]", CA);
+    Input(leakage).imports("gh/construction/leakage[value]", CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]", CA);
-    Input(indoorsTemperature).imports("indoors[temperature]", CA);
+    Input(indoorsTemperature).imports("gh/budget/indoors[temperature]", CA);
     Input(outdoorsRh).imports("outdoors[rh]", CA);
-    Input(indoorsRh).imports("indoors[rh]", CA);
+    Input(indoorsRh).imports("gh/budget/indoors[rh]", CA);
     Input(timeStep).imports("calendar[timeStepSecs]");
-    Input(indoorsVolume).imports("geometry[volume]");
+    Input(indoorsVolume).imports("gh/geometry[volume]");
 
     Output(value).help("Ventilation air flux, including leakage").unit("/h");
     Output(minValue).help("Minimum possible air flux, including leakage").unit("/h");

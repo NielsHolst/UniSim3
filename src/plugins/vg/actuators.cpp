@@ -39,7 +39,7 @@ void Actuators::addLayer(base::BoxBuilder &builder, int i) {
         box("Accumulator").name(layer).
             port("change").imports("./pid[controlVariable]").
             port("minValue").equals(0.).
-            port("maxValue").imports("setpoints[maxScreen]").
+            port("maxValue").imports("gh/setpoints[maxScreen]").
             box("PidController").name("pid").
                 port("desiredValue").imports("controllers/screens/" + layer + "[value]").
                 port("sensedValue").imports("..[value]").

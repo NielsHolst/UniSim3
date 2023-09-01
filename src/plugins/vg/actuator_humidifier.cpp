@@ -20,8 +20,8 @@ ActuatorHumidifier::ActuatorHumidifier(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a humidifier (fogging)");
-    Input(groundArea).imports("construction/geometry[groundArea]",CA);
-    Input(greenhouseVolume).imports("construction/geometry[volume]",CA);
+    Input(groundArea).imports("gh/geometry[groundArea]",CA);
+    Input(greenhouseVolume).imports("gh/geometry[volume]",CA);
     Input(inflowTemperature).imports("outdoors[temperature]",CA);
     Input(inflowRh).imports("outdoors[rh]",CA);
     Input(state).imports("setpoints/elementary/humidifiersOn[value]",CA).help("Running state relative to full effect").unit("[0;1]");

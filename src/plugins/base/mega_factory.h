@@ -28,6 +28,7 @@ public:
     static QDir pluginsDir();
     static QStringList qualifiedClassNames(QString className);
     static void usingPlugin(QString pluginName);
+    static QString usingPlugin();
     static QStringList find(QString className);
 private:
     // methods

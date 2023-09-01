@@ -5,6 +5,7 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
+#include <base/dialog.h>
 #include <base/publish.h>
 #include "face.h"
 
@@ -25,9 +26,14 @@ Face::Face(QString name, Box *parent)
     Output(screenMaterials).noClear().help("Vector of screen material names");
 }
 
-void Face::initialize() {
+void Face::reset() {
     QStringList list = screens.split("+");
     screenMaterials = QVector<QString>(list.cbegin(), list.cend());
+    if (screens != _prevScreens) {
+        // if (name() == "roof1")
+            // dialog().information("Screen changed:\n" + _prevScreens + " -> " + screens);
+        _prevScreens = screens;
+    }
 }
 
 } //namespace

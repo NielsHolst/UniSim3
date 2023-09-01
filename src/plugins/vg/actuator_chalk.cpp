@@ -18,7 +18,7 @@ ActuatorChalk::ActuatorChalk(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models reflection caused by whitening");
-    Input(state).imports("setpoints/chalk[value]");
+    Input(state).imports("gh/setpoints/chalk[value]");
     Input(swReflectivity).help("Short-wave reflectivity potentially added to cover").unit("[0;1]");
     Input(lwReflectivity).help("Long-wave reflectivity potentially added to cover").unit("[0;1]");
     Output(swReflectivityValue).help("Short-wave reflectivity actually added to cover").unit("[0;1]");

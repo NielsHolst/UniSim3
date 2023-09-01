@@ -19,19 +19,25 @@ public:
     void update();
 private:
     // Inputs
+    QString productName;
     bool isOn;
-    double ballast, power,
-        parPhotonCoef, efficiency,
-        propSw, propLw, propConv,
-        propBallastLw, propBallastConv;
-        ;
+    double
+        numberInstalled, efficiency;
     // Outputs
     double
+        power, ballast,
         parEmissionBottom,
         swEmissionBottom,
         lwEmissionBottom, lwEmissionTop,
         convectionBottom, convectionTop,
-        powerUsage;
+        powerUsage,
+        minPeriodOn;
+    // Data (copied from lamp product)
+    double
+        parPhotonCoef,
+        propSw, propLw, propConv,
+        propBallastLw, propBallastConv;
+
     // Methods
     void noLight();
     void checkProp(double prop, QString name);

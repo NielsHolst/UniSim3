@@ -93,6 +93,7 @@ void AverageCoverOrScreen::buildAverageMaterial(BoxBuilder &builder, QString mat
     QStringList myFaces = collectFacesByMaterial(material);
     builder.
     box("AverageMaterial").name(material).
+        port("materialName").equals(material).
         MATERIAL_PORT(swReflectivityTop).
         MATERIAL_PORT(swReflectivityBottom).
         MATERIAL_PORT(lwReflectivityTop).

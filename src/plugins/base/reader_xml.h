@@ -48,6 +48,8 @@ private:
     BoxBuilder& shadingAgents();
     BoxBuilder& shelterCovers();
     BoxBuilder& shelterScreens();
+    BoxBuilder& shelterScreensAll();
+    BoxBuilder& shelterScreensOnlyUsed();
     BoxBuilder& shelterFaces();
     BoxBuilder& setpoint(QString xmlName, QString newName);
     BoxBuilder& setpoint(QString xmlName, const Setpoint &setpoint);
@@ -68,6 +70,7 @@ private:
 
     Setpoints getSetpoints(QString name);
     double groundArea();
+    const QString makeScreenId(QString screenProduct);
     const QString makeScreenId(QString screenProduct, int layer);
 };
 

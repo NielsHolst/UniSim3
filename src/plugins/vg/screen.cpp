@@ -28,6 +28,7 @@ Screen::Screen(QString name, Box *parent)
     Input(state).help("Proportion drawn (0=fully withdrawn; 1=fully drawn").unit("[0;1]");
     Input(Uinsulation).equals(1e16).unit("W/K/m2 layer").help("Insulation effect on cover");
     Input(UinsulationEffectivity).equals(1.).unit("[0;1]").help("Effectivity of Uinsulation");
+    Input(energySaving).unit("%").help("Documented energy saving used for calibration");
     Output(UinsulationAdj).unit("W/K/m2 layer").help("Insulation effect on cover adjusted for state and perfection");
 }
 

@@ -20,7 +20,7 @@ public:
     void update();
 private:
     // Additional inputs
-    double state, Uinsulation, UinsulationAdj, UinsulationEffectivity;
+    double state, Uinsulation, UinsulationAdj, UinsulationEffectivity, energySaving;
     // No additional outputs
 };
 

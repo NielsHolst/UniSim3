@@ -48,9 +48,9 @@ Plant::Plant(QString name, Box *parent)
     Input(delsC).equals(629.26).help("Temperature response of Vcmax");
     Input(Q10  ).equals(1.92).help("Temperature response of respiration");
 
-    Input(indoorsTemperature).imports("indoors[temperature]");
-    Input(indoorsRh).imports("indoors[rh]");
-    Input(indoorsCo2).imports("indoors[co2]");
+    Input(indoorsTemperature).imports("gh/budget/indoors[temperature]");
+    Input(indoorsRh).imports("gh/budget/indoors[rh]");
+    Input(indoorsCo2).imports("gh/budget/indoors[co2]");
     Input(timeStep).imports("calendar[timeStepSecs]");
 
     Output(temperature).unit("oC").help("Leaf temperature");

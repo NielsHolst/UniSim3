@@ -141,7 +141,7 @@ dev.off()
 print(paste("Figure written to", file_name_path))
 
 # Write table with figure data
-file_name_path = paste0(output_folder, "/fig-6-bw-table.txt")
+file_name_path = paste0(output_folder, "/fig-5-bw-table.txt")
 write.table(make_table(), file_name_path, quote=FALSE, sep="\t", row.names=FALSE)
 
 

@@ -20,7 +20,7 @@ ActuatorHeatExchanger::ActuatorHeatExchanger(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a heat exchanger");
-    Input(groundArea).imports("construction/geometry[groundArea]",CA);
+    Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]",CA);
     Input(indoorsTemperature).imports("indoors[temperature]",CA);
     Input(indoorsRh).imports("indoors[rh]",CA);

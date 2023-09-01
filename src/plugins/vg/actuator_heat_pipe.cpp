@@ -35,7 +35,7 @@ ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
     Input(maxTemperature).equals(80.).help("Maximum inflow temperature").unit("oC");
     Input(desiredTemperature).help("Desired inflow temperature").unit("oC");
     Input(indoorsTemperature).imports("indoors[temperature]",CA).unit("oC");
-    Input(groundArea).imports("geometry[groundArea]",CA).unit("m2");
+    Input(groundArea).imports("gh/geometry[groundArea]",CA).unit("m2");
 
     Output(inflowTemperature).help("Water temperature at entry").unit("oC");
     Output(outflowTemperature).help("Water temperature at exit").unit("oC");

@@ -44,11 +44,11 @@ HEADERS +=  \
     test_port_status.h \
     test_reader_boxscript_x3.h \
     test_references.h \
+    test_reg_exp.h \
     test_simulation.h \
     test_unique_names.h \
     test_value.h \
     test_value_collection.h
-#    ../../plugins/vg/budget.h \
 
 SOURCES +=  \
     main.cpp \
@@ -81,8 +81,8 @@ SOURCES +=  \
     test_phys_math.cpp \
     test_reader_boxscript_x3.cpp \
     test_references.cpp \
+    test_reg_exp.cpp \
     test_simulation.cpp \
     test_unique_names.cpp \
     test_value.cpp \
-    test_value_collection.cpp \
-#    ../../plugins/vg/budget.cpp
+    test_value_collection.cpp

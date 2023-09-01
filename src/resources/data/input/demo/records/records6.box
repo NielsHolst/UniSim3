@@ -6,7 +6,6 @@ Simulation sim {
   }
   Records weather { 
     .fileName = "../weather/flakkebjerg 2005.txt"
-    .cycle = TRUE
   }
   OutputR {
      OutputText {

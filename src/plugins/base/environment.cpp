@@ -97,9 +97,6 @@ QString Environment::homePath() const {
 }
 
 QString Environment::openOutputFile(QFile &file, QString extension) {
-//    QString s="Environment::openOutputFile, extension:%1";
-//    dialog().information(s.arg(extension));
-
     // If multiple instances are running there is an off chance that the file path already exists
     // The forced increment of the counter will most likely but not certainly solve the problem
     QString filePath = outputFilePath(extension);
@@ -107,10 +104,8 @@ QString Environment::openOutputFile(QFile &file, QString extension) {
         incrementFileCounter();
         filePath = outputFilePath(extension);
     }
-
     file.setFileName(filePath);
     if ( !file.open(QIODevice::WriteOnly | QIODevice::NewOnly | QIODevice::Text) )
-//    if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         ThrowException("Cannot open file for output").value(filePath);
     return filePath;
 }

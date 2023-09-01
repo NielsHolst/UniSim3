@@ -51,6 +51,7 @@ HEADERS +=  \
     tail.h \
 #    test.h \
 #    update.h \
+    vg.h \
     what.h \
     write.h \
     write_output.h \
@@ -95,6 +96,7 @@ SOURCES +=  \
     set_font.cpp \
     set_folder.cpp \
     tail.cpp \
+    vg.cpp \
 #    test.cpp \
 #    update.cpp \
     what.cpp \

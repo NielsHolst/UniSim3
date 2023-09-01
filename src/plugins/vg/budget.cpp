@@ -47,20 +47,20 @@ Budget::Budget(QString name, base::Box *parent)
     Input(tempPrecision).equals(0.5).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(thresholdPrecision).equals(0.1).unit("K").help("Precision of temperature thresholds for climate control");
     Input(timeStep).imports("calendar[timeStepSecs]");
-    Input(averageHeight).imports("geometry[averageHeight]");
-    Input(coverPerGroundArea).imports("geometry[coverPerGroundArea]");
+    Input(averageHeight).imports("gh/geometry[averageHeight]");
+    Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
     Input(outdoorsTemperature).imports("outdoors[temperature]");
     Input(outdoorsRh).imports("outdoors[rh]");
     Input(outdoorsCo2).imports("outdoors[co2]");
-    Input(transpirationRate).imports("plant[transpiration]");
-    Input(Pn).imports("plant[Pn]");
-    Input(co2Injection).imports("actuators/co2[value]");
-    Input(heatPipeFlux).imports("actuators/heatPipes[heatFlux]");
-    Input(ventilationThreshold).imports("controllers/ventilation/temperatureThreshold[value]");
-    Input(ventilationCostThreshold).imports("controllers/ventilation/maxHeatingCost[value]");
-    Input(heatingThreshold).imports("controllers/heating[value]");
-    Input(heatPipesOn).imports("heatPipes/*[isHeating]");
-    Input(ventilationOn).imports("actuators/ventilation[isVentilating]");
+    Input(transpirationRate).imports("gh/plant[transpiration]");
+    Input(Pn).imports("gh/plant[Pn]");
+    Input(co2Injection).imports("gh/actuators/co2[value]");
+    Input(heatPipeFlux).imports("gh/actuators/heatPipes[heatFlux]");
+    Input(ventilationThreshold).imports("gh/controllers/ventilation/temperatureThreshold[value]");
+    Input(ventilationCostThreshold).imports("gh/controllers/ventilation/maxHeatingCost[value]");
+    Input(heatingThreshold).imports("gh/controllers/heating[value]");
+    Input(heatPipesOn).imports("gh/actuators/heatPipes/*[isHeating]");
+    Input(ventilationOn).imports("gh/actuators/ventilation[isVentilating]");
     Input(deltaVentControl).equals(0.3).unit("/h/min").help("Control increment of ventilation flux");
     Input(deltaVentControlRelative).equals(0.2).unit("/min").help("Relative control of ventilation flux");
     Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
@@ -127,8 +127,8 @@ void Budget::addLayers() {
     screens      = findMany<AverageScreen*>("shelter/layers/screens/*");
     growthLights = findMaybeOne<GrowthLights*>("actuators/growthLights");
     heatPipes    = findMaybeOne<HeatPipes*>("actuators/heatPipes");
-    plant        = findMaybeOne<Plant*>("/plant");
-    floor        = findOne<Floor*>("/floor");
+    plant        = findMaybeOne<Plant*>("gh/plant");
+    floor        = findOne<Floor*>("gh/floor");
 
     // Build layers as children
     BoxBuilder builder(this);
@@ -161,8 +161,8 @@ void Budget::addLayers() {
     if (plant) {
         builder.
             box("BudgetLayer").name("plant").
-                port("initTemperature").imports("/plant[temperature]").
-                port("temperature").imports("/plant[temperature]").
+                port("initTemperature").imports("gh/plant[temperature]").
+                port("temperature").imports("gh/plant[temperature]").
             endbox();
     }
     if (heatPipes) {

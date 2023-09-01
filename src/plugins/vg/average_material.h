@@ -20,6 +20,7 @@ public:
     void update();
 private:
     // Additional inputs
+    QString materialName;
     QVector<double>
         myAreas, myWeights,
         allAreas, allWeights;

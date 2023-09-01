@@ -20,27 +20,34 @@ ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models power use and radiation from growth light");
-    Input(isOn).help("Is light currently switched on?").unit("bool");
-    Input(power).help("Power of installed lamps per greenhouse area").unit("W/m2");
-    Input(ballast).help("Power used by lamp ballast").unit("W/m2");
-    Input(parPhotonCoef).equals(1.6).help("Number of PAR photons per spent lamp energy").unit("micromole PAR/J");
+    Input(productName).help("Name of product holding lamp parameters");
+    Input(numberInstalled).unit("/m2").help("Number of lamps installed");
     Input(efficiency).equals(1.).help("Proportion of intensity actually emitted").unit("[0;1]");
-    Input(propSw).equals(0.5).help("Proportion of power emitted as short-wave radiation").unit("[0;1]");
-    Input(propLw).equals(0.1).help("Proportion of power emitted as long-wave radiation").unit("[0;1]");
-    Input(propConv).equals(0.4).help("Proportion of power emitted as convective heat").unit("[0;1]");
-    Input(propBallastLw).equals(0.7).help("Proportion of ballast emitted as long-wave radiation").unit("[0;1]");
-    Input(propBallastConv).equals(0.3).help("Proportion of ballast emitted as convective heat").unit("[0;1]");
+    Input(isOn).help("Is light currently switched on?").unit("bool");
 
+    Output(power).help("Power of installed lamps").unit("W/m2");
+    Output(ballast).help("Power used by lamp ballast").unit("W/m2");
     Output(parEmissionBottom).help("PAR emission downwards").unit("micromole PAR/m2/s");
     Output(swEmissionBottom).help("Short-wave emission downwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
     Output(convectionBottom).help("Convective heat downwards").unit("W/m2");
     Output(convectionTop).   help("Convective heat upwards").unit("W/m2");
+    Output(minPeriodOn).help("Minimum period that light stays on").unit("min");
     Output(powerUsage).help("Current power usage").unit("W/m2");
 }
 
 void ActuatorGrowthLight::reset() {
+    Box *product = findOne<Box*>("../products/" + productName);
+    power           = product->port("power")->value<double>()   * numberInstalled;
+    ballast         = product->port("ballast")->value<double>() * numberInstalled;
+    propSw          = product->port("propSw")->value<double>();
+    propLw          = product->port("propLw")->value<double>();
+    propConv        = product->port("propConv")->value<double>();
+    propBallastLw   = product->port("propBallastLw")->value<double>();
+    propBallastConv = product->port("propBallastConv")->value<double>();
+    minPeriodOn     = product->port("minPeriodOn")->value<double>();
+
     checkProp(propSw, "propSw");
     checkProp(propLw, "propLw");
     checkProp(propConv, "propConv");
@@ -81,7 +88,7 @@ void ActuatorGrowthLight::noLight() {
 }
 
 void ActuatorGrowthLight::checkProp(double prop, QString name) {
-    if (prop < 0. || prop > 1)
+    if (prop < 0. || prop > 1.)
         ThrowException("Proportion must be inside [0;1] interval").value(name).value2(prop).context(this);
 }
 

@@ -20,7 +20,7 @@ BudgetLayerScreen::BudgetLayerScreen(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
     setClassName("vg", "BudgetLayer");
-    Input(groundArea).imports("geometry[groundArea]");
+    Input(groundArea).imports("gh/geometry[groundArea]");
     Input(indoorsRh).imports("indoors[rh]");
 }
 
