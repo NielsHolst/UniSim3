@@ -45,6 +45,27 @@ Layer::Layer(QString name, Box *parent)
     Input(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 layer");
 }
 
+#define UPDATE_INPUT(x) x = product->port(#x)->value<double>()
+
+void Layer::updateInputsFromProduct(QString productPath) {
+    Box *product = findOne<Box*>(productPath);
+    UPDATE_INPUT(swReflectivityTop);
+    UPDATE_INPUT(swReflectivityBottom);
+    UPDATE_INPUT(lwReflectivityTop);
+    UPDATE_INPUT(lwReflectivityBottom);
+    UPDATE_INPUT(swTransmissivityTop);
+    UPDATE_INPUT(swTransmissivityBottom);
+    UPDATE_INPUT(lwTransmissivityTop);
+    UPDATE_INPUT(lwTransmissivityBottom);
+    UPDATE_INPUT(swAbsorptivityTop);
+    UPDATE_INPUT(swAbsorptivityBottom);
+    UPDATE_INPUT(lwAbsorptivityTop);
+    UPDATE_INPUT(lwAbsorptivityBottom);
+    UPDATE_INPUT(Utop);
+    UPDATE_INPUT(Ubottom);
+    UPDATE_INPUT(heatCapacity);
+}
+
 void Layer::update() {
     checkInputs();
 }

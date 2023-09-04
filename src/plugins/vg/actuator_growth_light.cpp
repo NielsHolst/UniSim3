@@ -37,16 +37,20 @@ ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
     Output(powerUsage).help("Current power usage").unit("W/m2");
 }
 
+#define UPDATE_INPUT(x) x = product->port(#x)->value<double>()
+
 void ActuatorGrowthLight::reset() {
     Box *product = findOne<Box*>("../products/" + productName);
-    power           = product->port("power")->value<double>()   * numberInstalled;
-    ballast         = product->port("ballast")->value<double>() * numberInstalled;
-    propSw          = product->port("propSw")->value<double>();
-    propLw          = product->port("propLw")->value<double>();
-    propConv        = product->port("propConv")->value<double>();
-    propBallastLw   = product->port("propBallastLw")->value<double>();
-    propBallastConv = product->port("propBallastConv")->value<double>();
-    minPeriodOn     = product->port("minPeriodOn")->value<double>();
+    UPDATE_INPUT(power)*numberInstalled;
+    UPDATE_INPUT(ballast)*numberInstalled;
+    UPDATE_INPUT(parPhotonCoef);
+    UPDATE_INPUT(propSw);
+    UPDATE_INPUT(propSw);
+    UPDATE_INPUT(propLw);
+    UPDATE_INPUT(propConv);
+    UPDATE_INPUT(propBallastLw);
+    UPDATE_INPUT(propBallastConv);
+    UPDATE_INPUT(minPeriodOn);
 
     checkProp(propSw, "propSw");
     checkProp(propLw, "propLw");

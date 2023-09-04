@@ -33,6 +33,7 @@ Screen::Screen(QString name, Box *parent)
 }
 
 void Screen::reset() {
+//    updateInputsFromProduct("shelter/products/screens/" + name());
     checkInputs();
     state = 0.;
     update();

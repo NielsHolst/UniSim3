@@ -9,7 +9,7 @@
 		<Longitude>10.4024</Longitude>
 		<Latitude>55.4038</Latitude>
 		<StartTime>01.01.2023</StartTime>
-		<StopTime>31.12.2023</StopTime>
+		<StopTime>03.01.2023</StopTime>
 		<TimeStep>3</TimeStep>
 	</Description>
 	<Greenhouse>
@@ -438,6 +438,14 @@
 					<PaneLwReflection>0.15</PaneLwReflection>
 					<PaneLwTransmission>0.02</PaneLwTransmission>
 					<PaneHeatCapacity>8400</PaneHeatCapacity>
+				</Product>
+				<Product name="Single glass 6mm">
+					<PaneTransmission>0.78</PaneTransmission>
+					<PaneUValue>5.4</PaneUValue>
+					<PaneReflection>0.1</PaneReflection>
+					<PaneLwReflection>0.15</PaneLwReflection>
+					<PaneLwTransmission>0.01</PaneLwTransmission>
+					<PaneHeatCapacity>12600</PaneHeatCapacity>
 				</Product>
 			</Products>
 			<Pane index="0" layer="0" position="1">

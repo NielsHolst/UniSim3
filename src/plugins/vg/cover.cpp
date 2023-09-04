@@ -25,7 +25,9 @@ Cover::Cover(QString name, Box *parent)
     Input(lwShading).unit("[0;1]").help("Additional long-wave reflectivity caused by chalk");
 }
 
+
 void Cover::reset() {
+//    updateInputsFromProduct("shelter/products/covers/" + name());
     checkInputs();
     update();
 }

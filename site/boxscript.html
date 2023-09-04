@@ -1399,7 +1399,7 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
        34.5      0.0       20.0   100.0       100.0         1   79
 </code></pre>
 </div> <!-- border-grey-->
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='maker'>xxx</p><div class='border-grey'>
+<p class='hidden-anchor' id='maker'>xxx</p><div class='border-grey'>
 <h2>Maker</h2>
 <ul class="h3-links">
   <li><a href='#make-numbered-clones'>Make numbered clones</a></li>
@@ -1408,7 +1408,8 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 </ul>
 <div class="insert macro">#plugins/boxes/maker.html</div>
 <div class="begin macro"></div>
-<h3>Interface</h3>
+<h2>Maker</h2>
+<h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>replicates</td><td>int</td><td>1 </td><td>Supply either, (1) then number of clones to replicate from child boxes;</td></tr>
 <tr><td>names</td><td>vec_string</td><td>c() </td><td>or (2) the names of clones;</td></tr>
@@ -1418,10 +1419,10 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 </tbody></table>
 <div class="end macro"></div>
 
-<h3>Usage</h3>
+<h3 id='usage'>Usage</h3>
 You use a <code>Maker</code> box if you want to make several copies (clones) of a box in the boxscript. The clones will all be exact copies of the original box (albeit with different names), including its port values and any child boxes, recursively (i.e. the clones are deep copies). 
 
-<h3 id='#make-numbered-clones'>&#9207; Make numbered clones</h3>
+<h3 id='make-numbered-clones'>&#9207; Make numbered clones</h3>
 In the first example, we create want to create four box objets representing islands with populations of foxes and rabbits. The geolocation of the islands and animal densities should be random. Here is our first sketch of a model without the use of a <code>Maker</code>:
 <pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands1.box">// islands1.box&#9207;</a>
 Simulation sim {
@@ -1639,7 +1640,7 @@ isle2.fox isle2.rabbit isle2.latitude isle2.longitude iteration step
        15          949        18.9858        -36.5964         4    5
 </code></pre>
 Note the there can only be one randomiser box on a boxscript. All the random variables in a boxscript draw numbers from this one source.
-<h3 id='#make-named-clones'>Make named clones</h3>
+<h3 id='make-named-clones'>Make named clones</h3>
 To continue the example above, let's say that we want to model some concrete islands with known positions but still with random population densities. We can achieve this by supplying the <code>Maker</code> box with a vector of <code>names</code> in stead of just the number of replicates. In this example, we include only to islands:
 <pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands4.box">// islands4.box&#9207;</a>
 Simulation sim {
@@ -3135,7 +3136,7 @@ Simulation sim {
         <div class="border-red">
           <h2>Try it!</h2>
           <p><a href="https://tildeweb.au.dk/au152367/download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
-          <p class="date">2 Aug 2023</p>
+          <p class="date">5 Oct 2023</p>
         </div>
         <div class="border-violet">
           <h2>Model just published</h2>

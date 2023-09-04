@@ -18,6 +18,7 @@ public:
     Cover(QString name, Box *parent);
     void reset();
     void update();
+    void updateProductInputs(QString productPath);
 private:
     // Additional inputs
     double transmissivityReduction, swShading, lwShading;

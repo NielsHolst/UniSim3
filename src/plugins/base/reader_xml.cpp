@@ -231,6 +231,14 @@ void ReaderXml::readVirtualGreenhouse() {
                     box().name("covers");
                         shelterCovers().
                     endbox().
+                    box().name("products").
+                        box().name("covers");
+                            shelterCovers().
+                        endbox().
+                        box().name("screens");
+                            shelterScreens().
+                        endbox().
+                    endbox().
                     box().name("screens");
                         shelterScreens().
                     endbox().
@@ -769,7 +777,7 @@ BoxBuilder& ReaderXml::actuatorsHeatPipes() {
         double
             diameter = heatPipe.find("InnerDiameter")->toDouble(),
             lengthPerSqm = heatPipe.find("PipeLengthPerSqm")->toDouble(),
-            volume = PI*p2(diameter)*lengthPerSqm*groundArea();
+            volume = PI*p2(diameter)*lengthPerSqm*groundArea();  // diameter/2 !!
         _builder->
         box("ActuatorHeatPipe").name("circuit"+QString::number(circuit)).
             port("volume").equals(volume).

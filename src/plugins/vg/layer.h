@@ -16,6 +16,7 @@ class Layer : virtual public base::Box
 public:
     Layer(QString name, Box *parent);
     void update();
+    void updateInputsFromProduct(QString productPath);
 protected:
     // Inputs
     double
