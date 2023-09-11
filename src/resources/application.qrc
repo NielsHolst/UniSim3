@@ -208,6 +208,11 @@
     <file>data/input/models/vg/2023-08-31-Watson.box</file>
     <file>data/input/models/vg/2023-08-31-Watson.xml</file>
     <file>data/input/models/vg/2023-09-01-standard.box</file>
+    <file>data/input/models/vg/2023-09-01-Test.box</file>
+    <file>data/input/models/vg/2023-09-01-Test.xml</file>
+    <file>data/input/models/vg/2023-09-04-basis-analyse.R</file>
+    <file>data/input/models/vg/2023-09-04-basis.box</file>
+    <file>data/input/models/vg/2023-09-04-basis.xml</file>
     <file>data/input/models/vg/calibrate-screens.box</file>
     <file>data/input/models/vg/DNK_Odense.txt</file>
     <file>data/input/models/vg/greenhouse.box</file>

@@ -18,7 +18,7 @@ PUBLISH(AverageCover)
 
 AverageCover::AverageCover(QString name, Box *parent)
     : Box(name, parent),
-      AverageCoverOrScreen(name, parent)
+      AverageAllMaterialsInLayer(name, parent)
 {
     help("computes average cover radiation and heat parameters");
     Input(groundArea).imports("gh/geometry[groundArea]");
@@ -79,7 +79,7 @@ void AverageCover::reset() {
         }
         ++i;
     }
-    AverageCoverOrScreen::reset();
+    AverageAllMaterialsInLayer::reset();
 }
 
 void AverageCover::updateUbottomAdj() {

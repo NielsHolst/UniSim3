@@ -1,0 +1,897 @@
+Simulation sim{
+  Box global{
+    &beginDate = 2023/01/01
+  }
+  Calendar calendar{
+    .latitude = 55.4038
+    .longitude = 10.4024
+    .begin = global[beginDate] - 1
+    .end = 2023/01/31T00:00:00
+    .timeStep = 180
+    .timeUnit = "s"
+  }
+  Outdoors outdoors{
+    Records records{
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+      .ignoreYear = TRUE
+    }
+    SoilTemperature soilTemperature{
+      .initial = 1.2
+    }
+  }
+  Sky sky{
+  }
+  Box construction{
+    Geometry geometry{
+      .numSpans = 25
+      .spanWidth = 4.0
+      .length = 100.0
+      .height = 4.0
+      .roofPitch = 26.0
+    }
+    LeakageVentilation leakage{
+      .leakage = 0.1
+    }
+    Shelter shelter{
+      UWind Utop{
+        .UwindSlope = 1.2
+      }
+      Shading shading{
+        ShadingAgent test{
+          .swReflectivity = 0.2
+          .lwReflectivity = 0.2
+          .state = setpoints/shading/test[value]
+        }
+      }
+      Box covers{
+        Cover Single_glass_4mm{
+          .swAbsorptivityTop = 0.1
+          .swReflectivityTop = 0.1
+          .swTransmissivityTop = 0.8
+          .swAbsorptivityBottom = 0.1
+          .swReflectivityBottom = 0.1
+          .swTransmissivityBottom = 0.8
+          .lwAbsorptivityTop = 0.83
+          .lwReflectivityTop = 0.15
+          .lwTransmissivityTop = 0.02
+          .lwAbsorptivityBottom = 0.83
+          .lwReflectivityBottom = 0.15
+          .lwTransmissivityBottom = 0.02
+          .Utop = shelter/Utop[value]
+          .Ubottom = 6.5
+          .heatCapacity = 8400.0
+          .transmissivityReduction = 0.1
+          .swShading = shelter/shading[swReflectivity]
+          .lwShading = shelter/shading[lwReflectivity]
+        }
+      }
+      Box screens{
+        Screen layer1_Bonar_PhormiTex_55_B1{
+          .swAbsorptivityTop = 0.53
+          .swReflectivityTop = 0.02
+          .swTransmissivityTop = 0.45
+          .swAbsorptivityBottom = 0.0
+          .swReflectivityBottom = 0.55
+          .swTransmissivityBottom = 0.45
+          .lwAbsorptivityTop = 0.53
+          .lwReflectivityTop = 0.02
+          .lwTransmissivityTop = 0.45
+          .lwAbsorptivityBottom = 0.0
+          .lwReflectivityBottom = 0.55
+          .lwTransmissivityBottom = 0.45
+          .Utop = 0.6
+          .Ubottom = 0.6
+          .heatCapacity = 80.0
+          .state = actuators/screens/layer1[state]
+          .Uinsulation = 0.3
+          .UinsulationEffectivity = 0.95
+        }
+      }
+      Box faces{
+        Face roof1{
+          .cover = "Single_glass_4mm"
+          .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          .area = construction/geometry[roofArea] / 2
+          .weight = 1.0
+        }
+        Face roof2{
+          .cover = "Single_glass_4mm"
+          .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          .area = construction/geometry[roofArea] / 2
+          .weight = 1.0
+        }
+        Face side1{
+          .cover = "Single_glass_4mm"
+          .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          .area = construction/geometry[sideArea] / 2
+          .weight = 0.6
+        }
+        Face side2{
+          .cover = "Single_glass_4mm"
+          .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          .area = construction/geometry[sideArea] / 2
+          .weight = 0.6
+        }
+        Face end1{
+          .cover = "Single_glass_4mm"
+          .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          .area = construction/geometry[endArea] / 2
+          .weight = 0.2
+        }
+        Face end2{
+          .cover = "Single_glass_4mm"
+          .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          .area = construction/geometry[endArea] / 2
+          .weight = 0.2
+        }
+      }
+      Box layers{
+        AverageCover cover{
+          Box materials{
+            AverageMaterial Single_glass_4mm{
+              .swAbsorptivityTop = shelter/covers/Single_glass_4mm[swAbsorptivityTopAdj]
+              .swReflectivityTop = shelter/covers/Single_glass_4mm[swReflectivityTopAdj]
+              .swTransmissivityTop = shelter/covers/Single_glass_4mm[swTransmissivityTopAdj]
+              .swAbsorptivityBottom = shelter/covers/Single_glass_4mm[swAbsorptivityBottomAdj]
+              .swReflectivityBottom = shelter/covers/Single_glass_4mm[swReflectivityBottomAdj]
+              .swTransmissivityBottom = shelter/covers/Single_glass_4mm[swTransmissivityBottomAdj]
+              .lwAbsorptivityTop = shelter/covers/Single_glass_4mm[lwAbsorptivityTopAdj]
+              .lwReflectivityTop = shelter/covers/Single_glass_4mm[lwReflectivityTopAdj]
+              .lwTransmissivityTop = shelter/covers/Single_glass_4mm[lwTransmissivityTopAdj]
+              .lwAbsorptivityBottom = shelter/covers/Single_glass_4mm[lwAbsorptivityBottomAdj]
+              .lwReflectivityBottom = shelter/covers/Single_glass_4mm[lwReflectivityBottomAdj]
+              .lwTransmissivityBottom = shelter/covers/Single_glass_4mm[lwTransmissivityBottomAdj]
+              .Utop = shelter/covers/Single_glass_4mm[UtopAdj]
+              .Ubottom = shelter/covers/Single_glass_4mm[UbottomAdj]
+              .heatCapacity = shelter/covers/Single_glass_4mm[heatCapacityAdj]
+              .myAreas = shelter/faces/roof1[area]|shelter/faces/roof2[area]|shelter/faces/side1[area]|shelter/faces/side2[area]|shelter/faces/end1[area]|shelter/faces/end2[area]
+              .myWeights = shelter/faces/roof1[weight]|shelter/faces/roof2[weight]|shelter/faces/side1[weight]|shelter/faces/side2[weight]|shelter/faces/end1[weight]|shelter/faces/end2[weight]
+            }
+          }
+        }
+        Box screens{
+          AverageScreen screen1{
+            Box materials{
+              AverageMaterial layer1_Bonar_PhormiTex_55_B1{
+                .swAbsorptivityTop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[swAbsorptivityTopAdj]
+                .swReflectivityTop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[swReflectivityTopAdj]
+                .swTransmissivityTop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[swTransmissivityTopAdj]
+                .swAbsorptivityBottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[swAbsorptivityBottomAdj]
+                .swReflectivityBottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[swReflectivityBottomAdj]
+                .swTransmissivityBottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[swTransmissivityBottomAdj]
+                .lwAbsorptivityTop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[lwAbsorptivityTopAdj]
+                .lwReflectivityTop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[lwReflectivityTopAdj]
+                .lwTransmissivityTop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[lwTransmissivityTopAdj]
+                .lwAbsorptivityBottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[lwAbsorptivityBottomAdj]
+                .lwReflectivityBottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[lwReflectivityBottomAdj]
+                .lwTransmissivityBottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[lwTransmissivityBottomAdj]
+                .Utop = shelter/screens/layer1_Bonar_PhormiTex_55_B1[UtopAdj]
+                .Ubottom = shelter/screens/layer1_Bonar_PhormiTex_55_B1[UbottomAdj]
+                .heatCapacity = shelter/screens/layer1_Bonar_PhormiTex_55_B1[heatCapacityAdj]
+                .myAreas = shelter/faces/roof1[area]|shelter/faces/roof2[area]|shelter/faces/side1[area]|shelter/faces/side2[area]|shelter/faces/end1[area]|shelter/faces/end2[area]
+                .myWeights = shelter/faces/roof1[weight]|shelter/faces/roof2[weight]|shelter/faces/side1[weight]|shelter/faces/side2[weight]|shelter/faces/end1[weight]|shelter/faces/end2[weight]
+              }
+            }
+          }
+          AverageScreen screen2{
+            Box materials{
+              AverageMaterial none{
+                .Utop = 1e-32
+                .Ubottom = 1e-32
+                .myAreas = shelter/faces/roof1[area]|shelter/faces/roof2[area]|shelter/faces/side1[area]|shelter/faces/side2[area]|shelter/faces/end1[area]|shelter/faces/end2[area]
+                .myWeights = shelter/faces/roof1[weight]|shelter/faces/roof2[weight]|shelter/faces/side1[weight]|shelter/faces/side2[weight]|shelter/faces/end1[weight]|shelter/faces/end2[weight]
+              }
+            }
+          }
+          AverageScreen screen3{
+            Box materials{
+              AverageMaterial none{
+                .Utop = 1e-32
+                .Ubottom = 1e-32
+                .myAreas = shelter/faces/roof1[area]|shelter/faces/roof2[area]|shelter/faces/side1[area]|shelter/faces/side2[area]|shelter/faces/end1[area]|shelter/faces/end2[area]
+                .myWeights = shelter/faces/roof1[weight]|shelter/faces/roof2[weight]|shelter/faces/side1[weight]|shelter/faces/side2[weight]|shelter/faces/end1[weight]|shelter/faces/end2[weight]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  Box setpoints{
+    Box rhMax{
+      PrioritySignal threshold{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 90.0
+        }
+      }
+      PrioritySignal band{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 5.0
+        }
+      }
+    }
+    Box heating{
+      PrioritySignal base{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 20.0
+        }
+      }
+      PrioritySignal humidityOffset{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 2.0
+        }
+      }
+      PrioritySignal minTemperature{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 20.0
+        }
+      }
+    }
+    Box ventilation{
+      PrioritySignal offset{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 5.0
+        }
+      }
+      PrioritySignal maxHeatingCost{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 50.0
+        }
+      }
+    }
+    Box screens{
+      Box energy1{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+      }
+      Box energy2{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+      }
+      Box energy3{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+      }
+      Box shade1{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 500.0
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 50.0
+          }
+        }
+      }
+      Box shade2{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 500.0
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 50.0
+          }
+        }
+      }
+      Box shade3{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 500.0
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 50.0
+          }
+        }
+      }
+      Box blackout1{
+        PrioritySignal state{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.0
+          }
+        }
+      }
+      Box blackout2{
+        PrioritySignal state{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.0
+          }
+        }
+      }
+      Box blackout3{
+        PrioritySignal state{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.0
+          }
+        }
+      }
+    }
+    Box shading{
+      PrioritySignal test{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 0.0
+        }
+      }
+    }
+    Box growthLights{
+      Box bank1{
+        PrioritySignal mode{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 1.0
+          }
+        }
+        Box thresholds{
+          PrioritySignal low{
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 40.0
+            }
+          }
+          PrioritySignal high{
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 600.0
+            }
+          }
+        }
+      }
+      Box bank2{
+        PrioritySignal mode{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.0
+          }
+        }
+        Box thresholds{
+          PrioritySignal low{
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 40.0
+            }
+          }
+          PrioritySignal high{
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 600.0
+            }
+          }
+        }
+      }
+      Box bank3{
+        PrioritySignal mode{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.0
+          }
+        }
+        Box thresholds{
+          PrioritySignal low{
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 40.0
+            }
+          }
+          PrioritySignal high{
+            DateTimeSignal {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 600.0
+            }
+          }
+        }
+      }
+    }
+    Box co2{
+      PrioritySignal concentration{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 900.0
+        }
+      }
+      PrioritySignal capacity{
+        DateTimeSignal {
+          .beginDate = 1/1
+          .endDate = 31/12
+          .beginTime = 00:00:00
+          .endTime = 00:00:00
+          .signalInside = 50.0
+        }
+      }
+      Box ventilation{
+        PrioritySignal threshold{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.1
+          }
+        }
+        PrioritySignal band{
+          DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.2
+          }
+        }
+      }
+    }
+  }
+  Box controllers{
+    Sum heating{
+      .values = setpoints/heating/base[value]|./humidityOffset[value]
+      ProportionalSignal humidityOffset{
+        .input = indoors[rh]
+        .threshold = setpoints/rhMax/threshold[value]
+        .thresholdBand = setpoints/rhMax/band[value]
+        .maxSignal = setpoints/heating/humidityOffset[value]
+        .increasingSignal = TRUE
+      }
+    }
+    Box ventilation{
+      Sum temperatureThreshold{
+        .values = controllers/heating[value]|setpoints/ventilation/offset[value]
+      }
+      ProportionalSignal maxHeatingCost{
+        .input = indoors[rh]
+        .threshold = setpoints/rhMax/threshold[value]
+        .thresholdBand = setpoints/rhMax/band[value]
+        .maxSignal = setpoints/ventilation/maxHeatingCost[value]
+        .increasingSignal = TRUE
+      }
+    }
+    Box screens{
+      ProportionalSignal energy1{
+        .input = outdoors[radiation]
+        .threshold = setpoints/screens/energy1/threshold[value]
+        .thresholdBand = setpoints/screens/energy1/band[value]
+        .maxSignal = 1.0
+        .increasingSignal = FALSE
+      }
+      ProportionalSignal energy2{
+        .input = outdoors[radiation]
+        .threshold = setpoints/screens/energy2/threshold[value]
+        .thresholdBand = setpoints/screens/energy2/band[value]
+        .maxSignal = 1.0
+        .increasingSignal = FALSE
+      }
+      ProportionalSignal energy3{
+        .input = outdoors[radiation]
+        .threshold = setpoints/screens/energy3/threshold[value]
+        .thresholdBand = setpoints/screens/energy3/band[value]
+        .maxSignal = 1.0
+        .increasingSignal = FALSE
+      }
+      ProportionalSignal shade1{
+        .input = outdoors[radiation]
+        .threshold = setpoints/screens/shade1/threshold[value]
+        .thresholdBand = setpoints/screens/shade1/band[value]
+        .maxSignal = 1.0
+        .increasingSignal = TRUE
+      }
+      ProportionalSignal shade2{
+        .input = outdoors[radiation]
+        .threshold = setpoints/screens/shade2/threshold[value]
+        .thresholdBand = setpoints/screens/shade2/band[value]
+        .maxSignal = 1.0
+        .increasingSignal = TRUE
+      }
+      ProportionalSignal shade3{
+        .input = outdoors[radiation]
+        .threshold = setpoints/screens/shade3/threshold[value]
+        .thresholdBand = setpoints/screens/shade3/band[value]
+        .maxSignal = 1.0
+        .increasingSignal = TRUE
+      }
+      Box blackout1{
+        &value = setpoints/screens/blackout1/state[value]
+      }
+      Box blackout2{
+        &value = setpoints/screens/blackout2/state[value]
+      }
+      Box blackout3{
+        &value = setpoints/screens/blackout3/state[value]
+      }
+    }
+    Box growthLights{
+      GrowthLightController bank3{
+        .mode = setpoints/growthLights/bank3/mode[value]
+        .input = outdoors[radiation]
+        .thresholdLow = setpoints/growthLights/bank3/thresholds/low[value]
+        .thresholdHigh = setpoints/growthLights/bank3/thresholds/high[value]
+        .minPeriodOn = 20.0
+      }
+      GrowthLightController bank2{
+        .mode = setpoints/growthLights/bank2/mode[value]
+        .input = outdoors[radiation]
+        .thresholdLow = setpoints/growthLights/bank2/thresholds/low[value]
+        .thresholdHigh = setpoints/growthLights/bank2/thresholds/high[value]
+        .minPeriodOn = 20.0
+      }
+      GrowthLightController bank1{
+        .mode = setpoints/growthLights/bank1/mode[value]
+        .input = outdoors[radiation]
+        .thresholdLow = setpoints/growthLights/bank1/thresholds/low[value]
+        .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
+        .minPeriodOn = 5.0
+      }
+    }
+  }
+  Actuators actuators{
+    HeatPipes heatPipes{
+      ActuatorHeatPipe circuit2{
+        .volume = 477.836
+        .flowRate = 10.0
+        .k = 0.0063
+        .b = 1.25
+        .propLw = 0.2
+        .minTemperature = setpoints/heating/minTemperature[value]
+        .maxTemperature = 80.0
+        .indoorsTemperature = indoors[temperature]
+      }
+      ActuatorHeatPipe circuit1{
+        .volume = 477.836
+        .flowRate = 10.0
+        .k = 0.0063
+        .b = 1.25
+        .propLw = 0.2
+        .minTemperature = setpoints/heating/minTemperature[value]
+        .maxTemperature = 80.0
+        .indoorsTemperature = indoors[temperature]
+      }
+    }
+    ActuatorVentilation ventilation{
+      .ventAreaRatio = 0.12
+    }
+    Box screens{
+      ActuatorScreen layer1{
+        .lagPeriod = 10.0
+        .desiredState = max(controllers/screens/energy1[value])
+      }
+      ActuatorScreen layer2{
+        .lagPeriod = 10.0
+        .desiredState = max(controllers/screens/shade2[value])
+      }
+      ActuatorScreen layer3{
+        .lagPeriod = 10.0
+        .desiredState = max(controllers/screens/blackout3[value])
+      }
+    }
+    GrowthLights growthLights{
+      ActuatorGrowthLight bank3{
+        .isOn = controllers/growthLights/bank3[isOn]
+        .power = 0.0
+        .ballast = 50.0
+        .parPhotonCoef = 2.8
+        .efficiency = 1.0
+        .propSw = 0.4
+        .propLw = 0.5
+        .propConv = 0.1
+        .propBallastLw = 0.3
+        .propBallastConv = 0.7
+      }
+      ActuatorGrowthLight bank2{
+        .isOn = controllers/growthLights/bank2[isOn]
+        .power = 0.0
+        .ballast = 0.0
+        .parPhotonCoef = 0.0
+        .efficiency = 1.0
+        .propSw = 0.4
+        .propLw = 0.0
+        .propConv = 0.6
+        .propBallastLw = 0.0
+        .propBallastConv = 1.0
+      }
+      ActuatorGrowthLight bank1{
+        .isOn = controllers/growthLights/bank1[isOn]
+        .power = 30.0
+        .ballast = 50.0
+        .parPhotonCoef = 1.787
+        .efficiency = 1.0
+        .propSw = 0.2
+        .propLw = 0.0
+        .propConv = 0.8
+        .propBallastLw = 0.2
+        .propBallastConv = 0.8
+      }
+    }
+    Accumulator co2{
+      .change = ./controller[controlVariable]
+      .minValue = 0.0
+      .maxValue = setpoints/co2/capacity[value]
+      PidController controller{
+        .sensedValue = indoors[co2]
+        .desiredValue = setpoints/co2/concentration[value]
+        .Kprop = 0.05
+      }
+    }
+  }
+  Plant plant{
+    .k_sw = 0.7
+    .g0 = 0.1
+    .g1 = 1.64
+    .re = 200.0
+    .lai = 1.0
+    .coverage = 0.95
+    .Jmax = 145.52
+    .Vcmax = 71.61
+    .GammaStar = 55.47
+    .Km = 600.0
+    .Rd0 = 0.74
+    .alpha = 0.24
+    .theta = 0.85
+    .Q10 = 1.03
+  }
+  Floor floor{
+    .swAbsorptivityTop = 0.6
+    .swReflectivityTop = 0.4
+    .swTransmissivityTop = 0.0
+    .lwAbsorptivityTop = 0.6
+    .lwReflectivityTop = 0.4
+    .lwTransmissivityTop = 0.0
+    .Utop = 7.5
+    .Ubottom = 0.1
+    .heatCapacity = 42000.0
+  }
+  Budget budget{
+    BudgetVolume outdoorsVol{
+      .initTemperature = /outdoors[temperature]
+      .initRh = /outdoors[rh]
+    }
+    BudgetVolume indoors{
+      .initTemperature = 20.0
+      .initRh = 70.0
+    }
+    BudgetVolume soilVol{
+      .initTemperature = soilTemperature[value]
+    }
+    BudgetLayerSky sky{
+    }
+    BudgetLayerCover cover{
+    }
+    BudgetLayerScreen screen1{
+    }
+    BudgetLayerScreen screen2{
+    }
+    BudgetLayerScreen screen3{
+    }
+    BudgetLayer growthLights{
+    }
+    BudgetLayer plant{
+      .initTemperature = /plant[temperature]
+    }
+    BudgetLayer heatPipes{
+    }
+    BudgetLayerFloor floor{
+    }
+  }
+  Summary summary{
+  }
+  OutputR output{
+    Box variables{
+      &Uoutside = shelter/layers/cover[UtopAdj]
+      &Uinside = shelter/layers/cover[UbottomAdj]
+      &transpiration = budget[transpiration]
+      &spVentilationTemperature = controllers/ventilation/temperatureThreshold[value]
+      &spHeatingTemperature = controllers/heating[value]
+      &spCo2 = setpoints/co2/concentration[value]
+      &soilT = outdoors[soilTemperature]
+      &skyT = budget/sky[temperature]
+      &sensibleVentFlux = actuators/ventilation[sensibleHeatFlux]
+      &screen3T = budget/screen3[temperature]
+      &screen2T = budget/screen2[temperature]
+      &screen1T = budget/screen1[temperature]
+      &respirationRate = plant[Rd]
+      &pipeT = budget/heatPipes[temperature]
+      &outdoorsWindSpeed = outdoors[windSpeed]
+      &outdoorsT = outdoors[temperature]
+      &outdoorsRh = outdoors[rh]
+      &outdoorsPar = outdoors[par]
+      &outdoorsLight = outdoors[radiation]
+      &netGrowthRateLeaf = plant[leafGrowthRate]
+      &netGrowthRate = plant[growthRate]
+      &netAssimilationRate = plant[Pn]
+      &lwEmissionCover = budget/cover[lwEmissionTop]
+      &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
+      &lightUseEfficiency = plant[lue]
+      &leafT = budget/plant[temperature]
+      &latentVentFlux = actuators/ventilation[latentHeatFlux]
+      &indoorsTotalPar = plant[incidentPar]
+      &indoorsT = budget/indoors[temperature]
+      &indoorsRh = budget/indoors[rh]
+      &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
+      &indoorsCo2 = budget/indoors[co2]
+      &heatFluxFloor = budget/cover[convectionBottom]
+      &heatFluxCover = budget/cover[convectionTop]
+      &grossAssimilationRate = plant[Pg]
+      &floorT = budget/floor[temperature]
+      &coverT = budget/cover[temperature]
+      &condensation = budget[condensation]
+      &airFluxTotal = actuators/ventilation[value]
+      &actVentilation = actuators/ventilation[value]
+      &actScreen3 = actuators/screens/layer3[state]
+      &actScreen2 = actuators/screens/layer2[state]
+      &actScreen1  = actuators/screens/layer1[state]
+      &actPipeTempOut2 = actuators/heatPipes/circuit2[outflowTemperature]
+      &actPipeTempOut1 = actuators/heatPipes/circuit1[outflowTemperature]
+      &actPipeTempIn2 = actuators/heatPipes/circuit2[inflowTemperature]
+      &actPipeTempIn1 = actuators/heatPipes/circuit1[inflowTemperature]
+      &actLightPower = actuators/growthLights[powerUsage]
+      &actLightPar = actuators/growthLights[parEmissionBottom]
+      &actLight3 = actuators/growthLights/bank3[powerUsage]
+      &actLight2 = actuators/growthLights/bank2[powerUsage]
+      &actLight1 = actuators/growthLights/bank1[powerUsage]
+      &actHeatingPower = actuators/heatPipes[heatFlux]
+      &actCo2 = actuators/co2[value]
+    }
+    PageR {
+      .xAxis = calendar[dateTime]
+      .maximizeWindow = TRUE
+      PlotR {
+        .ports = "output/variables[*]"
+        .nrow = 7
+      }
+    }
+    OutputSelector selector{
+      .beginDateTime = 2023/01/01T00:00:00
+      .period = 10
+      .useLocalDecimalChar = FALSE
+      .skipFormats = TRUE
+    }
+  }
+  OutputWriter outputWriter{
+  }
+}

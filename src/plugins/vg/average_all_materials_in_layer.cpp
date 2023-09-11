@@ -7,7 +7,7 @@
 */
 #include <base/box_builder.h>
 #include <base/vector_op.h>
-#include "average_cover_or_screen.h"
+#include "average_all_materials_in_layer.h"
 
 using vector_op::sum;
 
@@ -21,7 +21,7 @@ using namespace base;
 
 namespace vg {
 
-AverageCoverOrScreen::AverageCoverOrScreen(QString name, Box *parent)
+AverageAllMaterialsInLayer::AverageAllMaterialsInLayer(QString name, Box *parent)
     : Box(name, parent),
       LayerAdjusted(name, parent)
 {
@@ -46,11 +46,11 @@ AverageCoverOrScreen::AverageCoverOrScreen(QString name, Box *parent)
     INPUT_MATERIALS(heatCapacity);
 }
 
-void AverageCoverOrScreen::reset() {
+void AverageAllMaterialsInLayer::reset() {
     update();
 }
 
-void AverageCoverOrScreen::update() {
+void AverageAllMaterialsInLayer::update() {
     double a, r, t;
     a = sum(swAbsorptivityTops);
     r = sum(swReflectivityTops);
@@ -89,7 +89,7 @@ void AverageCoverOrScreen::update() {
 
 #define MATERIAL_PORT(X) port(#X).imports(pathToMaterialPorts(material, #X))
 
-void AverageCoverOrScreen::buildAverageMaterial(BoxBuilder &builder, QString material) {
+void AverageAllMaterialsInLayer::buildAverageMaterial(BoxBuilder &builder, QString material) {
     QStringList myFaces = collectFacesByMaterial(material);
     builder.
     box("AverageMaterial").name(material).
@@ -114,7 +114,7 @@ void AverageCoverOrScreen::buildAverageMaterial(BoxBuilder &builder, QString mat
     endbox();
 }
 
-QString AverageCoverOrScreen::pathToFaces(QStringList faces, QString port) const {
+QString AverageAllMaterialsInLayer::pathToFaces(QStringList faces, QString port) const {
     QStringList result;
     for (const QString &face : faces) {
         result << "shelter/faces/" + face + "[" + port + "]";

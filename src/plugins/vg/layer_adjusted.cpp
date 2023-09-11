@@ -23,8 +23,6 @@ LayerAdjusted::LayerAdjusted(QString name, Box *parent)
     : Box(name, parent)
 {
     help("holds adjusted radiative and heat parameters of a layer");
-    Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
-
     const char text[] = "Parameter adjusted for chalk and state";
     Output(swAbsorptivityTopAdj).unit("[0;1]").help(text);
     Output(swReflectivityTopAdj).unit("[0;1]").help(text);

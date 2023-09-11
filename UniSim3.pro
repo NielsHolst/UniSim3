@@ -27,15 +27,15 @@ unisim.depends = command
 # Simulation model modules
 #
 
-SUBDIRS += aphid
-aphid.subdir = src/plugins/aphid
-aphid.depends = base
-unisim.depends = aphid
-
-SUBDIRS += cmbp
-cmbp.subdir = src/plugins/cmbp
-cmbp.depends = base
-unisim.depends = cmbp
+##SUBDIRS += aphid
+##aphid.subdir = src/plugins/aphid
+##aphid.depends = base
+##unisim.depends = aphid
+##
+##SUBDIRS += cmbp
+##cmbp.subdir = src/plugins/cmbp
+##cmbp.depends = base
+##unisim.depends = cmbp
 
 #SUBDIRS += coffee
 #coffee.subdir = src/plugins/coffee
@@ -47,15 +47,15 @@ unisim.depends = cmbp
 #MusselBed.depends = base
 #unisim.depends = MusselBed
 
-SUBDIRS += PestTox
-PestTox.subdir = src/plugins/PestTox
-PestTox.depends = base
-unisim.depends = PestTox
-
-SUBDIRS += saccharina
-saccharina.subdir = src/plugins/saccharina
-saccharina.depends = base
-unisim.depends = saccharina#
+##SUBDIRS += PestTox
+##PestTox.subdir = src/plugins/PestTox
+##PestTox.depends = base
+##unisim.depends = PestTox
+##
+##SUBDIRS += saccharina
+##saccharina.subdir = src/plugins/saccharina
+##saccharina.depends = base
+##unisim.depends = saccharina#
 
 SUBDIRS += vg
 vg.subdir = src/plugins/vg

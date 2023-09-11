@@ -543,7 +543,7 @@ I_a = A_zI_d\{1-exp(-k_lA_i)\}
 $$
 The relations all ultimately depend on $\wSdw$ as illustrated here with $c_Z=2$ m and $k_l=0.7$:
 
-![carbon-supply](..\media\models\saccharina\carbon-supply.png)
+![carbon-supply](media/models/saccharina/carbon-supply.png)
 
 The leaf area index is always high and the fraction of light intercepted (`fabs` in the figure) close to 100%. This means that the extent of the crown zone $A_z$ is more decisive for light absorption than the leaf area $A_l$, and that $c_Z$ is more influential than $k_l$, which we can safely leave at $k_l=0.7$. According to this reasoning, line-grown plants are expected to be morphologically distinguishable from solitary plants, due to the dense foliage, with narrower and maybe thinner leaves (showing etiolated growth).
 

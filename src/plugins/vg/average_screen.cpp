@@ -20,7 +20,7 @@ PUBLISH(AverageScreen)
 
 AverageScreen::AverageScreen(QString name, Box *parent)
     : Box(name, parent),
-      AverageCoverOrScreen(name, parent)
+      AverageAllMaterialsInLayer(name, parent)
 {
     help("computes average screen radiation and heat parameters");
     Input(effectiveArea).unit("m2").help("Total area of screens drawn");
@@ -91,7 +91,7 @@ void AverageScreen::reset() {
 }
 
 void AverageScreen::update() {
-    AverageCoverOrScreen::update();
+    AverageAllMaterialsInLayer::update();
     effectiveArea = 0.;
     for (int i=0; i<6; ++i)
         effectiveArea += _areas.at(i)*(*_states.at(i));

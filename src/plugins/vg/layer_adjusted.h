@@ -17,8 +17,6 @@ public:
     LayerAdjusted(QString name, Box *parent);
     void update();
 protected:
-    // Inputs
-    double coverPerGroundArea;
     // Outputs
     double
         swReflectivityTopAdj, swReflectivityBottomAdj,

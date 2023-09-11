@@ -15,8 +15,8 @@ HEADERS +=  \
     actuator_heat_pipe.h \
     actuator_screen.h \
     actuator_ventilation.h \
+    average_all_materials_in_layer.h \
     average_cover.h \
-    average_cover_or_screen.h \
     average_material.h \
     average_screen.h \
     budget.h \
@@ -63,8 +63,8 @@ SOURCES += \
     actuator_heat_pump.cpp \
     actuator_screen.cpp \
     actuator_ventilation.cpp \
+    average_all_materials_in_layer.cpp \
     average_cover.cpp \
-    average_cover_or_screen.cpp \
     average_material.cpp \
     average_screen.cpp \
     budget.cpp \

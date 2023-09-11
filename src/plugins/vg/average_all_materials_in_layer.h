@@ -5,8 +5,8 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef AVERAGE_COVER_OR_SCREEN_H
-#define AVERAGE_COVER_OR_SCREEN_H
+#ifndef AVERAGE_ALL_MATERIALS_IN_LAYER_H
+#define AVERAGE_ALL_MATERIALS_IN_LAYER_H
 #include "layer_adjusted.h"
 
 namespace base {
@@ -15,10 +15,10 @@ namespace base {
 
 namespace vg {
 
-class AverageCoverOrScreen : public LayerAdjusted
+class AverageAllMaterialsInLayer : public LayerAdjusted
 {
 public:
-    AverageCoverOrScreen(QString name, Box *parent);
+    AverageAllMaterialsInLayer(QString name, Box *parent);
     void reset();
     void update();
 private:

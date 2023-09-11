@@ -7,11 +7,11 @@
 */
 #ifndef AVERAGE_COVER_H
 #define AVERAGE_COVER_H
-#include "average_cover_or_screen.h"
+#include "average_all_materials_in_layer.h"
 
 namespace vg {
 
-class AverageCover : public AverageCoverOrScreen
+class AverageCover : public AverageAllMaterialsInLayer
 {
 public:
     AverageCover(QString name, Box *parent);

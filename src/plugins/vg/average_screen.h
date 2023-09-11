@@ -7,7 +7,7 @@
 */
 #ifndef AVERAGE_SCREEN_H
 #define AVERAGE_SCREEN_H
-#include "average_cover_or_screen.h"
+#include "average_all_materials_in_layer.h"
 
 namespace base {
  class BoxBuilder;
@@ -15,7 +15,7 @@ namespace base {
 
 namespace vg {
 
-class AverageScreen : public AverageCoverOrScreen
+class AverageScreen : public AverageAllMaterialsInLayer
 {
 public: 
     AverageScreen(QString name, Box *parent);
