@@ -6,14 +6,15 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/publish.h>
+#include <base/test_num.h>
 #include "actuator_screen.h"
 
 using namespace base;
+using TestNum::snapTo;
 
 namespace vg {
 
 PUBLISH(ActuatorScreen)
-
 
 ActuatorScreen::ActuatorScreen(QString name, Box *parent)
     : Box(name, parent)
@@ -39,6 +40,9 @@ void ActuatorScreen::update() {
     if (fabs(delta) > _deltaStateMax)
         delta = sign(delta)*_deltaStateMax;
     state += delta;
+    snapTo(state, 0., 1e-3);
+    snapTo(state, 1., 1e-3);
+    Q_ASSERT(state>=0. && state<=1.);
 }
 
 } //namespace

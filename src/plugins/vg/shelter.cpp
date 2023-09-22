@@ -22,11 +22,12 @@ Shelter::Shelter(QString name, Box *parent)
     : Box(name, parent)
 {
     help("holds parameters of the greenhouse shelter");
+    Input(transmissivityReduction).unit("[0;1]").help("Reduced cover transmission due to beams, dirt, etc.");
 }
 
 void Shelter::amend() {
     // Find faces
-    _faces = findMany<Box*>("./faces/*");
+    QVector<Box*> _faces = findMany<Box*>("./faces/*");
     if (_faces.size() != 6)
         ThrowException("Shelter must have 6 faces").value(_faces.size()).context(this);
 
@@ -58,10 +59,6 @@ void Shelter::amend() {
         endbox().
         box().name("screens");
             for (int layer=0; layer<numLayers; ++layer) {
-                QSet<QString> materials;
-                for (const QStringList &screenNames : screenNamesByFace) {
-                    materials << screenNames.at(layer);
-                }
                 builder.
                 box("AverageScreen").name("screen" + QString::number(layer+1)).
                 endbox();

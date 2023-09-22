@@ -8,16 +8,13 @@
 #ifndef FLOOR_H
 #define FLOOR_H
 #include "layer.h"
-#include "layer_adjusted.h"
 
 namespace vg {
 
-class Floor : public Layer, public LayerAdjusted
+class Floor : public Layer
 {
 public:
     Floor(QString name, Box *parent);
-    void reset();
-    void update();
 };
 
 } //namespace

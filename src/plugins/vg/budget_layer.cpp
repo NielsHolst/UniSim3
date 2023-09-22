@@ -10,7 +10,7 @@
 #include <base/test_num.h>
 #include "budget_layer.h"
 #include "budget_volume.h"
-#include "layer_adjusted.h"
+#include "layer.h"
 
 using namespace base;
 using namespace phys_math;
@@ -54,17 +54,17 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(netConvection).unit("W/m2").help("Net radiation (absorption - emission");
 }
 
-void BudgetLayer::attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom)
+void BudgetLayer::attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bottom)
 {
     // Attach layer parameters
     attachedLayer = layer;
-    emissivityTop    = attachedLayer->port("lwAbsorptivityTopAdj")->valuePtr<double>();
-    emissivityBottom = attachedLayer->port("lwAbsorptivityBottomAdj")->valuePtr<double>();
-    UtopAdj          = attachedLayer->port("UtopAdj")->valuePtr<double>();
-    UbottomAdj       = attachedLayer->port("UbottomAdj")->valuePtr<double>();
-    heatCapacity     = attachedLayer->port("heatCapacityAdj")->valuePtr<double>();
-    screenEffectiveArea = attachedLayer->peakPort("effectiveArea") ?
-                       attachedLayer->port("effectiveArea")->valuePtr<double>() : nullptr;
+    emissivityTop    = layer->port("lwAbsorptivityTop")->valuePtr<double>();
+    emissivityBottom = layer->port("lwAbsorptivityBottom")->valuePtr<double>();
+    Utop             = layer->port("Utop")->valuePtr<double>();
+    Ubottom          = layer->port("Ubottom")->valuePtr<double>();
+    heatCapacity     = layer->port("heatCapacity")->valuePtr<double>();
+    screenEffectiveArea = layer->peakPort("effectiveArea") ?
+                          layer->port("effectiveArea")->valuePtr<double>() : nullptr;
     // Attach volumes
     volumeTop = top;
     volumeBottom = bottom;
@@ -126,10 +126,10 @@ void BudgetLayer::updateLwEmission() {
 void BudgetLayer::updateConvection() {
     // Flux is positive if volume is warmer than layer
     if (!convectionTopUpdatedExternally) {
-        convectionTop    = eqZero(*UtopAdj) ? 0. : ((*temperatureVolumeTop)    - temperature)*(*UtopAdj);
+        convectionTop    = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeTop)    - temperature)*(*Utop);
     }
     if (!convectionBottomUpdatedExternally) {
-        convectionBottom = eqZero(*UbottomAdj) ? 0. : ((*temperatureVolumeBottom) - temperature)*(*UbottomAdj);
+        convectionBottom = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeBottom) - temperature)*(*Ubottom);
     }
     netConvection = convectionTop + convectionBottom;
 

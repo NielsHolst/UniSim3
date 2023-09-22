@@ -19,124 +19,57 @@ namespace vg {
 PUBLISH(AverageScreen)
 
 AverageScreen::AverageScreen(QString name, Box *parent)
-    : Box(name, parent),
-      AverageAllMaterialsInLayer(name, parent)
+    : AverageShelterLayer(name, parent)
 {
     help("computes average screen radiation and heat parameters");
-    Input(effectiveArea).unit("m2").help("Total area of screens drawn");
 }
 
 void AverageScreen::amend() {
-    // Collect the six faces
-    _faces = findMany<Box*>("shelter/faces/*");
-    if (_faces.size() != 6)
-        ThrowException("Shelter must have 6 faces").value(_faces.size()).context(this);
-
-    // Collect screens referred to
-    int numLayers = 0;
-    QVector<QStringList> screenNamesByFace;
-    for (Box *face : _faces) {
-        Port *port = face->peakPort("screens");
-        if (!port)
-            ThrowException("Face must have a port called 'screens'").
-            value(face->fullName()).context(this);
-        QStringList screenNames = port->value<QString>().split("+");
-        if (numLayers == 0)
-            numLayers = screenNames.size();
-        else if (numLayers != screenNames.size())
-            ThrowException("All faces must have the same number of screen layers").
-            value(numLayers).value2(screenNames.size()).hint(port->fullName()).context(this);
-        screenNamesByFace << screenNames;
-    }
-
-    // Collect materials
-    int layerNumber = getNumberFromName();
-    QSet<QString> materials;
-    for (const QStringList &screenNames : screenNamesByFace) {
-        materials << screenNames.at(layerNumber-1);
-    }
-
-    BoxBuilder builder(this);
-    builder.
-    box().name("materials");
-    for (const QString &material : materials.values()) {
-        if (material == "none")
-            buildAverageMaterialNone(builder);
-        else
-            buildAverageMaterial(builder, material);
-    }
-    builder.endbox(); //end materials
+    QString number = QString::number(screenIndex());
+    Input(state).imports("actuators/screens/screen" + number + "[state]");
 }
 
 void AverageScreen::reset() {
-    // Collect the six areas and states
-    // Done here since we need updated area values
-    static double zero = 0.;
-    _areas.clear();
-    _states.clear();
-    for (Box *face : _faces) {
-        QStringList screenNames = face->port("screens")->value<QString>().split("+");
-        int layerNumber = getNumberFromName();
-        QString material = screenNames.at(layerNumber-1);
-        if (material == "none") {
-            _areas << 0.;
-            _states << &zero;
-        }
-        else {
-            _areas << face->port("area")->value<double>();
-            _states << findOne<Box*>("shelter/screens/"+ material)->port("state")->valuePtr<double>();
-        }
-    }
     update();
 }
 
+LayerParameters AverageScreen::transform(const LayerParametersPtrs &p, const QVector<double> &adjustments) {
+    LayerParameters adj;
+    const double
+        &state(adjustments.at(0));
+
+    adj.swAbsorptivityTop      = state*(*p.swAbsorptivityTop);
+    adj.swReflectivityTop      = state*(*p.swReflectivityTop);
+    adj.swTransmissivityTop    = 1. - adj.swAbsorptivityTop - adj.swReflectivityTop;
+
+    adj.swAbsorptivityBottom   = state*(*p.swAbsorptivityBottom);
+    adj.swReflectivityBottom   = state*(*p.swReflectivityBottom);
+    adj.swTransmissivityBottom = 1. - adj.swAbsorptivityBottom - adj.swReflectivityBottom;
+
+    adj.lwAbsorptivityTop      = state*(*p.lwAbsorptivityTop);
+    adj.lwReflectivityTop      = state*(*p.lwReflectivityTop);
+    adj.lwTransmissivityTop    = 1. - adj.lwAbsorptivityTop - adj.lwReflectivityTop;
+
+    adj.lwAbsorptivityBottom   = state*(*p.lwAbsorptivityBottom);
+    adj.lwReflectivityBottom   = state*(*p.lwReflectivityBottom);
+    adj.lwTransmissivityBottom = 1. - adj.lwAbsorptivityBottom - adj.lwReflectivityBottom;
+
+    // Unaffected by state
+    adj.Utop         = *p.Utop;
+    adj.Ubottom      = *p.Ubottom;
+    adj.heatCapacity = *p.heatCapacity;
+    return adj;
+}
+
 void AverageScreen::update() {
-    AverageAllMaterialsInLayer::update();
-    effectiveArea = 0.;
-    for (int i=0; i<6; ++i)
-        effectiveArea += _areas.at(i)*(*_states.at(i));
+    updateParameters(screenIndex(), {state});
 }
 
-int AverageScreen::getNumberFromName() const {
+int AverageScreen::screenIndex() const {
     bool ok;
-    int result = objectName().mid(6).toInt(&ok);
-    if (!ok)
-        ThrowException("Screen number missing in box name").value(objectName()).context(this);
-    return result;
-}
-
-
-void AverageScreen::buildAverageMaterialNone(BoxBuilder &builder) {
-    QStringList myFaces = collectFacesByMaterial("none");
-    builder.
-    box("AverageMaterial").name("none").
-        port("swTransmissivityTopAdj").equals(1.).
-        port("swTransmissivityBottomAdj").equals(1.).
-        port("lwTransmissivityTopAdj").equals(1.).
-        port("lwTransmissivityBottomAdj").equals(1.).
-        port("Utop").equals(1e-32).
-        port("Ubottom").equals(1e-32).
-        port("myAreas").  imports(pathToFaces(myFaces, "area")).
-        port("myWeights").imports(pathToFaces(myFaces, "weight")).
-    endbox();
-}
-
-void AverageScreen::updateUbottomAdj() {
-    UbottomAdj = vector_op::sum(Ubottoms);
-}
-
-QStringList AverageScreen::collectFacesByMaterial(QString material) {
-    QStringList result;
-    for (Box *face : _faces) {
-        QStringList materials = face->port("screens")->value<QString>().split("+");
-        if (materials.contains(material))
-            result << face->objectName();
-    }
-    return result;
-}
-
-QString AverageScreen::pathToMaterialPorts(QString material, QString portName) const {
-    return "shelter/screens/" + material + "[" + portName + "Adj]";
+//    QString s = objectName(), n = objectName().mid(6);
+    int index = objectName().mid(6).toInt(&ok);
+    return ok ? index : 0;
 }
 
 } //namespace

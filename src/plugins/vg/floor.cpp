@@ -15,40 +15,10 @@ namespace vg {
 PUBLISH(Floor)
 
 Floor::Floor(QString name, Box *parent)
-    : Box(name, parent),
-      Layer(name, parent),
-      LayerAdjusted(name, parent)
+    : Layer(name, parent)
 {
     help("holds floor radiation and heat parameters");
-}
-
-void Floor::reset() {
-    checkInputs();
-
-    swReflectivityTopAdj      = swReflectivityTop   ;
-    lwReflectivityTopAdj      = lwReflectivityTop   ;
-    swReflectivityBottomAdj   = swReflectivityBottom;
-    lwReflectivityBottomAdj   = lwReflectivityBottom;
-
-    swTransmissivityTopAdj    = swTransmissivityTop   ;
-    lwTransmissivityTopAdj    = lwTransmissivityTop   ;
-    swTransmissivityBottomAdj = swTransmissivityBottom;
-    lwTransmissivityBottomAdj = lwTransmissivityBottom;
-
-    swAbsorptivityTopAdj      = swAbsorptivityTop   ;
-    lwAbsorptivityTopAdj      = lwAbsorptivityTop   ;
-    swAbsorptivityBottomAdj   = swAbsorptivityBottom;
-    lwAbsorptivityBottomAdj   = lwAbsorptivityBottom;
-
-    UtopAdj         = Utop;
-    UbottomAdj      = Ubottom;
-    heatCapacityAdj = heatCapacity;
-    checkOutputs();
-}
-
-void Floor::update() {
-    // Nothing to do
-    // Needed as a final override of update()
+    useLayerAsInput();
 }
 
 } //namespace

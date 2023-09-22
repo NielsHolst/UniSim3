@@ -20,8 +20,7 @@ namespace vg {
 PUBLISH(Plant)
 
 Plant::Plant(QString name, Box *parent)
-    : Box(name, parent),
-      LayerAdjusted(name, parent)
+    : Layer(name, parent)
 {
     Input(k_sw).equals(0.7).unit("[0;1]").help("Short-wave extinction coefficient");
     Input(k_lw).equals(1.).unit("[0;1]").help("Long-wave extinction coefficient");
@@ -53,6 +52,7 @@ Plant::Plant(QString name, Box *parent)
     Input(indoorsCo2).imports("gh/budget/indoors[co2]");
     Input(timeStep).imports("calendar[timeStepSecs]");
 
+    useLayerAsOutput();
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
     Output(incidentPar).unit("mymol PAR/m2 ground/s").help("PAR hitting the canopy");
@@ -80,7 +80,7 @@ void Plant::update() {
 
 void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
     netRadiation_ = netRadiation;
-    incidentPar  = parAbsorbed/lai/swAbsorptivityTopAdj;
+    incidentPar  = parAbsorbed/lai/swAbsorptivityTop;
     svp_          = svp(indoorsTemperature);
     vp_           = vpFromRh(indoorsTemperature, indoorsRh);
     svpSlope_     = svpSlope(indoorsTemperature);
@@ -93,21 +93,21 @@ void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
 }
 
 void Plant::updateRadiative() {
-    swReflectivityTopAdj    =
-    swReflectivityBottomAdj = reflectivity(k_sw);
-    swAbsorptivityTopAdj    =
-    swAbsorptivityBottomAdj = absorptivity(k_sw);
-    swTransmissivityTopAdj  =
-    swTransmissivityBottomAdj = 1. - swReflectivityTopAdj - swAbsorptivityTopAdj;
+    swReflectivityTop    =
+    swReflectivityBottom = reflectivity(k_sw);
+    swAbsorptivityTop    =
+    swAbsorptivityBottom = absorptivity(k_sw);
+    swTransmissivityTop  =
+    swTransmissivityBottom = 1. - swReflectivityTop - swAbsorptivityTop;
 
-    lwReflectivityTopAdj    =
-    lwReflectivityBottomAdj = reflectivity(k_lw);
-    lwAbsorptivityTopAdj    =
-    lwAbsorptivityBottomAdj = absorptivity(k_lw);
-    lwTransmissivityTopAdj  =
-    lwTransmissivityBottomAdj = 1. - lwReflectivityTopAdj - lwAbsorptivityTopAdj;
+    lwReflectivityTop    =
+    lwReflectivityBottom = reflectivity(k_lw);
+    lwAbsorptivityTop    =
+    lwAbsorptivityBottom = absorptivity(k_lw);
+    lwTransmissivityTop  =
+    lwTransmissivityBottom = 1. - lwReflectivityTop - lwAbsorptivityTop;
 
-    checkOutputs();
+    checkParameters();
 }
 
 void Plant::updateTemperature() {

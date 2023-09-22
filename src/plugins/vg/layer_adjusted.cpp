@@ -5,12 +5,14 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
+#include <base/phys_math.h>
 #include <base/publish.h>
 #include <base/test_num.h>
 #include "layer_adjusted.h"
 
 using namespace base;
 using namespace TestNum;
+using phys_math::infinity;
 
 #define CHECK_OUTPUT(X) checkOutput(#X, X)
 #define CHECK_OUTPUT_SUM(X) checkOutputSum(#X, X)
@@ -56,9 +58,8 @@ void LayerAdjusted::makeTransparent() {
     lwTransmissivityTopAdj = lwTransmissivityBottomAdj = 1.;
     swAbsorptivityTopAdj   = swAbsorptivityBottomAdj   = 0.;
     lwAbsorptivityTopAdj   = lwAbsorptivityBottomAdj   = 0.;
-    UtopAdj = UbottomAdj =
     heatCapacityAdj = 0.;
-
+    UtopAdj = UbottomAdj = infinity();
 }
 
 void LayerAdjusted::checkOutputs() {

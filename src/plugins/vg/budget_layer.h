@@ -12,12 +12,12 @@
 namespace vg {
 
 class BudgetVolume;
-class LayerAdjusted;
+class Layer;
 
 class BudgetLayer : public base::Box {
 public:
     BudgetLayer(QString name, base::Box *parent);
-    void attach(const LayerAdjusted *layer, BudgetVolume *top, BudgetVolume *bottom);
+    void attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bottom);
     void reset() final;
     void updateConvection();
     virtual double updateCondensation();
@@ -54,13 +54,13 @@ protected:
         condensation;
     // Data
     const double *emissivityTop, *emissivityBottom,
-        *UtopAdj, *UbottomAdj,
+        *Utop, *Ubottom,
         *heatCapacity,
         *temperatureVolumeTop, *temperatureVolumeBottom,
         *screenEffectiveArea;
 private:
     // Data
-    const LayerAdjusted *attachedLayer;
+    const Layer *attachedLayer;
     BudgetVolume *volumeTop, *volumeBottom;
     bool
         lwEmissionTopUpdatedExternally, lwEmissionBottomUpdatedExternally,

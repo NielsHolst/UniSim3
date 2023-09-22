@@ -8,7 +8,7 @@
 #ifndef FACE_H
 #define FACE_H
 #include <base/box.h>
-
+#include "layer_parameters.h"
 
 namespace vg {
 
@@ -17,14 +17,19 @@ class Face : public base::Box
 public: 
     Face(QString name, Box *parent);
     void reset();
+    const LayerParametersPtrs& coverParameters() const;
+    const LayerParametersPtrs& screenParameters(int index) const;
+    const LayerParametersPtrs& parameters(int index) const;
 private:
     // Inputs
     QString cover, screens;
     double area, weight;
     // Outputs
     QVector<QString> screenMaterials;
+    int numScreens;
     // Data
-    QString _prevScreens;
+    LayerParametersPtrs _cover;
+    QVector<LayerParametersPtrs> _screens;
 };
 
 } //namespace

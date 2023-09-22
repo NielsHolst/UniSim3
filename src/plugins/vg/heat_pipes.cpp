@@ -18,8 +18,7 @@ namespace vg {
 PUBLISH(HeatPipes)
 
 HeatPipes::HeatPipes(QString name, Box *parent)
-    : Box(name, parent),
-      LayerAdjusted(name, parent)
+    : Layer(name, parent)
 {
     help("sums power use and radiation from growth light");
     Input(lwEmissionTopPipes)    .imports("./*[lwEmissionTop]");
@@ -27,6 +26,7 @@ HeatPipes::HeatPipes(QString name, Box *parent)
     Input(convectionTopPipes)    .imports("./*[convectionTop]");
     Input(convectionBottomPipes) .imports("./*[convectionBottom]");
     Input(inflowTemperaturePipes).imports("./*[inflowTemperature]");
+    useLayerAsOutput();
     Output(lwEmissionTop)   .help("Long-wave emission upwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(convectionTop)   .help("Convective heat flux upwards").unit("W/m2");

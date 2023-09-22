@@ -7,12 +7,11 @@
 */
 #ifndef PLANT_H
 #define PLANT_H
-
-#include "layer_adjusted.h"
+#include "layer.h"
 
 namespace vg {
 
-class Plant : public LayerAdjusted
+class Plant : public Layer
 {
 public:
     Plant(QString name, Box *parent);

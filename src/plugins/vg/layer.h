@@ -8,30 +8,26 @@
 #ifndef LAYER_H
 #define LAYER_H
 #include <base/box.h>
+#include "layer_parameters.h"
 
 namespace vg {
 
-class Layer : virtual public base::Box
+class Layer : public base::Box, public LayerParameters
 {
 public:
     Layer(QString name, Box *parent);
-    void update();
-    void updateInputsFromProduct(QString productPath);
+
 protected:
-    // Inputs
-    double
-        swAbsorptivityTop, swAbsorptivityBottom,
-        swReflectivityTop, swReflectivityBottom,
-        swTransmissivityTop, swTransmissivityBottom,
-        lwAbsorptivityTop, lwAbsorptivityBottom,
-        lwReflectivityTop, lwReflectivityBottom,
-        lwTransmissivityTop, lwTransmissivityBottom,
-        Utop, Ubottom,
-        heatCapacity;
     // Methods
-    void checkInputs();
-    void checkInput(QString name, double value);
-    void checkInputSum(QString name, double value);
+    void useLayerAsInput();
+    void useLayerAsOutput();
+    void checkParameters();
+private:
+    void checkParameter(QString name, double value);
+    void checkParameterSum(QString name, double value);
+    // Friends
+    friend class Budget;
+    friend class BudgetLayer;
 };
 
 } //namespace

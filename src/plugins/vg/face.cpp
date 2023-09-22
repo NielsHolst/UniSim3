@@ -23,17 +23,38 @@ Face::Face(QString name, Box *parent)
     Input(screens).help("Zero or more screen materials listed in shelter/screens");
     Input(area).unit("m2").help("Area of face");
     Input(weight).equals(1.).unit("[0;1]").help("Weight given to face in radiation budget");
-    Output(screenMaterials).noClear().help("Vector of screen material names");
+    Output(screenMaterials).help("Vector of screen material names");
+    Output(numScreens).help("Number of screens on this face");
 }
 
 void Face::reset() {
     QStringList list = screens.split("+");
     screenMaterials = QVector<QString>(list.cbegin(), list.cend());
-    if (screens != _prevScreens) {
-        // if (name() == "roof1")
-            // dialog().information("Screen changed:\n" + _prevScreens + " -> " + screens);
-        _prevScreens = screens;
+    numScreens = screenMaterials.size();
+    _cover.setPointers(findOne<Box*>("shelter/products/covers/" + cover));
+
+    _screens.clear();
+    for (QString &screen : screenMaterials) {
+        LayerParametersPtrs p;
+        p.setPointers(findOne<Box*>("shelter/products/screens/" + screen));
+        _screens << p;
     }
+}
+
+const LayerParametersPtrs& Face::coverParameters() const {
+    return _cover;
+}
+
+const LayerParametersPtrs& Face::screenParameters(int index) const {
+    Q_ASSERT(index < screens.size());
+    return _screens.at(index);
+}
+
+const LayerParametersPtrs& Face::parameters(int index) const {
+    if (index == 0)
+        return _cover;
+    Q_ASSERT(index-1 < screens.size());
+    return _screens.at(index-1);
 }
 
 } //namespace

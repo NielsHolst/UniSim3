@@ -25,9 +25,9 @@ Summary::Summary(QString name, Box *parent)
     Input(transpirationFinite).imports("gh/budget[transpiration]");
     Input(condensationFinite).imports("gh/budget[condensation]");
     Input(ventedWaterFinite).imports("gh/budget[ventedWater]");
-    Input(screenState1).imports("gh/actuators/screens/layer1[state]");
-    Input(screenState2).imports("gh/actuators/screens/layer2[state]");
-    Input(screenState3).imports("gh/actuators/screens/layer3[state]");
+    Input(screenState1).imports("gh/actuators/screens/screen1[state]");
+    Input(screenState2).imports("gh/actuators/screens/screen2[state]");
+    Input(screenState3).imports("gh/actuators/screens/screen3[state]");
     Input(isSkipping).imports("output/*[isSkipping]");
     Input(lightState1).imports("gh/actuators/growthLights/bank1[isOn]");
     Input(lightState2).imports("gh/actuators/growthLights/bank2[isOn]");

@@ -260,19 +260,19 @@ void Budget::addState() {
 void Budget::addParameters() {
     // Set pointers to parameters
     for (BudgetLayer *layer : layers) {
-        swParam.a   << &layer->attachedLayer->swAbsorptivityTopAdj;
-        swParam.a_  << &layer->attachedLayer->swAbsorptivityBottomAdj;
-        swParam.r   << &layer->attachedLayer->swReflectivityTopAdj;
-        swParam.r_  << &layer->attachedLayer->swReflectivityBottomAdj;
-        swParam.t   << &layer->attachedLayer->swTransmissivityTopAdj;
-        swParam.t_  << &layer->attachedLayer->swTransmissivityBottomAdj;
+        swParam.a   << &layer->attachedLayer->swAbsorptivityTop;
+        swParam.a_  << &layer->attachedLayer->swAbsorptivityBottom;
+        swParam.r   << &layer->attachedLayer->swReflectivityTop;
+        swParam.r_  << &layer->attachedLayer->swReflectivityBottom;
+        swParam.t   << &layer->attachedLayer->swTransmissivityTop;
+        swParam.t_  << &layer->attachedLayer->swTransmissivityBottom;
 
-        lwParam.a   << &layer->attachedLayer->lwAbsorptivityTopAdj;
-        lwParam.a_  << &layer->attachedLayer->lwAbsorptivityBottomAdj;
-        lwParam.r   << &layer->attachedLayer->lwReflectivityTopAdj;
-        lwParam.r_  << &layer->attachedLayer->lwReflectivityBottomAdj;
-        lwParam.t   << &layer->attachedLayer->lwTransmissivityTopAdj;
-        lwParam.t_  << &layer->attachedLayer->lwTransmissivityBottomAdj;
+        lwParam.a   << &layer->attachedLayer->lwAbsorptivityTop;
+        lwParam.a_  << &layer->attachedLayer->lwAbsorptivityBottom;
+        lwParam.r   << &layer->attachedLayer->lwReflectivityTop;
+        lwParam.r_  << &layer->attachedLayer->lwReflectivityBottom;
+        lwParam.t   << &layer->attachedLayer->lwTransmissivityTop;
+        lwParam.t_  << &layer->attachedLayer->lwTransmissivityBottom;
     }
 }
 

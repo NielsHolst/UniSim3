@@ -8,11 +8,11 @@
 #ifndef SKY_H
 #define SKY_H
 
-#include "layer_adjusted.h"
+#include "layer.h"
 
 namespace vg {
 
-class Sky : public LayerAdjusted
+class Sky : public Layer
 {
 public:
     Sky(QString name, Box *parent);

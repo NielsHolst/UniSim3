@@ -7,27 +7,25 @@
 */
 #ifndef AVERAGE_COVER_H
 #define AVERAGE_COVER_H
-#include "average_all_materials_in_layer.h"
+#include "average_shelter_layer.h"
+#include "layer_parameters.h"
 
 namespace vg {
 
-class AverageCover : public AverageAllMaterialsInLayer
+class AverageCover : public AverageShelterLayer
 {
 public:
     AverageCover(QString name, Box *parent);
-    void amend();
     void reset();
+    void update();
 private:
-    // Input
-    double groundArea;
+    // Inputs
+    double transmissivityReduction, swShading, lwShading;
     // Data
-    QVector<Box*> _faces;
-    double _areas[6], _Rfaces[6];
     QVector<const double*> _Uinsulations[6];
     // Methods
-    void updateUbottomAdj();
-    QStringList collectFacesByMaterial(QString material);
-    QString pathToMaterialPorts(QString material, QString portName) const;
+    LayerParameters transform(const LayerParametersPtrs &p, const QVector<double> &adjustments);
+    void correctUbottom();
 };
 
 } //namespace

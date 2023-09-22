@@ -16,6 +16,18 @@ class LayerAdjusted : virtual public base::Box
 public:
     LayerAdjusted(QString name, Box *parent);
     void update();
+    struct Pointers {
+        const double
+            *swReflectivityTopAdj,   *swReflectivityBottomAdj,
+            *swTransmissivityTopAdj, *swTransmissivityBottomAdj,
+            *lwReflectivityTopAdj,   *lwReflectivityBottomAdj,
+            *lwTransmissivityTopAdj, *lwTransmissivityBottomAdj,
+            *swAbsorptivityTopAdj,   *swAbsorptivityBottomAdj,
+            *lwAbsorptivityTopAdj,   *lwAbsorptivityBottomAdj,
+            *UtopAdj,                *UbottomAdj,
+            *heatCapacityAdj;
+    };
+
 protected:
     // Outputs
     double

@@ -15,10 +15,9 @@ HEADERS +=  \
     actuator_heat_pipe.h \
     actuator_screen.h \
     actuator_ventilation.h \
-    average_all_materials_in_layer.h \
     average_cover.h \
-    average_material.h \
     average_screen.h \
+    average_shelter_layer.h \
     budget.h \
     budget_layer.h \
     budget_layer_cover.h \
@@ -29,6 +28,7 @@ HEADERS +=  \
     canopy_photosynthesis.h \
     cover.h \
     face.h \
+    faces.h \
     floor.h \
     geometry.h \
     growth_light_controller.h \
@@ -37,7 +37,7 @@ HEADERS +=  \
     heat_pipes.h \
     ig_indoors_humidity.h \
     layer.h \
-    layer_adjusted.h \
+    layer_parameters.h \
     leakage_ventilation.h \
     outdoors.h \
     pid_controller.h \
@@ -63,10 +63,9 @@ SOURCES += \
     actuator_heat_pump.cpp \
     actuator_screen.cpp \
     actuator_ventilation.cpp \
-    average_all_materials_in_layer.cpp \
     average_cover.cpp \
-    average_material.cpp \
     average_screen.cpp \
+    average_shelter_layer.cpp \
     budget.cpp \
     budget_layer.cpp \
     budget_layer_cover.cpp \
@@ -77,6 +76,7 @@ SOURCES += \
     canopy_photosynthesis.cpp \
     cover.cpp \
     face.cpp \
+    faces.cpp \
     floor.cpp \
     geometry.cpp \
     growth_light_controller.cpp \
@@ -85,7 +85,7 @@ SOURCES += \
     heat_pipes.cpp \
     ig_indoors_humidity.cpp \
     layer.cpp \
-    layer_adjusted.cpp \
+    layer_parameters.cpp \
     leakage_ventilation.cpp \
     outdoors.cpp \
     pid_controller.cpp \

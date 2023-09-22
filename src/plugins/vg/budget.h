@@ -13,7 +13,7 @@ class BudgetVolume;
 class Floor;
 class GrowthLights;
 class HeatPipes;
-class LayerAdjusted;
+class Layer;
 class Plant;
 class Sky;
 
@@ -58,8 +58,8 @@ private:
     AverageCover *cover;
     QVector<AverageScreen*> screens;
     GrowthLights *growthLights;
-    HeatPipes *heatPipes;
     Plant *plant;
+    HeatPipes *heatPipes;
     Floor *floor;
 
     // State

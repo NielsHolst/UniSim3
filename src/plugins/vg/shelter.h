@@ -21,8 +21,8 @@ public:
     Shelter(QString name, Box *parent);
     void amend();
 private:
-    // Data
-    QVector<Box*> _faces;
+    // Inputs
+    double transmissivityReduction;
 
 };
 

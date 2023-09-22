@@ -173,8 +173,10 @@ void ReaderXml::readVirtualGreenhouse() {
     }
 
     double
-        floorReflectance   = _doc->find("Greenhouse/floor-reflectance")->toDouble();
+        floorReflectance        = _doc->find("Greenhouse/floor-reflectance")->toDouble(),
+        transmissivityReduction = _doc->find("Greenhouse/GreenhouseReductionFactorLight")->toDouble();
     XmlNode *stopInStep    = _doc->peak("Description/StopInStep");
+
     MegaFactory::usingPlugin("vg");
     _builder->
     box("Simulation").name("sim").
@@ -222,6 +224,7 @@ void ReaderXml::readVirtualGreenhouse() {
                     port("leakage").equals(_doc->find("Greenhouse/leakage")->value()).
                 endbox().
                 box("Shelter").name("shelter").
+                    port("transmissivityReduction").equals(transmissivityReduction).
                     box("UWind").name("Utop").
                         port("UwindSlope").equals(_doc->find("Greenhouse/UwindSlope")->value()).
                     endbox().
@@ -431,8 +434,6 @@ BoxBuilder& ReaderXml::shadingAgents() {
 }
 
 BoxBuilder& ReaderXml::shelterCovers() {
-    double transmissivityReduction = getChildValueDouble(_doc->find("Greenhouse"), "GreenhouseReductionFactorLight");
-
     XmlNode *products = _doc->find("Greenhouse/Panes/Products");
 
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
@@ -466,9 +467,6 @@ BoxBuilder& ReaderXml::shelterCovers() {
             port("Utop")                  .imports("shelter/Utop[value]").
             port("Ubottom")               .equals(U).
             port("heatCapacity")          .equals(C).
-            port("transmissivityReduction").equals(transmissivityReduction).
-            port("swShading")             .computes("shelter/shading[swReflectivity]").
-            port("lwShading")             .computes("shelter/shading[lwReflectivity]").
         endbox();
     }
     return *_builder;
@@ -538,7 +536,6 @@ BoxBuilder& ReaderXml::shelterScreensOnlyUsed() {
                 port("Uinsulation")           .equals(Uins).
                 port("UinsulationEffectivity").equals(UinsulationEffectivity).
                 port("heatCapacity")          .equals(C).
-                port("state")                 .imports("actuators/screens/layer" + QString::number(*layerNumber) + "[state]").
             endbox();
         }
     }

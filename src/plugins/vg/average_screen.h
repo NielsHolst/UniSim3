@@ -7,15 +7,11 @@
 */
 #ifndef AVERAGE_SCREEN_H
 #define AVERAGE_SCREEN_H
-#include "average_all_materials_in_layer.h"
-
-namespace base {
- class BoxBuilder;
-}
+#include "average_shelter_layer.h"
 
 namespace vg {
 
-class AverageScreen : public AverageAllMaterialsInLayer
+class AverageScreen : public AverageShelterLayer
 {
 public: 
     AverageScreen(QString name, Box *parent);
@@ -23,19 +19,11 @@ public:
     void reset();
     void update();
 private:
-    // Output
-    double effectiveArea;
-    // Data
-    QVector<Box*> _faces;
-    QVector<double> _areas;
-    QVector<const double *> _states;
+    // Input
+    double state;
     // Methods
-    void updateUbottomAdj();
-    QStringList collectFacesByMaterial(QString material);
-    QString pathToMaterialPorts(QString material, QString portName) const;
-
-    int getNumberFromName() const;
-    void buildAverageMaterialNone(base::BoxBuilder &builder);
+    LayerParameters transform(const LayerParametersPtrs &p, const QVector<double> &adjustments);
+    int screenIndex() const;
 };
 
 } //namespace

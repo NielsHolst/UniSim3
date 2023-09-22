@@ -7,14 +7,13 @@
 */
 #ifndef HEAT_PIPES_H
 #define HEAT_PIPES_H
-
-#include "layer_adjusted.h"
+#include "layer.h"
 
 namespace vg {
 
 class ActuatorHeatPipe;
 
-class HeatPipes : public LayerAdjusted {
+class HeatPipes : public Layer {
 public:
     HeatPipes(QString name, base::Box *parent);
     void reset();

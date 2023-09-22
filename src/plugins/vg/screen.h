@@ -12,16 +12,15 @@
 
 namespace vg {
 
-class Screen : public Layer, public LayerAdjusted
+class Screen : public Layer
 {
 public:
     Screen(QString name, Box *parent);
-    void reset();
-    void update();
 private:
     // Additional inputs
-    double state, Uinsulation, UinsulationAdj, UinsulationEffectivity, energySaving;
-    // No additional outputs
+    double
+        Uinsulation, UinsulationEffectivity,
+        energySaving;
 };
 
 } //namespace
