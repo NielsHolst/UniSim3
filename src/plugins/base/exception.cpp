@@ -4,6 +4,7 @@
 */
 #include <iostream>
 #include <QDateTime>
+#include <QFileInfo>
 #include "box.h"
 #include "computation.h"
 #include "environment.h"
@@ -171,6 +172,12 @@ QDateTime Exception::dateTime() const noexcept {
         result = QDateTime();
     }
     return result;
+}
+
+QString Exception::sourceFile() const {
+    QString fileName =  environment().latestLoadArg();
+    QFileInfo fi(fileName);
+
 }
 
 }

@@ -1,16 +1,16 @@
 <VG_SETUP format="vg">
   <XML_Version>3</XML_Version>
   <Description>
-    <ShortDesc>C0.0</ShortDesc>
-    <LongDesc>C0.0</LongDesc>
-    <WeatherFile>DNK_Odense.txt</WeatherFile>
+    <LongDesc>Greenhouse 10.000 m2</LongDesc>
+    <WeatherFile>C:\VG2\VG Weather\DNK_Odense.txt</WeatherFile>
     <Country>Denmark</Country>
     <Location>Odense</Location>
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
     <StartTime>01.01.2023</StartTime>
-    <StopTime>31.01.2023</StopTime>
+    <StopTime>31.12.2023</StopTime>
     <TimeStep>3</TimeStep>
+    <ShortDesc>Con</ShortDesc>
   </Description>
   <Greenhouse>
     <Positions>
@@ -33,14 +33,14 @@
         <Weight>0.2</Weight>
       </end2>
     </Positions>
-    <Length>100</Length>
-    <SpanSize>4</SpanSize>
-    <NumberOfSpans>25</NumberOfSpans>
+    <Length>5.8</Length>
+    <SpanSize>2.3</SpanSize>
+    <NumberOfSpans>1</NumberOfSpans>
     <GreenhouseReductionFactorLight>0.1</GreenhouseReductionFactorLight>
-    <TrempelHeight>4</TrempelHeight>
-    <RoofPitch>26</RoofPitch>
+    <TrempelHeight>2.3</TrempelHeight>
+    <RoofPitch>0</RoofPitch>
     <UwindSlope>1.2</UwindSlope>
-    <leakage>0.1</leakage>
+    <leakage>0.05</leakage>
     <screenPerfection>0.95</screenPerfection>
     <floor-Uindoors>7.5</floor-Uindoors>
     <floor-Usoil>0.1</floor-Usoil>
@@ -55,6 +55,8 @@
     <InitialSoilTemperature>1.2</InitialSoilTemperature>
     <CO2PIDProp>0.05</CO2PIDProp>
     <ScreenLagPeriod>10</ScreenLagPeriod>
+    <VentWindCoef>40</VentWindCoef>
+    <VentTemperatureCoef>7</VentTemperatureCoef>
     <Crops>
       <Crop index="0" layer="0" position="0">
         <LAI>1</LAI>
@@ -230,10 +232,10 @@
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
         <CommonFlowTemperature>80</CommonFlowTemperature>
-        <heatPipeFlowRate>10</heatPipeFlowRate>
-        <PipeLengthPerSqm>10</PipeLengthPerSqm>
-        <k>0.0063</k>
-        <b>1.2500</b>
+        <heatPipeFlowRate>50</heatPipeFlowRate>
+        <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
+        <k>0.0100</k>
+        <b>1.5000</b>
         <PropLw>0.2000</PropLw>
       </Heatpipe>
       <Heatpipe index="0" layer="0" position="2">
@@ -241,10 +243,10 @@
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
         <CommonFlowTemperature>80</CommonFlowTemperature>
-        <heatPipeFlowRate>10</heatPipeFlowRate>
-        <PipeLengthPerSqm>10</PipeLengthPerSqm>
-        <k>0.0063</k>
-        <b>1.2500</b>
+        <heatPipeFlowRate>50</heatPipeFlowRate>
+        <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
+        <k>0.0100</k>
+        <b>1.5000</b>
         <PropLw>0.2000</PropLw>
       </Heatpipe>
     </Heatpipes>
@@ -331,47 +333,51 @@
       </HeatPump>
     </HeatPumps>
     <Lamps>
+      <Products>
+        <Product>
+          <Manufacture>None</Manufacture>
+          <Lp_name>None</Lp_name>
+          <Lp_LampType>Led</Lp_LampType>
+          <Lp_Power>0</Lp_Power>
+          <Lp_MinPeriodOn>0</Lp_MinPeriodOn>
+          <Lp_MicroMolParPerWattSeconds>0</Lp_MicroMolParPerWattSeconds>
+          <Lp_Ballast>0</Lp_Ballast>
+          <Lp_PropLw>0</Lp_PropLw>
+          <Lp_PropSw>0</Lp_PropSw>
+          <Lp_BallastPropLw>0</Lp_BallastPropLw>
+          <Lp_LifeTime>99000</Lp_LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Signify</Manufacture>
+          <Lp_name>Signify DR/W/FR FR4_RSE Standard</Lp_name>
+          <Lp_LampType>Led</Lp_LampType>
+          <Lp_Power>590</Lp_Power>
+          <Lp_MinPeriodOn>590</Lp_MinPeriodOn>
+          <Lp_MicroMolParPerWattSeconds>0</Lp_MicroMolParPerWattSeconds>
+          <Lp_Ballast>0</Lp_Ballast>
+          <Lp_PropLw>0.1</Lp_PropLw>
+          <Lp_PropSw>0.4</Lp_PropSw>
+          <Lp_BallastPropLw>0.4</Lp_BallastPropLw>
+          <Lp_LifeTime>36000</Lp_LifeTime>
+        </Product>
+      </Products>
       <Lamp index="0" layer="0" position="1">
-        <Product>E HP Na 1000W</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>30</LightCapacityPerSqm>
-        <MicromolParPerWatt>1.7870</MicromolParPerWatt>
-        <LampType>HpSl</LampType>
-        <Manufacture>NoName</Manufacture>
-        <Ballast>50.0000</Ballast>
-        <PropLw>0</PropLw>
-        <MinPeriodOn>5</MinPeriodOn>
-        <Name>Bank1</Name>
-        <PropSw>0.2</PropSw>
-        <BallastPropLw>0.2000</BallastPropLw>
+        <Product>Signify DR/W/FR FR4_RSE Standard</Product>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.25</NumberInstalled>
+        <Manufacture>Signify</Manufacture>
       </Lamp>
       <Lamp index="0" layer="0" position="2">
         <Product>None</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>0</LightCapacityPerSqm>
-        <MicromolParPerWatt>0.0000</MicromolParPerWatt>
-        <LampType>Led</LampType>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.25</NumberInstalled>
         <Manufacture>None</Manufacture>
-        <Ballast>0.0000</Ballast>
-        <PropLw>0.0000</PropLw>
-        <MinPeriodOn>20</MinPeriodOn>
-        <Name>Bank2</Name>
-        <PropSw>0.4</PropSw>
-        <BallastPropLw>0</BallastPropLw>
       </Lamp>
       <Lamp index="0" layer="0" position="3">
         <Product>None</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>0</LightCapacityPerSqm>
-        <MicromolParPerWatt>2.800</MicromolParPerWatt>
-        <LampType>Led</LampType>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.5</NumberInstalled>
         <Manufacture>None</Manufacture>
-        <Ballast>50</Ballast>
-        <PropLw>0.5</PropLw>
-        <MinPeriodOn>20</MinPeriodOn>
-        <Name>Bank3</Name>
-        <PropSw>0.4</PropSw>
-        <BallastPropLw>0.3</BallastPropLw>
       </Lamp>
     </Lamps>
     <PadFans>
@@ -438,6 +444,22 @@
     </PadFans>
     <Panes>
       <Products>
+        <Product name="Double Glazing">
+          <PaneTransmission>0.82</PaneTransmission>
+          <PaneUValue>2.7</PaneUValue>
+          <PaneReflection>0.18</PaneReflection>
+          <PaneLwReflection>0.18</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PUR sandwich 50 mm">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.4</PaneUValue>
+          <PaneReflection>0.9</PaneReflection>
+          <PaneLwReflection>0.9</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
         <Product name="Single glass 4mm">
           <PaneTransmission>0.8</PaneTransmission>
           <PaneUValue>6.5</PaneUValue>
@@ -448,22 +470,22 @@
         </Product>
       </Products>
       <Pane index="0" layer="0" position="1">
-        <Product>Single glass 4mm</Product>
+        <Product>Double Glazing</Product>
       </Pane>
       <Pane index="0" layer="0" position="2">
-        <Product>Single glass 4mm</Product>
+        <Product>Double Glazing</Product>
       </Pane>
       <Pane index="0" layer="0" position="3">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="4">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="5">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="6">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="7">
         <Product>Single glass 4mm</Product>
@@ -486,26 +508,19 @@
     <Screens>
       <!--Layer 1 er yderst, 2 dernæst og 3 inderst-->
       <Products>
-        <Product name="Bonar PhormiTex 55 B1">
-          <Transmission>0.45</Transmission>
-          <ReflectionOutwards>0.02</ReflectionOutwards>
-          <ReflectionInwards>0.55</ReflectionInwards>
-          <InsulationU>0.3</InsulationU>
-          <U>0.6</U>
-          <HeatCapacity>80</HeatCapacity>
-        </Product>
-        <Product name="None">
+        <Product name="None                                                                  ">
           <Transmission>1</Transmission>
           <ReflectionOutwards>0</ReflectionOutwards>
           <ReflectionInwards>0</ReflectionInwards>
           <InsulationU>10</InsulationU>
           <U>0.6</U>
           <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0</EnergySaving>
         </Product>
       </Products>
       <Screen index="1" layer="1" position="1">
-        <Product>Bonar PhormiTex 55 B1</Product>
-        <Manufacture>Bonar</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="4">
         <Product>None</Product>
@@ -544,24 +559,24 @@
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="2">
-        <Product>Bonar PhormiTex 55 B1</Product>
-        <Manufacture>Bonar</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="3">
-        <Product>Bonar PhormiTex 55 B1</Product>
-        <Manufacture>Bonar</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="4">
-        <Product>Bonar PhormiTex 55 B1</Product>
-        <Manufacture>Bonar</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="5">
-        <Product>Bonar PhormiTex 55 B1</Product>
-        <Manufacture>Bonar</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="6">
-        <Product>Bonar PhormiTex 55 B1</Product>
-        <Manufacture>Bonar</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="1">
         <Product>None</Product>
@@ -580,13 +595,13 @@
       <Vent index="0" layer="0" position="1">
         <Length>3</Length>
         <Width>1</Width>
-        <Number>200</Number>
+        <Number>20</Number>
         <VentTransmissivity>1</VentTransmissivity>
       </Vent>
       <Vent index="0" layer="0" position="2">
         <Length>3</Length>
         <Width>1</Width>
-        <Number>200</Number>
+        <Number>20</Number>
         <VentTransmissivity>1</VentTransmissivity>
       </Vent>
     </Vents>
@@ -602,8 +617,8 @@
   </Greenhouse>
   <Climate>
     <Setpoint>
-      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</HeatingTemp>
-      <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</VentTemp>
+      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">17</HeatingTemp>
+      <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">14</VentTemp>
       <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
       <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
       <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation>
@@ -611,11 +626,11 @@
       <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
       <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>
       <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
-      <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00" />
-      <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00" />
-      <screenActive2Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00" />
-      <screenActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00" />
-      <screenActive3Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00" />
+      <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive2Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive3Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
       <screenEnergyThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold1>
       <screenEnergyThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold2>
       <screenEnergyThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThresholdBand>
@@ -631,7 +646,8 @@
       <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity>
       <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature>
       <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand>
-      <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</AssLightActive1>
+      <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
+      <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
       <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
       <AssLightActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive3>
       <AssLightOn1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn1>
@@ -659,60 +675,60 @@
     <UseLocalDecimalChar>0</UseLocalDecimalChar>
     <SkipFormats>1</SkipFormats>
     <Variables>
-      <Variable name="actCo2" path="actuators/co2[value]" />
-      <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]" />
-      <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]" />
-      <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]" />
-      <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]" />
-      <Variable name="actLightPar" path="actuators/growthLights[parEmissionBottom]" />
-      <Variable name="actLightPower" path="actuators/growthLights[powerUsage]" />
-      <Variable name="actPipeTempIn1" path="actuators/heatPipes/circuit1[inflowTemperature]" />
-      <Variable name="actPipeTempIn2" path="actuators/heatPipes/circuit2[inflowTemperature]" />
-      <Variable name="actPipeTempOut1" path="actuators/heatPipes/circuit1[outflowTemperature]" />
-      <Variable name="actPipeTempOut2" path="actuators/heatPipes/circuit2[outflowTemperature]" />
-      <Variable name="actScreen1 " path="actuators/screens/layer1[state]" />
-      <Variable name="actScreen2" path="actuators/screens/layer2[state]" />
-      <Variable name="actScreen3" path="actuators/screens/layer3[state]" />
-      <Variable name="actVentilation" path="actuators/ventilation[value]" />
-      <Variable name="airFluxTotal" path="actuators/ventilation[value]" />
-      <Variable name="condensation" path="budget[condensation]" />
-      <Variable name="coverT" path="budget/cover[temperature]" />
-      <Variable name="floorT" path="budget/floor[temperature]" />
-      <Variable name="grossAssimilationRate" path="plant[Pg]" />
-      <Variable name="heatFluxCover" path="budget/cover[convectionTop]" />
-      <Variable name="heatFluxFloor" path="budget/cover[convectionBottom]" />
-      <Variable name="indoorsCo2" path="budget/indoors[co2]" />
-      <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]" />
-      <Variable name="indoorsRh" path="budget/indoors[rh]" />
-      <Variable name="indoorsT" path="budget/indoors[temperature]" />
-      <Variable name="indoorsTotalPar" path="plant[incidentPar]" />
-      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]" />
-      <Variable name="leafT" path="budget/plant[temperature]" />
-      <Variable name="lightUseEfficiency" path="plant[lue]" />
-      <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]" />
-      <Variable name="lwEmissionCover" path="budget/cover[lwEmissionTop]" />
-      <Variable name="netAssimilationRate" path="plant[Pn]" />
-      <Variable name="netGrowthRate" path="plant[growthRate]" />
-      <Variable name="netGrowthRateLeaf" path="plant[leafGrowthRate]" />
-      <Variable name="outdoorsLight" path="outdoors[radiation]" />
-      <Variable name="outdoorsPar" path="outdoors[par]" />
-      <Variable name="outdoorsRh" path="outdoors[rh]" />
-      <Variable name="outdoorsT" path="outdoors[temperature]" />
-      <Variable name="outdoorsWindSpeed" path="outdoors[windSpeed]" />
-      <Variable name="pipeT" path="budget/heatPipes[temperature]" />
-      <Variable name="respirationRate" path="plant[Rd]" />
-      <Variable name="screen1T" path="budget/screen1[temperature]" />
-      <Variable name="screen2T" path="budget/screen2[temperature]" />
-      <Variable name="screen3T" path="budget/screen3[temperature]" />
-      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]" />
-      <Variable name="skyT" path="budget/sky[temperature]" />
-      <Variable name="soilT" path="outdoors[soilTemperature]" />
-      <Variable name="spCo2" path="setpoints/co2/concentration[value]" />
-      <Variable name="spHeatingTemperature" path="controllers/heating[value]" />
-      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]" />
-      <Variable name="transpiration" path="budget[transpiration]" />
-      <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]" />
-      <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]" />
+      <Variable name="actCo2" path="actuators/co2[value]"/>
+      <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
+      <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
+      <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
+      <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
+      <Variable name="actLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="actLightPower" path="actuators/growthLights[powerUsage]"/>
+      <Variable name="actPipeTempIn1" path="actuators/heatPipes/circuit1[inflowTemperature]"/>
+      <Variable name="actPipeTempIn2" path="actuators/heatPipes/circuit2[inflowTemperature]"/>
+      <Variable name="actPipeTempOut1" path="actuators/heatPipes/circuit1[outflowTemperature]"/>
+      <Variable name="actPipeTempOut2" path="actuators/heatPipes/circuit2[outflowTemperature]"/>
+      <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
+      <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
+      <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
+      <Variable name="actVentilation" path="actuators/ventilation[value]"/>
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
+      <Variable name="condensation" path="budget[condensation]"/>
+      <Variable name="coverT" path="budget/cover[temperature]"/>
+      <Variable name="floorT" path="budget/floor[temperature]"/>
+      <Variable name="grossAssimilationRate" path="plant[Pg]"/>
+      <Variable name="heatFluxCover" path="budget/cover[convectionTop]"/>
+      <Variable name="heatFluxFloor" path="budget/cover[convectionBottom]"/>
+      <Variable name="indoorsCo2" path="budget/indoors[co2]"/>
+      <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="indoorsRh" path="budget/indoors[rh]"/>
+      <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
+      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/>
+      <Variable name="leafT" path="budget/plant[temperature]"/>
+      <Variable name="lightUseEfficiency" path="plant[lue]"/>
+      <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
+      <Variable name="lwEmissionCover" path="budget/cover[lwEmissionTop]"/>
+      <Variable name="netAssimilationRate" path="plant[Pn]"/>
+      <Variable name="netGrowthRate" path="plant[growthRate]"/>
+      <Variable name="netGrowthRateLeaf" path="plant[leafGrowthRate]"/>
+      <Variable name="outdoorsLight" path="outdoors[radiation]"/>
+      <Variable name="outdoorsPar" path="outdoors[par]"/>
+      <Variable name="outdoorsRh" path="outdoors[rh]"/>
+      <Variable name="outdoorsT" path="outdoors[temperature]"/>
+      <Variable name="outdoorsWindSpeed" path="outdoors[windSpeed]"/>
+      <Variable name="pipeT" path="budget/heatPipes[temperature]"/>
+      <Variable name="respirationRate" path="plant[Rd]"/>
+      <Variable name="screen1T" path="budget/screen1[temperature]"/>
+      <Variable name="screen2T" path="budget/screen2[temperature]"/>
+      <Variable name="screen3T" path="budget/screen3[temperature]"/>
+      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]"/>
+      <Variable name="skyT" path="budget/sky[temperature]"/>
+      <Variable name="soilT" path="outdoors[soilTemperature]"/>
+      <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
+      <Variable name="spHeatingTemperature" path="controllers/heating[value]"/>
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]"/>
+      <Variable name="transpiration" path="budget[transpiration]"/>
+      <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
+      <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
     </Variables>
   </Output>
   <Status>

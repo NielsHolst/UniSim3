@@ -141,8 +141,8 @@ void ReaderXml::collectScreenProducts() {
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
         XmlNode *product = pr.value();
-        QString productName = productId(product->getAttributeString("name"));
-        if (productName != "none")
+        QString productName = product->getAttributeString("name").trimmed();
+        if (productName.toLower() != "none")
             _screenProducts[productName] = QSet<int>();
     }
 
@@ -150,8 +150,8 @@ void ReaderXml::collectScreenProducts() {
     for (auto sc = screens->children().begin(); sc != screens->children().end(); ++sc) {
         XmlNode *screen = sc.value();
         if (screen->name() == "Screen") {
-            QString productName = productId(screen->find("Product")->value());
-            if (productName != "none") {
+            QString productName = screen->find("Product")->value().trimmed();
+            if (productName.toLower() != "none") {
                 if (!_screenProducts.contains(productName))
                     ThrowException("Undefined screen product name").value(productName);
                 int layer = screen->getAttributeInt("layer");
@@ -231,6 +231,9 @@ void ReaderXml::readVirtualGreenhouse() {
                     box("Shading").name("shading");
                         shadingAgents().
                     endbox().
+                    box().name("covers");
+                        shelterCovers().
+                    endbox().
                     box().name("products").
                         box().name("covers");
                             shelterCovers().
@@ -239,7 +242,10 @@ void ReaderXml::readVirtualGreenhouse() {
                             shelterScreens().
                         endbox().
                     endbox().
-                    box("Faces").name("faces");
+                    box().name("screens");
+                        shelterScreens().
+                    endbox().
+                    box().name("faces");
                         shelterFaces().
                     endbox().
                 endbox().
@@ -397,21 +403,25 @@ void ReaderXml::readVirtualGreenhouse() {
 }
 
 BoxBuilder& ReaderXml::shadingAgents() {
-    _chosenShadingAgent = productId(_doc->find("Greenhouse/ShadingAgents/ChosenProduct")->value());
+    _chosenShadingAgent = _doc->find("Greenhouse/ShadingAgents/ChosenProduct")->value();
     bool chosenExists = false;
     XmlNode *products = _doc->find("Greenhouse/ShadingAgents/Products");
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
         XmlNode *product = pr.value();
-        QString id = productId(product->getAttributeString("name"));
+        QString productName = product->getAttributeString("name");
+        if (productName.isEmpty())
+            ThrowException("<Product> node is missing a 'name' attribute").value("ShadingAgents/Products/" + pr.key());
+        if (!isValidNodeName(productName))
+            ThrowException("Invalid name of shading product").value(productName).hint("Must begin with a letter followed by letters and numbers; no blanks");
         double
             swReflectivity = getChildValueDouble(product, "SwReflectivity"),
             lwReflectivity = getChildValueDouble(product, "LwReflectivity");
         _builder->
-        box("ShadingAgent").name(id).
+        box("ShadingAgent").name(productName).
             port("swReflectivity").equals(swReflectivity).
             port("lwReflectivity").equals(lwReflectivity);
-        if (id == _chosenShadingAgent) {
-            _builder->port("state").imports("setpoints/shading/" + id + "[value]");
+        if (productName == _chosenShadingAgent) {
+            _builder->port("state").imports("setpoints/shading/" + productName + "[value]");
             chosenExists = true;
         }
         else
@@ -428,8 +438,9 @@ BoxBuilder& ReaderXml::shelterCovers() {
 
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
         XmlNode *product = pr.value();
-        QString id = productId(product->getAttributeString("name"));
-
+        QString productName = product->getAttributeString("name");
+        if (productName.isEmpty())
+            ThrowException("<Product> node is missing a 'name' attribute").value("Panes/Products/" + pr.key());
         double
             swt = getChildValueDouble(product, "PaneTransmission"),
             swr = getChildValueDouble(product, "PaneReflection"),
@@ -440,7 +451,7 @@ BoxBuilder& ReaderXml::shelterCovers() {
             U   = getChildValueDouble(product, "PaneUValue"),
             C   = getChildValueDouble(product, "PaneHeatCapacity");
         _builder->
-        box("Cover").name(id).
+        box("Cover").name(productName.replace(" ", "_")).
             port("swTransmissivityTop")   .equals(swt).
             port("swReflectivityTop")     .equals(swr).
             port("swAbsorptivityTop")     .equals(swa).
@@ -461,15 +472,14 @@ BoxBuilder& ReaderXml::shelterCovers() {
     return *_builder;
 }
 
-const QString ReaderXml::productId(QString productName) {
-    static auto regex = QRegularExpression("[^(A-Za-z0-9)]");
-    QString id = productName.simplified().trimmed().replace(regex, "_");
-    if (!isValidNodeName(id))
-        ThrowException("Invalid name of product").value(id).hint("Must begin with a letter followed by letters and numbers");
-    if (id.compare("none", Qt::CaseInsensitive) == 0)
-        id = "none";
-    return id;
+const QString ReaderXml::makeScreenId(QString screenProduct) {
+    return screenProduct.simplified().replace(" ", "_");
 }
+
+const QString ReaderXml::makeScreenId(QString screenProduct, int layer) {
+    return "layer" + QString::number(layer) + "_" + makeScreenId(screenProduct);
+}
+
 
 BoxBuilder& ReaderXml::shelterScreens() {
     auto products = _doc->find("Greenhouse/Screens/Products");
@@ -486,7 +496,13 @@ BoxBuilder& ReaderXml::shelterScreensOnlyUsed() {
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     for (auto product = products->children().begin(); product != products->children().end(); ++product) {
         // Create screen products
-        QString id = productId(product.value()->getAttributeString("name"));
+        QString productName = product.value()->getAttributeString("name").trimmed();
+        if (productName.isEmpty())
+            ThrowException("<Product> node is missing a 'name' attribute").value("Screens/Products/" + product.key());
+        if (productName.toLower() == "none")
+            continue;
+        if (!_screenProducts.contains(productName))
+            ThrowException("Undefined screen product").value(productName);
         double
             t = getChildValueDouble(product.value(), "Transmission"),
             rtop = getChildValueDouble(product.value(), "ReflectionOutwards"),
@@ -498,10 +514,11 @@ BoxBuilder& ReaderXml::shelterScreensOnlyUsed() {
             C       = getChildValueDouble(product.value(), "HeatCapacity");
 
         // Loop through the layers (1 to 3 layers) that uses this screen product
-        const auto &layerNumbers(_screenProducts.value(id));
+        const auto &layerNumbers(_screenProducts.value(productName));
         for (auto layerNumber = layerNumbers.constBegin(); layerNumber != layerNumbers.constEnd(); ++layerNumber) {
+            QString boxId = makeScreenId(productName,*layerNumber);
             _builder->
-            box("Screen").name(id).
+            box("Screen").name(boxId).
                 port("swTransmissivityTop")   .equals(t).
                 port("swReflectivityTop")     .equals(rtop).
                 port("swAbsorptivityTop")     .equals(atop).
@@ -529,8 +546,8 @@ BoxBuilder& ReaderXml::shelterScreensAll() {
     double UinsulationEffectivity = _doc->find("Greenhouse/screenPerfection")->toDouble();
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     for (auto product = products->children().begin(); product != products->children().end(); ++product) {
-        QString id = productId(product.value()->getAttributeString("name"));
-        if (id == "none")
+        QString productName = product.value()->getAttributeString("name").trimmed();
+        if (productName.toLower() == "none")
             continue;
         double
             t = getChildValueDouble(product.value(), "Transmission"),
@@ -542,8 +559,9 @@ BoxBuilder& ReaderXml::shelterScreensAll() {
             C       = getChildValueDouble(product.value(), "HeatCapacity"),
             saving  = getChildValueDouble(product.value(), "EnergySaving");
 
+            QString boxId = makeScreenId(productName);
             _builder->
-            box("Screen").name(id).
+            box("Screen").name(boxId).
                 port("swTransmissivityTop")   .equals(t).
                 port("swReflectivityTop")     .equals(rtop).
                 port("swAbsorptivityTop")     .equals(atop).
@@ -562,6 +580,7 @@ BoxBuilder& ReaderXml::shelterScreensAll() {
                 port("UinsulationEffectivity").equals(UinsulationEffectivity).
                 port("heatCapacity")          .equals(C).
                 port("energySaving")          .equals(saving).
+                port("state")                 .imports("actuators/screens/layer1[state]").
             endbox();
     }
     return *_builder;
@@ -575,7 +594,7 @@ QString ReaderXml::findPaneProduct(QString position) {
            int panePosition = getPosition(pane.value());
            if (panePosition <= 6 && panePosition == pos) {
                 XmlNode *product = pane.value()->find("Product");
-                return productId(product->value());
+                return product->value().replace(" ", "_");
            }
         }
     }
@@ -842,18 +861,18 @@ BoxBuilder& ReaderXml::actuatorsGrowthLights() {
     auto products = _doc->find("Greenhouse/Lamps/Products")->children();
     for (auto pr = products.begin(); pr != products.end(); ++pr) {
         XmlNode &product(*pr.value());
-        QString name = makeId(product.find("Name")->value());
+        QString name = makeId(product.find("Lp_name")->value());
         _builder->
         box("GrowthLightProduct").name(name).
-            port("power").equals(product.find("Power")->toDouble()).
-            port("ballast").equals(product.find("Ballast")->toDouble()).
-            port("parPhotonCoef").equals(product.find("MicroMolParPerWattSeconds")->toDouble()).
-            port("propSw").equals(product.find("PropSw")->toDouble()).
-            port("propLw").equals(product.find("PropLw")->toDouble()).
-            port("propConv").equals(1. - product.find("PropSw")->toDouble() - product.find("PropLw")->toDouble()).
-            port("propBallastLw").equals(product.find("BallastPropLw")->toDouble()).
-            port("propBallastConv").equals(1. - product.find("BallastPropLw")->toDouble()).
-            port("minPeriodOn").equals(product.find("MinPeriodOn")->toDouble()).
+            port("power").equals(product.find("Lp_Power")->toDouble()).
+            port("ballast").equals(product.find("Lp_Ballast")->toDouble()).
+            port("parPhotonCoef").equals(product.find("Lp_MicroMolParPerWattSeconds")->toDouble()).
+            port("propSw").equals(product.find("Lp_PropSw")->toDouble()).
+            port("propLw").equals(product.find("Lp_PropLw")->toDouble()).
+            port("propConv").equals(1. - product.find("Lp_PropSw")->toDouble() - product.find("Lp_PropLw")->toDouble()).
+            port("propBallastLw").equals(product.find("Lp_BallastPropLw")->toDouble()).
+            port("propBallastConv").equals(1. - product.find("Lp_BallastPropLw")->toDouble()).
+            port("minPeriodOn").equals(1. - product.find("Lp_MinPeriodOn")->toDouble()).
         endbox();
     }
     _builder->endbox();
@@ -893,7 +912,9 @@ QStringList ReaderXml::collectScreens(QString position) {
 
             XmlNode *product = screen.value()->find("Product");
             QString productName = product->value().replace(" ", "_");
-            productName = (productName.toLower() == "none") ? "none" : productName;
+            productName = (productName.toLower() == "none") ?
+                          "none" :
+                          "layer" + QString::number(layer) + "_" + productName;
             result[layer] = productName;
         }
         ++screen;

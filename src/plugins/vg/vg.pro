@@ -27,6 +27,7 @@ HEADERS +=  \
     budget_volume.h \
     canopy_photosynthesis.h \
     cover.h \
+    energy_saving.h \
     face.h \
     faces.h \
     floor.h \
@@ -75,6 +76,7 @@ SOURCES += \
     budget_volume.cpp \
     canopy_photosynthesis.cpp \
     cover.cpp \
+    energy_saving.cpp \
     face.cpp \
     faces.cpp \
     floor.cpp \

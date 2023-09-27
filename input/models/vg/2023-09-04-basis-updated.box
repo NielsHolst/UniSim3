@@ -1,4 +1,6 @@
+#using vg
 Simulation sim {
+  // .steps = 1
   Box global {
     &beginDate = 2023/01/01
   }
@@ -9,7 +11,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/12/31
+    .end = 2023/01/04
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -35,9 +37,10 @@ Simulation sim {
     }
     Box construction {
       LeakageVentilation leakage {
-        .leakage = 0.05
+        .leakage = 0.2
       }
       Shelter shelter {
+        .transmissivityReduction = 0.1
         UWind Utop {
           .UwindSlope = 1.2
         }
@@ -48,84 +51,84 @@ Simulation sim {
             .state = setpoints/shading/test[value]
           }
         }
-        Box covers {
-          Cover Single_glass_4mm {
-            .swAbsorptivityTop = 0.1
-            .swReflectivityTop = 0.1
-            .swTransmissivityTop = 0.8
-            .swAbsorptivityBottom = 0.1
-            .swReflectivityBottom = 0.1
-            .swTransmissivityBottom = 0.8
-            .lwAbsorptivityTop = 0.83
-            .lwReflectivityTop = 0.15
-            .lwTransmissivityTop = 0.02
-            .lwAbsorptivityBottom = 0.83
-            .lwReflectivityBottom = 0.15
-            .lwTransmissivityBottom = 0.02
-            .Utop = shelter/Utop[value]
-            .Ubottom = 6.5
-            .heatCapacity = 8400.0
-            .transmissivityReduction = 0.1
-            .swShading = shelter/shading[swReflectivity]
-            .lwShading = shelter/shading[lwReflectivity]
+        Box products {
+          Box covers {
+            Cover Single_glass_4mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.1
+              .swTransmissivityTop = 0.8
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.1
+              .swTransmissivityBottom = 0.8
+              .lwAbsorptivityTop = 0.83
+              .lwReflectivityTop = 0.15
+              .lwTransmissivityTop = 0.02
+              .lwAbsorptivityBottom = 0.83
+              .lwReflectivityBottom = 0.15
+              .lwTransmissivityBottom = 0.02
+              .Utop = shelter/Utop[value]
+              .Ubottom = 6.5
+              .heatCapacity = 8400.0
+            }
+          }
+          Box screens {
+            Screen Bonar_PhormiTex_55_B1 {
+              .swAbsorptivityTop = 0.53
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.45
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.55
+              .swTransmissivityBottom = 0.45
+              .lwAbsorptivityTop = 0.53
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.45
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.55
+              .lwTransmissivityBottom = 0.45
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = 0.3
+              .UinsulationEffectivity = 0.95
+            }
           }
         }
-        Box screens {
-          Screen layer1_Bonar_PhormiTex_55_B1 {
-            .swAbsorptivityTop = 0.53
-            .swReflectivityTop = 0.02
-            .swTransmissivityTop = 0.45
-            .swAbsorptivityBottom = 0.0
-            .swReflectivityBottom = 0.55
-            .swTransmissivityBottom = 0.45
-            .lwAbsorptivityTop = 0.53
-            .lwReflectivityTop = 0.02
-            .lwTransmissivityTop = 0.45
-            .lwAbsorptivityBottom = 0.0
-            .lwReflectivityBottom = 0.55
-            .lwTransmissivityBottom = 0.45
-            .Utop = 0.6
-            .Ubottom = 0.6
-            .heatCapacity = 80.0
-            .state = actuators/screens/layer1[state]
-            .Uinsulation = 0.3
-            .UinsulationEffectivity = 0.95
-          }
-        }
-        Box faces {
+        Faces faces {
+          &screens = "Bonar_PhormiTex_55_B1+none+none"
+          // &screens = "none+none+none"
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = ..[screens]
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = ..[screens]
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
           Face side1 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = ..[screens]
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
           Face side2 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = ..[screens]
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = ..[screens]
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
           Face end2 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = ..[screens]
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
@@ -159,22 +162,8 @@ Simulation sim {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
-            .endTime = 06:00:00
-            .signalInside = 10.0
-          }
-          DateTimeSignal  {
-            .beginDate = 1/1
-            .endDate = 31/12
-            .beginTime = 20:00:00
             .endTime = 00:00:00
-            .signalInside = 10.0
-          }
-          DateTimeSignal  {
-            .beginDate = 1/1
-            .endDate = 31/12
-            .beginTime = 00:00:00
-            .endTime = 00:00:00
-            .signalInside = 10.0
+            .signalInside = 21.0
           }
         }
         PrioritySignal humidityOffset {
@@ -224,7 +213,7 @@ Simulation sim {
               .endDate = 31/12
               .beginTime = 00:00:00
               .endTime = 00:00:00
-              .signalInside = 10.0
+              .signalInside = 5.0
             }
           }
           PrioritySignal band {
@@ -244,7 +233,7 @@ Simulation sim {
               .endDate = 31/12
               .beginTime = 00:00:00
               .endTime = 00:00:00
-              .signalInside = 10.0
+              .signalInside = 5.0
             }
           }
           PrioritySignal band {
@@ -607,29 +596,31 @@ Simulation sim {
           .input = outdoors[radiation]
           .thresholdLow = setpoints/growthLights/bank3/thresholds/low[value]
           .thresholdHigh = setpoints/growthLights/bank3/thresholds/high[value]
-          .minPeriodOn = 20.0
+          .minPeriodOn = actuators/growthLights/bank3[minPeriodOn]
         }
         GrowthLightController bank2 {
           .mode = setpoints/growthLights/bank2/mode[value]
           .input = outdoors[radiation]
           .thresholdLow = setpoints/growthLights/bank2/thresholds/low[value]
           .thresholdHigh = setpoints/growthLights/bank2/thresholds/high[value]
-          .minPeriodOn = 20.0
+          .minPeriodOn = actuators/growthLights/bank2[minPeriodOn]
         }
         GrowthLightController bank1 {
           .mode = setpoints/growthLights/bank1/mode[value]
           .input = outdoors[radiation]
           .thresholdLow = setpoints/growthLights/bank1/thresholds/low[value]
           .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
-          .minPeriodOn = 5.0
+          .minPeriodOn = actuators/growthLights/bank1[minPeriodOn]
         }
       }
     }
     Actuators actuators {
       HeatPipes heatPipes {
         ActuatorHeatPipe circuit2 {
-          .volume = 477.836
-          .flowRate = 10.0
+          // .volume = 477.836
+          // .flowRate = 200.0
+          .volume = 76.0
+          .flowRate = 50.0
           .k = 0.0063
           .b = 1.25
           .propLw = 0.2
@@ -638,18 +629,22 @@ Simulation sim {
           .indoorsTemperature = indoors[temperature]
         }
         ActuatorHeatPipe circuit1 {
-          .volume = 477.836
-          .flowRate = 10.0
+          // .volume = 477.836
+          // .flowRate = 200.0
+          .volume = 76.0
+          .flowRate = 50.0
           .k = 0.0063
           .b = 1.25
-          .propLw = 0.1
+          .propLw = 0.2
           .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
           .indoorsTemperature = indoors[temperature]
         }
       }
       ActuatorVentilation ventilation {
-        .ventAreaRatio = 0.12
+        .ventAreaRatio = 0.012
+        .windCoef = 40.0
+        .temperatureCoef = 7.0
       }
       Box screens {
         ActuatorScreen layer1 {
@@ -666,41 +661,47 @@ Simulation sim {
         }
       }
       GrowthLights growthLights {
+        Box products {
+          GrowthLightProduct None {
+            .power = 0.0
+            .ballast = 0.0
+            .parPhotonCoef = 0.0
+            .propSw = 0.0
+            .propLw = 0.0
+            .propConv = 1.0
+            .propBallastLw = 0.0
+            .propBallastConv = 1.0
+            .minPeriodOn = 1.0
+          }
+          GrowthLightProduct E_HP_Na_1000W {
+            .power = 1035.0
+            .ballast = 15.0
+            .parPhotonCoef = 1.787
+            .propSw = 0.2
+            .propLw = 0.1
+            .propConv = 0.7
+            .propBallastLw = 0.2
+            .propBallastConv = 0.8
+            // .minPeriodOn = -1034.0 NH
+          }
+        }
         ActuatorGrowthLight bank3 {
-          .isOn = controllers/growthLights/bank3[isOn]
-          .power = 0.0
-          .ballast = 50.0
-          .parPhotonCoef = 2.8
+          .productName = "None"
+          .numberInstalled = 0.5
           .efficiency = 1.0
-          .propSw = 0.4
-          .propLw = 0.5
-          .propConv = 0.1
-          .propBallastLw = 0.3
-          .propBallastConv = 0.7
+          .isOn = controllers/growthLights/bank3[isOn]
         }
         ActuatorGrowthLight bank2 {
-          .isOn = controllers/growthLights/bank2[isOn]
-          .power = 0.0
-          .ballast = 0.0
-          .parPhotonCoef = 0.0
+          .productName = "None"
+          .numberInstalled = 0.25
           .efficiency = 1.0
-          .propSw = 0.4
-          .propLw = 0.0
-          .propConv = 0.6
-          .propBallastLw = 0.0
-          .propBallastConv = 1.0
+          .isOn = controllers/growthLights/bank2[isOn]
         }
         ActuatorGrowthLight bank1 {
-          .isOn = controllers/growthLights/bank1[isOn]
-          .power = 60.0
-          .ballast = 50.0
-          .parPhotonCoef = 1.787
+          .productName = "E_HP_Na_1000W"
+          .numberInstalled = 0.25
           .efficiency = 1.0
-          .propSw = 0.2
-          .propLw = 0.1
-          .propConv = 0.7
-          .propBallastLw = 0.2
-          .propBallastConv = 0.8
+          .isOn = controllers/growthLights/bank1[isOn]
         }
       }
       Accumulator co2 {
@@ -744,83 +745,80 @@ Simulation sim {
     Budget budget {
     }
     Summary summary {
+      Distribution Tin {
+        .input = gh/budget/indoors[temperature]
+        .sections = c(10,50,90)
+      }
     }
   }
   OutputR output {
     Box variables {
-      &Uoutside = shelter/layers/cover[UtopAdj]
-      &Uinside = shelter/layers/cover[UbottomAdj]
-      &transpiration = budget[transpiration]
+      // &Uoutside = shelter/layers/cover[Utop]
+      // &Uinside = shelter/layers/cover[Ubottom]
+      // &transpiration = budget[transpiration]
       &spVentilationTemperature = controllers/ventilation/temperatureThreshold[value]
       &spHeatingTemperature = controllers/heating[value]
-      &spCo2 = setpoints/co2/concentration[value]
-      &soilT = outdoors[soilTemperature]
-      &skyT = budget/sky[temperature]
+      // &spCo2 = setpoints/co2/concentration[value]
+      // &soilT = outdoors[soilTemperature]
+      // &skyT = budget/sky[temperature]
       &sensibleVentFlux = actuators/ventilation[sensibleHeatFlux]
-      &screen3T = budget/screen3[temperature]
-      &screen2T = budget/screen2[temperature]
-      &screen1T = budget/screen1[temperature]
-      &respirationRate = plant[Rd]
+      // &screen3T = budget/screen3[temperature]
+      // &screen2T = budget/screen2[temperature]
+      // &screen1T = budget/screen1[temperature]
+      // &respirationRate = plant[Rd]
       &pipeT = budget/heatPipes[temperature]
-      &outdoorsWindSpeed = outdoors[windSpeed]
-      &outdoorsT = outdoors[temperature]
-      &outdoorsRh = outdoors[rh]
-      &outdoorsPar = outdoors[par]
+      // &outdoorsWindSpeed = outdoors[windSpeed]
+      // &outdoorsT = outdoors[temperature]
+      // &outdoorsRh = outdoors[rh]
+      // &outdoorsPar = outdoors[par]
       &outdoorsLight = outdoors[radiation]
-      &netGrowthRateLeaf = plant[leafGrowthRate]
-      &netGrowthRate = plant[growthRate]
-      &netAssimilationRate = plant[Pn]
-      &lwEmissionCover = budget/cover[lwEmissionTop]
-      &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
-      &lightUseEfficiency = plant[lue]
-      &leafT = budget/plant[temperature]
-      &latentVentFlux = actuators/ventilation[latentHeatFlux]
-      &indoorsTotalPar = plant[incidentPar]
+      // &netGrowthRateLeaf = plant[leafGrowthRate]
+      // &netGrowthRate = plant[growthRate]
+      // &netAssimilationRate = plant[Pn]
+      // &lwEmissionCover = budget/cover[lwEmissionTop]
+      // &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
+      // &lightUseEfficiency = plant[lue]
+      // &leafT = budget/plant[temperature]
+      // &latentVentFlux = actuators/ventilation[latentHeatFlux]
+      // &indoorsTotalPar = plant[incidentPar]
       &indoorsT = budget/indoors[temperature]
-      &indoorsRh = budget/indoors[rh]
-      &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
-      &indoorsCo2 = budget/indoors[co2]
-      &heatFluxFloor = budget/cover[convectionBottom]
-      &heatFluxCover = budget/cover[convectionTop]
-      &grossAssimilationRate = plant[Pg]
-      &floorT = budget/floor[temperature]
-      &coverT = budget/cover[temperature]
-      &condensation = budget[condensation]
-      &airFluxTotal = actuators/ventilation[value]
+      // &indoorsRh = budget/indoors[rh]
+      // &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
+      // &indoorsCo2 = budget/indoors[co2]
+      // &heatFluxFloor = budget/cover[convectionBottom]
+      // &heatFluxCover = budget/cover[convectionTop]
+      // &grossAssimilationRate = plant[Pg]
+      // &floorT = budget/floor[temperature]
+      // &coverT = budget/cover[temperature]
+      // &condensation = budget[condensation]
+      // &airFluxTotal = actuators/ventilation[value]
       &actVentilation = actuators/ventilation[value]
-      &actScreen3 = actuators/screens/layer3[state]
-      &actScreen2 = actuators/screens/layer2[state]
       &actScreen1  = actuators/screens/layer1[state]
-      &actPipeTempOut2 = actuators/heatPipes/circuit2[outflowTemperature]
-      &actPipeTempOut1 = actuators/heatPipes/circuit1[outflowTemperature]
-      &actPipeTempIn2 = actuators/heatPipes/circuit2[inflowTemperature]
-      &actPipeTempIn1 = actuators/heatPipes/circuit1[inflowTemperature]
-      &actLightPower = actuators/growthLights[powerUsage]
-      &actLightPar = actuators/growthLights[parEmissionBottom]
-      &actLight3 = actuators/growthLights/bank3[powerUsage]
-      &actLight2 = actuators/growthLights/bank2[powerUsage]
+      // &actScreen2 = actuators/screens/layer2[state]
+      // &actScreen3 = actuators/screens/layer3[state]
+      // &actPipeTempOut2 = actuators/heatPipes/circuit2[outflowTemperature]
+      // &actPipeTempOut1 = actuators/heatPipes/circuit1[outflowTemperature]
+      // &actPipeTempIn2 = actuators/heatPipes/circuit2[inflowTemperature]
+      // &actPipeTempIn1 = actuators/heatPipes/circuit1[inflowTemperature]
+      // &actLightPower = actuators/growthLights[powerUsage]
+      // &actLightPar = actuators/growthLights[parEmissionBottom]
+      // &actLight3 = actuators/growthLights/bank3[powerUsage]
+      // &actLight2 = actuators/growthLights/bank2[powerUsage]
       &actLight1 = actuators/growthLights/bank1[powerUsage]
       &actHeatingPower = actuators/heatPipes[heatFlux]
-      &actCo2 = actuators/co2[value]
+      // &actCo2 = actuators/co2[value]
     }
     PageR  {
       .xAxis = calendar[dateTime]
-      .maximizeWindow = TRUE
+      // .maximizeWindow = TRUE
       PlotR  {
-        .ports = output/variables[*]
-        .nrow = 7
-      }
-    }
-    PageR  {
-      .xAxis = calendar[dateTime]
-      PlotR  {
-        .ports = summary[output::*]
+        .ports = output/variables[*] | summary[heatingCost]
+        .nrow = 5
       }
     }
     OutputSelector selector {
-      .beginDateTime = global[beginDate]
-      .period = 10
-      .useLocalDecimalChar = FALSE
+      // .beginDateTime = global[beginDate]
+      // .period = 10
     }
   }
 }

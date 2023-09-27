@@ -1,4 +1,4 @@
-#using vg
+x#using vg
 Simulation sim {
   .silent = TRUE
   .unattended = TRUE
@@ -12,7 +12,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/12/31T00:00:00
+    .end = 2023/12/31
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -41,6 +41,7 @@ Simulation sim {
         .leakage = 0.2
       }
       Shelter shelter {
+        .transmissivityReduction = 0.1
         UWind Utop {
           .UwindSlope = 1.2
         }
@@ -51,104 +52,84 @@ Simulation sim {
             .state = setpoints/shading/test[value]
           }
         }
-        Box covers {
-          Cover Single_glass_4mm {
-            .swAbsorptivityTop = 0.1
-            .swReflectivityTop = 0.1
-            .swTransmissivityTop = 0.8
-            .swAbsorptivityBottom = 0.1
-            .swReflectivityBottom = 0.1
-            .swTransmissivityBottom = 0.8
-            .lwAbsorptivityTop = 0.83
-            .lwReflectivityTop = 0.15
-            .lwTransmissivityTop = 0.02
-            .lwAbsorptivityBottom = 0.83
-            .lwReflectivityBottom = 0.15
-            .lwTransmissivityBottom = 0.02
-            .Utop = shelter/Utop[value]
-            .Ubottom = 6.5
-            .heatCapacity = 8400.0
-            .transmissivityReduction = 0.1
-            .swShading = shelter/shading[swReflectivity]
-            .lwShading = shelter/shading[lwReflectivity]
+        Box products {
+          Box covers {
+            Cover Single_glass_4mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.1
+              .swTransmissivityTop = 0.8
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.1
+              .swTransmissivityBottom = 0.8
+              .lwAbsorptivityTop = 0.83
+              .lwReflectivityTop = 0.15
+              .lwTransmissivityTop = 0.02
+              .lwAbsorptivityBottom = 0.83
+              .lwReflectivityBottom = 0.15
+              .lwTransmissivityBottom = 0.02
+              .Utop = shelter/Utop[value]
+              .Ubottom = 6.5
+              .heatCapacity = 8400.0
+            }
+          }
+          Box screens {
+            Screen Bonar_PhormiTex_55_B1 {
+              .swAbsorptivityTop = 0.53
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.45
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.55
+              .swTransmissivityBottom = 0.45
+              .lwAbsorptivityTop = 0.53
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.45
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.55
+              .lwTransmissivityBottom = 0.45
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = 3.0
+              .UinsulationEffectivity = 0.95
+            }
+            Screen none {
+            }
           }
         }
-        Box screens {
-          Screen layer1_LS_Obscura_10070_FR_WB_BW {
-            .swAbsorptivityTop = 0.99
-            .swReflectivityTop = 0.0
-            .swTransmissivityTop = 0.01
-            .swAbsorptivityBottom = 0.0
-            .swReflectivityBottom = 0.99
-            .swTransmissivityBottom = 0.01
-            .lwAbsorptivityTop = 0.99
-            .lwReflectivityTop = 0.0
-            .lwTransmissivityTop = 0.01
-            .lwAbsorptivityBottom = 0.0
-            .lwReflectivityBottom = 0.99
-            .lwTransmissivityBottom = 0.01
-            .Utop = 0.6
-            .Ubottom = 0.6
-            .heatCapacity = 80.0
-            .state = actuators/screens/layer1[state]
-            .Uinsulation = 70.0
-            .UinsulationEffectivity = 0.95
-          }
-          Screen layer1_Bonar_PhormiTex_55_B1 {
-            .swAbsorptivityTop = 0.53
-            .swReflectivityTop = 0.02
-            .swTransmissivityTop = 0.45
-            .swAbsorptivityBottom = 0.0
-            .swReflectivityBottom = 0.55
-            .swTransmissivityBottom = 0.45
-            .lwAbsorptivityTop = 0.53
-            .lwReflectivityTop = 0.02
-            .lwTransmissivityTop = 0.45
-            .lwAbsorptivityBottom = 0.0
-            .lwReflectivityBottom = 0.55
-            .lwTransmissivityBottom = 0.45
-            .Utop = 0.6
-            .Ubottom = 0.6
-            .heatCapacity = 80.0
-            .state = actuators/screens/layer1[state]
-            .Uinsulation = 0.3
-            .UinsulationEffectivity = 0.95
-          }
-        }
-        Box faces {
+        Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_LS_Obscura_10070_FR_WB_BW+none+none"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
           Face side1 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
           Face side2 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
           Face end2 {
             .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
@@ -183,7 +164,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 21.0
+            .signalInside = 20.0
           }
         }
         PrioritySignal humidityOffset {
@@ -212,7 +193,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 4.0
+            .signalInside = 2.0
           }
         }
         PrioritySignal maxHeatingCost {
@@ -293,7 +274,7 @@ Simulation sim {
               .endDate = 31/12
               .beginTime = 00:00:00
               .endTime = 00:00:00
-              .signalInside = 500.0
+              .signalInside = 900.0
             }
           }
           PrioritySignal band {
@@ -637,20 +618,20 @@ Simulation sim {
     Actuators actuators {
       HeatPipes heatPipes {
         ActuatorHeatPipe circuit2 {
-          .volume = 477.836
-          .flowRate = 10.0
-          .k = 0.0063
-          .b = 1.25
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
           .propLw = 0.2
           .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
           .indoorsTemperature = indoors[temperature]
         }
         ActuatorHeatPipe circuit1 {
-          .volume = 477.836
-          .flowRate = 10.0
-          .k = 0.0063
-          .b = 1.25
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
           .propLw = 0.2
           .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
@@ -658,7 +639,7 @@ Simulation sim {
         }
       }
       ActuatorVentilation ventilation {
-        .ventAreaRatio = 0.12
+        .ventAreaRatio = 0.012
         .windCoef = 40.0
         .temperatureCoef = 7.0
       }
@@ -687,24 +668,24 @@ Simulation sim {
             .propConv = 0.7
             .propBallastLw = 0.2
             .propBallastConv = 0.8
-            .minPeriodOn = -29.0
+            .minPeriodOn = -1034.0
           }
         }
         ActuatorGrowthLight bank3 {
-          .productName = "E_HP_Na_1000W"
-          .numberInstalled = 0.03
+          .productName = "None"
+          .numberInstalled = 0.5
           .efficiency = 1.0
           .isOn = controllers/growthLights/bank3[isOn]
         }
         ActuatorGrowthLight bank2 {
-          .productName = "E_HP_Na_1000W"
-          .numberInstalled = 0.03
+          .productName = "None"
+          .numberInstalled = 0.25
           .efficiency = 1.0
           .isOn = controllers/growthLights/bank2[isOn]
         }
         ActuatorGrowthLight bank1 {
           .productName = "E_HP_Na_1000W"
-          .numberInstalled = 0.03
+          .numberInstalled = 0.25
           .efficiency = 1.0
           .isOn = controllers/growthLights/bank1[isOn]
         }
@@ -815,9 +796,9 @@ Simulation sim {
     }
     PageR  {
       .xAxis = calendar[dateTime]
-      .maximizeWindow = TRUE
+      // .maximizeWindow = TRUE
       PlotR  {
-        .ports = output/variables[*]
+        .ports = summary[heatingCost] //output/variables[*]
         .nrow = 7
       }
     }

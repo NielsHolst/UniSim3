@@ -70,8 +70,7 @@ private:
 
     Setpoints getSetpoints(QString name);
     double groundArea();
-    const QString makeScreenId(QString screenProduct);
-    const QString makeScreenId(QString screenProduct, int layer);
+    const QString productId(QString productName);
 };
 
 }

@@ -1,140 +1,158 @@
 #using vg
-Simulation sim{
-  Box global{
-    &beginDate = 01/01/2023
-    &endDate   = 07/01/2023
+Simulation sim {
+  Box global {
+    &beginDate = 2023/01/01
   }
-  Calendar calendar{
+  Box scenarios {
+    &Uinsulation = 0.5
+  }
+  Calendar calendar {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = global[endDate]
-    .timeStep = 180
+    .end = 2023/01/02
+    .timeStep = 1
     .timeUnit = "s"
   }
-  Outdoors outdoors{
-    Records records{
+  Outdoors outdoors {
+    Records records {
       .fileName = "DNK_Odense.txt"
       .cycle = TRUE
       .ignoreYear = TRUE
     }
-    SoilTemperature soilTemperature{
+    SoilTemperature soilTemperature {
       .initial = 1.2
     }
   }
-  Sky sky{
+  Sky sky {
   }
   Box gh {
-    Geometry geometry{
-      .numSpans = 25
-      .spanWidth = 4.0
-      .length = 100.0
-      .height = 4.0
-      .roofPitch = 26.0
+    Geometry geometry {
+      .numSpans = 1
+      .spanWidth = 2.3
+      .length = 5.8
+      .height = 2.3
+      .roofPitch = 0.0
     }
-    Box construction{
-      LeakageVentilation leakage{
+    Box construction {
+      LeakageVentilation leakage {
         .leakage = 0.05
       }
-      Shelter shelter{
-        UWind Utop{
+      Shelter shelter {
+        .transmissivityReduction = 0.1
+        UWind Utop {
           .UwindSlope = 1.2
         }
-        Shading shading{
-          ShadingAgent test{
+        Shading shading {
+          ShadingAgent test {
             .swReflectivity = 0.2
             .lwReflectivity = 0.2
-            .state = gh/setpoints/shading/test[value]
+            .state = setpoints/shading/test[value]
           }
         }
-        Box covers{
-          Cover Single_glass_4mm{
-            .swAbsorptivityTop = 0.1
-            .swReflectivityTop = 0.1
-            .swTransmissivityTop = 0.8
-            .swAbsorptivityBottom = 0.1
-            .swReflectivityBottom = 0.1
-            .swTransmissivityBottom = 0.8
-            .lwAbsorptivityTop = 0.83
-            .lwReflectivityTop = 0.15
-            .lwTransmissivityTop = 0.02
-            .lwAbsorptivityBottom = 0.83
-            .lwReflectivityBottom = 0.15
-            .lwTransmissivityBottom = 0.02
-            .Utop = shelter/Utop[value]
-            .Ubottom = 6.5
-            .heatCapacity = 8400.0
-            .transmissivityReduction = 0.1
-            .swShading = gh/construction/shelter/shading[swReflectivity]
-            .lwShading = gh/construction/shelter/shading[lwReflectivity]
+        Box products {
+          Box covers {
+            Cover Single_glass_4mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.1
+              .swTransmissivityTop = 0.8
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.1
+              .swTransmissivityBottom = 0.8
+              .lwAbsorptivityTop = 0.83
+              .lwReflectivityTop = 0.15
+              .lwTransmissivityTop = 0.02
+              .lwAbsorptivityBottom = 0.83
+              .lwReflectivityBottom = 0.15
+              .lwTransmissivityBottom = 0.02
+              .Utop = shelter/Utop[value]
+              .Ubottom = 6.5
+              .heatCapacity = 8400.0
+            }
+            Cover PUR_sandwich_50_mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.9
+              .swTransmissivityTop = 0.0
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.9
+              .swTransmissivityBottom = 0.0
+              .lwAbsorptivityTop = 0.1
+              .lwReflectivityTop = 0.9
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.1
+              .lwReflectivityBottom = 0.9
+              .lwTransmissivityBottom = 0.0
+              .Utop = shelter/Utop[value]
+              .Ubottom = 0.4
+              .heatCapacity = 1.0
+            }
+            Cover Double_Glazing {
+              .swAbsorptivityTop = 5.55112e-17
+              .swReflectivityTop = 0.18
+              .swTransmissivityTop = 0.82
+              .swAbsorptivityBottom = 5.55112e-17
+              .swReflectivityBottom = 0.18
+              .swTransmissivityBottom = 0.82
+              .lwAbsorptivityTop = 0.62
+              .lwReflectivityTop = 0.18
+              .lwTransmissivityTop = 0.2
+              .lwAbsorptivityBottom = 0.62
+              .lwReflectivityBottom = 0.18
+              .lwTransmissivityBottom = 0.2
+              .Utop = shelter/Utop[value]
+              .Ubottom = 2.7
+              .heatCapacity = 1.0
+            }
+          }
+          Box screens {
+            Screen none {
+            }
           }
         }
-        Box screens{
-          Screen layer1_Bonar_PhormiTex_55_B1{
-            .swAbsorptivityTop = 0.5
-            .swReflectivityTop = 0.2
-            .swTransmissivityTop = 0.3
-            .swAbsorptivityBottom = 0.3
-            .swReflectivityBottom = 0.4
-            .swTransmissivityBottom = 0.3
-            .lwAbsorptivityTop = 0.5
-            .lwReflectivityTop = 0.2
-            .lwTransmissivityTop = 0.3
-            .lwAbsorptivityBottom = 0.3
-            .lwReflectivityBottom = 0.4
-            .lwTransmissivityBottom = 0.3
-            .Utop = 2.0
-            .Ubottom = 2.0
-            .heatCapacity = 80.0
-            .Uinsulation = 0.5
-            .UinsulationEffectivity = 0.95
-            .state = gh/actuators/screens/layer1[state]
-          }
-        }
-        Box faces{
-          Face roof1{
-            .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+        Faces faces {
+          Face roof1 {
+            .cover = "Double_Glazing"
+            .screens = "none+none+none"
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
-          Face roof2{
-            .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          Face roof2 {
+            .cover = "Double_Glazing"
+            .screens = "none+none+none"
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
-          Face side1{
-            .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          Face side1 {
+            .cover = "PUR_sandwich_50_mm"
+            .screens = "none+none+none"
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
-          Face side2{
-            .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          Face side2 {
+            .cover = "PUR_sandwich_50_mm"
+            .screens = "none+none+none"
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
-          Face end1{
-            .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          Face end1 {
+            .cover = "PUR_sandwich_50_mm"
+            .screens = "none+none+none"
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
-          Face end2{
-            .cover = "Single_glass_4mm"
-            .screens = "layer1_Bonar_PhormiTex_55_B1+none+none"
+          Face end2 {
+            .cover = "PUR_sandwich_50_mm"
+            .screens = "none+none+none"
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
         }
       }
     }
-    Box setpoints{
-      Box rhMax{
-        PrioritySignal threshold{
-          DateTimeSignal {
+    Box setpoints {
+      Box rhMax {
+        PrioritySignal threshold {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -142,8 +160,8 @@ Simulation sim{
             .signalInside = 90.0
           }
         }
-        PrioritySignal band{
-          DateTimeSignal {
+        PrioritySignal band {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -152,18 +170,18 @@ Simulation sim{
           }
         }
       }
-      Box heating{
-        PrioritySignal base{
-          DateTimeSignal {
+      Box heating {
+        PrioritySignal base {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 20.0
+            .signalInside = 17.0
           }
         }
-        PrioritySignal humidityOffset{
-          DateTimeSignal {
+        PrioritySignal humidityOffset {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -171,8 +189,8 @@ Simulation sim{
             .signalInside = 2.0
           }
         }
-        PrioritySignal minTemperature{
-          DateTimeSignal {
+        PrioritySignal minTemperature {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -181,18 +199,18 @@ Simulation sim{
           }
         }
       }
-      Box ventilation{
-        PrioritySignal offset{
-          DateTimeSignal {
+      Box ventilation {
+        PrioritySignal offset {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 5.0
+            .signalInside = 14.0
           }
         }
-        PrioritySignal maxHeatingCost{
-          DateTimeSignal {
+        PrioritySignal maxHeatingCost {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -201,10 +219,10 @@ Simulation sim{
           }
         }
       }
-      Box screens{
-        Box energy1{
-          PrioritySignal threshold{
-            DateTimeSignal {
+      Box screens {
+        Box energy1 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -212,28 +230,8 @@ Simulation sim{
               .signalInside = 5.0
             }
           }
-          PrioritySignal band{
-            DateTimeSignal {
-              .beginDate = 1/1
-              .endDate = 31/12
-              .beginTime = 00:00:00
-              .endTime = 00:00:00
-              .signalInside = 5.0
-            }
-          }
-        }
-        Box energy2{
-          PrioritySignal threshold{
-            DateTimeSignal {
-              .beginDate = 1/1
-              .endDate = 31/12
-              .beginTime = 00:00:00
-              .endTime = 00:00:00
-              .signalInside = 5.0
-            }
-          }
-          PrioritySignal band{
-            DateTimeSignal {
+          PrioritySignal band {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -242,9 +240,9 @@ Simulation sim{
             }
           }
         }
-        Box energy3{
-          PrioritySignal threshold{
-            DateTimeSignal {
+        Box energy2 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -252,8 +250,8 @@ Simulation sim{
               .signalInside = 5.0
             }
           }
-          PrioritySignal band{
-            DateTimeSignal {
+          PrioritySignal band {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -262,9 +260,29 @@ Simulation sim{
             }
           }
         }
-        Box shade1{
-          PrioritySignal threshold{
-            DateTimeSignal {
+        Box energy3 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+        }
+        Box shade1 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -272,8 +290,8 @@ Simulation sim{
               .signalInside = 500.0
             }
           }
-          PrioritySignal band{
-            DateTimeSignal {
+          PrioritySignal band {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -282,9 +300,9 @@ Simulation sim{
             }
           }
         }
-        Box shade2{
-          PrioritySignal threshold{
-            DateTimeSignal {
+        Box shade2 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -292,8 +310,8 @@ Simulation sim{
               .signalInside = 500.0
             }
           }
-          PrioritySignal band{
-            DateTimeSignal {
+          PrioritySignal band {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -302,9 +320,9 @@ Simulation sim{
             }
           }
         }
-        Box shade3{
-          PrioritySignal threshold{
-            DateTimeSignal {
+        Box shade3 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -312,8 +330,8 @@ Simulation sim{
               .signalInside = 500.0
             }
           }
-          PrioritySignal band{
-            DateTimeSignal {
+          PrioritySignal band {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -322,9 +340,9 @@ Simulation sim{
             }
           }
         }
-        Box blackout1{
-          PrioritySignal state{
-            DateTimeSignal {
+        Box blackout1 {
+          PrioritySignal state {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -333,9 +351,9 @@ Simulation sim{
             }
           }
         }
-        Box blackout2{
-          PrioritySignal state{
-            DateTimeSignal {
+        Box blackout2 {
+          PrioritySignal state {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -344,9 +362,9 @@ Simulation sim{
             }
           }
         }
-        Box blackout3{
-          PrioritySignal state{
-            DateTimeSignal {
+        Box blackout3 {
+          PrioritySignal state {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -356,9 +374,9 @@ Simulation sim{
           }
         }
       }
-      Box shading{
-        PrioritySignal test{
-          DateTimeSignal {
+      Box shading {
+        PrioritySignal test {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -367,20 +385,27 @@ Simulation sim{
           }
         }
       }
-      Box growthLights{
-        Box bank1{
-          PrioritySignal mode{
-            DateTimeSignal {
+      Box growthLights {
+        Box bank1 {
+          PrioritySignal mode {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
-              .beginTime = 06:00
-              .endTime   = 20:00
+              .beginTime = 06:00:00
+              .endTime = 20:00:00
               .signalInside = 1.0
             }
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
           }
-          Box thresholds{
-            PrioritySignal low{
-              DateTimeSignal {
+          Box thresholds {
+            PrioritySignal low {
+              DateTimeSignal  {
                 .beginDate = 1/1
                 .endDate = 31/12
                 .beginTime = 00:00:00
@@ -388,8 +413,8 @@ Simulation sim{
                 .signalInside = 40.0
               }
             }
-            PrioritySignal high{
-              DateTimeSignal {
+            PrioritySignal high {
+              DateTimeSignal  {
                 .beginDate = 1/1
                 .endDate = 31/12
                 .beginTime = 00:00:00
@@ -399,9 +424,9 @@ Simulation sim{
             }
           }
         }
-        Box bank2{
-          PrioritySignal mode{
-            DateTimeSignal {
+        Box bank2 {
+          PrioritySignal mode {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -409,9 +434,9 @@ Simulation sim{
               .signalInside = 0.0
             }
           }
-          Box thresholds{
-            PrioritySignal low{
-              DateTimeSignal {
+          Box thresholds {
+            PrioritySignal low {
+              DateTimeSignal  {
                 .beginDate = 1/1
                 .endDate = 31/12
                 .beginTime = 00:00:00
@@ -419,8 +444,8 @@ Simulation sim{
                 .signalInside = 40.0
               }
             }
-            PrioritySignal high{
-              DateTimeSignal {
+            PrioritySignal high {
+              DateTimeSignal  {
                 .beginDate = 1/1
                 .endDate = 31/12
                 .beginTime = 00:00:00
@@ -430,9 +455,9 @@ Simulation sim{
             }
           }
         }
-        Box bank3{
-          PrioritySignal mode{
-            DateTimeSignal {
+        Box bank3 {
+          PrioritySignal mode {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -440,9 +465,9 @@ Simulation sim{
               .signalInside = 0.0
             }
           }
-          Box thresholds{
-            PrioritySignal low{
-              DateTimeSignal {
+          Box thresholds {
+            PrioritySignal low {
+              DateTimeSignal  {
                 .beginDate = 1/1
                 .endDate = 31/12
                 .beginTime = 00:00:00
@@ -450,8 +475,8 @@ Simulation sim{
                 .signalInside = 40.0
               }
             }
-            PrioritySignal high{
-              DateTimeSignal {
+            PrioritySignal high {
+              DateTimeSignal  {
                 .beginDate = 1/1
                 .endDate = 31/12
                 .beginTime = 00:00:00
@@ -462,9 +487,9 @@ Simulation sim{
           }
         }
       }
-      Box co2{
-        PrioritySignal concentration{
-          DateTimeSignal {
+      Box co2 {
+        PrioritySignal concentration {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -472,8 +497,8 @@ Simulation sim{
             .signalInside = 900.0
           }
         }
-        PrioritySignal capacity{
-          DateTimeSignal {
+        PrioritySignal capacity {
+          DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
@@ -481,9 +506,9 @@ Simulation sim{
             .signalInside = 50.0
           }
         }
-        Box ventilation{
-          PrioritySignal threshold{
-            DateTimeSignal {
+        Box ventilation {
+          PrioritySignal threshold {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -491,8 +516,8 @@ Simulation sim{
               .signalInside = 0.1
             }
           }
-          PrioritySignal band{
-            DateTimeSignal {
+          PrioritySignal band {
+            DateTimeSignal  {
               .beginDate = 1/1
               .endDate = 31/12
               .beginTime = 00:00:00
@@ -503,207 +528,204 @@ Simulation sim{
         }
       }
     }
-    Box controllers{
-      Sum heating{
-        .values = gh/setpoints/heating/base[value] | ./humidityOffset[value]
-        ProportionalSignal humidityOffset{
-          .input = gh/budget/indoors[rh]
-          .threshold = gh/setpoints/rhMax/threshold[value]
-          .thresholdBand = gh/setpoints/rhMax/band[value]
-          .maxSignal = gh/setpoints/heating/humidityOffset[value]
+    Box controllers {
+      Sum heating {
+        .values = setpoints/heating/base[value]|./humidityOffset[value]
+        ProportionalSignal humidityOffset {
+          .input = indoors[rh]
+          .threshold = setpoints/rhMax/threshold[value]
+          .thresholdBand = setpoints/rhMax/band[value]
+          .maxSignal = setpoints/heating/humidityOffset[value]
           .increasingSignal = TRUE
         }
       }
-      Box ventilation{
-        Sum temperatureThreshold{
-          .values = gh/controllers/heating[value] | gh/setpoints/ventilation/offset[value]
+      Box ventilation {
+        Sum temperatureThreshold {
+          .values = controllers/heating[value]|setpoints/ventilation/offset[value]
         }
-        ProportionalSignal maxHeatingCost{
-          .input = gh/budget/indoors[rh]
-          .threshold = gh/setpoints/rhMax/threshold[value]
-          .thresholdBand = gh/setpoints/rhMax/band[value]
-          .maxSignal = gh/setpoints/ventilation/maxHeatingCost[value]
+        ProportionalSignal maxHeatingCost {
+          .input = indoors[rh]
+          .threshold = setpoints/rhMax/threshold[value]
+          .thresholdBand = setpoints/rhMax/band[value]
+          .maxSignal = setpoints/ventilation/maxHeatingCost[value]
           .increasingSignal = TRUE
         }
       }
-      Box screens{
-        ProportionalSignal energy1{
+      Box screens {
+        ProportionalSignal energy1 {
           .input = outdoors[radiation]
-          .threshold = gh/setpoints/screens/energy1/threshold[value]
-          .thresholdBand = gh/setpoints/screens/energy1/band[value]
+          .threshold = setpoints/screens/energy1/threshold[value]
+          .thresholdBand = setpoints/screens/energy1/band[value]
           .maxSignal = 1.0
           .increasingSignal = FALSE
         }
-        ProportionalSignal energy2{
+        ProportionalSignal energy2 {
           .input = outdoors[radiation]
-          .threshold = gh/setpoints/screens/energy2/threshold[value]
-          .thresholdBand = gh/setpoints/screens/energy2/band[value]
+          .threshold = setpoints/screens/energy2/threshold[value]
+          .thresholdBand = setpoints/screens/energy2/band[value]
           .maxSignal = 1.0
           .increasingSignal = FALSE
         }
-        ProportionalSignal energy3{
+        ProportionalSignal energy3 {
           .input = outdoors[radiation]
-          .threshold = gh/setpoints/screens/energy3/threshold[value]
-          .thresholdBand = gh/setpoints/screens/energy3/band[value]
+          .threshold = setpoints/screens/energy3/threshold[value]
+          .thresholdBand = setpoints/screens/energy3/band[value]
           .maxSignal = 1.0
           .increasingSignal = FALSE
         }
-        ProportionalSignal shade1{
+        ProportionalSignal shade1 {
           .input = outdoors[radiation]
-          .threshold = gh/setpoints/screens/shade1/threshold[value]
-          .thresholdBand = gh/setpoints/screens/shade1/band[value]
+          .threshold = setpoints/screens/shade1/threshold[value]
+          .thresholdBand = setpoints/screens/shade1/band[value]
           .maxSignal = 1.0
           .increasingSignal = TRUE
         }
-        ProportionalSignal shade2{
+        ProportionalSignal shade2 {
           .input = outdoors[radiation]
-          .threshold = gh/setpoints/screens/shade2/threshold[value]
-          .thresholdBand = gh/setpoints/screens/shade2/band[value]
+          .threshold = setpoints/screens/shade2/threshold[value]
+          .thresholdBand = setpoints/screens/shade2/band[value]
           .maxSignal = 1.0
           .increasingSignal = TRUE
         }
-        ProportionalSignal shade3{
+        ProportionalSignal shade3 {
           .input = outdoors[radiation]
-          .threshold = gh/setpoints/screens/shade3/threshold[value]
-          .thresholdBand = gh/setpoints/screens/shade3/band[value]
+          .threshold = setpoints/screens/shade3/threshold[value]
+          .thresholdBand = setpoints/screens/shade3/band[value]
           .maxSignal = 1.0
           .increasingSignal = TRUE
         }
-        Box blackout1{
-          &value = gh/setpoints/screens/blackout1/state[value]
+        Box blackout1 {
+          &value = setpoints/screens/blackout1/state[value]
         }
-        Box blackout2{
-          &value = gh/setpoints/screens/blackout2/state[value]
+        Box blackout2 {
+          &value = setpoints/screens/blackout2/state[value]
         }
-        Box blackout3{
-          &value = gh/setpoints/screens/blackout3/state[value]
+        Box blackout3 {
+          &value = setpoints/screens/blackout3/state[value]
         }
       }
-      Box growthLights{
-        GrowthLightController bank3{
-          .mode = gh/setpoints/growthLights/bank3/mode[value]
+      Box growthLights {
+        GrowthLightController bank3 {
+          .mode = setpoints/growthLights/bank3/mode[value]
           .input = outdoors[radiation]
-          .thresholdLow = gh/setpoints/growthLights/bank3/thresholds/low[value]
-          .thresholdHigh = gh/setpoints/growthLights/bank3/thresholds/high[value]
-          .minPeriodOn = 20.0
+          .thresholdLow = setpoints/growthLights/bank3/thresholds/low[value]
+          .thresholdHigh = setpoints/growthLights/bank3/thresholds/high[value]
+          .minPeriodOn = actuators/growthLights/bank3[minPeriodOn]
         }
-        GrowthLightController bank2{
-          .mode = gh/setpoints/growthLights/bank2/mode[value]
+        GrowthLightController bank2 {
+          .mode = setpoints/growthLights/bank2/mode[value]
           .input = outdoors[radiation]
-          .thresholdLow = gh/setpoints/growthLights/bank2/thresholds/low[value]
-          .thresholdHigh = gh/setpoints/growthLights/bank2/thresholds/high[value]
-          .minPeriodOn = 20.0
+          .thresholdLow = setpoints/growthLights/bank2/thresholds/low[value]
+          .thresholdHigh = setpoints/growthLights/bank2/thresholds/high[value]
+          .minPeriodOn = actuators/growthLights/bank2[minPeriodOn]
         }
-        GrowthLightController bank1{
-          .mode = gh/setpoints/growthLights/bank1/mode[value]
+        GrowthLightController bank1 {
+          .mode = setpoints/growthLights/bank1/mode[value]
           .input = outdoors[radiation]
-          .thresholdLow = gh/setpoints/growthLights/bank1/thresholds/low[value]
-          .thresholdHigh = gh/setpoints/growthLights/bank1/thresholds/high[value]
-          .minPeriodOn = 5.0
+          .thresholdLow = setpoints/growthLights/bank1/thresholds/low[value]
+          .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
+          .minPeriodOn = actuators/growthLights/bank1[minPeriodOn]
         }
       }
     }
-    Actuators actuators{
-      HeatPipes heatPipes{
-        ActuatorHeatPipe circuit2{
-          .volume = 14.0 //NH
-          .flowRate = 50.0 //NH
-          .k = 0.0063
-          .b = 1.25
-          .propLw = 0.1
-          .minTemperature = gh/setpoints/heating/minTemperature[value]
+    Actuators actuators {
+      HeatPipes heatPipes {
+        ActuatorHeatPipe circuit2 {
+          .volume = 0.101989
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.2
+          .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
-          .indoorsTemperature = gh/budget/indoors[temperature]
+          .indoorsTemperature = indoors[temperature]
         }
-        ActuatorHeatPipe circuit1{
-          .volume = 14.0 //NH
-          .flowRate = 50.0 //NH
-          .k = 0.0063
-          .b = 1.25
-          .propLw = 0.1
-          .minTemperature = gh/setpoints/heating/minTemperature[value]
+        ActuatorHeatPipe circuit1 {
+          .volume = 0.101989
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.2
+          .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
-          .indoorsTemperature = gh/budget/indoors[temperature]
+          .indoorsTemperature = indoors[temperature]
         }
       }
-      ActuatorVentilation ventilation{
-        .ventAreaRatio = 0.12
+      ActuatorVentilation ventilation {
+        .ventAreaRatio = 8.9955
+        .windCoef = 40.0
+        .temperatureCoef = 7.0
       }
-      Box screens{
-        ActuatorScreen layer1{
+      Box screens {
+        ActuatorScreen layer1 {
           .lagPeriod = 10.0
-          .desiredState = max(gh/controllers/screens/energy1[value])
+          .desiredState = max(controllers/screens/energy1[value])
         }
-        ActuatorScreen layer2{
+        ActuatorScreen layer2 {
           .lagPeriod = 10.0
-          .desiredState = max(gh/controllers/screens/shade2[value])
+          .desiredState = max(controllers/screens/shade2[value])
         }
-        ActuatorScreen layer3{
+        ActuatorScreen layer3 {
           .lagPeriod = 10.0
-          .desiredState = max(gh/controllers/screens/blackout3[value])
+          .desiredState = max(controllers/screens/blackout3[value])
         }
       }
-      GrowthLights growthLights{
+      GrowthLights growthLights {
         Box products {
-          GrowthLightProduct lampA {
-            .power = 30.0
-            .ballast = 10.0
-            .parPhotonCoef = 1.787
-            .propSw = 0.2 
-            .propLw = 0.2
-            .propConv = 0.6
-            .propBallastLw = 0.5
-            .propBallastConv = 0.5
-          }
-          GrowthLightProduct lampB {
+          GrowthLightProduct None {
             .power = 0.0
             .ballast = 0.0
             .parPhotonCoef = 0.0
-            .propSw = 0.2 
-            .propLw = 0.2
-            .propConv = 0.6
-            .propBallastLw = 0.5
-            .propBallastConv = 0.5
+            .propSw = 0.0
+            .propLw = 0.0
+            .propConv = 1.0
+            .propBallastLw = 0.0
+            .propBallastConv = 1.0
+            .minPeriodOn = 1.0
           }
-          GrowthLightProduct lampC {
-            .power = 0.0
-            .ballast = 10.0
-            .parPhotonCoef = 2.8
-            .propSw = 0.2 
-            .propLw = 0.2
-            .propConv = 0.6
-            .propBallastLw = 0.5
-            .propBallastConv = 0.5
+          GrowthLightProduct HORTILED_Top_Sirius {
+            .power = 525.0
+            .ballast = 0.0
+            .parPhotonCoef = 3.5
+            .propSw = 0.4
+            .propLw = 0.1
+            .propConv = 0.5
+            .propBallastLw = 0.4
+            .propBallastConv = 0.6
+            .minPeriodOn = -524.0
           }
         }
-        ActuatorGrowthLight bank1{
-          .productName = "lampA"
-          .numberInstalled = 1.0
-          .isOn = gh/controllers/growthLights/bank1[isOn]
-        }
-        ActuatorGrowthLight bank2{
-          .productName = "lampB"
-          .isOn = gh/controllers/growthLights/bank2[isOn]
+        ActuatorGrowthLight bank3 {
+          .productName = "None"
+          .numberInstalled = 0.5
           .efficiency = 1.0
+          .isOn = controllers/growthLights/bank3[isOn]
         }
-        ActuatorGrowthLight bank3{
-          .productName = "lampC"
-          .isOn = gh/controllers/growthLights/bank3[isOn]
+        ActuatorGrowthLight bank2 {
+          .productName = "None"
+          .numberInstalled = 0.25
           .efficiency = 1.0
+          .isOn = controllers/growthLights/bank2[isOn]
+        }
+        ActuatorGrowthLight bank1 {
+          .productName = "HORTILED_Top_Sirius"
+          .numberInstalled = 0.25
+          .efficiency = 1.0
+          .isOn = controllers/growthLights/bank1[isOn]
         }
       }
-      Accumulator co2{
+      Accumulator co2 {
         .change = ./controller[controlVariable]
         .minValue = 0.0
-        .maxValue = gh/setpoints/co2/capacity[value]
-        PidController controller{
-          .sensedValue = gh/budget/indoors[co2]
-          .desiredValue = gh/setpoints/co2/concentration[value]
+        .maxValue = setpoints/co2/capacity[value]
+        PidController controller {
+          .sensedValue = indoors[co2]
+          .desiredValue = setpoints/co2/concentration[value]
           .Kprop = 0.05
         }
       }
     }
-    Plant plant{
+    Plant plant {
       .k_sw = 0.7
       .g0 = 0.1
       .g1 = 1.64
@@ -719,7 +741,7 @@ Simulation sim{
       .theta = 0.85
       .Q10 = 1.03
     }
-    Floor floor{
+    Floor floor {
       .swAbsorptivityTop = 0.6
       .swReflectivityTop = 0.4
       .swTransmissivityTop = 0.0
@@ -730,33 +752,16 @@ Simulation sim{
       .Ubottom = 0.1
       .heatCapacity = 42000.0
     }
-    Budget budget{
+    Budget budget {
+      .babyTimeStep = 0.01
     }
-    Summary summary{
+    Summary summary {
       Distribution Tin {
         .input = gh/budget/indoors[temperature]
         .sections = c(10,50,90)
       }
-      Distribution RHin {
-        .input = gh/budget/indoors[rh]
-        .sections = c(10,50,90)
-      }
     }
-  } // greenhouse
-  // OutputR output{
-    // .saveDataFrame = TRUE
-    // PageR {
-      // .xAxis = calendar[dateTime]
-      // PlotR {
-        // .ports = gh/summary[output::*] | gh/summary/*[output::*]
-        // .nrow = 6
-      // }
-    // }
-    // OutputSelector selector{
-      // .beginDateTime = global[beginDate]
-      // .period = 10 
-    // }
-  // }
+  }
   OutputR output {
     Box variables {
       &Uoutside = shelter/layers/cover[UtopAdj]
@@ -813,18 +818,17 @@ Simulation sim{
       &actLight1 = actuators/growthLights/bank1[powerUsage]
       &actHeatingPower = actuators/heatPipes[heatFlux]
       &actCo2 = actuators/co2[value]
+      &maxDeltaT = budget[maxDeltaT]
     }
     PageR  {
       .xAxis = calendar[dateTime]
       .maximizeWindow = TRUE
       PlotR  {
-        .ports = output/variables[*]
+        .ports = output/variables[*] | cover[radiationDeltaT] | cover[convectionDeltaT]
         .nrow = 7
       }
     }
     OutputSelector selector {
-      .beginDateTime = global[beginDate]
-      .period = 10
     }
   }
 }

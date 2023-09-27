@@ -27,7 +27,7 @@ private:
     void doExecute();
     void writeScreenCalibration();
     void writeScreenHeader();
-    void writeNoScreenReference(base::Box *screen);
+    void writeNoScreenReference();
     void writeScreenValues(QString name);
 };
 

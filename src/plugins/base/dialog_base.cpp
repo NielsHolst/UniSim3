@@ -35,11 +35,28 @@ void DialogBase::updateProgress(const ProgressInfo &info) {
     double progress = double(info.step + (info.iteration-1)*info.steps)/info.steps/info.iterations;
     if (progress > _nextShowProgress) {
         double total = static_cast<double>(info.time.elapsed())/progress;
-        int maximum = static_cast<int>(total)/1000,
-            value = static_cast<int>(info.time.elapsed())/1000;
+        int maximumSecs = static_cast<int>(total)/1000,
+            valueSecs = static_cast<int>(info.time.elapsed())/1000,
+            maximum, value;
+        char unit;
+        if (maximumSecs < 600) { // < 10 minutes: show in seconds
+            maximum = maximumSecs;
+            value = valueSecs;
+            unit = 's';
+        }
+        else if (maximumSecs < 6*3600) { // < 6 hours: show in minutes
+            maximum = maximumSecs/60;
+            value = valueSecs/60;
+            unit = 'm';
+        }
+        else { // show in hours
+            maximum = maximumSecs/3600;
+            value = valueSecs/3600;
+            unit = 'h';
+        }
         QProgressBar *bar = progressBar();
         if (bar) {
-            bar->setFormat(" %p% of %ms");
+            bar->setFormat(" %p% of %m" + QString(unit));
             bar->setMaximum(maximum);
             bar->setValue(value);
             bar->show();

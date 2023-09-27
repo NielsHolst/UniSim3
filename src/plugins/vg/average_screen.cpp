@@ -26,7 +26,7 @@ AverageScreen::AverageScreen(QString name, Box *parent)
 
 void AverageScreen::amend() {
     QString number = QString::number(screenIndex());
-    Input(state).imports("actuators/screens/screen" + number + "[state]");
+    Input(state).imports("actuators/screens/layer" + number + "[state]");
 }
 
 void AverageScreen::reset() {

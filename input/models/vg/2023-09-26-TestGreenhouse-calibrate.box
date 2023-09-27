@@ -1,0 +1,1657 @@
+#using vg
+Simulation sim {
+  .iterations = scenarios[iterations] //NH
+  .silent = TRUE
+  .unattended = TRUE
+  Box global {
+    &beginDate = 2023/01/01
+    &endDate   = 2023/12/31
+  }
+  Scenarios scenarios { //NH
+    .fileName = "calibrate-all.txt"
+  }
+  Calendar calendar {
+    .latitude = 55.4038
+    .longitude = 10.4024
+    .begin = global[beginDate] - 1
+    .end   = global[endDate]
+    .timeStep = 180
+    .timeUnit = "s"
+  }
+  Outdoors outdoors {
+    Records records {
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+      .ignoreYear = TRUE
+    }
+    SoilTemperature soilTemperature {
+      .initial = 1.2
+    }
+  }
+  Sky sky {
+  }
+  Box gh {
+    Geometry geometry {
+      .numSpans = 25
+      .spanWidth = 4.0
+      .length = 100.0
+      .height = 4.0
+      .roofPitch = 26.0
+    }
+    Box construction {
+      LeakageVentilation leakage {
+        .leakage = 0.2
+      }
+      Shelter shelter {
+        .transmissivityReduction = 0.1
+        UWind Utop {
+          .UwindSlope = 1.2
+        }
+        Shading shading {
+          ShadingAgent test {
+            .swReflectivity = 0.2
+            .lwReflectivity = 0.2
+            .state = setpoints/shading/test[value]
+          }
+        }
+        Box products {
+          Box covers {
+            Cover Single_glass_4mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.1
+              .swTransmissivityTop = 0.8
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.1
+              .swTransmissivityBottom = 0.8
+              .lwAbsorptivityTop = 0.83
+              .lwReflectivityTop = 0.15
+              .lwTransmissivityTop = 0.02
+              .lwAbsorptivityBottom = 0.83
+              .lwReflectivityBottom = 0.15
+              .lwTransmissivityBottom = 0.02
+              .Utop = shelter/Utop[value]
+              .Ubottom = 6.5
+              .heatCapacity = 8400.0
+            }
+          }
+          Box screens {
+            Screen LS_Harmony_4115_O_E_FR {
+              .swAbsorptivityTop = 0.45
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.53
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.47
+              .swTransmissivityBottom = 0.53
+              .lwAbsorptivityTop = 0.45
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.53
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.47
+              .lwTransmissivityBottom = 0.53
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.15
+            }
+            Screen LS_Harmony_6147_FR {
+              .swAbsorptivityTop = 0.04
+              .swReflectivityTop = 0.66
+              .swTransmissivityTop = 0.3
+              .swAbsorptivityBottom = 0.04
+              .swReflectivityBottom = 0.66
+              .swTransmissivityBottom = 0.3
+              .lwAbsorptivityTop = 0.04
+              .lwReflectivityTop = 0.66
+              .lwTransmissivityTop = 0.3
+              .lwAbsorptivityBottom = 0.04
+              .lwReflectivityBottom = 0.66
+              .lwTransmissivityBottom = 0.3
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Harmony_6020_O_E_FR {
+              .swAbsorptivityTop = 0.65
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.33
+              .swAbsorptivityBottom = 0
+              .swReflectivityBottom = 0.67
+              .swTransmissivityBottom = 0.33
+              .lwAbsorptivityTop = 0.65
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.33
+              .lwAbsorptivityBottom = 0
+              .lwReflectivityBottom = 0.67
+              .lwTransmissivityBottom = 0.33
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.2
+            }
+            Screen LS_Harmony_5220_O_FR {
+              .swAbsorptivityTop = 0.49
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.49
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.51
+              .swTransmissivityBottom = 0.49
+              .lwAbsorptivityTop = 0.49
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.49
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.51
+              .lwTransmissivityBottom = 0.49
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.2
+            }
+            Screen LS_Harmony_5047_FR {
+              .swAbsorptivityTop = 0.02
+              .swReflectivityTop = 0.58
+              .swTransmissivityTop = 0.4
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.58
+              .swTransmissivityBottom = 0.4
+              .lwAbsorptivityTop = 0.02
+              .lwReflectivityTop = 0.58
+              .lwTransmissivityTop = 0.4
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.58
+              .lwTransmissivityBottom = 0.4
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Harmony_5045 {
+              .swAbsorptivityTop = 0.02
+              .swReflectivityTop = 0.58
+              .swTransmissivityTop = 0.4
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.58
+              .swTransmissivityBottom = 0.4
+              .lwAbsorptivityTop = 0.02
+              .lwReflectivityTop = 0.58
+              .lwTransmissivityTop = 0.4
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.58
+              .lwTransmissivityBottom = 0.4
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.45
+            }
+            Screen LS_Harmony_5020_O_E_A_FR {
+              .swAbsorptivityTop = 0.59
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.61
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.59
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.61
+              .lwTransmissivityBottom = 0.39
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.2
+            }
+            Screen LS_Harmony_4945_R_FR {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.37
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.63
+              .swTransmissivityBottom = 0.37
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.37
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.63
+              .lwTransmissivityBottom = 0.37
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.45
+            }
+            Screen LS_Harmony_4820_O {
+              .swAbsorptivityTop = 0.01
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.49
+              .swAbsorptivityBottom = 0.01
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.49
+              .lwAbsorptivityTop = 0.01
+              .lwReflectivityTop = 0.5
+              .lwTransmissivityTop = 0.49
+              .lwAbsorptivityBottom = 0.01
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.49
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.2
+            }
+            Screen LS_Harmony_4520_O_FR {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.5
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.5
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.5
+              .lwTransmissivityTop = 0.5
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.5
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.2
+            }
+            Screen LS_Harmony_4515_O_FR {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.5
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.5
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.5
+              .lwTransmissivityTop = 0.5
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.5
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.15
+            }
+            Screen LS_Harmony_4145 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.5
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.5
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.5
+              .lwTransmissivityTop = 0.5
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.5
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.45
+            }
+            Screen LS_Harmony_7247_FR {
+              .swAbsorptivityTop = 0.78
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.22
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.78
+              .swTransmissivityBottom = 0.22
+              .lwAbsorptivityTop = 0.78
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.22
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.78
+              .lwTransmissivityBottom = 0.22
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Harmony_4047_FR {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.5
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.5
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.5
+              .lwTransmissivityTop = 0.5
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.5
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Harmony_3647_FR {
+              .swAbsorptivityTop = 0.48
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.5
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.5
+              .lwAbsorptivityTop = 0.48
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.5
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.5
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Harmony_3315_O_FR {
+              .swAbsorptivityTop = 0.38
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.38
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.6
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.4
+              .lwTransmissivityBottom = 0.6
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.15
+            }
+            Screen LS_Harmony_3045 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.4
+              .lwTransmissivityTop = 0.6
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.4
+              .lwTransmissivityBottom = 0.6
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.45
+            }
+            Screen LS_Harmony_3015_O {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.4
+              .lwTransmissivityTop = 0.6
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.4
+              .lwTransmissivityBottom = 0.6
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.15
+            }
+            Screen LS_7965_FR_AW {
+              .swAbsorptivityTop = 0.04
+              .swReflectivityTop = 0.77
+              .swTransmissivityTop = 0.19
+              .swAbsorptivityBottom = 0.04
+              .swReflectivityBottom = 0.77
+              .swTransmissivityBottom = 0.19
+              .lwAbsorptivityTop = 0.04
+              .lwReflectivityTop = 0.77
+              .lwTransmissivityTop = 0.19
+              .lwAbsorptivityBottom = 0.04
+              .lwReflectivityBottom = 0.77
+              .lwTransmissivityBottom = 0.19
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.65
+            }
+            Screen LS_7265_D_AW {
+              .swAbsorptivityTop = 0.02
+              .swReflectivityTop = 0.73
+              .swTransmissivityTop = 0.25
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.73
+              .swTransmissivityBottom = 0.25
+              .lwAbsorptivityTop = 0.02
+              .lwReflectivityTop = 0.73
+              .lwTransmissivityTop = 0.25
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.73
+              .lwTransmissivityBottom = 0.25
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.65
+            }
+            Screen Bonar_Phormitex_Bright {
+              .swAbsorptivityTop = 0.12
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.86
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.12
+              .swTransmissivityBottom = 0.86
+              .lwAbsorptivityTop = 0.12
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.86
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.12
+              .lwTransmissivityBottom = 0.86
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen Bonar_PhormiTex_66_B1 {
+              .swAbsorptivityTop = 0.63
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.35
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.65
+              .swTransmissivityBottom = 0.35
+              .lwAbsorptivityTop = 0.63
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.35
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.65
+              .lwTransmissivityBottom = 0.35
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.6
+            }
+            Screen Bonar_PhormiTex_55_B1 {
+              .swAbsorptivityTop = 0.53
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.45
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.55
+              .swTransmissivityBottom = 0.45
+              .lwAbsorptivityTop = 0.53
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.45
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.55
+              .lwTransmissivityBottom = 0.45
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.55
+            }
+            Screen LS_Solaro_6125_OA_E_AW {
+              .swAbsorptivityTop = 0.59
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.61
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.59
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.61
+              .lwTransmissivityBottom = 0.39
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.25
+            }
+            Screen Novavert_SHS_Shade_Therm_ANTIFIRE_B1 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.66
+              .swTransmissivityTop = 0.34
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.66
+              .swTransmissivityBottom = 0.34
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.66
+              .lwTransmissivityTop = 0.34
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.66
+              .lwTransmissivityBottom = 0.34
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.7
+            }
+            Screen XLS_Obscura_Revolux_AB_BW {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.9
+              .swTransmissivityTop = 0.1
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.9
+              .swTransmissivityBottom = 0.1
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.9
+              .lwTransmissivityTop = 0.1
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.9
+              .lwTransmissivityBottom = 0.1
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.75
+            }
+            Screen SLS_10_Ultra_plus {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.3
+              .swTransmissivityTop = 0.7
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.3
+              .swTransmissivityBottom = 0.7
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.3
+              .lwTransmissivityTop = 0.7
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.3
+              .lwTransmissivityBottom = 0.7
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.43
+            }
+            Screen LS_Tempa_7265_D_R_AW {
+              .swAbsorptivityTop = 0.74
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.24
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.76
+              .swTransmissivityBottom = 0.24
+              .lwAbsorptivityTop = 0.74
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.24
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.76
+              .lwTransmissivityBottom = 0.24
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.65
+            }
+            Screen LS_Tempa_6965_FR_AW {
+              .swAbsorptivityTop = 0.01
+              .swReflectivityTop = 0.7
+              .swTransmissivityTop = 0.29
+              .swAbsorptivityBottom = 0.01
+              .swReflectivityBottom = 0.7
+              .swTransmissivityBottom = 0.29
+              .lwAbsorptivityTop = 0.01
+              .lwReflectivityTop = 0.7
+              .lwTransmissivityTop = 0.29
+              .lwAbsorptivityBottom = 0.01
+              .lwReflectivityBottom = 0.7
+              .lwTransmissivityBottom = 0.29
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.65
+            }
+            Screen LS_Tempa_6562_D {
+              .swAbsorptivityTop = 0.7
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.28
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.72
+              .swTransmissivityBottom = 0.28
+              .lwAbsorptivityTop = 0.7
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.28
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.72
+              .lwTransmissivityBottom = 0.28
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.62
+            }
+            Screen LS_Tempa_6360_FR_AW {
+              .swAbsorptivityTop = 0.37
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.63
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.37
+              .swTransmissivityBottom = 0.63
+              .lwAbsorptivityTop = 0.37
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.63
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.37
+              .lwTransmissivityBottom = 0.63
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.6
+            }
+            Screen LS_Tempa_5557_D {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.6
+              .swTransmissivityTop = 0.4
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.6
+              .swTransmissivityBottom = 0.4
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.6
+              .lwTransmissivityTop = 0.4
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.6
+              .lwTransmissivityBottom = 0.4
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.57
+            }
+            Screen LS_Tempa_5555_FR_AW {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.6
+              .swTransmissivityTop = 0.4
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.6
+              .swTransmissivityBottom = 0.4
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.6
+              .lwTransmissivityTop = 0.4
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.6
+              .lwTransmissivityBottom = 0.4
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.55
+            }
+            Screen LS_Solaro_7530_O_E_AW {
+              .swAbsorptivityTop = 0.74
+              .swReflectivityTop = 0.01
+              .swTransmissivityTop = 0.25
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.75
+              .swTransmissivityBottom = 0.25
+              .lwAbsorptivityTop = 0.74
+              .lwReflectivityTop = 0.01
+              .lwTransmissivityTop = 0.25
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.75
+              .lwTransmissivityBottom = 0.25
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.3
+            }
+            Screen LS_Solaro_6827_O_FR {
+              .swAbsorptivityTop = 0.66
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.32
+              .swAbsorptivityBottom = -1.11022e-16
+              .swReflectivityBottom = 0.68
+              .swTransmissivityBottom = 0.32
+              .lwAbsorptivityTop = 0.66
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.32
+              .lwAbsorptivityBottom = -1.11022e-16
+              .lwReflectivityBottom = 0.68
+              .lwTransmissivityBottom = 0.32
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.27
+            }
+            Screen PH_98_FP_plus_PH_1_FP {
+              .swAbsorptivityTop = 0.97
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.99
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.97
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.99
+              .lwTransmissivityBottom = 0.01
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.78
+            }
+            Screen LS_Solaro_5120_O_E_AW {
+              .swAbsorptivityTop = 0.54
+              .swReflectivityTop = 0.02
+              .swTransmissivityTop = 0.44
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.56
+              .swTransmissivityBottom = 0.44
+              .lwAbsorptivityTop = 0.54
+              .lwReflectivityTop = 0.02
+              .lwTransmissivityTop = 0.44
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.56
+              .lwTransmissivityBottom = 0.44
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.2
+            }
+            Screen LS_Obscura_9950_FR_W {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.99
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.99
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.99
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.99
+              .lwTransmissivityBottom = 0.01
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.5
+            }
+            Screen LS_Obscura_10075_FR_AB_BW {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.9
+              .swTransmissivityTop = 0.1
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.9
+              .swTransmissivityBottom = 0.1
+              .lwAbsorptivityTop = 0.0
+              .lwReflectivityTop = 0.9
+              .lwTransmissivityTop = 0.1
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.9
+              .lwTransmissivityBottom = 0.1
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.7
+            }
+            Screen LS_Obscura_10075_FR_AB_B {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.99
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.99
+              .lwTransmissivityBottom = 0.01
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.75
+            }
+            Screen LS_Obscura_10070_R_FR_W {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.99
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.99
+              .lwTransmissivityBottom = 0.01
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.7
+            }
+            Screen LS_Obscura_10070_FR_WB_BW {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.99
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.99
+              .lwTransmissivityBottom = 0.01
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.7
+            }
+            Screen LS_Obscura_10070_FR_WB_B {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.99
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.99
+              .lwTransmissivityBottom = 0.01
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.7
+            }
+            Screen LS_Luxous_1547_D_FR {
+              .swAbsorptivityTop = 0.29
+              .swReflectivityTop = 0.01
+              .swTransmissivityTop = 0.7
+              .swAbsorptivityBottom = 0
+              .swReflectivityBottom = 0.3
+              .swTransmissivityBottom = 0.7
+              .lwAbsorptivityTop = 0.29
+              .lwReflectivityTop = 0.01
+              .lwTransmissivityTop = 0.7
+              .lwAbsorptivityBottom = 0
+              .lwReflectivityBottom = 0.3
+              .lwTransmissivityBottom = 0.7
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Luxous_1347_FR {
+              .swAbsorptivityTop = 0.12
+              .swReflectivityTop = 0.01
+              .swTransmissivityTop = 0.87
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.13
+              .swTransmissivityBottom = 0.87
+              .lwAbsorptivityTop = 0.12
+              .lwReflectivityTop = 0.01
+              .lwTransmissivityTop = 0.87
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.13
+              .lwTransmissivityBottom = 0.87
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.47
+            }
+            Screen LS_Harmony_7445_R_FR {
+              .swAbsorptivityTop = 0.79
+              .swReflectivityTop = 0.01
+              .swTransmissivityTop = 0.2
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.8
+              .swTransmissivityBottom = 0.2
+              .lwAbsorptivityTop = 0.79
+              .lwReflectivityTop = 0.01
+              .lwTransmissivityTop = 0.2
+              .lwAbsorptivityBottom = 0.0
+              .lwReflectivityBottom = 0.8
+              .lwTransmissivityBottom = 0.2
+              .Utop = 0.6
+              .Ubottom = 0.6
+              .heatCapacity = 80.0
+              .Uinsulation = scenarios[Uinsulation]
+              .UinsulationEffectivity = 0.95
+              .energySaving = 0.45
+            }
+            Screen none {
+            }
+          }
+        }
+        Faces faces {
+          Face roof1 {
+            .cover = "Single_glass_4mm"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .area = gh/geometry[roofArea] / 2
+            .weight = 1.0
+          }
+          Face roof2 {
+            .cover = "Single_glass_4mm"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .area = gh/geometry[roofArea] / 2
+            .weight = 1.0
+          }
+          Face side1 {
+            .cover = "Single_glass_4mm"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .area = gh/geometry[sideArea] / 2
+            .weight = 0.6
+          }
+          Face side2 {
+            .cover = "Single_glass_4mm"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .area = gh/geometry[sideArea] / 2
+            .weight = 0.6
+          }
+          Face end1 {
+            .cover = "Single_glass_4mm"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .area = gh/geometry[endArea] / 2
+            .weight = 0.2
+          }
+          Face end2 {
+            .cover = "Single_glass_4mm"
+            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .area = gh/geometry[endArea] / 2
+            .weight = 0.2
+          }
+        }
+      }
+    }
+    Box setpoints {
+      Box rhMax {
+        PrioritySignal threshold {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 90.0
+          }
+        }
+        PrioritySignal band {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 5.0
+          }
+        }
+      }
+      Box heating {
+        PrioritySignal base {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 20.0
+          }
+        }
+        PrioritySignal humidityOffset {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 2.0
+          }
+        }
+        PrioritySignal minTemperature {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 20.0
+          }
+        }
+      }
+      Box ventilation {
+        PrioritySignal offset {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 2.0
+          }
+        }
+        PrioritySignal maxHeatingCost {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 50.0
+          }
+        }
+      }
+      Box screens {
+        Box energy1 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = scenarios[ScreenThreshold] //NH
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+        }
+        Box energy2 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+        }
+        Box energy3 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 5.0
+            }
+          }
+        }
+        Box shade1 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 900.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 50.0
+            }
+          }
+        }
+        Box shade2 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 500.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 50.0
+            }
+          }
+        }
+        Box shade3 {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 500.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 50.0
+            }
+          }
+        }
+        Box blackout1 {
+          PrioritySignal state {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
+          }
+        }
+        Box blackout2 {
+          PrioritySignal state {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
+          }
+        }
+        Box blackout3 {
+          PrioritySignal state {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
+          }
+        }
+      }
+      Box shading {
+        PrioritySignal test {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 0.0
+          }
+        }
+      }
+      Box growthLights {
+        Box bank1 {
+          PrioritySignal mode {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 06:00:00
+              .endTime = 20:00:00
+              .signalInside = 1.0
+            }
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
+          }
+          Box thresholds {
+            PrioritySignal low {
+              DateTimeSignal  {
+                .beginDate = 1/1
+                .endDate = 31/12
+                .beginTime = 00:00:00
+                .endTime = 00:00:00
+                .signalInside = 40.0
+              }
+            }
+            PrioritySignal high {
+              DateTimeSignal  {
+                .beginDate = 1/1
+                .endDate = 31/12
+                .beginTime = 00:00:00
+                .endTime = 00:00:00
+                .signalInside = 600.0
+              }
+            }
+          }
+        }
+        Box bank2 {
+          PrioritySignal mode {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
+          }
+          Box thresholds {
+            PrioritySignal low {
+              DateTimeSignal  {
+                .beginDate = 1/1
+                .endDate = 31/12
+                .beginTime = 00:00:00
+                .endTime = 00:00:00
+                .signalInside = 40.0
+              }
+            }
+            PrioritySignal high {
+              DateTimeSignal  {
+                .beginDate = 1/1
+                .endDate = 31/12
+                .beginTime = 00:00:00
+                .endTime = 00:00:00
+                .signalInside = 600.0
+              }
+            }
+          }
+        }
+        Box bank3 {
+          PrioritySignal mode {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.0
+            }
+          }
+          Box thresholds {
+            PrioritySignal low {
+              DateTimeSignal  {
+                .beginDate = 1/1
+                .endDate = 31/12
+                .beginTime = 00:00:00
+                .endTime = 00:00:00
+                .signalInside = 40.0
+              }
+            }
+            PrioritySignal high {
+              DateTimeSignal  {
+                .beginDate = 1/1
+                .endDate = 31/12
+                .beginTime = 00:00:00
+                .endTime = 00:00:00
+                .signalInside = 600.0
+              }
+            }
+          }
+        }
+      }
+      Box co2 {
+        PrioritySignal concentration {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 900.0
+          }
+        }
+        PrioritySignal capacity {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 50.0
+          }
+        }
+        Box ventilation {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.1
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 0.2
+            }
+          }
+        }
+      }
+    }
+    Box controllers {
+      Sum heating {
+        .values = setpoints/heating/base[value]|./humidityOffset[value]
+        ProportionalSignal humidityOffset {
+          .input = indoors[rh]
+          .threshold = setpoints/rhMax/threshold[value]
+          .thresholdBand = setpoints/rhMax/band[value]
+          .maxSignal = setpoints/heating/humidityOffset[value]
+          .increasingSignal = TRUE
+        }
+      }
+      Box ventilation {
+        Sum temperatureThreshold {
+          .values = controllers/heating[value]|setpoints/ventilation/offset[value]
+        }
+        ProportionalSignal maxHeatingCost {
+          .input = indoors[rh]
+          .threshold = setpoints/rhMax/threshold[value]
+          .thresholdBand = setpoints/rhMax/band[value]
+          .maxSignal = setpoints/ventilation/maxHeatingCost[value]
+          .increasingSignal = TRUE
+        }
+      }
+      Box screens {
+        ProportionalSignal energy1 {
+          .input = outdoors[radiation]
+          .threshold = setpoints/screens/energy1/threshold[value]
+          .thresholdBand = setpoints/screens/energy1/band[value]
+          .maxSignal = 1.0
+          .increasingSignal = FALSE
+        }
+        ProportionalSignal energy2 {
+          .input = outdoors[radiation]
+          .threshold = setpoints/screens/energy2/threshold[value]
+          .thresholdBand = setpoints/screens/energy2/band[value]
+          .maxSignal = 1.0
+          .increasingSignal = FALSE
+        }
+        ProportionalSignal energy3 {
+          .input = outdoors[radiation]
+          .threshold = setpoints/screens/energy3/threshold[value]
+          .thresholdBand = setpoints/screens/energy3/band[value]
+          .maxSignal = 1.0
+          .increasingSignal = FALSE
+        }
+        ProportionalSignal shade1 {
+          .input = outdoors[radiation]
+          .threshold = setpoints/screens/shade1/threshold[value]
+          .thresholdBand = setpoints/screens/shade1/band[value]
+          .maxSignal = 1.0
+          .increasingSignal = TRUE
+        }
+        ProportionalSignal shade2 {
+          .input = outdoors[radiation]
+          .threshold = setpoints/screens/shade2/threshold[value]
+          .thresholdBand = setpoints/screens/shade2/band[value]
+          .maxSignal = 1.0
+          .increasingSignal = TRUE
+        }
+        ProportionalSignal shade3 {
+          .input = outdoors[radiation]
+          .threshold = setpoints/screens/shade3/threshold[value]
+          .thresholdBand = setpoints/screens/shade3/band[value]
+          .maxSignal = 1.0
+          .increasingSignal = TRUE
+        }
+        Box blackout1 {
+          &value = setpoints/screens/blackout1/state[value]
+        }
+        Box blackout2 {
+          &value = setpoints/screens/blackout2/state[value]
+        }
+        Box blackout3 {
+          &value = setpoints/screens/blackout3/state[value]
+        }
+      }
+      Box growthLights {
+        GrowthLightController bank3 {
+          .mode = setpoints/growthLights/bank3/mode[value]
+          .input = outdoors[radiation]
+          .thresholdLow = setpoints/growthLights/bank3/thresholds/low[value]
+          .thresholdHigh = setpoints/growthLights/bank3/thresholds/high[value]
+          .minPeriodOn = actuators/growthLights/bank3[minPeriodOn]
+        }
+        GrowthLightController bank2 {
+          .mode = setpoints/growthLights/bank2/mode[value]
+          .input = outdoors[radiation]
+          .thresholdLow = setpoints/growthLights/bank2/thresholds/low[value]
+          .thresholdHigh = setpoints/growthLights/bank2/thresholds/high[value]
+          .minPeriodOn = actuators/growthLights/bank2[minPeriodOn]
+        }
+        GrowthLightController bank1 {
+          .mode = setpoints/growthLights/bank1/mode[value]
+          .input = outdoors[radiation]
+          .thresholdLow = setpoints/growthLights/bank1/thresholds/low[value]
+          .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
+          .minPeriodOn = actuators/growthLights/bank1[minPeriodOn]
+        }
+      }
+    }
+    Actuators actuators {
+      HeatPipes heatPipes {
+        ActuatorHeatPipe circuit2 {
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.2
+          .minTemperature = setpoints/heating/minTemperature[value]
+          .maxTemperature = 80.0
+          .indoorsTemperature = indoors[temperature]
+        }
+        ActuatorHeatPipe circuit1 {
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.2
+          .minTemperature = setpoints/heating/minTemperature[value]
+          .maxTemperature = 80.0
+          .indoorsTemperature = indoors[temperature]
+        }
+      }
+      ActuatorVentilation ventilation {
+        .ventAreaRatio = 0.012
+        .windCoef = 40.0
+        .temperatureCoef = 7.0
+      }
+      Box screens {
+        ActuatorScreen layer1 {
+          .lagPeriod = 10.0
+          .desiredState = max(controllers/screens/energy1[value])
+        }
+        ActuatorScreen layer2 {
+          .lagPeriod = 10.0
+          .desiredState = max(controllers/screens/shade2[value])
+        }
+        ActuatorScreen layer3 {
+          .lagPeriod = 10.0
+          .desiredState = max(controllers/screens/blackout3[value])
+        }
+      }
+      GrowthLights growthLights {
+        Box products {
+          GrowthLightProduct E_HP_Na_1000W {
+            .power = 1035.0
+            .ballast = 15.0
+            .parPhotonCoef = 1.787
+            .propSw = 0.2
+            .propLw = 0.1
+            .propConv = 0.7
+            .propBallastLw = 0.2
+            .propBallastConv = 0.8
+            .minPeriodOn = 15.0
+          }
+        }
+        ActuatorGrowthLight bank3 {
+          .productName = "None"
+          .numberInstalled = 0.5
+          .efficiency = 1.0
+          .isOn = controllers/growthLights/bank3[isOn]
+        }
+        ActuatorGrowthLight bank2 {
+          .productName = "None"
+          .numberInstalled = 0.25
+          .efficiency = 1.0
+          .isOn = controllers/growthLights/bank2[isOn]
+        }
+        ActuatorGrowthLight bank1 {
+          .productName = "E_HP_Na_1000W"
+          .numberInstalled = 0.25
+          .efficiency = 1.0
+          .isOn = controllers/growthLights/bank1[isOn]
+        }
+      }
+      Accumulator co2 {
+        .change = ./controller[controlVariable]
+        .minValue = 0.0
+        .maxValue = setpoints/co2/capacity[value]
+        PidController controller {
+          .sensedValue = indoors[co2]
+          .desiredValue = setpoints/co2/concentration[value]
+          .Kprop = 0.05
+        }
+      }
+    }
+    Plant plant {
+      .k_sw = 0.7
+      .g0 = 0.1
+      .g1 = 1.64
+      .re = 200.0
+      .lai = 1.0
+      .coverage = 0.95
+      .Jmax = 145.52
+      .Vcmax = 71.61
+      .GammaStar = 55.47
+      .Km = 600.0
+      .Rd0 = 0.74
+      .alpha = 0.24
+      .theta = 0.85
+      .Q10 = 1.03
+    }
+    Floor floor {
+      .swAbsorptivityTop = 0.6
+      .swReflectivityTop = 0.4
+      .swTransmissivityTop = 0.0
+      .lwAbsorptivityTop = 0.6
+      .lwReflectivityTop = 0.4
+      .lwTransmissivityTop = 0.0
+      .Utop = 7.5
+      .Ubottom = 0.1
+      .heatCapacity = 42000.0
+    }
+    Budget budget {
+    }
+    Summary summary {
+      Distribution Tin {
+        .input = gh/budget/indoors[temperature]
+        .sections = c(10,50,90)
+      }
+    }
+  }
+  EnergySaving saving {
+    .screenName = scenarios[ScreenName]
+  }
+  OutputR {
+    .showPlots = FALSE
+    .scripts = "R/calibrate-screens.R"
+    OutputText output { 
+      .ports = scenarios[output::*] | summary[heatingCost] | saving[value]
+      OutputSelector selector {
+        .beginDateTime = global[beginDate]
+        .final = TRUE
+      }
+    }
+  }
+}

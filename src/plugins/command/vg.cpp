@@ -39,7 +39,6 @@ void vg::doExecute() {
 void vg::writeScreenCalibration() {
     environment().openOutputFile(_file, "txt");
     QString fileNamePath = _file.fileName();
-    dialog().information("Calibration scenarios written to file:\n" + fileNamePath);
 
     _stream.setDevice(&_file);
 
@@ -47,14 +46,19 @@ void vg::writeScreenCalibration() {
     if (!root)
         ThrowException("Load a boxscript before running the vg command");
 
-    QVector<Box*> screens = root->findMany<Box*>("shelter/screens/*");
+    QVector<Box*> screens = root->findMany<Box*>("shelter/products/screens/*");
     if (screens.isEmpty())
         ThrowException("No screen products found");
 
     writeScreenHeader();
-    writeNoScreenReference(screens[0]);
-    for (Box *screen : screens)
-        writeScreenValues(screen->name());
+    writeNoScreenReference();
+    for (Box *screen : screens) {
+        if (screen->name().toLower() != "none")
+            writeScreenValues(screen->name());
+    }
+    dialog().information("Calibration scenarios written to file:\n" + fileNamePath);
+    _file.close();
+    environment().incrementFileCounter();
 }
 
 void vg::writeScreenHeader() {
@@ -62,14 +66,14 @@ void vg::writeScreenHeader() {
         "ScreenName\tScreenThreshold\tUinsulation\n";
 }
 
-void vg::writeNoScreenReference(Box *screen) {
-    _stream << screen->name() << "+none+none" << "\t99999\t" << 0.1 << "\n";
+void vg::writeNoScreenReference() {
+    _stream << "none\t-999\t10e6\n";
 }
 
 void vg::writeScreenValues(QString name) {
-    const QVector<double> Uvalues = {0.1, 0.2, 0.4};
+    const QVector<double> Uvalues = {0, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2};
     for (double U : Uvalues) {
-        _stream << name << "+none+none" << "\t5\t" << U << "\n";
+        _stream << name << "\t5\t" << U << "\n";
     }
 }
 

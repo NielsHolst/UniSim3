@@ -40,6 +40,10 @@ ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
 #define UPDATE_INPUT(x) x = product->port(#x)->value<double>()
 
 void ActuatorGrowthLight::reset() {
+    if (productName.toLower() == "none") {
+        noLight();
+        return;
+    }
     Box *product = findOne<Box*>("../products/" + productName);
     UPDATE_INPUT(power)*numberInstalled;
     UPDATE_INPUT(ballast)*numberInstalled;

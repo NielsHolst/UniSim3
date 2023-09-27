@@ -289,6 +289,8 @@ void Budget::reset() {
     action = Action::CarryOn;
     _subTimeStep = timeStep;
     _maxDeltaT = tempPrecision;
+    // Correct baby step to be max 1% of the time step
+    babyTimeStep = std::min(babyTimeStep, timeStep/100.);
 }
 
 void Budget::update() {
@@ -326,7 +328,7 @@ void Budget::updateLayersAndVolumes() {
         ++subSteps;
     }
     if (subSteps == maxSubSteps)
-        dialog().error("Energy budget did not converge");
+        dialog().error("On" + convert<QString>(dateTime) + ": Energy budget did not converge");
 //    logger.close();
 }
 

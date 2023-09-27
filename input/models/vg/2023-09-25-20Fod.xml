@@ -1,16 +1,16 @@
 <VG_SETUP format="vg">
-  <XML_Version>3.0.1</XML_Version>
+  <XML_Version>3</XML_Version>
   <Description>
-    <ShortDesc>LED DRW</ShortDesc>
-    <LongDesc>Væksthus 10.000 m2</LongDesc>
+    <LongDesc>Greenhouse 10.000 m2</LongDesc>
     <WeatherFile>DNK_Odense.txt</WeatherFile>
     <Country>Denmark</Country>
     <Location>Odense</Location>
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
-    <StartTime>01.01.2022</StartTime>
-    <StopTime>02.01.2022</StopTime>
+    <StartTime>01.01.2023</StartTime>
+    <StopTime>10.01.2023</StopTime>
     <TimeStep>3</TimeStep>
+    <ShortDesc>Con</ShortDesc>
   </Description>
   <Greenhouse>
     <Positions>
@@ -33,15 +33,15 @@
         <Weight>0.2</Weight>
       </end2>
     </Positions>
-    <Length>100</Length>
-    <SpanSize>4</SpanSize>
-    <NumberOfSpans>25</NumberOfSpans>
+    <Length>5.8</Length>
+    <SpanSize>2.3</SpanSize>
+    <NumberOfSpans>1</NumberOfSpans>
     <GreenhouseReductionFactorLight>0.1</GreenhouseReductionFactorLight>
-    <TrempelHeight>4</TrempelHeight>
-    <RoofPitch>26</RoofPitch>
+    <TrempelHeight>2.3</TrempelHeight>
+    <RoofPitch>0</RoofPitch>
     <UwindSlope>1.2</UwindSlope>
-    <leakage>0.1</leakage>
-    <screenPerfection>0.95</screenPerfection> <!-- Bruges til at modificere InsulationU for alle gardiner -->
+    <leakage>0.05</leakage>
+    <screenPerfection>0.95</screenPerfection>
     <floor-Uindoors>7.5</floor-Uindoors>
     <floor-Usoil>0.1</floor-Usoil>
     <floor-heatCapacity>42000</floor-heatCapacity>
@@ -54,26 +54,27 @@
     <CalibrationPower>1</CalibrationPower>
     <InitialSoilTemperature>1.2</InitialSoilTemperature>
     <CO2PIDProp>0.05</CO2PIDProp>
-    <ScreenLagPeriod>10</ScreenLagPeriod> <!-- Ny. Antal minutter det tager at trække et gardin -->
+    <ScreenLagPeriod>10</ScreenLagPeriod>
+    <VentWindCoef>40</VentWindCoef>
+    <VentTemperatureCoef>7</VentTemperatureCoef>
     <Crops>
       <Crop index="0" layer="0" position="0">
-        <k>0.7</k> <!-- Ny. Light extinction coefficient -->
-        <re>200</re> <!-- Ny. Boundary layer resistance (H2O) -->
-        <Km>600</Km> <!-- Ny. Michaelis-Menten coefficient for Farquhar model -->
-        <alpha>0.24</alpha> <!-- Ny. Slope of light response curve -->
-        <theta>0.85</theta> <!-- Ny. Shape of light response curve -->
-        <Q10>1.92</Q10> <!-- Ny. Temperature response of respiration -->
-        <Jmax25>145.5200</Jmax25> <!-- Omdøbt for konsistens -->
-        <GammaStar>55.4700</GammaStar> <!-- Med stort "G"; det er et stort Gamma! -->
-
         <LAI>1</LAI>
+        <Jmax25>145.5200</Jmax25>
+        <GammaStar>55.4700</GammaStar>
         <lightRespiration>0.7400</lightRespiration>
         <BallBerryIntercept>0.1000</BallBerryIntercept>
         <BallBerrySlope>1.6400</BallBerrySlope>
-        <Alpha>0.9125</Alpha>
+        <Alpha>0.24</Alpha>
         <propAreaCultured>0.95</propAreaCultured>
         <Product>PotChrysanthemum</Product>
         <Vcmax25>71.6100</Vcmax25>
+        <k>0.7</k>
+        <re>200</re>
+        <Km>600</Km>
+        <alpha>0.24</alpha>
+        <theta>0.85</theta>
+        <Q10>1.03</Q10>
       </Crop>
     </Crops>
     <Fogs>
@@ -227,40 +228,26 @@
     </HeatExchangers>
     <Heatpipes>
       <Heatpipe index="0" layer="0" position="1">
-        <Product>32 mm Steel</Product>
+        <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
-        <InnerDiameter>0.0300</InnerDiameter>
+        <InnerDiameter>0.0390</InnerDiameter>
         <CommonFlowTemperature>80</CommonFlowTemperature>
-        <heatPipeFlowRate>10</heatPipeFlowRate>
-        <PipeLengthPerSqm>2.5</PipeLengthPerSqm>
-        <!-- fjernet dublet -->
-        <!-- <Product>32 mm Steel</Product> -->
-        <!-- <PipeMaterialDesc>Iron</PipeMaterialDesc> -->
-        <!-- <InnerDiameter>0.0300</InnerDiameter> -->
-        <!-- <CommonFlowTemperature>80</CommonFlowTemperature> -->
-        <!-- <heatPipeFlowRate>10</heatPipeFlowRate> -->
-        <!-- <PipeLengthPerSqm>2.5</PipeLengthPerSqm> -->
-        <k>0.0002</k>
-        <b>1.4000</b>
+        <heatPipeFlowRate>50</heatPipeFlowRate>
+        <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
+        <k>0.0100</k>
+        <b>1.5000</b>
         <PropLw>0.2000</PropLw>
       </Heatpipe>
       <Heatpipe index="0" layer="0" position="2">
-        <Product>32 mm Steel</Product>
+        <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
-        <InnerDiameter>0.030</InnerDiameter>
-        <CommonFlowTemperature>85</CommonFlowTemperature>
-        <heatPipeFlowRate>10</heatPipeFlowRate>
-        <PipeLengthPerSqm>2</PipeLengthPerSqm>
-        <!-- fjernet dublet -->
-        <!-- <Product>32 mm Steel</Product> -->
-        <!-- <PipeMaterialDesc>Iron</PipeMaterialDesc> -->
-        <!-- <InnerDiameter>0.030</InnerDiameter> -->
-        <!-- <CommonFlowTemperature>85</CommonFlowTemperature> -->
-        <!-- <heatPipeFlowRate>10</heatPipeFlowRate> -->
-        <!-- <PipeLengthPerSqm>2</PipeLengthPerSqm> -->
-        <k>1.5e-4</k>
-        <b>1.4</b>
-        <PropLw>0.2</PropLw>
+        <InnerDiameter>0.0390</InnerDiameter>
+        <CommonFlowTemperature>80</CommonFlowTemperature>
+        <heatPipeFlowRate>50</heatPipeFlowRate>
+        <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
+        <k>0.0100</k>
+        <b>1.5000</b>
+        <PropLw>0.2000</PropLw>
       </Heatpipe>
     </Heatpipes>
     <HeatPumps>
@@ -346,46 +333,51 @@
       </HeatPump>
     </HeatPumps>
     <Lamps>
+      <Products>
+        <Product>
+          <Manufacture>Hortilux</Manufacture>
+          <Lp_name>HORTILED Top Sirius</Lp_name>
+          <Lp_LampType>Led</Lp_LampType>
+          <Lp_Power>525</Lp_Power>
+          <Lp_MinPeriodOn>525</Lp_MinPeriodOn>
+          <Lp_MicroMolParPerWattSeconds>3.5</Lp_MicroMolParPerWattSeconds>
+          <Lp_Ballast>0</Lp_Ballast>
+          <Lp_PropLw>0.1</Lp_PropLw>
+          <Lp_PropSw>0.4</Lp_PropSw>
+          <Lp_BallastPropLw>0.4</Lp_BallastPropLw>
+          <Lp_LifeTime>36000</Lp_LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>None</Manufacture>
+          <Lp_name>None</Lp_name>
+          <Lp_LampType>Led</Lp_LampType>
+          <Lp_Power>0</Lp_Power>
+          <Lp_MinPeriodOn>0</Lp_MinPeriodOn>
+          <Lp_MicroMolParPerWattSeconds>0</Lp_MicroMolParPerWattSeconds>
+          <Lp_Ballast>0</Lp_Ballast>
+          <Lp_PropLw>0</Lp_PropLw>
+          <Lp_PropSw>0</Lp_PropSw>
+          <Lp_BallastPropLw>0</Lp_BallastPropLw>
+          <Lp_LifeTime>99000</Lp_LifeTime>
+        </Product>
+      </Products>
       <Lamp index="0" layer="0" position="1">
-        <Product>GreenPower LED toplighting mod. DR/B LB 400V</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>31</LightCapacityPerSqm>
-        <MicromolParPerWatt>3.0590</MicromolParPerWatt>
-        <LampType>Led</LampType>
-        <Manufacture>Philips</Manufacture>
-        <Ballast>0.0000</Ballast>
-        <PropLw>0.1000</PropLw>
-        <MinPeriodOn>Led</MinPeriodOn>
-        <Name>Bank1</Name>
-        <PropSw>0.4000</PropSw>
-        <BallastPropLw>100</BallastPropLw>
+        <Product>HORTILED Top Sirius</Product>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.25</NumberInstalled>
+        <Manufacture>Hortilux</Manufacture>
       </Lamp>
       <Lamp index="0" layer="0" position="2">
         <Product>None</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>0</LightCapacityPerSqm>
-        <MicromolParPerWatt>0.000</MicromolParPerWatt>
-        <LampType>Led</LampType>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.25</NumberInstalled>
         <Manufacture>None</Manufacture>
-        <Ballast>50</Ballast>
-        <PropLw>0.5</PropLw>
-        <MinPeriodOn>20</MinPeriodOn>
-        <Name>Bank2</Name>
-        <PropSw>0.4</PropSw>
       </Lamp>
       <Lamp index="0" layer="0" position="3">
         <Product>None</Product>
-        <ageCorrectedEfficiency>1</ageCorrectedEfficiency>
-        <LightCapacityPerSqm>0</LightCapacityPerSqm>
-        <MicromolParPerWatt>2.800</MicromolParPerWatt>
-        <LampType>Led</LampType>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.5</NumberInstalled>
         <Manufacture>None</Manufacture>
-        <Ballast>50</Ballast>
-        <PropLw>0.5</PropLw>
-        <MinPeriodOn>20</MinPeriodOn>
-        <Name>Bank3</Name>
-        <PropSw>0.4</PropSw>
-        <BallastPropLw>0.3</BallastPropLw>
       </Lamp>
     </Lamps>
     <PadFans>
@@ -452,34 +444,48 @@
     </PadFans>
     <Panes>
       <Products>
-        <Product name="Single glass 4mm">
-          <PaneTransmission>0.80</PaneTransmission>
-          <PaneUValue>6.5</PaneUValue>
-          <PaneRefelction>missing</PaneRefelction>  <!-- stavefejl -->
-          <PaneLwRefelction>0.15</PaneLwRefelction>  <!-- stavefejl -->
-          <PaneReflection>0.04</PaneReflection> <!-- rettet -->
-          <PaneLwReflection>0.15</PaneLwReflection> <!-- rettet -->
-          <PaneLwTransmission>0.20</PaneLwTransmission>
+        <Product name="Double Glazing">
+          <PaneTransmission>0.82</PaneTransmission>
+          <PaneUValue>2.7</PaneUValue>
+          <PaneReflection>0.18</PaneReflection>
+          <PaneLwReflection>0.18</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
           <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PUR sandwich 50 mm">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.4</PaneUValue>
+          <PaneReflection>0.9</PaneReflection>
+          <PaneLwReflection>0.9</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="Single glass 4mm">
+          <PaneTransmission>0.8</PaneTransmission>
+          <PaneUValue>6.5</PaneUValue>
+          <PaneReflection>0.1</PaneReflection>
+          <PaneLwReflection>0.15</PaneLwReflection>
+          <PaneLwTransmission>0.02</PaneLwTransmission>
+          <PaneHeatCapacity>8400</PaneHeatCapacity>
         </Product>
       </Products>
       <Pane index="0" layer="0" position="1">
-        <Product>Single glass 4mm</Product>
+        <Product>Double Glazing</Product>
       </Pane>
       <Pane index="0" layer="0" position="2">
-        <Product>Single glass 4mm</Product>
+        <Product>Double Glazing</Product>
       </Pane>
       <Pane index="0" layer="0" position="3">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="4">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="5">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="6">
-        <Product>Single glass 4mm</Product>
+        <Product>PUR sandwich 50 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="7">
         <Product>Single glass 4mm</Product>
@@ -489,63 +495,39 @@
       </Pane>
     </Panes>
     <ScreenLayers>
-      <!-- Forklaring: Gardiner i lag 1 trækkes til den maksimale værdi, som følger af de tre sætpunkter: screenEnergyThreshold1, screenShadeThreshold1 og screenFixed1 -->
       <ScreenLayer index="1" layer="1" position="0">
-        <Actuator>Energy+Shade+Blackout</Actuator> 
+        <Actuator>Energy</Actuator>
       </ScreenLayer>
-      <!-- Forklaring: Gardiner i lag 2 trækkes til værdien, som følger af sætpunktet: screenShadeThreshold2 -->
       <ScreenLayer index="2" layer="2" position="0">
         <Actuator>Shade</Actuator>
       </ScreenLayer>
-      <!-- Forklaring: Gardiner i lag 3 trækkes til værdien, som følger af sætpunktet: screenFixed3 -->
       <ScreenLayer index="3" layer="3" position="0">
         <Actuator>Blackout</Actuator>
       </ScreenLayer>
     </ScreenLayers>
     <Screens>
-      <!-- Forklaring: Layer 1 er yderst, 2 dernæst og 3 inderst-->
+      <!--Layer 1 er yderst, 2 dernæst og 3 inderst-->
       <Products>
-        <!-- Bemærtk: Alle egenskaber ved produktet "None", som angiver intet gardin, bliver ignoreret -->
-        <Product name="None                                                                  ">
+        <Product name="None">
           <Transmission>1</Transmission>
           <ReflectionOutwards>0</ReflectionOutwards>
           <ReflectionInwards>0</ReflectionInwards>
-        </Product>
-        <Product name="PH 98 FP plus PH 1 FP                                                 ">
-          <Transmission>0.01</Transmission>
-          <ReflectionOutwards>0.02</ReflectionOutwards>
-          <ReflectionInwards>0.99</ReflectionInwards>
-          <InsulationU>10</InsulationU> <!--Ny-->
-          <U>1.2</U> <!--Ny. Stoffets egen U-værdi. -->
-          <HeatCapacity>80</HeatCapacity> <!--Ny-->
-        </Product>
-        <Product name="LS Obscura 10070 FR WB BW">
-          <Transmission>0.010</Transmission>
-          <ReflectionOutwards>0.000</ReflectionOutwards>
-          <ReflectionInwards>0.990</ReflectionInwards>
-          <InsulationU>2.5</InsulationU> 
-          <U>1.2</U>
+          <InsulationU>10</InsulationU>
+          <U>0.6</U>
           <HeatCapacity>80</HeatCapacity>
-        </Product>
-        <Product name="LS Obscura 10075 FR AB BW">
-          <Transmission>0.100</Transmission>
-          <ReflectionOutwards>0.900</ReflectionOutwards>
-          <ReflectionInwards>0.900</ReflectionInwards>
-          <InsulationU>0.1</InsulationU> 
-          <U>1.2</U>
-          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0</EnergySaving>
         </Product>
       </Products>
       <Screen index="1" layer="1" position="1">
-        <Product>PH 98 FP plus PH 1 FP</Product>
-        <Manufacture>PolyPlants</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="4">
-        <Product>LS Obscura 10070 FR WB BW</Product>
+        <Product>None</Product>
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="5">
-        <Product>LS Obscura 10070 FR WB BW</Product>
+        <Product>None</Product>
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="6">
@@ -561,7 +543,7 @@
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="3" layer="3" position="3">
-        <Product>LS Obscura 10070 FR WB BW</Product>
+        <Product>None</Product>
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="3" layer="3" position="4">
@@ -569,7 +551,7 @@
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="3" layer="3" position="5">
-        <Product>LS Obscura 10075 FR AB BW</Product>
+        <Product>None</Product>
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="3" layer="3" position="6">
@@ -577,24 +559,24 @@
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="2">
-        <Product>PH 98 FP plus PH 1 FP</Product>
-        <Manufacture>PolyPlants</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="3">
-        <Product>PH 98 FP plus PH 1 FP</Product>
-        <Manufacture>PolyPlants</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="4">
-        <Product>PH 98 FP plus PH 1 FP</Product>
-        <Manufacture>PolyPlants</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="5">
-        <Product>PH 98 FP plus PH 1 FP</Product>
-        <Manufacture>PolyPlants</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="6">
-        <Product>PH 98 FP plus PH 1 FP</Product>
-        <Manufacture>PolyPlants</Manufacture>
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="1">
         <Product>None</Product>
@@ -609,135 +591,142 @@
         <Manufacture>None</Manufacture>
       </Screen>
     </Screens>
-    <!-- Forenklet: Skyggemiddel anvendes på hele huset! -->
-    <ShadingAgents>
-      <Products>
-        <Product name="Chalk">
-          <SwReflectivity>0.2</SwReflectivity>
-          <LwReflectivity>0.1</LwReflectivity>
-        </Product>
-        <Product name="WhiteFix">
-          <SwReflectivity>0.6</SwReflectivity>
-          <LwReflectivity>0.7</LwReflectivity>
-        </Product>
-      </Products>
-      <ChosenProduct>Chalk</ChosenProduct>
-    </ShadingAgents>
     <Vents>
       <Vent index="0" layer="0" position="1">
         <Length>3</Length>
         <Width>1</Width>
-        <Number>200</Number>
+        <Number>20</Number>
         <VentTransmissivity>1</VentTransmissivity>
-        <!-- dublet fjernet -->
-        <!-- <Length>3</Length> -->
-        <!-- <Width>1</Width> -->
-        <!-- <Number>200</Number> -->
-        <!-- <VentTransmissivity>1</VentTransmissivity> -->
       </Vent>
       <Vent index="0" layer="0" position="2">
         <Length>3</Length>
         <Width>1</Width>
-        <Number>200</Number>
+        <Number>20</Number>
         <VentTransmissivity>1</VentTransmissivity>
-        <!-- dublet fjernet -->
-        <!-- <Length>3</Length> -->
-        <!-- <Width>1</Width> -->
-        <!-- <Number>200</Number> -->
-        <!-- <VentTransmissivity>1</VentTransmissivity> -->
       </Vent>
     </Vents>
-    <Climate>
-      <Setpoint>
-        <AssLightActive1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="06:00">0</AssLightActive1>
-        <AssLightActive2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</AssLightActive2>
-        <AssLightActive3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</AssLightActive3>
-        <AssLightOff1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">600</AssLightOff1>
-        <AssLightOff2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">600</AssLightOff2>
-        <AssLightOff3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">600</AssLightOff3>
-        <AssLightOn1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</AssLightOn1>
-        <AssLightOn2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</AssLightOn2>
-        <AssLightOn3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</AssLightOn3>
-        <CO2Capacity index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">50</CO2Capacity>
-        <CO2InjectionRate index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1000</CO2InjectionRate>
-        <CO2InjectionStopPBand index="0" FromDate="01/01" FromTime="00:00" ToDate="02/12" ToTime="00:00">1</CO2InjectionStopPBand>
-        <CO2InjectionStopThreshold index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">6</CO2InjectionStopThreshold>
-        <CO2Setpoint index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">900</CO2Setpoint>
-        <CO2VentilationBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.2</CO2VentilationBand>
-        <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.1</CO2VentilationThreshold>
-        <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.05</crackScreenHighHumidity>
-        <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.05</crackScreenHighTemperature>
-        <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</crackScreenHighTemperatureBand>
-        <crackVentilation index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.05</crackVentilation>
-        <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">-5</crackVentilationTemperatureMin>
-        <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1</crackVentilationTemperatureMinBand>
-        <HeatingTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">20</HeatingTemp>
-        <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">2</MaxHeatAddHighRH>
-        <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</MaxHeatAddLowRH>
-        <MaxRelHmd index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">90</MaxRelHmd>
-
-        <minPipeTemperature index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">20</minPipeTemperature>
-        <!-- nedenstående bruges ikke -->
-        <!-- <minPipeTemperature1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</minPipeTemperature1> -->
-        <!-- <minPipeTemperature2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</minPipeTemperature2> -->
-        <!-- <maxPipeTemperature index="0" FromDate="01/12" FromTime="00:00" ToDate="31/12" ToTime="00:00" /> -->
-        <minRelHmd index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</minRelHmd>
-        <rhMaxBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</rhMaxBand>
-        <rhMinBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">2</rhMinBand>
-        
-        <!-- nedenstående bruges ikke -->
-        <!-- <screenActive1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">shade1+energy1</screenActive1> -->
-        <!-- <screenActive1Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00" /> -->
-        <!-- <screenActive2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00" /> -->
-        <!-- <screenActive2Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00" /> -->
-        <!-- <screenActive3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00" /> -->
-        <!-- <screenActive3Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00" /> -->
-        
-        <screenEnergyThreshold1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThreshold1>
-        <screenEnergyThreshold2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThreshold2>
-        <screenEnergyThreshold3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThreshold3> <!-- Ny -->
-        <screenEnergyThresholdBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThresholdBand> <!-- Check: Skal begynde med lille "s" -->
-        
-        <screenFixed1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</screenFixed1>
-        <screenFixed2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</screenFixed2>
-        <screenFixed3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</screenFixed3> <!-- Ny -->
-        
-        <screenShadeThreshold1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">500</screenShadeThreshold1>
-        <screenShadeThreshold2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">500</screenShadeThreshold2>
-        <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">500</screenShadeThreshold3> <!-- Ny -->
-        <screenShadeThresholdBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">50</screenShadeThresholdBand>
-        
-        <ShadingAgentReduction index="0" FromDate="15/05" FromTime="00:00" ToDate="31/08" ToTime="00:00">1</ShadingAgentReduction>
-        <ShadingAgentReduction index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</ShadingAgentReduction>
-        
-        <VentTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</VentTemp>
-        <VentTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</VentTemp>
-        <VentMaxCost index="0" FromDate="01/01" ToDate="31/12" FromTime="00:00" ToTime="00:00">50</VentMaxCost> <!-- Ny -->
-
-      </Setpoint>
-    </Climate>
-    <!-- <Controllers> -->
-      <!-- <Screen> -->
-        <!-- <Energy> -->
-          <!-- <Activate>BelowThreshold</Activate> -->
-          <!-- <Include>Blackout+Energy</Include> -->
-          <!-- <LagPeriod>10</LagPeriod> -->
-        <!-- </Energy> -->
-        <!-- <Blackout> -->
-          <!-- <Activate>AboveThreshold</Activate> -->
-          <!-- <Include>Blackout</Include> -->
-          <!-- <LagPeriod>10</LagPeriod> -->
-        <!-- </Blackout> -->
-        <!-- <Shade> -->
-          <!-- <Activate>AboveThreshold</Activate> -->
-          <!-- <Include>Shade</Include> -->
-          <!-- <LagPeriod>10</LagPeriod> -->
-        <!-- </Shade> -->
-      <!-- </Screen> -->
-    <!-- </Controllers> -->
+    <ShadingAgents>
+      <Products>
+        <Product name="test">
+          <SwReflectivity>0.2</SwReflectivity>
+          <LwReflectivity>0.2</LwReflectivity>
+        </Product>
+      </Products>
+      <ChosenProduct>test</ChosenProduct>
+    </ShadingAgents>
   </Greenhouse>
+  <Climate>
+    <Setpoint>
+      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">17</HeatingTemp>
+      <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">14</VentTemp>
+      <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
+      <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
+      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation>
+      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin>
+      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
+      <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>
+      <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
+      <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive2Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive3Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenEnergyThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold1>
+      <screenEnergyThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold2>
+      <screenEnergyThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThresholdBand>
+      <screenShadeThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold1>
+      <screenShadeThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold2>
+      <screenShadeThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</screenShadeThresholdBand>
+      <screenEnergyThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold3>
+      <screenFixed1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed1>
+      <screenFixed2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed2>
+      <screenFixed3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed3>
+      <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold3>
+      <ShadingAgentReduction index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</ShadingAgentReduction>
+      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity>
+      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature>
+      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand>
+      <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
+      <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
+      <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
+      <AssLightActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive3>
+      <AssLightOn1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn1>
+      <AssLightOff1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff1>
+      <AssLightOn2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn2>
+      <AssLightOff2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff2>
+      <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn3>
+      <AssLightOff3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff3>
+      <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">90</MaxRelHmd>
+      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd>
+      <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</MaxHeatAddHighRH>
+      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH>
+      <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>
+      <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>
+      <rhMaxBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</rhMaxBand>
+      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand>
+      <CO2Setpoint index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</CO2Setpoint>
+      <CO2Capacity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</CO2Capacity>
+      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand>
+      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold>
+    </Setpoint>
+  </Climate>
   <Output>
-    <Variables>outdoors[temperature] | outdoors[rh] | outdoors[radiation] | outdoors[windSpeed] | outdoors[soilTemperature] </Variables>
+    <Variables>
+      <Variable name="actCo2" path="actuators/co2[value]"/>
+      <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
+      <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
+      <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
+      <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
+      <Variable name="actLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="actLightPower" path="actuators/growthLights[powerUsage]"/>
+      <Variable name="actPipeTempIn1" path="actuators/heatPipes/circuit1[inflowTemperature]"/>
+      <Variable name="actPipeTempIn2" path="actuators/heatPipes/circuit2[inflowTemperature]"/>
+      <Variable name="actPipeTempOut1" path="actuators/heatPipes/circuit1[outflowTemperature]"/>
+      <Variable name="actPipeTempOut2" path="actuators/heatPipes/circuit2[outflowTemperature]"/>
+      <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
+      <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
+      <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
+      <Variable name="actVentilation" path="actuators/ventilation[value]"/>
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
+      <Variable name="condensation" path="budget[condensation]"/>
+      <Variable name="coverT" path="budget/cover[temperature]"/>
+      <Variable name="floorT" path="budget/floor[temperature]"/>
+      <Variable name="grossAssimilationRate" path="plant[Pg]"/>
+      <Variable name="heatFluxCover" path="budget/cover[convectionTop]"/>
+      <Variable name="heatFluxFloor" path="budget/cover[convectionBottom]"/>
+      <Variable name="indoorsCo2" path="budget/indoors[co2]"/>
+      <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="indoorsRh" path="budget/indoors[rh]"/>
+      <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
+      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/>
+      <Variable name="leafT" path="budget/plant[temperature]"/>
+      <Variable name="lightUseEfficiency" path="plant[lue]"/>
+      <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
+      <Variable name="lwEmissionCover" path="budget/cover[lwEmissionTop]"/>
+      <Variable name="netAssimilationRate" path="plant[Pn]"/>
+      <Variable name="netGrowthRate" path="plant[growthRate]"/>
+      <Variable name="netGrowthRateLeaf" path="plant[leafGrowthRate]"/>
+      <Variable name="outdoorsLight" path="outdoors[radiation]"/>
+      <Variable name="outdoorsPar" path="outdoors[par]"/>
+      <Variable name="outdoorsRh" path="outdoors[rh]"/>
+      <Variable name="outdoorsT" path="outdoors[temperature]"/>
+      <Variable name="outdoorsWindSpeed" path="outdoors[windSpeed]"/>
+      <Variable name="pipeT" path="budget/heatPipes[temperature]"/>
+      <Variable name="respirationRate" path="plant[Rd]"/>
+      <Variable name="screen1T" path="budget/screen1[temperature]"/>
+      <Variable name="screen2T" path="budget/screen2[temperature]"/>
+      <Variable name="screen3T" path="budget/screen3[temperature]"/>
+      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]"/>
+      <Variable name="skyT" path="budget/sky[temperature]"/>
+      <Variable name="soilT" path="outdoors[soilTemperature]"/>
+      <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
+      <Variable name="spHeatingTemperature" path="controllers/heating[value]"/>
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]"/>
+      <Variable name="transpiration" path="budget[transpiration]"/>
+      <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
+      <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
+    </Variables>
   </Output>
   <Status>
     <LigthSum>
