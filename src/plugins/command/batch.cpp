@@ -98,7 +98,7 @@ void batch::streamClipboard(QString filePath) {
     QString clip = QApplication::clipboard()->text();
     clip = clip.replace("keepVariables = FALSE",
                         "keepVariables = TRUE");
-    QString fileName = QFileInfo(filePath).baseName();
+    QString fileName = QFileInfo(filePath).completeBaseName();
     _clipboardStream
             << clip
             << "all_figures = c(all_figures, list(Figure=list(FilePath='"

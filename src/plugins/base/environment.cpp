@@ -117,7 +117,7 @@ QString Environment::outputFilePath(QString extension, int offset) {
     sprintf(numberFilled, "%04d", fileCountervalue() + offset);
 
     QString ext = (extension.at(0) == '.') ? extension : ("." + extension);
-    return outputFileNamePath(QFileInfo(fileName).baseName() + "_" + numberFilled + ext);
+    return outputFileNamePath(QFileInfo(fileName).completeBaseName() + "_" + numberFilled + ext);
 }
 
 QString Environment::outputFileNamePath(QString fileName) {
@@ -340,7 +340,7 @@ int Environment::fileCountervalue() {
 }
 
 QString Environment::fileCounterKey() {
-    return "environment/file-counter/" + QFileInfo(_latestLoadArg).baseName();
+    return "environment/file-counter/" + QFileInfo(_latestLoadArg).completeBaseName();
 }
 
 void Environment::copyToClipboard(QString text, QString message) {

@@ -65,10 +65,10 @@ LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVec
 
     // General transmissivity reduction is attributed to increased absorptivity, shared between top and bottom
     // But ensure that absorptivity + reflectivity <= 1.
-    adj.swAbsorptivityTop    = min(adj.swAbsorptivityTop    + transmissivityReduction/2., 1. - adj.swReflectivityTop);
-    adj.lwAbsorptivityTop    = min(adj.lwAbsorptivityTop    + transmissivityReduction/2., 1. - adj.lwReflectivityTop);
-    adj.swAbsorptivityBottom = min(adj.swAbsorptivityBottom + transmissivityReduction/2., 1. - adj.swReflectivityBottom);
-    adj.lwAbsorptivityBottom = min(adj.lwAbsorptivityBottom + transmissivityReduction/2., 1. - adj.lwReflectivityBottom);
+    adj.swAbsorptivityTop    = min(*p.swAbsorptivityTop    + transmissivityReduction/2., 1. - adj.swReflectivityTop);
+    adj.lwAbsorptivityTop    = min(*p.lwAbsorptivityTop    + transmissivityReduction/2., 1. - adj.lwReflectivityTop);
+    adj.swAbsorptivityBottom = min(*p.swAbsorptivityBottom + transmissivityReduction/2., 1. - adj.swReflectivityBottom);
+    adj.lwAbsorptivityBottom = min(*p.lwAbsorptivityBottom + transmissivityReduction/2., 1. - adj.lwReflectivityBottom);
 
     // Transmissivity takes rest
     adj.swTransmissivityTop     = 1. - adj.swReflectivityTop    - adj.swAbsorptivityTop;

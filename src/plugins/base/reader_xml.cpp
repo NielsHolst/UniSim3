@@ -842,7 +842,10 @@ BoxBuilder& ReaderXml::actuatorsGrowthLights() {
     auto products = _doc->find("Greenhouse/Lamps/Products")->children();
     for (auto pr = products.begin(); pr != products.end(); ++pr) {
         XmlNode &product(*pr.value());
-        QString name = makeId(product.find("Name")->value());
+        XmlNode *nameNode = product.peak("Name");
+        if (!nameNode)
+            nameNode = product.find("name");
+        QString name = makeId(nameNode->value());
         _builder->
         box("GrowthLightProduct").name(name).
             port("power").equals(product.find("Power")->toDouble()).
