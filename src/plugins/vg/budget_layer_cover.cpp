@@ -34,5 +34,18 @@ double BudgetLayerCover::updateCondensation() {
     return condensation;
 }
 
+void BudgetLayerCover::updateLwEmission() {
+    BudgetLayer::updateLwEmission();
+    // Convert W/m2 cover to W/m2 ground
+    lwEmissionTop    *= coverPerGroundArea;
+    lwEmissionBottom *= coverPerGroundArea;
+}
+
+double BudgetLayerCover::updateDeltaTByCondensation(double insideCondensation, double outsideCondensation) {
+    condInsideDeltaT  = LHe*insideCondensation/(*heatCapacity);
+    condOutsideDeltaT = LHe*outsideCondensation/(*heatCapacity);
+    return totalDeltaT += condInsideDeltaT + condOutsideDeltaT;
+}
+
 }
 

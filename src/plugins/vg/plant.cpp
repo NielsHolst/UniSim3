@@ -118,10 +118,14 @@ void Plant::updateTemperature() {
 }
 
 void Plant::updateTranspiration() {
-    double
-        a = svpSlope_/Psychr*netRadiation_ + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
-        b = LHe*(1. + svpSlope_/Psychr + ri_/re);
-    transpiration = a/b;
+    if (netRadiation_ < 0.)
+        transpiration =  0.;
+    else {
+        double
+            a = svpSlope_/Psychr*netRadiation_ + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
+            b = LHe*(1. + svpSlope_/Psychr + ri_/re);
+        transpiration = a/b;
+    }
 }
 
 void Plant::updateLeafPhotosynthesis() {

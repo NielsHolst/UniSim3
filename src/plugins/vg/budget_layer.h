@@ -24,6 +24,7 @@ public:
     virtual void updateLwEmission();
     virtual double updateDeltaT(double timeStep);
     void updateNetRadiation();
+    void checkParameters() const;
 private:
     // Inputs
     double
@@ -41,7 +42,7 @@ private:
         swAbsorbedTop, swAbsorbedBottom,
         lwAbsorbedTop, lwAbsorbedBottom,
         convectionTop, convectionBottom,
-        radiationDeltaT, convectionDeltaT, totalDeltaT;
+        radiationDeltaT, convectionDeltaT;
     // Data
     double rollBackTemperature;
 protected:
@@ -51,7 +52,7 @@ protected:
         lwEmissionTop, lwEmissionBottom,
         parAbsorbedTop, parAbsorbedBottom,
         netRadiation, netConvection,
-        condensation;
+        condensation, totalDeltaT;
     // Data
     const double *emissivityTop, *emissivityBottom,
         *Utop, *Ubottom,

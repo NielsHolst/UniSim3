@@ -20,6 +20,7 @@ public:
     void reset();
     void update();
     void increase(double delta);
+    void stop();
 private:
     // Inputs
     double volume, flowRate, minTemperature, maxTemperature,

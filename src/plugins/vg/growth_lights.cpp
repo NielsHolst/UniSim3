@@ -38,6 +38,7 @@ GrowthLights::GrowthLights(QString name, Box *parent)
 }
 
 void GrowthLights::reset() {
+    makeTransparent();
     update();
 }
 

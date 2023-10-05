@@ -25,16 +25,17 @@ AverageCover::AverageCover(QString name, Box *parent)
     Input(transmissivityReduction).imports("shelter[transmissivityReduction]");
     Input(swShading).imports("shelter/shading[swReflectivity]");
     Input(lwShading).imports("shelter/shading[lwReflectivity]");
+    Input(faceAreas).imports("shelter/faces/*[area]");
+    Input(screenStates).imports("actuators/screens/*[state]");
     NamedOutput("UbottomAdj", Ubottom).help("Alias");
     NamedOutput("UtopAdj", Utop).help("Alias");
 }
 
 void AverageCover::reset() {
-    // Create six vectors, one or each face.
-    // Each vector contains the UinsulationAdj values for the screens on that face
+    // Create six vectors, one for each face.
+    // Each vector contains the Uinsulation values for the screens on that face
     for (int i = 0; i < 6; ++i)
             _Uinsulations[i].clear();
-
     int i = 0;
     for (Face *face : _faces) {
         // Insolation U values from screens installed on this face
@@ -90,24 +91,24 @@ void AverageCover::update() {
 }
 
 void AverageCover::correctUbottom() {
+    // U is a conductance
+    // R = 1/U is a resistance
     // Compute Ubottom weighed over all six surfaces
-    double sumUface = 0;
+    Ubottom = 0;
     int i = 0;
     for (Face *face : _faces) {
         const LayerParametersPtrs &p(face->parameters(0));
         // Add up Uinsulation of screens and them to Ubottom of the cover
-        // On one face, resistances are in a series
+        // On one face, resistances are in a series and hence additive
         double sumRface = 1./(*p.Ubottom);
+        int layer = 0;
         for (const double *Uinsulation : _Uinsulations[i])
-            sumRface += 1./(*Uinsulation);
+            sumRface += screenStates.at(layer++)/(*Uinsulation);
         // Overall, the resistances of the six surfaces are in parallel;
-        // i.e. the conductancies (U=1/R) are additive, weighed by face area
-        sumUface += areas.at(i)*1./sumRface;
-        // Units: U [W/K/m2 layer]; sumUface [W/K]
-        ++i;
+        // i.e. the conductancies (U=1/R) are additive
+        Ubottom += faceAreas.at(i++)/sumRface;
     }
-    Ubottom = sumUface/groundArea;
-    // Unit: Ubottom [W/K/m2 ground]
+    Ubottom /= groundArea;
 }
 
 } //namespace

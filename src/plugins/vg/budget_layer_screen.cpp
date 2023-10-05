@@ -35,5 +35,14 @@ double BudgetLayerScreen::updateCondensation() {
     return condensation;
 }
 
+
+void BudgetLayerScreen::updateLwEmission() {
+    BudgetLayer::updateLwEmission();
+    // Convert W/m2 screen to W/m2 ground
+    const double c = screenEffectiveArea ? *screenEffectiveArea/groundArea : 0;
+    lwEmissionTop    *= c;
+    lwEmissionBottom *= c;
+}
+
 }
 

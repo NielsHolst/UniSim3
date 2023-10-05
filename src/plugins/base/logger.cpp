@@ -10,19 +10,33 @@
 
 namespace base {
 
+Logger::Logger()
+    : isOpen(false)
+{
+}
+
+Logger::~Logger() {
+    close();
+    isOpen = false;
+}
+
 void Logger::open(QString fileNamePath) {
     file.setFileName(fileNamePath);
     file.open(QIODeviceBase::Text | QIODeviceBase::WriteOnly);
     str.setDevice(&file);
+    isOpen = true;
 }
 
 void Logger::write(QString s) {
-    str << qPrintable(s) << "\n";
+    if (isOpen)
+        str << qPrintable(s) << "\n";
 }
 
 
 void Logger::close() {
-    file.close();
+    if (isOpen)
+        file.close();
+    isOpen = false;
 }
 
 }

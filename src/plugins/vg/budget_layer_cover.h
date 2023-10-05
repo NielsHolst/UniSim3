@@ -15,9 +15,13 @@ class BudgetLayerCover : public BudgetLayer {
 public:
     BudgetLayerCover(QString name, base::Box *parent);
     double updateCondensation();
+    void updateLwEmission();
+    double updateDeltaTByCondensation(double insideCondensation, double outsideCondensation);
 private:
     // Input
     double coverPerGroundArea, indoorsRh;
+    // Output
+    double condInsideDeltaT, condOutsideDeltaT;
     // Friends
     friend class Budget;
 };

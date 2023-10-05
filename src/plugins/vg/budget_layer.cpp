@@ -144,5 +144,9 @@ double BudgetLayer::updateCondensation() {
     return 0.;
 }
 
+void BudgetLayer::checkParameters() const {
+    attachedLayer->checkParameters();
+}
+
 }
 

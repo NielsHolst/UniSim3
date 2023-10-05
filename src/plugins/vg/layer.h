@@ -21,10 +21,11 @@ protected:
     // Methods
     void useLayerAsInput();
     void useLayerAsOutput();
-    void checkParameters();
+    void makeTransparent();
+    void checkParameters() const;
 private:
-    void checkParameter(QString name, double value);
-    void checkParameterSum(QString name, double value);
+    void checkParameter(QString name, double value) const;
+    void checkParameterSum(QString name, double value) const;
     // Friends
     friend class Budget;
     friend class BudgetLayer;

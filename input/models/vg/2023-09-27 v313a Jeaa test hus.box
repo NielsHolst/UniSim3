@@ -1,6 +1,6 @@
 #using vg
 Simulation sim {
-  .steps = 10
+  // .steps = 10
   Box global {
     &beginDate = 2023/01/01
   }
@@ -11,7 +11,8 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/12/31T00:00:00
+    // .end = 2023/12/31
+    .end = 2023/01/05
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -67,7 +68,7 @@ Simulation sim {
               .lwReflectivityBottom = 0.15
               .lwTransmissivityBottom = 0.02
               .Utop = shelter/Utop[value]
-              .Ubottom = 6.5
+              .Ubottom = 1.2 // 6.5 NH
               .heatCapacity = 8400.0
             }
           }
@@ -88,7 +89,7 @@ Simulation sim {
               .Utop = 0.6
               .Ubottom = 0.6
               .heatCapacity = 80.0
-              .Uinsulation = 1.2
+              .Uinsulation = 1.2 // 1.2 NH
               .UinsulationEffectivity = 1.0
             }
             Screen none {
@@ -201,7 +202,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 50.0
+            .signalInside = 10 // 50.0 NH
           }
         }
       }
@@ -621,7 +622,7 @@ Simulation sim {
           .flowRate = 50.0
           .k = 0.01
           .b = 1.5
-          .propLw = 0.2
+          .propLw = 0 // 0.2
           .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
           .indoorsTemperature = indoors[temperature]
@@ -631,16 +632,17 @@ Simulation sim {
           .flowRate = 50.0
           .k = 0.01
           .b = 1.5
-          .propLw = 0.2
+          .propLw = 0 // 0.2
           .minTemperature = setpoints/heating/minTemperature[value]
           .maxTemperature = 80.0
           .indoorsTemperature = indoors[temperature]
         }
       }
       ActuatorVentilation ventilation {
-        .ventAreaRatio = 0.012
-        .windCoef = 40.0
-        .temperatureCoef = 7.0
+        // NH
+        // .ventAreaRatio = 0.012
+        // .windCoef = 40.0
+        // .temperatureCoef = 7.0
       }
       Box screens {
         ActuatorScreen layer1 {
@@ -788,6 +790,7 @@ Simulation sim {
       &floorT = budget/floor[temperature]
       &coverT = budget/cover[temperature]
       &condensation = budget[condensation]
+      &coverCondHeat = budget[coverLatentHeatFlux]
       &airFluxTotal = actuators/ventilation[value]
       &actVentilation = actuators/ventilation[value]
       &actScreen3 = actuators/screens/layer3[state]
@@ -814,8 +817,8 @@ Simulation sim {
       }
     }
     OutputSelector selector {
-      // .beginDateTime = global[beginDate]
-      // .period = 10
+      .beginDateTime = global[beginDate]
+      .period = 20
       // .useLocalDecimalChar = FALSE
       // .skipFormats = FALSE
     }

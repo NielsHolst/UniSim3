@@ -21,6 +21,9 @@ AverageShelterLayer::AverageShelterLayer(QString name, Box *parent)
     Input(weights).imports("shelter/faces/*[weight]");
     Input(groundArea).imports("gh/geometry[groundArea]");
     useLayerAsOutput();
+    port("Utop")->unit("W/K/m2 ground");
+    port("Ubottom")->unit("W/K/m2 ground");
+    port("heatCapacity")->unit("J/K/m2 ground");
 }
 
 void AverageShelterLayer::initialize() {
@@ -72,7 +75,6 @@ void AverageShelterLayer::updateParameters(const int layerIndex, const QVector<d
         WEIGHT2(lwAbsorptivityBottom);
         // heatCapacity, UTop and UBottom are converted to [W/K/m2 ground]
         WEIGHT1(heatCapacity);
-        // Conductancies (U) in parallel are additive
         WEIGHT1(Utop);
         WEIGHT1(Ubottom);
         ++i;

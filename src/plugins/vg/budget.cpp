@@ -4,7 +4,6 @@
 */
 #include <QTextStream>
 #include <base/box_builder.h>
-#include <base/logger.h>
 #include <base/phys_math.h>
 #include <base/publish.h>
 #include <base/test_num.h>
@@ -13,6 +12,7 @@
 #include "average_screen.h"
 #include "budget.h"
 #include "budget_layer.h"
+#include "budget_layer_cover.h"
 #include "budget_volume.h"
 #include "floor.h"
 #include "growth_lights.h"
@@ -77,11 +77,11 @@ Budget::Budget(QString name, base::Box *parent)
     Output(transpiration).unit("kg/m2").help("Plant transpiration");
     Output(condensation).unit("kg/m2").help("Condensation on cover");
     Output(ventedWater).unit("kg/m2").help("Water loss by ventilation");
-    Output(latentHeatBalance).unit("W/m2").help("Latent heat of water balance");
     Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation");
 
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
     Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
+    Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
 }
 
 void Budget::amend() {
@@ -186,7 +186,7 @@ void Budget::addLayers() {
     layers << budgetLayerSky;
 
     // Attach cover
-    budgetLayerCover = findOne<BudgetLayer*>("./cover");
+    budgetLayerCover = findOne<BudgetLayerCover*>("./cover");
     budgetLayerCover->attach(cover, outdoorsVol, indoorsVol);
     layers << budgetLayerCover;
 
@@ -280,11 +280,11 @@ void Budget::initialize() {
     actuatorVentilation = findOne<ActuatorVentilation*>("actuators/ventilation");
     ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
-
 //    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
 }
 
 void Budget::reset() {
+    checkParameters();
     control = Control::CarryOn;
     action = Action::CarryOn;
     _subTimeStep = timeStep;
@@ -294,6 +294,7 @@ void Budget::reset() {
 }
 
 void Budget::update() {
+    checkParameters();
     const double
             indoorsTemp0 = indoorsVol->temperature,
             indoorsRh0   = indoorsVol->rh;
@@ -308,6 +309,10 @@ void Budget::update() {
     indoorsLatentHeatFlux = (ahFromRh(indoorsTemp0, indoorsRh0) - ahFromRh(indoorsTemp1, indoorsRh1))*LHe*averageHeight/timeStep;
 }
 
+void Budget::cleanup() {
+    logger.close();
+}
+
 void Budget::updateLayersAndVolumes() {
     const int maxSubSteps = 1000;
     saveForRollBack();
@@ -315,21 +320,31 @@ void Budget::updateLayersAndVolumes() {
     subSteps = 0;
     double timePassed = 0.;
     babyStep();
+    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
+    logger.write(dump(lwParam, Dump::WithHeader));
+    logger.write(dump(lwState, Dump::WithHeader));
+    transpiration =
+    condensation  =
+    ventedWater   = 0.;
     while (lt(timePassed, timeStep) && subSteps < maxSubSteps) {
         _subTimeStep = std::min(_subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
         updateSubStep(_subTimeStep, (timePassed == 0.) ? UpdateOption::IncludeSwPar : UpdateOption::ExcludeSwPar);
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
                                  budgetLayerPlant->parAbsorbedBottom);
+        logger.write(convert<QString>(subSteps) + ": " + convert<QString>(_subTimeStep));
+        logger.write(dump(lwState, Dump::WithHeader));
         updateWaterBalance(_subTimeStep);
         applyDeltaT();
-        applyLatentHeat();
+        if (budgetLayerCover->temperature < -100) {
+            logger.write(convert<QString>(condensation));
+        }
+
         timePassed += _subTimeStep;
         ++subSteps;
     }
     if (subSteps == maxSubSteps)
         dialog().error("On" + convert<QString>(dateTime) + ": Energy budget did not converge");
-//    logger.close();
 }
 
 void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
@@ -377,6 +392,7 @@ void Budget::updateConvection() {
 }
 
 namespace {
+
 struct WaterIntegration {
     double
         indoorsAh,
@@ -432,20 +448,30 @@ void Budget::updateWaterBalance(double timeStep) {
         v,
         outdoorsAh
     );
+    const double insideCondensation = w.condensation*averageHeight;
+    // Outputs
+    transpiration     +=  w.transpiration*averageHeight;
+    condensation      += -insideCondensation;
 
-    transpiration     =  w.transpiration*averageHeight;
-    condensation      = -w.condensation*averageHeight;
-    ventedWater       = -w.ventilation*averageHeight;
-    latentHeatBalance = -LHe*condensation;
-    indoorsVol->rh    = rhFromAh(indoorsVol->temperature, w.indoorsAh);
+    if (std::fpclassify(condensation) == FP_NAN) {
+        logger.close();
+        ThrowException("Condensation is not a number").context(this);
+    }
+
+    ventedWater       += -w.ventilation*averageHeight;
+    // Indoors state update
+    indoorsVol->rh     = rhFromAh(indoorsVol->temperature, w.indoorsAh);
+
+    // Outside latent heat
+    const double
+       condRate   = 2e-3*coverPerGroundArea,
+       outsideCondensation  = std::max(condRate*(outdoorsAh - coverSah)*timeStep, 0.);
+    // Update cover temperature
+    coverLatentHeatFlux = LHe*(insideCondensation + outsideCondensation);
+    double deltaT = budgetLayerCover->updateDeltaTByCondensation(insideCondensation, outsideCondensation);
+    if (fabs(deltaT) > _maxDeltaT)
+        _maxDeltaT = fabs(deltaT);
 }
-
-void Budget::applyLatentHeat() {
-//    budgetLayerCover->temperature += latentHeatBalance/(*budgetLayerCover->heatCapacity);
-    const double Cair = RhoAir*CpAir;
-    indoorsVol->temperature += latentHeatBalance/averageHeight/Cair;
-}
-
 
 void Budget::updateCo2() {
     double
@@ -587,7 +613,7 @@ void Budget::distributeRadiation(State &s, const Parameters &p) {
 void Budget::updateDeltaT(double timeStep) {
     for (BudgetLayer *layer : layers) {
         double deltaT = layer->updateDeltaT(timeStep);
-        if (fabs(deltaT) > fabs(_maxDeltaT))
+        if (fabs(deltaT) > _maxDeltaT)
             _maxDeltaT = fabs(deltaT);
     }
     double propVentilation   = 1. - exp(-(*ventilationRate)/3600.*timeStep),
@@ -724,6 +750,18 @@ void Budget::decreaseHeating() {
     action = Action::DecreaseHeating;
 }
 
+void Budget::stopHeating() {
+    if (heatPipes) {
+        rollBack();
+        heatPipes->stop();
+        budgetLayerHeatPipes->evaluatePorts();
+        extraVentilation();
+        babyStep();
+        updateLayersAndVolumes();
+    }
+    action = Action::DecreaseHeating;
+}
+
 void Budget::extraVentilation() {
     if (greenhouseTooHumid) {
         babyStep();
@@ -734,6 +772,11 @@ void Budget::extraVentilation() {
 void Budget::babyStep() {
     // Force a tentative, short _subTimeStep to assess the rate of temperature change
     _maxDeltaT = _subTimeStep*tempPrecision/babyTimeStep;
+}
+
+void Budget::checkParameters() const {
+    for (auto layer : layers)
+        layer->checkParameters();
 }
 
 QString Budget::dump(const State &s, Dump header) {

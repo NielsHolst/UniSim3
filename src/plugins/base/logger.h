@@ -12,14 +12,15 @@ namespace base {
 
 class Logger {
 public:
-    Logger(){}
+    Logger();
+    ~Logger();
     void open(QString fileNamePath);
     void write(QString s);
     void close();
 private:
     QFile file;
     QTextStream str;
-
+    bool isOpen;
 };
 
 

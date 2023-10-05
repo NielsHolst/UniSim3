@@ -15,6 +15,7 @@ class BudgetLayerScreen : public BudgetLayer {
 public:
     BudgetLayerScreen(QString name, base::Box *parent);
     double updateCondensation();
+    void updateLwEmission();
 private:
     double groundArea, indoorsRh;
     // Friends

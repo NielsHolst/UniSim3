@@ -46,6 +46,7 @@ void Layer::useLayerAsInput() {
     Input(lwReflectivityBottom).unit("[0;1]").help("Long-wave reflectivity at the bottom");
     Input(lwTransmissivityBottom).equals(1.).unit("[0;1]").help("Long-wave transmissivity at the bottom");
 
+    // When used as input these ports are per layer area
     Input(Utop).unit("W/K/m2 layer").help("Heat transfer coefficient at the top");
     Input(Ubottom).unit("W/K/m2 layer").help("Heat transfer coefficient at the bottom");
     Input(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 layer");
@@ -69,13 +70,25 @@ void Layer::useLayerAsOutput() {
     Output(lwReflectivityBottom).unit("[0;1]").help("Long-wave reflectivity at the bottom");
     Output(lwTransmissivityBottom).equals(1.).unit("[0;1]").help("Long-wave transmissivity at the bottom");
 
-    Output(Utop).unit("W/K/m2 layer").help("Heat transfer coefficient at the top");
-    Output(Ubottom).unit("W/K/m2 layer").help("Heat transfer coefficient at the bottom");
-    Output(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 layer");
+    // When used as output these ports are per ground area
+    Output(Utop).unit("W/K/m2 ground").help("Heat transfer coefficient at the top");
+    Output(Ubottom).unit("W/K/m2 ground").help("Heat transfer coefficient at the bottom");
+    Output(heatCapacity).unit("J/K/m2 ground").help("Area-specific heat capacity");
     makeTransparent();
 }
 
-void Layer::checkParameters() {
+void Layer::makeTransparent() {
+    swReflectivityTop   = swReflectivityBottom   = 0.;
+    swTransmissivityTop = swTransmissivityBottom = 1.;
+    lwReflectivityTop   = lwReflectivityBottom   = 0.;
+    lwTransmissivityTop = lwTransmissivityBottom = 1.;
+    swAbsorptivityTop   = swAbsorptivityBottom   = 0.;
+    lwAbsorptivityTop   = lwAbsorptivityBottom   = 0.;
+    Utop = Ubottom =
+    heatCapacity = 0.;
+}
+
+void Layer::checkParameters() const {
     CHECK_PARAM(swAbsorptivityTop);
     CHECK_PARAM(swReflectivityTop);
     CHECK_PARAM(swTransmissivityTop);
@@ -101,12 +114,12 @@ void Layer::checkParameters() {
         ThrowException("U-value can be zero only if heat capacity is zero too").value(heatCapacity).context(this);
 }
 
-void Layer::checkParameter(QString name, double value) {
+void Layer::checkParameter(QString name, double value) const {
     if (ltZero(value) || gt(value, 1.))
         ThrowException("Radiative parameter out of bounds").value(value).hint(name).context(this);
 }
 
-void Layer::checkParameterSum(QString name, double value) {
+void Layer::checkParameterSum(QString name, double value) const {
     if (ne(value, 1.))
         ThrowException("Radiative parameters out of bounds").value(value).hint(name).context(this);
 }

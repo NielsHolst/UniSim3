@@ -9,6 +9,7 @@ class ActuatorVentilation;
 class AverageCover;
 class AverageScreen;
 class BudgetLayer;
+class BudgetLayerCover;
 class BudgetVolume;
 class Floor;
 class GrowthLights;
@@ -34,13 +35,13 @@ private:
 
     int step;
     QDateTime dateTime;
-//    base::Logger logger;
+    base::Logger logger;
 
     // Output
     int radIterations, subSteps, controlCode, actionCode;
     double maxDeltaT, ventilationHeatLoss,
-        condensation, transpiration, ventedWater, latentHeatBalance,
-        indoorsSensibleHeatFlux, indoorsLatentHeatFlux;
+        condensation, transpiration, ventedWater,
+        indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux;
 
     // Volumes
     QVector<BudgetVolume*> volumes;
@@ -49,8 +50,9 @@ private:
 
     // Layers
     QVector<BudgetLayer*> layers;
+    BudgetLayerCover
+        *budgetLayerCover;
     BudgetLayer
-        *budgetLayerCover,
         *budgetLayerPlant,
         *budgetLayerHeatPipes;
     int numLayers;
@@ -97,12 +99,12 @@ public:
     void initialize();
     void reset();
     void update();
+    void cleanup();
 private:
     void updateSubStep(double subTimeStep, UpdateOption option);
     void updateLwEmission();
     void updateNetRadiation();
     void updateWaterBalance(double subTimeStep);
-    void applyLatentHeat();
     void updateLayersAndVolumes();
     void updateCo2();
     void resetState();
@@ -121,7 +123,9 @@ private:
     void increaseHeating();
     void decreaseHeating();
     void extraVentilation();
+    void stopHeating();
     void babyStep();
+    void checkParameters() const;
     enum class Dump{WithHeader, WithoutHeader};
     QString dump(const State &s, Dump header = Dump::WithoutHeader);
     QString dump(const Parameters &p, Dump header = Dump::WithoutHeader);

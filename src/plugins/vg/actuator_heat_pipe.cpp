@@ -78,5 +78,9 @@ void ActuatorHeatPipe::increase(double delta) {
     desiredTemperature = inflowTemperature + delta;
 }
 
+void ActuatorHeatPipe::stop() {
+    desiredTemperature = minTemperature;
+}
+
 }
 

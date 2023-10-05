@@ -21,8 +21,9 @@ public:
 private:
     // Inputs
     double transmissivityReduction, swShading, lwShading;
+    QVector<double> screenStates, faceAreas;
     // Data
-    QVector<const double*> _Uinsulations[6];
+    QVector<const double*> _Uinsulations[6], _s;
     // Methods
     LayerParameters transform(const LayerParametersPtrs &p, const QVector<double> &adjustments);
     void correctUbottom();

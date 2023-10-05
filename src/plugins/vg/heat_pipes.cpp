@@ -56,5 +56,11 @@ void HeatPipes::increase(double delta) {
     updateFamily();
 }
 
+void HeatPipes::stop() {
+    for (ActuatorHeatPipe *heatPipe : _heatPipes)
+        heatPipe->stop();
+    updateFamily();
+}
+
 } //namespace
 
