@@ -17,7 +17,8 @@ using phys_math::infinity;
 
 #define CHECK_PARAM(X) checkParameter(#X, X)
 #define CHECK_PARAM_SUM(X) checkParameterSum(#X, X)
-
+#define CHECK_ABS(X) checkAbsorptivity(#X, X)
+#define CHECK_REFL(X) checkReflectivity(#X, X)
 namespace vg {
 
 PUBLISH(Layer)
@@ -27,6 +28,7 @@ Layer::Layer(QString name, Box *parent)
       LayerParameters()
 {
     help("holds radiative and heat parameters of a layer");
+    Input(checkBoundaries).equals(false).unit("bool").help("Check parameter boundaries?");
 }
 
 void Layer::useLayerAsInput() {
@@ -112,6 +114,21 @@ void Layer::checkParameters() const {
 
     if ((Utop == 0. || Ubottom == 0) && heatCapacity > 0)
         ThrowException("U-value can be zero only if heat capacity is zero too").value(heatCapacity).context(this);
+
+    if (checkBoundaries)
+        checkParameterBoundaries();
+}
+
+void Layer::checkParameterBoundaries() const {
+    CHECK_ABS(swAbsorptivityTop);
+    CHECK_ABS(lwAbsorptivityTop);
+    CHECK_ABS(swAbsorptivityBottom);
+    CHECK_ABS(lwAbsorptivityBottom);
+
+    CHECK_ABS(swReflectivityTop);
+    CHECK_ABS(lwReflectivityTop);
+    CHECK_ABS(swReflectivityBottom);
+    CHECK_ABS(lwReflectivityBottom);
 }
 
 void Layer::checkParameter(QString name, double value) const {
@@ -122,6 +139,16 @@ void Layer::checkParameter(QString name, double value) const {
 void Layer::checkParameterSum(QString name, double value) const {
     if (ne(value, 1.))
         ThrowException("Radiative parameters out of bounds").value(value).hint(name).context(this);
+}
+
+void Layer::checkAbsorptivity(QString name, double value) const {
+    if (lt(value, 0.05))
+        ThrowException("Absorptivity must be >= 0.05").value(value).hint(name).context(this);
+}
+
+void Layer::checkReflectivity(QString name, double value) const {
+    if (lt(value, 0.03) || gt(value, 0.95))
+        ThrowException("Reflectivity must be between 0.03 and 0.95").value(value).hint(name).context(this);
 }
 
 } //namespace

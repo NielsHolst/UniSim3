@@ -20,18 +20,22 @@ BudgetLayerScreen::BudgetLayerScreen(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
     setClassName("vg", "BudgetLayer");
-    Input(groundArea).imports("gh/geometry[groundArea]");
+    Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
     Input(indoorsRh).imports("indoors[rh]");
 }
 
 double BudgetLayerScreen::updateCondensation() {
-    Q_ASSERT(screenEffectiveArea);
-    // Condensation on both sides of screen
-    // Top and bottom volumes are both indoors
-    const double
-        indoorsAh = ahFromRh(*temperatureVolumeTop, indoorsRh),
-        screenSah  = sah(temperature);
-    condensation = 2.*(*screenEffectiveArea)/groundArea*std::max(indoorsAh - screenSah, 0.);
+    if (state) {
+        // Condensation on both sides of screen
+        // Top and bottom volumes are both indoors
+        const double
+            indoorsAh = ahFromRh(*temperatureVolumeTop, indoorsRh),
+            screenSah  = sah(temperature);
+        condensation = 2.*(*state)*coverPerGroundArea*std::max(indoorsAh - screenSah, 0.);
+    }
+    else {
+        condensation = 0.;
+    }
     return condensation;
 }
 
@@ -39,7 +43,7 @@ double BudgetLayerScreen::updateCondensation() {
 void BudgetLayerScreen::updateLwEmission() {
     BudgetLayer::updateLwEmission();
     // Convert W/m2 screen to W/m2 ground
-    const double c = screenEffectiveArea ? *screenEffectiveArea/groundArea : 0;
+    const double c = state ? (*state)*coverPerGroundArea : 0;
     lwEmissionTop    *= c;
     lwEmissionBottom *= c;
 }

@@ -63,8 +63,8 @@ void BudgetLayer::attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bo
     Utop             = layer->port("Utop")->valuePtr<double>();
     Ubottom          = layer->port("Ubottom")->valuePtr<double>();
     heatCapacity     = layer->port("heatCapacity")->valuePtr<double>();
-    screenEffectiveArea = layer->peakPort("effectiveArea") ?
-                          layer->port("effectiveArea")->valuePtr<double>() : nullptr;
+    state            = layer->peakPort("state") ?
+                       layer->port("state")->valuePtr<double>() : nullptr;
     // Attach volumes
     volumeTop = top;
     volumeBottom = bottom;

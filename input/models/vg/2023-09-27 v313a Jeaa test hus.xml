@@ -496,8 +496,8 @@
       <Products>
         <Product name="LS Harmony 3647 FR                                                    ">
           <Transmission>0.5</Transmission>
-          <ReflectionOutwards>0.02</ReflectionOutwards>
-          <ReflectionInwards>0.5</ReflectionInwards>
+          <ReflectionOutwards>0.03</ReflectionOutwards>
+          <ReflectionInwards>0.45</ReflectionInwards>
           <InsulationU>1.2</InsulationU>
           <U>0.6</U>
           <HeatCapacity>80</HeatCapacity>

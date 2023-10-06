@@ -958,7 +958,7 @@ BoxBuilder& ReaderXml::outputVariables() {
     _builder->box().name("variables");
     for (auto variable = variables->children().begin(); variable != variables->children().end(); ++variable) {
         QString path = variable.value()->getAttributeString("path"),
-                name = variable.value()->getAttributeString("name");
+                name = variable.value()->getAttributeString("name").trimmed();
         _builder->aux(name).imports(path);
     }
     _builder->endbox();

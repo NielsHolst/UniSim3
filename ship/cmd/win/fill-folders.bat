@@ -1,4 +1,4 @@
-set UNISIM_SHIP=%DOCUMENTS%\QDev\UniSim3\ship
+set UNISIM_SHIP=C:\MyDocuments\QDev\UniSim3\ship
 set UNISIM_BIN=%UNISIM_SHIP%\bin
 if not exist %UNISIM_SHIP% (
   echo %UNISIM_SHIP% does not exist

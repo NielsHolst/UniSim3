@@ -1,7 +1,7 @@
 #ifndef BUDGET_H
 #define BUDGET_H
 #include <base/box.h>
-#include <base/logger.h>
+//#include <base/logger.h>
 
 namespace vg {
 
@@ -35,7 +35,7 @@ private:
 
     int step;
     QDateTime dateTime;
-    base::Logger logger;
+//    base::Logger logger;
 
     // Output
     int radIterations, subSteps, controlCode, actionCode;

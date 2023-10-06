@@ -666,7 +666,7 @@
   <Output>
     <Period>10</Period>
     <UseLocalDecimalChar>0</UseLocalDecimalChar>
-    <SkipFormats>1</SkipFormats>
+    <SkipFormats>0</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
@@ -679,7 +679,7 @@
       <Variable name="actPipeTempIn2" path="actuators/heatPipes/circuit2[inflowTemperature]"/>
       <Variable name="actPipeTempOut1" path="actuators/heatPipes/circuit1[outflowTemperature]"/>
       <Variable name="actPipeTempOut2" path="actuators/heatPipes/circuit2[outflowTemperature]"/>
-      <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
+      <Variable name="actScreen1" path="actuators/screens/layer1[state]"/>
       <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
       <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
       <Variable name="actVentilation" path="actuators/ventilation[value]"/>

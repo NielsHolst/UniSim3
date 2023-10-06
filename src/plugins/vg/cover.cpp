@@ -19,6 +19,7 @@ Cover::Cover(QString name, Box *parent)
 {
     help("holds cover radiation and heat parameters");
     useLayerAsInput();
+    port("checkBoundaries")->equals(true);
 }
 
 } //namespace

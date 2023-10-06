@@ -2,7 +2,8 @@
 Simulation sim {
   // .steps = 10
   Box global {
-    &beginDate = 2023/01/01
+    &beginDate = 01/01/2023
+    &endDate   = 31/12/2023
   }
   Box scenarios {
     &Uinsulation = 0.5
@@ -11,8 +12,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    // .end = 2023/12/31
-    .end = 2023/01/05
+    .end = global[endDate]
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -68,28 +68,28 @@ Simulation sim {
               .lwReflectivityBottom = 0.15
               .lwTransmissivityBottom = 0.02
               .Utop = shelter/Utop[value]
-              .Ubottom = 1.2 // 6.5 NH
+              .Ubottom = 1.2 // 6.5  NH
               .heatCapacity = 8400.0
             }
           }
           Box screens {
             Screen LS_Harmony_3647_FR {
-              .swAbsorptivityTop = 0.48
-              .swReflectivityTop = 0.02
+              .swAbsorptivityTop = 0.47
+              .swReflectivityTop = 0.03
               .swTransmissivityTop = 0.5
-              .swAbsorptivityBottom = 0.0
-              .swReflectivityBottom = 0.5
+              .swAbsorptivityBottom = 0.05
+              .swReflectivityBottom = 0.45
               .swTransmissivityBottom = 0.5
               .lwAbsorptivityTop = 0.48
               .lwReflectivityTop = 0.02
               .lwTransmissivityTop = 0.5
-              .lwAbsorptivityBottom = 0.0
-              .lwReflectivityBottom = 0.5
+              .lwAbsorptivityBottom = 0.05
+              .lwReflectivityBottom = 0.45
               .lwTransmissivityBottom = 0.5
               .Utop = 0.6
               .Ubottom = 0.6
               .heatCapacity = 80.0
-              .Uinsulation = 1.2 // 1.2 NH
+              .Uinsulation = 1.2 
               .UinsulationEffectivity = 1.0
             }
             Screen none {
@@ -784,13 +784,13 @@ Simulation sim {
       &indoorsRh = budget/indoors[rh]
       &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
       &indoorsCo2 = budget/indoors[co2]
-      &heatFluxFloor = budget/cover[convectionBottom]
-      &heatFluxCover = budget/cover[convectionTop]
+      // &heatFluxFloor = budget/cover[convectionBottom]
+      // &heatFluxCover = budget/cover[convectionTop]
       &grossAssimilationRate = plant[Pg]
       &floorT = budget/floor[temperature]
       &coverT = budget/cover[temperature]
       &condensation = budget[condensation]
-      &coverCondHeat = budget[coverLatentHeatFlux]
+      // &coverCondHeat = budget[coverLatentHeatFlux]
       &airFluxTotal = actuators/ventilation[value]
       &actVentilation = actuators/ventilation[value]
       &actScreen3 = actuators/screens/layer3[state]
@@ -807,20 +807,43 @@ Simulation sim {
       &actLight1 = actuators/growthLights/bank1[powerUsage]
       &actHeatingPower = actuators/heatPipes[heatFlux]
       &actCo2 = actuators/co2[value]
+      &coverRadNetTop = budget/cover[swAbsorbedTop] + budget/cover[lwAbsorbedTop] - budget/cover[lwEmissionTop]
+      &coverTotalNetTop = budget/cover[swAbsorbedTop] + budget/cover[lwAbsorbedTop] - budget/cover[lwEmissionTop] + budget/cover[convectionTop] 
     }
     PageR  {
       .xAxis = calendar[dateTime]
       .maximizeWindow = TRUE
       PlotR  {
+        // .ports = budget/*[temperature]  // budget/screen1[output::*] | actuators/screens/layer1[state] // output/variables[*]
         .ports = output/variables[*]
+          // output/variables[skyT] |  
+          // output/variables[outdoorsT] |  
+          // output/variables[coverT] |  
+          // output/variables[coverRadNetTop] |  
+          // output/variables[coverTotalNetTop] |
+          // output/variables[airFluxTotal] |
+          // output/variables[actHeatingPower] |
+
+          // budget/cover[swAbsorbedTop] | 
+          // // budget/cover[swAbsorbedBottom] | 
+          // budget/cover[lwAbsorbedTop] | 
+          // // budget/cover[lwAbsorbedBottom] | 
+          // budget/cover[lwEmissionTop] | 
+          // // budget/cover[lwEmissionBottom] | 
+          // // budget/cover[netRadiation] | 
+          // budget/cover[convectionTop]  
+          // // budget/cover[convectionBottom] | 
+          // // budget/cover[netConvection] | 
+          // // budget/screen1[temperature] |  
+          // // budget/screen2[temperature] |  
+          // // actuators/screens/layer1[state] |
+          // // actuators/screens/layer2[state]
         .nrow = 7
       }
     }
     OutputSelector selector {
       .beginDateTime = global[beginDate]
       .period = 20
-      // .useLocalDecimalChar = FALSE
-      // .skipFormats = FALSE
     }
   }
 }

@@ -16,7 +16,9 @@ class Layer : public base::Box, public LayerParameters
 {
 public:
     Layer(QString name, Box *parent);
-
+private:
+    // Inputs
+    bool checkBoundaries;
 protected:
     // Methods
     void useLayerAsInput();
@@ -24,8 +26,11 @@ protected:
     void makeTransparent();
     void checkParameters() const;
 private:
+    void checkParameterBoundaries() const;
     void checkParameter(QString name, double value) const;
     void checkParameterSum(QString name, double value) const;
+    void checkAbsorptivity(QString name, double value) const;
+    void checkReflectivity(QString name, double value) const;
     // Friends
     friend class Budget;
     friend class BudgetLayer;

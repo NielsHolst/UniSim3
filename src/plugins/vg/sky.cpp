@@ -40,6 +40,8 @@ void Sky::update() {
     temperature = (Tsky > -273.) ? Tsky :
                   pow(emissivity, 0.25)*(airTemperature + T0) - T0;
 
+//    temperature = airTemperature;
+
     swAbsorptivityTop =
     lwAbsorptivityTop =
     swAbsorptivityBottom =

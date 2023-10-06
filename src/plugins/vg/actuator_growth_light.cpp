@@ -76,8 +76,9 @@ void ActuatorGrowthLight::update() {
         swEmissionBottom  = propSw*power;
         lwEmissionTop     =
         lwEmissionBottom  = (propLw*power + propBallastLw*ballast)/2.;
+        // Convection energy is a loss from the growth light
         convectionTop     =
-        convectionBottom  = (propConv*power + propBallastConv*ballast)/2.;
+        convectionBottom  = -(propConv*power + propBallastConv*ballast)/2.;
         powerUsage        = power + ballast;
     }
     else

@@ -58,7 +58,7 @@ protected:
         *Utop, *Ubottom,
         *heatCapacity,
         *temperatureVolumeTop, *temperatureVolumeBottom,
-        *screenEffectiveArea;
+        *state;
 private:
     // Data
     const Layer *attachedLayer;

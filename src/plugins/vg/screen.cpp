@@ -27,6 +27,7 @@ Screen::Screen(QString name, Box *parent)
     Input(energySaving).unit("%").help("Documented energy saving used for calibration");
     Input(Uinsulation).equals(infinity()).unit("W/K/m2 layer").help("Insulation effect");
     Input(UinsulationEffectivity).equals(1.).unit("[0;1]").help("Effectivity of Uinsulation");
+    port("checkBoundaries")->equals(true);
 }
 
 } //namespace

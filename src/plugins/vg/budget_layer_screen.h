@@ -17,7 +17,7 @@ public:
     double updateCondensation();
     void updateLwEmission();
 private:
-    double groundArea, indoorsRh;
+    double coverPerGroundArea, indoorsRh;
     // Friends
     friend class Budget;
 };

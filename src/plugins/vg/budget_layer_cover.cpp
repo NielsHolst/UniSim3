@@ -22,6 +22,8 @@ BudgetLayerCover::BudgetLayerCover(QString name, base::Box *parent)
     setClassName("vg", "BudgetLayer");
     Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
     Input(indoorsRh).imports("indoors[rh]");
+    Output(condInsideDeltaT).unit("oC").help("Temperature change caused by inside condensation");
+    Output(condOutsideDeltaT).unit("oC").help("Temperature change caused by outside condensation");
 }
 
 double BudgetLayerCover::updateCondensation() {

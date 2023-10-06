@@ -194,8 +194,9 @@ void Budget::addLayers() {
     int i = 0;
     for (const QString &screenName : screenNames) {
         BudgetLayer *budgetLayerScreen = findOne<BudgetLayer*>("./"+screenName);
-        budgetLayerScreen->attach(screens[i++], indoorsVol, indoorsVol);
+        budgetLayerScreen->attach(screens[i], indoorsVol, indoorsVol);
         layers << budgetLayerScreen;
+        ++i;
     }
 
     // Attach growth lights
@@ -310,7 +311,7 @@ void Budget::update() {
 }
 
 void Budget::cleanup() {
-    logger.close();
+//    logger.close();
 }
 
 void Budget::updateLayersAndVolumes() {
@@ -320,9 +321,9 @@ void Budget::updateLayersAndVolumes() {
     subSteps = 0;
     double timePassed = 0.;
     babyStep();
-    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
-    logger.write(dump(lwParam, Dump::WithHeader));
-    logger.write(dump(lwState, Dump::WithHeader));
+//    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
+//    logger.write(dump(lwParam, Dump::WithHeader));
+//    logger.write(dump(lwState, Dump::WithHeader));
     transpiration =
     condensation  =
     ventedWater   = 0.;
@@ -332,14 +333,10 @@ void Budget::updateLayersAndVolumes() {
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
                                  budgetLayerPlant->parAbsorbedBottom);
-        logger.write(convert<QString>(subSteps) + ": " + convert<QString>(_subTimeStep));
-        logger.write(dump(lwState, Dump::WithHeader));
+//        logger.write(convert<QString>(subSteps) + ": " + convert<QString>(_subTimeStep));
+//        logger.write(dump(lwState, Dump::WithHeader));
         updateWaterBalance(_subTimeStep);
         applyDeltaT();
-        if (budgetLayerCover->temperature < -100) {
-            logger.write(convert<QString>(condensation));
-        }
-
         timePassed += _subTimeStep;
         ++subSteps;
     }
@@ -365,9 +362,7 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     distributeRadiation(lwState,  lwParam);
 
     updateNetRadiation();
-    // Update convection/conduction budget
     updateConvection();
-    // Update prospective change in temperature
     updateDeltaT(subTimeStep);
     // Update max temperature within simulation time step
     if (_maxDeltaT > maxDeltaT)
@@ -452,16 +447,9 @@ void Budget::updateWaterBalance(double timeStep) {
     // Outputs
     transpiration     +=  w.transpiration*averageHeight;
     condensation      += -insideCondensation;
-
-    if (std::fpclassify(condensation) == FP_NAN) {
-        logger.close();
-        ThrowException("Condensation is not a number").context(this);
-    }
-
     ventedWater       += -w.ventilation*averageHeight;
     // Indoors state update
     indoorsVol->rh     = rhFromAh(indoorsVol->temperature, w.indoorsAh);
-
     // Outside latent heat
     const double
        condRate   = 2e-3*coverPerGroundArea,
@@ -592,14 +580,10 @@ void Budget::distributeRadiation(State &s, const Parameters &p) {
     const int maxIterations = 99;
     radIterations = 0;
     double residual;
-//    dialog().information(dump(p, Dump::WithHeader));
-//    dialog().information(dump(s, Dump::WithHeader));
     do {
         ++radIterations;
-//        dialog().information(QString::number(radIterations) + " " + QString::number(residual));
         distributeRadDown(s, p);
         distributeRadUp(s, p);
-//        dialog().information(dump(s));
         // Don't include upwards radiation (F_) from sky layer in residual
         residual = *s.F.at(0);
         for (int i=1; i<numLayers; ++i)

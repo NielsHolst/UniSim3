@@ -19,6 +19,8 @@ Node::Node(QString name, Node *parent)
     _current = this;
     if (parent)
         parent->addChild(this);
+    if (name.contains(" "))
+        ThrowException("Spaces are not allowed in name").value(name).context(this);
 }
 
 Node::~Node() {
