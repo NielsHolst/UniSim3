@@ -29,7 +29,7 @@ private:
     QString timeUnit;
 
     // outputs
-    int steps;
+    int steps, stepWithinDay;
     QDate date;
     QTime time;
     QDateTime dateTime;

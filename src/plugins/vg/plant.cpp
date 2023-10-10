@@ -93,19 +93,38 @@ void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
 }
 
 void Plant::updateRadiative() {
+    // Short-waved
     swReflectivityTop    =
     swReflectivityBottom = reflectivity(k_sw);
     swAbsorptivityTop    =
     swAbsorptivityBottom = absorptivity(k_sw);
-    swTransmissivityTop  =
-    swTransmissivityBottom = 1. - swReflectivityTop - swAbsorptivityTop;
 
+    if (swReflectivityTop + swAbsorptivityTop > 1.) {
+        swReflectivityTop      =
+        swReflectivityBottom   = 1. - swAbsorptivityBottom;
+        swTransmissivityTop    =
+        swTransmissivityBottom = 0.;
+    }
+    else {
+        swTransmissivityTop  =
+        swTransmissivityBottom = 1. - swReflectivityTop - swAbsorptivityTop;
+    }
+    // Long-waved
     lwReflectivityTop    =
     lwReflectivityBottom = reflectivity(k_lw);
     lwAbsorptivityTop    =
     lwAbsorptivityBottom = absorptivity(k_lw);
-    lwTransmissivityTop  =
-    lwTransmissivityBottom = 1. - lwReflectivityTop - lwAbsorptivityTop;
+
+    if (lwReflectivityTop + lwAbsorptivityTop > 1.) {
+        lwReflectivityTop      =
+        lwReflectivityBottom   = 1. - lwAbsorptivityBottom;
+        lwTransmissivityTop    =
+        lwTransmissivityBottom = 0.;
+    }
+    else {
+        lwTransmissivityTop  =
+        lwTransmissivityBottom = 1. - lwReflectivityTop - lwAbsorptivityTop;
+    }
 
     checkParameters();
 }

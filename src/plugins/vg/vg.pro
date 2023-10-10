@@ -40,6 +40,7 @@ HEADERS +=  \
     layer.h \
     layer_parameters.h \
     leakage_ventilation.h \
+    light_sum.h \
     outdoors.h \
     pid_controller.h \
     pipe_forced.h \
@@ -89,6 +90,7 @@ SOURCES += \
     layer.cpp \
     layer_parameters.cpp \
     leakage_ventilation.cpp \
+    light_sum.cpp \
     outdoors.cpp \
     pid_controller.cpp \
     plant.cpp \

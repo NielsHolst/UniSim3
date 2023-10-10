@@ -22,12 +22,14 @@ class Budget : public base::Box {
 private:
     // Input
     double
-        radPrecision, tempPrecision, thresholdPrecision,
+        radPrecision, tempPrecision,
+        tempSetpointPrecision,
         timeStep, averageHeight, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
         transpirationRate, Pn, co2Injection,
         heatPipeFlux,
         ventilationThreshold, ventilationCostThreshold, heatingThreshold,
+        ventilationNeed,
         deltaVentControl, deltaVentControlRelative, deltaHeatingControl,
         babyTimeStep;
     QVector<bool> heatPipesOn;
@@ -38,7 +40,7 @@ private:
 //    base::Logger logger;
 
     // Output
-    int radIterations, subSteps, controlCode, actionCode;
+    int radIterations, subSteps, statusCode, actionCode;
     double maxDeltaT, ventilationHeatLoss,
         condensation, transpiration, ventedWater,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux;
@@ -70,9 +72,12 @@ private:
         void init();
     };
     State swState, lwState, parState;
-    enum class Control{CarryOn, OnSetpointVentilation, OnSetpointHeating, GreenhouseTooHot, GreenhouseTooCold, NeedlessHeating, NeedlessCooling};
-    Control control;
-    bool greenhouseTooHumid, tooCostlyVentilation;
+    enum class Status{WithinSetpoints, OnSetpointVentilation, OnSetpointHeating,
+                                 GreenhouseTooHot, GreenhouseTooCold,
+                                 NeedlessHeating, NeedlessCooling};
+    Status status;
+
+    bool tooCostlyVentilation;
     enum class Action{CarryOn, IncreaseVentilation, DecreaseVentilation, IncreaseHeating, DecreaseHeating};
     Action action;
     double _maxDeltaT, _subTimeStep;
@@ -119,11 +124,13 @@ private:
     void diagnoseControl();
     void exertControl();
     void increaseVentilation();
+    void increaseVentilationIfNeeded();
     void decreaseVentilation();
     void increaseHeating();
     void decreaseHeating();
     void extraVentilation();
     void stopHeating();
+    void stopVentilation();
     void babyStep();
     void checkParameters() const;
     enum class Dump{WithHeader, WithoutHeader};

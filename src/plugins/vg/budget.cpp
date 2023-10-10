@@ -45,7 +45,7 @@ Budget::Budget(QString name, base::Box *parent)
     help("resolves energy and water budgets across layers and volumes");
     Input(radPrecision).equals(0.1).unit("W/m2|mumol/m2/s").help("Precision of numerical solution to radiation budget");
     Input(tempPrecision).equals(0.5).unit("K").help("Max. allowed temperature change in a sub-step among layers");
-    Input(thresholdPrecision).equals(0.1).unit("K").help("Precision of temperature thresholds for climate control");
+    Input(tempSetpointPrecision).equals(0.1).unit("K").help("Precision of temperature setpoints");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("gh/geometry[averageHeight]");
     Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
@@ -59,9 +59,10 @@ Budget::Budget(QString name, base::Box *parent)
     Input(ventilationThreshold).imports("gh/controllers/ventilation/temperatureThreshold[value]");
     Input(ventilationCostThreshold).imports("gh/controllers/ventilation/maxHeatingCost[value]");
     Input(heatingThreshold).imports("gh/controllers/heating[value]");
+    Input(ventilationNeed).imports("gh/controllers/ventilation/humidityControl[value]");
     Input(heatPipesOn).imports("gh/actuators/heatPipes/*[isHeating]");
     Input(ventilationOn).imports("gh/actuators/ventilation[isVentilating]");
-    Input(deltaVentControl).equals(0.3).unit("/h/min").help("Control increment of ventilation flux");
+    Input(deltaVentControl).equals(0.1).unit("/min").help("Control increment of ventilation flux");
     Input(deltaVentControlRelative).equals(0.2).unit("/min").help("Relative control of ventilation flux");
     Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
     Input(babyTimeStep).equals(1.).unit("s").help("Length of first time step after climate control action");
@@ -72,8 +73,8 @@ Budget::Budget(QString name, base::Box *parent)
     Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
     Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step");
-    Output(controlCode).unit("int").help("Code for the control option needed");
-    Output(actionCode).unit("int").help("Code for the control action taken");
+    Output(statusCode).help("Code for status in relation to setpoints");
+    Output(actionCode).help("Code for the control action taken");
     Output(transpiration).unit("kg/m2").help("Plant transpiration");
     Output(condensation).unit("kg/m2").help("Condensation on cover");
     Output(ventedWater).unit("kg/m2").help("Water loss by ventilation");
@@ -286,7 +287,7 @@ void Budget::initialize() {
 
 void Budget::reset() {
     checkParameters();
-    control = Control::CarryOn;
+    status = Status::WithinSetpoints;
     action = Action::CarryOn;
     _subTimeStep = timeStep;
     _maxDeltaT = tempPrecision;
@@ -639,53 +640,59 @@ bool any(QVector<bool> flags) {
 }
 
 void Budget::diagnoseControl() {
+    // Diagnose temperature
     const double &T(indoorsVol->temperature);
-    if (fabs(T - ventilationThreshold) < thresholdPrecision)
-        control = Control::OnSetpointVentilation;
-    else if (fabs(T - heatingThreshold) < thresholdPrecision)
-        control = Control::OnSetpointHeating;
+    if (fabs(T - ventilationThreshold) < tempSetpointPrecision)
+        status = Status::OnSetpointVentilation;
+    else if (fabs(T - heatingThreshold) < tempSetpointPrecision)
+        status = Status::OnSetpointHeating;
     else if (T > ventilationThreshold)
-        control = Control::GreenhouseTooHot;
+        status = Status::GreenhouseTooHot;
     else if (T < heatingThreshold)
-        control = Control::GreenhouseTooCold;
+        status = Status::GreenhouseTooCold;
     else if (any(heatPipesOn))
-        control = Control::NeedlessHeating;
+        status = Status::NeedlessHeating;
     else if (ventilationOn)
-        control = Control::NeedlessCooling;
-    else control = Control::CarryOn;
-    greenhouseTooHumid   = (ventilationCostThreshold > 0.);
+        status = Status::NeedlessCooling;
+    else status = Status::WithinSetpoints;
+
     tooCostlyVentilation = (ventilationOn && heatPipeFlux > ventilationCostThreshold);
-    controlCode = static_cast<int>(control);
+    statusCode = static_cast<int>(status);
 }
 
 void Budget::exertControl() {
     diagnoseControl();
-    switch (control) {
-    case Control::GreenhouseTooHot:
-        if (any(heatPipesOn))
+    switch (status) {
+    case Status::GreenhouseTooHot:
+        if (any(heatPipesOn)) {
             decreaseHeating();
+            increaseVentilationIfNeeded();
+        }
         else
             increaseVentilation();
         break;
-    case Control::GreenhouseTooCold:
+    case Status::GreenhouseTooCold:
         if (tooCostlyVentilation)
-            decreaseVentilation();
+            stopVentilation();
         else
             increaseHeating();
         break;
-    case Control::NeedlessHeating:
+    case Status::NeedlessHeating:
+        increaseVentilationIfNeeded();
         decreaseHeating();
         break;
-    case Control::NeedlessCooling:
-        if (!greenhouseTooHumid)
+    case Status::NeedlessCooling:
+        if (eqZero(ventilationNeed))
             decreaseVentilation();
+        else
+            increaseVentilation();
         break;
-    case Control::OnSetpointVentilation:
-    case Control::OnSetpointHeating:
-    case Control::CarryOn:
+    case Status::OnSetpointVentilation:
+    case Status::OnSetpointHeating:
+    case Status::WithinSetpoints:
         if (tooCostlyVentilation)
-            decreaseVentilation();
-        else if (greenhouseTooHumid)
+            stopVentilation();
+        else if (gtZero(ventilationNeed))
             increaseVentilation();
         else
             action = Action::CarryOn;
@@ -694,9 +701,16 @@ void Budget::exertControl() {
     actionCode = static_cast<int>(action);
 }
 
+void Budget::increaseVentilationIfNeeded() {
+    if (gtZero(ventilationNeed) && !tooCostlyVentilation)
+        increaseVentilation();
+}
+
 void Budget::increaseVentilation() {
     rollBack();
-    actuatorVentilation->increase(deltaVentControl*timeStep/60.);
+    double delta = (status == Status::GreenhouseTooHot) ? deltaVentControl : 2*ventilationNeed*deltaVentControl;
+//    actuatorVentilation->increase(deltaVentControl*timeStep/60.);
+    actuatorVentilation->increase(delta*timeStep/60.);
     babyStep();
     updateLayersAndVolumes();
     action = Action::IncreaseVentilation;
@@ -704,7 +718,9 @@ void Budget::increaseVentilation() {
 
 void Budget::decreaseVentilation() {
     rollBack();
-    actuatorVentilation->decrease(-deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
+//    actuatorVentilation->decrease(-deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
+//    actuatorVentilation->decrease(deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
+    actuatorVentilation->decrease(0., deltaVentControlRelative*timeStep/60.);
     babyStep();
     updateLayersAndVolumes();
     action = Action::DecreaseVentilation;
@@ -746,11 +762,17 @@ void Budget::stopHeating() {
     action = Action::DecreaseHeating;
 }
 
+void Budget::stopVentilation() {
+    rollBack();
+    actuatorVentilation->stop();
+    babyStep();
+    updateLayersAndVolumes();
+    action = Action::DecreaseVentilation;
+}
+
 void Budget::extraVentilation() {
-    if (greenhouseTooHumid) {
-        babyStep();
+    if (gtZero(ventilationNeed))
         actuatorVentilation->increase(deltaVentControl*timeStep/60.);
-    }
 }
 
 void Budget::babyStep() {

@@ -35,6 +35,7 @@ Calendar::Calendar(QString name, Box *parent)
     Input(timeUnit).equals("d").help("Unit of time step (y|d|h|m|s)");
 
     Output(steps).help("Number of steps from begin to end");
+    Output(stepWithinDay).help("Step number within day");
     Output(date).help("Current date");
     Output(time).help("Current time of the day");
     Output(dateTime).help("Current date and time");
@@ -77,6 +78,7 @@ void Calendar::reset() {
         steps = 1;
     }
     port("steps")->setConstness(true);
+    stepWithinDay = 0;
 
     dateTime = begin;
     totalTimeSteps = 0;
@@ -89,6 +91,10 @@ void Calendar::update() {
     QDate curDate = dateTime.date();
     dateTime = dateTime + Time::Period(timeStep, timeUnit);
     atMidnight = (curDate != dateTime.date());
+    if (atMidnight)
+        stepWithinDay = 0;
+    else
+        ++stepWithinDay;
     updateDerived();
 }
 

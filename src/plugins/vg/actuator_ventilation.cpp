@@ -62,12 +62,19 @@ void ActuatorVentilation::update() {
 
 void ActuatorVentilation::increase(double delta) {
     desiredValue = value + delta;
+//    desiredValue = value + delta*(maxValue - minValue);
     updateOutput();
 }
 
 void ActuatorVentilation::decrease(double delta, double relative) {
     double change = std::max(delta, relative*value);
     desiredValue = value - change;
+//    desiredValue = value - delta*(maxValue - minValue);
+    updateOutput();
+}
+
+void ActuatorVentilation::stop() {
+    desiredValue = 0.;
     updateOutput();
 }
 
