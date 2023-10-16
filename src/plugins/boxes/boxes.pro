@@ -37,6 +37,7 @@ HEADERS +=  \
     functional_response.h \
     host.h \
     hump.h \
+    ignored_box.h \
     layout_r.h \
     maker.h \
     maximum.h \
@@ -136,6 +137,7 @@ SOURCES +=  \
     functional_response.cpp \
     host.cpp \
     hump.cpp \
+    ignored_box.cpp \
     layout_r.cpp \
     maker.cpp \
     maximum.cpp \

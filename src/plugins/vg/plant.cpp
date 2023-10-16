@@ -137,7 +137,7 @@ void Plant::updateTemperature() {
 }
 
 void Plant::updateTranspiration() {
-    if (netRadiation_ < 0.)
+    if (/*eqZero(incidentPar) ||*/ netRadiation_ < 0.)
         transpiration =  0.;
     else {
         double

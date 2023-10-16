@@ -24,6 +24,11 @@ DateTimeSignal::DateTimeSignal(QString name, Box *parent)
     Input(circadian).equals(true).help("Tells whether `signal` follows a daily rythm");
 }
 
+void DateTimeSignal::localReset() {
+    computeFlag();
+    update();
+}
+
 bool DateTimeSignal::computeFlag() {
     const QDate &today = currentDateTime.date();
     const QTime &time  = currentDateTime.time();

@@ -22,7 +22,7 @@ double Box::_diagnoseMin = std::numeric_limits<double>::lowest();
 double Box::_diagnoseMax = std::numeric_limits<double>::max();
 
 Box::Box(QString name, Box *parent)
-    : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _timer(this)
+    : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _ignore(false), _timer(this)
 {
     help("is a container of boxes and ports");
     setClassName("base", "Box");
@@ -95,6 +95,14 @@ void Box::additionalOutputs(QString description) {
 
 QString Box::additionalOutputs() const {
     return _additionalOutputs;
+}
+
+void Box::ignore(bool doIgnore) {
+    _ignore = doIgnore;
+}
+
+bool Box::ignore() const {
+    return _ignore;
 }
 
 bool Box::hasRoot() {
@@ -207,8 +215,10 @@ void Box::initializeFamily() {
 
     _timer.reset();
     const auto boxes = children<Box*>();
-    for (auto box : boxes)
-        box->initializeFamily();
+    for (auto box : boxes) {
+        if (!box->ignore())
+            box->initializeFamily();
+    }
     evaluatePorts();
     _timer.start("initialize");
     if (_debugOn)
@@ -220,8 +230,10 @@ void Box::initializeFamily() {
 
 void Box::resetFamily() {
     const auto boxes = children<Box*>();
-    for (auto box : boxes)
-        box->resetFamily();
+    for (auto box : boxes) {
+        if (!box->ignore())
+            box->resetFamily();
+    }
     clearPorts();
     evaluatePorts();
     _timer.start("reset");
@@ -235,8 +247,10 @@ void Box::resetFamily() {
 
 void Box::updateFamily() {
     const auto boxes = children<Box*>();
-    for (auto box : boxes)
-        box->updateFamily();
+    for (auto box : boxes) {
+        if (!box->ignore())
+            box->updateFamily();
+    }
     evaluatePorts();
     _timer.start("update");
     if (_debugOn)
@@ -249,8 +263,10 @@ void Box::updateFamily() {
 
 void Box::cleanupFamily() {
     const auto boxes = children<Box*>();
-    for (auto box : boxes)
-        box->cleanupFamily();
+    for (auto box : boxes) {
+        if (!box->ignore())
+            box->cleanupFamily();
+    }
     evaluatePorts();
     _timer.start("cleanup");
     if (_debugOn)
@@ -263,8 +279,10 @@ void Box::cleanupFamily() {
 
 void Box::debriefFamily() {
     const auto boxes = children<Box*>();
-    for (auto box : boxes)
-        box->debriefFamily();
+    for (auto box : boxes) {
+        if (!box->ignore())
+            box->debriefFamily();
+    }
     evaluatePorts();
     _timer.start("debrief");
     if (_debugOn)

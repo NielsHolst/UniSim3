@@ -44,8 +44,8 @@ Budget::Budget(QString name, base::Box *parent)
 {
     help("resolves energy and water budgets across layers and volumes");
     Input(radPrecision).equals(0.1).unit("W/m2|mumol/m2/s").help("Precision of numerical solution to radiation budget");
-    Input(tempPrecision).equals(0.5).unit("K").help("Max. allowed temperature change in a sub-step among layers");
-    Input(tempSetpointPrecision).equals(0.1).unit("K").help("Precision of temperature setpoints");
+    Input(tempPrecision).equals(2.0).unit("K").help("Max. allowed temperature change in a sub-step among layers");
+    Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("gh/geometry[averageHeight]");
     Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
@@ -56,30 +56,22 @@ Budget::Budget(QString name, base::Box *parent)
     Input(Pn).imports("gh/plant[Pn]");
     Input(co2Injection).imports("gh/actuators/co2[value]");
     Input(heatPipeFlux).imports("gh/actuators/heatPipes[heatFlux]");
-    Input(ventilationThreshold).imports("gh/controllers/ventilation/temperatureThreshold[value]");
-    Input(ventilationCostThreshold).imports("gh/controllers/ventilation/maxHeatingCost[value]");
-    Input(heatingThreshold).imports("gh/controllers/heating[value]");
-    Input(ventilationNeed).imports("gh/controllers/ventilation/humidityControl[value]");
     Input(heatPipesOn).imports("gh/actuators/heatPipes/*[isHeating]");
-    Input(ventilationOn).imports("gh/actuators/ventilation[isVentilating]");
-    Input(deltaVentControl).equals(0.1).unit("/min").help("Control increment of ventilation flux");
-    Input(deltaVentControlRelative).equals(0.2).unit("/min").help("Relative control of ventilation flux");
-    Input(deltaHeatingControl).equals(4.0).unit("K/min").help("Control increment in heating temperature");
+    Input(isVentilating).imports("gh/actuators/ventilation[isVentilating]");
+    Input(isHeating).imports("gh/actuators/heatPipes[isHeating]");
     Input(babyTimeStep).equals(1.).unit("s").help("Length of first time step after climate control action");
-
     Input(step).imports("sim[step]");
     Input(dateTime).imports("calendar[dateTime]");
 
-    Output(subSteps).unit("int").help("Number of sub-steps taken to resolve the whole budget");
-    Output(radIterations).unit("int").help("Number of iterations taken to resolve radiation budget");
+    Output(subDateTime).help("Date time within integration time step");
+    Output(subTimeStep).unit("s").help("Length of integration sub-time step");
+    Output(subSteps).help("Number of sub-steps taken to resolve the whole budget");
+    Output(radIterations).help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step");
-    Output(statusCode).help("Code for status in relation to setpoints");
-    Output(actionCode).help("Code for the control action taken");
     Output(transpiration).unit("kg/m2").help("Plant transpiration");
     Output(condensation).unit("kg/m2").help("Condensation on cover");
     Output(ventedWater).unit("kg/m2").help("Water loss by ventilation");
     Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation");
-
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
     Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
     Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
@@ -127,7 +119,7 @@ void Budget::addLayers() {
     cover        = findOne<AverageCover*>("shelter/layers/cover");
     screens      = findMany<AverageScreen*>("shelter/layers/screens/*");
     growthLights = findMaybeOne<GrowthLights*>("actuators/growthLights");
-    heatPipes    = findMaybeOne<HeatPipes*>("actuators/heatPipes");
+    heatingActuator = findOne<HeatPipes*>("actuators/heatPipes");
     plant        = findMaybeOne<Plant*>("gh/plant");
     floor        = findOne<Floor*>("gh/floor");
 
@@ -166,16 +158,14 @@ void Budget::addLayers() {
                 port("temperature").imports("gh/plant[temperature]").
             endbox();
     }
-    if (heatPipes) {
-        builder.
-            box("BudgetLayer").name("heatPipes").
-                port("lwEmissionTop")   .imports("actuators/heatPipes[lwEmissionTop]").
-                port("lwEmissionBottom").imports("actuators/heatPipes[lwEmissionBottom]").
-                port("convectionTop")   .imports("actuators/heatPipes[convectionTop]").
-                port("convectionBottom").imports("actuators/heatPipes[convectionBottom]").
-                port("temperature")     .imports("actuators/heatPipes[inflowTemperatureAvg]").
-            endbox();
-    }
+    builder.
+        box("BudgetLayer").name("heatPipes").
+            port("lwEmissionTop")   .imports("actuators/heatPipes[lwEmissionTop]").
+            port("lwEmissionBottom").imports("actuators/heatPipes[lwEmissionBottom]").
+            port("convectionTop")   .imports("actuators/heatPipes[convectionTop]").
+            port("convectionBottom").imports("actuators/heatPipes[convectionBottom]").
+            port("temperature")     .imports("actuators/heatPipes[inflowTemperatureAvg]").
+        endbox();
     builder.
         box("BudgetLayerFloor").name("floor").
         endbox();
@@ -215,14 +205,9 @@ void Budget::addLayers() {
     }
 
     // Attach heat pipes
-    if (heatPipes) {
-        budgetLayerHeatPipes = findOne<BudgetLayer*>("./heatPipes");
-        budgetLayerHeatPipes->attach(heatPipes, indoorsVol, indoorsVol);
-        layers << budgetLayerHeatPipes;
-    }
-    else {
-        budgetLayerHeatPipes = nullptr;
-    }
+    budgetLayerHeatPipes = findOne<BudgetLayer*>("./heatPipes");
+    budgetLayerHeatPipes->attach(heatingActuator, indoorsVol, indoorsVol);
+    layers << budgetLayerHeatPipes;
 
     // Attach floor
     BudgetLayer *budgetLayerFloor = findOne<BudgetLayer*>("./floor");
@@ -231,6 +216,13 @@ void Budget::addLayers() {
 
     // Done adding layers
     numLayers = static_cast<int>(layers.size());
+
+    // Find controllers and actuators
+    heatingSp             = findOne<Box*>("setpoints/heating");
+    heatingController     = findOne<Box*>("controllers/heating");
+    ventilationSp         = findOne<Box*>("setpoints/ventilation");
+    ventilationController = findOne<Box*>("controllers/ventilation");
+    ventilationActuator   = findOne<Box*>("actuators/ventilation");
 }
 
 void Budget::addState() {
@@ -283,16 +275,27 @@ void Budget::initialize() {
     ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
 //    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
+    // Hand-held controllers and actuators
+    heatingController->initializeFamily();
+    ventilationController->initializeFamily();
+//    heatingActuator->initializeFamily();
+//    ventilationActuator->initializeFamily();
+
+    outputWriter = findOne<Box*>("outputWriter");
 }
 
 void Budget::reset() {
     checkParameters();
-    status = Status::WithinSetpoints;
-    action = Action::CarryOn;
-    _subTimeStep = timeStep;
+    subTimeStep = timeStep;
+    subDateTime = dateTime;
     _maxDeltaT = tempPrecision;
     // Correct baby step to be max 1% of the time step
     babyTimeStep = std::min(babyTimeStep, timeStep/100.);
+    // Hand-held controllers and actuators
+    heatingController->resetFamily();
+    ventilationController->resetFamily();
+//    heatingActuator->resetFamily();
+//    ventilationActuator->resetFamily();
 }
 
 void Budget::update() {
@@ -302,7 +305,6 @@ void Budget::update() {
             indoorsRh0   = indoorsVol->rh;
     updateLayersAndVolumes();
     updateCo2();
-    exertControl();
 
     const double
             indoorsTemp1 = indoorsVol->temperature,
@@ -314,31 +316,48 @@ void Budget::update() {
 void Budget::cleanup() {
 //    logger.close();
 }
-
-void Budget::updateLayersAndVolumes() {
-    const int maxSubSteps = 1000;
-    saveForRollBack();
-    maxDeltaT = 0.;
-    subSteps = 0;
-    double timePassed = 0.;
-    babyStep();
 //    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
 //    logger.write(dump(lwParam, Dump::WithHeader));
 //    logger.write(dump(lwState, Dump::WithHeader));
+    //        logger.write(convert<QString>(subSteps) + ": " + convert<QString>(_subTimeStep));
+    //        logger.write(dump(lwState, Dump::WithHeader));
+
+void Budget::updateLayersAndVolumes() {
+    const int maxSubSteps = 1000;
+    maxDeltaT = 0.;
+    subSteps = 0;
+    double timePassed = 0.;
+    subDateTime = dateTime;
+    babyStep();
     transpiration =
     condensation  =
     ventedWater   = 0.;
     while (lt(timePassed, timeStep) && subSteps < maxSubSteps) {
-        _subTimeStep = std::min(_subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
-        updateSubStep(_subTimeStep, (timePassed == 0.) ? UpdateOption::IncludeSwPar : UpdateOption::ExcludeSwPar);
+        subTimeStep = std::min(subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
+        updateSubStep(subTimeStep, (timePassed == 0.) ? UpdateOption::IncludeSwPar : UpdateOption::ExcludeSwPar);
+
         plant->updateByRadiation(budgetLayerPlant->netRadiation,
                                  budgetLayerPlant->parAbsorbedTop +
                                  budgetLayerPlant->parAbsorbedBottom);
-//        logger.write(convert<QString>(subSteps) + ": " + convert<QString>(_subTimeStep));
-//        logger.write(dump(lwState, Dump::WithHeader));
-        updateWaterBalance(_subTimeStep);
+        port("transpirationRate")->evaluate();
+        updateWaterBalance(subTimeStep);
         applyDeltaT();
-        timePassed += _subTimeStep;
+
+        heatingSp->updateFamily();
+        heatingController->updateFamily();
+        heatingActuator->updateFamily();
+        budgetLayerHeatPipes->updateFamily();
+
+        ventilationSp->updateFamily();
+        ventilationController->updateFamily();
+        ventilationActuator->updateFamily();
+
+        timePassed += subTimeStep;
+        subDateTime = dateTime.addMSecs(static_cast<int>(1000.*timePassed));
+
+        if (writeHighRes && lt(timePassed, timeStep))
+            outputWriter->cleanupFamily();
+
         ++subSteps;
     }
     if (subSteps == maxSubSteps)
@@ -615,169 +634,9 @@ void Budget::applyDeltaT() {
     indoorsVol->temperature += indoorsDeltaT;
 }
 
-void Budget::saveForRollBack() {
-    for (BudgetLayer *layer : layers)
-         layer->rollBackTemperature = layer->temperature;
-    indoorsVol->rollBackTemperature = indoorsVol->temperature;
-    indoorsVol->rollBackRh          = indoorsVol->rh;
-}
-
-void Budget::rollBack() {
-    for (BudgetLayer *layer : layers)
-        layer->temperature = layer->rollBackTemperature;
-    indoorsVol->temperature = indoorsVol->rollBackTemperature;
-    indoorsVol->rh = indoorsVol->rollBackRh;
-}
-
-namespace {
-
-bool any(QVector<bool> flags) {
-    for (bool flag : flags)
-        if (flag) return true;
-    return false;
-}
-
-}
-
-void Budget::diagnoseControl() {
-    // Diagnose temperature
-    const double &T(indoorsVol->temperature);
-    if (fabs(T - ventilationThreshold) < tempSetpointPrecision)
-        status = Status::OnSetpointVentilation;
-    else if (fabs(T - heatingThreshold) < tempSetpointPrecision)
-        status = Status::OnSetpointHeating;
-    else if (T > ventilationThreshold)
-        status = Status::GreenhouseTooHot;
-    else if (T < heatingThreshold)
-        status = Status::GreenhouseTooCold;
-    else if (any(heatPipesOn))
-        status = Status::NeedlessHeating;
-    else if (ventilationOn)
-        status = Status::NeedlessCooling;
-    else status = Status::WithinSetpoints;
-
-    tooCostlyVentilation = (ventilationOn && heatPipeFlux > ventilationCostThreshold);
-    statusCode = static_cast<int>(status);
-}
-
-void Budget::exertControl() {
-    diagnoseControl();
-    switch (status) {
-    case Status::GreenhouseTooHot:
-        if (any(heatPipesOn)) {
-            decreaseHeating();
-            increaseVentilationIfNeeded();
-        }
-        else
-            increaseVentilation();
-        break;
-    case Status::GreenhouseTooCold:
-        if (tooCostlyVentilation)
-            stopVentilation();
-        else
-            increaseHeating();
-        break;
-    case Status::NeedlessHeating:
-        increaseVentilationIfNeeded();
-        decreaseHeating();
-        break;
-    case Status::NeedlessCooling:
-        if (eqZero(ventilationNeed))
-            decreaseVentilation();
-        else
-            increaseVentilation();
-        break;
-    case Status::OnSetpointVentilation:
-    case Status::OnSetpointHeating:
-    case Status::WithinSetpoints:
-        if (tooCostlyVentilation)
-            stopVentilation();
-        else if (gtZero(ventilationNeed))
-            increaseVentilation();
-        else
-            action = Action::CarryOn;
-        break;
-    }
-    actionCode = static_cast<int>(action);
-}
-
-void Budget::increaseVentilationIfNeeded() {
-    if (gtZero(ventilationNeed) && !tooCostlyVentilation)
-        increaseVentilation();
-}
-
-void Budget::increaseVentilation() {
-    rollBack();
-    double delta = (status == Status::GreenhouseTooHot) ? deltaVentControl : 2*ventilationNeed*deltaVentControl;
-//    actuatorVentilation->increase(deltaVentControl*timeStep/60.);
-    actuatorVentilation->increase(delta*timeStep/60.);
-    babyStep();
-    updateLayersAndVolumes();
-    action = Action::IncreaseVentilation;
-}
-
-void Budget::decreaseVentilation() {
-    rollBack();
-//    actuatorVentilation->decrease(-deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
-//    actuatorVentilation->decrease(deltaVentControl*timeStep/60., deltaVentControlRelative*timeStep/60.);
-    actuatorVentilation->decrease(0., deltaVentControlRelative*timeStep/60.);
-    babyStep();
-    updateLayersAndVolumes();
-    action = Action::DecreaseVentilation;
-}
-
-void Budget::increaseHeating() {
-    if (heatPipes) {
-        rollBack();
-        heatPipes->increase(deltaHeatingControl*timeStep/60.);
-        budgetLayerHeatPipes->evaluatePorts();
-        extraVentilation();
-        babyStep();
-        updateLayersAndVolumes();
-    }
-    action = Action::IncreaseHeating;
-}
-
-void Budget::decreaseHeating() {
-    if (heatPipes) {
-        rollBack();
-        heatPipes->increase(-deltaHeatingControl*timeStep/60.);
-        budgetLayerHeatPipes->evaluatePorts();
-        extraVentilation();
-        babyStep();
-        updateLayersAndVolumes();
-    }
-    action = Action::DecreaseHeating;
-}
-
-void Budget::stopHeating() {
-    if (heatPipes) {
-        rollBack();
-        heatPipes->stop();
-        budgetLayerHeatPipes->evaluatePorts();
-        extraVentilation();
-        babyStep();
-        updateLayersAndVolumes();
-    }
-    action = Action::DecreaseHeating;
-}
-
-void Budget::stopVentilation() {
-    rollBack();
-    actuatorVentilation->stop();
-    babyStep();
-    updateLayersAndVolumes();
-    action = Action::DecreaseVentilation;
-}
-
-void Budget::extraVentilation() {
-    if (gtZero(ventilationNeed))
-        actuatorVentilation->increase(deltaVentControl*timeStep/60.);
-}
-
 void Budget::babyStep() {
     // Force a tentative, short _subTimeStep to assess the rate of temperature change
-    _maxDeltaT = _subTimeStep*tempPrecision/babyTimeStep;
+    _maxDeltaT = subTimeStep*tempPrecision/babyTimeStep;
 }
 
 void Budget::checkParameters() const {

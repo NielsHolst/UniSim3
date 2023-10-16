@@ -14,6 +14,7 @@ class DateTimeSignal : public base::BaseSignal
 {
 public:
     DateTimeSignal(QString name, Box *parent);
+    void localReset();
     bool computeFlag();
     double computeSignal(bool flag);
 private:

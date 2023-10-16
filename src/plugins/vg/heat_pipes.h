@@ -26,12 +26,16 @@ private:
         lwEmissionTopPipes, lwEmissionBottomPipes,
         convectionTopPipes, convectionBottomPipes,
         inflowTemperaturePipes;
+    QVector<bool>
+        isHeatingPipes;
     // Outputs
     double
         lwEmissionTop, lwEmissionBottom,
         convectionTop, convectionBottom,
         inflowTemperatureAvg,
         heatFlux;
+    bool
+        isHeating;
     // Data
     QVector<ActuatorHeatPipe*> _heatPipes;
 };

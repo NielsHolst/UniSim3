@@ -23,27 +23,24 @@ private:
     // Input
     double
         radPrecision, tempPrecision,
-        tempSetpointPrecision,
         timeStep, averageHeight, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
         transpirationRate, Pn, co2Injection,
         heatPipeFlux,
-        ventilationThreshold, ventilationCostThreshold, heatingThreshold,
-        ventilationNeed,
-        deltaVentControl, deltaVentControlRelative, deltaHeatingControl,
         babyTimeStep;
     QVector<bool> heatPipesOn;
-    bool ventilationOn;
+    bool writeHighRes, isHeating, isVentilating;
 
     int step;
     QDateTime dateTime;
 //    base::Logger logger;
 
     // Output
-    int radIterations, subSteps, statusCode, actionCode;
-    double maxDeltaT, ventilationHeatLoss,
+    int radIterations, subSteps;
+    double subTimeStep, maxDeltaT, ventilationHeatLoss,
         condensation, transpiration, ventedWater,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux;
+    QDateTime subDateTime;
 
     // Volumes
     QVector<BudgetVolume*> volumes;
@@ -58,13 +55,22 @@ private:
         *budgetLayerPlant,
         *budgetLayerHeatPipes;
     int numLayers;
+
+    // Boxes
     Sky *sky;
     AverageCover *cover;
     QVector<AverageScreen*> screens;
     GrowthLights *growthLights;
     Plant *plant;
-    HeatPipes *heatPipes;
+    HeatPipes *heatingActuator;
     Floor *floor;
+
+    // Controllers etc.
+    Box
+        *heatingSp, *ventilationSp,
+        *heatingController, *ventilationController,
+        *ventilationActuator,
+        *outputWriter;
 
     // State
     struct State {
@@ -72,15 +78,7 @@ private:
         void init();
     };
     State swState, lwState, parState;
-    enum class Status{WithinSetpoints, OnSetpointVentilation, OnSetpointHeating,
-                                 GreenhouseTooHot, GreenhouseTooCold,
-                                 NeedlessHeating, NeedlessCooling};
-    Status status;
-
-    bool tooCostlyVentilation;
-    enum class Action{CarryOn, IncreaseVentilation, DecreaseVentilation, IncreaseHeating, DecreaseHeating};
-    Action action;
-    double _maxDeltaT, _subTimeStep;
+    double _maxDeltaT;
 
     // Parameters
     struct Parameters {
@@ -119,18 +117,6 @@ private:
     void updateConvection();
     void updateDeltaT(double timeStep);
     void applyDeltaT();
-    void saveForRollBack();
-    void rollBack();
-    void diagnoseControl();
-    void exertControl();
-    void increaseVentilation();
-    void increaseVentilationIfNeeded();
-    void decreaseVentilation();
-    void increaseHeating();
-    void decreaseHeating();
-    void extraVentilation();
-    void stopHeating();
-    void stopVentilation();
     void babyStep();
     void checkParameters() const;
     enum class Dump{WithHeader, WithoutHeader};

@@ -9,6 +9,7 @@ BOXES_PLUGIN_NAME = vg
 include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 
 HEADERS +=  \
+    absolute_humidity.h \
     actuator_chalk.h \
     actuator_growth_light.h \
     actuators.h \
@@ -58,6 +59,7 @@ HEADERS +=  \
     vg_documentation.h
 
 SOURCES += \
+    absolute_humidity.cpp \
     actuator_chalk.cpp \
     actuator_growth_light.cpp \
     actuators.cpp \

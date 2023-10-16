@@ -252,11 +252,16 @@ void ReaderXml::readVirtualGreenhouse() {
                 box().name("heating");
                     setpoint("HeatingTemp", "base");
                     setpoint("MaxHeatAddHighRH", "humidityOffset");
-                    setpoint("minPipeTemperature", "minTemperature").
+                    setpoint("minPipeTemperature", "minTemperature");
+                    setpoint("maxPipeTemperature", "maxTemperature").
                 endbox().
                 box().name("ventilation");
                     setpoint("VentTemp", "offset");
-                    setpoint("VentMaxCost", "maxHeatingCost").
+                    setpoint("crackVentilation", "crack").
+                    box().name("temperature");
+                        setpoint("crackVentilationTemperatureMin", "threshold");
+                        setpoint("crackVentilationTemperatureMinBand", "band").
+                    endbox().
                 endbox().
                 box().name("screens");
                     setpointsScreens().
@@ -297,8 +302,7 @@ void ReaderXml::readVirtualGreenhouse() {
                 endbox().
             endbox().
             box().name("controllers").
-                box("Sum").name("heating").
-                    port("values").computes("setpoints/heating/base[value] | ./humidityOffset[value]").
+                box("IgnoredBox").name("heating").
                     box("ProportionalSignal").name("humidityOffset").
                         port("input").imports("indoors[rh]").
                         port("threshold").imports("setpoints/rhMax/threshold[value]").
@@ -306,18 +310,59 @@ void ReaderXml::readVirtualGreenhouse() {
                         port("maxSignal").imports("setpoints/heating/humidityOffset[value]").
                         port("increasingSignal").equals(true).
                     endbox().
-                endbox().
-                box().name("ventilation").
-                    box("Sum").name("temperatureThreshold").
-                        port("values").computes("controllers/heating[value] | setpoints/ventilation/offset[value]").
+                    box("Sum").name("desiredIndoorsTemperature").
+                        port("values").computes("setpoints/heating/base[value] | ../humidityOffset[value]").
                     endbox().
-                    box("ProportionalSignal").name("maxHeatingCost").
+                    box("Accumulator").name("inflowTemperature").
+                        port("change").imports("./controller[controlVariable]").
+                        port("minValue").imports("setpoints/heating/minTemperature[value]").
+                        port("maxValue").imports("setpoints/heating/maxTemperature[value]").
+                        box("PidController").name("controller").
+                            port("sensedValue").imports("indoors[temperature]").
+                            port("desiredValue").imports("../../desiredIndoorsTemperature[value]").
+                            port("timeStep").imports("budget[subTimeStep]").
+                            port("Kprop").equals(_doc->find("Greenhouse/HeatingPIDProp")->toDouble()).
+                        endbox().
+                    endbox().
+                endbox().
+                box("IgnoredBox").name("ventilation").
+                    box("Sum").name("desiredIndoorsTemperature").
+                        port("values").computes("controllers/heating/desiredIndoorsTemperature[value] | setpoints/ventilation/offset[value]").
+                    endbox().
+                    box("ProportionalSignal").name("crack").
                         port("input").imports("indoors[rh]").
                         port("threshold").imports("setpoints/rhMax/threshold[value]").
                         port("thresholdBand").imports("setpoints/rhMax/band[value]").
-                        port("maxSignal").imports("setpoints/ventilation/maxHeatingCost[value]").
+                        port("maxSignal").imports("./max[value]").
                         port("increasingSignal").equals(true).
+                        box("ProportionalSignal").name("max").
+                            port("input").imports("outdoors[temperature]").
+                            port("threshold").imports("setpoints/ventilation/temperature/threshold[value]").
+                            port("thresholdBand").imports("setpoints/ventilation/temperature/band[value]").
+                            port("maxSignal").imports("setpoints/ventilation/crack[value]").
+                            port("increasingSignal").equals(true).
+                        endbox().
                     endbox().
+                    box("Accumulator").name("opening").
+                        port("change").imports("./controller[controlVariable]").
+                        port("minValue").imports("../crack[value]").
+                        port("maxValue").equals(1.0).
+                        box("PidController").name("controller").
+                            port("sensedValue").imports("indoors[temperature]").
+                            port("desiredValue").imports("../../desiredIndoorsTemperature[value]").
+                            port("timeStep").imports("budget[subTimeStep]").
+                            port("Kprop").equals(_doc->find("Greenhouse/VentilationPIDProp")->toDouble()).
+                        endbox().
+                    endbox().
+                endbox().
+                box().name("co2").
+                    box("ProportionalSignal").name("max").
+                        port("input").imports("controllers/ventilation/opening[value]").
+                        port("threshold").imports("setpoints/co2/ventilation/threshold[value]").
+                        port("thresholdBand").imports("setpoints/co2/ventilation/band[value]").
+                        port("maxSignal").imports("setpoints/co2/capacity[value]").
+                        port("increasingSignal").equals(false).
+                        endbox().
                 endbox();
                 controllersScreens();
                 controllersGrowthLights().
@@ -330,7 +375,7 @@ void ReaderXml::readVirtualGreenhouse() {
                 box("Accumulator").name("co2").
                     port("change").imports("./controller[controlVariable]").
                     port("minValue").equals(0).
-                    port("maxValue").imports("setpoints/co2/capacity[value]").
+                    port("maxValue").imports("controllers/co2/max[value]").
                     box("PidController").name("controller").
                         port("sensedValue").imports("indoors[co2]").
                         port("desiredValue").imports("setpoints/co2/concentration[value]").
@@ -367,12 +412,12 @@ void ReaderXml::readVirtualGreenhouse() {
             endbox().
             box("Budget").name("budget").
             endbox().
-            box("Summary").name("summary").
-                box("Distribution").name("Tin").
-                    port("input").imports("gh/budget/indoors[temperature]").
-                    port("sections").computes("c(10,50,90)").
-                endbox().
-            endbox().
+//            box("Summary").name("summary").
+//                box("Distribution").name("Tin").
+//                    port("input").imports("gh/budget/indoors[temperature]").
+//                    port("sections").computes("c(10,50,90)").
+//                endbox().
+//            endbox().
         endbox().
         box("OutputR").name("output");
             outputVariables().
@@ -763,8 +808,9 @@ BoxBuilder& ReaderXml::actuatorsHeatPipes() {
             port("k").equals(heatPipe.find("k")->toDouble()).
             port("b").equals(heatPipe.find("b")->toDouble()).
             port("propLw").equals(heatPipe.find("PropLw")->toDouble()).
+            port("inflowTemperature").imports("controllers/heating/inflowTemperature[value]").
             port("minTemperature").imports("setpoints/heating/minTemperature[value]").
-            port("maxTemperature").equals(heatPipe.find("CommonFlowTemperature")->toDouble()).
+            port("maxTemperature").imports("setpoints/heating/maxTemperature[value]").
             port("indoorsTemperature").imports("indoors[temperature]").
         endbox();
     }
@@ -785,7 +831,8 @@ BoxBuilder& ReaderXml::actuatorsVentilation() {
         ventArea += length*width*number*efficiency;
     }
     _builder->box("ActuatorVentilation").name("ventilation").
-        port("ventAreaRatio").equals(ventArea/groundArea());
+        port("ventAreaRatio").equals(ventArea/groundArea()).
+        port("opening").imports("controllers/ventilation/opening[value]");
 
     XmlNode
         *windCoef = _doc->find("Greenhouse/VentWindCoef"),

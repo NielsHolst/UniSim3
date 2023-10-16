@@ -19,6 +19,10 @@ PrioritySignal::PrioritySignal(QString name, Box *parent)
     Input(reverseOrder).equals(false).help("Find first signal!=0 from top (false) or bottom (true)?").unit("y|n");
 }
 
+void PrioritySignal::localReset() {
+    computeFlag();
+    update();
+}
 
 bool PrioritySignal::computeFlag() {
     for (auto flag : myFlags) {

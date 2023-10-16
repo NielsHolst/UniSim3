@@ -45,6 +45,8 @@ int whichMin(const Vec &x);
 double weightedAverage(const Vec &x, const Vec &weights, base::Node *context=nullptr);
 double sumOfProducts(const Vec &x, const Vec &y, base::Node *context=nullptr);
 
+bool any(const QVector<bool> &x);
+
 } //namespace
 
 #endif

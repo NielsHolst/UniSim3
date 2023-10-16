@@ -26,6 +26,7 @@ HeatPipes::HeatPipes(QString name, Box *parent)
     Input(convectionTopPipes)    .imports("./*[convectionTop]");
     Input(convectionBottomPipes) .imports("./*[convectionBottom]");
     Input(inflowTemperaturePipes).imports("./*[inflowTemperature]");
+    Input(isHeatingPipes)        .imports("./*[isHeating]");
     useLayerAsOutput();
     Output(lwEmissionTop)   .help("Long-wave emission upwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
@@ -33,6 +34,7 @@ HeatPipes::HeatPipes(QString name, Box *parent)
     Output(convectionBottom).help("Convective heat flux downwards").unit("W/m2");
     Output(heatFlux).help("Total heat flux from pipes").unit("W/m2");
     Output(inflowTemperatureAvg).help("Average of inflow temperatures").unit("oC");
+    Output(isHeating).help("Is any heat pipe above its minimum temperature?");
 }
 
 void HeatPipes::reset() {
@@ -47,19 +49,8 @@ void HeatPipes::update() {
     convectionTop        = sum(convectionTopPipes);
     convectionBottom     = sum(convectionBottomPipes);
     inflowTemperatureAvg = average(inflowTemperaturePipes);
+    isHeating            = any(isHeatingPipes);
     heatFlux = lwEmissionTop + lwEmissionBottom - convectionTop - convectionBottom;
-}
-
-void HeatPipes::increase(double delta) {
-    for (ActuatorHeatPipe *heatPipe : _heatPipes)
-        heatPipe->increase(delta);
-    updateFamily();
-}
-
-void HeatPipes::stop() {
-    for (ActuatorHeatPipe *heatPipe : _heatPipes)
-        heatPipe->stop();
-    updateFamily();
 }
 
 } //namespace

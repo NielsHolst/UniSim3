@@ -9,8 +9,8 @@
     <Latitude>55.4038</Latitude>
     <StartTime>01.01.2023</StartTime>
     <StopTime>31.12.2023</StopTime>
-    <TimeStep>3</TimeStep>
-    <ShortDesc>Uden gardin</ShortDesc>
+    <TimeStep>3</TimeStep>  <!-- NH: 3 minutters tidsskridt er fint -->
+    <ShortDesc>Std21/4</ShortDesc>
   </Description>
   <Greenhouse>
     <Positions>
@@ -36,11 +36,11 @@
     <Length>100</Length>
     <SpanSize>4</SpanSize>
     <NumberOfSpans>25</NumberOfSpans>
-    <GreenhouseReductionFactorLight>0.1</GreenhouseReductionFactorLight>
+    <GreenhouseReductionFactorLight>0.2</GreenhouseReductionFactorLight>
     <TrempelHeight>4</TrempelHeight>
     <RoofPitch>26</RoofPitch>
-    <UwindSlope>1.2</UwindSlope>
-    <leakage>0.2</leakage>
+    <UwindSlope>0.5</UwindSlope>
+    <leakage>0.1</leakage>
     <screenPerfection>0.95</screenPerfection>
     <floor-Uindoors>7.5</floor-Uindoors>
     <floor-Usoil>0.1</floor-Usoil>
@@ -52,14 +52,16 @@
     <Currency>missing</Currency>
     <CalibrationHeat>1</CalibrationHeat>
     <CalibrationPower>1</CalibrationPower>
-    <InitialSoilTemperature>1.2</InitialSoilTemperature>
+    <InitialSoilTemperature>1.7</InitialSoilTemperature> <!-- NH: Bør være gennemsnittet af udetemperaturen, den 24. til 31. december. 1.7 oC for DNK_Odense.txt -->
     <CO2PIDProp>0.05</CO2PIDProp>
+    <HeatingPIDProp>0.05</HeatingPIDProp> <!-- NH: Tilføjet -->
+    <VentilationPIDProp>-0.0001</VentilationPIDProp> <!-- NH: Tilføjet. Skal være negativ -->
     <ScreenLagPeriod>10</ScreenLagPeriod>
-    <VentWindCoef>40</VentWindCoef>
-    <VentTemperatureCoef>7</VentTemperatureCoef>
+    <VentWindCoef>50</VentWindCoef> <!-- NH: Værdien 50 kalibreret til ByGrowers Hus 1AB -->
+    <VentTemperatureCoef>14</VentTemperatureCoef>  <!-- NH: Værdien 14 kalibreret til ByGrowers Hus 1AB -->
     <Crops>
       <Crop index="0" layer="0" position="0">
-        <LAI>1</LAI>
+        <LAI>2.5</LAI> <!-- NH: Stor betydning for RH. Værdien 2.5 kalibreret til ByGrowers Hus 1AB -->
         <Jmax25>145.5200</Jmax25>
         <GammaStar>55.4700</GammaStar>
         <lightRespiration>0.7400</lightRespiration>
@@ -231,7 +233,7 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature>
+        <CommonFlowTemperature>80</CommonFlowTemperature> <!-- NH: Anvendes ikke. I stedet anvendes <SetPoint><maxPipeTemperature> -->
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -242,7 +244,7 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature>
+        <CommonFlowTemperature>80</CommonFlowTemperature> <!-- NH: Anvendes ikke. I stedet anvendes <SetPoint><maxPipeTemperature> -->
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -338,8 +340,8 @@
           <Manufacture>NoName</Manufacture>
           <name>E HP Na 1000W</name>
           <LampType>HpSl</LampType>
-          <Power>1035</Power>
-          <MinPeriodOn>1035</MinPeriodOn>
+          <Power>1035</Power> <!-- NH: -->
+          <MinPeriodOn>30</MinPeriodOn> <!-- NH: Fejl i din XML. Perioden er i minutter. -->
           <MicroMolParPerWattSeconds>1.787</MicroMolParPerWattSeconds>
           <Ballast>15</Ballast>
           <PropLw>0.1</PropLw>
@@ -444,6 +446,14 @@
     </PadFans>
     <Panes>
       <Products>
+        <Product name="PC 3 wall 16 mm">
+          <PaneTransmission>0.74</PaneTransmission>
+          <PaneUValue>2.4</PaneUValue>
+          <PaneReflection>0.26</PaneReflection>
+          <PaneLwReflection>0.5</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
         <Product name="Single glass 4mm">
           <PaneTransmission>0.8</PaneTransmission>
           <PaneUValue>6.5</PaneUValue>
@@ -460,16 +470,16 @@
         <Product>Single glass 4mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="3">
-        <Product>Single glass 4mm</Product>
+        <Product>PC 3 wall 16 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="4">
-        <Product>Single glass 4mm</Product>
+        <Product>PC 3 wall 16 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="5">
-        <Product>Single glass 4mm</Product>
+        <Product>PC 3 wall 16 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="6">
-        <Product>Single glass 4mm</Product>
+        <Product>PC 3 wall 16 mm</Product>
       </Pane>
       <Pane index="0" layer="0" position="7">
         <Product>Single glass 4mm</Product>
@@ -492,7 +502,16 @@
     <Screens>
       <!--Layer 1 er yderst, 2 dernæst og 3 inderst-->
       <Products>
-        <Product name="None                                                                  ">
+        <Product name="LS Harmony 3647 FR">
+          <Transmission>0.5</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.5</ReflectionInwards>
+          <InsulationU>1.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="None">
           <Transmission>1</Transmission>
           <ReflectionOutwards>0</ReflectionOutwards>
           <ReflectionInwards>0</ReflectionInwards>
@@ -503,8 +522,8 @@
         </Product>
       </Products>
       <Screen index="1" layer="1" position="1">
-        <Product>None</Product>
-        <Manufacture>None</Manufacture>
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="4">
         <Product>None</Product>
@@ -543,24 +562,24 @@
         <Manufacture>None</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="2">
-        <Product>None</Product>
-        <Manufacture>None</Manufacture>
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="3">
-        <Product>None</Product>
-        <Manufacture>None</Manufacture>
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="4">
-        <Product>None</Product>
-        <Manufacture>None</Manufacture>
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="5">
-        <Product>None</Product>
-        <Manufacture>None</Manufacture>
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
       </Screen>
       <Screen index="1" layer="1" position="6">
-        <Product>None</Product>
-        <Manufacture>None</Manufacture>
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
       </Screen>
       <Screen index="2" layer="2" position="1">
         <Product>None</Product>
@@ -578,14 +597,14 @@
     <Vents>
       <Vent index="0" layer="0" position="1">
         <Length>3</Length>
-        <Width>1</Width>
-        <Number>20</Number>
+        <Width>3</Width>
+        <Number>200</Number>
         <VentTransmissivity>1</VentTransmissivity>
       </Vent>
       <Vent index="0" layer="0" position="2">
         <Length>3</Length>
-        <Width>1</Width>
-        <Number>20</Number>
+        <Width>3</Width>
+        <Number>200</Number>
         <VentTransmissivity>1</VentTransmissivity>
       </Vent>
     </Vents>
@@ -601,14 +620,14 @@
   </Greenhouse>
   <Climate>
     <Setpoint>
-      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</HeatingTemp>
+      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</HeatingTemp> <!-- NH: Værdien 21 kalibreret til ByGrowers Hus 1AB -->
       <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</VentTemp>
       <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
       <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
-      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation>
-      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin>
-      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
-      <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>
+      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation> <!-- NH: Er først nu sat i kraft. Værdien refererer til vinduesåbning [0;1] -->
+      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin> <!-- NH: Er først nu sat i kraft. -->
+      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand> <!-- NH: Er først nu sat i kraft. -->
+      <!-- <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>  NH: Udgået -->
       <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
       <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
       <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
@@ -618,7 +637,7 @@
       <screenEnergyThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold1>
       <screenEnergyThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold2>
       <screenEnergyThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThresholdBand>
-      <screenShadeThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</screenShadeThreshold1>
+      <screenShadeThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold1>
       <screenShadeThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold2>
       <screenShadeThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</screenShadeThresholdBand>
       <screenEnergyThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold3>
@@ -627,40 +646,41 @@
       <screenFixed3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed3>
       <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold3>
       <ShadingAgentReduction index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</ShadingAgentReduction>
-      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity>
-      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature>
-      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand>
+      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity> <!-- NH: Anvendes ikke pt. -->
+      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature> <!-- NH: Anvendes ikke pt. -->
+      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand> <!-- NH: Anvendes ikke pt. -->
       <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
       <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
       <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
       <AssLightActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive3>
-      <AssLightOn1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn1>
+      <AssLightOn1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn1>
       <AssLightOff1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff1>
-      <AssLightOn2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn2>
+      <AssLightOn2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn2>
       <AssLightOff2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff2>
-      <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</AssLightOn3>
+      <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn3>
       <AssLightOff3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff3>
-      <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">90</MaxRelHmd>
-      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd>
+      <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">85</MaxRelHmd>
+      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd> <!-- NH: Anvendes ikke pt. -->
       <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</MaxHeatAddHighRH>
-      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH>
-      <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>
-      <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>
+      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH> <!-- NH: Anvendes ikke pt. -->
+      <!-- <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>  NH: Anvendes ikke. I stedet anvendes <SetPoint><mimPipeTemperature> -->
+      <!-- <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>  NH: Anvendes ikke. I stedet anvendes <SetPoint><mimPipeTemperature> -->
       <rhMaxBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</rhMaxBand>
-      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand>
+      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand> <!-- NH: Anvendes ikke pt. -->
       <CO2Setpoint index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</CO2Setpoint>
       <CO2Capacity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</CO2Capacity>
-      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand>
-      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold>
+      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand> <!-- NH: Er først nu sat i kraft. Værdien refererer til vinduesåbning [0;1] -->
+      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold> <!-- NH: Er først nu sat i kraft. Værdien refererer til vinduesåbning [0;1] -->
     </Setpoint>
   </Climate>
   <Output>
-    <Period>10</Period>
-    <UseLocalDecimalChar>0</UseLocalDecimalChar>
-    <SkipFormats>1</SkipFormats>
+    <Period>10</Period> <!-- NH: Output hver halve time er fint -->
+    <UseLocalDecimalChar>0</UseLocalDecimalChar> <!-- NH: Skal nok sættes til værdien 1 på danske PCer -->
+    <SkipFormats>0</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
+      <!-- <Variable name="actionCode" path="budget[actionCode]"/>  NH: Udgået -->
       <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
       <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
       <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
@@ -673,9 +693,11 @@
       <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
       <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
       <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
-      <Variable name="actVentilation" path="actuators/ventilation[value]"/>
-      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
+      <Variable name="actVentilation" path="actuators/ventilation[ventFlux]"/> <!-- NH: Ændret path. Ventilation gennem vinduer (pr. time) -->
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/> <!-- NH: Uændret. Ventilation gennem vinduer + leakage (pr. time) -->
+      <Variable name="ventOpening" path="actuators/ventilation[opening]"/> <!-- NH: Tilføjet. Vinduesåbning [0;1] -->
       <Variable name="condensation" path="budget[condensation]"/>
+      <!-- <Variable name="controlCode" path="budget[controlCode]"/> NH: Udgået -->
       <Variable name="coverT" path="budget/cover[temperature]"/>
       <Variable name="floorT" path="budget/floor[temperature]"/>
       <Variable name="grossAssimilationRate" path="plant[Pg]"/>
@@ -686,7 +708,7 @@
       <Variable name="indoorsRh" path="budget/indoors[rh]"/>
       <Variable name="indoorsT" path="budget/indoors[temperature]"/>
       <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
-      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/>
+      <!-- <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/> NH: Udgået, men genopstår start. Der skal opstilles et mere fuldstændigt vandbudget i output (det findes i modellen allerede) -->
       <Variable name="leafT" path="budget/plant[temperature]"/>
       <Variable name="lightUseEfficiency" path="plant[lue]"/>
       <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
@@ -704,23 +726,23 @@
       <Variable name="screen1T" path="budget/screen1[temperature]"/>
       <Variable name="screen2T" path="budget/screen2[temperature]"/>
       <Variable name="screen3T" path="budget/screen3[temperature]"/>
-      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]"/>
+      <Variable name="sensibleVentFlux" path="budget[ventilationHeatLoss]"/> <!-- NH: Ændret path. -->
       <Variable name="skyT" path="budget/sky[temperature]"/>
       <Variable name="soilT" path="outdoors[soilTemperature]"/>
       <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
-      <Variable name="spHeatingTemperature" path="controllers/heating[value]"/>
-      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]"/>
+      <Variable name="spHeatingTemperature" path="controllers/ventilation/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
+      <Variable name="spVentilationTemperature" path="controllers/heating/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
       <Variable name="transpiration" path="budget[transpiration]"/>
       <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
       <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
     </Variables>
   </Output>
-  <Status>
-    <LigthSum>
-      <Period>10</Period>
-    </LigthSum>
-    <TwemperatureAvg>
-      <Period>20</Period>
-    </TwemperatureAvg>
-  </Status>
+  <!-- <Status> -->
+    <!-- <LigthSum> -->
+      <!-- <Period>10</Period> -->
+    <!-- </LigthSum> -->
+    <!-- <TwemperatureAvg> -->
+      <!-- <Period>20</Period> -->
+    <!-- </TwemperatureAvg> -->
+  <!-- </Status> -->
 </VG_SETUP>

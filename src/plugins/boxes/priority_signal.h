@@ -14,6 +14,7 @@ class PrioritySignal : public base::BaseSignal
 {
 public:
     PrioritySignal(QString name, Box *parent);
+    void localReset();
     bool computeFlag();
     double computeSignal(bool flag);
 private:

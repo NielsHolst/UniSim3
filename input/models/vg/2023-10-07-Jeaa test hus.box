@@ -159,7 +159,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside =  80.0 // NH 85.0
+            .signalInside =  85.0
           }
         }
         PrioritySignal band {
@@ -168,7 +168,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 20.0 // NH 5.0
+            .signalInside = 5.0
           }
         }
       }
@@ -200,6 +200,15 @@ Simulation sim {
             .signalInside = 20.0
           }
         }
+        PrioritySignal maxTemperature {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 80.0
+          }
+        }
       }
       Box ventilation {
         PrioritySignal offset {
@@ -211,13 +220,31 @@ Simulation sim {
             .signalInside = 2.0
           }
         }
-        PrioritySignal maxHeatingCost {
-          DateTimeSignal  {
+        Box crack {
+          PrioritySignal size {
+            DateTimeSignal {
             .beginDate = 1/1
             .endDate = 31/12
-            .beginTime = 00:00:00
-            .endTime = 00:00:00
-            .signalInside = 50.0
+            .signalInside = 0.05
+            }
+          }
+        }
+        Box temperature {
+          PrioritySignal threshold {
+            DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .signalInside = -5
+            }
+          }
+        }
+        PrioritySignal band {
+          PrioritySignal threshold {
+            DateTimeSignal {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .signalInside = 1
+            }
           }
         }
       }
@@ -531,8 +558,7 @@ Simulation sim {
       }
     }
     Box controllers {
-      Sum heating {
-        .values = setpoints/heating/base[value]|./humidityOffset[value]
+      IgnoredBox heating { 
         ProportionalSignal humidityOffset {
           .input = indoors[rh]
           .threshold = setpoints/rhMax/threshold[value]
@@ -540,24 +566,49 @@ Simulation sim {
           .maxSignal = setpoints/heating/humidityOffset[value]
           .increasingSignal = TRUE
         }
+        Sum desiredIndoorsTemperature {
+          .values = setpoints/heating/base[value] | ./humidityOffset[value]
+        }
+        Accumulator inflowTemperature { 
+          .change = ./controller[controlVariable]
+          .minValue = setpoints/heating/minTemperature[value]
+          .maxValue = setpoints/heating/maxTemperature[value]
+          PidController controller {
+            .sensedValue = indoors[temperature]
+            .desiredValue = ../desiredIndoorsTemperature[value]
+            .timeStep = budget[subTimeStep]
+            .Kprop = 0.05
+          }
+        }
       }
-      Box ventilation {
-        Sum temperatureThreshold {
-          .values = controllers/heating[value]|setpoints/ventilation/offset[value]
+      Box ventilation { 
+        Sum desiredIndoorsTemperature {
+          .values = controllers/heating/desiredIndoorsTemperature[value] | setpoints/ventilation/offset[value]
         }
-        ProportionalSignal maxHeatingCost {
+        ProportionalSignal crack {
           .input = indoors[rh]
           .threshold = setpoints/rhMax/threshold[value]
-          .thresholdBand = setpoints/rhMax/band[value]
-          .maxSignal = setpoints/ventilation/maxHeatingCost[value]
+          .thresholdBand = setpoints/rhMax/banc[value]
+          .maxSignal = ./max[value]
           .increasingSignal = TRUE
+          ProportionalSignal max {
+            .input = outdoors[temperature]
+            .threshold = setpoints/ventilation/minTemperature[value]
+            .thresholdBand = setpoints/ventilation/minTemperatureBand[value]
+            .maxSignal = setpoints/ventilation/crack[value]
+            .increasingSignal = TRUE
+          }
         }
-        ProportionalSignal humidityControl {  // NH
-          .input = indoors[rh]
-          .threshold = setpoints/rhMax/threshold[value]
-          .thresholdBand = setpoints/rhMax/band[value]
-          .maxSignal = 1.0
-          .increasingSignal = TRUE
+        Accumulator opening {
+          .change = ./controller[controlVariable]
+          .minValue = ../crack[value]
+          .maxValue = 1.0
+          PidController controller {
+            .sensedValue = indoors[temperature]
+            .desiredValue = ../desiredIndoorsTemperature[value]
+            .timeStep = budget[subTimeStep]
+            .Kprop = 0.04
+          }
         }
       }
       Box screens {
@@ -639,24 +690,26 @@ Simulation sim {
     }
     Actuators actuators {
       HeatPipes heatPipes {
-        ActuatorHeatPipe circuit2 {
-          .volume = 76.4538
-          .flowRate = 50.0
-          .k = 0.01
-          .b = 1.5
-          .propLw = 0.2
-          .minTemperature = setpoints/heating/minTemperature[value]
-          .maxTemperature = 80.0
-          .indoorsTemperature = indoors[temperature]
-        }
         ActuatorHeatPipe circuit1 {
           .volume = 76.4538
           .flowRate = 50.0
           .k = 0.01
           .b = 1.5
           .propLw = 0.2
+          .inflowTemperature = controllers/heating/inflowTemperature[value]
           .minTemperature = setpoints/heating/minTemperature[value]
-          .maxTemperature = 80.0
+          .maxTemperature = setpoints/heating/maxTemperature[value]
+          .indoorsTemperature = indoors[temperature]
+        }
+        ActuatorHeatPipe circuit2 {
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.2
+          .inflowTemperature = controllers/heating/inflowTemperature[value]
+          .minTemperature = setpoints/heating/minTemperature[value]
+          .maxTemperature = setpoints/heating/maxTemperature[value]
           .indoorsTemperature = indoors[temperature]
         }
       }
@@ -664,6 +717,7 @@ Simulation sim {
         .ventAreaRatio = 0.36
         .windCoef = 10.0
         .temperatureCoef = 4.0
+        .opening = controllers/ventilation/opening[value]
       }
       Box screens {
         ActuatorScreen layer1 {
@@ -725,7 +779,7 @@ Simulation sim {
       }
       Accumulator co2 {
         .change = ./controller[controlVariable]
-        .minValue = 0.0
+        .minValue = setpoints/heating/minTemperature[value]
         .maxValue = setpoints/co2/capacity[value]
         PidController controller {
           .sensedValue = indoors[co2]

@@ -267,4 +267,10 @@ double sumOfProducts(const Vec &x, const Vec &y, Node *context_) {
     return receiver;
 }
 
+bool any(const QVector<bool> &v) {
+    for (bool value : v)
+        if (value) return true;
+    return false;
+}
+
 } // namespace

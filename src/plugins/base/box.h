@@ -45,6 +45,9 @@ public:
     void additionalOutputs(QString description);
     QString additionalOutputs() const;
 
+    void ignore(bool doIgnore);
+    bool ignore() const;
+
     static bool hasRoot();
     static Box* root();
     static Box* root(Box *box);
@@ -99,7 +102,7 @@ private:
     QString _help, _sideEffects, _additionalOutputs;
     QMap<QString,Port*> _portMap;
     QVector<Port*> _portsInOrder, _trackedPorts;
-    bool _amended, _initialized, _cloned;
+    bool _amended, _initialized, _cloned, _ignore;
     Timer _timer;
     static std::unique_ptr<Box> _root;
     static Box *_latest;

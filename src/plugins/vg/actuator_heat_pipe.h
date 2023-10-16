@@ -8,7 +8,6 @@
 #ifndef ACTUATOR_HEAT_PIPE_H
 #define ACTUATOR_HEAT_PIPE_H
 
-#include <QMap>
 #include <base/box.h>
 
 namespace vg {
@@ -19,13 +18,11 @@ public:
     ActuatorHeatPipe(QString name, Box *parent);
     void reset();
     void update();
-    void increase(double delta);
-    void stop();
 private:
     // Inputs
     double volume, flowRate, minTemperature, maxTemperature,
         k, b, propLw,
-        desiredTemperature, indoorsTemperature, groundArea;
+        indoorsTemperature, groundArea, timeStep;
     // Outputs
     double transitTime,
         inflowTemperature, outflowTemperature, temperatureDrop,
@@ -33,6 +30,8 @@ private:
         lwEmissionTop, lwEmissionBottom,
         convectionTop, convectionBottom;
     bool isHeating;
+    // Data
+    double _heatBuffer;
 };
 
 } //namespace

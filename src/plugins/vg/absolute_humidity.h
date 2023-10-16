@@ -5,36 +5,25 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef PID_CONTROLLER_H
-#define PID_CONTROLLER_H
-
+#ifndef ABSOLUTE_HUMIDITY_H
+#define ABSOLUTE_HUMIDITY_H
 #include <base/box.h>
 
 namespace vg {
 
-class PidController : public base::Box
+class AbsoluteHumidity : public base::Box
 {
 public:
-    PidController(QString name, Box *parent);
+    AbsoluteHumidity(QString name, Box *parent);
     void reset();
     void update();
-//    void rollBack();
 private:
-    // Inputs
-    double sensedValue, desiredValue,
-        minimum, maximum,
-        timeStep,
-        Kprop, Kint, Kderiv;
-    // Outputs
-    double controlVariable, error, integral, derivative,
-    // Data
-        _prevError;
-//    struct {
-//        double controlVariable, error, integral, derivative,
-//           prevError;
-
-//    } latest;
+    // Input
+    double rh, temperature;
+    // Output
+    double value;
 };
+
 } //namespace
 
 

@@ -32,7 +32,6 @@ PidController::PidController(QString name, Box *parent)
     Input(Kprop).equals(0.1).help("The proportional gain");
     Input(Kint).equals(0.).help("The integral gain").unit("/min");
     Input(Kderiv).equals(0.).help("The derivative gain").unit("min");
-    Input(lookAhead).equals(0.).help("Computed error from predicted sensed value this time ahead").unit("min");
 
     Input(minimum).equals(doubleMin).help("Minimum allowed value of control variable");
     Input(maximum).equals(doubleMax).help("Maximum allowed value of control variable");
@@ -42,30 +41,25 @@ PidController::PidController(QString name, Box *parent)
     Output(error).help("The error");
     Output(integral).help("The integral error").unit("min");
     Output(derivative).help("The derivative of the approach of sensed towards target value").unit("/min");
-//    Output(eta).help("Estimated time of arrival at desired value; negative means wrong direction").unit("min");
 }
 
 void PidController::reset() {
-    _dt = timeStep/60.;  // from secs to minutes
-    _tick = 0;
+    controlVariable =
+    error =
+    integral =
+    derivative =
+    _prevError = 0.;
 }
 
 void PidController::update() {
-    updateControlVariable();
-    _prevSensedValue = sensedValue;
-}
-
-void PidController::updateControlVariable() {
     // Compute errors
-    derivative = (error == 0. || _tick++ < 2) ? 0. : (sensedValue-_prevSensedValue)/_dt;
-    error = desiredValue - (sensedValue + derivative*lookAhead);
-    if (Kint > 0.)
-        integral += error*_dt;
+    error = desiredValue - sensedValue;
+    integral += error*timeStep;
+    derivative = (error - _prevError)/timeStep;
+    _prevError = error;
     // Compute control response
-    controlVariable = Kprop*error + Kint*integral + Kderiv*derivative*_dt;
+    controlVariable = Kprop*error + Kint*integral + Kderiv*derivative;
     controlVariable = qBound(minimum, controlVariable, maximum);
-    // Compute estimated time of arrival
-//    eta = (derivative == 0.) ? 0. : error/derivative;;
 }
 
 } //namespace

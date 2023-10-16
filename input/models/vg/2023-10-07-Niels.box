@@ -1,4 +1,4 @@
-x#using vg
+#using vg
 Simulation sim {
   .silent = TRUE
   .unattended = TRUE
@@ -12,7 +12,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/12/31
+    .end = 2023/12/31T00:00:00
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -23,7 +23,7 @@ Simulation sim {
       .ignoreYear = TRUE
     }
     SoilTemperature soilTemperature {
-      .initial = 1.2
+      .initial = 1.7
     }
   }
   Sky sky {
@@ -38,12 +38,12 @@ Simulation sim {
     }
     Box construction {
       LeakageVentilation leakage {
-        .leakage = 0.2
+        .leakage = 0.1
       }
       Shelter shelter {
-        .transmissivityReduction = 0.1
+        .transmissivityReduction = 0.2
         UWind Utop {
-          .UwindSlope = 1.2
+          .UwindSlope = 0.5
         }
         Shading shading {
           ShadingAgent test {
@@ -71,25 +71,42 @@ Simulation sim {
               .Ubottom = 6.5
               .heatCapacity = 8400.0
             }
+            Cover PC_3_wall_16_mm {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.26
+              .swTransmissivityTop = 0.74
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.26
+              .swTransmissivityBottom = 0.74
+              .lwAbsorptivityTop = 0.3
+              .lwReflectivityTop = 0.5
+              .lwTransmissivityTop = 0.2
+              .lwAbsorptivityBottom = 0.3
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.2
+              .Utop = shelter/Utop[value]
+              .Ubottom = 2.4
+              .heatCapacity = 1.0
+            }
           }
           Box screens {
-            Screen Bonar_PhormiTex_55_B1 {
-              .swAbsorptivityTop = 0.53
+            Screen LS_Harmony_3647_FR {
+              .swAbsorptivityTop = 0.48
               .swReflectivityTop = 0.02
-              .swTransmissivityTop = 0.45
+              .swTransmissivityTop = 0.5
               .swAbsorptivityBottom = 0.0
-              .swReflectivityBottom = 0.55
-              .swTransmissivityBottom = 0.45
-              .lwAbsorptivityTop = 0.53
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.5
+              .lwAbsorptivityTop = 0.48
               .lwReflectivityTop = 0.02
-              .lwTransmissivityTop = 0.45
+              .lwTransmissivityTop = 0.5
               .lwAbsorptivityBottom = 0.0
-              .lwReflectivityBottom = 0.55
-              .lwTransmissivityBottom = 0.45
+              .lwReflectivityBottom = 0.5
+              .lwTransmissivityBottom = 0.5
               .Utop = 0.6
               .Ubottom = 0.6
               .heatCapacity = 80.0
-              .Uinsulation = 3.0
+              .Uinsulation = 1.2
               .UinsulationEffectivity = 0.95
             }
             Screen none {
@@ -99,37 +116,37 @@ Simulation sim {
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .screens = "LS_Harmony_3647_FR+none+none"
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .screens = "LS_Harmony_3647_FR+none+none"
             .area = gh/geometry[roofArea] / 2
             .weight = 1.0
           }
           Face side1 {
-            .cover = "Single_glass_4mm"
-            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .cover = "PC_3_wall_16_mm"
+            .screens = "LS_Harmony_3647_FR+none+none"
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
           Face side2 {
-            .cover = "Single_glass_4mm"
-            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .cover = "PC_3_wall_16_mm"
+            .screens = "LS_Harmony_3647_FR+none+none"
             .area = gh/geometry[sideArea] / 2
             .weight = 0.6
           }
           Face end1 {
-            .cover = "Single_glass_4mm"
-            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .cover = "PC_3_wall_16_mm"
+            .screens = "LS_Harmony_3647_FR+none+none"
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
           Face end2 {
-            .cover = "Single_glass_4mm"
-            .screens = "Bonar_PhormiTex_55_B1+none+none"
+            .cover = "PC_3_wall_16_mm"
+            .screens = "LS_Harmony_3647_FR+none+none"
             .area = gh/geometry[endArea] / 2
             .weight = 0.2
           }
@@ -144,7 +161,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 90.0
+            .signalInside = 85.0
           }
         }
         PrioritySignal band {
@@ -164,7 +181,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 20.0
+            .signalInside = 21.0
           }
         }
         PrioritySignal humidityOffset {
@@ -185,6 +202,15 @@ Simulation sim {
             .signalInside = 20.0
           }
         }
+        PrioritySignal maxTemperature {
+          DateTimeSignal  {
+            .beginDate = 1/1
+            .endDate = 31/12
+            .beginTime = 00:00:00
+            .endTime = 00:00:00
+            .signalInside = 80.0
+          }
+        }
       }
       Box ventilation {
         PrioritySignal offset {
@@ -196,13 +222,33 @@ Simulation sim {
             .signalInside = 2.0
           }
         }
-        PrioritySignal maxHeatingCost {
+        PrioritySignal crack {
           DateTimeSignal  {
             .beginDate = 1/1
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 50.0
+            .signalInside = 0.05
+          }
+        }
+        Box temperature {
+          PrioritySignal threshold {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = -5.0
+            }
+          }
+          PrioritySignal band {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 1.0
+            }
           }
         }
       }
@@ -274,7 +320,7 @@ Simulation sim {
               .endDate = 31/12
               .beginTime = 00:00:00
               .endTime = 00:00:00
-              .signalInside = 900.0
+              .signalInside = 500.0
             }
           }
           PrioritySignal band {
@@ -397,7 +443,7 @@ Simulation sim {
                 .endDate = 31/12
                 .beginTime = 00:00:00
                 .endTime = 00:00:00
-                .signalInside = 40.0
+                .signalInside = 5.0
               }
             }
             PrioritySignal high {
@@ -428,7 +474,7 @@ Simulation sim {
                 .endDate = 31/12
                 .beginTime = 00:00:00
                 .endTime = 00:00:00
-                .signalInside = 40.0
+                .signalInside = 5.0
               }
             }
             PrioritySignal high {
@@ -459,7 +505,7 @@ Simulation sim {
                 .endDate = 31/12
                 .beginTime = 00:00:00
                 .endTime = 00:00:00
-                .signalInside = 40.0
+                .signalInside = 5.0
               }
             }
             PrioritySignal high {
@@ -516,8 +562,7 @@ Simulation sim {
       }
     }
     Box controllers {
-      Sum heating {
-        .values = setpoints/heating/base[value]|./humidityOffset[value]
+      IgnoredBox heating {
         ProportionalSignal humidityOffset {
           .input = indoors[rh]
           .threshold = setpoints/rhMax/threshold[value]
@@ -525,17 +570,58 @@ Simulation sim {
           .maxSignal = setpoints/heating/humidityOffset[value]
           .increasingSignal = TRUE
         }
-      }
-      Box ventilation {
-        Sum temperatureThreshold {
-          .values = controllers/heating[value]|setpoints/ventilation/offset[value]
+        Sum desiredIndoorsTemperature {
+          .values = setpoints/heating/base[value]|../humidityOffset[value]
         }
-        ProportionalSignal maxHeatingCost {
+        Accumulator inflowTemperature {
+          .change = ./controller[controlVariable]
+          .minValue = setpoints/heating/minTemperature[value]
+          .maxValue = setpoints/heating/maxTemperature[value]
+          PidController controller {
+            .sensedValue = indoors[temperature]
+            .desiredValue = ../../desiredIndoorsTemperature[value]
+            .Kprop = 0.05
+            .timeStep = budget[subTimeStep]
+          }
+        }
+      }
+      IgnoredBox ventilation {
+        Sum desiredIndoorsTemperature {
+          .values = controllers/heating/desiredIndoorsTemperature[value]|setpoints/ventilation/offset[value]
+        }
+        ProportionalSignal crack {
           .input = indoors[rh]
           .threshold = setpoints/rhMax/threshold[value]
           .thresholdBand = setpoints/rhMax/band[value]
-          .maxSignal = setpoints/ventilation/maxHeatingCost[value]
+          .maxSignal = ./max[value]
           .increasingSignal = TRUE
+          ProportionalSignal max {
+            .input = outdoors[temperature]
+            .threshold = setpoints/ventilation/temperature/threshold[value]
+            .thresholdBand = setpoints/ventilation/temperature/band[value]
+            .maxSignal = setpoints/ventilation/crack[value]
+            .increasingSignal = TRUE
+          }
+        }
+        Accumulator opening {
+          .change = ./controller[controlVariable]
+          .minValue = ../crack[value]
+          .maxValue = 1.0
+          PidController controller {
+            .sensedValue = indoors[temperature]
+            .desiredValue = ../../desiredIndoorsTemperature[value]
+            .Kprop = -0.0001
+            .timeStep = budget[subTimeStep]
+          }
+        }
+      }
+      Box co2 {
+        ProportionalSignal max {
+          .input = controllers/ventilation/opening[value]
+          .threshold = setpoints/co2/ventilation/threshold[value]
+          .thresholdBand = setpoints/co2/ventilation/band[value]
+          .maxSignal = setpoints/co2/capacity[value]
+          .increasingSignal = FALSE
         }
       }
       Box screens {
@@ -623,8 +709,9 @@ Simulation sim {
           .k = 0.01
           .b = 1.5
           .propLw = 0.2
+          .inflowTemperature = controllers/heating/inflowTemperature[value]
           .minTemperature = setpoints/heating/minTemperature[value]
-          .maxTemperature = 80.0
+          .maxTemperature = setpoints/heating/maxTemperature[value]
           .indoorsTemperature = indoors[temperature]
         }
         ActuatorHeatPipe circuit1 {
@@ -633,20 +720,22 @@ Simulation sim {
           .k = 0.01
           .b = 1.5
           .propLw = 0.2
+          .inflowTemperature = controllers/heating/inflowTemperature[value]
           .minTemperature = setpoints/heating/minTemperature[value]
-          .maxTemperature = 80.0
+          .maxTemperature = setpoints/heating/maxTemperature[value]
           .indoorsTemperature = indoors[temperature]
         }
       }
       ActuatorVentilation ventilation {
-        .ventAreaRatio = 0.012
-        .windCoef = 40.0
-        .temperatureCoef = 7.0
+        .ventAreaRatio = 0.36
+        .windCoef = 50.0
+        .temperatureCoef = 14.0
+        .opening = controllers/ventilation/opening[value]
       }
       Box screens {
         ActuatorScreen layer1 {
           .lagPeriod = 10.0
-          .desiredState = max(controllers/screens/energy1[value])
+          .desiredState = max(controllers/screens/energy1[value]|controllers/screens/shade1[value])
         }
         ActuatorScreen layer2 {
           .lagPeriod = 10.0
@@ -659,6 +748,17 @@ Simulation sim {
       }
       GrowthLights growthLights {
         Box products {
+          GrowthLightProduct None {
+            .power = 0.0
+            .ballast = 0.0
+            .parPhotonCoef = 0.0
+            .propSw = 0.0
+            .propLw = 0.0
+            .propConv = 1.0
+            .propBallastLw = 0.0
+            .propBallastConv = 1.0
+            .minPeriodOn = 0.0
+          }
           GrowthLightProduct E_HP_Na_1000W {
             .power = 1035.0
             .ballast = 15.0
@@ -668,7 +768,7 @@ Simulation sim {
             .propConv = 0.7
             .propBallastLw = 0.2
             .propBallastConv = 0.8
-            .minPeriodOn = -1034.0
+            .minPeriodOn = 30.0
           }
         }
         ActuatorGrowthLight bank3 {
@@ -693,7 +793,7 @@ Simulation sim {
       Accumulator co2 {
         .change = ./controller[controlVariable]
         .minValue = 0.0
-        .maxValue = setpoints/co2/capacity[value]
+        .maxValue = controllers/co2/max[value]
         PidController controller {
           .sensedValue = indoors[co2]
           .desiredValue = setpoints/co2/concentration[value]
@@ -706,7 +806,7 @@ Simulation sim {
       .g0 = 0.1
       .g1 = 1.64
       .re = 200.0
-      .lai = 1.0
+      .lai = 2.5
       .coverage = 0.95
       .Jmax = 145.52
       .Vcmax = 71.61
@@ -730,24 +830,18 @@ Simulation sim {
     }
     Budget budget {
     }
-    Summary summary {
-      Distribution Tin {
-        .input = gh/budget/indoors[temperature]
-        .sections = c(10,50,90)
-      }
-    }
   }
   OutputR output {
     Box variables {
       &Uoutside = shelter/layers/cover[UtopAdj]
       &Uinside = shelter/layers/cover[UbottomAdj]
       &transpiration = budget[transpiration]
-      &spVentilationTemperature = controllers/ventilation/temperatureThreshold[value]
-      &spHeatingTemperature = controllers/heating[value]
+      &spVentilationTemperature = controllers/heating/desiredIndoorsTemperature[value]
+      &spHeatingTemperature = controllers/ventilation/desiredIndoorsTemperature[value]
       &spCo2 = setpoints/co2/concentration[value]
       &soilT = outdoors[soilTemperature]
       &skyT = budget/sky[temperature]
-      &sensibleVentFlux = actuators/ventilation[sensibleHeatFlux]
+      &sensibleVentFlux = budget[ventilationHeatLoss]
       &screen3T = budget/screen3[temperature]
       &screen2T = budget/screen2[temperature]
       &screen1T = budget/screen1[temperature]
@@ -765,7 +859,6 @@ Simulation sim {
       &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
       &lightUseEfficiency = plant[lue]
       &leafT = budget/plant[temperature]
-      &latentVentFlux = actuators/ventilation[latentHeatFlux]
       &indoorsTotalPar = plant[incidentPar]
       &indoorsT = budget/indoors[temperature]
       &indoorsRh = budget/indoors[rh]
@@ -777,11 +870,12 @@ Simulation sim {
       &floorT = budget/floor[temperature]
       &coverT = budget/cover[temperature]
       &condensation = budget[condensation]
+      &ventOpening = actuators/ventilation[opening]
       &airFluxTotal = actuators/ventilation[value]
-      &actVentilation = actuators/ventilation[value]
+      &actVentilation = actuators/ventilation[ventFlux]
       &actScreen3 = actuators/screens/layer3[state]
       &actScreen2 = actuators/screens/layer2[state]
-      &actScreen1  = actuators/screens/layer1[state]
+      &actScreen1 = actuators/screens/layer1[state]
       &actPipeTempOut2 = actuators/heatPipes/circuit2[outflowTemperature]
       &actPipeTempOut1 = actuators/heatPipes/circuit1[outflowTemperature]
       &actPipeTempIn2 = actuators/heatPipes/circuit2[inflowTemperature]
@@ -796,15 +890,17 @@ Simulation sim {
     }
     PageR  {
       .xAxis = calendar[dateTime]
-      // .maximizeWindow = TRUE
+      .maximizeWindow = TRUE
       PlotR  {
-        .ports = summary[heatingCost] //output/variables[*]
+        .ports = output/variables[*]
         .nrow = 7
       }
     }
     OutputSelector selector {
       .beginDateTime = global[beginDate]
       .period = 10
+      .useLocalDecimalChar = FALSE
+      .skipFormats = FALSE
     }
   }
 }
