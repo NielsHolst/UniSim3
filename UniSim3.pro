@@ -27,6 +27,11 @@ unisim.depends = command
 # Simulation model modules
 #
 
+SUBDIRS += vg
+vg.subdir = src/plugins/vg
+vg.depends = base
+unisim.depends = vg
+
 ##SUBDIRS += aphid
 ##aphid.subdir = src/plugins/aphid
 ##aphid.depends = base
@@ -36,16 +41,6 @@ unisim.depends = command
 ##cmbp.subdir = src/plugins/cmbp
 ##cmbp.depends = base
 ##unisim.depends = cmbp
-
-#SUBDIRS += coffee
-#coffee.subdir = src/plugins/coffee
-#coffee.depends = base
-#unisim.depends = coffee
-#
-#SUBDIRS += MusselBed
-#MusselBed.subdir = src/plugins/MusselBed
-#MusselBed.depends = base
-#unisim.depends = MusselBed
 
 ##SUBDIRS += PestTox
 ##PestTox.subdir = src/plugins/PestTox
@@ -57,10 +52,15 @@ unisim.depends = command
 ##saccharina.depends = base
 ##unisim.depends = saccharina#
 
-SUBDIRS += vg
-vg.subdir = src/plugins/vg
-vg.depends = base
-unisim.depends = vg
+#SUBDIRS += coffee
+#coffee.subdir = src/plugins/coffee
+#coffee.depends = base
+#unisim.depends = coffee
+#
+#SUBDIRS += MusselBed
+#MusselBed.subdir = src/plugins/MusselBed
+#MusselBed.depends = base
+#unisim.depends = MusselBed
 
 #
 # InfoGrow modules

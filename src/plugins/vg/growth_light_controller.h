@@ -20,11 +20,16 @@ public:
 private:
     // Inputs
     int mode;
-    double thresholdLow, thresholdHigh, input,
+    double thresholdLow, thresholdHigh,
+        desiredLightSum, currentLightSum, expectedSunlightSum,
+        input,
         minPeriodOn, timeStepSecs;
+    bool atMidnight;
     // Outputs
     bool isOn;
     double periodOn;
+    // Data
+    enum class Mode{Off=0, Threshold=1, LightSum=2, On=10};
 };
 } //namespace
 

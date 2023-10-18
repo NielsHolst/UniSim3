@@ -1,0 +1,1662 @@
+<VG_SETUP format="vg">
+  <XML_Version>3</XML_Version>
+  <Description>
+    <LongDesc>Greenhouse 10.000 m2</LongDesc>
+    <WeatherFile>C:\VG2\VG Weather\DNK_Odense.txt</WeatherFile>
+    <Country>Denmark</Country>
+    <Location>Odense</Location>
+    <Longitude>10.4024</Longitude>
+    <Latitude>55.4038</Latitude>
+    <StartTime>01.01.2023</StartTime>
+    <StopTime>31.12.2023</StopTime>
+    <TimeStep>1</TimeStep>
+    <ShortDesc>Std21/4</ShortDesc>
+  </Description>
+  <Greenhouse>
+    <Positions>
+      <roof1 position="1">
+        <Weight>1</Weight>
+      </roof1>
+      <roof2 position="2">
+        <Weight>1</Weight>
+      </roof2>
+      <side1 position="3">
+        <Weight>0.6</Weight>
+      </side1>
+      <side2 position="4">
+        <Weight>0.6</Weight>
+      </side2>
+      <end1 position="5">
+        <Weight>0.2</Weight>
+      </end1>
+      <end2 position="6">
+        <Weight>0.2</Weight>
+      </end2>
+    </Positions>
+    <Length>100</Length>
+    <SpanSize>4</SpanSize>
+    <NumberOfSpans>25</NumberOfSpans>
+    <GreenhouseReductionFactorLight>0.2</GreenhouseReductionFactorLight>
+    <TrempelHeight>4</TrempelHeight>
+    <RoofPitch>26</RoofPitch>
+    <UwindSlope>0.5</UwindSlope>
+    <leakage>0.1</leakage>
+    <screenPerfection>0.95</screenPerfection>
+    <floor-Uindoors>7.5</floor-Uindoors>
+    <floor-Usoil>0.1</floor-Usoil>
+    <floor-heatCapacity>42000</floor-heatCapacity>
+    <floor-reflectance>0.4</floor-reflectance>
+    <HasHeatSink>0</HasHeatSink>
+    <priceHeat>30</priceHeat>
+    <pricePower>60</pricePower>
+    <Currency>missing</Currency>
+    <CalibrationHeat>1</CalibrationHeat>
+    <CalibrationPower>1</CalibrationPower>
+    <InitialSoilTemperature>12</InitialSoilTemperature>
+    <CO2PIDProp>0.05</CO2PIDProp>
+    <ScreenLagPeriod>10</ScreenLagPeriod>
+    <VentWindCoef>10</VentWindCoef>
+    <VentTemperatureCoef>4</VentTemperatureCoef>
+    <Crops>
+      <Crop index="0" layer="0" position="0">
+        <LAI>1</LAI>
+        <Jmax25>145.5200</Jmax25>
+        <GammaStar>55.4700</GammaStar>
+        <lightRespiration>0.7400</lightRespiration>
+        <BallBerryIntercept>0.1000</BallBerryIntercept>
+        <BallBerrySlope>1.6400</BallBerrySlope>
+        <Alpha>0.24</Alpha>
+        <propAreaCultured>0.95</propAreaCultured>
+        <Product>PotChrysanthemum</Product>
+        <Vcmax25>71.6100</Vcmax25>
+        <k>0.7</k>
+        <re>200</re>
+        <Km>600</Km>
+        <alpha>0.24</alpha>
+        <theta>0.85</theta>
+        <Q10>1.03</Q10>
+      </Crop>
+    </Crops>
+    <Fogs>
+      <Fog index="1" layer="1" position="1">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog8</Product>
+        <Number>1</Number>
+      </Fog>
+      <Fog index="1" layer="1" position="2">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog2</Product>
+        <Number>1</Number>
+      </Fog>
+      <Fog index="1" layer="1" position="3">
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog3</Product>
+        <Number>1</Number>
+        <Efficiency>1</Efficiency>
+      </Fog>
+      <Fog index="1" layer="1" position="4">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog4</Product>
+        <Number>1</Number>
+        <Number>1</Number>
+      </Fog>
+      <Fog index="1" layer="1" position="5">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog5</Product>
+        <Number>1</Number>
+      </Fog>
+      <Fog index="1" layer="1" position="6">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog6</Product>
+        <Number>1</Number>
+      </Fog>
+      <Fog index="1" layer="1" position="7">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog7</Product>
+        <Number>1</Number>
+      </Fog>
+      <Fog index="1" layer="1" position="8">
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>50</MaxHumidification>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>Fog8</Product>
+        <Number>1</Number>
+        <Number>1</Number>
+      </Fog>
+    </Fogs>
+    <HeatBuffer>
+      <HeatBuffer index="1" layer="1" position="1">
+        <MaxHeatStorage>100000</MaxHeatStorage>
+        <HeatLossCoefficientIn>1</HeatLossCoefficientIn>
+        <HeatLossCoefficientOut>1</HeatLossCoefficientOut>
+        <HeatLossStorage>20</HeatLossStorage>
+        <HeatStorageProvideEnergy>0</HeatStorageProvideEnergy>
+      </HeatBuffer>
+    </HeatBuffer>
+    <HeatExchangers>
+      <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+      <Number>0</Number>
+      <MaxFlowRate>100</MaxFlowRate>
+      <MaxLoad>3000</MaxLoad>
+      <Efficiency>1</Efficiency>
+      <MaxParasitLoad>50</MaxParasitLoad>
+      <HeatRecovery>0</HeatRecovery>
+      <Product>HeatExchanger2</Product>
+      <HeatExchanger index="1" layer="1" position="2">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+      <HeatExchanger index="1" layer="1" position="3">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+      <HeatExchanger index="1" layer="1" position="4">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+      <HeatExchanger index="1" layer="1" position="5">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+      <HeatExchanger index="1" layer="1" position="6">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+      <HeatExchanger index="1" layer="1" position="7">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+      <HeatExchanger index="1" layer="1" position="8">
+        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxLoad>3000</MaxLoad>
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>50</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+        <Product>HeatExchanger2</Product>
+      </HeatExchanger>
+    </HeatExchangers>
+    <Heatpipes>
+      <Heatpipe index="0" layer="0" position="1">
+        <Product>41 mm Steel</Product>
+        <PipeMaterialDesc>Iron</PipeMaterialDesc>
+        <InnerDiameter>0.0390</InnerDiameter>
+        <CommonFlowTemperature>80</CommonFlowTemperature>
+        <heatPipeFlowRate>50</heatPipeFlowRate>
+        <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
+        <k>0.0100</k>
+        <b>1.5000</b>
+        <PropLw>0.2000</PropLw>
+      </Heatpipe>
+      <Heatpipe index="0" layer="0" position="2">
+        <Product>41 mm Steel</Product>
+        <PipeMaterialDesc>Iron</PipeMaterialDesc>
+        <InnerDiameter>0.0390</InnerDiameter>
+        <CommonFlowTemperature>80</CommonFlowTemperature>
+        <heatPipeFlowRate>50</heatPipeFlowRate>
+        <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
+        <k>0.0100</k>
+        <b>1.5000</b>
+        <PropLw>0.2000</PropLw>
+      </Heatpipe>
+    </Heatpipes>
+    <HeatPumps>
+      <HeatPump index="1" layer="1" position="1">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="2">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="3">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="4">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="5">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="6">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="7">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+      <HeatPump index="1" layer="1" position="8">
+        <Product>HeatPump8</Product>
+        <CoolingTemperature>5</CoolingTemperature>
+        <Number>0</Number>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxCoolingLoad>1000</MaxCoolingLoad>
+        <CoolingEfficiency>1</CoolingEfficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <HeatRecovery>0</HeatRecovery>
+      </HeatPump>
+    </HeatPumps>
+    <Lamps>
+      <Products>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL300                                                                  </name>
+          <LampType>Led</LampType>
+          <Power>367</Power>
+          <MinPeriodOn>367</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.997</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>12000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL600                                                                  </name>
+          <LampType>Led</LampType>
+          <Power>436</Power>
+          <MinPeriodOn>436</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.523</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>12000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>NoName</Manufacture>
+          <name>HP Na 400W                                                                      </name>
+          <LampType>HpSl</LampType>
+          <Power>400</Power>
+          <MinPeriodOn>400</MinPeriodOn>
+          <MicroMolParPerWattSeconds>1.611</MicroMolParPerWattSeconds>
+          <Ballast>50</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>12000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>NoName</Manufacture>
+          <name>HP Na 600W                                                                      </name>
+          <LampType>HpSl</LampType>
+          <Power>670</Power>
+          <MinPeriodOn>670</MinPeriodOn>
+          <MicroMolParPerWattSeconds>1.642</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>12000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>NoName</Manufacture>
+          <name>E HP Na 600W                                                                    </name>
+          <LampType>HpSl</LampType>
+          <Power>635</Power>
+          <MinPeriodOn>635</MinPeriodOn>
+          <MicroMolParPerWattSeconds>1.732</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>12000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>NoName</Manufacture>
+          <name>E HP Na 1000W                                                                   </name>
+          <LampType>HpSl</LampType>
+          <Power>1035</Power>
+          <MinPeriodOn>1035</MinPeriodOn>
+          <MicroMolParPerWattSeconds>1.787</MicroMolParPerWattSeconds>
+          <Ballast>15</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.2</PropSw>
+          <BallastPropLw>0.2</BallastPropLw>
+          <LifeTime>12000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL300 Grow                                                             </name>
+          <LampType>Led</LampType>
+          <Power>550</Power>
+          <MinPeriodOn>550</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.5</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senamtic FL300 Sunlight                                                         </name>
+          <LampType>Led</LampType>
+          <Power>550</Power>
+          <MinPeriodOn>550</MinPeriodOn>
+          <MicroMolParPerWattSeconds>1.5</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL300 Grow White                                                       </name>
+          <LampType>Led</LampType>
+          <Power>550</Power>
+          <MinPeriodOn>550</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.3</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL100 Grow                                                             </name>
+          <LampType>Led</LampType>
+          <Power>150</Power>
+          <MinPeriodOn>150</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.45</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL100 Sunlight                                                         </name>
+          <LampType>Led</LampType>
+          <Power>150</Power>
+          <MinPeriodOn>150</MinPeriodOn>
+          <MicroMolParPerWattSeconds>1.3</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Senmatic</Manufacture>
+          <name>Senmatic FL100 Grow White                                                       </name>
+          <LampType>Led</LampType>
+          <Power>150</Power>
+          <MinPeriodOn>150</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.3</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/B LB 400V                                    </name>
+          <LampType>Led</LampType>
+          <Power>170</Power>
+          <MinPeriodOn>170</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.059</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/B MB 400V                                    </name>
+          <LampType>Led</LampType>
+          <Power>175</Power>
+          <MinPeriodOn>175</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.971</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/B HB 400V                                    </name>
+          <LampType>Led</LampType>
+          <Power>180</Power>
+          <MinPeriodOn>180</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.889</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/B LB HO 400V                                 </name>
+          <LampType>Led</LampType>
+          <Power>195</Power>
+          <MinPeriodOn>195</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.179</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/W LB 400V                                    </name>
+          <LampType>Led</LampType>
+          <Power>180</Power>
+          <MinPeriodOn>180</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.889</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/W MB 400V                                    </name>
+          <LampType>Led</LampType>
+          <Power>185</Power>
+          <MinPeriodOn>185</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.811</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/W HB 400V                                    </name>
+          <LampType>Led</LampType>
+          <Power>190</Power>
+          <MinPeriodOn>190</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.737</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/W LB HO 400V                                 </name>
+          <LampType>Led</LampType>
+          <Power>200</Power>
+          <MinPeriodOn>200</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.1</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting mod. DR/W MB HO 400V                                 </name>
+          <LampType>Led</LampType>
+          <Power>210</Power>
+          <MinPeriodOn>210</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.952</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting module DR/W/FR LB 400V                               </name>
+          <LampType>Led</LampType>
+          <Power>180</Power>
+          <MinPeriodOn>180</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.778</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting module DR/W/FR MB 400V                               </name>
+          <LampType>Led</LampType>
+          <Power>160</Power>
+          <MinPeriodOn>160</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.563</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>GreenPower LED toplighting module DR/W/FR RSE 400V                              </name>
+          <LampType>Led</LampType>
+          <Power>180</Power>
+          <MinPeriodOn>180</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.778</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>35000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Signify</Manufacture>
+          <name>Signify DR/B LB Standard                                                        </name>
+          <LampType>Led</LampType>
+          <Power>600</Power>
+          <MinPeriodOn>600</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.6</PropSw>
+          <BallastPropLw>0.6</BallastPropLw>
+          <LifeTime>36000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Signify</Manufacture>
+          <name>Signify DR/W LB Standard                                                        </name>
+          <LampType>Led</LampType>
+          <Power>620</Power>
+          <MinPeriodOn>620</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.9</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>36000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Signify</Manufacture>
+          <name>Signify DR/W MB Standard                                                        </name>
+          <LampType>Led</LampType>
+          <Power>630</Power>
+          <MinPeriodOn>630</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.8</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>36000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Signify</Manufacture>
+          <name>Signify DR/W/FR FR1_LB  Standard                                                </name>
+          <LampType>Led</LampType>
+          <Power>590</Power>
+          <MinPeriodOn>590</MinPeriodOn>
+          <MicroMolParPerWattSeconds>2.8</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>36000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Signify</Manufacture>
+          <name>Signify DR/W/FR FR4_RSE Standard                                                </name>
+          <LampType>Led</LampType>
+          <Power>590</Power>
+          <MinPeriodOn>590</MinPeriodOn>
+          <MicroMolParPerWattSeconds>0</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>36000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>None</Manufacture>
+          <name>None                                                                            </name>
+          <LampType>Led</LampType>
+          <Power>0</Power>
+          <MinPeriodOn>0</MinPeriodOn>
+          <MicroMolParPerWattSeconds>0</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0</PropLw>
+          <PropSw>0</PropSw>
+          <BallastPropLw>0</BallastPropLw>
+          <LifeTime>99000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Hortilux</Manufacture>
+          <name>HORTILED Top Sirius                                                             </name>
+          <LampType>Led</LampType>
+          <Power>525</Power>
+          <MinPeriodOn>525</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.5</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>36000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Hortilux</Manufacture>
+          <name>HORTILED Top Intense G2                                                         </name>
+          <LampType>Led</LampType>
+          <Power>1050</Power>
+          <MinPeriodOn>1050</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.48</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Hortilux</Manufacture>
+          <name>HORTILED Top Antares                                                            </name>
+          <LampType>Led</LampType>
+          <Power>1050</Power>
+          <MinPeriodOn>1050</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.51</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+        <Product>
+          <Manufacture>Philips</Manufacture>
+          <name>Deep Red/White LB                                                               </name>
+          <LampType>Led</LampType>
+          <Power>800</Power>
+          <MinPeriodOn>800</MinPeriodOn>
+          <MicroMolParPerWattSeconds>3.5</MicroMolParPerWattSeconds>
+          <Ballast>0</Ballast>
+          <PropLw>0.1</PropLw>
+          <PropSw>0.4</PropSw>
+          <BallastPropLw>0.4</BallastPropLw>
+          <LifeTime>70000</LifeTime>
+        </Product>
+      </Products>
+      <Lamp index="0" layer="0" position="1">
+        <Product>E HP Na 1000W</Product>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.25</NumberInstalled>
+        <Manufacture>NoName</Manufacture>
+      </Lamp>
+      <Lamp index="0" layer="0" position="2">
+        <Product>None</Product>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.25</NumberInstalled>
+        <Manufacture>None</Manufacture>
+      </Lamp>
+      <Lamp index="0" layer="0" position="3">
+        <Product>None</Product>
+        <Efficiency>1</Efficiency>
+        <NumberInstalled>0.5</NumberInstalled>
+        <Manufacture>None</Manufacture>
+      </Lamp>
+    </Lamps>
+    <PadFans>
+      <PadFan index="1" layer="1" position="1">
+        <Efficiency>1</Efficiency>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <MaxFlowRate>100</MaxFlowRate>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+      </PadFan>
+      <PadFan index="1" layer="1" position="2">
+        <Efficiency>1</Efficiency>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+      </PadFan>
+      <PadFan index="1" layer="1" position="3">
+        <Efficiency>1</Efficiency>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+      </PadFan>
+      <PadFan index="1" layer="1" position="4">
+        <Efficiency>1</Efficiency>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxParasitLoad>10</MaxParasitLoad>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+      </PadFan>
+      <PadFan index="1" layer="1" position="5">
+        <Efficiency>1</Efficiency>
+        <MaxFlowRate>100</MaxFlowRate>
+        <MaxFlowRate>100</MaxFlowRate>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+        <MaxParasitLoad>10</MaxParasitLoad>
+      </PadFan>
+      <PadFan index="1" layer="1" position="6">
+        <Efficiency>1</Efficiency>
+        <MaxFlowRate>100</MaxFlowRate>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+        <MaxParasitLoad>10</MaxParasitLoad>
+      </PadFan>
+      <PadFan index="1" layer="1" position="7">
+        <Efficiency>1</Efficiency>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+      </PadFan>
+      <PadFan index="1" layer="1" position="8">
+        <MaxParasitLoad>10</MaxParasitLoad>
+      </PadFan>
+      <PadFan index="1" layer="1" position="7">
+        <MaxParasitLoad>10</MaxParasitLoad>
+      </PadFan>
+      <PadFan index="1" layer="1" position="8">
+        <Efficiency>1</Efficiency>
+        <MaxFlowRate>100</MaxFlowRate>
+        <Product>PadFan8</Product>
+        <Number>1</Number>
+      </PadFan>
+    </PadFans>
+    <Panes>
+      <Products>
+        <Product name="Combined                                                    ">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0</PaneUValue>
+          <PaneReflection>0.9</PaneReflection>
+          <PaneLwReflection>0</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="Double Glazing                                              ">
+          <PaneTransmission>0.82</PaneTransmission>
+          <PaneUValue>2.7</PaneUValue>
+          <PaneReflection>0.18</PaneReflection>
+          <PaneLwReflection>0.18</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="Glass plus PE foil                                          ">
+          <PaneTransmission>0.66</PaneTransmission>
+          <PaneUValue>2.46</PaneUValue>
+          <PaneReflection>0.24</PaneReflection>
+          <PaneLwReflection>0.2</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="Glass plus AluBob b1                                        ">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.57</PaneUValue>
+          <PaneReflection>0.9</PaneReflection>
+          <PaneLwReflection>0.9</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="Insulation 80mm                                             ">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.3</PaneUValue>
+          <PaneReflection>0.8</PaneReflection>
+          <PaneLwReflection>0.8</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PC 2 wall 10 mm                                             ">
+          <PaneTransmission>0.81</PaneTransmission>
+          <PaneUValue>3.02</PaneUValue>
+          <PaneReflection>0.19</PaneReflection>
+          <PaneLwReflection>0.3</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PC 3 wall 16 mm                                             ">
+          <PaneTransmission>0.74</PaneTransmission>
+          <PaneUValue>2.4</PaneUValue>
+          <PaneReflection>0.26</PaneReflection>
+          <PaneLwReflection>0.5</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PC 5 wall 25 mm                                             ">
+          <PaneTransmission>0.68</PaneTransmission>
+          <PaneUValue>1.6</PaneUValue>
+          <PaneReflection>0.32</PaneReflection>
+          <PaneLwReflection>0.5</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PC 6 wall 16 mm                                             ">
+          <PaneTransmission>0.59</PaneTransmission>
+          <PaneUValue>1.84</PaneUValue>
+          <PaneReflection>0.41</PaneReflection>
+          <PaneLwReflection>0.5</PaneLwReflection>
+          <PaneLwTransmission>0.2</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PC plus AluBob B1                                           ">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.45</PaneUValue>
+          <PaneReflection>0.95</PaneReflection>
+          <PaneLwReflection>0.9</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PE Foil                                                     ">
+          <PaneTransmission>0.8</PaneTransmission>
+          <PaneUValue>3.97</PaneUValue>
+          <PaneReflection>0.2</PaneReflection>
+          <PaneLwReflection>0.2</PaneLwReflection>
+          <PaneLwTransmission>0.8</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="Single glass 4mm                                            ">
+          <PaneTransmission>0.8</PaneTransmission>
+          <PaneUValue>6.5</PaneUValue>
+          <PaneReflection>0.1</PaneReflection>
+          <PaneLwReflection>0.15</PaneLwReflection>
+          <PaneLwTransmission>0.02</PaneLwTransmission>
+          <PaneHeatCapacity>8400</PaneHeatCapacity>
+        </Product>
+        <Product name="PUR sandwich 40 mm                                          ">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.5</PaneUValue>
+          <PaneReflection>0.9</PaneReflection>
+          <PaneLwReflection>0.9</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+        <Product name="PUR sandwich 50 mm                                          ">
+          <PaneTransmission>0</PaneTransmission>
+          <PaneUValue>0.4</PaneUValue>
+          <PaneReflection>0.9</PaneReflection>
+          <PaneLwReflection>0.9</PaneLwReflection>
+          <PaneLwTransmission>0</PaneLwTransmission>
+          <PaneHeatCapacity>1</PaneHeatCapacity>
+        </Product>
+      </Products>
+      <Pane index="0" layer="0" position="1">
+        <Product>Single glass 4mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="2">
+        <Product>Single glass 4mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="3">
+        <Product>PC 3 wall 16 mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="4">
+        <Product>PC 3 wall 16 mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="5">
+        <Product>PC 3 wall 16 mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="6">
+        <Product>PC 3 wall 16 mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="7">
+        <Product>Single glass 4mm</Product>
+      </Pane>
+      <Pane index="0" layer="0" position="8">
+        <Product>Single glass 4mm</Product>
+      </Pane>
+    </Panes>
+    <ScreenLayers>
+      <ScreenLayer index="1" layer="1" position="0">
+        <Actuator>Energy+Shade</Actuator>
+      </ScreenLayer>
+      <ScreenLayer index="2" layer="2" position="0">
+        <Actuator>Shade</Actuator>
+      </ScreenLayer>
+      <ScreenLayer index="3" layer="3" position="0">
+        <Actuator>Blackout</Actuator>
+      </ScreenLayer>
+    </ScreenLayers>
+    <Screens>
+      <!--Layer 1 er yderst, 2 dernæst og 3 inderst-->
+      <Products>
+        <Product name="Bonar PhormiTex 55 B1                                                 ">
+          <Transmission>0.45</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.55</ReflectionInwards>
+          <InsulationU>3</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.55</EnergySaving>
+        </Product>
+        <Product name="Bonar PhormiTex 66 B1                                                 ">
+          <Transmission>0.35</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.65</ReflectionInwards>
+          <InsulationU>0.1</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.6</EnergySaving>
+        </Product>
+        <Product name="Bonar Phormitex Bright                                                ">
+          <Transmission>0.86</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.12</ReflectionInwards>
+          <InsulationU>0.3</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS 7265 D AW                                                          ">
+          <Transmission>0.25</Transmission>
+          <ReflectionOutwards>0.73</ReflectionOutwards>
+          <ReflectionInwards>0.73</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="LS 7965 FR AW                                                         ">
+          <Transmission>0.19</Transmission>
+          <ReflectionOutwards>0.77</ReflectionOutwards>
+          <ReflectionInwards>0.77</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3015 O                                                     ">
+          <Transmission>0.61</Transmission>
+          <ReflectionOutwards>0.37</ReflectionOutwards><!-- NH: Rettet -->
+          <ReflectionInwards>0.37</ReflectionInwards><!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3045                                                       ">
+          <Transmission>0.64</Transmission>
+          <ReflectionOutwards>0.35</ReflectionOutwards><!-- NH: Rettet -->
+          <ReflectionInwards>0.35</ReflectionInwards><!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3315 O FR                                                  ">
+          <Transmission>0.6</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.4</ReflectionInwards>
+          <InsulationU>5</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3647 FR                                                    ">
+          <Transmission>0.5</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.5</ReflectionInwards>
+          <InsulationU>1.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4047 FR                                                    ">
+          <Transmission>0.56</Transmission>
+          <ReflectionOutwards>0.41</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.41</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4115 O E FR                                                ">
+          <Transmission>0.53</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.47</ReflectionInwards>
+          <InsulationU>6.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4145                                                       ">
+          <Transmission>0.53</Transmission>
+          <ReflectionOutwards>0.43</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.43</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4515 O FR                                                  ">
+          <Transmission>0.52</Transmission>
+          <ReflectionOutwards>0.44</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.44</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4520 O FR                                                  ">
+          <Transmission>0.52</Transmission>
+          <ReflectionOutwards>0.44</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.44</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4820 O                                                     ">
+          <Transmission>0.49</Transmission>
+          <ReflectionOutwards>0.46</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.46</ReflectionInwards>  <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4945 R FR                                                  ">
+          <Transmission>0.37</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.63</ReflectionInwards>
+          <InsulationU>1.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5020 O E A FR                                              ">
+          <Transmission>0.39</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.61</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5045                                                       ">
+          <Transmission>0.46</Transmission>
+          <ReflectionOutwards>0.48</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.48</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5047 FR                                                    ">
+          <Transmission>0.46</Transmission>
+          <ReflectionOutwards>0.48</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.48</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5220 O FR                                                  ">
+          <Transmission>0.49</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.51</ReflectionInwards>
+          <InsulationU>3.8</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 6020 O E FR                                                ">
+          <Transmission>0.33</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.67</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 6147 FR                                                    ">
+          <Transmission>0.35</Transmission>
+          <ReflectionOutwards>0.65</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.65</ReflectionInwards>   <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 7247 FR                                                    ">
+          <Transmission>0.22</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.78</ReflectionInwards>
+          <InsulationU>1.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 7445 R FR                                                  ">
+          <Transmission>0.2</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.8</ReflectionInwards>
+          <InsulationU>1.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Luxous 1347 FR                                                     ">
+          <Transmission>0.87</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.13</ReflectionInwards>
+          <InsulationU>1.1</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Luxous 1547 D FR                                                   ">
+          <Transmission>0.7</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.3</ReflectionInwards>
+          <InsulationU>3</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10070 FR WB B                                              ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>0.6</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10070 FR WB BW                                             ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>70</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10070 R FR W                                               ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>0.6</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10075 FR AB B                                              ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>0.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.75</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10075 FR AB BW                                             ">
+          <Transmission>0.1</Transmission>
+          <ReflectionOutwards>0.9</ReflectionOutwards>
+          <ReflectionInwards>0.9</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 9950 FR W                                                  ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0.99</ReflectionOutwards>  <!-- NH: Rettet -->
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>1.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.5</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 5120 O E AW                                                 ">
+          <Transmission>0.44</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.56</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 6125 OA E AW                                                ">
+          <Transmission>0.39</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.61</ReflectionInwards>
+          <InsulationU>2.7</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.25</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 6827 O FR                                                   ">
+          <Transmission>0.32</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.68</ReflectionInwards>
+          <InsulationU>2.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.27</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 7530 O E AW                                                 ">
+          <Transmission>0.25</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.75</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.3</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 5555 FR AW                                                   ">
+          <Transmission>0.41</Transmission>
+          <ReflectionOutwards>0.51</ReflectionOutwards>  <!-- NH: Rettet -->
+          <ReflectionInwards>0.51</ReflectionInwards> <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.55</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 5557 D                                                       ">
+          <Transmission>0.39</Transmission>
+          <ReflectionOutwards>0.53</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.65</ReflectionInwards><!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.57</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 6360 FR AW                                                   ">
+          <Transmission>0.63</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.37</ReflectionInwards>
+          <InsulationU>2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.6</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 6562 D                                                       ">
+          <Transmission>0.28</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.72</ReflectionInwards>
+          <InsulationU>2.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.62</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 6965 FR AW                                                   ">
+          <Transmission>0.29</Transmission>
+          <ReflectionOutwards>0.7</ReflectionOutwards>
+          <ReflectionInwards>0.7</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 7265 D R AW                                                  ">
+          <Transmission>0.24</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.76</ReflectionInwards>
+          <InsulationU>0.6</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="SLS 10 Ultra plus                                                     ">
+          <Transmission>0.81</Transmission>
+          <ReflectionOutwards>0.13</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.13</ReflectionInwards>  <!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.43</EnergySaving>
+        </Product>
+        <Product name="XLS Obscura Revolux AB BW                                             ">
+          <Transmission>0.1</Transmission>
+          <ReflectionOutwards>0.9</ReflectionOutwards>
+          <ReflectionInwards>0.9</ReflectionInwards>
+          <InsulationU>1</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.75</EnergySaving>
+        </Product>
+        <Product name="None                                                                  ">
+          <Transmission>1</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0</ReflectionInwards>
+          <InsulationU>10</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0</EnergySaving>
+        </Product>
+        <Product name="Novavert SHS Shade Therm ANTIFIRE B1                                  ">
+          <Transmission>0.35</Transmission>
+          <ReflectionOutwards>0.65</ReflectionOutwards> <!-- NH: Rettet -->
+          <ReflectionInwards>0.65</ReflectionInwards><!-- NH: Rettet -->
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="PH 98 FP plus PH 1 FP                                                 ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.78</EnergySaving>
+        </Product>
+      </Products>
+      <Screen index="1" layer="1" position="1">
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
+      </Screen>
+      <Screen index="2" layer="2" position="4">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="2" layer="2" position="5">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="2" layer="2" position="6">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="3" layer="3" position="1">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="3" layer="3" position="2">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="3" layer="3" position="3">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="3" layer="3" position="4">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="3" layer="3" position="5">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="3" layer="3" position="6">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="1" layer="1" position="2">
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
+      </Screen>
+      <Screen index="1" layer="1" position="3">
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
+      </Screen>
+      <Screen index="1" layer="1" position="4">
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
+      </Screen>
+      <Screen index="1" layer="1" position="5">
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
+      </Screen>
+      <Screen index="1" layer="1" position="6">
+        <Product>LS Harmony 3647 FR</Product>
+        <Manufacture>LS</Manufacture>
+      </Screen>
+      <Screen index="2" layer="2" position="1">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="2" layer="2" position="2">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+      <Screen index="2" layer="2" position="3">
+        <Product>None</Product>
+        <Manufacture>None</Manufacture>
+      </Screen>
+    </Screens>
+    <Vents>
+      <Vent index="0" layer="0" position="1">
+        <Length>3</Length>
+        <Width>3</Width>
+        <Number>200</Number>
+        <VentTransmissivity>1</VentTransmissivity>
+      </Vent>
+      <Vent index="0" layer="0" position="2">
+        <Length>3</Length>
+        <Width>3</Width>
+        <Number>200</Number>
+        <VentTransmissivity>1</VentTransmissivity>
+      </Vent>
+    </Vents>
+    <ShadingAgents>
+      <Products>
+        <Product name="test">
+          <SwReflectivity>0.2</SwReflectivity>
+          <LwReflectivity>0.2</LwReflectivity>
+        </Product>
+      </Products>
+      <ChosenProduct>test</ChosenProduct>
+    </ShadingAgents>
+  </Greenhouse>
+  <Climate>
+    <Setpoint>
+      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</HeatingTemp>
+      <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</VentTemp>
+      <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
+      <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
+      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation>
+      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin>
+      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
+      <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>
+      <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
+      <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive2Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenActive3Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
+      <screenEnergyThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold1>
+      <screenEnergyThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold2>
+      <screenEnergyThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThresholdBand>
+      <screenShadeThreshold1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold1>
+      <screenShadeThreshold2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold2>
+      <screenShadeThresholdBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</screenShadeThresholdBand>
+      <screenEnergyThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</screenEnergyThreshold3>
+      <screenFixed1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed1>
+      <screenFixed2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed2>
+      <screenFixed3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed3>
+      <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold3>
+      <ShadingAgentReduction index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</ShadingAgentReduction>
+      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity>
+      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature>
+      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand>
+      <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
+      <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
+      <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
+      <AssLightActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive3>
+      <AssLightOn1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn1>
+      <AssLightOff1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff1>
+      <AssLightOn2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn2>
+      <AssLightOff2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff2>
+      <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn3>
+      <AssLightOff3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff3>
+      <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">85</MaxRelHmd>
+      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd>
+      <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</MaxHeatAddHighRH>
+      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH>
+      <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>
+      <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>
+      <rhMaxBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</rhMaxBand>
+      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand>
+      <CO2Setpoint index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</CO2Setpoint>
+      <CO2Capacity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</CO2Capacity>
+      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand>
+      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold>
+    </Setpoint>
+  </Climate>
+  <Output>
+    <Period>10</Period>
+    <UseLocalDecimalChar>0</UseLocalDecimalChar>
+    <SkipFormats>1</SkipFormats>
+    <Variables>
+      <Variable name="actCo2" path="actuators/co2[value]"/>
+      <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
+      <Variable name="actionCode" path="budget[actionCode]"/>
+      <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
+      <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
+      <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
+      <Variable name="actLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="actLightPower" path="actuators/growthLights[powerUsage]"/>
+      <Variable name="actPipeTempIn1" path="actuators/heatPipes/circuit1[inflowTemperature]"/>
+      <Variable name="actPipeTempIn2" path="actuators/heatPipes/circuit2[inflowTemperature]"/>
+      <Variable name="actPipeTempOut1" path="actuators/heatPipes/circuit1[outflowTemperature]"/>
+      <Variable name="actPipeTempOut2" path="actuators/heatPipes/circuit2[outflowTemperature]"/>
+      <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
+      <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
+      <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
+      <Variable name="actVentilation" path="actuators/ventilation[value]"/>
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
+      <Variable name="condensation" path="budget[condensation]"/>
+      <Variable name="controlCode" path="budget[controlCode]"/>
+      <Variable name="coverT" path="budget/cover[temperature]"/>
+      <Variable name="floorT" path="budget/floor[temperature]"/>
+      <Variable name="grossAssimilationRate" path="plant[Pg]"/>
+      <Variable name="heatFluxCover" path="budget/cover[convectionTop]"/>
+      <Variable name="heatFluxFloor" path="budget/cover[convectionBottom]"/>
+      <Variable name="indoorsCo2" path="budget/indoors[co2]"/>
+      <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
+      <Variable name="indoorsRh" path="budget/indoors[rh]"/>
+      <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
+      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/>
+      <Variable name="leafT" path="budget/plant[temperature]"/>
+      <Variable name="lightUseEfficiency" path="plant[lue]"/>
+      <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
+      <Variable name="lwEmissionCover" path="budget/cover[lwEmissionTop]"/>
+      <Variable name="netAssimilationRate" path="plant[Pn]"/>
+      <Variable name="netGrowthRate" path="plant[growthRate]"/>
+      <Variable name="netGrowthRateLeaf" path="plant[leafGrowthRate]"/>
+      <Variable name="outdoorsLight" path="outdoors[radiation]"/>
+      <Variable name="outdoorsPar" path="outdoors[par]"/>
+      <Variable name="outdoorsRh" path="outdoors[rh]"/>
+      <Variable name="outdoorsT" path="outdoors[temperature]"/>
+      <Variable name="outdoorsWindSpeed" path="outdoors[windSpeed]"/>
+      <Variable name="pipeT" path="budget/heatPipes[temperature]"/>
+      <Variable name="respirationRate" path="plant[Rd]"/>
+      <Variable name="screen1T" path="budget/screen1[temperature]"/>
+      <Variable name="screen2T" path="budget/screen2[temperature]"/>
+      <Variable name="screen3T" path="budget/screen3[temperature]"/>
+      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]"/>
+      <Variable name="skyT" path="budget/sky[temperature]"/>
+      <Variable name="soilT" path="outdoors[soilTemperature]"/>
+      <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
+      <Variable name="spHeatingTemperature" path="controllers/heating[value]"/>
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]"/>
+      <Variable name="transpiration" path="budget[transpiration]"/>
+      <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
+      <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
+    </Variables>
+  </Output>
+  <Status>
+    <LigthSum>
+      <Period>10</Period>
+    </LigthSum>
+    <TwemperatureAvg>
+      <Period>20</Period>
+    </TwemperatureAvg>
+  </Status>
+</VG_SETUP>

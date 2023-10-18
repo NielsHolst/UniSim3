@@ -676,7 +676,7 @@
   <Output>
     <Period>10</Period> <!-- NH: Output hver halve time er fint -->
     <UseLocalDecimalChar>0</UseLocalDecimalChar> <!-- NH: Skal nok sættes til værdien 1 på danske PCer -->
-    <SkipFormats>0</SkipFormats>
+    <SkipFormats>1</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>

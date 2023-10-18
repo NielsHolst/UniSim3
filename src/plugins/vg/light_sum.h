@@ -16,16 +16,21 @@ class LightSum : public base::Box
 {
 public: 
     LightSum(QString name, Box *parent);
+    void initialize();
     void reset();
     void update();
 private:
     // Inputs
-    int numDays, stepWithinDay;
-    double timeStep, parIntensity;
+    int numDays, timeStepSecs, stepWithinDay;
+    double indoorsPar, outdoorsPar;
+    bool atMidnight;
     // Outputs
-    double value;
+    double value, indoorsAccumulated, outdoorsExpected;
     // Data
-    base::CircularBuffer<double> _buffer;
+    int _stepsPerDay;
+    base::CircularBuffer<double> _lightSum;
+    int _yesterday, _today;
+    QVector<double> _buffer[2];
 };
 
 } //namespace

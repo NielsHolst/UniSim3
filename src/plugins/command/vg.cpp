@@ -63,17 +63,18 @@ void vg::writeScreenCalibration() {
 
 void vg::writeScreenHeader() {
     _stream <<
-        "ScreenName\tScreenThreshold\tUinsulation\n";
+        "ScreenName\tUinsulation\n";
 }
 
 void vg::writeNoScreenReference() {
-    _stream << "none\t-999\t10e6\n";
+    _stream << "none\t10e6\n";
 }
 
 void vg::writeScreenValues(QString name) {
-    const QVector<double> Uvalues = {0, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2};
+    const QVector<double> Uvalues = {0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6};
+//    const QVector<double> Uvalues = {0.05, 25.6};
     for (double U : Uvalues) {
-        _stream << name << "\t5\t" << U << "\n";
+        _stream << name << "\t" << U << "\n";
     }
 }
 

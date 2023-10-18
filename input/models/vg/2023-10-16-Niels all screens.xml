@@ -501,8 +501,80 @@
     </ScreenLayers>
     <Screens>
       <!--Layer 1 er yderst, 2 dernæst og 3 inderst-->
-      <Products>
-        <Product name="LS Harmony 3647 FR">
+      <Products includeAll="1">
+        <Product name="Bonar PhormiTex 55 B1                                                 ">
+          <Transmission>0.45</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.55</ReflectionInwards>
+          <InsulationU>3</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.55</EnergySaving>
+        </Product>
+        <Product name="Bonar PhormiTex 66 B1                                                 ">
+          <Transmission>0.35</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.65</ReflectionInwards>
+          <InsulationU>0.1</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.6</EnergySaving>
+        </Product>
+        <Product name="Bonar Phormitex Bright                                                ">
+          <Transmission>0.86</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.12</ReflectionInwards>
+          <InsulationU>0.3</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS 7265 D AW                                                          ">
+          <Transmission>0.25</Transmission>
+          <ReflectionOutwards>0.73</ReflectionOutwards>
+          <ReflectionInwards>0.73</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="LS 7965 FR AW                                                         ">
+          <Transmission>0.19</Transmission>
+          <ReflectionOutwards>0.77</ReflectionOutwards>
+          <ReflectionInwards>0.77</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3015 O                                                     ">
+          <Transmission>0.61</Transmission>
+          <ReflectionOutwards>0.47</ReflectionOutwards>
+          <ReflectionInwards>0.47</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3045                                                       ">
+          <Transmission>0.64</Transmission>
+          <ReflectionOutwards>0.45</ReflectionOutwards>
+          <ReflectionInwards>0.45</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3315 O FR                                                  ">
+          <Transmission>0.6</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.4</ReflectionInwards>
+          <InsulationU>5</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 3647 FR                                                    ">
           <Transmission>0.5</Transmission>
           <ReflectionOutwards>0.02</ReflectionOutwards>
           <ReflectionInwards>0.5</ReflectionInwards>
@@ -511,7 +583,322 @@
           <HeatCapacity>80</HeatCapacity>
           <EnergySaving>0.47</EnergySaving>
         </Product>
-        <Product name="None">
+        <Product name="LS Harmony 4047 FR                                                    ">
+          <Transmission>0.56</Transmission>
+          <ReflectionOutwards>0.51</ReflectionOutwards>
+          <ReflectionInwards>0.51</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4115 O E FR                                                ">
+          <Transmission>0.53</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.47</ReflectionInwards>
+          <InsulationU>6.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4145                                                       ">
+          <Transmission>0.53</Transmission>
+          <ReflectionOutwards>0.53</ReflectionOutwards>
+          <ReflectionInwards>0.53</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4515 O FR                                                  ">
+          <Transmission>0.52</Transmission>
+          <ReflectionOutwards>0.54</ReflectionOutwards>
+          <ReflectionInwards>0.54</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.15</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4520 O FR                                                  ">
+          <Transmission>0.52</Transmission>
+          <ReflectionOutwards>0.54</ReflectionOutwards>
+          <ReflectionInwards>0.54</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4820 O                                                     ">
+          <Transmission>0.49</Transmission>
+          <ReflectionOutwards>0.56</ReflectionOutwards>
+          <ReflectionInwards>0.56</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 4945 R FR                                                  ">
+          <Transmission>0.37</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.63</ReflectionInwards>
+          <InsulationU>1.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5020 O E A FR                                              ">
+          <Transmission>0.39</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.61</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5045                                                       ">
+          <Transmission>0.46</Transmission>
+          <ReflectionOutwards>0.58</ReflectionOutwards>
+          <ReflectionInwards>0.58</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5047 FR                                                    ">
+          <Transmission>0.46</Transmission>
+          <ReflectionOutwards>0.58</ReflectionOutwards>
+          <ReflectionInwards>0.58</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 5220 O FR                                                  ">
+          <Transmission>0.49</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.51</ReflectionInwards>
+          <InsulationU>3.8</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 6020 O E FR                                                ">
+          <Transmission>0.33</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.67</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 6147 FR                                                    ">
+          <Transmission>0.35</Transmission>
+          <ReflectionOutwards>0.66</ReflectionOutwards>
+          <ReflectionInwards>0.66</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 7247 FR                                                    ">
+          <Transmission>0.22</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.78</ReflectionInwards>
+          <InsulationU>1.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Harmony 7445 R FR                                                  ">
+          <Transmission>0.2</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.8</ReflectionInwards>
+          <InsulationU>1.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.45</EnergySaving>
+        </Product>
+        <Product name="LS Luxous 1347 FR                                                     ">
+          <Transmission>0.87</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.13</ReflectionInwards>
+          <InsulationU>1.1</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Luxous 1547 D FR                                                   ">
+          <Transmission>0.7</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.3</ReflectionInwards>
+          <InsulationU>3</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.47</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10070 FR WB B                                              ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>0.6</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10070 FR WB BW                                             ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>70</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10070 R FR W                                               ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>0.6</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10075 FR AB B                                              ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>0.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.75</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 10075 FR AB BW                                             ">
+          <Transmission>0.1</Transmission>
+          <ReflectionOutwards>0.9</ReflectionOutwards>
+          <ReflectionInwards>0.9</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="LS Obscura 9950 FR W                                                  ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>1</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>1.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.5</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 5120 O E AW                                                 ">
+          <Transmission>0.44</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.56</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.2</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 6125 OA E AW                                                ">
+          <Transmission>0.39</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.61</ReflectionInwards>
+          <InsulationU>2.7</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.25</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 6827 O FR                                                   ">
+          <Transmission>0.32</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.68</ReflectionInwards>
+          <InsulationU>2.4</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.27</EnergySaving>
+        </Product>
+        <Product name="LS Solaro 7530 O E AW                                                 ">
+          <Transmission>0.25</Transmission>
+          <ReflectionOutwards>0.01</ReflectionOutwards>
+          <ReflectionInwards>0.75</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.3</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 5555 FR AW                                                   ">
+          <Transmission>0.41</Transmission>
+          <ReflectionOutwards>0.61</ReflectionOutwards>
+          <ReflectionInwards>0.61</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.55</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 5557 D                                                       ">
+          <Transmission>0.39</Transmission>
+          <ReflectionOutwards>0.63</ReflectionOutwards>
+          <ReflectionInwards>0.63</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.57</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 6360 FR AW                                                   ">
+          <Transmission>0.63</Transmission>
+          <ReflectionOutwards>0</ReflectionOutwards>
+          <ReflectionInwards>0.37</ReflectionInwards>
+          <InsulationU>2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.6</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 6562 D                                                       ">
+          <Transmission>0.28</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.72</ReflectionInwards>
+          <InsulationU>2.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.62</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 6965 FR AW                                                   ">
+          <Transmission>0.29</Transmission>
+          <ReflectionOutwards>0.7</ReflectionOutwards>
+          <ReflectionInwards>0.7</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="LS Tempa 7265 D R AW                                                  ">
+          <Transmission>0.24</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.76</ReflectionInwards>
+          <InsulationU>0.6</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.65</EnergySaving>
+        </Product>
+        <Product name="SLS 10 Ultra plus                                                     ">
+          <Transmission>0.81</Transmission>
+          <ReflectionOutwards>0.33</ReflectionOutwards>
+          <ReflectionInwards>0.33</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.43</EnergySaving>
+        </Product>
+        <Product name="XLS Obscura Revolux AB BW                                             ">
+          <Transmission>0.1</Transmission>
+          <ReflectionOutwards>0.9</ReflectionOutwards>
+          <ReflectionInwards>0.9</ReflectionInwards>
+          <InsulationU>1</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.75</EnergySaving>
+        </Product>
+        <Product name="None                                                                  ">
           <Transmission>1</Transmission>
           <ReflectionOutwards>0</ReflectionOutwards>
           <ReflectionInwards>0</ReflectionInwards>
@@ -519,6 +906,24 @@
           <U>0.6</U>
           <HeatCapacity>80</HeatCapacity>
           <EnergySaving>0</EnergySaving>
+        </Product>
+        <Product name="Novavert SHS Shade Therm ANTIFIRE B1                                  ">
+          <Transmission>0.35</Transmission>
+          <ReflectionOutwards>0.66</ReflectionOutwards>
+          <ReflectionInwards>0.66</ReflectionInwards>
+          <InsulationU>0</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.7</EnergySaving>
+        </Product>
+        <Product name="PH 98 FP plus PH 1 FP                                                 ">
+          <Transmission>0.01</Transmission>
+          <ReflectionOutwards>0.02</ReflectionOutwards>
+          <ReflectionInwards>0.99</ReflectionInwards>
+          <InsulationU>3.2</InsulationU>
+          <U>0.6</U>
+          <HeatCapacity>80</HeatCapacity>
+          <EnergySaving>0.78</EnergySaving>
         </Product>
       </Products>
       <Screen index="1" layer="1" position="1">
@@ -676,7 +1081,7 @@
   <Output>
     <Period>10</Period> <!-- NH: Output hver halve time er fint -->
     <UseLocalDecimalChar>0</UseLocalDecimalChar> <!-- NH: Skal nok sættes til værdien 1 på danske PCer -->
-    <SkipFormats>0</SkipFormats>
+    <SkipFormats>1</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>

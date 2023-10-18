@@ -17,13 +17,32 @@ Message::Message(QString name, Box *parent)
 {
     help("prints a message at the prompt");
     Input(text).help("Text message to print");
+    Input(when).help("In which step to print the message (reset, initialize, etc.)");
+}
+
+void Message::initialize() {
+    if (when == "initialize")
+        dialog().information(when + " " + text);
 }
 
 void Message::reset() {
+    if (when == "reset")
+        dialog().information(when + " " + text);
 }
 
 void Message::update() {
-    dialog().information(text);
+    if (when == "update")
+        dialog().information(when + " " + text);
+}
+
+void Message::cleanup() {
+    if (when == "cleanup")
+        dialog().information(when + " " + text);
+}
+
+void Message::debrief() {
+    if (when == "debrief")
+        dialog().information(when + " " + text);
 }
 
 } //namespace

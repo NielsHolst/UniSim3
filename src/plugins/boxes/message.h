@@ -12,8 +12,11 @@ class Message : public base::Box
 {
 public: 
     Message(QString name, Box *parent);
+    void initialize();
     void reset();
     void update();
+    void cleanup();
+    void debrief();
 private:
     // Inputs
     QString text, when;

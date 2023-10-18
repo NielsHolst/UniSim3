@@ -55,7 +55,7 @@ Plant::Plant(QString name, Box *parent)
     useLayerAsOutput();
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
-    Output(incidentPar).unit("mymol PAR/m2 ground/s").help("PAR hitting the canopy");
+    Output(incidentPar).unit("μmol PAR/m2 ground/s").help("PAR hitting the canopy");
     Output(Pn).unit("μmol CO2/m2 ground/s").help("Net photosynthetic rate");
     Output(Pg).unit("μmol CO2/m2 ground/s").help("Gross photosynthetic rate");
     Output(Rd).unit("μmol CO2/m2 ground/s").help("Respiration rate");
@@ -80,7 +80,7 @@ void Plant::update() {
 
 void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
     netRadiation_ = netRadiation;
-    incidentPar  = parAbsorbed/lai/swAbsorptivityTop;
+    incidentPar  = parAbsorbed/swAbsorptivityTop;
     svp_          = svp(indoorsTemperature);
     vp_           = vpFromRh(indoorsTemperature, indoorsRh);
     svpSlope_     = svpSlope(indoorsTemperature);
@@ -137,7 +137,7 @@ void Plant::updateTemperature() {
 }
 
 void Plant::updateTranspiration() {
-    if (/*eqZero(incidentPar) ||*/ netRadiation_ < 0.)
+    if (leZero(netRadiation_))
         transpiration =  0.;
     else {
         double
@@ -227,7 +227,7 @@ double Plant::TJmax() const {
 // Non-rectangular hyperbola
 double Plant::Jfun() const {
     const double
-        &PPFD(incidentPar),
+        &PPFD(incidentPar/lai),
         &Jmax(JmaxAdj_);
     return
         (alpha*PPFD + Jmax - sqrt(p2(alpha*PPFD + Jmax) - 4*alpha*theta*PPFD*Jmax))/(2*theta);

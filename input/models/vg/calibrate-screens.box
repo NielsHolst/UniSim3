@@ -723,22 +723,15 @@ Simulation sim{
     Budget budget{
     }
     Summary summary{
-      Distribution Tin {
-        .input = gh/budget/indoors[temperature]
-        .sections = c(10,50,90)
-      }
     }
   } // greenhouse
   OutputR output{
-    PageR {
-      .xAxis = calendar[dateTime]
-      PlotR {
-        .ports = gh/budget/indoors[output::*]
-      }
+    OutputText {
+      .ports = gh/budget/indoors[output::*]
     }
     OutputSelector selector{
       .beginDateTime = global[beginDate]
-      .period = 5 
+      .final = TRUE 
     }
   }
 }

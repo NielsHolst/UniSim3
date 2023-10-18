@@ -20,10 +20,11 @@ GrowthLightController::GrowthLightController(QString name, Box *parent)
     : Box(name, parent), isOn(false)
 {
     help("control lights on/off according to setting");
-    Input(mode).help("Control mode can be 0=off, 1=threshold-controlled, 10=on").unit("0|1|10");
+    Input(mode).help("Control mode can be 0=off, 1=by threshold, 2=by light sum, 10=on").unit("0|1|10");
     Input(input).help("Current value of threshold variable");
     Input(thresholdLow). help("If threshold-controlled the light is switched on below this threshold").unit("W/m2");
     Input(thresholdHigh).help("If threshold-controlled the light is switched off above this threshold").unit("W/m2");
+    Input(desiredLightSum).help("Targetted light sum").unit("mol PAR/m2/d");
     Input(minPeriodOn).help("Minimum period that light stays on").unit("min");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");
     Output(isOn).unit("bool").help("Is light on?");
@@ -36,14 +37,16 @@ void GrowthLightController::reset() {
 
 void GrowthLightController::update() {
     // Switch light or off according to mode and input
-    bool nowOn = isOn;
-    if (mode == 0) {
+    bool
+        nowOn = isOn,
+        lightSumAchieved = !atMidnight && (currentLightSum + expectedSunlightSum > desiredLightSum);
+    if (mode == static_cast<int>(Mode::Off)) {
         isOn = false;
     }
-    else if (mode == 10) {
+    else if (mode == static_cast<int>(Mode::On)) {
         isOn = true;
     }
-    else if (mode == 1) {
+    else if (mode == static_cast<int>(Mode::Threshold)) {
         if (isOn) {
             bool switchOff = (input > thresholdHigh);
             isOn = !switchOff;

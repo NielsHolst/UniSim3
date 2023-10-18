@@ -43,7 +43,7 @@ Budget::Budget(QString name, base::Box *parent)
     : Box(name, parent)
 {
     help("resolves energy and water budgets across layers and volumes");
-    Input(radPrecision).equals(0.1).unit("W/m2|mumol/m2/s").help("Precision of numerical solution to radiation budget");
+    Input(radPrecision).equals(0.1).unit("W/m2 | μmol/m2/s").help("Precision of numerical solution to radiation budget");
     Input(tempPrecision).equals(2.0).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");
     Input(timeStep).imports("calendar[timeStepSecs]");
@@ -75,6 +75,10 @@ Budget::Budget(QString name, base::Box *parent)
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
     Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
     Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
+    Output(sunParAbsorbedInCover).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
+    Output(sunParAbsorbedInScreens).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
+    Output(sunParHittingPlant).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
+    Output(growthLightParHittingPlant).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
 }
 
 void Budget::amend() {
@@ -172,7 +176,7 @@ void Budget::addLayers() {
 
 
     // Attach sky
-    BudgetLayer *budgetLayerSky = findOne<BudgetLayer*>("./sky");
+    budgetLayerSky = findOne<BudgetLayer*>("./sky");
     budgetLayerSky->attach(sky, nullptr, nullptr);
     layers << budgetLayerSky;
 
@@ -187,12 +191,13 @@ void Budget::addLayers() {
         BudgetLayer *budgetLayerScreen = findOne<BudgetLayer*>("./"+screenName);
         budgetLayerScreen->attach(screens[i], indoorsVol, indoorsVol);
         layers << budgetLayerScreen;
+        _sunParAbsorbedInScreens << budgetLayerScreen->port("parAbsorbedTop")->valuePtr<double>();
         ++i;
     }
 
     // Attach growth lights
     if (growthLights) {
-        BudgetLayer *budgetLayerGrowthLights = findOne<BudgetLayer*>("./growthLights");
+        budgetLayerGrowthLights = findOne<BudgetLayer*>("./growthLights");
         budgetLayerGrowthLights->attach(growthLights, indoorsVol, indoorsVol);
         layers << budgetLayerGrowthLights;
     }
@@ -228,26 +233,27 @@ void Budget::addLayers() {
 void Budget::addState() {
     // Set pointers to states
     for (BudgetLayer *layer : layers) {
+        // Note: Absorption occurs in opposite direction of emission and flow
         swState.E  << &layer->swEmissionBottom;
         swState.E_ << &layer->swEmissionTop;
         swState.F  << &layer->swFlowBottom;
         swState.F_ << &layer->swFlowTop;
-        swState.A  << &layer->swAbsorbedBottom;
-        swState.A_ << &layer->swAbsorbedTop;
+        swState.A_ << &layer->swAbsorbedBottom;
+        swState.A  << &layer->swAbsorbedTop;
 
         lwState.E  << &layer->lwEmissionBottom;
         lwState.E_ << &layer->lwEmissionTop;
         lwState.F  << &layer->lwFlowBottom;
         lwState.F_ << &layer->lwFlowTop;
-        lwState.A  << &layer->lwAbsorbedBottom;
-        lwState.A_ << &layer->lwAbsorbedTop;
+        lwState.A_ << &layer->lwAbsorbedBottom;
+        lwState.A  << &layer->lwAbsorbedTop;
 
         parState.E  << &layer->parEmissionBottom;
         parState.E_ << &layer->parEmissionTop;
         parState.F  << &layer->parFlowBottom;
         parState.F_ << &layer->parFlowTop;
-        parState.A  << &layer->parAbsorbedBottom;
-        parState.A_ << &layer->parAbsorbedTop;
+        parState.A_ << &layer->parAbsorbedBottom;
+        parState.A  << &layer->parAbsorbedTop;
     }
 }
 
@@ -274,14 +280,13 @@ void Budget::initialize() {
     actuatorVentilation = findOne<ActuatorVentilation*>("actuators/ventilation");
     ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
-//    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
     // Hand-held controllers and actuators
     heatingController->initializeFamily();
     ventilationController->initializeFamily();
-//    heatingActuator->initializeFamily();
-//    ventilationActuator->initializeFamily();
-
+    // Find write for detailed output
     outputWriter = findOne<Box*>("outputWriter");
+    // Log test output
+    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
 }
 
 void Budget::reset() {
@@ -294,8 +299,6 @@ void Budget::reset() {
     // Hand-held controllers and actuators
     heatingController->resetFamily();
     ventilationController->resetFamily();
-//    heatingActuator->resetFamily();
-//    ventilationActuator->resetFamily();
 }
 
 void Budget::update() {
@@ -311,11 +314,21 @@ void Budget::update() {
             indoorsRh1   = indoorsVol->rh;
     indoorsSensibleHeatFlux = (indoorsTemp1 - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
     indoorsLatentHeatFlux = (ahFromRh(indoorsTemp0, indoorsRh0) - ahFromRh(indoorsTemp1, indoorsRh1))*LHe*averageHeight/timeStep;
+    // Approximate outputs ignoring reflection and transmission between layers
+    growthLightParHittingPlant = budgetLayerGrowthLights->parEmissionBottom;
+    sunParAbsorbedInCover = budgetLayerCover->parAbsorbedTop;
+    sunParAbsorbedInScreens = 0.;
+    for (auto ptrAbsorbed : _sunParAbsorbedInScreens)
+        sunParAbsorbedInScreens += *ptrAbsorbed;
+    sunParHittingPlant = std::max(
+            budgetLayerSky->parEmissionBottom + growthLightParHittingPlant -
+            sunParAbsorbedInCover - sunParAbsorbedInScreens, 0.);
 }
 
 void Budget::cleanup() {
-//    logger.close();
+    logger.close();
 }
+
 //    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
 //    logger.write(dump(lwParam, Dump::WithHeader));
 //    logger.write(dump(lwState, Dump::WithHeader));
@@ -376,8 +389,16 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     lwState.init();
 
     if (option == UpdateOption::IncludeSwPar) {
+        if (step>=2635) {
+            logger.write(convert<QString>(step));
+            logger.write(dump(swParam, Dump::WithHeader));
+            logger.write(dump(parState, Dump::WithHeader));
+        }
         distributeRadiation(swState,  swParam);
         distributeRadiation(parState, swParam);
+        if (step>=2635) {
+            logger.write(dump(parState, Dump::WithHeader));
+        }
     }
     distributeRadiation(lwState,  lwParam);
 

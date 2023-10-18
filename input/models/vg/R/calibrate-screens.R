@@ -1,5 +1,12 @@
 library(cowplot)
 
+iterationColumn   = "iteration"
+stepColumn        = "step"
+skip_formats      = FALSE
+box_script_folder = "C:/MyDocuments/QDev/UniSim3/input/models/vg"
+output_file_name  = "C:/MyDocuments/QDev/UniSim3/output/2023-10-16-Niels all screens_0020.txt"
+sim = read_output(output_file_name)
+
 ix_none = which(sim$ScreenName == "none")
 referenceCost = sim$heatingCost[ix_none]
 sim = sim[-ix_none,]
@@ -10,9 +17,9 @@ referenceCost
 summary(sim)
 sim
 
-s = sim[7:12,]
+s = sim[1:10,]
 estimate_U = function(s) {
-  saving = unique(s$saving)
+  saving = unique(s$energySaving)
   targetCost = referenceCost*(1-saving)
   U = approx(s$heatingCost, s$Uinsulation, targetCost)$y
   no_U = is.na(U) 

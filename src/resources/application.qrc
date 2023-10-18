@@ -196,24 +196,17 @@
     <file>data/input/models/saccharina/saccharina.R</file>
     <file>data/input/models/saccharina/sal-response.R</file>
     <file>data/input/models/saccharina/T-response.R</file>
-    <file>data/input/models/vg/2023-09-04-basis-analyse.R</file>
-    <file>data/input/models/vg/2023-09-04-basis-updated.box</file>
-    <file>data/input/models/vg/2023-09-04-basis.box</file>
-    <file>data/input/models/vg/2023-09-04-basis.xml</file>
-    <file>data/input/models/vg/2023-09-22-20Fod.xml</file>
-    <file>data/input/models/vg/2023-09-25-20Fod.box</file>
-    <file>data/input/models/vg/2023-09-25-20Fod.xml</file>
-    <file>data/input/models/vg/2023-09-26-TestGreenhouse-calibrate.box</file>
-    <file>data/input/models/vg/2023-09-26-TestGreenhouse.box</file>
-    <file>data/input/models/vg/2023-09-26-TestGreenhouse.xml</file>
-    <file>data/input/models/vg/2023-09-27 v313 Jeaa test hus.box</file>
-    <file>data/input/models/vg/2023-09-27 v313 Jeaa test hus.xml</file>
-    <file>data/input/models/vg/2023-09-27 v313a Jeaa test hus.box</file>
-    <file>data/input/models/vg/2023-09-27 v313a Jeaa test hus.xml</file>
-    <file>data/input/models/vg/2023-09-27-Jeaa test hus uden gardin.xml</file>
-    <file>data/input/models/vg/2023-09-27-Jeaa test hus.box</file>
-    <file>data/input/models/vg/2023-09-27-Jeaa test hus.xml</file>
-    <file>data/input/models/vg/2023-10-02-Jeaa test hus.xml</file>
+    <file>data/input/models/vg/2023-10-07-Jeaa all screens rettet.xml</file>
+    <file>data/input/models/vg/2023-10-07-Jeaa test hus.xml</file>
+    <file>data/input/models/vg/2023-10-07-Niels.box</file>
+    <file>data/input/models/vg/2023-10-16-Niels all screens full.txt</file>
+    <file>data/input/models/vg/2023-10-16-Niels all screens.box</file>
+    <file>data/input/models/vg/2023-10-16-Niels all screens.txt</file>
+    <file>data/input/models/vg/2023-10-16-Niels all screens.xml</file>
+    <file>data/input/models/vg/2023-10-16-Niels lightsum.box</file>
+    <file>data/input/models/vg/2023-10-16-Niels lightsum.xml</file>
+    <file>data/input/models/vg/2023-10-16-Niels test hus.box</file>
+    <file>data/input/models/vg/2023-10-16-Niels test hus.xml</file>
     <file>data/input/models/vg/bygrowers-heating.R</file>
     <file>data/input/models/vg/bygrowers-heating.txt</file>
     <file>data/input/models/vg/bygrowers-heating.xlsx</file>
@@ -221,13 +214,11 @@
     <file>data/input/models/vg/calibrate-all.txt</file>
     <file>data/input/models/vg/calibrate-screens.box</file>
     <file>data/input/models/vg/calibrate-test.txt</file>
-    <file>data/input/models/vg/cover-heat-budget.R</file>
     <file>data/input/models/vg/DNK_Odense.txt</file>
-    <file>data/input/models/vg/Foulum-2022.txt</file>
-    <file>data/input/models/vg/greenhouse.box</file>
     <file>data/input/models/vg/R/0-energy-budget-functions.R</file>
     <file>data/input/models/vg/R/1-energy-budget-sw.R</file>
     <file>data/input/models/vg/R/2-energy-budget-lw.R</file>
+    <file>data/input/models/vg/R/2023-10-16-Niels all screens_0020.txt</file>
     <file>data/input/models/vg/R/3-energy-budget-convection.R</file>
     <file>data/input/models/vg/R/4-energy-budget-advection.R</file>
     <file>data/input/models/vg/R/5-energy-budget-plant.R</file>
@@ -253,8 +244,6 @@
     <file>data/input/models/vg/R/verify-weighted-sum.R</file>
     <file>data/input/models/vg/R/water-budget-integral.odt</file>
     <file>data/input/models/vg/R/water-budget-integral.R</file>
-    <file>data/input/models/vg/random_lw.box</file>
-    <file>data/input/models/vg/sensitivity.box</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>
