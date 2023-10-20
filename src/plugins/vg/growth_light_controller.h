@@ -21,15 +21,18 @@ private:
     // Inputs
     int mode;
     double thresholdLow, thresholdHigh,
-        desiredLightSum, currentLightSum, expectedSunlightSum,
+        desiredLightSum, currentLightSum,
         input,
         minPeriodOn, timeStepSecs;
     bool atMidnight;
     // Outputs
-    bool isOn;
+    bool isOn, switchOffForToday;
     double periodOn;
     // Data
     enum class Mode{Off=0, Threshold=1, LightSum=2, On=10};
+    // Methods
+    void switchByThreshold();
+    void switchByLightSum();
 };
 } //namespace
 

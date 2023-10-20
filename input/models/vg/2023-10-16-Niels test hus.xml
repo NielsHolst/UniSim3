@@ -338,7 +338,7 @@
       <Products>
         <Product>
           <Manufacture>NoName</Manufacture>
-          <name>E HP Na 1000W</name>
+          <Name>E HP Na 1000W</Name>
           <LampType>HpSl</LampType>
           <Power>1035</Power> <!-- NH: -->
           <MinPeriodOn>30</MinPeriodOn> <!-- NH: Fejl i din XML. Perioden er i minutter. -->
@@ -730,8 +730,8 @@
       <Variable name="skyT" path="budget/sky[temperature]"/>
       <Variable name="soilT" path="outdoors[soilTemperature]"/>
       <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
-      <Variable name="spHeatingTemperature" path="controllers/ventilation/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
-      <Variable name="spVentilationTemperature" path="controllers/heating/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
+      <Variable name="spHeatingTemperature" path="controllers/heating/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
       <Variable name="transpiration" path="budget[transpiration]"/>
       <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
       <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>

@@ -38,6 +38,8 @@ public:
     // Tail is the oldest value pushed
     int headIndex() const;
     // Index of head in the buffer; equals -1 if buffer is empty
+    void moveHead(int delta);
+    // Move head by delta, positive or negative
     T at(int i) const;
     // Returns value indexed relative to head (at index 0), i.e. and increasing index returns progressively older values
     T set(int i, T value);
@@ -114,18 +116,6 @@ T CircularBuffer<T>::push(T value) {
     _full = (_full || _head == _size-1);
 
     return replace( (*_vector)[_head], value );
-
-
-//    T &place((*_vector)[_head]),
-//      pushedOut = place;
-//    _sum += value - place;
-//    if (value < _min)
-//        _min = value;
-//    if (value > _max)
-//        _max = value;
-//    place = value;
-//    _full = (_full || _head == _size-1);
-//    return pushedOut;
 }
 
 template <class T>
@@ -163,6 +153,12 @@ T CircularBuffer<T>::tail() const {
 template <class T>
 int CircularBuffer<T>::headIndex() const {
     return _head;
+}
+
+template <class T>
+void CircularBuffer<T>::moveHead(int delta) {
+    Q_ASSERT(abs(delta) <= _size);
+    _head = (_head + _size + delta) % _size;
 }
 
 template <class T>

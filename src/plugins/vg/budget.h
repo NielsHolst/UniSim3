@@ -1,7 +1,7 @@
 #ifndef BUDGET_H
 #define BUDGET_H
 #include <base/box.h>
-#include <base/logger.h>
+//#include <base/logger.h>
 
 namespace vg {
 
@@ -33,7 +33,7 @@ private:
 
     int step;
     QDateTime dateTime;
-    base::Logger logger;
+//    base::Logger logger;
 
     // Output
     int radIterations, subSteps;
@@ -41,7 +41,7 @@ private:
         condensation, transpiration, ventedWater,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
         sunParAbsorbedInCover, sunParAbsorbedInScreens, sunParHittingPlant,
-        growthLightParHittingPlant;
+        growthLightParHittingPlant, totalPar;
     QDateTime subDateTime;
 
     // Volumes

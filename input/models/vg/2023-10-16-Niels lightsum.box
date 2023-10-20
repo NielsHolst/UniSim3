@@ -7,7 +7,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/01/05T12:00:00
+    .end = 2023/12/31
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -414,6 +414,26 @@ Simulation sim {
         }
       }
       Box growthLights {
+        Box lightSum {
+          PrioritySignal desired {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 15.0
+            }
+          }
+          PrioritySignal numDays {
+            DateTimeSignal  {
+              .beginDate = 1/1
+              .endDate = 31/12
+              .beginTime = 00:00:00
+              .endTime = 00:00:00
+              .signalInside = 3.0
+            }
+          }
+        }
         Box bank1 {
           PrioritySignal mode {
             DateTimeSignal  {
@@ -421,7 +441,7 @@ Simulation sim {
               .endDate = 31/12
               .beginTime = 06:00:00
               .endTime = 20:00:00
-              .signalInside = 1.0
+              .signalInside = 2.0
             }
             DateTimeSignal  {
               .beginDate = 1/1
@@ -674,6 +694,7 @@ Simulation sim {
       }
       Box growthLights {
         LightSum lightSum {
+          .numDays = setpoints/growthLights/lightSum/numDays[value]
         }
         GrowthLightController bank3 {
           .mode = setpoints/growthLights/bank3/mode[value]
@@ -681,6 +702,8 @@ Simulation sim {
           .thresholdLow = setpoints/growthLights/bank3/thresholds/low[value]
           .thresholdHigh = setpoints/growthLights/bank3/thresholds/high[value]
           .minPeriodOn = actuators/growthLights/bank3[minPeriodOn]
+          .desiredLightSum = setpoints/growthLights/lightSum/desired[value]
+          .currentLightSum = ../lightSum[progressiveValue]
         }
         GrowthLightController bank2 {
           .mode = setpoints/growthLights/bank2/mode[value]
@@ -688,6 +711,8 @@ Simulation sim {
           .thresholdLow = setpoints/growthLights/bank2/thresholds/low[value]
           .thresholdHigh = setpoints/growthLights/bank2/thresholds/high[value]
           .minPeriodOn = actuators/growthLights/bank2[minPeriodOn]
+          .desiredLightSum = setpoints/growthLights/lightSum/desired[value]
+          .currentLightSum = ../lightSum[progressiveValue]
         }
         GrowthLightController bank1 {
           .mode = setpoints/growthLights/bank1/mode[value]
@@ -695,6 +720,8 @@ Simulation sim {
           .thresholdLow = setpoints/growthLights/bank1/thresholds/low[value]
           .thresholdHigh = setpoints/growthLights/bank1/thresholds/high[value]
           .minPeriodOn = actuators/growthLights/bank1[minPeriodOn]
+          .desiredLightSum = setpoints/growthLights/lightSum/desired[value]
+          .currentLightSum = ../lightSum[progressiveValue]
         }
       }
     }
@@ -847,7 +874,7 @@ Simulation sim {
       // &outdoorsWindSpeed = outdoors[windSpeed]
       // &outdoorsT = outdoors[temperature]
       // &outdoorsRh = outdoors[rh]
-      &outdoorsPar = outdoors[par]
+      // &outdoorsPar = outdoors[par]
       // &outdoorsLight = outdoors[radiation]
       // &netGrowthRateLeaf = plant[leafGrowthRate]
       // &netGrowthRate = plant[growthRate]
@@ -856,8 +883,9 @@ Simulation sim {
       // &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
       // &lightUseEfficiency = plant[lue]
       // &leafT = budget/plant[temperature]
-      &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
-      &indoorsTotalPar = plant[incidentPar]
+      &indoorsSunPar = budget[sunParHittingPlant]
+      &growthLightPar = budget[growthLightParHittingPlant]
+      &totalPar = budget[totalPar]
       // &indoorsT = budget/indoors[temperature]
       // &indoorsRh = budget/indoors[rh]
       // &indoorsCo2 = budget/indoors[co2]
@@ -890,7 +918,7 @@ Simulation sim {
       .xAxis = calendar[dateTime]
       .maximizeWindow = FALSE
       PlotR  {
-        .ports = output/variables[*] | lightSum[output::*]
+        .ports = output/variables[*] | lightSum[value] | controllers/growthLights/bank1[switchOffForToday]
         .nrow = 7
       }
     }

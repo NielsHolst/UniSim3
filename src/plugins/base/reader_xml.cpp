@@ -270,6 +270,10 @@ void ReaderXml::readVirtualGreenhouse() {
                     setpoint("ShadingAgentReduction", _chosenShadingAgent).
                 endbox().
                 box().name("growthLights").
+                    box().name("lightSum");
+                        setpoint("AssLightLightSum", "desired");
+                        setpoint("AssLightLightSumDays", "numDays").
+                    endbox().
                     box().name("bank1");
                         setpoint("AssLightActive1", "mode").
                         box().name("thresholds");
@@ -772,7 +776,11 @@ BoxBuilder& ReaderXml::controllersScreens() {
 
 BoxBuilder& ReaderXml::controllersGrowthLights() {
     auto lamps = _doc->find("Greenhouse/Lamps")->children();
-    _builder->box().name("growthLights");
+    _builder->box().name("growthLights").
+        box("LightSum").name("lightSum").
+            port("numDays").imports("setpoints/growthLights/lightSum/numDays[value]").
+        endbox();
+
     for (auto la = lamps.begin(); la != lamps.end(); ++la) {
         XmlNode &lamp(*la.value());
         if (lamp.name() != "Lamp")
@@ -785,6 +793,8 @@ BoxBuilder& ReaderXml::controllersGrowthLights() {
             port("thresholdLow").imports("setpoints/growthLights/" + name + "/thresholds/low[value]").
             port("thresholdHigh").imports("setpoints/growthLights/" + name + "/thresholds/high[value]").
             port("minPeriodOn").imports("actuators/growthLights/" + name + "[minPeriodOn]").
+            port("desiredLightSum").imports("setpoints/growthLights/lightSum/desired[value]").
+            port("currentLightSum").imports("../lightSum[progressiveValue]").
         endbox();
     }
     _builder->endbox();

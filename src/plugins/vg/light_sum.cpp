@@ -6,9 +6,11 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/publish.h>
+#include <base/test_num.h>
 #include "light_sum.h"
 
 using namespace base;
+using namespace TestNum;
 
 namespace vg {
 
@@ -21,52 +23,54 @@ LightSum::LightSum(QString name, Box *parent)
     Input(numDays).equals(3.).unit("d").help("Number of days to accumulate light sum");
     Input(stepWithinDay).imports("calendar[stepWithinDay]");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");
-    Input(indoorsPar).imports("plant[incidentPar]");
-    Input(outdoorsPar).imports("outdoors[par]");
-    Input(atMidnight).imports("calendar[atMidnight]");
-    Output(value).unit("mol/m2/d").help("Accumulated light sum averages over `numDays`");
-    Output(indoorsAccumulated).unit("mol/m2").help("Today's accumulated indoors light");
-    Output(outdoorsExpected).unit("mol/m2").help("Expected sunlight sum for the rest of the day");
+    Input(daysPassed).imports("calendar[totalDays]");
+    Input(totalPar).imports("budget[totalPar]");
+    Input(sunPar).imports("budget[sunParHittingPlant]");
+    Output(progressiveValue).unit("mol/m2/d").help("Value progressing during the day");
+    Output(value).unit("mol/m2/d").help("Daily accumulated light sum averaged over `numDays`");
 }
 
 void LightSum::initialize() {
     _stepsPerDay = 24*3600/timeStepSecs;
-    _buffer[0].resize(_stepsPerDay);
-    _buffer[1].resize(_stepsPerDay);
-    _yesterday = 0;
-    _today = 1;
 }
 
 void LightSum::reset() {
     _lightSum.resize(numDays*_stepsPerDay);
-    indoorsAccumulated = 0.;
+    _sunPar.resize(_stepsPerDay);
 }
 
-void LightSum::update() {
-    // Update indoors light sum buffer
-    const double indoorsMolPar = indoorsPar*timeStepSecs*1e-6;
-    _lightSum.push(indoorsMolPar);
-    value = _lightSum.sum()/numDays;
-    // At midnight
-    if (stepWithinDay == 0) {
-        // Swap buffers
-        _yesterday = 1 - _yesterday;
-        _today     = 1 - _today;
-        // Update yesterday's buffer to contain summed PAR until midnight
-        double sum = 0;
-        for (auto it = _buffer[_yesterday].rbegin(); it != _buffer[_yesterday].rend(); ++it) {
-            sum += *it;
-            *it = sum;
-        }
+void LightSum::update() {        
+    // Convert to mol PAR
+    const double
+        totalMolPar = totalPar*timeStepSecs*1e-6,
+        sunMolPar   =   sunPar*timeStepSecs*1e-6;
+
+    // Fill buffer at beginning
+    if (eq(daysPassed, 1.)) {
+        for (int i=0; i<numDays; ++i)
+            fillInExpectedSunlight();
     }
-    // Accumulate today's indoors light
-    if (atMidnight)
-        indoorsAccumulated = indoorsMolPar;
-    else
-        indoorsAccumulated += indoorsMolPar;
-    // Update today's outdoors light buffer
-    _buffer[_today][stepWithinDay] = outdoorsPar*timeStepSecs*1e-6;;
-    outdoorsExpected = _buffer[_yesterday].at(stepWithinDay);
+    // At midnight
+    else if (stepWithinDay == 0) {
+        // Update achieved light sum at end of day
+        value = progressiveValue;
+        // Push todays's sunlight to light sum buffer; this is the expected total PAR for the coming day without growth light
+        fillInExpectedSunlight();
+        _lightSum.moveHead(-_stepsPerDay);
+    }
+
+    // Update progressive light sum
+    _lightSum.push(totalMolPar);
+    progressiveValue = _lightSum.sum()/numDays;
+
+    // Update today's sunlight buffer
+    _sunPar[stepWithinDay] = sunMolPar;
+
+}
+
+void LightSum::fillInExpectedSunlight() {
+    for (double sunPar : _sunPar)
+        _lightSum.push(sunPar);
 }
 
 } //namespace

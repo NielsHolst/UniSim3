@@ -77,8 +77,9 @@ Budget::Budget(QString name, base::Box *parent)
     Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
     Output(sunParAbsorbedInCover).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
     Output(sunParAbsorbedInScreens).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
-    Output(sunParHittingPlant).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
-    Output(growthLightParHittingPlant).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
+    Output(sunParHittingPlant).unit("μmol/m2/s").help("Sunlight PAR hitting plant canopy");
+    Output(growthLightParHittingPlant).unit("μmol/m2/s").help("Growth light PAR hitting plant canopy");
+    Output(totalPar).unit("μmol/m2/s").help("Total PAR hitting plant canopy");
 }
 
 void Budget::amend() {
@@ -286,7 +287,7 @@ void Budget::initialize() {
     // Find write for detailed output
     outputWriter = findOne<Box*>("outputWriter");
     // Log test output
-    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
+//    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
 }
 
 void Budget::reset() {
@@ -321,12 +322,12 @@ void Budget::update() {
     for (auto ptrAbsorbed : _sunParAbsorbedInScreens)
         sunParAbsorbedInScreens += *ptrAbsorbed;
     sunParHittingPlant = std::max(
-            budgetLayerSky->parEmissionBottom + growthLightParHittingPlant -
-            sunParAbsorbedInCover - sunParAbsorbedInScreens, 0.);
+            budgetLayerSky->parEmissionBottom - sunParAbsorbedInCover - sunParAbsorbedInScreens, 0.);
+    totalPar = growthLightParHittingPlant + sunParHittingPlant;
 }
 
 void Budget::cleanup() {
-    logger.close();
+//    logger.close();
 }
 
 //    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
@@ -389,16 +390,16 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     lwState.init();
 
     if (option == UpdateOption::IncludeSwPar) {
-        if (step>=2635) {
-            logger.write(convert<QString>(step));
-            logger.write(dump(swParam, Dump::WithHeader));
-            logger.write(dump(parState, Dump::WithHeader));
-        }
+//        if (step>=2635) {
+//            logger.write(convert<QString>(step));
+//            logger.write(dump(swParam, Dump::WithHeader));
+//            logger.write(dump(parState, Dump::WithHeader));
+//        }
         distributeRadiation(swState,  swParam);
         distributeRadiation(parState, swParam);
-        if (step>=2635) {
-            logger.write(dump(parState, Dump::WithHeader));
-        }
+//        if (step>=2635) {
+//            logger.write(dump(parState, Dump::WithHeader));
+//        }
     }
     distributeRadiation(lwState,  lwParam);
 

@@ -22,15 +22,15 @@ public:
 private:
     // Inputs
     int numDays, timeStepSecs, stepWithinDay;
-    double indoorsPar, outdoorsPar;
-    bool atMidnight;
+    double daysPassed, totalPar, sunPar;
     // Outputs
-    double value, indoorsAccumulated, outdoorsExpected;
+    double progressiveValue, value;
     // Data
     int _stepsPerDay;
     base::CircularBuffer<double> _lightSum;
-    int _yesterday, _today;
-    QVector<double> _buffer[2];
+    QVector<double> _sunPar;
+    // Methods
+    void fillInExpectedSunlight();
 };
 
 } //namespace
