@@ -4,7 +4,7 @@ iterationColumn   = "iteration"
 stepColumn        = "step"
 skip_formats      = FALSE
 box_script_folder = "C:/MyDocuments/QDev/UniSim3/input/models/vg"
-output_file_name  = "C:/MyDocuments/QDev/UniSim3/output/2023-10-16-Niels all screens_0020.txt"
+output_file_name  = "C:/MyDocuments/QDev/UniSim3/output/2023-10-20-Jeaa all ScreenCal_0013.txt"
 sim = read_output(output_file_name)
 
 ix_none = which(sim$ScreenName == "none")

@@ -36,6 +36,7 @@ Calendar::Calendar(QString name, Box *parent)
 
     Output(steps).help("Number of steps from begin to end");
     Output(stepWithinDay).help("Step number within day");
+    Output(stepsPerDay).help("Number of steps per day");
     Output(date).help("Current date");
     Output(time).help("Current time of the day");
     Output(dateTime).help("Current date and time");
@@ -79,6 +80,7 @@ void Calendar::reset() {
     }
     port("steps")->setConstness(true);
     stepWithinDay = 0;
+    stepsPerDay = 24*3600/timeStepSecs;
 
     dateTime = begin;
     totalTimeSteps = 0;

@@ -8,8 +8,8 @@
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
     <StartTime>01.01.2023</StartTime>
-    <StopTime>31.12.2023</StopTime>
-    <TimeStep>3</TimeStep>  
+    <StopTime>31.01.2023</StopTime>
+    <TimeStep>3</TimeStep> 
     <ShortDesc>Std21/4</ShortDesc>
   </Description>
   <Greenhouse>
@@ -56,9 +56,12 @@
     <CO2PIDProp>0.05</CO2PIDProp>
     <HeatingPIDProp>0.05</HeatingPIDProp> 
     <VentilationPIDProp>-0.0001</VentilationPIDProp> 
+    <TavgPIDProp>1.5</TavgPIDProp>     <!-- NH: Ny PID-regulering -->
+    <TavgPIDInt>0.0</TavgPIDInt>       <!-- NH: Ny PID-regulering -->
+    <TavgPIDDeriv>0.001</TavgPIDDeriv> <!-- NH: Ny PID-regulering -->
     <ScreenLagPeriod>10</ScreenLagPeriod>
     <VentWindCoef>50</VentWindCoef> 
-    <VentTemperatureCoef>14</VentTemperatureCoef>  
+    <VentTemperatureCoef>14</VentTemperatureCoef> 
     <Crops>
       <Crop index="0" layer="0" position="0">
         <LAI>2.5</LAI> 
@@ -233,7 +236,6 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature> 
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -244,7 +246,6 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature> 
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -625,8 +626,8 @@
       <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
       <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
       <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation> 
-      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin> 
-      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand> 
+      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin>
+      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
       <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
       <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
       <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
@@ -645,13 +646,8 @@
       <screenFixed3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed3>
       <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold3>
       <ShadingAgentReduction index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</ShadingAgentReduction>
-      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity> <!-- NH: Anvendes ikke pt. -->
-      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature> <!-- NH: Anvendes ikke pt. -->
-      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand> <!-- NH: Anvendes ikke pt. -->
-      <AssLightLightSum index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">15</AssLightLightSum> <!-- NH: Tilføjet (mol/m2/day). Anvendes når AssLightActive1..2..3 sættes til værdien 2 -->
-      <AssLightLightSumDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</AssLightLightSumDays> 
-      <!-- NH: Tilføjet: Antal dage for lyssumsgennemsnit --><AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
-      <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">2</AssLightActive1>  <!-- NH: Eksempel på aktivering af lyssumsstyring -->
+      <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
+      <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
       <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
       <AssLightActive3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive3>
       <AssLightOn1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn1>
@@ -660,21 +656,25 @@
       <AssLightOff2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff2>
       <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn3>
       <AssLightOff3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff3>
+      <AssLightLightSum index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">12</AssLightLightSum>
+      <AssLightLightSumDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</AssLightLightSumDays>
       <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">85</MaxRelHmd>
-      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd> <!-- NH: Anvendes ikke pt. -->
       <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</MaxHeatAddHighRH>
-      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH> <!-- NH: Anvendes ikke pt. -->
       <rhMaxBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</rhMaxBand>
-      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand> <!-- NH: Anvendes ikke pt. -->
       <CO2Setpoint index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</CO2Setpoint>
       <CO2Capacity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</CO2Capacity>
       <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand> 
       <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold> 
+      <Tavg     index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</Tavg>    <!-- NH: Nyt sætpunkt -->
+      <TavgMin  index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">15</TavgMin> <!-- NH: Nyt sætpunkt -->
+      <TavgMax  index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">25</TavgMax> <!-- NH: Nyt sætpunkt -->
+      <TavgDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</TavgDays> <!-- NH: Nyt sætpunkt -->
+      <TavgOn   index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</TavgOn>   <!-- NH: Nyt sætpunkt -->
     </Setpoint>
   </Climate>
   <Output>
-    <Period>10</Period>
-    <UseLocalDecimalChar>0</UseLocalDecimalChar> <!-- NH: Skal nok sættes til værdien 1 på danske PCer -->
+    <Period>10</Period> 
+    <UseLocalDecimalChar>0</UseLocalDecimalChar>
     <SkipFormats>1</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
@@ -682,7 +682,6 @@
       <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
       <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
       <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
-      <Variable name="lightSum" path="lightSum[value]"/> <!-- NH: Tilføjet. Den dagligt opnåede gennemsnitslyssum. Opdateres kun ved midnat. -->
       <Variable name="actLightPar" path="actuators/growthLights[parEmissionBottom]"/>
       <Variable name="actLightPower" path="actuators/growthLights[powerUsage]"/>
       <Variable name="actPipeTempIn1" path="actuators/heatPipes/circuit1[inflowTemperature]"/>
@@ -705,8 +704,8 @@
       <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
       <Variable name="indoorsRh" path="budget/indoors[rh]"/>
       <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsTavg" path="indoorsTemperature[average]"/> <!-- NH: Nyt output -->
       <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
-      <!-- <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/> NH: Udgået, men genopstår snart. Der skal opstilles et mere fuldstændigt vandbudget i output (det findes i modellen allerede) -->
       <Variable name="leafT" path="budget/plant[temperature]"/>
       <Variable name="lightUseEfficiency" path="plant[lue]"/>
       <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
@@ -724,14 +723,23 @@
       <Variable name="screen1T" path="budget/screen1[temperature]"/>
       <Variable name="screen2T" path="budget/screen2[temperature]"/>
       <Variable name="screen3T" path="budget/screen3[temperature]"/>
+      <Variable name="sensibleVentFlux" path="budget[ventilationHeatLoss]"/>
       <Variable name="skyT" path="budget/sky[temperature]"/>
       <Variable name="soilT" path="outdoors[soilTemperature]"/>
       <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
-      <Variable name="spHeatingTemperature" path="controllers/heating/desiredIndoorsTemperature[value]"/> 
-      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredIndoorsTemperature[value]"/>
+      <Variable name="spHeatingTemperature" path="controllers/heating/desiredTemperature[value]"/> <!-- NH: Ændret path. -->
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredTemperature[value]"/> <!-- NH: Ændret path. -->
       <Variable name="transpiration" path="budget[transpiration]"/>
       <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
       <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
     </Variables>
   </Output>
+  <!-- <Status> -->
+    <!-- <LigthSum> -->
+      <!-- <Period>10</Period> -->
+    <!-- </LigthSum> -->
+    <!-- <TwemperatureAvg> -->
+      <!-- <Period>20</Period> -->
+    <!-- </TwemperatureAvg> -->
+  <!-- </Status> -->
 </VG_SETUP>

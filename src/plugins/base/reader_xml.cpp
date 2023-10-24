@@ -43,8 +43,13 @@ namespace {
         return value;
     }
 
+    QString makeId(QString s) {
+        static auto regex = QRegularExpression("[^(A-Za-z0-9)]");
+        return s.simplified().trimmed().replace(regex, "_");
+    }
+
     bool isValidNodeName(QString s) {
-        const auto regex = QRegularExpression("^[a-zA-Z]+[a-zA-Z0-9]*");
+        static auto regex = QRegularExpression("^[a-zA-Z]+[a-zA-Z0-9]*");
         return s.contains(regex);
     }
 
@@ -245,6 +250,13 @@ void ReaderXml::readVirtualGreenhouse() {
                 endbox().
             endbox().
             box().name("setpoints").
+                box().name("averageTemperature");
+                    setpoint("Tavg", "targetTemperature");
+                    setpoint("TavgMin", "minTemperature");
+                    setpoint("TavgMax", "maxTemperature");
+                    setpoint("TavgDays", "numDays");
+                    setpoint("TavgOn", "isOn").
+                endbox().
                 box().name("rhMax");
                     setpoint("MaxRelHmd", "threshold");
                     setpoint("rhMaxBand", "band").
@@ -307,6 +319,29 @@ void ReaderXml::readVirtualGreenhouse() {
             endbox().
             box().name("controllers").
                 box("IgnoredBox").name("heating").
+                    box().name("desiredTemperature").
+                        aux("value").computes("if setpoints/averageTemperature/isOn[value] then ./averageControlled[value] else rhControlled[value]").
+                        box("Sum").name("rhControlled").
+                            port("values").computes("setpoints/heating/base[value] | ../humidityOffset[value]").
+                        endbox().
+                        box("Accumulator").name("averageControlled").
+                            port("change").imports("./controller[controlVariable]").
+                            port("minValue").imports("setpoints/averageTemperature/minTemperature[value]").
+                            port("maxValue").imports("setpoints/averageTemperature/maxTemperature[value]").
+                            box("PidController").name("controller").
+                                port("sensedValue").imports("./indoorsTemperature[average]").
+                                port("desiredValue").imports("setpoints/averageTemperature/targetTemperature[value]").
+                                port("timeStep").imports("budget[subTimeStep]").
+                                port("Kprop").equals(_doc->find("Greenhouse/TavgPIDProp")->toDouble()).
+                                port("Kint").equals(_doc->find("Greenhouse/TavgPIDInt")->toDouble()).
+                                port("Kderiv").equals(_doc->find("Greenhouse/TavgPIDDeriv")->toDouble()).
+                                box("Buffer").name("indoorsTemperature").
+                                    port("input").imports("indoors[temperature]").
+                                    port("size").computes("calendar[stepsPerDay] * setpoints/averageTemperature/numDays[value]").
+                                endbox().
+                            endbox().
+                        endbox().
+                    endbox().
                     box("ProportionalSignal").name("humidityOffset").
                         port("input").imports("indoors[rh]").
                         port("threshold").imports("setpoints/rhMax/threshold[value]").
@@ -314,24 +349,21 @@ void ReaderXml::readVirtualGreenhouse() {
                         port("maxSignal").imports("setpoints/heating/humidityOffset[value]").
                         port("increasingSignal").equals(true).
                     endbox().
-                    box("Sum").name("desiredIndoorsTemperature").
-                        port("values").computes("setpoints/heating/base[value] | ../humidityOffset[value]").
-                    endbox().
                     box("Accumulator").name("inflowTemperature").
                         port("change").imports("./controller[controlVariable]").
                         port("minValue").imports("setpoints/heating/minTemperature[value]").
                         port("maxValue").imports("setpoints/heating/maxTemperature[value]").
                         box("PidController").name("controller").
                             port("sensedValue").imports("indoors[temperature]").
-                            port("desiredValue").imports("../../desiredIndoorsTemperature[value]").
+                            port("desiredValue").imports("controllers/heating/desiredTemperature[value]").
                             port("timeStep").imports("budget[subTimeStep]").
                             port("Kprop").equals(_doc->find("Greenhouse/HeatingPIDProp")->toDouble()).
                         endbox().
                     endbox().
                 endbox().
                 box("IgnoredBox").name("ventilation").
-                    box("Sum").name("desiredIndoorsTemperature").
-                        port("values").computes("controllers/heating/desiredIndoorsTemperature[value] | setpoints/ventilation/offset[value]").
+                    box("Sum").name("desiredTemperature").
+                        port("values").computes("controllers/heating/desiredTemperature[value] | setpoints/ventilation/offset[value]").
                     endbox().
                     box("ProportionalSignal").name("crack").
                         port("input").imports("indoors[rh]").
@@ -353,7 +385,7 @@ void ReaderXml::readVirtualGreenhouse() {
                         port("maxValue").equals(1.0).
                         box("PidController").name("controller").
                             port("sensedValue").imports("indoors[temperature]").
-                            port("desiredValue").imports("../../desiredIndoorsTemperature[value]").
+                            port("desiredValue").imports("controllers/ventilation/desiredTemperature[value]").
                             port("timeStep").imports("budget[subTimeStep]").
                             port("Kprop").equals(_doc->find("Greenhouse/VentilationPIDProp")->toDouble()).
                         endbox().
@@ -511,8 +543,7 @@ BoxBuilder& ReaderXml::shelterCovers() {
 }
 
 const QString ReaderXml::productId(QString productName) {
-    static auto regex = QRegularExpression("[^(A-Za-z0-9)]");
-    QString id = productName.simplified().trimmed().replace(regex, "_");
+    QString id = makeId(productName);
     if (!isValidNodeName(id))
         ThrowException("Invalid name of product").value(id).hint("Must begin with a letter followed by letters and numbers");
     if (id.compare("none", Qt::CaseInsensitive) == 0)
@@ -886,11 +917,6 @@ BoxBuilder& ReaderXml::actuatorsScreens() {
     return *_builder;
 }
 
-namespace {
-    QString makeId(QString s) {
-        return s.simplified().replace(" ", "_");
-    }
-}
 BoxBuilder& ReaderXml::actuatorsGrowthLights() {
     _builder->box("GrowthLights").name("growthLights").
         box().name("products");

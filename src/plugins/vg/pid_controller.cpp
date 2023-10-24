@@ -39,8 +39,8 @@ PidController::PidController(QString name, Box *parent)
 
     Output(controlVariable).help("The control variable; tends to zero when all three error terms summed tend to zero");
     Output(error).help("The error");
-    Output(integral).help("The integral error").unit("min");
-    Output(derivative).help("The derivative of the approach of sensed towards target value").unit("/min");
+    Output(integral).help("The integral error");
+    Output(derivative).help("The derivative of the approach of sensed towards target value").unit("/s");
 }
 
 void PidController::reset() {
