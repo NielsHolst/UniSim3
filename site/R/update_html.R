@@ -1,5 +1,5 @@
 rm(list=ls(all=TRUE))
-setwd("~/QDev/UniSim3/site")
+setwd("C:/MyDocuments/QDev/UniSim3/site")
 source("R/common.R")
 
 extract_macros = function(lines) {
@@ -213,5 +213,4 @@ files = c(
   "download.html",
   "about.html"
 )
-
 l_ply(files, update_file)

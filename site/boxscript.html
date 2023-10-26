@@ -491,6 +491,7 @@ Simulation sim</code>
 <div class="begin macro"></div>
 <h2>Accumulator</h2>
 <h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initial</td><td>double</td><td>0.0 </td><td>Initial <span class="table-interface-code">value</span> at reset</td></tr>
 <tr><td>change</td><td>double</td><td>0.0 </td><td>Change added to <span class="table-interface-code">value</span></td></tr>
 <tr><td>minValue</td><td>double</td><td>-1.79769e+308 </td><td>Minimum possible <span class="table-interface-code">value</span></td></tr>
@@ -720,6 +721,8 @@ Simulation sim {
 <tr><td>timeUnit</td><td>string</td><td>"d" </td><td>Unit of time step (y|d|h|m|s)</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>steps</td><td>int</td><td>0 </td><td>Number of steps from begin to end</td></tr>
+<tr><td>stepWithinDay</td><td>int</td><td>0 </td><td>Step number within day</td></tr>
+<tr><td>stepsPerDay</td><td>int</td><td>0 </td><td>Number of steps per day</td></tr>
 <tr><td>date</td><td>date</td><td>null </td><td>Current date</td></tr>
 <tr><td>time</td><td>time</td><td>null </td><td>Current time of the day</td></tr>
 <tr><td>dateTime</td><td>datetime</td><td>null </td><td>Current date and time</td></tr>
@@ -1411,7 +1414,7 @@ temperature     hump humpOffset   ditch ditchOffset iteration step
 <h2>Maker</h2>
 <h3 id='interface'>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>replicates</td><td>int</td><td>1 </td><td>Supply either, (1) then number of clones to replicate from child boxes;</td></tr>
+<tr><td>replicates</td><td>int</td><td>1 </td><td>Supply either, (1) the number of clones to replicate from child boxes;</td></tr>
 <tr><td>names</td><td>vec_string</td><td>c() </td><td>or (2) the names of clones;</td></tr>
 <tr><td>fileName</td><td>string</td><td>"" </td><td>or (3) a file; each line specifies a clone; column headings label inputs to each clone.</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -1791,6 +1794,7 @@ hump at maxValue iteration step
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>text</td><td>string</td><td>"" </td><td>Text message to print</td></tr>
+<tr><td>when</td><td>string</td><td>"" </td><td>In which step to print the message (reset, initialize, etc.)</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>

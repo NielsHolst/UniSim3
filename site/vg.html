@@ -59,7 +59,7 @@
 <h2>ActuatorChalk</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>state</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">setpoints/chalk[value]</span></td></tr>
+<tr><td>state</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/setpoints/chalk[value]</span></td></tr>
 <tr><td>swReflectivity</td><td>double</td><td>0.0</td><td>Short-wave reflectivity potentially added to cover [0;1]</td></tr>
 <tr><td>lwReflectivity</td><td>double</td><td>0.0</td><td>Long-wave reflectivity potentially added to cover [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -75,23 +75,20 @@
 <h2>ActuatorGrowthLight</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is light currently switched on?</td></tr>
-<tr><td>power</td><td>double</td><td>0.0 W/m2</td><td>Power of installed lamps per greenhouse area</td></tr>
-<tr><td>ballast</td><td>double</td><td>0.0 W/m2</td><td>Power used by lamp ballast</td></tr>
-<tr><td>parPhotonCoef</td><td>double</td><td>1.6 micromole PAR/J</td><td>Number of PAR photons per spent lamp energy</td></tr>
+<tr><td>productName</td><td>string</td><td>"" </td><td>Name of product holding lamp parameters</td></tr>
+<tr><td>numberInstalled</td><td>double</td><td>0.0 /m2</td><td>Number of lamps installed</td></tr>
 <tr><td>efficiency</td><td>double</td><td>1.0</td><td>Proportion of intensity actually emitted [0;1]</td></tr>
-<tr><td>propSw</td><td>double</td><td>0.5</td><td>Proportion of power emitted as short-wave radiation [0;1]</td></tr>
-<tr><td>propLw</td><td>double</td><td>0.1</td><td>Proportion of power emitted as long-wave radiation [0;1]</td></tr>
-<tr><td>propConv</td><td>double</td><td>0.4</td><td>Proportion of power emitted as convective heat [0;1]</td></tr>
-<tr><td>propBallastLw</td><td>double</td><td>0.7</td><td>Proportion of ballast emitted as long-wave radiation [0;1]</td></tr>
-<tr><td>propBallastConv</td><td>double</td><td>0.3</td><td>Proportion of ballast emitted as convective heat [0;1]</td></tr>
+<tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is light currently switched on?</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>power</td><td>double</td><td>0.0 W/m2</td><td>Power of installed lamps</td></tr>
+<tr><td>ballast</td><td>double</td><td>0.0 W/m2</td><td>Power used by lamp ballast</td></tr>
 <tr><td>parEmissionBottom</td><td>double</td><td>0.0 micromole PAR/m2/s</td><td>PAR emission downwards</td></tr>
 <tr><td>swEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Short-wave emission downwards</td></tr>
 <tr><td>lwEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission downwards</td></tr>
 <tr><td>lwEmissionTop</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission upwards</td></tr>
 <tr><td>convectionBottom</td><td>double</td><td>0.0 W/m2</td><td>Convective heat downwards</td></tr>
 <tr><td>convectionTop</td><td>double</td><td>0.0 W/m2</td><td>Convective heat upwards</td></tr>
+<tr><td>minPeriodOn</td><td>double</td><td>0.0 min</td><td>Minimum period that light stays on</td></tr>
 <tr><td>powerUsage</td><td>double</td><td>0.0 W/m2</td><td>Current power usage</td></tr>
 </tbody></table>
 <div class="end macro"></div>
@@ -103,7 +100,7 @@
 <h2>ActuatorChalk</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>state</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">setpoints/chalk[value]</span></td></tr>
+<tr><td>state</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/setpoints/chalk[value]</span></td></tr>
 <tr><td>swReflectivity</td><td>double</td><td>0.0</td><td>Short-wave reflectivity potentially added to cover [0;1]</td></tr>
 <tr><td>lwReflectivity</td><td>double</td><td>0.0</td><td>Long-wave reflectivity potentially added to cover [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -119,23 +116,20 @@
 <h2>ActuatorGrowthLight</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is light currently switched on?</td></tr>
-<tr><td>power</td><td>double</td><td>0.0 W/m2</td><td>Power of installed lamps per greenhouse area</td></tr>
-<tr><td>ballast</td><td>double</td><td>0.0 W/m2</td><td>Power used by lamp ballast</td></tr>
-<tr><td>parPhotonCoef</td><td>double</td><td>1.6 micromole PAR/J</td><td>Number of PAR photons per spent lamp energy</td></tr>
+<tr><td>productName</td><td>string</td><td>"" </td><td>Name of product holding lamp parameters</td></tr>
+<tr><td>numberInstalled</td><td>double</td><td>0.0 /m2</td><td>Number of lamps installed</td></tr>
 <tr><td>efficiency</td><td>double</td><td>1.0</td><td>Proportion of intensity actually emitted [0;1]</td></tr>
-<tr><td>propSw</td><td>double</td><td>0.5</td><td>Proportion of power emitted as short-wave radiation [0;1]</td></tr>
-<tr><td>propLw</td><td>double</td><td>0.1</td><td>Proportion of power emitted as long-wave radiation [0;1]</td></tr>
-<tr><td>propConv</td><td>double</td><td>0.4</td><td>Proportion of power emitted as convective heat [0;1]</td></tr>
-<tr><td>propBallastLw</td><td>double</td><td>0.7</td><td>Proportion of ballast emitted as long-wave radiation [0;1]</td></tr>
-<tr><td>propBallastConv</td><td>double</td><td>0.3</td><td>Proportion of ballast emitted as convective heat [0;1]</td></tr>
+<tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is light currently switched on?</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>power</td><td>double</td><td>0.0 W/m2</td><td>Power of installed lamps</td></tr>
+<tr><td>ballast</td><td>double</td><td>0.0 W/m2</td><td>Power used by lamp ballast</td></tr>
 <tr><td>parEmissionBottom</td><td>double</td><td>0.0 micromole PAR/m2/s</td><td>PAR emission downwards</td></tr>
 <tr><td>swEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Short-wave emission downwards</td></tr>
 <tr><td>lwEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission downwards</td></tr>
 <tr><td>lwEmissionTop</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission upwards</td></tr>
 <tr><td>convectionBottom</td><td>double</td><td>0.0 W/m2</td><td>Convective heat downwards</td></tr>
 <tr><td>convectionTop</td><td>double</td><td>0.0 W/m2</td><td>Convective heat upwards</td></tr>
+<tr><td>minPeriodOn</td><td>double</td><td>0.0 min</td><td>Minimum period that light stays on</td></tr>
 <tr><td>powerUsage</td><td>double</td><td>0.0 W/m2</td><td>Current power usage</td></tr>
 </tbody></table>
 <div class="end macro"></div>
@@ -152,13 +146,13 @@
 <tr><td>k</td><td>double</td><td>0.0063 </td><td>Calibration parameter</td></tr>
 <tr><td>b</td><td>double</td><td>1.25 </td><td>Calibration parameter(!=1)</td></tr>
 <tr><td>propLw</td><td>double</td><td>0.5</td><td>Proportion of energy emitted as long-wave radiation [0;1]</td></tr>
-<tr><td>minTemperature</td><td>double</td><td>20.0 oC</td><td>Minimum inflow temperature</td></tr>
-<tr><td>maxTemperature</td><td>double</td><td>80.0 oC</td><td>Maximum inflow temperature</td></tr>
-<tr><td>desiredTemperature</td><td>double</td><td>0.0 oC</td><td>Desired inflow temperature</td></tr>
-<tr><td>indoorsTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
-<tr><td>groundArea</td><td>double</td><td>- m2</td><td>&larr; <span class="table-interface-code">geometry[groundArea]</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>inflowTemperature</td><td>double</td><td>0.0 oC</td><td>Water temperature at entry</td></tr>
+<tr><td>minTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">setpoints/heating/minTemperature[value]</span> (Minimum inflow temperature)</td></tr>
+<tr><td>maxTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">setpoints/heating/maxTemperature[value]</span> (Maximum inflow temperature)</td></tr>
+<tr><td>indoorsTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
+<tr><td>groundArea</td><td>double</td><td>- m2</td><td>&larr; <span class="table-interface-code">gh/geometry[groundArea]</span></td></tr>
+<tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">budget[subTimeStep]</span></td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>outflowTemperature</td><td>double</td><td>0.0 oC</td><td>Water temperature at exit</td></tr>
 <tr><td>transitTime</td><td>double</td><td>0.0 min</td><td>Average transit time of water</td></tr>
 <tr><td>temperatureDrop</td><td>double</td><td>0.0 oC</td><td>Drop in water temperature from entry to exit</td></tr>
@@ -178,7 +172,7 @@
 <h2>ActuatorHeatPump</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">construction/geometry[groundArea]</span></td></tr>
+<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[groundArea]</span></td></tr>
 <tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
 <tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors/humidity[rh]</span></td></tr>
 <tr><td>state</td><td>double</td><td>-</td><td>&larr; <span class="table-interface-code">setpoints/elementary/heatPumpsOn[value]</span> (Running state relative to full effect)</td></tr>
@@ -232,26 +226,23 @@
 <h2>ActuatorVentilation</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>desiredValue</td><td>double</td><td>0.0 /h</td><td>Desired ventilation rate</td></tr>
 <tr><td>ventAreaRatio</td><td>double</td><td>0.4 int</td><td>Total vent area in proportion to groundarea</td></tr>
 <tr><td>windCoef</td><td>double</td><td>50.0 /h/(m/s)</td><td>Proportionality of air flux with windspeed</td></tr>
-<tr><td>temperatureCoef</td><td>double</td><td>14.0 /h/K</td><td>Proportionality of air flux with temperature diffence</td></tr>
+<tr><td>temperatureCoef</td><td>double</td><td>14.0 /h/K</td><td>Proportionality of air flux with temperature difference</td></tr>
+<tr><td>opening</td><td>double</td><td>0.0</td><td>Ventilation relative to <span class="table-interface-code">maxVentFlux</span> [0;1]</td></tr>
 <tr><td>windSpeed</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[windSpeed]</span></td></tr>
-<tr><td>leakage</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">construction/leakage[value]</span></td></tr>
+<tr><td>leakage</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/construction/leakage[value]</span></td></tr>
+<tr><td>crackOpening</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/controllers/ventilation/crack[value]</span></td></tr>
 <tr><td>outdoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[temperature]</span></td></tr>
-<tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
+<tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget/indoors[temperature]</span></td></tr>
 <tr><td>outdoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[rh]</span></td></tr>
-<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[rh]</span></td></tr>
-<tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
-<tr><td>indoorsVolume</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[volume]</span></td></tr>
+<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget/indoors[rh]</span></td></tr>
+<tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">budget[subTimeStep]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>value</td><td>double</td><td>0.0 /h</td><td>Ventilation air flux, including leakage</td></tr>
-<tr><td>minValue</td><td>double</td><td>0.0 /h</td><td>Minimum possible air flux, including leakage</td></tr>
-<tr><td>maxValue</td><td>double</td><td>0.0 /h</td><td>Maximum possible air flux, including leakage</td></tr>
-<tr><td>relative</td><td>double</td><td>0.0</td><td>Ventilation relative to maximum possible [0;1]</td></tr>
-<tr><td>sensibleHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Sensible heat flux</td></tr>
-<tr><td>latentHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Latent heat flux</td></tr>
-<tr><td>isVentilating</td><td>bool</td><td>FALSE </td><td>Are vents more open than crack?</td></tr>
+<tr><td>ventFlux</td><td>double</td><td>0.0 /h</td><td>Ventilation air flux</td></tr>
+<tr><td>maxVentFlux</td><td>double</td><td>0.0 /h</td><td>Maximum possible air flux, including leakage</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 /h</td><td>Total air flux through <span class="table-interface-code">ventFlux</span> and <span class="table-interface-code">leakage</span></td></tr>
+<tr><td>isVentilating</td><td>bool</td><td>FALSE </td><td>Is ventilation active, i.e. <span class="table-interface-code">opening>crackOpening</span> ?</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -262,39 +253,33 @@
 <h2>AverageCover</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
-<tr><td>swAbsorptivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swAbsorptivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swAbsorptivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swAbsorptivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swReflectivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swReflectivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swReflectivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swReflectivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swTransmissivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swTransmissivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swTransmissivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swTransmissivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwAbsorptivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwAbsorptivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwAbsorptivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwAbsorptivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwReflectivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwReflectivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwReflectivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwReflectivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwTransmissivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwTransmissivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwTransmissivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwTransmissivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>Utops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[UtopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>Ubottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[UbottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>heatCapacitys</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[heatCapacityAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[groundArea]</span></td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
+<tr><td>areas</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[area]</span></td></tr>
+<tr><td>weights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[weight]</span></td></tr>
+<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[groundArea]</span></td></tr>
+<tr><td>transmissivityReduction</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter[transmissivityReduction]</span></td></tr>
+<tr><td>swShading</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/shading[swReflectivity]</span></td></tr>
+<tr><td>lwShading</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/shading[lwReflectivity]</span></td></tr>
+<tr><td>faceAreas</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[area]</span></td></tr>
+<tr><td>screenStates</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/screens/*[state]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
+<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Alias</td></tr>
+<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Alias</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -351,39 +336,26 @@
 <h2>AverageScreen</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
-<tr><td>swAbsorptivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swAbsorptivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swAbsorptivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swAbsorptivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swReflectivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swReflectivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swReflectivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swReflectivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swTransmissivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swTransmissivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>swTransmissivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[swTransmissivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwAbsorptivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwAbsorptivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwAbsorptivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwAbsorptivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwReflectivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwReflectivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwReflectivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwReflectivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwTransmissivityTops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwTransmissivityTopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>lwTransmissivityBottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[lwTransmissivityBottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>Utops</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[UtopAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>Ubottoms</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[UbottomAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>heatCapacitys</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./materials/*[heatCapacityAdj]</span> (Vector of materials' adjusted values)</td></tr>
-<tr><td>effectiveArea</td><td>double</td><td>0.0 m2</td><td>Total area of screens drawn</td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
+<tr><td>areas</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[area]</span></td></tr>
+<tr><td>weights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[weight]</span></td></tr>
+<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[groundArea]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -394,44 +366,38 @@
 <h2>Budget</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>radPrecision</td><td>double</td><td>0.1 W/m2|mumol/m2/s</td><td>Precision of numerical solution to radiation budget</td></tr>
-<tr><td>tempPrecision</td><td>double</td><td>0.5 K</td><td>Max. allowed temperature change in a sub-step among layers</td></tr>
-<tr><td>thresholdPrecision</td><td>double</td><td>0.1 K</td><td>Precision of temperature thresholds for climate control</td></tr>
+<tr><td>radPrecision</td><td>double</td><td>0.1 W/m2 | <tr><td>tempPrecision</td><td>double</td><td>2.0 K</td><td>Max. allowed temperature change in a sub-step among layers</td></tr>
+<tr><td>writeHighRes</td><td>bool</td><td>FALSE </td><td>Write output at finest time resolution (indicated by <span class="table-interface-code">subDateTime</span>)</td></tr>
 <tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
-<tr><td>averageHeight</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[averageHeight]</span></td></tr>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>averageHeight</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[averageHeight]</span></td></tr>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[coverPerGroundArea]</span></td></tr>
 <tr><td>outdoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[temperature]</span></td></tr>
 <tr><td>outdoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[rh]</span></td></tr>
 <tr><td>outdoorsCo2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[co2]</span></td></tr>
-<tr><td>transpirationRate</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">plant[transpiration]</span></td></tr>
-<tr><td>Pn</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">plant[Pn]</span></td></tr>
-<tr><td>co2Injection</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/co2[value]</span></td></tr>
-<tr><td>heatPipeFlux</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/heatPipes[heatFlux]</span></td></tr>
-<tr><td>ventilationThreshold</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">controllers/ventilation/temperatureThreshold[value]</span></td></tr>
-<tr><td>ventilationCostThreshold</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">controllers/ventilation/maxHeatingCost[value]</span></td></tr>
-<tr><td>heatingThreshold</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">controllers/heating[value]</span></td></tr>
-<tr><td>heatPipesOn</td><td>vec_bool</td><td>- </td><td>&larr; <span class="table-interface-code">heatPipes/*[isHeating]</span></td></tr>
-<tr><td>ventilationOn</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/ventilation[isVentilating]</span></td></tr>
-<tr><td>deltaVentControl</td><td>double</td><td>0.3 /h/min</td><td>Control increment of ventilation flux</td></tr>
-<tr><td>deltaVentControlRelative</td><td>double</td><td>0.2 /min</td><td>Relative control of ventilation flux</td></tr>
-<tr><td>deltaHeatingControl</td><td>double</td><td>4.0 K/min</td><td>Control increment in heating temperature</td></tr>
+<tr><td>transpirationRate</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/plant[transpiration]</span></td></tr>
+<tr><td>Pn</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/plant[Pn]</span></td></tr>
+<tr><td>co2Injection</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/co2[value]</span></td></tr>
+<tr><td>heatPipeFlux</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes[heatFlux]</span></td></tr>
+<tr><td>heatPipesOn</td><td>vec_bool</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes/*[isHeating]</span></td></tr>
+<tr><td>isVentilating</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/ventilation[isVentilating]</span></td></tr>
+<tr><td>isHeating</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes[isHeating]</span></td></tr>
 <tr><td>babyTimeStep</td><td>double</td><td>1.0 s</td><td>Length of first time step after climate control action</td></tr>
 <tr><td>step</td><td>int</td><td>- </td><td>&larr; <span class="table-interface-code">sim[step]</span></td></tr>
 <tr><td>dateTime</td><td>datetime</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[dateTime]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>subSteps</td><td>int</td><td>0 int</td><td>Number of sub-steps taken to resolve the whole budget</td></tr>
-<tr><td>radIterations</td><td>int</td><td>0 int</td><td>Number of iterations taken to resolve radiation budget</td></tr>
+<tr><td>subDateTime</td><td>datetime</td><td>null </td><td>Date time within integration time step</td></tr>
+<tr><td>subTimeStep</td><td>double</td><td>0.0 s</td><td>Length of integration sub-time step</td></tr>
+<tr><td>subSteps</td><td>int</td><td>0 </td><td>Number of sub-steps taken to resolve the whole budget</td></tr>
+<tr><td>radIterations</td><td>int</td><td>0 </td><td>Number of iterations taken to resolve radiation budget</td></tr>
 <tr><td>maxDeltaT</td><td>double</td><td>0.0 K</td><td>Max. temperature change in a sub-step</td></tr>
-<tr><td>controlCode</td><td>int</td><td>0 int</td><td>Code for the control option needed</td></tr>
-<tr><td>actionCode</td><td>int</td><td>0 int</td><td>Code for the control action taken</td></tr>
 <tr><td>transpiration</td><td>double</td><td>0.0 kg/m2</td><td>Plant transpiration</td></tr>
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation on cover</td></tr>
 <tr><td>ventedWater</td><td>double</td><td>0.0 kg/m2</td><td>Water loss by ventilation</td></tr>
-<tr><td>latentHeatBalance</td><td>double</td><td>0.0 W/m2</td><td>Latent heat of water balance</td></tr>
 <tr><td>ventilationHeatLoss</td><td>double</td><td>0.0 W/m2</td><td>Sensible heat lost by ventilation</td></tr>
 <tr><td>indoorsSensibleHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of change in indoors air sensible heat</td></tr>
 <tr><td>indoorsLatentHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of change in indoors air latent heat</td></tr>
-</tbody></table>
+<tr><td>coverLatentHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of condensation heat influx to cover</td></tr>
+<tr><td>sunParAbsorbedInCover</td><td>double</td><td>0.0 <tr><td>sunParAbsorbedInScreens</td><td>double</td><td>0.0 <tr><td>sunParHittingPlant</td><td>double</td><td>0.0 <tr><td>growthLightParHittingPlant</td><td>double</td><td>0.0 <tr><td>totalPar</td><td>double</td><td>0.0 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
 
@@ -481,7 +447,7 @@
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initTemperature</td><td>double</td><td>20.0 oC</td><td>Initial temperature</td></tr>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[coverPerGroundArea]</span></td></tr>
 <tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[rh]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>temperature</td><td>double</td><td>0.0 </td><td></td></tr>
@@ -511,6 +477,8 @@
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation (top+bottom)</td></tr>
 <tr><td>netRadiation</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>netConvection</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
+<tr><td>condInsideDeltaT</td><td>double</td><td>0.0 oC</td><td>Temperature change caused by inside condensation</td></tr>
+<tr><td>condOutsideDeltaT</td><td>double</td><td>0.0 oC</td><td>Temperature change caused by outside condensation</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -562,7 +530,7 @@
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
 <tr><td>initTemperature</td><td>double</td><td>20.0 oC</td><td>Initial temperature</td></tr>
-<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[groundArea]</span></td></tr>
+<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[coverPerGroundArea]</span></td></tr>
 <tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[rh]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>temperature</td><td>double</td><td>0.0 </td><td></td></tr>
@@ -679,6 +647,7 @@
 <h2>Cover</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>checkBoundaries</td><td>bool</td><td>TRUE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
 <tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
 <tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
@@ -694,26 +663,8 @@
 <tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
 <tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
 <tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
-<tr><td>transmissivityReduction</td><td>double</td><td>0.0</td><td>Reduced cover transmission due to beams, dirt, etc. [0;1]</td></tr>
-<tr><td>swShading</td><td>double</td><td>0.0</td><td>Additional short-wave reflectivity caused by chalk [0;1]</td></tr>
-<tr><td>lwShading</td><td>double</td><td>0.0</td><td>Additional long-wave reflectivity caused by chalk [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -751,6 +702,7 @@
 <tr><td>weight</td><td>double</td><td>1.0</td><td>Weight given to face in radiation budget [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>screenMaterials</td><td>vec_string</td><td>c() </td><td>Vector of screen material names</td></tr>
+<tr><td>numScreens</td><td>int</td><td>0 </td><td>Number of screens on this face</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -761,6 +713,7 @@
 <h2>Floor</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
 <tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
 <tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
@@ -776,23 +729,8 @@
 <tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
 <tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
 <tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -827,15 +765,19 @@
 <h2>GrowthLightController</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>mode</td><td>int</td><td>0 0|1|10</td><td>Control mode can be 0=off, 1=threshold-controlled, 10=on</td></tr>
+<tr><td>mode</td><td>int</td><td>0 0|1|2|10</td><td>Control mode can be 0=off, 1=by threshold, 2=by light sum, 10=on</td></tr>
 <tr><td>input</td><td>double</td><td>0.0 </td><td>Current value of threshold variable</td></tr>
 <tr><td>thresholdLow</td><td>double</td><td>0.0 W/m2</td><td>If threshold-controlled the light is switched on below this threshold</td></tr>
 <tr><td>thresholdHigh</td><td>double</td><td>0.0 W/m2</td><td>If threshold-controlled the light is switched off above this threshold</td></tr>
+<tr><td>desiredLightSum</td><td>double</td><td>0.0 mol PAR/m2/d</td><td>Targetted light sum</td></tr>
+<tr><td>currentLightSum</td><td>double</td><td>0.0 mol PAR/m2/d</td><td>Current light sum</td></tr>
 <tr><td>minPeriodOn</td><td>double</td><td>0.0 min</td><td>Minimum period that light stays on</td></tr>
 <tr><td>timeStepSecs</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
+<tr><td>atMidnight</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[atMidnight]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>isOn</td><td>bool</td><td>FALSE </td><td>Is light on?</td></tr>
 <tr><td>periodOn</td><td>double</td><td>0.0 min</td><td>Time since last time light went on</td></tr>
+<tr><td>switchOffForToday</td><td>bool</td><td>FALSE </td><td>Light sum reached for today</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -846,7 +788,7 @@
 <h2>GrowthLights</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>parEmissionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[parEmissionBottom]</span></td></tr>
 <tr><td>swEmissionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[swEmissionBottom]</span></td></tr>
 <tr><td>lwEmissionBottomLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[lwEmissionBottom]</span></td></tr>
@@ -855,21 +797,21 @@
 <tr><td>convectionTopLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[convectionTop]</span></td></tr>
 <tr><td>powerUsageLights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[powerUsage]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
 <tr><td>parEmissionBottom</td><td>double</td><td>0.0 micromole PAR/m2/s</td><td>PAR emission downwards</td></tr>
 <tr><td>swEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Short-wave emission downwards</td></tr>
 <tr><td>lwEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission downwards</td></tr>
@@ -887,34 +829,36 @@
 <h2>HeatPipes</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>lwEmissionTopPipes</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[lwEmissionTop]</span></td></tr>
 <tr><td>lwEmissionBottomPipes</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[lwEmissionBottom]</span></td></tr>
 <tr><td>convectionTopPipes</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[convectionTop]</span></td></tr>
 <tr><td>convectionBottomPipes</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[convectionBottom]</span></td></tr>
 <tr><td>inflowTemperaturePipes</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*[inflowTemperature]</span></td></tr>
+<tr><td>isHeatingPipes</td><td>vec_bool</td><td>- </td><td>&larr; <span class="table-interface-code">./*[isHeating]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
 <tr><td>lwEmissionTop</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission upwards</td></tr>
 <tr><td>lwEmissionBottom</td><td>double</td><td>0.0 W/m2</td><td>Long-wave emission downwards</td></tr>
 <tr><td>convectionTop</td><td>double</td><td>0.0 W/m2</td><td>Convective heat flux upwards</td></tr>
 <tr><td>convectionBottom</td><td>double</td><td>0.0 W/m2</td><td>Convective heat flux downwards</td></tr>
 <tr><td>heatFlux</td><td>double</td><td>0.0 W/m2</td><td>Total heat flux from pipes</td></tr>
 <tr><td>inflowTemperatureAvg</td><td>double</td><td>0.0 oC</td><td>Average of inflow temperatures</td></tr>
+<tr><td>isHeating</td><td>bool</td><td>FALSE </td><td>Is any heat pipe above its minimum temperature?</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -939,21 +883,7 @@
 <h2>Layer</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
-<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
-<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
-<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
-<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
-<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
-<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
-<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
-<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
-<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
-<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
-<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
-<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
-<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
@@ -1032,15 +962,14 @@
 <tr><td>Kprop</td><td>double</td><td>0.1 </td><td>The proportional gain</td></tr>
 <tr><td>Kint</td><td>double</td><td>0.0 /min</td><td>The integral gain</td></tr>
 <tr><td>Kderiv</td><td>double</td><td>0.0 min</td><td>The derivative gain</td></tr>
-<tr><td>lookAhead</td><td>double</td><td>0.0 min</td><td>Computed error from predicted sensed value this time ahead</td></tr>
 <tr><td>minimum</td><td>double</td><td>-1.79769e+308 </td><td>Minimum allowed value of control variable</td></tr>
 <tr><td>maximum</td><td>double</td><td>1.79769e+308 </td><td>Maximum allowed value of control variable</td></tr>
 <tr><td>timeStep</td><td>double</td><td>- s</td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>controlVariable</td><td>double</td><td>0.0 </td><td>The control variable; tends to zero when all three error terms summed tend to zero</td></tr>
 <tr><td>error</td><td>double</td><td>0.0 </td><td>The error</td></tr>
-<tr><td>integral</td><td>double</td><td>0.0 min</td><td>The integral error</td></tr>
-<tr><td>derivative</td><td>double</td><td>0.0 /min</td><td>The derivative of the approach of sensed towards target value</td></tr>
+<tr><td>integral</td><td>double</td><td>0.0 </td><td>The integral error</td></tr>
+<tr><td>derivative</td><td>double</td><td>0.0 /s</td><td>The derivative of the approach of sensed towards target value</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -1051,7 +980,7 @@
 <h2>Plant</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>k_sw</td><td>double</td><td>0.7</td><td>Short-wave extinction coefficient [0;1]</td></tr>
 <tr><td>k_lw</td><td>double</td><td>1.0</td><td>Long-wave extinction coefficient [0;1]</td></tr>
 <tr><td>sigma</td><td>double</td><td>0.2 </td><td>Scattering coefficient</td></tr>
@@ -1071,30 +1000,29 @@
 <tr><td>EdVC</td><td>double</td><td>200000.0 </td><td>Temperature response of Vcmax</td></tr>
 <tr><td>delsC</td><td>double</td><td>629.26 </td><td>Temperature response of Vcmax</td></tr>
 <tr><td>Q10</td><td>double</td><td>1.92 </td><td>Temperature response of respiration</td></tr>
-<tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
-<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[rh]</span></td></tr>
-<tr><td>indoorsCo2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[co2]</span></td></tr>
+<tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget/indoors[temperature]</span></td></tr>
+<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget/indoors[rh]</span></td></tr>
+<tr><td>indoorsCo2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget/indoors[co2]</span></td></tr>
 <tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
 <tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Leaf temperature</td></tr>
 <tr><td>transpiration</td><td>double</td><td>0.0 kg/m2 ground/s</td><td>Transpiration rate</td></tr>
-<tr><td>incidentPar</td><td>double</td><td>0.0 mymol PAR/m2 ground/s</td><td>PAR hitting the canopy</td></tr>
-<tr><td>Pn</td><td>double</td><td>0.0 <tr><td>Pg</td><td>double</td><td>0.0 <tr><td>Rd</td><td>double</td><td>0.0 <tr><td>growthRate</td><td>double</td><td>0.0 g carbohydrate/m2 ground</td><td>Carbohydrate biomass produced in this time step</td></tr>
+<tr><td>incidentPar</td><td>double</td><td>0.0 <tr><td>Pn</td><td>double</td><td>0.0 <tr><td>Pg</td><td>double</td><td>0.0 <tr><td>Rd</td><td>double</td><td>0.0 <tr><td>growthRate</td><td>double</td><td>0.0 g carbohydrate/m2 ground</td><td>Carbohydrate biomass produced in this time step</td></tr>
 <tr><td>leafAm</td><td>double</td><td>0.0 <tr><td>leafAc</td><td>double</td><td>0.0 <tr><td>leafAj</td><td>double</td><td>0.0 <tr><td>leafRd</td><td>double</td><td>0.0 <tr><td>leafGrowthRate</td><td>double</td><td>0.0 g carbohydrate/m2 leaf</td><td>Carbohydrate biomass produced in this time step</td></tr>
 <tr><td>lue</td><td>double</td><td>0.0 g carbohydrate/micromole PAR absorbed</td><td>Light use efficiency</td></tr>
 </tbody></table>
@@ -1107,6 +1035,7 @@
 <h2>Screen</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>checkBoundaries</td><td>bool</td><td>TRUE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
 <tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
 <tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
@@ -1122,27 +1051,11 @@
 <tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
 <tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
 <tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
-<tr><td>state</td><td>double</td><td>0.0</td><td>Proportion drawn (0=fully withdrawn; 1=fully drawn [0;1]</td></tr>
-<tr><td>Uinsulation</td><td>double</td><td>1e+16 W/K/m2 layer</td><td>Insulation effect on cover</td></tr>
+<tr><td>energySaving</td><td>double</td><td>0.0 %</td><td>Documented energy saving used for calibration</td></tr>
+<tr><td>Uinsulation</td><td>double</td><td>inf W/K/m2 layer</td><td>Insulation effect</td></tr>
 <tr><td>UinsulationEffectivity</td><td>double</td><td>1.0</td><td>Effectivity of Uinsulation [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UinsulationAdj</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Insulation effect on cover adjusted for state and perfection</td></tr>
+<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -1217,7 +1130,7 @@
 <h2>Shelter</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
+<tr><td>transmissivityReduction</td><td>double</td><td>0.0</td><td>Reduced cover transmission due to beams, dirt, etc. [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
@@ -1243,28 +1156,28 @@
 <h2>Sky</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
+<tr><td>checkBoundaries</td><td>bool</td><td>FALSE </td><td>Check parameter boundaries?</td></tr>
 <tr><td>intercept</td><td>double</td><td>0.732</td><td>Emissivity intercept on dew point temperature [0;1]</td></tr>
 <tr><td>slope</td><td>double</td><td>0.00635 /K</td><td>Emissivity slope on dew point temperature</td></tr>
 <tr><td>airTemperature</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">outdoors[temperature]</span></td></tr>
 <tr><td>rh</td><td>double</td><td>-</td><td>&larr; <span class="table-interface-code">outdoors[rh]</span></td></tr>
 <tr><td>Tsky</td><td>double</td><td>- oC</td><td>&larr; <span class="table-interface-code">if exists(outdoors[Tsky]) then outdoors[Tsky] else - 273.0</span> (Sky temperature taken from records otherwise computed)</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
+<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
+<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
+<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
+<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
+<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
+<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
+<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the top</td></tr>
+<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 ground</td><td>Heat transfer coefficient at the bottom</td></tr>
+<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
 <tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Sky temperature</td></tr>
 </tbody></table>
 <div class="end macro"></div>
@@ -1293,19 +1206,19 @@
 <h2>Summary</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>heatPipesHeatFlux</td><td>double</td><td>- W/m2</td><td>&larr; <span class="table-interface-code">actuators/heatPipes[heatFlux]</span></td></tr>
-<tr><td>lampsPowerUsage</td><td>double</td><td>- W/m2</td><td>&larr; <span class="table-interface-code">actuators/growthLights[powerUsage]</span></td></tr>
-<tr><td>co2Injection</td><td>double</td><td>- g/m2/h</td><td>&larr; <span class="table-interface-code">actuators/co2[value]</span></td></tr>
-<tr><td>transpirationFinite</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">budget[transpiration]</span></td></tr>
-<tr><td>condensationFinite</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">budget[condensation]</span></td></tr>
-<tr><td>ventedWaterFinite</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">budget[ventedWater]</span></td></tr>
-<tr><td>screenState1</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/screens/layer1[state]</span></td></tr>
-<tr><td>screenState2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/screens/layer2[state]</span></td></tr>
-<tr><td>screenState3</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/screens/layer3[state]</span></td></tr>
+<tr><td>heatPipesHeatFlux</td><td>double</td><td>- W/m2</td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes[heatFlux]</span></td></tr>
+<tr><td>lampsPowerUsage</td><td>double</td><td>- W/m2</td><td>&larr; <span class="table-interface-code">gh/actuators/growthLights[powerUsage]</span></td></tr>
+<tr><td>co2Injection</td><td>double</td><td>- g/m2/h</td><td>&larr; <span class="table-interface-code">gh/actuators/co2[value]</span></td></tr>
+<tr><td>transpirationFinite</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget[transpiration]</span></td></tr>
+<tr><td>condensationFinite</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget[condensation]</span></td></tr>
+<tr><td>ventedWaterFinite</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/budget[ventedWater]</span></td></tr>
+<tr><td>screenState1</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/screens/layer1[state]</span></td></tr>
+<tr><td>screenState2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/screens/layer2[state]</span></td></tr>
+<tr><td>screenState3</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/screens/layer3[state]</span></td></tr>
 <tr><td>isSkipping</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">output/*[isSkipping]</span></td></tr>
-<tr><td>lightState1</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/growthLights/bank1[isOn]</span></td></tr>
-<tr><td>lightState2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/growthLights/bank2[isOn]</span></td></tr>
-<tr><td>lightState3</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">actuators/growthLights/bank3[isOn]</span></td></tr>
+<tr><td>lightState1</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/growthLights/bank1[isOn]</span></td></tr>
+<tr><td>lightState2</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/growthLights/bank2[isOn]</span></td></tr>
+<tr><td>lightState3</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/growthLights/bank3[isOn]</span></td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>heatingCost</td><td>double</td><td>0.0 MWh/m2/y</td><td></td></tr>
 <tr><td>lampCost</td><td>double</td><td>0.0 MWh/m2/y</td><td></td></tr>
