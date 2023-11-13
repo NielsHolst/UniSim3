@@ -21,6 +21,7 @@ private:
     double initial, change, minValue, maxValue;
     // Outputs
     double value;
+    bool isAtMin, isAtMax;
 };
 } //namespace
 

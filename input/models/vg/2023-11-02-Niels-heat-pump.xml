@@ -8,8 +8,8 @@
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
     <StartTime>01.01.2023</StartTime>
-    <StopTime>31.12.2023</StopTime>
-    <TimeStep>1</TimeStep>
+    <StopTime>31.01.2023</StopTime>
+    <TimeStep>3</TimeStep> 
     <ShortDesc>Std21/4</ShortDesc>
   </Description>
   <Greenhouse>
@@ -52,14 +52,19 @@
     <Currency>missing</Currency>
     <CalibrationHeat>1</CalibrationHeat>
     <CalibrationPower>1</CalibrationPower>
-    <InitialSoilTemperature>12</InitialSoilTemperature>
+    <InitialSoilTemperature>1.7</InitialSoilTemperature> 
     <CO2PIDProp>0.05</CO2PIDProp>
+    <HeatingPIDProp>0.05</HeatingPIDProp> 
+    <VentilationPIDProp>-0.0001</VentilationPIDProp> 
+    <TavgPIDProp>1.5</TavgPIDProp>     
+    <TavgPIDInt>0.0</TavgPIDInt>       
+    <TavgPIDDeriv>0.001</TavgPIDDeriv> 
     <ScreenLagPeriod>10</ScreenLagPeriod>
-    <VentWindCoef>10</VentWindCoef>
-    <VentTemperatureCoef>4</VentTemperatureCoef>
+    <VentWindCoef>50</VentWindCoef> 
+    <VentTemperatureCoef>14</VentTemperatureCoef> 
     <Crops>
       <Crop index="0" layer="0" position="0">
-        <LAI>1</LAI>
+        <LAI>2.5</LAI> 
         <Jmax25>145.5200</Jmax25>
         <GammaStar>55.4700</GammaStar>
         <lightRespiration>0.7400</lightRespiration>
@@ -231,7 +236,6 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature>
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -242,7 +246,6 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature>
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -250,15 +253,15 @@
         <PropLw>0.2000</PropLw>
       </Heatpipe>
     </Heatpipes>
-    <HeatPumps>
+    <HeatPumps> <!-- NH -->
       <HeatPump index="1" layer="1" position="1">
         <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
-        <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
+        <CoolingTemperature>10</CoolingTemperature>
+        <Number>1</Number>
+        <MaxFlowRate>2.5</MaxFlowRate>
+        <MaxCoolingLoad>78.4</MaxCoolingLoad>
+        <CoolingEfficiency>0.69</CoolingEfficiency>
+        <MaxParasitLoad>2.2</MaxParasitLoad>
         <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="2">
@@ -336,10 +339,10 @@
       <Products>
         <Product>
           <Manufacture>NoName</Manufacture>
-          <name>E HP Na 1000W</name>
+          <Name>E HP Na 1000W</Name>
           <LampType>HpSl</LampType>
-          <Power>1035</Power>
-          <MinPeriodOn>1035</MinPeriodOn>
+          <Power>1035</Power> 
+          <MinPeriodOn>30</MinPeriodOn> 
           <MicroMolParPerWattSeconds>1.787</MicroMolParPerWattSeconds>
           <Ballast>15</Ballast>
           <PropLw>0.1</PropLw>
@@ -618,14 +621,13 @@
   </Greenhouse>
   <Climate>
     <Setpoint>
-      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</HeatingTemp>
+      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</HeatingTemp> 
       <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</VentTemp>
       <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
       <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
-      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation>
+      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation> 
       <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin>
       <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
-      <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>
       <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
       <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
       <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
@@ -644,9 +646,6 @@
       <screenFixed3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed3>
       <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold3>
       <ShadingAgentReduction index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</ShadingAgentReduction>
-      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity>
-      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature>
-      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand>
       <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
       <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
       <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
@@ -657,28 +656,31 @@
       <AssLightOff2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff2>
       <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn3>
       <AssLightOff3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff3>
+      <AssLightLightSum index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">12</AssLightLightSum>
+      <AssLightLightSumDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</AssLightLightSumDays>
       <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">85</MaxRelHmd>
-      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd>
       <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</MaxHeatAddHighRH>
-      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH>
-      <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>
-      <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>
       <rhMaxBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</rhMaxBand>
-      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand>
       <CO2Setpoint index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</CO2Setpoint>
       <CO2Capacity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</CO2Capacity>
-      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand>
-      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold>
+      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand> 
+      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold> 
+      <Tavg     index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</Tavg>    
+      <TavgMin  index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">15</TavgMin> 
+      <TavgMax  index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">25</TavgMax> 
+      <TavgDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</TavgDays> 
+      <TavgOn   index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</TavgOn>   
+      <HeatPumpActive index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</HeatPumpActive>   
+      <HeatPumpMax index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</HeatPumpMax>   
     </Setpoint>
   </Climate>
   <Output>
-    <Period>10</Period>
+    <Period>10</Period> 
     <UseLocalDecimalChar>0</UseLocalDecimalChar>
     <SkipFormats>1</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
-      <Variable name="actionCode" path="budget[actionCode]"/>
       <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
       <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
       <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
@@ -691,10 +693,10 @@
       <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
       <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
       <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
-      <Variable name="actVentilation" path="actuators/ventilation[value]"/>
-      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
+      <Variable name="actVentilation" path="actuators/ventilation[ventFlux]"/> 
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/> 
+      <Variable name="ventOpening" path="actuators/ventilation[opening]"/> 
       <Variable name="condensation" path="budget[condensation]"/>
-      <Variable name="controlCode" path="budget[controlCode]"/>
       <Variable name="coverT" path="budget/cover[temperature]"/>
       <Variable name="floorT" path="budget/floor[temperature]"/>
       <Variable name="grossAssimilationRate" path="plant[Pg]"/>
@@ -704,8 +706,8 @@
       <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
       <Variable name="indoorsRh" path="budget/indoors[rh]"/>
       <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsTavg" path="indoorsTemperature[average]"/> 
       <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
-      <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/>
       <Variable name="leafT" path="budget/plant[temperature]"/>
       <Variable name="lightUseEfficiency" path="plant[lue]"/>
       <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
@@ -723,23 +725,23 @@
       <Variable name="screen1T" path="budget/screen1[temperature]"/>
       <Variable name="screen2T" path="budget/screen2[temperature]"/>
       <Variable name="screen3T" path="budget/screen3[temperature]"/>
-      <Variable name="sensibleVentFlux" path="actuators/ventilation[sensibleHeatFlux]"/>
+      <Variable name="sensibleVentFlux" path="budget[ventilationHeatLoss]"/>
       <Variable name="skyT" path="budget/sky[temperature]"/>
       <Variable name="soilT" path="outdoors[soilTemperature]"/>
       <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
-      <Variable name="spHeatingTemperature" path="controllers/heating[value]"/>
-      <Variable name="spVentilationTemperature" path="controllers/ventilation/temperatureThreshold[value]"/>
+      <Variable name="spHeatingTemperature" path="controllers/heating/desiredTemperature[value]"/> 
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredTemperature[value]"/> 
       <Variable name="transpiration" path="budget[transpiration]"/>
       <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
       <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
     </Variables>
   </Output>
-  <Status>
-    <LigthSum>
-      <Period>10</Period>
-    </LigthSum>
-    <TwemperatureAvg>
-      <Period>20</Period>
-    </TwemperatureAvg>
-  </Status>
+  <!-- <Status> -->
+    <!-- <LigthSum> -->
+      <!-- <Period>10</Period> -->
+    <!-- </LigthSum> -->
+    <!-- <TwemperatureAvg> -->
+      <!-- <Period>20</Period> -->
+    <!-- </TwemperatureAvg> -->
+  <!-- </Status> -->
 </VG_SETUP>

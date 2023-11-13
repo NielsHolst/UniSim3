@@ -10,9 +10,10 @@ include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 
 HEADERS +=  \
     absolute_humidity.h \
+    actuators.h \
     actuator_chalk.h \
     actuator_growth_light.h \
-    actuators.h \
+    actuator_heat_pump.h \
     actuator_heat_pipe.h \
     actuator_screen.h \
     actuator_ventilation.h \
@@ -37,6 +38,8 @@ HEADERS +=  \
     growth_light_product.h \
     growth_lights.h \
     heat_pipes.h \
+    heat_pump_product.h \
+    heat_pumps_max_state.h \
     ig_indoors_humidity.h \
     layer.h \
     layer_parameters.h \
@@ -60,9 +63,9 @@ HEADERS +=  \
 
 SOURCES += \
     absolute_humidity.cpp \
+    actuators.cpp \
     actuator_chalk.cpp \
     actuator_growth_light.cpp \
-    actuators.cpp \
     actuator_heat_pipe.cpp \
     actuator_heat_pump.cpp \
     actuator_screen.cpp \
@@ -88,6 +91,8 @@ SOURCES += \
     growth_light_product.cpp \
     growth_lights.cpp \
     heat_pipes.cpp \
+    heat_pump_product.cpp \
+    heat_pumps_max_state.cpp \
     ig_indoors_humidity.cpp \
     layer.cpp \
     layer_parameters.cpp \

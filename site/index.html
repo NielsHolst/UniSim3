@@ -56,10 +56,10 @@
 <p class='hidden-anchor' id='motivation'>xxx</p><div class='border-grey'>
 <h1>Motivation</h1>
           <p>You want to create a mathematical model of sorts. Well, not that mathematical maybe. More, like computational. You have this image in your mind, which you just put down on paper. Maybe it looks like this:</p>
-          <p><img src="https://tildeweb.au.dk/au152367/media/cats-owls-mice-3.png"></p>
+          <p><img src="media/cats-owls-mice-3.png"></p>
 <p>The math is not that complicated. The arrows represent equations specifying that both owls and cats eat mice, which again eat your morning cereals (important model restriction: exclude yourself as a cereal forager and leave out the cereal production system). If we looked inside the boxes and elaborated further, we could add how cereals is a resource for mice offspring. Throw in kittens and owlets, and we’ve got a whole ecosystem going. We’ll look into textbooks of population dynamics and quickly find a few, simple equations describing each sub-process. Having the system diagram (which have grown since our first sketch above) drawn on one paper and an assortment of equations listed on another paper, how do we proceed? Every bit is simple enough but to assemble this as a whole in a neat model running on your computer seems beyond your reach.</p>
 <p>If you are an engineer, I am sorry for having bothered you with this bottomless pit of biological processes and ever-enfolded sub-processes and sub-sub-process. Maybe you are more into a physical systems, like a greenhouse (from <a href='https://doi.org/10.1016/j.compag.2017.08.020'>j.compag.2017.08.020</a>):</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/reyes-rosas-et-al-2017.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p><img src="media/reyes-rosas-et-al-2017.png" referrerpolicy="no-referrer" alt="Image"></p>
 <p>So what’s the problem? Go ahead. Write down those differential equations, built on the safe physical principles of thermodynamics, heat exchange, etc. But then you realise that the smoothness of your equations belies the abruptness of the real-world system. You’ve got windows opening and closing, curtains being drawn, heat system turning on/off — a battery of effectuators controlled by the logic of the greenhouse climate computer. Trying to incorporate that logic into your equations disrupts their beauty and turn the model as a whole into an unmanageable monster. No. You need another approach: Describe the logic inside each box on its own and then connect the boxes, like <a href='https://www.lego.com'>Lego</a> bricks, to build the whole model.</p>
 <p>If you are a mathematician, you may have come to the wrong place, unless you want to learn about model-building that involves no fancy math at all.</p>
 <p><em>BoxScript</em> is a language developed at the Ecological Modelling Laboratory as a tool to compose models out of model building blocks, like those described loosely in the two examples above. It is not yet another software <em>to draw</em> models by dropping building blocks (boxes, arrows and whatnot) on a graphical canvas. BoxScript is a programming language used <em>to write</em> models in text files, which we call <em>boxscripts</em>.</p>
@@ -79,7 +79,7 @@
 <p class='hidden-anchor' id='what-s-boxscript'>xxx</p><div class='border-grey'>
 <h1>What's BoxScript?</h1>
 <p>Enough talk. Let&#39;s see what a real boxscript looks like. Here&#39;s one:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/butterfly.box">// butterfly.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/butterfly.box">// butterfly.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2009
@@ -169,7 +169,7 @@ egg[inflow]
 <p>All box inputs will have a sensible default value, which they will keep unless you change the input value in the boxscript. Thus the <code>calendar</code> box in the butterfly boxscript have many inputs besides the <code>begin</code> and <code>end</code> inputs, which were set explicitly. One of them is <code>timeStep</code> which defaults to a value of <code>1</code>, another is <code>timeUnit</code> which defaults to <code>&quot;d&quot;</code> for days. You can look up the default values for all inputs in the class documentation.</p>
 <p>Most often you would like to see model outputs as time series in a figure. You specify this with an <code>OutputR</code> box (not more than one), which can contain one or more <code>PageR</code> boxes (each will produce one page of output in R), which again each may contain one or more <code>PlotR</code> boxes (each producing one plot on the page). All plots on a page have the same x-axis. </p>
 <p>Here is the page, consisting of two plots, produced by the boxscript :</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/butterfly.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p><img src="media/demo/butterfly.png" referrerpolicy="no-referrer" alt="Image"></p>
 <p>We chose to put date on the x-axis:</p>
 <pre><code> .xAxis = calendar[date]
 </code></pre>
@@ -190,7 +190,7 @@ egg[inflow]
 <p class='hidden-anchor' id='what-s-the-universal-simulator'>xxx</p><div class='border-grey'>
 <h1>What’s the Universal Simulator?</h1>
 <p>The Universal Simulator provides a <em>prompt</em> as the user interface. Under the hood, it contains the <em>BoxScript Engine</em>, which carries out the actual simulations. It collaborates smoothly with <em>R</em> to produce simulation outputs. This is the overall process:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/whats-unisim-b-1.png" referrerpolicy="no-referrer" alt="Image"></p>
+<p><img src="media/whats-unisim-b-1.png" referrerpolicy="no-referrer" alt="Image"></p>
 <p>Here, the green-dashed boxes are text files (such as weather files) and R scripts optionally supplied by the modeller. The violet-punctuated boxes are temporary files, together with content copied to the clipboard (the R snippet). These can usually be ignored by the modeller but they might come handy, when debugging faulty models.</p>
 <p>The Boxscript Engine reads the boxscript and other input files (specified in the boxscript) &#8212; and carries out the simulation. The user steers this process through the <em>load</em> and <em>run</em> commands typed in at the prompt. Remember, that a boxscript does not include the code defining the behaviour of the boxes that make up the model. It only declares which boxes the model is constructed of, while setting the input ports to the desired values. The behaviour of the boxes is defined in the C++ implementation of each <code>Box</code> class. Technically, those <code>Box</code> class implementations are loaded from dynamic link libraries by the BoxScript Engine. If you should refer to a <code>Box</code> class that is lacking from these libraries, you will be told so by an error message at the prompt.</p>
 <p>The simulation output comes as a tab-separated text file, which contains columns corresponding to the ports, referred to in the boxscript&#39;s <code>PageR</code> and <code>PlotR</code> boxes, with a row for each time step of the model. In addition, an R script is produced that will show the demanded plots (R <em>ggplot</em> is used for this purpose). For ease of use, finally, a snippet of R code is put into the clipboard, so that all you have to do as a user, once the engine has finished its job, is to paste the clipboard at the R prompt. The plots will appear immediately, optionally amended with analyses defined in additional R scripts supplied by the user (which R scripts can be specified in the boxscript).</p>
@@ -226,12 +226,12 @@ egg[inflow]
       <div class="right">
         <div class="border-red">
           <h2>Try it!</h2>
-          <p><a href="https://tildeweb.au.dk/au152367/download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
+          <p><a href="download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
           <p class="date">5 Oct 2023</p>
         </div>
         <div class="border-violet">
           <h2>Model just published</h2>
-          <p>Read <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">our paper</a> on the Cereal Aphid-Fungus model and study the <a href="https://tildeweb.au.dk/au152367/models.html">detailed documentation</a>. Any questions? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p>Read <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">our paper</a> on the Cereal Aphid-Fungus model and study the <a href="models.html">detailed documentation</a>. Any questions? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-pink">

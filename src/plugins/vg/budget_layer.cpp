@@ -49,6 +49,7 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(radiationDeltaT).unit("oC").help("Change in temperature due to net radiation");
     Output(convectionDeltaT).unit("oC").help("Change in temperature due to net convection/conduction");
     Output(totalDeltaT).unit("oC").help("Total change in temperature");
+    Output(totalDeltaTEnergy).unit("J/m2").help("Change in thermal heat contained in layer");
     Output(condensation).unit("kg/m2").help("Condensation (top+bottom)");
     Output(netRadiation).unit("W/m2").help("Net radiation (absorption - emission");
     Output(netConvection).unit("W/m2").help("Net radiation (absorption - emission");
@@ -113,7 +114,12 @@ double BudgetLayer::updateDeltaT(double timeStep) {
         // Change total
         totalDeltaT = radiationDeltaT + convectionDeltaT;
     }
+    updateDeltaTEnergy();
     return totalDeltaT;
+}
+
+void BudgetLayer::updateDeltaTEnergy() {
+    totalDeltaTEnergy = totalDeltaT*(*heatCapacity);
 }
 
 void BudgetLayer::updateLwEmission() {

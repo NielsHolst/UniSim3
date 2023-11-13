@@ -23,6 +23,7 @@ public:
     virtual double updateCondensation();
     virtual void updateLwEmission();
     virtual double updateDeltaT(double timeStep);
+    void updateDeltaTEnergy();
     void updateNetRadiation();
     void checkParameters() const;
 private:
@@ -52,7 +53,7 @@ protected:
         lwEmissionTop, lwEmissionBottom,
         parAbsorbedTop, parAbsorbedBottom,
         netRadiation, netConvection,
-        condensation, totalDeltaT;
+        condensation, totalDeltaT, totalDeltaTEnergy;
     // Data
     const double *emissivityTop, *emissivityBottom,
         *Utop, *Ubottom,

@@ -311,7 +311,7 @@ double enthalpy(double temperature, double sh) {
  */
 double evaporationHeat(double temperature) {
     double y = 193.1 - 10950.*log((374.-temperature)/647.) * pow(374.-temperature,0.785) /(273.+temperature);
-    return y/1000.;
+    return 1000.*y;
 }
 
 //! Joint of two emissivities
@@ -502,7 +502,7 @@ double sineWaveUp(double proportion, double y0, double y1) {
     return y0 + y1 - sineWaveDown(proportion, y1, y0);
 }
 
-//! Make hash value fromm two pointers
+//! Make hash value from two pointers
 /*!
  * \brief Combine the most significant half of the bits in the two addresses.
  * \param p is a pointer

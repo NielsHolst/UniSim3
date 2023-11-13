@@ -48,6 +48,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("gh/geometry[averageHeight]");
+    Input(groundArea).imports("gh/geometry[groundArea]");
     Input(coverPerGroundArea).imports("gh/geometry[coverPerGroundArea]");
     Input(outdoorsTemperature).imports("outdoors[temperature]");
     Input(outdoorsRh).imports("outdoors[rh]");
@@ -56,6 +57,8 @@ Budget::Budget(QString name, base::Box *parent)
     Input(Pn).imports("gh/plant[Pn]");
     Input(co2Injection).imports("gh/actuators/co2[value]");
     Input(heatPipeFlux).imports("gh/actuators/heatPipes[heatFlux]");
+    Input(heatPumpCooling).computes("sum(actuators/heatPumps/*[cooling])");
+    Input(heatPumpCondensationRate).computes("sum(actuators/heatPumps/*[condensationRate])");
     Input(heatPipesOn).imports("gh/actuators/heatPipes/*[isHeating]");
     Input(isVentilating).imports("gh/actuators/ventilation[isVentilating]");
     Input(isHeating).imports("gh/actuators/heatPipes[isHeating]");
@@ -69,7 +72,8 @@ Budget::Budget(QString name, base::Box *parent)
     Output(radIterations).help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step");
     Output(transpiration).unit("kg/m2").help("Plant transpiration");
-    Output(condensation).unit("kg/m2").help("Condensation on cover");
+    Output(condensationCover).unit("kg/m2").help("Condensation on cover");
+    Output(condensationHeatPump).unit("kg/m2").help("Water removed by heat pumps");
     Output(ventedWater).unit("kg/m2").help("Water loss by ventilation");
     Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation");
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
@@ -225,7 +229,7 @@ void Budget::addLayers() {
 
     // Find controllers and actuators
     heatingSp             = findOne<Box*>("setpoints/heating");
-    heatingController     = findOne<Box*>("controllers/heating");
+    heatingController     = findOne<Box*>("controllers/heatPipes");
     ventilationSp         = findOne<Box*>("setpoints/ventilation");
     ventilationController = findOne<Box*>("controllers/ventilation");
     ventilationActuator   = findOne<Box*>("actuators/ventilation");
@@ -315,6 +319,7 @@ void Budget::update() {
             indoorsRh1   = indoorsVol->rh;
     indoorsSensibleHeatFlux = (indoorsTemp1 - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
     indoorsLatentHeatFlux = (ahFromRh(indoorsTemp0, indoorsRh0) - ahFromRh(indoorsTemp1, indoorsRh1))*LHe*averageHeight/timeStep;
+
     // Approximate outputs ignoring reflection and transmission between layers
     growthLightParHittingPlant = budgetLayerGrowthLights->parEmissionBottom;
     sunParAbsorbedInCover = budgetLayerCover->parAbsorbedTop;
@@ -344,8 +349,9 @@ void Budget::updateLayersAndVolumes() {
     subDateTime = dateTime;
     babyStep();
     transpiration =
-    condensation  =
-    ventedWater   = 0.;
+    condensationCover  =
+    ventedWater   =
+    condensationHeatPump = 0.;
     while (lt(timePassed, timeStep) && subSteps < maxSubSteps) {
         subTimeStep = std::min(subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
         updateSubStep(subTimeStep, (timePassed == 0.) ? UpdateOption::IncludeSwPar : UpdateOption::ExcludeSwPar);
@@ -390,16 +396,8 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     lwState.init();
 
     if (option == UpdateOption::IncludeSwPar) {
-//        if (step>=2635) {
-//            logger.write(convert<QString>(step));
-//            logger.write(dump(swParam, Dump::WithHeader));
-//            logger.write(dump(parState, Dump::WithHeader));
-//        }
         distributeRadiation(swState,  swParam);
         distributeRadiation(parState, swParam);
-//        if (step>=2635) {
-//            logger.write(dump(parState, Dump::WithHeader));
-//        }
     }
     distributeRadiation(lwState,  lwParam);
 
@@ -488,17 +486,23 @@ void Budget::updateWaterBalance(double timeStep) {
     const double insideCondensation = w.condensation*averageHeight;
     // Outputs
     transpiration     +=  w.transpiration*averageHeight;
-    condensation      += -insideCondensation;
-    ventedWater       += -w.ventilation*averageHeight;
+    condensationCover      -= insideCondensation;
+    ventedWater       -= w.ventilation*averageHeight;       // kg/m3 * m   = kg/m2
+    condensationHeatPump   -= heatPumpCondensationRate*timeStep; // kg/m2/s * s = kg/m2
+
     // Indoors state update
-    indoorsVol->rh     = rhFromAh(indoorsVol->temperature, w.indoorsAh);
+    // Since heat pump condensation is so small, it is simply subtracted
+    indoorsVol->rh     = rhFromAh(indoorsVol->temperature, std::max(w.indoorsAh - heatPumpCondensationRate*timeStep/averageHeight, 0.));
+
     // Outside latent heat
     const double
        condRate   = 2e-3*coverPerGroundArea,
        outsideCondensation  = std::max(condRate*(outdoorsAh - coverSah)*timeStep, 0.);
+
     // Update cover temperature
     coverLatentHeatFlux = LHe*(insideCondensation + outsideCondensation);
     double deltaT = budgetLayerCover->updateDeltaTByCondensation(insideCondensation, outsideCondensation);
+    budgetLayerCover->updateDeltaTEnergy();
     if (fabs(deltaT) > _maxDeltaT)
         _maxDeltaT = fabs(deltaT);
 }
@@ -634,6 +638,9 @@ void Budget::distributeRadiation(State &s, const Parameters &p) {
     if (radIterations == maxIterations)
        ThrowException("Radiation budget did not converge").value(residual).
                  hint("Check your parameters:\n" + dump(p, Dump::WithHeader)).context(this);
+    // Radiation flow upwards from sky layer "passed through the sky".
+    // Register this radiation as absorbed by the sky
+    *s.A_[0] += *s.F_.at(0);
 }
 
 void Budget::updateDeltaT(double timeStep) {
@@ -644,7 +651,7 @@ void Budget::updateDeltaT(double timeStep) {
     }
     double propVentilation   = 1. - exp(-(*ventilationRate)/3600.*timeStep),
            ventilationDeltaT = (outdoorsTemperature - indoorsVol->temperature)*propVentilation;
-    indoorsDeltaT = indoorsVol->heatInflux*timeStep/indoorsHeatCapacity + ventilationDeltaT;
+    indoorsDeltaT = (indoorsVol->heatInflux - heatPumpCooling)*timeStep/indoorsHeatCapacity + ventilationDeltaT;
     ventilationHeatLoss = ventilationDeltaT*averageHeight*RhoAir*CpAir/timeStep;
     if (fabs(indoorsDeltaT) > fabs(_maxDeltaT))
         _maxDeltaT = fabs(indoorsDeltaT);

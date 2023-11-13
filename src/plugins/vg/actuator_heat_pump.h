@@ -20,17 +20,20 @@ public:
     void update();
 private:
     // Inputs
-    double groundArea, indoorsTemperature, indoorsRh,
-        maxCoolingPower, coolingEfficiency, maxFlowRate, maxPowerUserParasitic, coolingTemperature,
-        state;
+    QString productName;
     int number;
+    double groundArea, indoorsTemperature, indoorsRh, state;
     // Outputs
     double
         condensationRate,
         powerUseCooling,
         powerUserParasitic,
         powerUse,
-        heat;
+        cooling,
+    // Data (copied from heat pump product)
+        maxCoolingLoad;
+    double coolingEfficiency, maxFlowRate, parasiticLoad, coolingTemperature;
+
 };
 
 } //namespace

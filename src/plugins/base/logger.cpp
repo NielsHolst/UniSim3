@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QDateTime>
 #include <QDir>
+#include "dialog.h"
 #include "environment.h"
 #include "logger.h"
 
@@ -34,8 +35,10 @@ void Logger::write(QString s) {
 
 
 void Logger::close() {
-    if (isOpen)
+    if (isOpen) {
+        dialog().information("Warning: Test output written to " + file.fileName());
         file.close();
+    }
     isOpen = false;
 }
 

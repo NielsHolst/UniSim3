@@ -32,25 +32,25 @@ vg.subdir = src/plugins/vg
 vg.depends = base
 unisim.depends = vg
 
-##SUBDIRS += aphid
-##aphid.subdir = src/plugins/aphid
-##aphid.depends = base
-##unisim.depends = aphid
-##
-##SUBDIRS += cmbp
-##cmbp.subdir = src/plugins/cmbp
-##cmbp.depends = base
-##unisim.depends = cmbp
+SUBDIRS += aphid
+aphid.subdir = src/plugins/aphid
+aphid.depends = base
+unisim.depends = aphid
 
-##SUBDIRS += PestTox
-##PestTox.subdir = src/plugins/PestTox
-##PestTox.depends = base
-##unisim.depends = PestTox
-##
-##SUBDIRS += saccharina
-##saccharina.subdir = src/plugins/saccharina
-##saccharina.depends = base
-##unisim.depends = saccharina#
+SUBDIRS += cmbp
+cmbp.subdir = src/plugins/cmbp
+cmbp.depends = base
+unisim.depends = cmbp
+
+SUBDIRS += PestTox
+PestTox.subdir = src/plugins/PestTox
+PestTox.depends = base
+unisim.depends = PestTox
+
+SUBDIRS += saccharina
+saccharina.subdir = src/plugins/saccharina
+saccharina.depends = base
+unisim.depends = saccharina#
 
 #SUBDIRS += coffee
 #coffee.subdir = src/plugins/coffee

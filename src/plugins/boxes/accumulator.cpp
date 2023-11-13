@@ -5,6 +5,7 @@
 #include <limits>
 #include <base/phys_math.h>
 #include <base/publish.h>
+#include <base/test_num.h>
 #include "accumulator.h"
 
 using namespace base;
@@ -23,6 +24,8 @@ Accumulator::Accumulator(QString name, Box *parent)
     Input(maxValue).equals(std::numeric_limits<double>::max()).help("Maximum possible `value`");
     Output(value).help("Accumulated value");
     NamedOutput("signal", value).help("Synonym for `value`");
+    Output(isAtMin).help("Is `value` equal to `minValue`?");
+    Output(isAtMax).help("Is `value` equal to `maxValue`?");
 }
 
 void Accumulator::reset() {
@@ -34,6 +37,8 @@ void Accumulator::reset() {
 void Accumulator::update() {
     value += change;
     value = phys_math::minmax(minValue, value, maxValue);
+    isAtMin = TestNum::eq(value, minValue);
+    isAtMax = TestNum::eq(value, maxValue);
 }
 
 } //namespace

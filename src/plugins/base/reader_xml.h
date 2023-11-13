@@ -58,6 +58,7 @@ private:
     BoxBuilder& controllerScreen(QString name, int layer, bool isIncreasing);
     BoxBuilder& controllersGrowthLights();
     BoxBuilder& actuatorsHeatPipes();
+    BoxBuilder& actuatorsHeatPumps();
     BoxBuilder& actuatorsVentilation();
     BoxBuilder& actuatorsScreens();
     BoxBuilder& actuatorsGrowthLights();

@@ -5,32 +5,28 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef HEAT_PUMP_H
-#define HEAT_PUMP_H
+#ifndef HEAT_PUMPS_MAX_STATE_H
+#define HEAT_PUMPS_MAX_STATE_H
 #include <base/box.h>
 
 
 namespace vg {
 
-class HeatPump : public base::Box
+class HeatPumpsMaxState : public base::Box
 {
 public: 
-    HeatPump(QString name, Box *parent);
+    HeatPumpsMaxState(QString name, Box *parent);
     void reset();
     void update();
 private:
     // Inputs
-    double groundArea, indoorsTemperature, indoorsRh,
-        maxCoolingPower, coolingEfficiency, maxFlowRate, maxPowerUserParasitic, coolingTemperature,
-        state;
-    int number;
+    QVector<double> maxCoolingLoads;
+    QVector<int> numbers;
+    double mode, maxPowerUse;
     // Outputs
-    double
-        condensationRate,
-        powerUseCooling,
-        powerUserParasitic,
-        powerUse,
-        heat;
+    double value;
+    // data
+    double _maxCoolingLoadsTotal;
 };
 
 } //namespace

@@ -1,34 +1,8 @@
 # How to update site HTML and other files
 
-## Update HTML pages
+## Edit HTML pages
 
-The `update-html.R` script updates all HTML files found in the `site` root folder:
-
-```R
-setwd("~/QDev/UniSim3/site")
-source("R/common.R")
-:
-files = c(
-  "index.html",
-  "intro.html",
-  "commands.html",
-  "boxscript.html",
-  "models.html",
-  "cereal-aphids.html",
-  "vg.html",
-  "saccharina.html",
-  "download.html",
-  "about.html"
-)
-l_ply(files, update_file)
-```
-
-The HTML files are updated *in situ*. Each file corresponds to one HTML file located at the root, e.g., <www.ecolmod.org/vg.html>.
-
-## Upload site
-
-* Upload (update newer) all files and sub-folders in `site` to the server root.
-* Upload (update newer) the`UniSim3/input` folder to the server root.
+The HTML page files are all found in the `UniSim3/site` folder (not in sub-folders thereof). The page files edited using **CoffeeCup**. 
 
 ## Source files
 
@@ -134,13 +108,47 @@ The interfaces of all classes are generated as tables, which are found as HTML f
 <div class="end macro"></div>
 ```
 
-
-
 ### Media files
 
-Media files (PNG, JPG, etc.) are found in the `site/media` folder, which is organised in sub-folders following the structure of `UniSim3/input` folder.
+Media files (PNG, JPG, etc.) are found in the `site/media` folder, which is organised in sub-folders following the structure of the `UniSim3/input` folder.
 
 ### Input files
 
-Input files (BOX, R, TXT, etc.) are found in the `UniSim3/input` folder.
+Input files (`.box`, `.R`, `.txt`) are found in the `UniSim3/input` folder.
 
+## Refresh HTML pages
+
+The `update-html.R` script regenerates all the HTML files found in the `site` root folder and listed in the R `files` variable:
+
+```R
+setwd("~/QDev/UniSim3/site")
+source("R/common.R")
+:
+files = c(
+  "index.html",
+  "intro.html",
+  "commands.html",
+  "boxscript.html",
+  "models.html",
+  "cereal-aphids.html",
+  "vg.html",
+  "saccharina.html",
+  "download.html",
+  "about.html"
+)
+l_ply(files, update_file)
+```
+
+The HTML files are refreshed *in situ* by the R script, which refreshes the header, footer, left-hand menu  and right-hand callouts.
+
+==It also refreshes the class interfaces in those pages that document plug-ins.==
+
+Each file corresponds to one HTML file located at the root, e.g., <www.ecolmod.org/vg.html>.
+
+## Upload site
+
+**FileZilla** is used to upload files:
+
+* Upload (update newer) all files and sub-folders in `site` to the server root.
+* Upload (update newer) the`UniSim3/input` folder to the server root.
+* Upload new UniSim versions to `download` folder on server root.

@@ -4,13 +4,13 @@
     <LongDesc>Greenhouse 10.000 m2</LongDesc>
     <WeatherFile>DNK_Odense.txt</WeatherFile>
     <Country>Denmark</Country>
-    <Location>Odense</Location>
+    <Location>Odense                                            </Location>
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
     <StartTime>01.01.2023</StartTime>
     <StopTime>31.12.2023</StopTime>
-    <TimeStep>3</TimeStep>  <!-- NH: 3 minutters tidsskridt er fint -->
-    <ShortDesc>Std21/4</ShortDesc>
+    <TimeStep>3</TimeStep>
+    <ShortDesc>Std</ShortDesc>
   </Description>
   <Greenhouse>
     <Positions>
@@ -33,6 +33,7 @@
         <Weight>0.2</Weight>
       </end2>
     </Positions>
+    <HeatStorageProvideEnergy>1</HeatStorageProvideEnergy>
     <Length>100</Length>
     <SpanSize>4</SpanSize>
     <NumberOfSpans>25</NumberOfSpans>
@@ -52,180 +53,136 @@
     <Currency>missing</Currency>
     <CalibrationHeat>1</CalibrationHeat>
     <CalibrationPower>1</CalibrationPower>
-    <InitialSoilTemperature>1.7</InitialSoilTemperature> <!-- NH: Bør være gennemsnittet af udetemperaturen, den 24. til 31. december. 1.7 oC for DNK_Odense.txt -->
+    <InitialSoilTemperature>1.7</InitialSoilTemperature>
     <CO2PIDProp>0.05</CO2PIDProp>
-    <HeatingPIDProp>0.05</HeatingPIDProp> <!-- NH: Tilføjet -->
-    <VentilationPIDProp>-0.0001</VentilationPIDProp> <!-- NH: Tilføjet. Skal være negativ -->
     <ScreenLagPeriod>10</ScreenLagPeriod>
-    <VentWindCoef>50</VentWindCoef> <!-- NH: Værdien 50 kalibreret til ByGrowers Hus 1AB -->
-    <VentTemperatureCoef>14</VentTemperatureCoef>  <!-- NH: Værdien 14 kalibreret til ByGrowers Hus 1AB -->
+    <VentWindCoef>50</VentWindCoef>
+    <VentTemperatureCoef>14</VentTemperatureCoef>
+    <HeatingPIDProp>0.05</HeatingPIDProp>
+    <VentilationPIDProp>-0.0001</VentilationPIDProp>
+    <TavgPIDProp>1.5</TavgPIDProp>
+    <TavgPIDInt>0</TavgPIDInt>
+    <TavgPIDDeriv>0.001</TavgPIDDeriv>
     <Crops>
       <Crop index="0" layer="0" position="0">
-        <LAI>2.5</LAI> <!-- NH: Stor betydning for RH. Værdien 2.5 kalibreret til ByGrowers Hus 1AB -->
+        <LAI>2.5</LAI>
         <Jmax25>145.5200</Jmax25>
-        <GammaStar>55.4700</GammaStar>
-        <lightRespiration>0.7400</lightRespiration>
-        <BallBerryIntercept>0.1000</BallBerryIntercept>
-        <BallBerrySlope>1.6400</BallBerrySlope>
-        <Alpha>0.24</Alpha>
+        <GammaStar>0.7400</GammaStar>
+        <lightRespiration>0.9125</lightRespiration>
+        <BallBerryIntercept>1.6400</BallBerryIntercept>
+        <BallBerrySlope>55.4700</BallBerrySlope>
+        <Alpha>145.5200</Alpha>
         <propAreaCultured>0.95</propAreaCultured>
-        <Product>PotChrysanthemum</Product>
-        <Vcmax25>71.6100</Vcmax25>
+        <Product>Tomato</Product>
+        <Vcmax25>0.1000</Vcmax25>
         <k>0.7</k>
         <re>200</re>
         <Km>600</Km>
-        <alpha>0.24</alpha>
+        <alpha>145.5200</alpha>
         <theta>0.85</theta>
         <Q10>1.03</Q10>
+        <Jmax>71.6100</Jmax>
       </Crop>
     </Crops>
     <Fogs>
+      <Products>
+        <Product name="Fog test1">
+          <MaxHumidification>95</MaxHumidification>
+          <Efficiency>0.8</Efficiency>
+          <MaxParasitLoad>100</MaxParasitLoad>
+        </Product>
+        <Product name="Fog test2">
+          <MaxHumidification>93</MaxHumidification>
+          <Efficiency>0.9</Efficiency>
+          <MaxParasitLoad>200</MaxParasitLoad>
+        </Product>
+      </Products>
       <Fog index="1" layer="1" position="1">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog8</Product>
+        <Product>Fog test2</Product>
         <Number>1</Number>
       </Fog>
       <Fog index="1" layer="1" position="2">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog2</Product>
+        <Product>Fog test2</Product>
         <Number>1</Number>
       </Fog>
       <Fog index="1" layer="1" position="3">
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog3</Product>
+        <Product>Fog test1</Product>
         <Number>1</Number>
-        <Efficiency>1</Efficiency>
       </Fog>
       <Fog index="1" layer="1" position="4">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog4</Product>
-        <Number>1</Number>
+        <Product>Fog test1</Product>
         <Number>1</Number>
       </Fog>
       <Fog index="1" layer="1" position="5">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog5</Product>
+        <Product>Fog test1</Product>
         <Number>1</Number>
       </Fog>
       <Fog index="1" layer="1" position="6">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog6</Product>
+        <Product>Fog test1</Product>
         <Number>1</Number>
       </Fog>
       <Fog index="1" layer="1" position="7">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog7</Product>
+        <Product>Fog test1</Product>
         <Number>1</Number>
       </Fog>
       <Fog index="1" layer="1" position="8">
-        <Efficiency>1</Efficiency>
-        <MaxHumidification>50</MaxHumidification>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>Fog8</Product>
-        <Number>1</Number>
+        <Product>Fog test1</Product>
         <Number>1</Number>
       </Fog>
     </Fogs>
     <HeatBuffer>
       <HeatBuffer index="1" layer="1" position="1">
-        <MaxHeatStorage>100000</MaxHeatStorage>
+        <MaxHeatStorage>10000</MaxHeatStorage>
         <HeatLossCoefficientIn>1</HeatLossCoefficientIn>
         <HeatLossCoefficientOut>1</HeatLossCoefficientOut>
-        <HeatLossStorage>20</HeatLossStorage>
-        <HeatStorageProvideEnergy>0</HeatStorageProvideEnergy>
+        <HeatLossStorage>1</HeatLossStorage>
       </HeatBuffer>
     </HeatBuffer>
     <HeatExchangers>
-      <HeatExchangerName>HeatExchanger2</HeatExchangerName>
       <Number>0</Number>
-      <MaxFlowRate>100</MaxFlowRate>
-      <MaxLoad>3000</MaxLoad>
-      <Efficiency>1</Efficiency>
-      <MaxParasitLoad>50</MaxParasitLoad>
-      <HeatRecovery>0</HeatRecovery>
-      <Product>HeatExchanger2</Product>
+      <Product>Heat exchanger test 1</Product>
+      <Products>
+        <Product name="Heat exchanger test 1">
+          <MaxFlowRate>2000</MaxFlowRate>
+          <MaxLoad>100</MaxLoad>
+          <Efficiency>0.8</Efficiency>
+          <MaxParasitLoad>200</MaxParasitLoad>
+          <HeatRecovery>0</HeatRecovery>
+        </Product>
+        <Product name="Heat exchanger test 2">
+          <MaxFlowRate>3000</MaxFlowRate>
+          <MaxLoad>200</MaxLoad>
+          <Efficiency>0.9</Efficiency>
+          <MaxParasitLoad>300</MaxParasitLoad>
+          <HeatRecovery>1</HeatRecovery>
+        </Product>
+      </Products>
       <HeatExchanger index="1" layer="1" position="2">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
+        <Product>Heat exchanger test 2</Product>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="3">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
+        <Product>Heat exchanger test 1</Product>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="4">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
+        <Product>Heat exchanger test 1</Product>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="5">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
+        <Product>Heat exchanger test 1</Product>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="6">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
+        <Product>Heat exchanger test 1</Product>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="7">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
+        <Product>Heat exchanger test 1</Product>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="8">
-        <HeatExchangerName>HeatExchanger2</HeatExchangerName>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxLoad>3000</MaxLoad>
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>50</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
-        <Product>HeatExchanger2</Product>
       </HeatExchanger>
     </HeatExchangers>
     <Heatpipes>
@@ -233,7 +190,7 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature> <!-- NH: Anvendes ikke. I stedet anvendes <SetPoint><maxPipeTemperature> -->
+        <CommonFlowTemperature>80</CommonFlowTemperature>
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -244,7 +201,7 @@
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
         <InnerDiameter>0.0390</InnerDiameter>
-        <CommonFlowTemperature>80</CommonFlowTemperature> <!-- NH: Anvendes ikke. I stedet anvendes <SetPoint><maxPipeTemperature> -->
+        <CommonFlowTemperature>80</CommonFlowTemperature>
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
         <k>0.0100</k>
@@ -253,85 +210,55 @@
       </Heatpipe>
     </Heatpipes>
     <HeatPumps>
+      <Products>
+        <Product name="Heat pump test 1">
+          <MaxFlowRate>110</MaxFlowRate>
+          <MaxCoolingLoad>100</MaxCoolingLoad>
+          <CoolingEfficiency>1</CoolingEfficiency>
+          <MaxParasitLoad>100</MaxParasitLoad>
+          <CoolingTemperature>7</CoolingTemperature>
+          <HeatRecovery>1</HeatRecovery>
+        </Product>
+        <Product name="Heat pump test 2">
+          <MaxFlowRate>3600</MaxFlowRate>
+          <MaxCoolingLoad>200</MaxCoolingLoad>
+          <CoolingEfficiency>1</CoolingEfficiency>
+          <MaxParasitLoad>50</MaxParasitLoad>
+          <CoolingTemperature>9</CoolingTemperature>
+          <HeatRecovery>0</HeatRecovery>
+        </Product>
+      </Products>
       <HeatPump index="1" layer="1" position="1">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="2">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 2</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="3">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="4">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="5">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="6">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="7">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="8">
-        <Product>HeatPump8</Product>
-        <CoolingTemperature>5</CoolingTemperature>
+        <Product>Heat pump test 1</Product>
         <Number>0</Number>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxCoolingLoad>1000</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
     </HeatPumps>
     <Lamps>
@@ -340,8 +267,8 @@
           <Manufacture>NoName</Manufacture>
           <Name>E HP Na 1000W</Name>
           <LampType>HpSl</LampType>
-          <Power>1035</Power> <!-- NH: -->
-          <MinPeriodOn>30</MinPeriodOn> <!-- NH: Fejl i din XML. Perioden er i minutter. -->
+          <Power>1035</Power>
+          <MinPeriodOn>1035</MinPeriodOn>
           <MicroMolParPerWattSeconds>1.787</MicroMolParPerWattSeconds>
           <Ballast>15</Ballast>
           <PropLw>0.1</PropLw>
@@ -351,7 +278,7 @@
         </Product>
         <Product>
           <Manufacture>None</Manufacture>
-          <name>None</name>
+          <Name>None</Name>
           <LampType>Led</LampType>
           <Power>0</Power>
           <MinPeriodOn>0</MinPeriodOn>
@@ -383,64 +310,44 @@
       </Lamp>
     </Lamps>
     <PadFans>
+      <Products>
+        <Product name="PadFan Test 1">
+          <Efficiency>0.9</Efficiency>
+          <MaxFlowRate>100</MaxFlowRate>
+          <MaxParasitLoad>100</MaxParasitLoad>
+        </Product>
+        <Product name="PadFan Test 2">
+          <Efficiency>0.7</Efficiency>
+          <MaxFlowRate>200</MaxFlowRate>
+          <MaxParasitLoad>200</MaxParasitLoad>
+        </Product>
+      </Products>
       <PadFan index="1" layer="1" position="1">
-        <Efficiency>1</Efficiency>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <MaxFlowRate>100</MaxFlowRate>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 1</Product>
         <Number>1</Number>
       </PadFan>
       <PadFan index="1" layer="1" position="2">
-        <Efficiency>1</Efficiency>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 2</Product>
         <Number>1</Number>
       </PadFan>
       <PadFan index="1" layer="1" position="3">
-        <Efficiency>1</Efficiency>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 1</Product>
         <Number>1</Number>
       </PadFan>
       <PadFan index="1" layer="1" position="4">
-        <Efficiency>1</Efficiency>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxParasitLoad>10</MaxParasitLoad>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 1</Product>
         <Number>1</Number>
       </PadFan>
       <PadFan index="1" layer="1" position="5">
-        <Efficiency>1</Efficiency>
-        <MaxFlowRate>100</MaxFlowRate>
-        <MaxFlowRate>100</MaxFlowRate>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 1</Product>
         <Number>1</Number>
-        <MaxParasitLoad>10</MaxParasitLoad>
       </PadFan>
       <PadFan index="1" layer="1" position="6">
-        <Efficiency>1</Efficiency>
-        <MaxFlowRate>100</MaxFlowRate>
-        <Product>PadFan8</Product>
-        <Number>1</Number>
-        <MaxParasitLoad>10</MaxParasitLoad>
-      </PadFan>
-      <PadFan index="1" layer="1" position="7">
-        <Efficiency>1</Efficiency>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 1</Product>
         <Number>1</Number>
       </PadFan>
-      <PadFan index="1" layer="1" position="8">
-        <MaxParasitLoad>10</MaxParasitLoad>
-      </PadFan>
       <PadFan index="1" layer="1" position="7">
-        <MaxParasitLoad>10</MaxParasitLoad>
-      </PadFan>
-      <PadFan index="1" layer="1" position="8">
-        <Efficiency>1</Efficiency>
-        <MaxFlowRate>100</MaxFlowRate>
-        <Product>PadFan8</Product>
+        <Product>PadFan Test 1</Product>
         <Number>1</Number>
       </PadFan>
     </PadFans>
@@ -504,8 +411,8 @@
       <Products>
         <Product name="LS Harmony 3647 FR">
           <Transmission>0.5</Transmission>
-          <ReflectionOutwards>0.02</ReflectionOutwards>
-          <ReflectionInwards>0.5</ReflectionInwards>
+          <ReflectionOutwards>0.4</ReflectionOutwards>
+          <ReflectionInwards>0.4</ReflectionInwards>
           <InsulationU>1.2</InsulationU>
           <U>0.6</U>
           <HeatCapacity>80</HeatCapacity>
@@ -606,6 +513,24 @@
         <Width>3</Width>
         <Number>200</Number>
         <VentTransmissivity>1</VentTransmissivity>
+        <MaxHumidification>93.0000</MaxHumidification>
+        <Efficiency>0.9000</Efficiency>
+        <MaxParasitLoad>200.0000</MaxParasitLoad>
+        <MaxFlowRate>1000.0000</MaxFlowRate>
+        <MaxLoad>100.0000</MaxLoad>
+        <Efficiency>1.0000</Efficiency>
+        <MaxParasitLoad>200.0000</MaxParasitLoad>
+        <HeatRecovery>1</HeatRecovery>
+        <MaxFlowRate>110.0000</MaxFlowRate>
+        <MaxCoolingLoad>100.0000</MaxCoolingLoad>
+        <CoolingEfficiency>1.0000</CoolingEfficiency>
+        <MaxParasitLoad>100.0000</MaxParasitLoad>
+        <CoolingTemperature>7.0000</CoolingTemperature>
+        <HeatRecovery>1</HeatRecovery>
+        <MinPeriodOn/>
+        <Efficiency>0.9000</Efficiency>
+        <MaxFlowRate>100.0000</MaxFlowRate>
+        <MaxParasitLoad>100.0000</MaxParasitLoad>
       </Vent>
     </Vents>
     <ShadingAgents>
@@ -620,14 +545,19 @@
   </Greenhouse>
   <Climate>
     <Setpoint>
-      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</HeatingTemp> <!-- NH: Værdien 21 kalibreret til ByGrowers Hus 1AB -->
+      <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</HeatingTemp>
       <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</VentTemp>
+      <Tavg index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</Tavg>
+      <TavgDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</TavgDays>
+      <TavgMax index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">25</TavgMax>
+      <TavgMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">15</TavgMin>
+      <TavgOn index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</TavgOn>
       <minPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">20</minPipeTemperature>
       <maxPipeTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">80</maxPipeTemperature>
-      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation> <!-- NH: Er først nu sat i kraft. Værdien refererer til vinduesåbning [0;1] -->
-      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin> <!-- NH: Er først nu sat i kraft. -->
-      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand> <!-- NH: Er først nu sat i kraft. -->
-      <!-- <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>  NH: Udgået -->
+      <crackVentilation index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackVentilation>
+      <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">-5</crackVentilationTemperatureMin>
+      <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</crackVentilationTemperatureMinBand>
+      <VentMaxCost index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</VentMaxCost>
       <screenActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">shade1+energy1</screenActive1>
       <screenActive1Layer index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
       <screenActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00"/>
@@ -646,9 +576,6 @@
       <screenFixed3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</screenFixed3>
       <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">500</screenShadeThreshold3>
       <ShadingAgentReduction index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</ShadingAgentReduction>
-      <crackScreenHighHumidity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighHumidity> <!-- NH: Anvendes ikke pt. -->
-      <crackScreenHighTemperature index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.05</crackScreenHighTemperature> <!-- NH: Anvendes ikke pt. -->
-      <crackScreenHighTemperatureBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</crackScreenHighTemperatureBand> <!-- NH: Anvendes ikke pt. -->
       <AssLightActive1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive1>
       <AssLightActive1 index="1" FromDate="01/01" FromTime="06:00" ToDate="31/12" ToTime="20:00">1</AssLightActive1>
       <AssLightActive2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</AssLightActive2>
@@ -658,29 +585,26 @@
       <AssLightOn2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn2>
       <AssLightOff2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff2>
       <AssLightOn3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</AssLightOn3>
+      <AssLightLightSum index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">12</AssLightLightSum>
+      <AssLightLightSumDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</AssLightLightSumDays>
       <AssLightOff3 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">600</AssLightOff3>
       <MaxRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">85</MaxRelHmd>
-      <minRelHmd index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">40</minRelHmd> <!-- NH: Anvendes ikke pt. -->
       <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</MaxHeatAddHighRH>
-      <MaxHeatAddLowRH index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</MaxHeatAddLowRH> <!-- NH: Anvendes ikke pt. -->
-      <!-- <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>  NH: Anvendes ikke. I stedet anvendes <SetPoint><minPipeTemperature> -->
-      <!-- <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>  NH: Anvendes ikke. I stedet anvendes <SetPoint><minPipeTemperature> -->
+      <minPipeTemperature1 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature1>
+      <minPipeTemperature2 index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</minPipeTemperature2>
       <rhMaxBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">5</rhMaxBand>
-      <rhMinBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</rhMinBand> <!-- NH: Anvendes ikke pt. -->
       <CO2Setpoint index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">900</CO2Setpoint>
       <CO2Capacity index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</CO2Capacity>
-      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand> <!-- NH: Er først nu sat i kraft. Værdien refererer til vinduesåbning [0;1] -->
-      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold> <!-- NH: Er først nu sat i kraft. Værdien refererer til vinduesåbning [0;1] -->
+      <CO2VentilationBand index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.2</CO2VentilationBand>
+      <CO2VentilationThreshold index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0.1</CO2VentilationThreshold>
     </Setpoint>
   </Climate>
   <Output>
-    <Period>10</Period> <!-- NH: Output hver halve time er fint -->
-    <UseLocalDecimalChar>0</UseLocalDecimalChar> <!-- NH: Skal nok sættes til værdien 1 på danske PCer -->
-    <SkipFormats>0</SkipFormats>
+    <Period>10</Period>
+    <UseLocalDecimalChar>0</UseLocalDecimalChar>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>
-      <!-- <Variable name="actionCode" path="budget[actionCode]"/>  NH: Udgået -->
       <Variable name="actLight1" path="actuators/growthLights/bank1[powerUsage]"/>
       <Variable name="actLight2" path="actuators/growthLights/bank2[powerUsage]"/>
       <Variable name="actLight3" path="actuators/growthLights/bank3[powerUsage]"/>
@@ -693,12 +617,14 @@
       <Variable name="actScreen1 " path="actuators/screens/layer1[state]"/>
       <Variable name="actScreen2" path="actuators/screens/layer2[state]"/>
       <Variable name="actScreen3" path="actuators/screens/layer3[state]"/>
-      <Variable name="actVentilation" path="actuators/ventilation[ventFlux]"/> <!-- NH: Ændret path. Ventilation gennem vinduer (pr. time) -->
-      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/> <!-- NH: Uændret. Ventilation gennem vinduer + leakage (pr. time) -->
-      <Variable name="ventOpening" path="actuators/ventilation[opening]"/> <!-- NH: Tilføjet. Vinduesåbning [0;1] -->
+      <Variable name="actVentilation" path="actuators/ventilation[ventFlux]"/>
+      <Variable name="airFluxTotal" path="actuators/ventilation[value]"/>
       <Variable name="condensation" path="budget[condensation]"/>
-      <!-- <Variable name="controlCode" path="budget[controlCode]"/> NH: Udgået -->
       <Variable name="coverT" path="budget/cover[temperature]"/>
+      <Variable name="energyBalanceConvectionOut" path="budget/cover[convectionTop]"/>
+      <Variable name="energyBalanceLwCoverAbsorbed" path="budget/cover[lwAbsorbedTop]"/>
+      <Variable name="energyBalanceLwEmissionTop" path="budget/cover[lwEmissionTop]"/>
+      <Variable name="energyBalanceVentilationHeatLoss" path="budget[ventilationHeatLoss]"/>
       <Variable name="floorT" path="budget/floor[temperature]"/>
       <Variable name="grossAssimilationRate" path="plant[Pg]"/>
       <Variable name="heatFluxCover" path="budget/cover[convectionTop]"/>
@@ -707,9 +633,10 @@
       <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
       <Variable name="indoorsRh" path="budget/indoors[rh]"/>
       <Variable name="indoorsT" path="budget/indoors[temperature]"/>
+      <Variable name="indoorsTavg" path="indoorsTemperature[average]"/>
       <Variable name="indoorsTotalPar" path="plant[incidentPar]"/>
-      <!-- <Variable name="latentVentFlux" path="actuators/ventilation[latentHeatFlux]"/> NH: Udgået, men genopstår snart. Der skal opstilles et mere fuldstændigt vandbudget i output (det findes i modellen allerede) -->
       <Variable name="leafT" path="budget/plant[temperature]"/>
+      <Variable name="lightSum" path="lightSum[value]"/>
       <Variable name="lightUseEfficiency" path="plant[lue]"/>
       <Variable name="lwAbsorbedCover" path="budget/cover[lwAbsorbedTop]"/>
       <Variable name="lwEmissionCover" path="budget/cover[lwEmissionTop]"/>
@@ -726,23 +653,16 @@
       <Variable name="screen1T" path="budget/screen1[temperature]"/>
       <Variable name="screen2T" path="budget/screen2[temperature]"/>
       <Variable name="screen3T" path="budget/screen3[temperature]"/>
-      <Variable name="sensibleVentFlux" path="budget[ventilationHeatLoss]"/> <!-- NH: Ændret path. -->
+      <Variable name="sensibleVentFlux" path="budget[ventilationHeatLoss]"/>
       <Variable name="skyT" path="budget/sky[temperature]"/>
       <Variable name="soilT" path="outdoors[soilTemperature]"/>
       <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
-      <Variable name="spHeatingTemperature" path="controllers/heating/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
-      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredIndoorsTemperature[value]"/> <!-- NH: Ændret path. -->
+      <Variable name="spHeatingTemperature" path="controllers/heating/desiredTemperature[value]"/>
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredTemperature[value]"/>
       <Variable name="transpiration" path="budget[transpiration]"/>
       <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
       <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
+      <Variable name="ventOpening" path="actuators/ventilation[opening]"/>
     </Variables>
   </Output>
-  <!-- <Status> -->
-    <!-- <LigthSum> -->
-      <!-- <Period>10</Period> -->
-    <!-- </LigthSum> -->
-    <!-- <TwemperatureAvg> -->
-      <!-- <Period>20</Period> -->
-    <!-- </TwemperatureAvg> -->
-  <!-- </Status> -->
 </VG_SETUP>

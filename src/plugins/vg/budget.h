@@ -1,7 +1,7 @@
 #ifndef BUDGET_H
 #define BUDGET_H
 #include <base/box.h>
-//#include <base/logger.h>
+#include <base/logger.h>
 
 namespace vg {
 
@@ -23,22 +23,23 @@ private:
     // Input
     double
         radPrecision, tempPrecision,
-        timeStep, averageHeight, coverPerGroundArea,
+        timeStep, averageHeight, groundArea, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
         transpirationRate, Pn, co2Injection,
         heatPipeFlux,
+        heatPumpCooling, heatPumpCondensationRate,
         babyTimeStep;
     QVector<bool> heatPipesOn;
     bool writeHighRes, isHeating, isVentilating;
 
     int step;
     QDateTime dateTime;
-//    base::Logger logger;
+    base::Logger logger;
 
     // Output
     int radIterations, subSteps;
     double subTimeStep, maxDeltaT, ventilationHeatLoss,
-        condensation, transpiration, ventedWater,
+        condensationCover, transpiration, ventedWater, condensationHeatPump, heatPumpDrying,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
         sunParAbsorbedInCover, sunParAbsorbedInScreens, sunParHittingPlant,
         growthLightParHittingPlant, totalPar;

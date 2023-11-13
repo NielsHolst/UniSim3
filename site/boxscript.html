@@ -56,7 +56,7 @@
 <li>A <strong>comment</strong> runs from <code>//</code> to the end of the line.</li>
 </ul>
 <p>The <em>Hello world!</em> boxscript exemplifies most of the BoxScript syntax:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/hello_world1.box">// hello_world1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/hello_world1.box">// hello_world1.box&#9207;</a>
 Simulation sim {
   .steps = 3
   OutputText {
@@ -479,8 +479,8 @@ Simulation sim</code>
 </div>
 <p class='hidden-anchor' id='standard-boxes'>xxx</p><div class='border-grey'>
 <h1>Standard boxes</h1>
-<p>The <span class="plugin">boxes</span> plugin contains model building blocks of general utility. The functionality of these building blocks (<a href='https://tildeweb.au.dk/au152367/intro.html#classes'>classes</a>) is described below</p>
-<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='https://tildeweb.au.dk/au152367/download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.box">briere1.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
+<p>The <span class="plugin">boxes</span> plugin contains model building blocks of general utility. The functionality of these building blocks (<a href='intro.html#classes'>classes</a>) is described below</p>
+<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the <a href="input/demo/briere/briere1.box">briere1.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
 <pre><code class="command">> run demo/briere/briere1.box</code></pre>
 <p>Paste the clipboard at the R prompt to see the output as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
 <p>You can download particular boxscripts and R scripts whereever you see the &#9207; download symbol, if you want to study them further. But you don't need to to run the examples, since all necessary scripts are included with the Universal Simulator installation.</p>
@@ -505,7 +505,7 @@ Simulation sim</code>
 
 <h3 id='usage'>Usage</h3>
 <p>The Accumulator box keeps track of an accumulated sum. For every simulation step, <code>change</code> (can be negative) is added to its <code>value</code>. This boxscript calculates the day-degrees above a threshold of 10 °C (a <a href='#daydegrees'>DayDegrees</a> box would allow you more control with less BoxScript code):</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/accumulator/accumulator1.box">// accumulator1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/accumulator/accumulator1.box">// accumulator1.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2009
@@ -528,7 +528,7 @@ Simulation sim {
   }
 }</code></pre>
 <p>Note that in the output a port named <code>value</code> is by default labelled after its parent (here <code>dd18</code>):</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/accumulator1.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/accumulator1.png" referrerpolicy="no-referrer"></p>
 </div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='basesignal'>xxx</p><div class='border-grey'>
 <h2>BaseSignal</h2>
@@ -608,7 +608,7 @@ et al. (2008)</a>):</p>
 </table></figure>
 <p> Using R <em>nls</em> we arrive at the estimates, T0=14.2&#176;C, Tmax=35.0&#176;C and a=2.836 × 10<sup>−5</sup> d<sup>−1</sup> that we can plug into this boxscript, which also shows two alternative models (simple linear and the <a href='#daydegrees'>DayDegrees</a> box, which features a breakpoint at the optimum temperature):</p>
 <pre><code class="listing">
-<a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere1.box">// briere1.box&#9207;</a>
+<a href="input/demo/briere/briere1.box">// briere1.box&#9207;</a>
 Simulation sim {
   .steps = temperature[steps]
   SequenceByStep temperature {
@@ -639,10 +639,10 @@ Simulation sim {
 }
 </code></pre>
 <p>This is the plot produced:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/briere1.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/briere1.png" referrerpolicy="no-referrer"></p>
 <h3 id='usage'><li>Usage</li></h3>
 <p>In practical usage, you often want to turn the ticking of the physiological clock on and off. Sometimes, you may want to reset it to zero too. This is what the two remaining input ports (<code>isTicking</code> and <code>resetTotal</code>) are for. They are both of the boolean type. In this script, the clock is only ticking in the period 1 May to 1 October. Moreover, it is reset to zero on 1 May and 1 July:</p>
-<pre><code><a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere2.box">// briere2.box&#9207;</a>
+<pre><code><a href="input/demo/briere/briere2.box">// briere2.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2009
@@ -680,7 +680,7 @@ Simulation sim {
 
 </ul>
 <p>The output shows two years worth of data, identical since the weather of 2009 is used for both years:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/briere2.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/briere2.png" referrerpolicy="no-referrer"></p>
 </div> <!-- border-grey-->
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='buffer'>xxx</p><div class='border-grey'>
 <div class="insert macro">#plugins/boxes/buffer.html</div>
@@ -739,7 +739,7 @@ Simulation sim {
 
 <h3 id='daily-time-step'><li>Daily time step</li></h3>
 <p>It is common to include a <code>Date</code> box in your boxscript. Its logical place is at the very top because for every time step, you will usually want update the current time before everything else:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/calendar/calendar1.box">// calendar1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/calendar/calendar1.box">// calendar1.box&#9207;</a>
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -768,7 +768,7 @@ Simulation sim {
 <p>You will often use <code>date</code>, <code>time</code> or <code>dateTime</code> to put on the x-axis in the output plots. They can also be used as inputs to boxes that depends on the date or the hour of the day.</p>
 <h3 id='changing-the-time-step'><li>Changing the time step</li></h3>
 <p>You can change the time step. Here we also chose to set the specific time of the day for the simulation to start:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/calendar/calendar2.box">// calendar2.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/calendar/calendar2.box">// calendar2.box&#9207;</a>
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -788,7 +788,7 @@ Simulation sim {
 </code></pre>
 <h3 id='setting-the-time-period-of-the-simulation'><li>Setting the time period of the simulation</li></h3>
 <p>Maybe you prefer to specify the simulation period by date (maybe by date and time) rather then by the number of steps. That is easily done:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/calendar/calendar3.box">// calendar3.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/calendar/calendar3.box">// calendar3.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 15/12/2022
@@ -844,7 +844,7 @@ Simulation sim {
 
 </ul>
 <p>It can be useful when learning BoxScript. Here is a simple boxscript for exponential growth:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/computation/computation1.box">// computation1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/computation/computation1.box">// computation1.box&#9207;</a>
 Simulation sim {
   .iterations = 2
   .steps = 3
@@ -863,7 +863,7 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>The simulation will run for two iterations, three steps each as governed by the inputs to <code>sim</code>. The Computation box is simply declared without any input values (it has no inputs). The <code>pop</code> box is of the generic (empty) type <code>Box</code>. We equip it with <a href='https://tildeweb.au.dk/au152367/intro.html#objects'>auxiliary ports</a> using the ampersand designator (<code>&#38;</code>). Here we have set the growth rate <code>r</code> to 5% per step. The <code>density</code> is set to <code>100.0</code> in the <em>reset</em> step. In the <em>update</em> step the 5% growth is applied, while in all other steps it just keeps its value.</p>
+<p>The simulation will run for two iterations, three steps each as governed by the inputs to <code>sim</code>. The Computation box is simply declared without any input values (it has no inputs). The <code>pop</code> box is of the generic (empty) type <code>Box</code>. We equip it with <a href='intro.html#objects'>auxiliary ports</a> using the ampersand designator (<code>&#38;</code>). Here we have set the growth rate <code>r</code> to 5% per step. The <code>density</code> is set to <code>100.0</code> in the <em>reset</em> step. In the <em>update</em> step the 5% growth is applied, while in all other steps it just keeps its value.</p>
 <p>BoxScript tricks work noting:</p>
 <ul>
 <li>We include the decimal point <code>100.0</code> to set the <code>density</code> port to be of <code>double</code> type. A value of <code>100</code> would have set it to an <code>int</code>.</li>
@@ -902,7 +902,7 @@ comp.step    r density iteration sim.step
 
 <h3 id='usage'>Usage</h3>
 <p>Use this box to construct a date from <code>day</code>, <code>month</code> and <code>year</code>. Here is an example:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/date/date1.box">// date1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/date/date1.box">// date1.box&#9207;</a>
 Simulation sim {
   .steps = 3
   Date date {
@@ -943,7 +943,7 @@ Simulation sim {
 
 <h3 id='usage'>Usage</h3>
 <p>You use the <code>DateSplit</code> box to split a <code>date</code> variable into <code>day</code>, <code>month</code> and <code>year</code>. If you are trying to do something complicated then consider instead moving the complications to an R script that can be executed after the simulation has run (see <a href='#outputr'>OutputR</a>). This simple R script demonstrates the functionality:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/date_split/date_split1.box">// date_split1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/date_split/date_split1.box">// date_split1.box&#9207;</a>
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -1009,7 +1009,7 @@ day month year iteration step
 <p>If <code>circadian</code> is <code>FALSE</code> then <code>currentDateTime</code> is considered inside the limits, if it falls inside the period from <code>beginTime</code> on <code>beginDate</code> to <code>endTime</code> on <code>endDate</code> (specifying a single signal). </p>
 <h3 id='circadian-signals'><li>Circadian signals</li></h3>
 <p>The difference that <code>circadian</code> makes is easier to understand by example. First we demonstrate a circadian signal:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/date_time_signal/date_time_signal1.box">// date_time_signal1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/date_time_signal/date_time_signal1.box">// date_time_signal1.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2001T12:00
@@ -1041,7 +1041,7 @@ Simulation sim {
 }
 </code></pre>
 <p>The boxscript raises the signal for five days between 14:00 and 20:00 every day, as shown in the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/date_time_signal1.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/date_time_signal1.png" referrerpolicy="no-referrer"></p>
 <p>You can check the precision of the signal going <em>on</em> at the Universal Simulator prompt with the <code class="command">rows 295 300</code> command:</p>
 <pre><code class="command">&gt; rows 295 300</code>
 <code class="output">...
@@ -1075,7 +1075,7 @@ Simulation sim {
 2001/01/04T21:00:00        0              0               0   50.0         1  324
 </code></pre>
 <h3 id='non-circadian-signals'><li>Non-circadian signals</li></h3>
-<p>In the next script (<a href="https://tildeweb.au.dk/au152367/input/demo/date_time_signal/date_time_signal2.box">date_time_signal2.box&#9207;</a>), we only changed one detail, namely the value of <code>circadian</code> in the <code>signal</code> box:</p>
+<p>In the next script (<a href="input/demo/date_time_signal/date_time_signal2.box">date_time_signal2.box&#9207;</a>), we only changed one detail, namely the value of <code>circadian</code> in the <code>signal</code> box:</p>
 <pre><code class="listing">  DateTimeSignal signal {
     .beginDate  = 03/01/2001
     .beginTime  = 14:00
@@ -1088,7 +1088,7 @@ Simulation sim {
   }
 </code></pre>
 <p>We also re-arranged the ordering of the date and time inputs to make their meaning more clear. The output shows that the signal is raised only through one time period stretching 4 days and 6 hours:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/date_time_signal2.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/date_time_signal2.png" referrerpolicy="no-referrer"></p>
 <p>The precise timing is readily revealed:</p>
 <pre><code class="command">&gt; rows 199 202</code>
 <code class="output">...
@@ -1105,7 +1105,7 @@ Simulation sim {
 2001/01/07T20:15:00        0              0               1   50.0         1  609
 2001/01/07T20:30:00        0              0               0   50.0         1  610
 </code></pre>
-<p><em>Alternatively</em>, we can ignore the time of day all together, as shown in the <a href="https://tildeweb.au.dk/au152367/input/demo/date_time_signal/date_time_signal3.box">date_time_signal3.box&#9207;</a> script:</p>
+<p><em>Alternatively</em>, we can ignore the time of day all together, as shown in the <a href="input/demo/date_time_signal/date_time_signal3.box">date_time_signal3.box&#9207;</a> script:</p>
 <pre><code class="listing">  DateTimeSignal signal {
     .beginDate  = 03/01/2001
     .endDate    = 07/01/2001
@@ -1157,11 +1157,11 @@ Simulation sim {
 
 <h3 id='usage'>Usage</h3>
 <p>The DayDegrees box implements the classical, linear day-degree scale of physiological development. The <code>briere1.box</code> script (see <a href='#briere'>Briere</a>) compares linear and non-linear models:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/briere1.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/briere1.png" referrerpolicy="no-referrer"></p>
 <p>Here, the brown line shows a pure linear model, while the broken green line shows how DayDegrees work. The lower threshold for development (<code>T0</code>) was set to 14.2&#176;C in this example with optimum temperature (<code>Topt</code>) at 29.0&#176;C and maximum temperature (<code>Tmax</code>) at 35.0&#176;C. </p>
 <p>If you choose only to set <code>T0</code> in your boxscsript, while keeping the default values of <code>Topt</code> and <code>Tmax</code>, you will achiece the pure linear model (brown line).</p>
-<p>This boxscript is identical to the <a href="https://tildeweb.au.dk/au152367/input/demo/briere/briere2.box">briere2.box&#9207;</a> script, except a <code>DayDegree</code> box has replaced the <code>Briere</code> box:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/day_degrees/day_degrees1.box">// day_degrees1.box&#9207;</a>
+<p>This boxscript is identical to the <a href="input/demo/briere/briere2.box">briere2.box&#9207;</a> script, except a <code>DayDegree</code> box has replaced the <code>Briere</code> box:</p>
+<pre><code class="listing"><a href="input/demo/day_degrees/day_degrees1.box">// day_degrees1.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2009
@@ -1192,7 +1192,7 @@ Simulation sim {
 }
 </code></pre>
 <p>The output of the boxscript is much the same as that of the <code>briere2.box</code> script, because ambient temperature remained mostly in the linear part of the temperature response:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/day_degrees1.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/day_degrees1.png" referrerpolicy="no-referrer"></p>
 <p>For further explanation of the output, please see <a href='#briere'>Briere</a>.</p>
 </div> <!-- border-grey-->
 
@@ -1231,7 +1231,7 @@ Simulation sim {
 
 <h3 id='usage'>Usage</h3>
 <p>The <code>FixedSignal</code> simply fixes the signal at the value given as <code>initialSignal</code>. It is useful when you have a group of boxes (e.g., of sibling boxes) from which you want to select all the boxes of type <code>BaseSignal</code>. Here is the beginning of a boxscript. It does not yet produce any output:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/fixed_signal/fixed_signal1.box">// fixed_signal1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/fixed_signal/fixed_signal1.box">// fixed_signal1.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/01/2001
@@ -1334,7 +1334,7 @@ g(x)= \begin{cases}
 \end{cases}
 $$
 <p>The following script demonstrates the shapes that can be obtained:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/hump/hump1.box">// hump1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/hump/hump1.box">// hump1.box&#9207;</a>
 Simulation sim {
   .steps = temperature[steps]
   SequenceByStep temperature {
@@ -1384,7 +1384,7 @@ Simulation sim {
 }
 </code></pre>
 <p>Here is the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/hump1.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/hump1.png" referrerpolicy="no-referrer"></p>
 <p>The curve takes off exactly from its cloor or ceiling exactly at the limits <code>x0</code> and <code>x1</code> as you can see by the <code>rows</code> command:</p>
 <pre><code>&gt; rows 34 37
 ...
@@ -1427,7 +1427,7 @@ You use a <code>Maker</code> box if you want to make several copies (clones) of 
 
 <h3 id='make-numbered-clones'>&#9207; Make numbered clones</h3>
 In the first example, we create want to create four box objets representing islands with populations of foxes and rabbits. The geolocation of the islands and animal densities should be random. Here is our first sketch of a model without the use of a <code>Maker</code>:
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands1.box">// islands1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/maker/islands1.box">// islands1.box&#9207;</a>
 Simulation sim {
   .iterations = 4
   .steps = 5
@@ -1480,7 +1480,7 @@ With the <code>OutputSelector</code>'s <code>final</code> port set to <code>TRUE
  18    471  19.2508  -35.2724         4    5
 </code></pre>
 This boxscript will allow us to model on each island (given further elaborations of the model) <em>in sequence</em>. But if we wanted to model them <em>simultaneously</em>, maybe to include migration between the islands? For that we can use a <code>Maker</code> box:
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands2.box">// islands2.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/maker/islands2.box">// islands2.box&#9207;</a>
 Simulation sim {
   .iterations = 4
   .steps = 5
@@ -1571,7 +1571,7 @@ isle2.fox isle2.rabbit isle2.latitude isle2.longitude iteration step
 </code></pre>
 
 In each of the four iterations, the three isles share their position (like being stacked), and they have the same densities of foxes and rabbits. We don't know the exact research questions addresses by this model but let's say that in each iteration, isles should be placed randomly and with different, random population densities. Then we need for each isle to draw its own random numbers:
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands3.box">// islands3.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/maker/islands3.box">// islands3.box&#9207;</a>
 Simulation sim {
   .iterations = 4
   .steps = 5
@@ -1645,7 +1645,7 @@ isle2.fox isle2.rabbit isle2.latitude isle2.longitude iteration step
 Note the there can only be one randomiser box on a boxscript. All the random variables in a boxscript draw numbers from this one source.
 <h3 id='make-named-clones'>Make named clones</h3>
 To continue the example above, let's say that we want to model some concrete islands with known positions but still with random population densities. We can achieve this by supplying the <code>Maker</code> box with a vector of <code>names</code> in stead of just the number of replicates. In this example, we include only to islands:
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maker/islands4.box">// islands4.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/maker/islands4.box">// islands4.box&#9207;</a>
 Simulation sim {
   .iterations = 4
   .steps = 5
@@ -1737,7 +1737,7 @@ As you can see, we got the wished for structure of the model:
 <p>If you need to summarise the trend of a port by the maximum value it attained and in which step it happened, you can use a <a href="#maximumat">MaximumAt</a> box. The interface is simple. Just watch the example below. If you run the simulation for several iterations, the outputs <code>at</code> and <code>max</code> may differ between iterations.</p>
 <h3 id='usage'>Usage</h3>
 <p> We will use a <a href='#hump'>Hump</a> box for demonstration since we now the position of its maximum value:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/maximum_at/maximum_at1.box">// maximum_at1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/maximum_at/maximum_at1.box">// maximum_at1.box&#9207;</a>
 Simulation sim {
   .steps = 50
   Hump hump {
@@ -1763,8 +1763,8 @@ Simulation sim {
 <pre><code class="command">> run demo/maximum_at/maximum_at1.box
 </code></pre>
 <p>and study the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/maximum-at1.png" style="width:60%;" /></p>
-<p>Further confirmation can be gotten by the <a href='https://tildeweb.au.dk/au152367/commands.html#tail'>tail</a> command:</p>
+<p><img src="media/demo/maximum-at1.png" style="width:60%;" /></p>
+<p>Further confirmation can be gotten by the <a href='commands.html#tail'>tail</a> command:</p>
 <pre><code class="command">&gt; tail 3</code>
 <code class="output">...
 hump at maxValue iteration step
@@ -1964,7 +1964,7 @@ copies an R script to the clipboard
 
 <h3 id='skip-a-number-of-lines'><li>Skip a number of lines</li></h3>
 <p>You can set the number <code>steps</code> and <code>iterations</code> a  simulation is running in the <a href='#simulation'>Simulation</a> object. That will by itself result in <code>iterations</code> * (<code>steps</code> + 1) lines in the output file (adding one for each iteration because a line is written also in the reset step). You can skip a number of initial lines in each iteration by setting the <code>beginStep</code> of the <code>OutputSelector</code> box. Maybe the model needs some warming up before it produces reliable or relevant output. Here is one simple example:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector1.box">// output_selector1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/output_selector/output_selector1.box">// output_selector1.box&#9207;</a>
 Simulation sim {
   .iterations = 2
   .steps = 12
@@ -1995,7 +1995,7 @@ Simulation sim {
 <p>Well, unless you had not anticipated that <code>beginStep</code> is acting on every <code>iteration</code>.</p>
 <h3 id='skip-lines-until-a-certain-time'><li>Skip lines until a certain time</li></h3>
 <p>As an alternative to <code>beginStep</code>, you can set <code>beginDateTime</code> to commence output at a certain date-time. You can combine them both, which will postpone output until both a certain step and a certain date-time is reached, though I never found the need to do so. Here is a simple example, working in 5-minute time steps</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector2.box">// output_selector2.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/output_selector/output_selector2.box">// output_selector2.box&#9207;</a>
 Simulation sim {
   .iterations = 2
   Calendar calendar {
@@ -2028,7 +2028,7 @@ Simulation sim {
 </code></pre>
 <h3 id='periodic-output'><li>Periodic output</li></h3>
 <p>You can write only every other line by setting <code>period = 2</code>, every third line by <code>period = 3</code>, and so forth. This can be combined with <code>beginStep</code> and <code>beginDateTime</code> as you wish:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector3.box">// output_selector3.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/output_selector/output_selector3.box">// output_selector3.box&#9207;</a>
 Simulation sim {
   .iterations = 2
   .steps = 25
@@ -2056,7 +2056,7 @@ Simulation sim {
 </code></pre>
 <h3 id='final-output'><li>Final output</li></h3>
 <p>If you want only the final values to appear in the output, i.e. those in the last step, then you set <code>final</code> to <code>TRUE</code>. This will overrule any of the settings on <code>beginStep</code>, <code>beginDateTime</code> and <code>period</code>. Here is a simple boxscript:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/output_selector/output_selector4.box">// output_selector4.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/output_selector/output_selector4.box">// output_selector4.box&#9207;</a>
 Simulation sim {
   .iterations = 3
   .steps = 25
@@ -2127,7 +2127,7 @@ Simulation sim {
 <h3 id='usage'><li>Usage</li></h3>
 <p>You&#39;ll never need to include an <code>OutputWriter</code> box in a boxscript explicitly. It will be created automaticall by boxes that need it, such as <a href='#outputr'>OutputR</a> and <a href='#outputtext'>OutputText</a>. It is the sole responsibility of <code>OutputWriter</code> to write the simulation output to a file. All of its inputshas been given default expressions, which look up the relevant data in other boxes. You set <em>what</em> to change what is written in the <a href='#outputr'>OutputR</a> or <a href='#outputtext'>OutputText</a> box and you can change <em>how</em> it is written in the <a href='#outputselector'>OutputSelector</a> box.</p>
 <p><code>OutputWriter</code> depends much on <code>OutputSelector</code>, in fact, so much that if no <code>OutputSelector</code> box is present in the boxscript then the <code>OutputWriter</code> box will create an <code>OutputSelector</code> as a child box. </p>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/sun/sun1.box">sun1.box&#9207;</a> script, for example, includes an <code>OutputR</code> box explicitly in the script. In a chain reaction, the <code>OutputR</code> box creates an <code>OutputWriter</code> box, which again creates an <code>OutputSelector</code> box:</p>
+<p>The <a href="input/demo/sun/sun1.box">sun1.box&#9207;</a> script, for example, includes an <code>OutputR</code> box explicitly in the script. In a chain reaction, the <code>OutputR</code> box creates an <code>OutputWriter</code> box, which again creates an <code>OutputSelector</code> box:</p>
 <pre><code class="command">&gt; load demo/sun/sun1.box</code>
 <code class="output">Constructing...
 Amending...
@@ -2144,7 +2144,7 @@ Amending...
 </code></pre>
 <p>Most often you are not interested in the output file, as Universal Simulator does its best to handle all output automatically behind the scenes but, anyway, here are the details.</p>
 <h3 id='output-folder'><li>Output folder</li></h3>
-<p>The output file will be written to your output folder, which you can locate with the  <a href='https://tildeweb.au.dk/au152367/commands.html#get-folders'>get folders</a> command:</p>
+<p>The output file will be written to your output folder, which you can locate with the  <a href='commands.html#get-folders'>get folders</a> command:</p>
 <pre><code class="command">> get folders
 </code></pre>
 <p>The name of the output file will be the same as the boxscript that produced it, just with a four-digit running number at the end. As a pure text file, its suffix (also known as its file type) is &quot;txt&quot;. The file consists of tab-separated columns, separated by tab characters (no, you cannot change the separator character to something else than a tab). </p>
@@ -2315,7 +2315,7 @@ Amending...
 <p>You can change the <code>seed</code> to a positive value, if you want the same sequence of pseudo-random numbers every time you run the boxscript. For a <code>RandomiserSobolSequence</code> box, though, the <code>seed</code> has no effect because this box will produce the same sequence of quasi-random numbers always.</p>
 <p>By default random numbers will be drawn in every <strong>reset</strong> step (see <a href='#computation-steps'>computational model</a>), as indicated by <code>drawAtReset</code>. Other options (they can be combined) are <code>drawAtInitialize</code> and <code>drawAtUpdate</code>. If you choose to draw random numbers at every <strong>update</strong>, you will end up with a <strong>stochastic model</strong>. The default setting will change model behaviour for every iteration that you run the model. This is useful for <strong>uncertainty analysis</strong> and <strong>sensitivity analysis</strong>. If you want to carry out a sensitivity analysis then set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and consider changing <code>bootstrapSize</code> to 10,000 for serious use.</p>
 <p>The single output <code>numVariables</code> is mysterious. It tells you how many variables are randomised, yet there are no inputs to indicate which variables to randomise? That&#39;s because a certain structure of boxes is assumed, as exemplified by this boxscript:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser1.box">// randomiser1.box&#9207;</a> 
+<pre><code class="listing"><a href="input/demo/randomiser/randomiser1.box">// randomiser1.box&#9207;</a> 
 Box random {
   RandomiserMonteCarlo randomiser {
   }
@@ -2332,7 +2332,7 @@ Box random {
 <p>The box names (<code>random</code>, <code>randomiser</code>, <code>k</code> and <code>r</code>) are all up to you to choose but are used here for reference. There must be one <code>randomiser</code> box with any number of sibling boxes. The sibling boxes of classes derived from <a href='#randombase'>RandomBase</a> represent the random variables. Here there are two, <code>k</code> and <code>r</code>. There can be other sibling boxes beside that but you should always have the randomiser as the top-most child. Arrange it all neatly within a common parent box, here <code>random</code>.</p>
 <h3 id='stochastic-modelling'><li>Stochastic modelling</li></h3>
 <p>It is easiest to understand how to set up a stochastic model by starting out with one that is not stochastic, yet makes use of random numbers. This is exemplified by this boxscript:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser1.box">// randomiser1.box&#9207;</a> 
+<pre><code class="listing"><a href="input/demo/randomiser/randomiser1.box">// randomiser1.box&#9207;</a> 
 Simulation sim {
   .iterations = 4
   .steps = 5
@@ -2363,10 +2363,10 @@ Simulation sim {
 <pre><code class="command">> run demo/randomiser/randomiser1.box
 </code></pre>
 <p>and study the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser1.png" style="width:60%;" /></p>
+<p><img src="media/demo/randomiser1.png" style="width:60%;" /></p>
 <p>The four panels show the four iterations of the model. Within each iteration the variables remain constant. It is only from one iteration to the next that they attain new values inside their designated intervals (which happens to be [10;30] for both of them). This set-up of the random variables are useful for an uncertainty or a sensitivity analysis.</p>
 <p>Only little changed in the next boxscript. Most importantly, we are now drawing random numbers for every simulation update:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser2.box">// randomiser2.box&#9207;</a> 
+<pre><code class="listing"><a href="input/demo/randomiser/randomiser2.box">// randomiser2.box&#9207;</a> 
 Simulation sim {
   .iterations = 4
   .steps = 100
@@ -2397,12 +2397,12 @@ Simulation sim {
 <pre><code class="command">> run demo/randomiser/randomiser2.box
 </code></pre>
 <p>and marvel at the changed behaviour of the model. We are now running each of the four iterations for 100 steps to highligh the dynamics:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser2.png" style="width:60%;" /></p>
+<p><img src="media/demo/randomiser2.png" style="width:60%;" /></p>
 <p>This shows the behaviour of a stochastic model. Use those two variables elsewhere in your model as inputs to other boxes, and your model will behave erratically, hopefully within meaningful boundaries. You would refer to the current values by <code>random/k[value]</code> and <code>random/r[value]</code>.</p>
 <h3 id='uncertainty-analysis'><li>Uncertainty analysis</li></h3>
 <p>In uncertainty analysis we study  the uncertainty on model outputs induced by uncertainty in model parameters. We have take the introductory
-<a href="https://tildeweb.au.dk/au152367/input/demo/butterfly.box">butterfly.box&#9207;</a> script and made two of the model parameters uncertain:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser3.box">// randomiser3.box&#9207;</a> 
+<a href="input/demo/butterfly.box">butterfly.box&#9207;</a> script and made two of the model parameters uncertain:</p>
+<pre><code class="listing"><a href="input/demo/randomiser/randomiser3.box">// randomiser3.box&#9207;</a> 
 Simulation sim {
   .iterations = 4
   Calendar calendar {
@@ -2470,13 +2470,13 @@ Simulation sim {
 <pre><code class="command">> run demo/randomiser/randomiser3.box
 </code></pre>
 <p>and study the uncertainty in the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser3.png" style="width:60%;" /></p>
+<p><img src="media/demo/randomiser3.png" style="width:60%;" /></p>
 <p>An alternative presentation of the uncertainty is shown in the next boxscript, running 30 iterations:</p>
 <pre><code class="command">> run demo/randomiser/randomiser4.box
 </code></pre>
 <p>There are 30 curves in each panel, representing the course of life stages phenology for each of the 30 iterations:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser4.png" style="width:80%;" /></p>
-<p>How about summarising the 30 curves in the panels for larva, pupa and adult by the date of their maximum? Then we could show the distribution of these dates as ann alternative illustration of the uncertainty. That&#39;s what we&#39;ll do in the next script. Here are the final lines of the <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser5.box">randomiser5.box&#9207;</a> script:</p>
+<p><img src="media/demo/randomiser4.png" style="width:80%;" /></p>
+<p>How about summarising the 30 curves in the panels for larva, pupa and adult by the date of their maximum? Then we could show the distribution of these dates as ann alternative illustration of the uncertainty. That&#39;s what we&#39;ll do in the next script. Here are the final lines of the <a href="input/demo/randomiser/randomiser5.box">randomiser5.box&#9207;</a> script:</p>
 <pre><code>Box max {
   MaximumAt larva {
     .track = butterfly/larva[value]
@@ -2501,12 +2501,12 @@ OutputR {
 <p>We use three <a href='#maxat'>MaxAt</a> boxes to catch the simulation step, in which the maximum is reached. By setting <code>final</code> to <code>TRUE</code> in the <a href='#outputselector'>OutputSelector</a>, we get only one line of out from each simulation iteration. Let&#39;s run that,</p>
 <pre><code class="command">> run demo/randomiser/randomiser5.box
 </code></pre>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser5.R">randomiser5.R&#9207;</a> script grabbed the output to show these <code>geom_density</code> plots:
-<img src="https://tildeweb.au.dk/au152367/media/demo/randomiser5.png" style="width:60%;" /></p>
+<p>The <a href="input/demo/randomiser/randomiser5.R">randomiser5.R&#9207;</a> script grabbed the output to show these <code>geom_density</code> plots:
+<img src="media/demo/randomiser5.png" style="width:60%;" /></p>
 <p>That&#39;s a lot of uncertainty! The expected date of maximum occurence stretches over a month for all three life stages. The question is, which of the two uncertain parameters <code>k</code> or <code>deltaT</code> is the main cause of this uncertainty? That&#39;s what we&#39;ll find out next in the sensitivity analysis.</p>
 <h3 id='sensitivity-analysis'><li>Sensitivity analysis</li></h3>
 <p>Sensitivity analysis demands many simulation iterations. Therefore, you should use the randomiser that most efficiently explores the <em>n</em>-dimensional space formed by your <em>n</em> uncertain model parameters. That means you should use <a href='#randomisersobolsequence'>RandomiserSobolSequence</a>. This has been set up in the next script like so:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser6.box">// randomiser6.box&#9207;</a> 
+<pre><code class="listing"><a href="input/demo/randomiser/randomiser6.box">// randomiser6.box&#9207;</a> 
 Simulation sim {
   .iterations = 1024
   .silent = TRUE
@@ -2543,7 +2543,7 @@ $$
 $$
 <p>If you set <code>iterations</code> to an invalid number (which depends only on your value of \(p\)), the simulation will stop immediately if you try to run it. As a service, you will get suggestions to valid values for <code>iterations</code> near the number you picked. So, if you want in the range of, say, 50,000 iterations, write that, and you will be told nearby valid numbers.</p>
 <p>To carry out the sensitivity analysis on the simulation output, we must set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and choose a reasonable <code>bootstrapSize</code> to do statistics on the sensitivity indices. A <code>bootstrapSize</code> of 10,000 seems to be a standard choice in literature but here we&#39;ll use 1000 for demonstration.</p>
-<p>The <a href='#outputr'>OutputR</a> box  in the <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser6.box">randomiser6.box&#9207;</a>  script will show three pages of output produced by <a href='#pager'>PageR</a> boxes:</p>
+<p>The <a href='#outputr'>OutputR</a> box  in the <a href="input/demo/randomiser/randomiser6.box">randomiser6.box&#9207;</a>  script will show three pages of output produced by <a href='#pager'>PageR</a> boxes:</p>
 <pre><code class="listing">OutputR {
   OutputSelector {
     .final = TRUE
@@ -2572,7 +2572,7 @@ $$
   }
 }
 </code></pre>
-<p>We invoke the <a href='#outputselector'>OutputSelector</a> to write only the <code>final</code> values of each iteration. For each of the <code>PageR</code> boxes, you must put all the uncertain parameters on the <code>xAxis</code>. You can use the <a href='https://tildeweb.au.dk/au152367/commands.html#find'>find</a> command to check whether you got it right:</p>
+<p>We invoke the <a href='#outputselector'>OutputSelector</a> to write only the <code>final</code> values of each iteration. For each of the <code>PageR</code> boxes, you must put all the uncertain parameters on the <code>xAxis</code>. You can use the <a href='commands.html#find'>find</a> command to check whether you got it right:</p>
 <pre><code class="command">>&gt; load demo/randomiser/randomiser6.box</code>
 <code class="output">...</code>
 <code class="command">&gt; find random/*[value]</code>
@@ -2590,15 +2590,15 @@ Port int sim/max/adult[at]
 </code></pre>
 <p>The 1024 iterations took 31 seconds on my machine. Paste into R and wait for the 1000 bootstraps statistics to finish. That took 14 seconds for me. For larger models, you might need &gt;100,000 iterations while 10,000 bootstraps should suffice. For hours&#39; long simulation, you should <code>unattended</code> to <code>TRUE</code> in the <a href='#simulation'>Simulation</a> box.</p>
 <p>The first plot represents each iteration result asa dot in each. Remember that the model responses on the y-axis is the simulation step (i.e., days after 30 April), when the maximum value was attained:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6a.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/randomiser6a.png" referrerpolicy="no-referrer"></p>
 <p>Clearly, <code>k</code> had no influence, while <code>deltaT</code>  had a very clear-cut influence. Don&#39;t expect such simplicity coming out of more complex models!</p>
 <p>The second plot shows you the increased precision of the estimates of the Sobol&#39; indices:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6b.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/randomiser6b.png" referrerpolicy="no-referrer"></p>
 <p>We had sample size \(N=256\). The plot shows what would have happened with smaller \(N\). The estimates, shown for <code>deltaT</code>, <code>k</code> and their sum, are clearly converging and not changing much from \(N=128\) to \(N=256\). We conclude that we don&#39;t need to increase the sample size.</p>
 <p>The final plot shows the Sobol&#39; indices for each of the model responses:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser6c.png" referrerpolicy="no-referrer"></p>
-<p>The uncertain model parameters are sorted for each model response in decreasing order of importance. We are not surprised that the sensitivity indices for <code>k</code> are both nil, while they are both 1 for <code>deltaT</code>. This stresses that <code>deltaT</code> is not interacting with <code>k</code> to determine model uncertainty. In the cereal aphid-fungus model, you can find <a href='https://tildeweb.au.dk/au152367/models.html#biocontrol-with-sensitivity-analysis'>a more complicated sensitivity analysis</a>.</p>
-<p>Since the simulation and bootstrapping computations may take a very long time, you should be aware how to save the results. How to do that is described for the cereal aphid-fungus model under <a href='https://tildeweb.au.dk/au152367/models.html#reproducing-figures-from-saved-data'>Saving and restoring the analysis</a>.</p>
+<p><img src="media/demo/randomiser6c.png" referrerpolicy="no-referrer"></p>
+<p>The uncertain model parameters are sorted for each model response in decreasing order of importance. We are not surprised that the sensitivity indices for <code>k</code> are both nil, while they are both 1 for <code>deltaT</code>. This stresses that <code>deltaT</code> is not interacting with <code>k</code> to determine model uncertainty. In the cereal aphid-fungus model, you can find <a href='models.html#biocontrol-with-sensitivity-analysis'>a more complicated sensitivity analysis</a>.</p>
+<p>Since the simulation and bootstrapping computations may take a very long time, you should be aware how to save the results. How to do that is described for the cereal aphid-fungus model under <a href='models.html#reproducing-figures-from-saved-data'>Saving and restoring the analysis</a>.</p>
 </div> <!-- border-grey-->
 <p class='hidden-anchor' id='randomisermontecarlo'>xxx</p><div class='border-grey'>
 <h2>RandomiserMonteCarlo</h2>
@@ -2632,8 +2632,8 @@ Port int sim/max/adult[at]
 
 <h3 id='usage'>Usage</h3>
 <p>You can use <code>RandomiserMonteCarlo</code> for stochastic modelling and uncertainty analysis, but <a href='#randomiserstratified'>RandomiserStratified</a> will explore the parameter space more efficiently. For sensitivity analysis, <a href='#randomisersobolsequence'>RandomiserSobolSequence</a> is the preferred choice because it is the most effective of the three in covering all of the parameter space.</p>
-<p>The <a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser7.box">randomiser7.box&#9207;</a> script shows the differences, subtle but important, between the three randomisers. The boxscript breaks the general rule not to put more than one randomiser box into a script. The only good reason would be for a direct comparison like here. Each of the three randomisers is the source of random numbers used to generate random numbers for two variables <code>x</code> and  <code>y</code>, both with a uniform distribution of  numbers in the interval [20;40) (see <a href='#randomuniform'>RandomUniform</a>).</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/randomiser/randomiser7.box">// randomiser7.box&#9207;</a> 
+<p>The <a href="input/demo/randomiser/randomiser7.box">randomiser7.box&#9207;</a> script shows the differences, subtle but important, between the three randomisers. The boxscript breaks the general rule not to put more than one randomiser box into a script. The only good reason would be for a direct comparison like here. Each of the three randomisers is the source of random numbers used to generate random numbers for two variables <code>x</code> and  <code>y</code>, both with a uniform distribution of  numbers in the interval [20;40) (see <a href='#randomuniform'>RandomUniform</a>).</p>
+<pre><code class="listing"><a href="input/demo/randomiser/randomiser7.box">// randomiser7.box&#9207;</a> 
 Simulation sim {
   .iterations = 32
   .steps = 1
@@ -2689,7 +2689,7 @@ Simulation sim {
 <pre><code class="command">>run demo/randomiser/randomiser7.box
 </code></pre>
 <p>and study the output:</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/randomiser7.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/randomiser7.png" referrerpolicy="no-referrer"></p>
 <p>The three ransomisers worked like this to generate random numbers:</p>
 <ul>
 <li><code>RandomiserMonteCarlo</code> picked 32 numbers at random from the interval [20;40) for both <code>x</code> and <code>y</code>.</li>
@@ -2745,7 +2745,7 @@ Simulation sim {
 
 <h3 id='usage'>Usage</h3>
 <p><code>RandomBinomial</code> produces numbers from the binomial distribution. <code>value</code> will be <code>TRUE</code> with probability <code>P</code>.</p>
-<pre><code><a href="https://tildeweb.au.dk/au152367/input/demo/random_binomial/random_binomial1.box">// random_binomial1.box&#9207;</a>
+<pre><code><a href="input/demo/random_binomial/random_binomial1.box">// random_binomial1.box&#9207;</a>
 Simulation sim {
   .steps = 100
   Box random {
@@ -2932,7 +2932,7 @@ random.x random.y positive.x positive.y iteration step
 <div class="end macro"></div>
 
 <h3 id='daily-readings'><li>Daily readings</li></h3>
-<p>You  use a <code>Records</code> box to read logged data, i.e., data with a time stamp, typically a weather file. Here is one example showing the first and last lines of <a href="https://tildeweb.au.dk/au152367/input/demo/weather/flakkebjerg 2005.txt">flakkebjerg 2005.txt&#9207;</a>:
+<p>You  use a <code>Records</code> box to read logged data, i.e., data with a time stamp, typically a weather file. Here is one example showing the first and last lines of <a href="input/demo/weather/flakkebjerg 2005.txt">flakkebjerg 2005.txt&#9207;</a>:
 <pre><code class="listing">      Date        Tmin Tmax  Tavg  I
 01/01/2005  0    4.7   2.8   1.4
 02/01/2005  0.7  6.2   3.6   1.3
@@ -2944,7 +2944,7 @@ random.x random.y positive.x positive.y iteration step
 </code></pre>
 <p>The input file must be a column-oriented text file with columns separated by whitespace (any number of blanks and tab stops between each column) and one row for each records. Columns must be complete; you cannot have an empty value. Rows, on the other hand, need not be complete. If some records are missing, say a few days due to a malfunctioning weather station, then the <code>Records</code> box will automatically interpolate (linearly) between neighboring records.</p>
 <p>The <code>Records</code> box must be accompanied by a <code>Calendar</code> box. It is the <code>Calendar</code> box that keeps track of time during a simulation, not the <code>Records</code> box. In this example, the simulation runs through three days in December:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records1.box">// records1.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/records/records1.box">// records1.box&#9207;</a>
 Simulation sim {
   .steps = 3
   Calendar calendar {
@@ -2976,7 +2976,7 @@ Simulation sim {
 <p>Each of the columns in the input file produces an output port with the same name as the column heading. </p>
 <h3 id='interpolation'><li>Interpolation</li></h3>
 <p>The temperatures are daily estimates, which for interpolation purposes are assumed to have occured at midnight. We can explore this by changing the time step to 8 hours:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records2.box">// records2.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/records/records2.box">// records2.box&#9207;</a>
 Simulation sim {
   .steps = 6
   Calendar calendar {
@@ -3008,7 +3008,7 @@ Simulation sim {
 </code></pre>
 <p><em>Pitfalls</em>. Plants and animals have a diurnal rythm. Be careful that your model makes sense, if you decrease the time step to less than 1 day. If use a daily accumulated variable like precipitation, you need to transform the data. If your time step is 1 hour, for example, then you must divide the precipitation data in the input file by 24 before using it in a <code>Records</code> box.</p>
 <h3 id='hourly-readings'><li>Hourly readings</li></h3>
-<p>If you model runs on a finer time scale, you may have records at an hourly interval, or even down to seconds, corresponding to the smallest time step supported by <code>Calendar</code> (1 second). You may also have records at irregular intervals with a time stamp of date and time. In any case, you provide the time of the day in a separate column, as exemplified by the file <a href="https://tildeweb.au.dk/au152367/input/demo/weather/copenhagen-may-hourly.txt">copenhagen-may-hourly.txt&#9207;</a>, which contains hourly data for the first half of May:</p>
+<p>If you model runs on a finer time scale, you may have records at an hourly interval, or even down to seconds, corresponding to the smallest time step supported by <code>Calendar</code> (1 second). You may also have records at irregular intervals with a time stamp of date and time. In any case, you provide the time of the day in a separate column, as exemplified by the file <a href="input/demo/weather/copenhagen-may-hourly.txt">copenhagen-may-hourly.txt&#9207;</a>, which contains hourly data for the first half of May:</p>
 <pre><code class="listing">Date       Time  Tair Rhair GlobRad DifRad Windspeed
 01-05-2001 00:00 4.7  85     0      0      2.6
 01-05-2001 01:00 4.1  84     0      0      2.6
@@ -3019,7 +3019,7 @@ Simulation sim {
 16-05-2001 00:00 6.1  85     0      0      5.1
 </code></pre>
 <p>In our boxscript, we specify the period of the simulation in the <code>Calendar</code> box:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records3.box">// records3.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/records/records3.box">// records3.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2001T00:00
@@ -3054,11 +3054,11 @@ Simulation sim {
 </code></pre>
 <p>The plot looks like this:</p>
 <p>&nbsp;</p>
-<p><img src="https://tildeweb.au.dk/au152367/media/demo/records3.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/demo/records3.png" referrerpolicy="no-referrer"></p>
 <p><em>The two flavours of midnight</em>. The time stamps 2001/05/06T24:00:00 and 2001/05/07T00:00:00 are equivalent because 24 hours is translated into 0 hours (midnight) on the following day.</p>
 <h3 id='ignoring-the-year'><li>Ignoring the year</li></h3>
 <p>It happens quite often that you want to use a weather file without regards to the year noted in the time stamp. This is the purpose of <code>ignoreYear</code>, which defaults to <code>FALSE</code> but here set it to <code>TRUE</code>:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records4.box">// records4.box&#9207;</a>Simulation sim {
+<pre><code class="listing"><a href="input/demo/records/records4.box">// records4.box&#9207;</a>Simulation sim {
   .steps = 3
   Calendar calendar {
     .begin = 15/12/2022
@@ -3080,7 +3080,7 @@ Simulation sim {
 </code></pre>
 <h3 id='extrapolation'><li>Extrapolation</li></h3>
 <p>What happens if we run past the end of the weather file? Consider this:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records6.box">// records6.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/records/records6.box">// records6.box&#9207;</a>
 Simulation sim {
   .steps = 5
   Calendar calendar {
@@ -3104,7 +3104,7 @@ Simulation sim {
 <h3 id='recycling-the-year'><li>Recycling the year</li></h3>
 <p>If your weather file goes from 1 January to 31 December, or if it otherwise forms a whole year from beginning to end, e.g. from 21 March one year to 20 March the following year, then you can ask the Records box to recycle the readings. In that way, you can use one year&#39;s weather data to simulate several years. All right, that&#39;s a quick and dirty way of doing it, but sometimes we just want it like that. </p>
 <p>You achieve this behaviour by setting the <code>cycle</code> flag <code>TRUE</code> (it defaults to <code>FALSE</code>). If <code>cycle</code> is <code>TRUE</code> then <code>ignoreYear</code> will always be forced to <code>TRUE</code> as well, since the year registered in the input file has become irrelevant. Let&#39;s try it:</p>
-<pre><code class="listing"><a href="https://tildeweb.au.dk/au152367/input/demo/records/records7.box">// records7.box&#9207;</a>
+<pre><code class="listing"><a href="input/demo/records/records7.box">// records7.box&#9207;</a>
 Simulation sim {
   .steps = 5
   Calendar calendar {
@@ -3139,12 +3139,12 @@ Simulation sim {
       <div class="right">
         <div class="border-red">
           <h2>Try it!</h2>
-          <p><a href="https://tildeweb.au.dk/au152367/download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
+          <p><a href="download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
           <p class="date">5 Oct 2023</p>
         </div>
         <div class="border-violet">
           <h2>Model just published</h2>
-          <p>Read <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">our paper</a> on the Cereal Aphid-Fungus model and study the <a href="https://tildeweb.au.dk/au152367/models.html">detailed documentation</a>. Any questions? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p>Read <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">our paper</a> on the Cereal Aphid-Fungus model and study the <a href="models.html">detailed documentation</a>. Any questions? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
           <p class="date">2 Aug 2023</p>
         </div>
         <div class="border-pink">

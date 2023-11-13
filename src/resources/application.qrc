@@ -196,22 +196,21 @@
     <file>data/input/models/saccharina/saccharina.R</file>
     <file>data/input/models/saccharina/sal-response.R</file>
     <file>data/input/models/saccharina/T-response.R</file>
-    <file>data/input/models/vg/2023-10-07-Jeaa all screens rettet.xml</file>
-    <file>data/input/models/vg/2023-10-07-Jeaa test hus.xml</file>
-    <file>data/input/models/vg/2023-10-07-Niels.box</file>
-    <file>data/input/models/vg/2023-10-16-Niels all screens full.txt</file>
-    <file>data/input/models/vg/2023-10-16-Niels all screens.box</file>
-    <file>data/input/models/vg/2023-10-16-Niels all screens.txt</file>
-    <file>data/input/models/vg/2023-10-16-Niels all screens.xml</file>
-    <file>data/input/models/vg/2023-10-16-Niels lightsum.box</file>
-    <file>data/input/models/vg/2023-10-16-Niels test hus.box</file>
-    <file>data/input/models/vg/2023-10-16-Niels test hus.xml</file>
     <file>data/input/models/vg/2023-10-18 Jeaa Ny test.xml</file>
     <file>data/input/models/vg/2023-10-20-Jeaa all ScreenCal.box</file>
     <file>data/input/models/vg/2023-10-20-Jeaa all ScreenCal.txt</file>
     <file>data/input/models/vg/2023-10-20-Jeaa all ScreenCal.xml</file>
     <file>data/input/models/vg/2023-10-23-Niels temp avg.box</file>
     <file>data/input/models/vg/2023-10-23-Niels temp avg.xml</file>
+    <file>data/input/models/vg/2023-10-30-energy-budget (0).box</file>
+    <file>data/input/models/vg/2023-10-30-energy-budget (1).box</file>
+    <file>data/input/models/vg/2023-10-30-energy-budget (2).box</file>
+    <file>data/input/models/vg/2023-10-30-energy-budget.box</file>
+    <file>data/input/models/vg/2023-11-02-Niels-heat-pump.box</file>
+    <file>data/input/models/vg/2023-11-02-Niels-heat-pump.xml</file>
+    <file>data/input/models/vg/2023-11-10-Niels-heat-pump.box</file>
+    <file>data/input/models/vg/2023-11-11-Jesper-heat-pump.xml</file>
+    <file>data/input/models/vg/2023-11-11-Niels-heat-pump.xml</file>
     <file>data/input/models/vg/bygrowers-heating.R</file>
     <file>data/input/models/vg/bygrowers-heating.txt</file>
     <file>data/input/models/vg/bygrowers-heating.xlsx</file>
@@ -224,6 +223,7 @@
     <file>data/input/models/vg/R/1-energy-budget-sw.R</file>
     <file>data/input/models/vg/R/2-energy-budget-lw.R</file>
     <file>data/input/models/vg/R/2023-10-16-Niels all screens_0020.txt</file>
+    <file>data/input/models/vg/R/2023-10-30-energy-budget.R</file>
     <file>data/input/models/vg/R/3-energy-budget-convection.R</file>
     <file>data/input/models/vg/R/4-energy-budget-advection.R</file>
     <file>data/input/models/vg/R/5-energy-budget-plant.R</file>
@@ -239,6 +239,8 @@
     <file>data/input/models/vg/R/heat-pipes (0).R</file>
     <file>data/input/models/vg/R/heat-pipes (1).R</file>
     <file>data/input/models/vg/R/heat-pipes.R</file>
+    <file>data/input/models/vg/R/heat-pump-example.R</file>
+    <file>data/input/models/vg/R/heat-pump.R</file>
     <file>data/input/models/vg/R/photosynthesis.R</file>
     <file>data/input/models/vg/R/pid-controller.R</file>
     <file>data/input/models/vg/R/plant-canopy-layer.R</file>
