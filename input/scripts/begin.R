@@ -46,7 +46,7 @@ scale_linetype_discrete = function(...) {
   scale_linetype_manual(..., values = rep(c(rep(1, n), rep(7, n)), 5))
 }
 
-update_geom_defaults("line", list(size=1))
+update_geom_defaults("line", list(linewidth=1))
 
 ggplot_theme = function(fontSize) {
   if (fontSize==0) {

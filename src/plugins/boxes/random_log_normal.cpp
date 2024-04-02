@@ -20,7 +20,6 @@ RandomLogNormal::RandomLogNormal(QString name, Box *parent)
 {
     help("produces random numbers from the log-normal distribution");
     port("min")->equals(0.01);
-    port("P")->equals(0).help("Not used");
 }
 
 void RandomLogNormal::checkInputs(QString text) {

@@ -27,7 +27,6 @@ HEADERS +=  \
     budget_layer_screen.h \
     budget_layer_sky.h \
     budget_volume.h \
-    canopy_photosynthesis.h \
     cover.h \
     energy_saving.h \
     face.h \
@@ -49,6 +48,7 @@ HEADERS +=  \
     pid_controller.h \
     pipe_forced.h \
     plant.h \
+    plant_instrument.h \
     screen.h \
     sensor.h \
     shading.h \
@@ -80,7 +80,6 @@ SOURCES += \
     budget_layer_screen.cpp \
     budget_layer_sky.cpp \
     budget_volume.cpp \
-    canopy_photosynthesis.cpp \
     cover.cpp \
     energy_saving.cpp \
     face.cpp \
@@ -101,6 +100,7 @@ SOURCES += \
     outdoors.cpp \
     pid_controller.cpp \
     plant.cpp \
+    plant_instrument.cpp \
     screen.cpp \
     sensor.cpp \
     shading.cpp \

@@ -1,7 +1,9 @@
 # All functions below are from the plantecophys package (except for the example plots)
 # The leaf_photosynthesis function has been abbreviated and boundary layer conductance added
-# The canopy-photosynthesis functions was invented by me
+# The canopy-photosynthesis functions were invented by me
 # niels.holst@agro.au.dk
+
+source("~/Rdev/setup.R")
 
 .Rgas <- function()8.314
 Tk <- function(x)x+273.15
@@ -355,6 +357,41 @@ plot_leaf_photo_synthesis = function() {
       axis.title.x = element_text(margin = margin(t=8)),
       axis.title.y = element_text(margin = margin(r=9))
     )
+}
+
+plot_leaf_photo_synthesis_2 = function() {
+  M = expand.grid(
+    Ca    = 100*(3:18), # CO2
+    Tleaf = 15:30
+  )
+
+  M = ddply(M, .(Ca, Tleaf), 
+    function(x) {
+      leaf_photosynthesis(
+      Ca        = x$Ca,
+      PPFD      = 200,
+      RH        = 80,
+      GS        = 0.1,
+      GB        = 0.01,
+      Tleaf     = x$Tleaf,
+      Jmax      = 194,
+      Vcmax     = 112,
+      GammaStar = 41,
+      Km        = 600,
+      Rd0       = 0.49,
+      alpha = 0.9
+      )
+    }
+  )
+  windows(7,6)
+  ggplot(M, aes(Ca, ALEAF, colour=Tleaf)) +
+    geom_line(aes(group=Tleaf)) +
+    labs(
+      x="CO2 (ppm))",
+      y="Net photosynthesis\n(micromol CO2/m2 leaf/s)",
+      colour="Temperature",
+      linetype="Tleaf (oC)"
+    ) 
 }
   
 plot_canopy_photo_synthesis = function() {

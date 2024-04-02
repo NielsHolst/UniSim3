@@ -78,6 +78,27 @@ void Plant::update() {
     updateRadiative();
 }
 
+double Plant::calcGrowthRate(double temperature, double co2) {
+    indoorsTemperature = temperature;
+    indoorsCo2 = co2;
+    update();
+    return growthRate;
+}
+
+void Plant::saveState() {
+    state.indoorsTemperature  = indoorsTemperature;
+    state.indoorsCo2 = indoorsCo2;
+//    state.netRadiation = netRadiation_;
+//    state.parAbsorbed = incidentPar*swAbsorptivityTop;
+}
+
+void Plant::restoreState() {
+    indoorsTemperature  = state.indoorsTemperature;
+    indoorsCo2 = state.indoorsCo2;
+//    updateByRadiation(state.netRadiation, state.parAbsorbed);
+    update();
+}
+
 void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
     netRadiation_ = netRadiation;
     incidentPar  = parAbsorbed/swAbsorptivityTop;

@@ -1,0 +1,47 @@
+#using vg
+Simulation sim {
+  .steps = sequence[steps]
+  // SequenceByStep sequence {
+    // .min = 400
+    // .max = 2000
+    // .by = 100
+  // }
+  SequenceByStep sequence {
+    .min = 15
+    .max = 30
+    .by = 1
+  }
+  Plant plant {
+    .k_sw = 0.7
+    .g0 = 0.0943
+    .g1 = 1.64
+    .re = 200.0
+    .lai = 2.5
+    .coverage = 0.95
+    .Jmax = 145.52
+    .Vcmax = 88.12
+    .GammaStar = 53.21
+    .Km = 600.0
+    .Rd0 = 0.68
+    .alpha = 0.8991
+    .theta = 0.85
+    .Q10 = 1.03
+    .timeStep = 180.
+    .indoorsRh = 70.0
+    .indoorsTemperature = sequence[value] //22.0
+    .indoorsCo2 = 1500. //sequence[value]
+    PlantInstrument instrument {
+      .netRadiation = 200.
+      .parAbsorbed = 250.
+    }
+  }
+  OutputR output {
+    PageR  {
+      .xAxis = sequence[value]
+      PlotR  {
+        .ncol = 5
+        .ports = plant[output::*]
+      }
+    }
+  }
+}

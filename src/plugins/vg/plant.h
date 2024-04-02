@@ -18,6 +18,9 @@ public:
     void reset();
     void update();
     void updateByRadiation(double netRadiation, double parAbsorbed);
+    double calcGrowthRate(double temperature, double co2);
+    void saveState();
+    void restoreState();
 private:
     // Inputs
     double k_sw, k_lw, sigma,
@@ -45,6 +48,9 @@ private:
         rhoh_, vp_, svp_, svpSlope_, ri_,
         absorbedTotal_,
         VcmaxAdj_, JmaxAdj_;
+    struct {
+        double indoorsTemperature, indoorsCo2;
+    } state;
     // 6 moles CO2 (44 g/mole) -> 1 mole glucose (180 g/mole)
     const double co2ToBiomass = 180./(6*44);
     // Methods

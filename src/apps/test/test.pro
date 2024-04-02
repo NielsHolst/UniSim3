@@ -33,6 +33,7 @@ HEADERS +=  \
     test_expression_parser.h \
     test_flags.h \
     test_functions.h \
+    test_gradient_ascent.h \
     test_import_export.h \
     test_maker.h \
     test_node.h \
@@ -70,6 +71,7 @@ SOURCES +=  \
     test_expression_parser.cpp \
     test_flags.cpp \
     test_functions.cpp \
+    test_gradient_ascent.cpp \
     test_import_export.cpp \
     test_maker.cpp \
     test_node.cpp \

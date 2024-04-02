@@ -1,0 +1,16 @@
+Simulation {
+  .steps = 14
+  Box butterfly {
+    Stage egg {
+      .initial = 100
+      .duration = 5
+    }
+  }
+  OutputR {
+    PageR {
+      PlotR {
+        .ports = egg[content]
+      }
+    }
+  }
+}

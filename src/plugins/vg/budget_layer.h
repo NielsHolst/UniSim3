@@ -41,7 +41,6 @@ private:
         parFlowTop, parFlowBottom,
 
         swAbsorbedTop, swAbsorbedBottom,
-        lwAbsorbedTop, lwAbsorbedBottom,
         convectionTop, convectionBottom,
         radiationDeltaT, convectionDeltaT;
     // Data
@@ -50,6 +49,7 @@ protected:
     // Outputs
     double
         temperature,
+        lwAbsorbedTop, lwAbsorbedBottom,
         lwEmissionTop, lwEmissionBottom,
         parAbsorbedTop, parAbsorbedBottom,
         netRadiation, netConvection,

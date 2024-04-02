@@ -60,6 +60,7 @@ HEADERS +=  \
     factory_plug_in.h \
     flags.h \
 #    food_web_box_base.h \
+    gradient_ascent.h \
     history.h \
     interpolate.h \
     logger.h \
@@ -136,6 +137,7 @@ SOURCES +=  \
     environment.cpp \
     exception.cpp \
     expression.cpp \
+    gradient_ascent.cpp \
     history.cpp \
     logger.cpp \
     mega_factory.cpp \

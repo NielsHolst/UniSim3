@@ -116,7 +116,7 @@ private:
     void updateWaterBalance(double subTimeStep);
     void updateLayersAndVolumes();
     void updateCo2();
-    void resetState();
+//    void resetState();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);

@@ -1,0 +1,28 @@
+Simulation {
+  Calendar calendar {
+    .begin = 01/05/2009
+    .end   = 30/09/2009
+  }
+  Records weather {
+    .fileName = "data/flakkebjerg 2009.txt"
+  }
+  Box butterfly {
+    Stage egg {
+      .initial = 100 
+      .duration = 140
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 5
+        .T = weather[Tavg]
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = egg[content]
+      }
+    }
+  }
+}

@@ -18,7 +18,6 @@ RandomLogUniform::RandomLogUniform(QString name, Box *parent)
 {
     help("produces random numbers from the log uniform distribution");
     port("min")->equals(0.01);
-    port("P")->equals(0).help("Not used");
 }
 
 void RandomLogUniform::checkInputs(QString text) {

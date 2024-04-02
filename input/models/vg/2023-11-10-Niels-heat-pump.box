@@ -615,6 +615,7 @@ Simulation sim {
             .beginTime = 00:00:00
             .endTime = 00:00:00
             .signalInside = 900.0
+            // .signalInside = if (indoors/temperature[value] < 25) then 900 else 1500
           }
         }
         PrioritySignal capacity {
