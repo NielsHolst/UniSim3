@@ -23,8 +23,8 @@ static map<Operator,int> precedences =
    {Operator::LessOrEqual  , 3},
    {Operator::Equal        , 3},
    {Operator::NotEqual     , 3},
-   {Operator::And          , 5},
-   {Operator::Or           , 4},
+   {Operator::And          , 2},
+   {Operator::Or           , 1},
    {Operator::Negate       , 8},
    {Operator::Not          , 8},
    {Operator::Comma        , 0}

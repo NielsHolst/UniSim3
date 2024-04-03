@@ -34,7 +34,7 @@ private:
     enum class Format{generic, vg};
     struct Setpoint {
         int index;
-        QString name, fromDate, toDate, fromTime, toTime, value;
+        QString name, fromDate, toDate, fromTime, toTime, value, equation;
     };
     using Setpoints = QVector<Setpoint>;
 

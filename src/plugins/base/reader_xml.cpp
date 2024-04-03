@@ -738,10 +738,19 @@ BoxBuilder& ReaderXml::setpoint(QString xmlName, const Setpoint &setpoint) {
         _builder->port("beginTime").equals(setpoint.fromTime);
     if (!setpoint.toTime.isEmpty())
         _builder->port("endTime").equals(setpoint.toTime);
-    if (setpoint.value.isEmpty())
-        ThrowException("Setpoint value is empty").value(xmlName);
-    _builder->port("signalInside").equals(setpoint.value).
-    endbox();
+    bool
+        hasValue = !setpoint.value.isEmpty(),
+        hasEquation = !setpoint.equation.isEmpty();
+    if (hasValue)
+        if (hasEquation)
+            ThrowException("Setpoint cannot have both a value and an <Eq> element").hint(xmlName);
+        else
+            _builder->port("signalInside").equals(setpoint.value);
+    else if (hasEquation)
+        _builder->port("signalInside").computes(setpoint.equation);
+    else
+        ThrowException("Setpoint value is empty").hint(xmlName);
+    _builder->endbox();
     return *_builder;
 }
 
@@ -1086,14 +1095,17 @@ ReaderXml::Setpoints ReaderXml::getSetpoints(QString name) {
     auto children = node->children(name);
     auto sp = children.begin();
     while (sp != children.end()) {
+        XmlNode &spNode(*sp.value());
         Setpoint setpoint;
-        setpoint.index    = sp.value()->getAttributeInt("index");
-        setpoint.name     = sp.value()->getAttributeString("name");
-        setpoint.fromDate = sp.value()->getAttributeString("FromDate");
-        setpoint.toDate   = sp.value()->getAttributeString("ToDate");
-        setpoint.fromTime = sp.value()->getAttributeString("FromTime");
-        setpoint.toTime   = sp.value()->getAttributeString("ToTime");
-        setpoint.value    = sp.value()->value();
+        setpoint.index    = spNode.getAttributeInt("index");
+        setpoint.name     = spNode.getAttributeString("name");
+        setpoint.fromDate = spNode.getAttributeString("FromDate");
+        setpoint.toDate   = spNode.getAttributeString("ToDate");
+        setpoint.fromTime = spNode.getAttributeString("FromTime");
+        setpoint.toTime   = spNode.getAttributeString("ToTime");
+        setpoint.value    = spNode.value();
+        XmlNode *eqNode = spNode.peak("Eq");
+        setpoint.equation = eqNode ? eqNode->value() : "";
         result << setpoint;
         ++sp;
     }
