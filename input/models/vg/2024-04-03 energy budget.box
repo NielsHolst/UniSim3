@@ -6,6 +6,8 @@ Simulation sim {
   Calendar calendar {
     .latitude = 55.4038
     .longitude = 10.4024
+    // .begin = 2023/07/01T12:00:00
+    // .end   = 2023/07/03T14:00:00
     .begin = 2023/01/01T12:00:00
     .end   = 2023/01/03T06:00:00
     .timeStep = 180
@@ -985,77 +987,12 @@ Simulation sim {
     }
   }
   OutputR output {
-    Box variables {
-      &ventOpening = actuators/ventilation[opening]
-      &ventedWater = budget[ventedWater]
-      &Uoutside = shelter/layers/cover[UtopAdj]
-      &Uinside = shelter/layers/cover[UbottomAdj]
-      &transpiration = budget[transpiration]
-      &spVentilationTemperature = controllers/desiredMaxTemperature[value]
-      &spHeatingTemperature = controllers/desiredMinTemperature[value]
-      &spCo2 = setpoints/co2/concentration[value]
-      &soilT = outdoors[soilTemperature]
-      &skyT = budget/sky[temperature]
-      &sensibleVentFlux = budget[ventilationHeatLoss]
-      &screen3T = budget/screen3[temperature]
-      &screen2T = budget/screen2[temperature]
-      &screen1T = budget/screen1[temperature]
-      &respirationRate = plant[Rd]
-      &pipeT = budget/heatPipes[temperature]
-      &outdoorsWindSpeed = outdoors[windSpeed]
-      &outdoorsT = outdoors[temperature]
-      &outdoorsRh = outdoors[rh]
-      &outdoorsPar = outdoors[par]
-      &outdoorsLight = outdoors[radiation]
-      &netGrowthRateLeaf = plant[leafGrowthRate]
-      &netGrowthRate = plant[growthRate]
-      &netAssimilationRate = plant[Pn]
-      &lwEmissionCover = budget/cover[lwEmissionTop]
-      &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
-      &lightUseEfficiency = plant[lue]
-      &lightSum = lightSum[value]
-      &leafT = budget/plant[temperature]
-      &indoorsTotalPar = plant[incidentPar]
-      &indoorsTavg = indoorsTemperature[average]
-      &indoorsT = budget/indoors[temperature]
-      &indoorsRh = budget/indoors[rh]
-      &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
-      &indoorsCo2 = budget/indoors[co2]
-      &heatPumpState = controllers/heatPumps/state[value]
-      &heatPumpCooling = budget[heatPumpCooling]
-      &heatFluxFloor = budget/cover[convectionBottom]
-      &heatFluxCover = budget/cover[convectionTop]
-      &grossAssimilationRate = plant[Pg]
-      &floorT = budget/floor[temperature]
-      &energyBalanceVentilationHeatLoss = budget[ventilationHeatLoss]
-      &energyBalanceLwEmissionTop = budget/cover[lwEmissionTop]
-      &energyBalanceLwCoverAbsorbed = budget/cover[lwAbsorbedTop]
-      &energyBalanceConvectionOut = budget/cover[convectionTop]
-      &coverT = budget/cover[temperature]
-      &condensationHeatPump = budget[condensationHeatPump]
-      &condensationCover = budget[condensationCover]
-      &airFluxTotal = actuators/ventilation[value]
-      &actVentilation = actuators/ventilation[ventFlux]
-      &actScreen3 = actuators/screens/layer3[state]
-      &actScreen2 = actuators/screens/layer2[state]
-      &actScreen1 = actuators/screens/layer1[state]
-      &actPipeTempOut2 = actuators/heatPipes/circuit2[outflowTemperature]
-      &actPipeTempOut1 = actuators/heatPipes/circuit1[outflowTemperature]
-      &actPipeTempIn2 = actuators/heatPipes/circuit2[inflowTemperature]
-      &actPipeTempIn1 = actuators/heatPipes/circuit1[inflowTemperature]
-      &actLightPower = actuators/growthLights[powerUsage]
-      &actLightPar = actuators/growthLights[parEmissionBottom]
-      &actLight3 = actuators/growthLights/bank3[powerUsage]
-      &actLight2 = actuators/growthLights/bank2[powerUsage]
-      &actLight1 = actuators/growthLights/bank1[powerUsage]
-      &actHeatingPower = actuators/heatPipes[heatFlux]
-      &actCo2 = actuators/co2[value]
-    }
-    PageR  {
+    .showPlots = FALSE
+    PageR page {
       .xAxis = calendar[dateTime]
-      PlotR  {
-        .ports = output/variables[*]
-        .ncol = 8
+      .ncol = 8
+      PlotR plot {
+        .ports = budget/*[output::*] | budget[ventilationHeatLoss]
       }
     }
     OutputSelector selector {
