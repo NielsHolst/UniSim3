@@ -20,9 +20,15 @@ public:
     void update();
 private:
     // Inputs
-    double input, size, demand, capacity;
+    double
+        volume, maxTemperature, U,
+        inputResource, outputDemand,
+        groundArea, externalTemperature, timeStep;
     // Outputs
-    double content, supply;
+    double
+        inputDemand, inputSupply,
+        outputResource, outputSupply,
+        heatLoss, temperature;
 };
 
 } //namespace

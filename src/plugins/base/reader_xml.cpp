@@ -270,6 +270,7 @@ void ReaderXml::readVirtualGreenhouse() {
                     setpoint("maxPipeTemperature", "maxTemperature").
                 endbox().
                 box().name("heatPumps");
+                    setpoint("HeatPumpTemp", "offset");
                     setpoint("heatPumpMode", "mode");
                     setpoint("heatPumpMaxPowerUse", "maxPowerUse").
                 endbox().
@@ -354,9 +355,6 @@ void ReaderXml::readVirtualGreenhouse() {
                         endbox().
                     endbox().
                 endbox().
-                box("Sum").name("desiredMaxTemperature").
-                    port("values").computes("../desiredMinTemperature[value] | setpoints/ventilation/offset[value]").
-                endbox().
                 box("IgnoredBox").name("heatPipes").
                     box("Accumulator").name("inflowTemperature").
                         port("change").imports("./controller[controlVariable]").
@@ -370,7 +368,10 @@ void ReaderXml::readVirtualGreenhouse() {
                         endbox().
                     endbox().
                 endbox().
-                box().name("heatPumps").
+                box("IgnoredBox").name("heatPumps").
+                    box("Sum").name("desiredMaxTemperature").
+                        port("values").computes("../../desiredMinTemperature[value] | setpoints/heatPumps/offset[value]").
+                    endbox().
                     box("HeatPumpsMaxState").name("maxState").
                     endbox().
                     box("Accumulator").name("state").
@@ -379,13 +380,16 @@ void ReaderXml::readVirtualGreenhouse() {
                         port("maxValue").imports("../maxState[value]").
                         box("PidController").name("controller").
                             port("sensedValue").imports("indoors[temperature]").
-                            port("desiredValue").imports("controllers/desiredMaxTemperature[value]").
+                            port("desiredValue").imports("../../desiredMaxTemperature[value]").
                             port("timeStep").imports("calendar[timeStepSecs]").
                             port("Kprop").equals(_doc->find("Greenhouse/HeatPumpPIDProp")->toDouble()).
                         endbox().
                     endbox().
                 endbox().
                 box("IgnoredBox").name("ventilation").
+                    box("Sum").name("desiredMaxTemperature").
+                        port("values").computes("../../desiredMinTemperature[value] | setpoints/ventilation/offset[value]").
+                    endbox().
                     box("ProportionalSignal").name("crack").
                         port("input").imports("indoors[rh]").
                         port("threshold").imports("setpoints/rhMax/threshold[value]").
@@ -406,7 +410,7 @@ void ReaderXml::readVirtualGreenhouse() {
                         port("maxValue").equals(1.0).
                         box("PidController").name("controller").
                             port("sensedValue").imports("indoors[temperature]").
-                            port("desiredValue").imports("controllers/desiredMaxTemperature[value]").
+                            port("desiredValue").imports("../../desiredMaxTemperature[value]").
                             port("timeStep").imports("budget[subTimeStep]").
                             port("Kprop").equals(_doc->find("Greenhouse/VentilationPIDProp")->toDouble()).
                         endbox().
@@ -469,7 +473,9 @@ void ReaderXml::readVirtualGreenhouse() {
                 port("heatCapacity").equals(_doc->find("Greenhouse/floor-heatCapacity")->toDouble()).
             endbox().
             box("Budget").name("budget").
-            endbox().
+            endbox();
+            actuatorsHeatBuffer().
+
 //            box("Summary").name("summary").
 //                box("Distribution").name("Tin").
 //                    port("input").imports("gh/budget/indoors[temperature]").
@@ -890,6 +896,19 @@ BoxBuilder& ReaderXml::actuatorsHeatPipes() {
     return *_builder;
 }
 
+BoxBuilder& ReaderXml::actuatorsHeatBuffer() {
+    auto heatPump = _doc->find("Greenhouse/HeatBuffer/HeatBuffer");
+    _builder->box("HeatBuffer").name("heatBuffer").
+        port("volume").equals(heatPump->find("Volume")->toDouble()).
+        port("maxTemperature").equals(heatPump->find("MaxTemperature")->toDouble()).
+        port("U").equals(heatPump->find("U")->toDouble()).
+        port("inputResource").imports("actuators/heatPumps/cooling[value]").
+        port("outputDemand").imports("actuators/heatPipes[heatFlux]").
+        port("timeStep").imports("calendar[timeStepSecs]").
+    endbox();
+    return *_builder;
+}
+
 BoxBuilder& ReaderXml::actuatorsHeatPumps() {
     auto products  = _doc->find("Greenhouse/HeatPumps/Products")->children(),
          heatPumps = _doc->find("Greenhouse/HeatPumps")->children();
@@ -939,7 +958,14 @@ BoxBuilder& ReaderXml::actuatorsHeatPumps() {
          }
 
      }
-     _builder->endbox();
+     _builder->
+         box("Sum").name("powerUse").
+             port("values").imports("../ActuatorHeatPump::*[powerUse]").
+         endbox().
+         box("Sum").name("cooling").
+             port("values").imports("../ActuatorHeatPump::*[cooling]").
+         endbox().
+     endbox();
 
     return *_builder;
 }

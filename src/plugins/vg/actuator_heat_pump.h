@@ -23,6 +23,7 @@ private:
     QString productName;
     int number;
     double groundArea, indoorsTemperature, indoorsRh, state;
+    QString destination;
     // Outputs
     double
         condensationRate,
@@ -30,9 +31,12 @@ private:
         powerUserParasitic,
         powerUse,
         cooling,
+        energyToBuffer,
     // Data (copied from heat pump product)
         maxCoolingLoad;
     double coolingEfficiency, maxFlowRate, parasiticLoad, coolingTemperature;
+    // Data
+    bool useBuffer_;
 
 };
 

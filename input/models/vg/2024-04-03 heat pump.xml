@@ -7,8 +7,8 @@
     <Location>Odense                                            </Location>
     <Longitude>10.4024</Longitude>
     <Latitude>55.4038</Latitude>
-    <StartTime>01-01-2023</StartTime>
-    <StopTime>05-01-2023</StopTime>
+    <StartTime>01-07-2023</StartTime>
+    <StopTime>05-07-2023T13:00:00</StopTime>
     <TimeStep>3</TimeStep>
     <ShortDesc>Vent2</ShortDesc>
   </Description>
@@ -126,12 +126,18 @@
       </Fog>
     </Fogs>
     <HeatBuffer>
+      <!--NH: Indtil videre kan der kun være én HeatBuffer -->
+      <!-- Varmebufferen opsamler og afgiver energi, men den har ingen indflydelse på resten af modellen. Den energi, som den afgiver, er blot energi man har sparet 
+      på opvarmning af vand til varmerørerne -->
       <HeatBuffer index="1" layer="1" position="1">
-        <MaxHeatStorage>10000</MaxHeatStorage>
-        <HeatLossCoefficientIn>1</HeatLossCoefficientIn>
-        <HeatLossCoefficientOut>1</HeatLossCoefficientOut>
-        <HeatLossStorage>1</HeatLossStorage>
-        <HeatStorageProvideEnergy>1</HeatStorageProvideEnergy>
+        <Volume>10</Volume> <!-- m3 -->
+        <MaxTemperature>95</MaxTemperature>  
+        <U>10</U> <!-- Varmetab i forhold til udendørstemperatur (W/K) -->
+        <!-- <MaxHeatStorage>10000</MaxHeatStorage> -->
+        <!-- <HeatLossCoefficientIn>1</HeatLossCoefficientIn> -->
+        <!-- <HeatLossCoefficientOut>1</HeatLossCoefficientOut> -->
+        <!-- <HeatLossStorage>1</HeatLossStorage> -->
+        <!-- <HeatStorageProvideEnergy>1</HeatStorageProvideEnergy> -->
       </HeatBuffer>
     </HeatBuffer>
     <HeatExchangers>
@@ -205,18 +211,17 @@
     <HeatPumps>
       <Products>
         <Product>
-          <Name>None</Name>
-          <MaxFlowRate>0</MaxFlowRate>
-          <MaxCoolingLoad>0</MaxCoolingLoad>
-          <CoolingEfficiency>0</CoolingEfficiency>
-          <MaxParasitLoad>0</MaxParasitLoad>
-          <CoolingTemperature>0</CoolingTemperature>
-          <HeatRecovery>0</HeatRecovery>
+          <Name>Generic</Name>
+          <MaxFlowRate>2.5</MaxFlowRate>
+          <MaxCoolingLoad>78.4</MaxCoolingLoad>
+          <CoolingEfficiency>0.69</CoolingEfficiency>
+          <MaxParasitLoad>2.2</MaxParasitLoad>
+          <CoolingTemperature>10.0</CoolingTemperature>
         </Product>
       </Products>
       <HeatPump index="1" layer="1" position="1">
-        <Product>None</Product>
-        <Number>0</Number>
+        <Product>Generic</Product>
+        <Number>2</Number>
       </HeatPump>
       <HeatPump index="1" layer="1" position="2">
         <Product>None</Product>
@@ -521,10 +526,11 @@
   <Climate>
     <Setpoint>
       <heatPumpMaxPowerUse index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">50</heatPumpMaxPowerUse>
-      <heatPumpMode index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">0</heatPumpMode>
+      <heatPumpMode index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</heatPumpMode> 
       <HeatingTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">18</HeatingTemp>
       <HeatingTemp index="1" FromDate="01/01" FromTime="07:00" ToDate="31/12" ToTime="16:00">19</HeatingTemp>
       <VentTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">2</VentTemp>
+      <HeatPumpTemp index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">1</HeatPumpTemp> <!--NH: Tilføjet -->
       <Tavg index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">21</Tavg>
       <TavgDays index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">3</TavgDays>
       <TavgMax index="0" FromDate="01/01" FromTime="0:00" ToDate="31/12" ToTime="0:00">25</TavgMax>
@@ -610,7 +616,8 @@
       <Variable name="grossAssimilationRate" path="plant[Pg]"/>
       <Variable name="heatFluxCover" path="budget/cover[convectionTop]"/>
       <Variable name="heatFluxFloor" path="budget/cover[convectionBottom]"/>
-      <Variable name="heatPumpCooling " path="budget[heatPumpCooling]"/>
+      <Variable name="heatPumpCooling" path="actuators/heatPumps/cooling[value]"/> <!--NH: Ændret (W/m2) -->
+      <Variable name="heatPumpPowerUse" path="actuators/heatPumps/cooling[powerUse]"/> <!--NH: Tilføjet (W/m2)-->
       <Variable name="heatPumpState" path="controllers/heatPumps/state[value]"/>
       <Variable name="indoorsCo2" path="budget/indoors[co2]"/>
       <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]"/>
@@ -641,14 +648,18 @@
       <Variable name="soilT" path="outdoors[soilTemperature]"/>
       <Variable name="spCo2" path="setpoints/co2/concentration[value]"/>
       <Variable name="spHeatingTemperature" path="controllers/desiredMinTemperature[value]"/>
-      <Variable name="spVentilationTemperature" path="controllers/desiredMaxTemperature[value]"/>
+      <Variable name="spVentilationTemperature" path="controllers/ventilation/desiredMaxTemperature[value]"/> <!--NH: Ændret -->
+      <Variable name="spHeatPumpTemperature" path="controllers/heatPumps/desiredMaxTemperature[value]"/> <!--NH: Tilføjet -->
       <Variable name="transpiration" path="budget[transpiration]"/>
       <Variable name="Uinside" path="shelter/layers/cover[UbottomAdj]"/>
       <Variable name="Uoutside" path="shelter/layers/cover[UtopAdj]"/>
       <Variable name="ventedWater" path="budget[ventedWater]"/>
       <Variable name="ventOpening" path="actuators/ventilation[opening]"/>
+      <Variable name="heatBufferTemp" path="heatBuffer[temperature]"/> <!--NH: Tilføjet -->
+      <Variable name="heatBufferOutput" path="heatBuffer[outputSupply]"/> <!--NH: Tilføjet (W/m2) -->
     </Variables>
   </Output>
+  <!--NH: Fjernet
   <Status>
     <LigthSum>
       <Period>10</Period>
@@ -657,4 +668,5 @@
       <Period>20</Period>
     </TwemperatureAvg>
   </Status>
+  -->
 </VG_SETUP>

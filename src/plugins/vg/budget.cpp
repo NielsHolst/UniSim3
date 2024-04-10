@@ -233,6 +233,9 @@ void Budget::addLayers() {
     ventilationSp         = findOne<Box*>("setpoints/ventilation");
     ventilationController = findOne<Box*>("controllers/ventilation");
     ventilationActuator   = findOne<Box*>("actuators/ventilation");
+    heatPumpsSp           = findOne<Box*>("setpoints/heatPumps");
+    heatPumpsController   = findOne<Box*>("controllers/heatPumps");
+    heatPumpsActuator     = findOne<Box*>("actuators/heatPumps");
 }
 
 void Budget::addState() {
@@ -371,6 +374,10 @@ void Budget::updateLayersAndVolumes() {
         ventilationSp->updateFamily();
         ventilationController->updateFamily();
         ventilationActuator->updateFamily();
+
+        heatPumpsSp->updateFamily();
+        heatPumpsController->updateFamily();
+        heatPumpsActuator->updateFamily();
 
         timePassed += subTimeStep;
         subDateTime = dateTime.addMSecs(static_cast<int>(1000.*timePassed));

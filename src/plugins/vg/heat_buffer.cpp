@@ -6,10 +6,12 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/publish.h>
+#include <base/phys_math.h>
 #include <base/test_num.h>
 #include "heat_buffer.h"
 
 using namespace base;
+using namespace phys_math;
 
 namespace vg {
 
@@ -19,24 +21,47 @@ HeatBuffer::HeatBuffer(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a heat buffer");
-    Input(input).help("Heat input").unit("kW");
-    Input(size).help("Max energy content").unit("kWh");
-    Input(demand).help("Demanded heat output").unit("kW");
-    Input(capacity).help("Maximum heat supply").unit("kW");
-    Output(content).help("Energy content").unit("kWh");
-    Output(supply).help("Energy supplied in response to demand").unit("kW");
+    Input(volume).equals(10).help("Buffer volume").unit("m3");
+    Input(maxTemperature).equals(95.).help("Max. temperature of water in buffer").unit("oC");
+    Input(U).equals(10.).help("U-value relative to surroundings").unit("W/K");
+
+    Input(inputResource).help("Ressource power available, e.g. from a heat pump").unit("W/m2");
+    Input(outputDemand).help("Demanded power for heating").unit("W/m2");
+    Input(timeStep).help("Length of time step (of `Budget` integration)").unit("s");
+
+    Input(groundArea).imports("geometry[groundArea]");
+    Input(externalTemperature).imports("outdoors[temperature]").help("Temperature of surroundings");
+
+    Output(inputDemand).help("Power demanded to reach `maxTemperature` during `timeStep`").unit("W");
+    Output(inputSupply).help("Power supplied by `inputResource` in response to `inputDemand`").unit("W");
+    Output(outputResource).help("Power available to fulfill `outputDemand`").unit("W/m2");
+    Output(outputSupply).help("Power supplied by `outputResource` in response to `outputDemand`").unit("W/m2");
+    Output(heatLoss).help("Power lost to surroundings").unit("W");
+    Output(temperature).help("Temperature of water in buffer").unit("oC");
 }
 
 void HeatBuffer::reset() {
+    temperature = 20.;
     update();
 }
 
 void HeatBuffer::update() {
-    supply = std::min(content+input, demand);
-    content += input - supply;
-    if (content>size)
-        content = size;
-    TestNum::snapToZero(content, 1e-3);
+    // Convert W to delta T
+    const double CpSpec = timeStep/CpWater/volume*1e-3; // s * kg * K / J / m3 * 1e-3 m3 / kg = K/W
+    // Decrease (rarely increase) buffer temperature by heat loss
+    heatLoss = U*(temperature - externalTemperature);
+    temperature -= heatLoss*CpSpec;
+    // Increase buffer temperature by power input
+    inputDemand = (temperature < maxTemperature) ? (maxTemperature - temperature)/CpSpec : 0.;
+    inputSupply = TestNum::eqZero(inputDemand) ? 0. : inputDemand*(1. - exp(-inputResource*groundArea/inputDemand));
+    temperature += inputSupply*CpSpec;
+    // Decrease buffer temperature by power output
+    const double minTemperature = std::max(externalTemperature, 0.);
+    outputResource = std::max(temperature - minTemperature, 0.)/CpSpec/groundArea; // W/m2
+    outputSupply = TestNum::eqZero(outputDemand) ? 0. : outputDemand*(1. - exp(-outputResource/outputDemand));
+    temperature -= outputSupply*groundArea*CpSpec;
+    // Round off
+    temperature = minmax(minTemperature, temperature, maxTemperature);
 }
 
 } //namespace

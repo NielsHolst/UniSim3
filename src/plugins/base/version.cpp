@@ -31,8 +31,9 @@ QString version(QString raw) {
     QString config = items.at(3);
     items.removeAt(3);
     QString code = items.join(".");
-    if (config != "release")
-        code += " (developer)";
+    #ifdef QT_DEBUG
+        code += " (debug)";
+    #endif
     return code;
 }
 

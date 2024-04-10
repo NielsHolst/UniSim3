@@ -59,6 +59,7 @@ private:
     BoxBuilder& controllersGrowthLights();
     BoxBuilder& actuatorsHeatPipes();
     BoxBuilder& actuatorsHeatPumps();
+    BoxBuilder& actuatorsHeatBuffer();
     BoxBuilder& actuatorsVentilation();
     BoxBuilder& actuatorsScreens();
     BoxBuilder& actuatorsGrowthLights();

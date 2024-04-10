@@ -26,13 +26,15 @@ ActuatorHeatPump::ActuatorHeatPump(QString name, Box *parent)
     Input(indoorsTemperature).imports("indoors[temperature]",CA);
     Input(indoorsRh).imports("indoors[rh]",CA);
     Input(state).help("Running state relative to full effect").unit("[0;1]");
+//    Input(destination).equals("outdoors").help("Destination of generated heat: 'outdoors' or 'buffer'");
 
     Output(maxCoolingLoad).help("Maximum cooling power").unit("kW");
     Output(condensationRate).help("Rate of water condensed in the unit").unit("kg/m2/s");
     Output(powerUseCooling).help("Power used for cooling").unit("W/m2");
     Output(powerUserParasitic).help("Power lost").unit("W/m2");
     Output(powerUse).help("Power used (total)").unit("W/m2");
-    Output(cooling).help("Cooling effect >= 0").unit("W/m2");
+    Output(cooling).help("Cooling effect >= 0. An equal amount of heat is available for any `HeatBuffer`").unit("W/m2");
+//    Output(energyToBuffer).help("Cooling energy >= 0, routed to heat buffer").unit("W");
 }
 
 #define UPDATE_INPUT(x) x = product->port(#x)->value<double>()
@@ -46,6 +48,13 @@ void ActuatorHeatPump::reset() {
     UPDATE_INPUT(parasiticLoad);
     UPDATE_INPUT(coolingTemperature);
 
+    // Determine destination
+//    if (destination.toLower() == "outdoors")
+//        useBuffer_ = false;
+//    else if (destination.toLower() == "buffer")
+//        useBuffer_ = false;
+//    else
+//        ThrowException("The destination must be 'outdoors' or 'buffer").value(destination).context(this);
     update();
 }
 
@@ -58,7 +67,7 @@ void ActuatorHeatPump::update() {
     condensationRate = std::max(beforeAh - afterAh, 0.)*maxFlowRate*state;   // kg/s
     powerUseCooling = coolingLoad;
     powerUserParasitic = parasiticLoad*state;
-    powerUse =  powerUseCooling + powerUserParasitic;
+    powerUse = powerUseCooling + powerUserParasitic;
     cooling = coolingLoad + LHe*condensationRate*1e-3; // J/kg * kg/s * kW/(1000*W) = kW
 
     // Correct for number of units
@@ -71,6 +80,8 @@ void ActuatorHeatPump::update() {
     cooling *= k;
     // Convert condensation to per area
     condensationRate /= groundArea; // kg/m2/s
+    // Route cooling enerygy to destination
+//    energyToBuffer = useBuffer_ ? cooling*groundArea : 0.;
 }
 
 } //namespace

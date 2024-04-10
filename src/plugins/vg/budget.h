@@ -73,9 +73,9 @@ private:
 
     // Controllers etc.
     Box
-        *heatingSp, *ventilationSp,
-        *heatingController, *ventilationController,
-        *ventilationActuator,
+        *heatingSp, *ventilationSp, *heatPumpsSp,
+        *heatingController, *ventilationController, *heatPumpsController,
+        *ventilationActuator, *heatPumpsActuator,
         *outputWriter;
 
     // State

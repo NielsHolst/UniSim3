@@ -36,6 +36,7 @@ HEADERS +=  \
     growth_light_controller.h \
     growth_light_product.h \
     growth_lights.h \
+    heat_buffer.h \
     heat_pipes.h \
     heat_pump_product.h \
     heat_pumps_max_state.h \
@@ -89,6 +90,7 @@ SOURCES += \
     growth_light_controller.cpp \
     growth_light_product.cpp \
     growth_lights.cpp \
+    heat_buffer.cpp \
     heat_pipes.cpp \
     heat_pump_product.cpp \
     heat_pumps_max_state.cpp \
