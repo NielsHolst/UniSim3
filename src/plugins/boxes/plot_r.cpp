@@ -114,7 +114,7 @@ QString PlotR::toScript() {
 }
 
 inline QString df(int maxData) {
-    return (maxData==0) ? "df" : ("df[1:min(nrow(sim)," + QString::number(maxData) + "),]");
+    return (maxData==0) ? "df" : ("df[1:min(nrow(df)," + QString::number(maxData) + "),]");
 }
 
 QString PlotR::scriptForDefaultPlot(QStringList xLabels, QStringList yLabels) const {

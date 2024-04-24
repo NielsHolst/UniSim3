@@ -1,0 +1,42 @@
+// islands3.box
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  RandomiserMonteCarlo randomiser {
+  }
+  Maker archipelago {
+    .replicates = 3
+    Box isle {
+      &latitude = ./latitude[value]
+      &longitude = ./longitude[value]
+      RandomUniform latitude {
+        .min = 10
+        .max = 20
+      }
+      RandomUniform longitude {
+        .min = -40
+        .max = -30
+      }
+      Box fox {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 10
+          .max = 20
+        }
+      }
+      Box rabbit {
+        &value = ./init[value]
+        RandomUniformInt init {
+          .min = 200
+          .max = 1000
+        }
+      }
+    } 
+  }
+  OutputText {
+    .ports = sim[iteration] | archipelago/*[*] | fox[value] | rabbit[value]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}

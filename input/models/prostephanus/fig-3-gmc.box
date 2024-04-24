@@ -1,0 +1,23 @@
+#using cmbp
+Simulation sim {
+  .steps = ./rh[steps]
+  SequenceByStep rh {
+    .min = 0
+    .max = 100
+    .by  = 1
+  }
+  GrainMoistureContent gmc {
+    .rh = rh[value]
+  }
+  OutputR {
+    PageR {
+      .xAxis = rh[value]
+      .width = 7
+      .height =3.5
+      PlotR {
+        .ports = gmc[value]
+      }
+    }
+  }
+}
+

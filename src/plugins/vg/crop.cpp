@@ -23,8 +23,8 @@ Crop::Crop(QString name, Box *parent)
     Input(coverage).equals(1.0).unit("[0;1]").help("Proportion of floor area with crop");
     Input(k).equals(0.7).unit("[0;1]").help("Light extinction coefficient");
     Input(gammaStar).equals(48.95).unit("ppm").help("CO2 compensation point");
-    Input(Jmax).equals(115.67).unit("μmol CO2/m2/s").help("Max. photosynthetic rate at 25 oC");
-    Input(lightRespiration).equals(0.29).unit("μmol CO2/m2/s").help("Day respiration rate at 25 oC");
+    Input(Jmax).equals(115.67).unit("&micro;mol CO2/m2/s").help("Max. photosynthetic rate at 25 oC");
+    Input(lightRespiration).equals(0.29).unit("&micro;mol CO2/m2/s").help("Day respiration rate at 25 oC");
     Input(ballBerryIntercept).equals(0.106).help("Minimum stomatal conductance for CO2 (g0)");
     Input(ballBerrySlope).equals(1.64).help("Slope og stomatal conductance for CO2 (g1)");
     Input(Vcmax).equals(98.).help("Not used");

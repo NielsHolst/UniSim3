@@ -1,0 +1,11 @@
+// hello_world3.box
+Simulation sim {
+  .iterations = 5
+  .steps = 100
+  OutputR {
+    OutputText {
+      &message = "Hello R!"
+      .ports = .[message]
+    }
+  }
+}

@@ -22,7 +22,7 @@ PlantInstrument::PlantInstrument(QString name, Box *parent)
 {
     help("instrumentalises a Plant object");
     Input(netRadiation).unit("W/m2").help("Net radiation of plant canopy");
-    Input(parAbsorbed).unit("μmol/m2/s").help("PAR absorbed by plant canopy");
+    Input(parAbsorbed).unit("&micro;mol/m2/s").help("PAR absorbed by plant canopy");
 }
 
 void PlantInstrument::initialize() {

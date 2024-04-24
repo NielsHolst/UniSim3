@@ -1,0 +1,83 @@
+// butterfly3.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/05/2009  
+    .end   = 30/09/2009  
+  }
+  Records weather {
+    .fileName = "weather/flakkebjerg 2009.txt"
+  }
+  Box butterfly {
+    Stage egg {
+      .initial = 100 
+      .inflow = ../adult/oviposition[outflow]  
+      .duration = 140
+      .timeStep = ./time[value] 
+      OnOffByDate time { 
+        .x = calendar[date]
+        .xOn  = 10/05    
+        .xOff = 01/06   
+        .valueOn = ./dayDegrees[step]
+        .valueOff = 0
+        DayDegrees dayDegrees {
+          .T0 = 5
+          .T = weather[Tavg]
+        }
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = weather[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Box adult {
+      Stage adult {
+        .inflow = ../../pupa[outflow]
+        .duration = 28
+        .timeStep = 1
+      }
+      Stage preOviposition {
+        .inflow = ../../pupa[outflow]
+        .duration = 5
+        .timeStep = 1
+      }
+      Stage oviposition {
+        .inflow = ../preOviposition[outflow]
+        .duration = 10
+        .timeStep = 1
+        .growthFactor = 40
+      }
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      .ncol = 3 
+      PlotR {
+        .ports = *[content]
+        .ggplot = "scale_y_continuous(trans='log10', limits=c(1,NA))"
+      }
+      PlotR {
+        .ports = *[outflowTotal]
+        .ggplot = "scale_y_continuous(trans='log10', limits=c(1,NA))"
+      }
+      PlotR { 
+        .ports = weather[Tavg] | egg/time/dayDegrees[step] | egg/time[isOn] | egg[timeStep]
+      }
+    }
+  }
+}
+

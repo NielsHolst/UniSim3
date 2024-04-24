@@ -1,0 +1,28 @@
+// func-resp-fg.box
+Simulation {
+  .iterations = attacker[iterations]
+  .steps = host[steps]
+  SeriesByIteration attacker {
+    .numbers = c(1, 2, 5)
+  }
+  SeriesByIteration demand {
+    .numbers = c(10, 20, 50)
+  }
+  SequenceByStep host {
+    .min = 0
+    .max = 100
+    .by = 1
+  }
+  SuperFunctionalResponse funcResp {
+    .attacker = attacker[value]
+    .host = host[value]
+    .demand = demand[value]
+    .attackRate = 0.8
+  }
+  OutputR {
+    .scripts = "func-resp-fg.R"
+    OutputText {
+      .ports = funcResp[*]
+    }
+  }
+}

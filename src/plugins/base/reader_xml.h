@@ -63,12 +63,14 @@ private:
     BoxBuilder& actuatorsVentilation();
     BoxBuilder& actuatorsScreens();
     BoxBuilder& actuatorsGrowthLights();
+    BoxBuilder& actuatorsHumidifiers();
     BoxBuilder& outputVariables();
 
     int numRows();
     QString findPaneProduct(QString position);
     QStringList collectScreens(QString position);
     QMap<QString, QStringList> collectAllScreens();
+    QMap<int, XmlNode*> mapByPosition(QMultiMap<QString, XmlNode *> &nodes, QString keyFilter);
 
     Setpoints getSetpoints(QString name);
     double groundArea();

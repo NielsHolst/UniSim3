@@ -10,6 +10,7 @@ private slots:
     void testMatchOne();
     void testMatchAll();
     void testMatchPairedApostrophes();
+    void testNumberInParentheses();
 };
 
 DECLARE_TEST(TestRegExp)

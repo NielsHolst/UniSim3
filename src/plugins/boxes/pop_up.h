@@ -36,6 +36,7 @@ private:
     QMessageBox::StandardButtons toButtons(QVector<QString> source);
     QMessageBox::Icon toIcon(QString source);
     QString latestCommand() const;
+    void setDefaultAnswer();
 };
 
 } //namespace

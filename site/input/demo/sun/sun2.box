@@ -1,0 +1,23 @@
+// sun2.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 15/08/2022T00:00
+    .end   = 15/08/2022T24:00
+    .timeStep = 5
+    .timeUnit = "m"
+  }
+  Sun sun {
+  }
+  OutputR {
+    .width = 5
+    .height = 3
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = sun[solarConstant] | sun[angot]
+        .layout = "merged"
+      }
+    }
+  }
+}
+

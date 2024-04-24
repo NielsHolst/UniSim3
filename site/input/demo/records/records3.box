@@ -1,0 +1,20 @@
+// records3.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/05/2001T00:00
+    .end   = 06/05/2001T24:00
+    .timeStep = 15
+    .timeUnit = "m"
+  }
+  Records weather { 
+    .fileName = "../weather/copenhagen-may-hourly.txt"
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+       .ports = weather[Tair] | weather[GlobRad] |weather[Windspeed]
+      }
+    }
+  }
+}

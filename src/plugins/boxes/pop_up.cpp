@@ -45,6 +45,8 @@ void PopUp::initialize() {
     // Maybe show
     if (_when==Computation::Step::Initialize && dialog().latestCommand()=="run")
         showPopUp();
+    else
+        setDefaultAnswer();
 }
 
 void PopUp::reset() {
@@ -64,8 +66,10 @@ void PopUp::debrief() {
 }
 
 void PopUp::showPopUp() {
-    if (!show)
+    if (!show) {
+        setDefaultAnswer();
         return;
+    }
     QMessageBox msgBox;
     msgBox.setText(title);
     msgBox.setInformativeText(text);
@@ -105,6 +109,11 @@ QMessageBox::Icon PopUp::toIcon(QString source) {
     if (s == "warning") return QMessageBox::Warning;
     if (s == "critical") return QMessageBox::Critical;
     ThrowException("Unknown icon").value(source).context(this);
+}
+
+void PopUp::setDefaultAnswer() {
+    answer = "Yes";
+    accepted = true;
 }
 
 } //namespace

@@ -17,16 +17,24 @@ public:
 private:
     // Data
     QString _relativePath, _fileMask;
-    QStringList _filePaths;
-    QFile _clipboardFile;
-    QTextStream _clipboardStream;
+    QStringList _userFilePaths, _boxFilePaths, _batchRFilePaths;
+    QFile _file;
+    QTextStream _fileStream;
+    bool _isFirstFigure;
     // Methods
     void doExecute();
     void getArguments();
-    void getFilePaths();
+    QStringList getFilePaths(QString fileMask);
+    QStringList getFilePaths(QDir dir, QString fileMask);
     void openFile();
-    void runFiles();
-    void streamClipboard(QString filePath);
+    void closeFile();
+    void runBoxFiles(QStringList boxFilePaths);
+    void sourceRFiles();
+    QString readFile(QString filePath) const;
+    bool fileContainsGgplot(QString filePath) const;
+    bool pagesExpected(QString filePath);
+    void writeClipboard();
+    void writeFigure(QString filePath, QString fileType, bool pagesExpected);
     void fillClipboard();
 };
 

@@ -1,6 +1,4 @@
 rm(list=ls(all=TRUE))
-setwd("C:/MyDocuments/QDev/UniSim3/site")
-source("R/common.R")
 
 extract_macros = function(lines) {
   n = length(lines)
@@ -148,7 +146,7 @@ update_anchors = function(lines, headers) {
   lines
 }
 
-update_file = function(file_name) {
+update_file = function(file_name, do_debug=FALSE) {
   lines = read_file(file_name)
   macros = extract_macros(lines)
 
@@ -195,12 +193,27 @@ update_file = function(file_name) {
     lines = c(lines[1:menu_begin], menu, lines[menu_end:n])
 
   # Write file
-  write_file(file_name, lines)
-  # write_file("ud.html", lines)
+  if (do_debug) 
+    write_file_debug(lines)
+  else
+    write_file(file_name, lines)
 }
 
-# update_file(file_name = "vg.html")
+#
+# Main
+#
 
+# Turn warning into errors
+options(warn=2)
+
+# Read common script
+setwd("C:/MyDocuments/QDev/UniSim3/site")
+source("R/common.R")
+
+# Debug
+# update_file(file_name = "vg.html", TRUE)
+
+# Files to update
 files = c(
   "index.html",
   "intro.html",
@@ -213,4 +226,9 @@ files = c(
   "download.html",
   "about.html"
 )
+
+# Do update
 l_ply(files, update_file)
+
+# Back to relaxed warnings
+options(warn=0)

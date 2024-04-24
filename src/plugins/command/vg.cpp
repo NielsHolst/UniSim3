@@ -22,7 +22,7 @@ vg::vg(QString name, Box *parent)
 }
 
 namespace {
-    const QString errorMsg = "The command only has one form: \"vg cal \"";
+    const QString errorMsg = "The command only has one form: \"vg cal\"";
 }
 
 void vg::doExecute() {

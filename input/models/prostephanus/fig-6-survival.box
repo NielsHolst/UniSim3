@@ -1,0 +1,25 @@
+#using cmbp
+Simulation sim {
+  .steps = ./N[steps]
+  SequenceByStep N {
+    .min = 0
+    .max = 2000
+    .by  = 10
+  }
+  SurvivalByDensity survival {
+    .N = N[value]
+    .e1 = -0.0483
+  }
+  OutputR {
+    PageR {
+      .xAxis = N[value]
+      .width = 7
+      .height =3.5
+      PlotR {
+        .ports = survival[value]
+        .ggplot = "geom_line(size=1.1) + ylim(0,1)"
+      }
+    }
+  }
+}
+

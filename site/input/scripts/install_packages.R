@@ -1,0 +1,11 @@
+# R packages needed by Universal Simulator
+install.packages("colorspace")
+install.packages("ggplot2")
+install.packages("ggpubr")
+install.packages("gridExtra")
+install.packages("lubridate")
+install.packages("plyr")
+install.packages("reshape2")
+install.packages("scales")
+install.packages("splines")
+install.packages("stringr")

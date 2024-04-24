@@ -44,25 +44,25 @@
 
 <p class='hidden-anchor' id='cereal-aphid-fungus-model'>xxx</p><div class='border-grey'>
 <h1>Cereal aphid-fungus model</h1>
-<p>In this section the model is demonstrated step-by-step, each step adding more components (boxes) and complexity (relations between boxes). The <a href="#aphid-plugin">following section</a> describes  the box classes that were developed for this model in particular.</p>
+<p>In this section the model is demonstrated step-by-step, each step adding more components (boxes) and complexity (relations between boxes). The <a href="#aphid-plugin">plugin section</a> describes  the box classes that were developed for this model in particular.</p>
 </div>
 <p class='hidden-anchor' id='background'>xxx</p><div class='border-grey'>
 <h2>Background</h2>
 <p>This is a tri-trophic model of the winter wheat-cereal aphid (<em>Sitobion avenae</em>)-fungus (<em>Pandora neoaphidis</em>) system, simulating the dynamics of aphid and fungus from spring until harvest (<a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">Saussure et al. 2023</a>). The winter wheat model is rudimentary; the crop is only represented as a growth stage modelled by a regression model fitted to Norwegian growing conditions. Weather data (daily average temperature and maximum relative humidity) drives the model. Optionally, the winter wheat model can be left out, and the crop growth stage instead supplied as an additional column in the weather file. </p>
 <p>Below you will find models of increasing complexity, building up to the full model found in the scientific paper. The models are composed of building blocks, implemented as C++ <a href='intro.html#classes'>classes</a>. The functionality of model building blocks were implemented in C++. If you really want to get the depth of that, you can download the <a href='download.html#source-code'>source code</a>. The classes specific to this model is found in the <code>src/plugins/aphid</code> source code folder.</p>
-<p>Each model building block was designed to solve a particular task. The model was constructed from building blocks included in the standard plugin (<a href='boxscript.html#standard-boxes'>boxes</a>), together with building blocks developed specifically for this model (in the <a href='#aphid-plugin'>aphid-plugin</a>). </p>
-<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the <a href="input/models/aphid/crop-aphid-model.box">crop-aphid-model.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
-<pre><code class="command">> run models/aphid/crop-aphid-model.box
+<p>Each model building block was designed to solve a particular task. The model was constructed from building blocks included in the standard plugin (<a href='boxscript.html#standard-boxes'>boxes</a>), together with building blocks developed specifically for this model (in the <a href='#aphid-plugin'>aphid plugin</a>). </p>
+<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the <a href="input/models/aphid/crop_aphid_model.box">crop_aphid_model.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
+<pre><code class="command">> run models/aphid/crop_aphid_model.box
 </code></pre>
-<p>Paste the clipboard at the R prompt to see the output as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
+<p>Paste the clipboard at the R prompt to see the output, as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
 </div>        
         
 <p class='hidden-anchor' id='weather-driven'>xxx</p><p class='hidden-anchor' id='crop-model'>xxx</p><div class='border-grey'>
 <h2>Crop model</h2>
 <p>The crop model can either be weather-driven (by a weather file) or data-driven (by recorded wheat growth stages).</p>
 <h3><li>Weather-driven</li></h3>
-<p>The weather-driven crop model makes use of the <a href='#'>CropGrowthStage</a> and <a href='#'>CropIsGrowing</a> models, tailored for Norwegian conditions, together with the generic <a href='#'>DayDegrees</a> model. A <a href='#'>Calendar</a> and <a href='#'>Records</a> box provides the driving data:</p>
-<pre><code><a href="input/models/aphid/crop-model-weather-driven.box">// crop-model-weather-driven.box&#9207;</a>
+<p>The weather-driven crop model makes use of the <a href='#cropgrowthstage'>CropGrowthStage</a> and <a href='#cropisgrowing'>CropIsGrowing</a> models, tailored for Norwegian conditions, together with the generic <a href='boxscript.html#daydegrees'>DayDegrees</a> model. A <a href='boxscript.html#calendar'>Calendar</a> and a <a href='boxscript.html#records'>Records</a> box provides the driving data:</p>
+<pre><code><a href="input/models/aphid/crop_model_weather_driven.box">// crop_model_weather_driven.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/04/2004
@@ -98,14 +98,14 @@ Simulation sim {
 }
 </code></pre>
 <p>Run the model from the Universal Simulator prompt with</p>
-<pre><code class="command">> run models/aphid/crop-model-weather-driven.box
+<pre><code class="command">> run models/aphid/crop_model_weather_driven.box
 </code></pre>
 <p>and paste to R to see the output:</p>
-<img src="/media/models/aphid/aphid-crop-model-weather-driven.png" style="zoom:80%;" />
+<img src="media/models/aphid/crop_model_weather_driven.png" />
 <p>&nbsp;</p>
 <h3 id='optionally-data-driven'><li>Optionally data-driven</li></h3>
 <p>The crop sub-model used in the final, complete model is flexible. It will pick the growth stage from the weather file, if a <code>CropGrowthStage</code> column is available. Otherwise, it uses the value provided by the weather-driven model. This feature was needed for the validation runs of the model, because the field observations were not from Norway. In those cases, the <code>CropGrowthStage</code> model cannot be expected to hold; it is more accurate to use the observed crop growth stages. Here is the boxscript to demonstrate a data-driven crop growth stage:</p>
-<pre><code><a href="input/models/aphid/crop-model-data-driven.box">// crop-model-data-driven.box&#9207;</a>
+<pre><code><a href="input/models/aphid/crop_model_data_driven.box">// crop_model_data_driven.box&#9207;</a>
 Simulation sim {
   Calendar calendar {
     .begin = 01/04/1995
@@ -149,33 +149,33 @@ Simulation sim {
 }
 </code></pre>
 <p>Run the model from the Universal  Simulator prompt with</p>
-<pre><code class="command">> run models/aphid/crop-model-data-driven.box
+<pre><code class="command">> run models/aphid/crop_model_data_driven.box
 </code></pre>
 <p>and paste to R to see the output:</p>
-<p><img src="/media/models/aphid/aphid-crop-model-data-driven.png" style="zoom:80%;" /></p>
+<p><img src="media/models/aphid/crop_model_data_driven.png" /></p>
 </div>
 
 <p class='hidden-anchor' id='crop-aphid-model'>xxx</p><div class='border-grey'>
 <h2>Crop-aphid model</h2>
 <p>In this model, the fungus is left out, so it is basically a model of aphid population dynamics driven bottom-up by the crop. The model is composed of these dedicated model building blocks, which is worth to look up. They each solve one particular task specific to this model:</p>
 <ul>
-<li><a href='#'>CropGrowthStage</a></li>
-<li><a href='#'>CropIsGrowing</a></li>
-<li><a href='#'>AphidImmigration</a></li>
-<li><a href='#'>AphidNetReproduction</a></li>
-<li><a href='#'>AphidOffspring</a></li>
-<li><a href='#'>AphidJuvenileSurvival</a></li>
+<li><a href='#cropgrowthstage'>CropGrowthStage</a></li>
+<li><a href='#cropisgrowing'>CropIsGrowing</a></li>
+<li><a href='#aphidimmigration'>AphidImmigration</a></li>
+<li><a href='#aphidnetreproduction'>AphidNetReproduction</a></li>
+<li><a href='#aphidoffspring'>AphidOffspring</a></li>
+<li><a href='#aphidjuvenilesurvival'>AphidJuvenileSurvival</a></li>
 
 </ul>
 <p>In addition, you will find these basic building blocks:</p>
 <ul>
-<li><a href='#'>Calendar</a></li>
-<li><a href='#'>Records</a></li>
-<li><a href='#'>Stage</a></li>
+<li><a href='boxscript.html#calendar'>Calendar</a></li>
+<li><a href='boxscript.html#records'>Records</a></li>
+<li><a href='boxscript.html#stage'>Stage</a></li>
 
 </ul>
 <p>After you have loaded the model:</p>
-<pre><code class="command">> load models/aphid/crop-aphid-model.box
+<pre><code class="command">> load models/aphid/crop_aphid_model.box
 </code></pre>
 <p>The <code class="command">list</code> command will show you the model structure:</p>
 <pre><code class="command">> list</code>
@@ -214,7 +214,7 @@ Simulation sim {
 </code></pre>
 <p>The <code>aphid</code> box is just a <code>Box</code>, which means it acts as a simple container of other boxes. Since we are anticipating a model including the fungus soon, we have put the <code>nymph</code> and <code>adult</code> stages inside a <code>susceptible</code> box (&#39;susceptible&#39; means &#39;uninfected&#39; in epidemiologist speak). Both are further divided into sub-populations of <code>apterous</code> and <code>alate</code> morphs. The <code>adult</code> box holds boxes inside for the individuals (<code>apterous</code> and <code>alate</code>) and their respective reproduction (<code>fecundity</code>).</p>
 <p>The <code>param</code> box holds parameter values that must be the same across several boxes, as seen in the boxscript below.</p>
-<pre><code class="listing"><a href="input/models/aphid/crop-aphid-model.box">// crop-aphid-model.box&#9207;</a>
+<pre><code class="listing"><a href="input/models/aphid/crop_aphid_model.box">// crop_aphid_model.box&#9207;</a>
 Simulation sim {
   Box param {
     &amp;k = 15
@@ -341,19 +341,21 @@ Simulation sim {
   }
 }
 </code></pre>
-<p>If you stumble over expressions, such as <code>.[nymph]</code> or <code>ancestors::*/time[step]</code>, please read up on <a href='#'>port paths</a>.</p>
+<p>If you stumble over expressions, such as <code>.[nymph]</code> or <code>ancestors::*/time[step]</code>, please read up on <a href='boxscript.html#paths'>port paths</a>.</p>
 <p>When you run the model,</p>
-<pre><code class="command">> run models/aphid/crop-aphid-model.box
+<pre><code class="command">> run models/aphid/crop_aphid_model.box
 </code></pre>
-<p>Aphid population dynamics are shown both on a date and a crop growth stage scale. Here are the two plots: </p>
-<p><img src="/media/models/aphid/crop-aphid-model.png"></p>
+<p>Aphid population dynamics are shown both on a date and a crop growth stage scale. Here are the two plots. First by date: </p>
+<p><img src="media/models/aphid/crop_aphid_model_1.png"></p>
+Then by growth stage:
+<p><img src="media/models/aphid/crop_aphid_model_2.png"></p>
 <p>The alate offspring comes in two waves, the second wave due to decreasing aphid density caused by the ripening of the crop. This may or may not reflect reality. The interaction between aphid density and crop growth stage, which determines aphid fecundity, is complicated.</p>
 </div>
 
 <p class='hidden-anchor' id='crop-aphid-model-with-uncertainty'>xxx</p><div class='border-grey'>
 <h2>Crop-aphid model with uncertainty</h2>
 <p>In this extension of the model above, we include uncertainty on weather and a few model parameters. Every time you run the model, you will get a different output. In this boxscript listing, only the additional boxes and major changes are shown (left-out parts shown as <code>...</code>):</p>
-<pre><code class="listing"><a href="input/models/aphid/crop-aphid-model-ua.box">// crop-aphid-model-ua.box&#9207;</a>
+<pre><code class="listing"><a href="input/models/aphid/crop_aphid_model_ua.box">// crop_aphid_model_ua.box&#9207;</a>
 Simulation sim {
   .iterations = 30
   .silent = TRUE
@@ -415,7 +417,7 @@ Simulation sim {
   }
   ...
   OutputR {
-    .scripts = &quot;crop-aphid-model-ua.R&quot;
+    .scripts = &quot;crop_aphid_model_ua.R&quot;
     OutputText {
       .ports = calendar[date] | cropGrowthStage[value] | 
                susceptible/*/*[value] | offspring[output::*] 
@@ -432,7 +434,7 @@ Simulation sim {
 
 </ul>
 <p>The very first child of <code>random</code> determines the method by which to draw random numbers. In this boxscript, stratified random sampling has been chosen.</p>
-<p>The <code>k</code> parameter will achieve a number between <code>15</code> and <code>30</code> before each iteration of the simulation. It is used by <code>immigration</code> and the four aphid sub-populations. You can use <a href='#'>list</a> with the <code>x</code> option to verify this:</p>
+<p>The <code>k</code> parameter will achieve a number between <code>15</code> and <code>30</code> before each iteration of the simulation. It is used by <code>immigration</code> and the four aphid sub-populations. You can use <a href='commands.html#list'>list</a> with the <code>x</code> option to verify this:</p>
 <pre><code class="command">&gt; list random/k x</code>
 <code class="output">
 RandomUniformInt k
@@ -447,7 +449,7 @@ RandomUniformInt k
 <p><code>fileNumber</code> represents a bit of a hack to choose at random, a file with suffix <code>txt</code> within the <code>weather</code> sub-folder. Two <code>SelectFile</code> boxes do the trick. The first one (<code>weatherFiles</code>) is queried by <code>fileNumber</code> about the total number of candidate files. The second one (<code>files</code>) is used to pick a file by the random number (the files are considered numbered alphabetically), which ultimately is the one opened by <code>weather</code>.</p>
 <p><code>iterations</code> have been set to <code>30</code>, which means the model will be running 30 times. To avoid an avalanche of status messages on the screen, <code>silent</code> has been set to <code>TRUE</code>. You should try setting it to <code>FALSE</code> (its default value), just to notice the difference.</p>
 <p>The <code>OutputR</code> box has been set to run a dedicated R script to process the simulation output:</p>
-<pre><code class='listing'><a href="input/models/aphid/crop-aphid-model-ua.R"># crop-aphid-model-ua.R&#9207;</a>
+<pre><code class='listing'><a href="input/models/aphid/crop_aphid_model_ua.R"># crop_aphid_model_ua.R&#9207;</a>
 densities = colnames(sim)[3:9]
 
 M = melt(sim, id.vars=c(&quot;iteration&quot;, &quot;date&quot;), measure.vars=densities, 
@@ -473,10 +475,10 @@ print(P)
 
 </code></pre>
 <p>When you run the simulation, </p>
-<pre><code class="command">> run models/aphid/crop-aphid-model-ua.box
+<pre><code class="command">> run models/aphid/crop_aphid_model_ua.box
 </code></pre>
 <p>the R script will be executed in R, when you paste the clipboard there. The plots are similar to the one before but now show output uncertainty as 30 overlaid curves for each variable:</p>
-<img src="/media/models/aphid/crop-aphid-model-ua.png">
+<img src="media/models/aphid/crop_aphid_model_ua.png">
 <p>Aphid dynamics are seen to be less uncertain on a crop growth stage scale than on a date scale.</p>
 </div>
 
@@ -491,7 +493,7 @@ print(P)
 </ul>
 <p>Remember that exposed means &#39;infected&#39;. Furthermore, note that we call nymphs, that will develop into alate adults, &#39;alate&#39;; the correct word is &#39;alatiform&#39; but we ignore that distinction in the code to make our boxscripts more readable.</p>
 <p>Here is the complete boxscript. It has been broken into pieces to allow comments as we go:</p>
-<pre><code class="listing"><a href="input/models/aphid/crop-aphid-fungus-model.box">// crop-aphid-fungus-model.box&#9207;</a>
+<pre><code class="listing"><a href="input/models/aphid/crop_aphid_fungus_model.box">// crop_aphid_fungus_model.box&#9207;</a>
 Simulation sim {
   Box param {
     &amp;k = 15
@@ -531,7 +533,7 @@ Simulation sim {
   }
   ...
 </code></pre>
-<p>So far nothing much has changed, only a few additions to <code>param</code>. But here goes! We invoke a <a href='#'>Maker</a> box to construct two copies of the box declared in line  5 below. They will be named <code>withoutFungus</code> and <code>withFungus</code> as defined in line 4 and also commented in line 5:</p>
+<p>So far nothing much has changed, only a few additions to <code>param</code>. But here goes! We invoke a <a href='boxscript.html#maker'>Maker</a> box to construct two copies of the box declared in line  5 below. They will be named <code>withoutFungus</code> and <code>withFungus</code> as defined in line 4 and also commented in line 5:</p>
 <pre><code class="listing">...
 Maker system {
   // The system contains two aphid populations, 
@@ -547,7 +549,7 @@ Maker system {
     ...
 </code></pre>
 <p>In effect the whole aphid model will be replicated, the two copies having the same structure and sharing all parameter values. They are created as children of <code>system</code> and can referred to by  <code>system/withoutFungus</code> and <code>system/withFungus</code>. </p>
-<p>We add a <code>fungusTime</code> to keep track of infection development and a few extra ports in <code>aphidDensity</code> to count aphids by their infection status (<code>susceptible</code>,  <code>exposed</code> and <code>cadavers</code>). The <code>immigration</code> box asks if the name of its parent is <code>withFungus</code>, in which case 25% of the immigrants will arrive exposed; otherwise zero. Here, <code>name</code> is a BoxScript function. <a href='#'>Paths</a> in BoxScript must include a port, but it can be left empty to refer to a box. Hence, we arrive at the expression <code>name(..[])</code>. </p>
+<p>We add a <code>fungusTime</code> to keep track of infection development and a few extra ports in <code>aphidDensity</code> to count aphids by their infection status (<code>susceptible</code>,  <code>exposed</code> and <code>cadavers</code>). The <code>immigration</code> box asks if the name of its parent is <code>withFungus</code>, in which case 25% of the immigrants will arrive exposed; otherwise zero. Here, <code>name</code> is a BoxScript function. <a href='boxscript.html#paths'>Paths</a> in BoxScript must include a port, but it can be left empty to refer to a box. Hence, we arrive at the expression <code>name(..[])</code>. </p>
 <pre><code class="listing">...
 DayDegrees fungusTime {
   .T = weather[Tavg]
@@ -833,17 +835,17 @@ Box infectious {
 } // sim (end-of-script)
 </code></pre>
 <p>When we run the model, </p>
-<pre><code>run models/aphid/crop-aphid-fungus-model.box
+<pre><code>run models/aphid/crop_aphid_fungus_model.box
 </code></pre>
 <p>as expected, the fungus is shortening the duration of the aphid outbreak. Cadavers are only present in the system with fungus:</p>
-<p><img src="/media/models/aphid/crop-aphid-fungus-model-aphids.png"></p>
+<p><img src="media/models/aphid/crop_aphid_fungus_model_1.png"></p>
 <p>Despite the obvious effect of the fungus on the density of aphids, <code>yield</code> does not seem much improved:
-<img src="/media/models/aphid/crop-aphid-fungus-model-diagnostics.png"></p>
+<img src="media/models/aphid/crop_aphid_fungus_model_2.png"></p>
 </div>
 
 <p class='hidden-anchor' id='biocontrol-model-with-uncertainty-analysis'>xxx</p><div class='border-grey'>
 <h2>Biocontrol model with uncertainty analysis</h2>
-<p>The <a href="input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script adds uncertain parameters, as we already saw in <a href='#crop-aphid-model-with-uncertainty'>Crop-aphid model with uncertainty</a>, but with even more uncertain parameters, most of them pertaining to the fungus. These are the exact same uncertain 11 parameters that also appear in the scientific paper on the model (). Here is the <code>random</code> box from the <a href="input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script:</p>
+<p>The <a href="input/models/aphid/biocontrol_model.box">biocontrol_model.box&#9207;</a> script adds uncertain parameters, as we already saw in <a href='#crop-aphid-model-with-uncertainty'>Crop-aphid model with uncertainty</a>, but with even more uncertain parameters, most of them pertaining to the fungus. These are the exact same uncertain 11 parameters that also appear in the scientific paper on the model (). Here is the <code>random</code> box from the <a href="input/models/aphid/biocontrol_model.box">biocontrol_model.box&#9207;</a> script:</p>
 <pre><code = class="listing">...
 Box random {
   RandomiserStratified randomiser {
@@ -895,7 +897,7 @@ Box random {
 }
 </code></pre>
 <p>You can open the boxscript yourself and find how each random parameter is used in the model. The <code class="command">list</code> command with the <code class="command">x</code> option comes in handy (some output abbreviated <code class="output">...</code>):</p>
-<pre><code class="command">> run models/aphid/biocontrol-model.box</code>
+<pre><code class="command">> run models/aphid/biocontrol_model.box</code>
 <code class="output">...</code>
 <code class="command">> list random/RandomBase::* x</code>
 <code class="output">RandomUniformInt k
@@ -949,7 +951,7 @@ RandomNormal transmissionEfficiency
     &gt;&gt; sim/system/withFungus/infectious/infectionRate[transmissionEfficiency]
 &gt; 
 </code></pre>
-<p>A <code>Biocontrol</code> box has been added near the end of the boxscript, and the output is now sent to a dedicated R script (<a href="input/models/aphid/biocontrol.R">biocontrol.R&#9207;</a>): 
+<p>A <code>Biocontrol</code> box has been added near the end of the boxscript, and the output is now sent to a dedicated R script (<a href="input/models/aphid/biocontrol_model.R">biocontrol_model.R&#9207;</a>): 
 <pre><code class="listing">...
 Biocontrol biocontrol {
   .aphidPressureWithoutF = withoutFungus/diagnostics/aphidDays[value] 
@@ -963,7 +965,7 @@ Biocontrol biocontrol {
   .cadaverPrevalence = withFungus/diagnostics/prevalence[cadavers]
 }
 OutputR {
-  .scripts = &quot;biocontrol.R&quot;
+  .scripts = &quot;biocontrol_model.R&quot;
   OutputText {
     .ports = calendar[date] | biocontrol[output::*]
   }
@@ -971,16 +973,16 @@ OutputR {
 ...
 </code></pre>
 <p>The <code>biocontrol</code> box compares the outputs of <code>system/withoutFungus</code> and <code>system/withFungus</code>. When you run the model,</p>
-<pre><code class="command">> run models/aphid/biocontrol-model.box
+<pre><code class="command">> run models/aphid/biocontrol_model.box
 </code></pre>
 <p>it will run for 30 iterations. However, here I have changed it to just one iteration</p>
-<pre><code class="listing"><a href="input/models/aphid/biocontrol-model.box">// biocontrol-model.box&#9207;</a>
+<pre><code class="listing"><a href="input/models/aphid/biocontrol_model.box">// biocontrol_model.box&#9207;</a>
 Simulation sim {
   .iterations = 1
   ...
 </code></pre>
 <p>to approach the upcoming complexity in baby steps. Here is the output:
-<img src="/media/models/aphid/biocontrol-1.png"></p>
+<img src="media/models/aphid/biocontrol_model_1.png"></p>
 <p>What we see changing with time, as an effect of the fungus, are</p>
 <ul>
 <li>the reduction in aphid pressure (area under the aphid density curve, so-called aphid-days)</li>
@@ -992,22 +994,23 @@ Simulation sim {
 <p>We also see the percentage of cadavers at  growth stage 43, 61 and 73.</p>
 <p>Since the model contains uncertain parameters, the course of these nine curves (which we will call model <em>outcomes</em>) will be different for every iteration we run the model. But notice, that the course of the curves is not that important, in fact, we are just interested in the <em>final value</em> for each of the outcomes. They tell us everything (or, at least, they summerise the salient points) about the effects of biocontrol.</p>
 <p>When <em>you</em> run the model, you will see 30 curves overlaid for each model outcome:</p>
-<p><img src="/media/models/aphid/biocontrol-30.png"></p>
+<p><img src="media/models/aphid/biocontrol_model_30.png"></p>
 <p>Imagine now that we picked just the final values for all of these curves. We could then show a histogram for each of the nine outcomes. These histograms would should how uncertain model outcomes are, all due to the uncertainty of the 11 model parameters. If you change iterations to 100, or any number higher then that, you will be rewarded by pastel-coloured histograms:
-<img src="/media/models/aphid/biocontrol-100.png"></p>
+<img src="media/models/aphid/biocontrol_model_100.png"></p>
 <p>An obvious question, once you have celebrated your success and posted this beautiful figure (which illustrates an <strong>uncertainty analysis</strong>) on the wall, is, which of the 11 uncertain parameters are most influential on each of these nine model outcomes? That is the purpose of <strong>sensitivity analysis</strong>, which we turn to next.</p>
 </div>
 
 <p class='hidden-anchor' id='setting-up-the-analysis'>xxx</p><p class='hidden-anchor' id='biocontrol-with-sensitivity-analysis'>xxx</p><div class='border-grey'>
 <h2>Biocontrol with sensitivity analysis</h2>
 <h3><li>Setting up the analysis</li></h3>
-<p>It will take us only a little editing of the <a href="input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script to add sensitivity analysis (SA). First, you should realise that SA is very computing intensive, so we need to optimise our sampling strategy for the random numbers. We will shift from stratified random sampling (which optimises the random sampling inside the distribution of each model parameter)  to Sobol&#39; quasi-random numbers (which optimise the random sampling inside the 11-dimensional distribution across all 11 model parameters). This is set up at the top of the boxscript, where we replace <code>RandomiserStratified</code> with <code>RandomiserSobolSequence</code>:</p>
-<pre><code class="listing"><a href="input/models/aphid/biocontrol-model-sa.box">// biocontrol-model-sa.box&#9207;</a>
+<p>It will take us only a little editing of the <a href="input/models/aphid/biocontrol_model.box">biocontrol_model.box&#9207;</a> script to add sensitivity analysis (SA). First, you should realise that SA is very computing intensive, so we need to optimise our sampling strategy for the random numbers. We will shift from stratified random sampling (which optimises the random sampling inside the distribution of each model parameter)  to Sobol&#39; quasi-random numbers (which optimise the random sampling inside the 11-dimensional distribution across all 11 model parameters). This is set up at the top of the boxscript, where we replace <code>RandomiserStratified</code> with <code>RandomiserSobolSequence</code>:</p>
+<pre><code class="listing"><a href="input/models/aphid/biocontrol_model_sa.box">// biocontrol_model_sa.box&#9207;</a>
 Simulation sim {
   .iterations = 832 // 832 (for demonstration) or 1703936 (for analysis)
   .silent = TRUE
-  .unattended = TRUE
+  .unattended = (sim[iterations] > 1000)
   .stopIteration = !question[accepted]
+  .show = (sim[iterations] > 1000)
   PopUp question {
     .title = "You are about to run a simulation that will potentially 
              last many hours (at ~40,000 simulations per hour)&quot;
@@ -1032,7 +1035,7 @@ Simulation sim {
     ...
 }
 </code></pre>
-<p>Since your computer is likely to lock up during this lengthy simulation, <code>unattended</code> has been set <code>TRUE</code>. Otherwise, you will get an (unharmful) error message when the simulation has finished, because the clipboard would have been locked as well.</p>
+<p>Since your computer is likely to lock up during this lengthy simulation, <code>unattended</code> will be set <code>TRUE</code> if there are more than 1000 <code>iterations</code>. Otherwise, you will get an (unharmful) error message when the simulation has finished, because the clipboard would have been locked as well.</p>
 <p>When we are using Sobol&#39; numbers we should be careful to make a balanced sampling of parameter space. To obtain that, the number of simulation <code>iterations</code> must equal \(2^n(p+2)\), where \(n\) is a whole, positive number, and \(p\) is the number of parameters sampled (we&#39;ve got 11). Hence, these are all valid options:</p>
 $$
 \begin{split}
@@ -1046,9 +1049,9 @@ $$
 $$
 <p>The last number listed is the one used in the published paper. That&#39;s a weekend job! For a quick demonstration we will stick to 832 iterations but you will also be shown, what came out of the weekend job. If you set <code>iterations</code> to an invalid number, the simulation will stop immediately if you try to run it. As a service, you will get suggestions to valid values for <code>iterations</code> near the number you picked. So, if you want in the range of, say, 50,000 iterations, write that, and you will be told nearby valid numbers.</p>
 <p>To carry out the sensitivity analysis on the simulation output, we must set <code>doSensitivityAnalysis</code> to <code>TRUE</code> and choose a reasonable <code>bootstrapSize</code> to do statistics on the sensitivity indices. A <code>bootstrapSize</code> of 10,000 seems to be a standard choice in literature but here we&#39;ll use 100 for demonstration.</p>
-<p>The <a href='#'>Popup</a> box is there to warn the user and give the option of regretting ever having started the simulation. The answer is used by <code>sim</code> to stop the simulation in the first step, if <code>stopIteration</code> is <code>TRUE</code>.</p>
+<p>The <a href='boxscript.html#popup'>Popup</a> box is there to warn the user and give the option of regretting ever having started the simulation. The answer is used by <code>sim</code> to stop the simulation in the first step, if <code>stopIteration</code> is <code>TRUE</code>.</p>
 <h3 id='showing-the-results'><li>Showing the results</li></h3>
-<p>The <a href='#'>OutputR</a> box contains four child boxes. Here are the first two:</p>
+<p>The <a href='boxscript.html#outputr'>OutputR</a> box contains four child boxes. Here are the first two:</p>
 <pre><code class="listing">...
 OutputR {
   .saveDataFrame = TRUE
@@ -1066,11 +1069,11 @@ OutputR {
   ...
 }
 </code></pre>
-<p>We ask for the output to be saved in a data frame (<code>saveDataFrame</code> is <code>TRUE</code>) to keep it for later; the simulation may have taken many hours and we don&#39;t want to lose it. We invoke the <a href='#'>OutputSelector</a> to write only the <code>final</code> values of each iteration. We are going to use the outputs generated by the <a href='#'>Biocontrol</a> box, and for those the final values nicely summarise the effect of biocontrol.</p>
-<p>The first <a href='#'>PageR</a> box puts all 11 uncertain parameters on the x-axis and all 9 biocontrol outputs on the y-axis. Let&#39;s decipher those two paths for <code>xAxis</code> and <code>ports</code>. But first we need to run the model (this took 20 seconds on my computer),</p>
-<pre><code class="command">> run models/aphid/biocontrol-model-sa.box
+<p>We ask for the output to be saved in a data frame (<code>saveDataFrame</code> is <code>TRUE</code>) to keep it for later; the simulation may have taken many hours and we don&#39;t want to lose the output. We invoke the <a href='boxscript.html#outputselector'>OutputSelector</a> to write only the <code>final</code> values of each iteration. We are going to use the outputs generated by the <a href='#biocontrol'>Biocontrol</a> box, and for those the final values nicely summarise the effect of biocontrol.</p>
+<p>The first <a href='boxscript.html#pager'>PageR</a> box puts all 11 uncertain parameters on the x-axis and all 9 biocontrol outputs on the y-axis. Let&#39;s decipher those two paths for <code>xAxis</code> and <code>ports</code>. But first we need to run the model (this took 20 seconds on my computer),</p>
+<pre><code class="command">> run models/aphid/biocontrol_model_sa.box
 </code></pre>
-<p>We can use the <a href='#'>find</a> command to find out what&#39;s on the path specified for the <code>xAxis</code> above (<code>random/*[value]</code>):</p>
+<p>We can use the <a href='commands.html#find'>find</a> command to find out what&#39;s on the path specified for the <code>xAxis</code> above (<code>random/*[value]</code>):</p>
 <pre><code class="command">&gt; find random/*[value]</code>
 <code class="output">Port int    sim/random/k[value]
 Port int    sim/random/fileNumber[value]
@@ -1097,9 +1100,9 @@ Port double sim/biocontrol[maxPrevalence]
 Port double sim/biocontrol[maxPrevalenceGS]
 </code></pre>
 <p>Check. We&#39;ve got nine of those.</p>
-<p>Since we were running the simulation <code>unattended</code> (see above), you must type in the <a href='#'>clip</a> command to fill the clipboard after the simulation has finished. When you paste that into R, R will do the bootstrapping on the sensitivity indices. This  took 15 seconds on my machine. The first thing you will see, is this impressive 11 by 9 plot:</p>
-<p><img src="media/models/aphid/biocontrol-sa-1.png"></p>
-<p>Notice that in the <a href='#'>PlotR</a> box, we set <code>maxData</code> to 1000 to show only the first 1000 lines of output; we don&#39;t want thousands of dots in those tiny plots. The R code given to the <code>ggplot</code> input is added to the plot in R (where it is produced by R&#39;s <code>ggplot</code> function), which is why the yellow trend lines appear on top of the dots.</p>
+<p>If you were running the simulation <code>unattended</code> (see above), you must type in the <a href='commands.html#clip'>clip</a> command to fill the clipboard after the simulation has finished. When you paste that into R, R will do the bootstrapping on the sensitivity indices. This  took 15 seconds on my machine. The first thing you will see, is this impressive 11 by 9 plot:</p>
+<p><img src="media/models/aphid/biocontrol_model_sa_1.png"></p>
+<p>Notice that in the <a href='boxscript.html#plotr'>PlotR</a> box, we set <code>maxData</code> to 1000 to show no more than the first 1000 lines of output; we don&#39;t want thousands of dots in those tiny plots. The R code given to the <code>ggplot</code> input is added to the plot in R (where it is produced by R&#39;s <code>ggplot</code> function), which is why the yellow trend lines appear on top of the dots. For a polished version of this plot, see the published <a href='#figure-6'>Figure 6</a>. </p>
 <p>The other two plots are defined like this:</p>
 <pre><code class="listing">PageR {
   .xAxis = random/*[value]
@@ -1118,81 +1121,28 @@ PageR {
 </code></pre>
 <p>What sets them apart is their <code>type</code>. These are specialised plots meant to be used only in connection with a sensitivity analysis. For these plots, you will need plenty of iterations to give a correct picture of model sensitivities. Here, we are showing how the plots look after 1,703,936 iterations.</p>
 <p>The first plot is a convergence plot:</p>
-<p><img src="media/models/aphid/biocontrol-sa-2.png"></p>
-<p>You use it to judge whether the two Sobol&#39; sensitivity indices (total and first-order) have stabilised, or if you need to increase the number of iterations. The number on the x-axis is the so-called sample size \((N)\) of the analysis. It is \(N=2^n\) defined by the number of iterations = \(2^n(p+2)\) (see <a href='#setting-up-the-analysis'>Setting up the analysis</a>). The first column shows the sums across all 11 parameters for both indices. They are still changing ever so slightly going from \(N=32,768\) to \(N=65,536\) for some of the nine outcome variables (arranged in rows). We judge that \(N=131,072\) is a sufficient sample size for our analysis.</p>
+<p><img src="media/models/aphid//biocontrol_model_sa_canned_2.png"></p>
+<p>You use it to judge whether the two Sobol&#39; sensitivity indices (total and first-order) have stabilised, or if you need to increase the number of iterations. The number on the x-axis is the so-called sample size \((N)\) of the analysis. It is \(N=2^n\) defined by the number of iterations = \(2^n(p+2)\) (see <a href='#setting-up-the-analysis'>Setting up the analysis</a>). The first column shows the sums across all 11 parameters for both indices. They are still changing ever so slightly going from \(N=2^{15}\) to \(N=2^{16}\) for some of the nine outcome variables (arranged in rows). We judge that \(N=2^{17}=131,072\) is a sufficient sample size for our analysis. You can find a more focused plot in the published <a href='#figure-8'>Figure 8</a>.</p>
 <p>The second plot shows the total and first-order sensitivity indices for each of the nine outcome variables:</p>
-<p><img src="media/models/aphid/biocontrol-sa-3.png"></p>
-<p>The 11 parameters have been sorted for each of the nine outcome variable to show the most influential ones at the top. The error bars show the 95% confidence limits estimated by bootstrapping. You can tell a long story based on this sensitivity analysis. For that we refer to our paper (<a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">Saussure et al. 2023</a>).</p>
-<h3 id='saving-and-restoring-the-analysis'><li>Saving and restoring the analysis</li></h3>
-<p>We already saved the data frame by setting <code>saveDataFrame</code> to <code>TRUE</code> in the <code>OutputR</code> box. Since the bootstrap estimates of the confidence limits on the sensitivity indices can be somewhat time consuming to compute, those estimates are always, automatically, saved as well. This allows you to restore the analysis quickly later on.</p>
-<p>The two files are both saved as R data frames written to your <a href='#'>output folder</a>. To find out where that is, use the  <a href='#'>get folders</a> command:</p>
-<pre><code class="command">> get folders
-</code></pre>
-<p>Visit that folder and you will find these two, latest files:</p>
-<ul>
-<li><em>biocontrol-model-sa_nnnn.Rdata</em></li>
-<li><em>biocontrol-model-sa_nnnn-S.Rdata</em></li>
-
-</ul>
-<p>where <em>nnnn</em> is some running number. The output folder is not a safe place for files (you should empty it now and then). Copy those two files to another folder for safe-keeping.</p>
-<p>You must write your own R script to process the two files but there is an R script to get you started residing in the same folder as the <code>biocontrol-model-sa.box</code> script:</p>
-<pre><code class="listing"><a href="input/models/aphid/biocontrol-model-sa-restore.R"># biocontrol-model-sa-restore.R&#9207;</a>
-rm(list=ls(all=TRUE))
-
-# Load standard scripts
-source(&quot;&lt;path to your input folder&gt;/scripts/begin.R&quot;)
-source(&quot;&lt;path to your input folder&gt;/scripts/begin-sobol.R&quot;)
-
-# Load your data
-setwd(&quot;&lt;path to your own folder&gt;&quot;)
-load(&quot;biocontrol-model-sa_nnnn.Rdata&quot;)
-load(&quot;biocontrol-model-sa_nnnn-S.Rdata&quot;)
-</code></pre>
-<p>The first line clears R memory just to be certain that we are working on the restored data. The scripts <a href="input/scripts/begin.R">begin.R&#9207;</a> and <a href="input/scripts/begin-sobol.R">begin-sobol.R&#9207;</a> are standard scripts with various useful functions found in the <code>scripts</code> sub-folder inside your input folder. Find out where your input folder is by the  <a href='#'>get folders</a> command:</p>
-<pre><code class="command">> get folders
-</code></pre>
-<p>The two calls of <code>load</code> will create the data frames <code>sim</code> and <code>S</code> in R. You can inspect them and find them pretty self-explanatory, except that in the <code>S</code> data frame, we recommend using the bootstrap-estimated confidence limits (<code>LowerPercentile</code> and <code>HigherPercentile</code>) rather than the estimated standard error (<code>EffectSE</code>).</p>
-<p>You can treat these data however you want but the final lines in the <a href="input/models/aphid/biocontrol-model-sa-restore.R">biocontrol-model-sa-restore.R&#9207;</a> script shows you how to re-create the three plots produced by your original <a href="input/models/aphid/biocontrol-model-sa.box">biocontrol-model-sa.box&#9207;</a> script:</p>
-<pre><code class="listing">...
-# Prepare analysis
-sobol_k = length(unique(S$Input)) - 1
-sobol_N = nrow(sim)/(sobol_k+2)
-iterationColumn = &quot;iteration&quot;
-stepColumn      = &quot;step&quot;
-
-# Plot trends
-plot_facetted(
-  df   = sim[1:min(nrow(sim),1000),], 
-  x    = input_names(), 
-  y    = output_names(), 
-  ncol = 1, 
-  dir  = &#39;h&#39;) + geom_smooth(colour=&#39;yellow&#39;)
-
-# Plot convergence
-plot_sobol_convergence()
-
-# Plot indices
-ggarrange(
-  plotlist=plot_sobol_indices(S)
-)
-</code></pre>
+<p><img src="media/models/aphid/biocontrol_model_sa_canned_3.png"></p>
+<p>The 11 parameters have been sorted for each of the nine outcome variable to show the most influential ones at the top. The error bars show the 95% confidence limits estimated by bootstrapping. Again, a more focused plot was published as <a href='#figure-5'>Figure 5</a>. You can tell a long story based upon this sensitivity analysis. For this we refer to our paper (<a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">Saussure et al. 2023</a>). </p>
 </div>
 
 <p class='hidden-anchor' id='instructions'>xxx</p><p class='hidden-anchor' id='reproduce-published-figures'>xxx</p><div class='border-grey'>
 <h2>Reproduce published figures</h2>
 <h3><li>Instructions</li></h3>
 <p>Here you will find instructions how to reproduce all the figures published in <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">Saussure et al. (2023)</a>.</p>
-<p>Some of the figures rely on the <code>sim</code> or <code>S</code> data frames, generated by the big (1,703,936 iterations) sensitivity analysis. You can generate those two data frames yourself, using the <code>biocontrol-model-sa.box</code> script with iterations changed to <code>1703936</code> (see <a href='#setting-up-the-analysis'>Setting up the analysis</a>). Just let your computer work it out over a weekend. Alternatively, you can download them (<a href='download/aphid-biocontrol-sim.Rdata'>download sim</a> | <a href='download/aphid-biocontrol-S.Rdata'>download S</a>). Either way, you will end up with two files with suffix (file type) <code>.Rdata</code> . Put those two files in a folder of your choice.</p>
+<p>Some of the figures rely on the <code>sim</code> or <code>S</code> data frames, generated by the big (1,703,936 iterations) sensitivity analysis. You can generate those two data frames yourself, using the <code>biocontrol_model_sa.box</code> script with iterations changed to <code>1703936</code> (see <a href='#setting-up-the-analysis'>Setting up the analysis</a>). Just let your computer work it out over a weekend. Alternatively, you can download them (<a href='download/aphid-biocontrol-sim.Rdata'>download sim</a> | <a href='download/aphid-biocontrol-S.Rdata'>download S</a>). Either way, you will end up with two files with suffix (file type) <code>.Rdata</code> . Put those two files in a folder of your choice.</p>
 <p>If an <code>.Rdata</code> file is needed to produce a figure, it will be noted below, together with the name of the R script producing the figure. In that R script, you must change the file path at the top to make it read <em>your</em> <code>.Rdata</code> file. Subsequently run the script in R to generate the figure. As an example, below are the steps to generate <a href='#figure-3'>Figure 3</a>.</p>
-<p>First, find the location of the input folder using the  <a href='#'>get folders</a> command:</p>
+<p>First, find the location of the input folder using the  <a href='commands.html#getfolders'>get folders</a> command:</p>
 <pre><code class="command">> get folders
 </code></pre>
-<p>and open the <a href="input/models/aphid/figure-3.R">figure-3.R&#9207;</a> script found there (or download it through the provided &#9207; link).</p>
+<p>and open the <a href="input/models/aphid/figure_3.R">figure_3.R&#9207;</a> script found there (or download it through the provided &#9207; link).</p>
 <p>You will have to change three variables, all clearly marked at the top of the R script, designating</p>
 <ul>
-<li>the file name and path of either your <code>sim</code> or <code>S</code> data frame</li>
+<li>the file name and path leading to your <code>sim</code> or <code>S</code> data frame, possibly both</li>
 <li>the name and path leading to the <code>input/scripts/begin.R</code> script, included with your installation of Universal Simulator</li>
-<li>the path to the folder where you want the graphics files written (the figures will be shown both on the screen in R and written to files)</li>
+<li>the path to the folder where you want the graphics files to be written (the figures will be shown both on the screen in R and written to files)</li>
 
 </ul>
 <p>Here is an example:</p>
@@ -1208,55 +1158,55 @@ output_folder = &quot;~/ipm/figures&quot;
 Note: The tilde <code>~</code> is a shorthand for your <code>Documents</code> folder. It works even on Windows!</p>
 <p>Now save and run the R script.</p>
 <h3 id='figure-2'><li>Figure 2</li></h3>
-<p>You create this figure by running a script that is nearly identical to the <a href="input/models/aphid/biocontrol-model.box">biocontrol-model.box&#9207;</a> script. Here goes</p>
-<pre><code class="command">> run models/aphid/figure-2.box
+<p>You create this figure by running a script that is nearly identical to the <a href="input/models/aphid/biocontrol_model.box">biocontrol_model.box&#9207;</a> script. Here goes</p>
+<pre><code class="command">> run models/aphid/figure_2.box
 </code></pre>
-<p>The script creates four figures, two on the screen (one in colours, one in grey tones) and two in graphics files (one PNG and one EPS). The <a href="input/models/aphid/figure-2.R">figure-2.R&#9207;</a> script creates the figures, writing the graphics files to your Universal Simulator output folder; the precise location is reported by the R script, so that you can easily retrieve them. Here is the PNG file:</p>
-<p><img src="media/models/aphid/fig-2-bw.png" style="width:50%;" /></p>
+<p>The script creates four figures, two on the screen (one in colours, one in grey tones) and two in graphics files (one PNG and one EPS). The <a href="input/models/aphid/figure_2.R">figure_2.R&#9207;</a> script creates the figures, writing the graphics files to your Universal Simulator output folder; the precise location is reported by the R script, so that you can easily retrieve them. Here is the PNG file:</p>
+<p><img src="media/models/aphid/figure_2.png"/></p>
 <p>Since the boxscript contains uncertain parameter values, you will get different results every time you run the script.</p>
 <h3 id='figure-3'><li>Figure 3</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-3.R">figure-3.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-3-bw.png" style="width:50%;" /></p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_3.R">figure_3.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_3.png"/></p>
 <h3 id='figure-4'><li>Figure 4</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-4.R">figure-4.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-4-bw.png" style="width:50%;" /></p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_4.R">figure_4.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_4.png"/></p>
 <h3 id='figure-5'><li>Figure 5</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-5.R">figure-5.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-5-bw.png" style="width:50%;" /></p>
-<p>Hey, wait. That didn&#39;t quite work out like that. The figure you generated is missing all the labels. That&#39;s because we handicrafted them afterwards, as we found it impossible to get these nice-looking labels in R. For proper labelling, you will find a text file with all figure data in <em>fig-5-bw-table.txt</em>, which was written to the output_folder by the <a href="input/models/aphid/figure-5.R">figure-5.R&#9207;</a> script.</p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_5.R">figure_5.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_5.png" /></p>
+<p>Hey, wait. That didn&#39;t quite work out like that. The figure you generated is missing all the labels. That&#39;s because we handicrafted them afterwards, as we found it impossible to get these nice-looking labels in R. For proper labelling, you will find a text file with all figure data in <em>fig-5-bw-table.txt</em>, which was written to the output_folder by the <a href="input/models/aphid/figure_5.R">figure_5.R&#9207;</a> script.</p>
 <p>The figure depicts Sobol’ indices \((S_{Ti}\): dark grey; \(S_i\) : light grey\()\) showing model sensitivity to the nine uncertain model parameters, in terms of three model outcomes: (a) peak prevalence of exposed aphids, (b) peak prevalence of cadavers, and (c) yield improvement due to biocontrol. The model parameters are listed in order of importance for each outcome according to \(S_{Ti}\).</p>
 <h3 id='figure-6'><li>Figure 6</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-6.R">figure-6.R&#9207;</a> script. You need to have the <code>mgcv</code> package installed in R before you run the script. Otherwise,  follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-6-bw.png" style="width:90%;" /></p>
-<p>If you study the <a href="input/models/aphid/figure-6.R">figure-6.R&#9207;</a> script, you will find that many a trick was pulled to produce this figure! The mathematical symbols were added afterwards outside R. </p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_6.R">figure-6.R&#9207;</a> script. You need to have the <code>mgcv</code> package installed in R before you run the script. Otherwise,  follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_6.png"/></p>
+<p>If you study the <a href="input/models/aphid/figure_6.R">figure_6.R&#9207;</a> script, you will find that many a trick was pulled to produce this figure! The mathematical symbols were added afterwards outside R. </p>
 <p>The figure depicts the response of three model outcomes to variation in the seven most influential model parameters (excluding weather). </p>
 <h3 id='figure-7'><li>Figure 7</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-7.R">figure-7.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-7-bw.png" style="width:50%;" /></p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_7.R">figure_7.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_7.png"/></p>
 <h3 id='figure-8'><li>Figure 8</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-8.R">figure-8.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-8-colour.png" style="width:80%;" /></p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_8.R">figure_8.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_8.png"  /></p>
 <h3 id='figure-9'><li>Figure 9</li></h3>
-<p>This figure is generated by the <a href="input/models/aphid/figure-9.R">figure-9.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
-<p><img src="media/models/aphid/fig-9-colour.png" style="width:90%;" /></p>
+<p>This figure is generated by the <a href="input/models/aphid/figure_9.R">figure_9.R&#9207;</a> script. Follow the instructions in <a href='#reproducing-figures-from-saved-data'>Reproducing figures from saved data</a> and watch the result:</p>
+<p><img src="media/models/aphid/figure_9.png"  /></p>
 <h3 id='figure-10'><li>Figure 10</li></h3>
 <p>You create this figure by running the boxscript,</p>
-<pre><code class="command">> run models/aphid/figure-10.box
+<pre><code class="command">> run models/aphid/figure_10.box
 </code></pre>
 <p>to get the result:</p>
-<p><img src="media/models/aphid/fig-10-colour.png" style="width:90%;" /></p>
+<p><img src="media/models/aphid/figure_10.png" /></p>
 <h3 id='figure-11'><li>Figure 11</li></h3>
 <p>You create this figure by running the boxscript,</p>
-<pre><code class="command">> run models/aphid/figure-11.box
+<pre><code class="command">> run models/aphid/figure_11.box
 </code></pre>
 <p>to get the result:</p>
-<p><img src="media/models/aphid/fig-11-colour.png" style="width:90%;" /></p></div>
+<p><img src="media/models/aphid/figure_11.png" /></p></div>
 
 <p class='hidden-anchor' id='aphid-plugin'>xxx</p><div class='border-grey'>
 <h1>Aphid plugin</h1>
-<p>The <code>aphid</code> plugin contains the model building blocks needed to run the <a href='#'>cereal aphid-fungus model</a>. The functionality of the building blocks (<a href='#'>classes</a>) is described below</p>
-<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the  <a href="input/models/aphid/aphid-juvenile-survival.box">aphid-juvenile-survival.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
-<pre><code class="command">> run models/aphid/aphid-juvenile-survival.box
+<p>The <code>aphid</code> plugin contains the model building blocks needed to run the <a href='#cereal-aphid-fungus-model'>cereal aphid-fungus model</a>. The functionality of the building blocks (<a href='intro.html#classes'>classes</a>) is described below</p>
+<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the  <a href="input/models/aphid/aphid_juvenile_survival.box">aphid_juvenile_survival.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
+<pre><code class="command">> run models/aphid/aphid_juvenile_survival.box
 </code></pre>
 <p>Paste the clipboard at the R prompt to see the output as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
 </div> 
@@ -1285,7 +1235,7 @@ Note: The tilde <code>~</code> is a shorthand for your <code>Documents</code> fo
 <p>Immigration will be ongoing when <code>cropGrowthStage</code> is between <code>fromCropGrowthStage</code> and <code>toCropGrowthStage</code> at a rate of <code>immigrationRate</code>. The proportion <code>propExposedImmigrants</code> will be considered exposed.</p>
 <p>Since the exposed aphids have an age structure reflecting the age of the infection, the <code>exposed</code> output from <code>AphidImmigration</code> needs to be a vector, while the <code>susceptible</code> output is a simple number. The length of the <code>exposed</code> vector is set by the <code>k</code> input.</p>
 <p>This  boxscript contains a <a href='#cropgrowthstage'>CropGrowthStage</a> model to drive the <code>AphidImmigration</code> model. The default <code>fromCropGrowthStage</code>=31 is maintained while <code>fromCropGrowthStage</code> is set to 69:</p>
-<pre><code class="listing"><a href="input/models/aphid/aphid-immigration.box">// aphid-immigration.box&#9207;</a>
+<pre><code class="listing"><a href="input/models/aphid/aphid_immigration.box">// aphid_immigration.box&#9207;</a>
 Simulation sim {
 
   Calendar calendar {
@@ -1339,7 +1289,7 @@ Simulation sim {
 <pre><code class="command">> run models/aphid/aphid-immigration.box
 </code></pre>
 <p>and the output will show the expected pattern, keeping the immigration of exposed aphids at zero, since <code>propExposedImmigrants</code> kept its default value of zero:</p>
-<p><img src="media/models/aphid/aphid-immigration.png" style="width:60%;" /></p>
+<p><img src="media/models/aphid/aphid_immigration.png" /></p>
 </div>
 
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidindex'>xxx</p><div class='border-grey'>
@@ -1394,7 +1344,7 @@ $$
 <p>The model parameters were estimated by <a href='https://doi.org/10.1016/j.ecolmodel.2017.03.011'>Duffy et al. (2017)</a>.</p>
 <h3 id='usage'>Usage</h3>
 <p>You use <code>AphidJuvenileSurvival</code> as a building block in an aphid population dynamics model. This boxscript runs through temperature from 15 to 35℃ and computes the survival at growth stage 60:</p>
-<pre><code class="listing"><a href="input/models/aphid/aphid-juvenile-survival.box">// aphid-juvenile-survival.box&#9207;</a>
+<pre><code class="listing"><a href="input/models/aphid/aphid_juvenile_survival.box">// aphid_juvenile_survival.box&#9207;</a>
 Simulation sim {
   .steps = temperature[steps]
   SequenceByStep temperature {
@@ -1420,7 +1370,7 @@ Simulation sim {
 <pre><code class="command">> run models/aphid/aphid-juvenile-survival.box
 </code></pre>
 <p>and you will get the output:</p>
-<p><img src="media/models/aphid/aphid-juvenile-survival.png" referrerpolicy="no-referrer"></p>
+<p><img src="media/models/aphid/aphid_juvenile_survival.png" referrerpolicy="no-referrer"></p>
 </div>
 
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='aphidnetreproduction'>xxx</p><div class='border-grey'>
@@ -1497,7 +1447,7 @@ R_0^{alaE} &= f(T)\,g(N)\,h(G)\,c_{alate}\,(1-\nu)
 $$
 
 <p>This boxscript demonstrates the functionality of <code>AphidNetReproduction</code> at different temperatures:</p>
-<pre><code><a href="input/models/aphid/aphid-net-reproduction.box">// aphid-net-reproduction.box&#9207;</a>
+<pre><code><a href="input/models/aphid/aphid_net_reproduction.box">// aphid_net_reproduction.box&#9207;</a>
 Simulation sim {
   .steps = temperature[steps]
   SequenceByStep temperature {
@@ -1535,7 +1485,7 @@ Simulation sim {
 <pre><code class="command">> run models/aphid/net-reproduction.box
 </code></pre>
 <p>and you will get the output:</p>
-<p><img src="media/models/aphid/aphid-net-reproduction.png" style="width:70%;" /></p>
+<p><img src="media/models/aphid/aphid_net_reproduction.png" /></p>
 <p>We can check the calculation at optimum temperature with the parameter values set in the boxscript:</p>
 $$
 \begin{split} 

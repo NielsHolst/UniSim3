@@ -25,12 +25,12 @@ private:
         radPrecision, tempPrecision,
         timeStep, averageHeight, groundArea, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
-        transpirationRate, Pn, co2Injection,
+        transpirationRate, humidificationRate, Pn, co2Injection,
         heatPipeFlux,
         heatPumpCooling, heatPumpCondensationRate,
         babyTimeStep;
     QVector<bool> heatPipesOn;
-    bool writeHighRes, isHeating, isVentilating;
+    bool writeHighRes, writeLog, isHeating, isVentilating;
 
     int step;
     QDateTime dateTime;
@@ -128,6 +128,7 @@ private:
     enum class Dump{WithHeader, WithoutHeader};
     QString dump(const State &s, Dump header = Dump::WithoutHeader);
     QString dump(const Parameters &p, Dump header = Dump::WithoutHeader);
+    void writeToLog();
 };
 
 }

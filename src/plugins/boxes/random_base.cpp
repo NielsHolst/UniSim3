@@ -58,16 +58,16 @@ void RandomBase::update() {
 
 RandomiserBase* RandomBase::randomiser() {
     if (!_randomiser) {
-        auto boxes = findMany<RandomiserBase*>("*");
+        auto boxes = findMany<RandomiserBase*>("ancestors::*/RandomiserBase::*");
         switch (boxes.size()) {
         case 0:
-            ThrowException("Boxscript must contain a Randomiser box").context(this);
+            ThrowException("Box must contain a Randomiser box").context(this);
             break;
         case 1:
             _randomiser = boxes[0];
             break;
         default:
-            ThrowException("Boxscript must contain only one Randomiser box").
+            ThrowException("Box can contain only one Randomiser box").
                     value("\n" + fullNames(boxes).join("\n")).context(this);
         }
     }

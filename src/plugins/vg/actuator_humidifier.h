@@ -20,11 +20,12 @@ public:
     void update();
 private:
     // Inputs
-    double groundArea, greenhouseVolume, timeStep, inflowTemperature, inflowRh, 
-        efficiency, maxHumidification, maxPowerUserParasitic,
-        state;
+    QString productName;
+    int numberInstalled;
+    double state, groundArea, greenhouseVolume, inflowTemperature, inflowRh, timeStep;
     // Outputs
-    double coolingPower, vapourFlux;
+    double efficiency, maxRate, parasiticLoad,
+        powerUse, vapourFlux;
 };
 
 } //namespace

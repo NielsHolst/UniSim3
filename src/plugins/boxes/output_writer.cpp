@@ -169,7 +169,7 @@ void OutputWriter::updateSums() {
 void OutputWriter::writeColumnLabels() {
     QStringList list;
     for (auto port : _ports) {
-        if (port->size() == 1)
+        if (port->value().type() == Value::Type::Uninitialized || port->size() == 1)
             list << port->outputName();
         else {
             for (int i = 0; i < port->size(); ++i)

@@ -46,6 +46,7 @@ OutputR::OutputR(QString name, Box *parent)
     Input(scripts).help("R scripts to be run at the end");
     Input(plotTypes).computes("PlotR::*[type]");
     Input(clearPlots).equals(false).help("Deprecated");
+    Input(hasError).imports("/.[hasError]");
     Output(ports).noClear().computes("./PageR::*[xAxis] | ./*/PlotR::*[ports]").help("Path to all ports used by my pages and plots");
     Output(numPages).noClear().help("Number of pages in this output");
 }
@@ -181,9 +182,10 @@ void OutputR::writeScript() {
     if (!_RCode.isEmpty())
         script << _RCode.join("\n") + "\n";
     script << simPortsCode()
-           << "skip_formats      = " + boolToR(skipFormats)   << "\n"
+           << "skip_formats      = " + boolToR(skipFormats) << "\n"
            << "box_script_folder = \"" + environment().currentBoxScriptFolder().absolutePath() << "\"\n"
            << "output_file_name  = \"" + _filePathTxt << "\"\n"
+           << "has_error         = " + boolToR(hasError) << "\n"
            <<
            "sim = read_output(output_file_name)\n\n"
            "print(paste0("
@@ -198,12 +200,9 @@ void OutputR::writeScript() {
            "if (exists(\"scenarios\")) {\n"
            "  sim$iteration = factor(sim$iteration)\n"
            "  levels(sim$iteration) = scenarios\n"
-           "  colnames(sim)[1] = scenariosTitle\n"
            "}\n"
            <<
-           showPlotsCode()
-           <<
-           "if (exists(\"sobol_k\") & exists(\"S\")) print(S)\n";
+           showPlotsCode();
     _file.close();
 }
 

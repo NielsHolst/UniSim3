@@ -22,6 +22,7 @@ private:
     // Inputs
     double
         volume, maxTemperature, U,
+        uptakeEfficiency, extractionEfficiency,
         inputResource, outputDemand,
         groundArea, externalTemperature, timeStep;
     // Outputs

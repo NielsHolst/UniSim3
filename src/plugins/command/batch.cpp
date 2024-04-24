@@ -6,6 +6,7 @@
 #include <QClipboard>
 #include <QDir>
 #include <QFileInfo>
+#include <QRegularExpression>
 #include <QStringList>
 #include <base/box.h>
 #include <base/command_help.h>
@@ -23,16 +24,23 @@ PUBLISH(batch)
 HELP(batch, "batch", "runs a batch of box scripts and writes plots to PNG files")
 
 batch::batch(QString name, Box *parent)
-    : Command(name, parent)
+    : Command(name, parent), _isFirstFigure(true)
 {
 }
 
 void batch::doExecute() {
     getArguments();
-    getFilePaths();
+    if (_fileMask.isEmpty()) {
+        _boxFilePaths = getFilePaths("*.box");
+        _batchRFilePaths = getFilePaths("batch.txt");
+    }
+    else {
+        _userFilePaths = getFilePaths(_fileMask);
+    }
     openFile();
-    runFiles();
-    _clipboardFile.close();
+    runBoxFiles(_userFilePaths.isEmpty() ? _boxFilePaths : _userFilePaths);
+    sourceRFiles();
+    closeFile();
     fillClipboard();
 }
 
@@ -40,7 +48,7 @@ void batch::getArguments() {
     switch (_args.size()) {
     case 2:
         _relativePath = _args[1];
-        _fileMask = "*.box";
+        _fileMask = "";
         break;
     case 3:
         _relativePath = _args[1];
@@ -52,63 +60,165 @@ void batch::getArguments() {
     }
 }
 
-void batch::getFilePaths() {
+QStringList batch::getFilePaths(QString fileMask) {
     QDir dir = environment().resolveDir(Environment::Input);
-    bool relPathOk = dir.cd(_relativePath);
-    if (!relPathOk)
+    if (!dir.cd(_relativePath))
         ThrowException(dir.absolutePath() + " contains no " + _relativePath + " subfolder");
-    dir.setNameFilters(QStringList() << _fileMask);
-    _filePaths.clear();
-    for (QFileInfo fileInfo : dir.entryInfoList(QDir::Files)) {
-        _filePaths << fileInfo.absoluteFilePath();
+    return getFilePaths(dir, fileMask);
+}
+
+QStringList batch::getFilePaths(QDir dir, QString fileMask) {
+    static QRegularExpression re(R"([^(]*\([0-9]*\).*)");
+    QStringList filePaths;
+    dir.setNameFilters(QStringList() << fileMask);
+    for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::Files)) {
+        // Discard file names with a version number (parenthesized number) in them
+        QString s = fileInfo.absoluteFilePath();
+        if (!re.match(s).hasMatch())
+            filePaths << s;
     }
-    dialog().information("Running this batch of scripts:\n\n" + _filePaths.join("\n") + "\n");
+    for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot)) {
+        filePaths << getFilePaths(fileInfo.absoluteFilePath(), fileMask);
+    }
+    return filePaths;
 }
 
 void batch::openFile() {
     environment().latestLoadArg("batch");
     QString filePath = environment().outputFilePath(".R");
     filePath.replace("\\", "/");
-    _clipboardFile.setFileName(filePath);
-    if ( !_clipboardFile.open(QIODevice::WriteOnly | QIODevice::Text) )
+    _file.setFileName(filePath);
+    if ( !_file.open(QIODevice::WriteOnly | QIODevice::Text) )
         ThrowException("Cannot open file for output").value(filePath).context(this);
-    _clipboardStream.setDevice(&_clipboardFile);
+    _fileStream.setDevice(&_file);
 }
 
-void batch::runFiles() {
+void batch::closeFile() {
+    _file.close();
+}
+
+void batch::runBoxFiles(QStringList boxFilePaths) {
+    dialog().information("Running scripts:\n\n" + boxFilePaths.join("\n") + "\n");
+
     environment().latestLoadArg("batch");
     environment().incrementFileCounter();
 
-    _clipboardStream << "all_figures = NULL\n\n";
+    _fileStream << "all_figures = NULL\n\n";
 
-    for (QString filePath : _filePaths) {
+    QStringList errors;
+    for (const QString &filePath : boxFilePaths) {
         QApplication::clipboard()->clear(QClipboard::Clipboard);
         QStringList com;
         com << "run" << filePath;
-        dialog().information("batch " + com.join(" "));
-        _clipboardStream
+        dialog().information("\nbatch " + com.join(" "));
+        _fileStream
             << "print('batch " << com.join(" ") << "')\n"
             << "figures = function(x) NULL\n";
         Command::submit(com);
-        streamClipboard(filePath);
+        Command::submit(QStringList() << "clip");
+        if (dialog().errorCount() > 0)
+            errors << filePath;
+        writeClipboard();
+        writeFigure(filePath, ".box", pagesExpected(filePath));
+    }
+    if (!errors.isEmpty())
+        dialog().error("");
+    for (const QString &error : errors)
+        dialog().error("Runtime error in " + error);
+    if (!errors.isEmpty())
+        dialog().error("");
+}
+
+void batch::sourceRFiles() {
+    for (const QString &batchRFilePath : _batchRFilePaths) {
+        QString s = readFile(batchRFilePath);
+        QStringList RFileNames = s.split("\n",Qt::SkipEmptyParts);
+        for (const QString &RFileName : RFileNames) {
+            auto fi = QFileInfo(batchRFilePath);
+            QString filePath = fi.absolutePath() + "/" + RFileName.trimmed();
+            _fileStream
+                << "print('source " << filePath << "')\n"
+                << "figures = function(x) NULL\n"
+                << "source(\"" << filePath << "\")\n";
+            writeFigure(filePath, ".R", fileContainsGgplot(filePath));
+        }
+
     }
 }
 
-void batch::streamClipboard(QString filePath) {
+QString batch::readFile(QString filePath) const {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        ThrowException("Cannot open file for input").value(filePath);
+    return file.readAll();
+}
+
+bool batch::fileContainsGgplot(QString filePath) const {
+    QString s = readFile(filePath);
+    return (s.indexOf("ggplot") > -1);
+}
+
+bool batch::pagesExpected(QString filePath) {
+    static QRegularExpression re(R"("[^"]*")");
+    bool expected = false;
+    QString s = readFile(filePath), s2;
+    if (s.indexOf("PageR") > -1) {
+        expected = true;
+    }
+    else {
+        auto i = s.indexOf(".scripts");
+        if (i > -1) {
+            s2 = s.mid(i);
+            QRegularExpressionMatch match = re.match(s2);
+            QStringList texts = match.capturedTexts();
+            if (!texts.isEmpty()) {
+                QString fn = texts.at(0);
+                auto fi = QFileInfo(filePath);
+                expected = fileContainsGgplot(fi.absolutePath() + "/" + fn.mid(1, fn.size()-2));
+            }
+        }
+    }
+    return expected;
+}
+
+void batch::writeClipboard() {
     QString clip = QApplication::clipboard()->text();
     clip = clip.replace("keepVariables = FALSE",
                         "keepVariables = TRUE");
-    QString fileName = QFileInfo(filePath).completeBaseName();
-    _clipboardStream
-            << clip
-            << "all_figures = c(all_figures, list(Figure=list(FilePath='"
-            << fileName
-            << "', Pages=list(figures(sim)))))\n\n";
+    _fileStream << clip;
+}
+
+void batch::writeFigure(QString filePath, QString fileType, bool pagesExpected) {
+    auto from = filePath.indexOf("/input/") + 7;
+    auto fi = QFileInfo(filePath.mid(from));
+    QString path = fi.path(),
+            baseName = fi.baseName();
+
+    _fileStream
+            << "all_figures = ";
+    if (!_isFirstFigure) {
+        _fileStream
+            << "c(all_figures, ";
+    }
+    _fileStream
+            << "list(Figure=list("
+            << "FilePath='" << path << "', "
+            << "FileBaseName='" << baseName << "', "
+            << "FileType='" << fileType << "', "
+            << "Pages=list(figures(sim)), PagesExpected=" << (pagesExpected ? "TRUE" : "FALSE")
+            << "))";
+    if (!_isFirstFigure) {
+        _fileStream
+            << ")";
+    }
+    _fileStream
+            << "\n\n";
+    _isFirstFigure = false;
 }
 
 void batch::fillClipboard() {
     QString s =
-        "source('" + _clipboardFile.fileName() + "')\n" +
+        "source('" + _file.fileName() + "')\n" +
         "graphics.off()\n" +
         "source('" + environment().inputFileNamePath("scripts/end-batch.R")+ "')\n" +
         "graphics.off()\n";

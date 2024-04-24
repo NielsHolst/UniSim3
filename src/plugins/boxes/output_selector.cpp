@@ -20,7 +20,7 @@ OutputSelector::OutputSelector(QString name, Box *parent)
     Input(beginStep).equals(0).help("Output is written when this step is reached").unit("int");
     Input(beginDateTime).equals(QDateTime()).help("Output is written when this time point is reached (optional)").unit("DateTime");
     Input(step).imports("/.[step]");
-    Input(dateTime).imports("Calendar::*[dateTime]");
+    Input(dateTime).computes("if exists(Calendar::*[dateTime]) then Calendar::*[dateTime] else .[beginDateTime]");
     Input(period).equals(1).help("If >1: A row of output will be produced with this period");
     Input(summary).equals("average").help("Either `\"average\"` or `\"current\"`; how values are summarized over the given `period`");
     Input(final).equals(false).help("Overrules `period`");

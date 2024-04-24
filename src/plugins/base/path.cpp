@@ -540,10 +540,16 @@ Path::Path(base::Port *parent)
 Path::Path(QString path, base::Port *parent)
     : _parent(parent)
 {
-    // The parser needs a port on every alternative: Add missing ports as blanks
+    // The parser needs a port on every alternative
     QStringList alternatives = path.split("|"), corrected;
-    for (auto alternative : alternatives)
-        corrected << (path.contains("[") ? alternative : alternative.trimmed() + "[]");
+    for (auto alternative : alternatives) {
+        // Add missing port as an empty port
+        QString s = (path.contains("[") ? alternative : alternative.trimmed() + "[]");
+        // Add dot to bare root, i.e. "/[]" -> "/.[]"
+        if (s.startsWith("/["))
+            s = "/." + s.mid(1);
+        corrected << s;
+    }
 
     // Parse path as an expression
     auto expression = boxscript::parser::parseExpression(nullptr, corrected.join("|"));

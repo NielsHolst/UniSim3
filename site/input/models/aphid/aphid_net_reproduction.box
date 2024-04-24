@@ -1,0 +1,35 @@
+// aphid_net_reproduction.box
+Simulation sim {
+  .steps = temperature[steps]
+  SequenceByStep temperature {
+    .min = 0
+    .max = 35
+    .by = 1
+  } 
+  AphidNetReproduction reproduction {
+    .temperature = temperature[value]
+    .Tmin = 3 
+    .Topt = 15
+    .Tmax = 30
+    .R0opt = 50
+    .cropGrowthStage = 60
+    .optimumCropGrowthStageMin = 59
+    .optimumCropGrowthStageMax   = 73
+    .optimumCropFactor = 1.6
+    .aphidDensity = 10
+    .aphidDensityThreshold = 40 
+    .alateFactor = 0.67
+    .immunityCost = 0.2
+  }
+  OutputR {
+    PageR {
+      .xAxis = temperature[value]
+      .width = 7
+      .height = 3.5
+      PlotR {
+        .ports = reproduction[output::*]
+        .layout = "merged"
+      }
+    }
+  }
+}

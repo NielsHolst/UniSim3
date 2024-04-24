@@ -1,0 +1,29 @@
+// Butterfly model
+Simulation sim {
+  Calendar calendar {
+    .begin = weather[firstDateTime]
+    .end = weather[lastDateTime]
+    .timeUnit= "h"
+  }
+  Records weather {
+    .fileName = "weather/copenhagen-may-hourly.txt"
+  }
+  DewPoint dewPoint {
+    .temperature = weather[Tair]
+    .rh = weather[Rhair]
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      .ncol = 1
+      .commonLegend = TRUE
+      PlotR {
+        .layout = "merged"
+        .ports = weather[Tair] | dewPoint[value]
+      }
+      PlotR {
+        .ports = weather[Rhair]
+      }
+    }
+  }
+}

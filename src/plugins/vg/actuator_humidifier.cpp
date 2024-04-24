@@ -19,38 +19,55 @@ PUBLISH(ActuatorHumidifier)
 ActuatorHumidifier::ActuatorHumidifier(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models a humidifier (fogging)");
+    help("models a humidifier");
+    Input(productName).help("Name of product holding humidifier parameters");
+    Input(numberInstalled).unit("int").help("Number of humidifiers installed");
+    Input(state).equals(1.).help("Running state relative to full effect").unit("[0;1]");
+
     Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(greenhouseVolume).imports("gh/geometry[volume]",CA);
     Input(inflowTemperature).imports("outdoors[temperature]",CA);
     Input(inflowRh).imports("outdoors[rh]",CA);
-    Input(state).imports("setpoints/elementary/humidifiersOn[value]",CA).help("Running state relative to full effect").unit("[0;1]");
-    Input(efficiency).equals(0.8).help("Efficiency at decreasing temperature to wet-bulb temperature").unit("[0;1]");
-    Input(maxHumidification).equals(2).help("Maximum humidification rate").unit("kg/s");
-    Input(maxPowerUserParasitic).equals(2.2).help("Maximum basic power use").unit("kW");
-    Output(coolingPower).help("Rate of cooling").unit("kW/m2");
+    Input(timeStep).imports("calendar[timeStepSecs]",CA);
+
+    Output(efficiency).help("Efficiency at decreasing temperature to wet-bulb temperature");
+    Output(maxRate).help("Total maximum humidification rate of installed humidifiers").unit("kg/s");;
+    Output(powerUse).help("Power used for cooling").unit("W/m2");
     Output(vapourFlux).help("Rate of water humidification").unit("kg/m2/s");
 }
 
+#define UPDATE_INPUT(x) x = product->port(#x)->value<double>()
+
 void ActuatorHumidifier::reset() {
+    if (productName.toLower() == "none") {
+        numberInstalled = 0;
+        return;
+    }
+    Box *product = findOne<Box*>("../products/" + productName);
+    UPDATE_INPUT(efficiency);
+    UPDATE_INPUT(maxRate)*numberInstalled;
+    UPDATE_INPUT(parasiticLoad)*numberInstalled;
     update();
 }
 
 void ActuatorHumidifier::update() {
-    // Compute for the humidifier unit
+    if (state == 0.) {
+        powerUse = vapourFlux = 0.;
+        return;
+    }
     double
-        beforeTwet = Twet(inflowTemperature, inflowRh),
-        beforeSh = shFromRh(inflowTemperature, inflowRh), // kg/kg
-        afterTemperature = inflowTemperature - efficiency*(inflowTemperature - beforeTwet),
-        afterRh = rhFromTwet(afterTemperature, beforeTwet),
-        afterSh = shFromRh(afterTemperature, afterRh), // kg/kg
-        // kg water / kg air * kg air / m3 air * m3 air / s = kg/s
-        demandedFoggingRate = (afterSh - beforeSh)*rhoAir(inflowTemperature)*greenhouseVolume/timeStep;
-    vapourFlux = std::min(demandedFoggingRate, maxHumidification*state);
-    coolingPower = evaporationHeat(inflowTemperature)*vapourFlux/1000.; // J/kg * kg/s / 1000 = kW
-    // Correct for number area
+        inflowTwet = Twet(inflowTemperature, inflowRh),
+        inflowSh = shFromRh(inflowTemperature, inflowRh), // kg/kg
+        outflowTemperature = inflowTemperature - efficiency*(inflowTemperature - inflowTwet),
+        outflowRh = rhFromTwet(outflowTemperature, inflowTwet),
+        outflowSh = shFromRh(outflowTemperature, outflowRh), // kg/kg
+        demandedVapourFlux = (outflowSh - inflowSh)*rhoAir(inflowTemperature)*greenhouseVolume/timeStep;
+            // kg/s = kg water / kg air * kg air / m3 air * m3 air / s
+    vapourFlux = std::min(demandedVapourFlux, maxRate*state);
+    powerUse = evaporationHeat(inflowTemperature)*vapourFlux + 1000.*parasiticLoad; // W = J/kg * kg/s
+    // Correct for ground area
     vapourFlux /= groundArea;
-    coolingPower /= groundArea;
+    powerUse /= groundArea;
 }
 
 } //namespace

@@ -1,0 +1,15 @@
+// records6.box
+Simulation sim {
+  .steps = 5
+  Calendar calendar {
+    .begin = 30/12/2022
+  }
+  Records weather { 
+    .fileName = "../weather/flakkebjerg 2005.txt"
+  }
+  OutputR {
+     OutputText {
+       .ports = calendar[date] | weather[Tmin] | weather[Tmax]
+     }
+  }
+}

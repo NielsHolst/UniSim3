@@ -282,6 +282,9 @@ void ReaderXml::readVirtualGreenhouse() {
                         setpoint("crackVentilationTemperatureMinBand", "band").
                     endbox().
                 endbox().
+                box().name("humidification");
+                    setpoint("FogActive", "state").
+                endbox().
                 box().name("screens");
                     setpointsScreens().
                 endbox().
@@ -424,7 +427,8 @@ void ReaderXml::readVirtualGreenhouse() {
                         port("maxSignal").imports("setpoints/co2/capacity[value]").
                         port("increasingSignal").equals(false).
                         endbox().
-                endbox();
+                endbox().
+                box("HumidificationController").name("humidification").endbox();
                 controllersScreens();
                 controllersGrowthLights().
             endbox().
@@ -432,6 +436,7 @@ void ReaderXml::readVirtualGreenhouse() {
                 actuatorsHeatPipes();
                 actuatorsHeatPumps();
                 actuatorsVentilation();
+                actuatorsHumidifiers();
                 actuatorsScreens();
                 actuatorsGrowthLights().
                 box("Accumulator").name("co2").
@@ -902,9 +907,10 @@ BoxBuilder& ReaderXml::actuatorsHeatBuffer() {
         port("volume").equals(heatPump->find("Volume")->toDouble()).
         port("maxTemperature").equals(heatPump->find("MaxTemperature")->toDouble()).
         port("U").equals(heatPump->find("U")->toDouble()).
+        port("uptakeEfficiency").equals(heatPump->find("UptakeEfficiency")->toDouble()).
+        port("extractionEfficiency").equals(heatPump->find("ExtractionEfficiency")->toDouble()).
         port("inputResource").imports("actuators/heatPumps/cooling[value]").
         port("outputDemand").imports("actuators/heatPipes[heatFlux]").
-        port("timeStep").imports("calendar[timeStepSecs]").
     endbox();
     return *_builder;
 }
@@ -1057,12 +1063,10 @@ BoxBuilder& ReaderXml::actuatorsGrowthLights() {
     _builder->endbox();
 
     // Create banks
-    auto lamps = _doc->find("Greenhouse/Lamps")->children();
+    auto lamps = mapByPosition( _doc->find("Greenhouse/Lamps")->children(), "Lamp");
     for (auto la = lamps.begin(); la != lamps.end(); ++la) {
         XmlNode &lamp(*la.value());
-        if (lamp.name() != "Lamp")
-            continue;
-        QString name = "bank" + lamp.getAttributeString("position");
+        QString name = "bank" + QString::number(la.key());
         _builder->
         box("ActuatorGrowthLight").name(name).
             port("productName").equals(makeId(lamp.find("Product")->value())).
@@ -1073,6 +1077,71 @@ BoxBuilder& ReaderXml::actuatorsGrowthLights() {
 
     }
     _builder->endbox();
+
+    return *_builder;
+}
+
+QMap<int, XmlNode*> ReaderXml::mapByPosition(QMultiMap<QString, XmlNode*> &nodes, QString keyFilter) {
+    QMap<int, XmlNode*> mappedNodes;
+    for (auto no = nodes.begin(); no != nodes.end(); ++no) {
+        XmlNode *node = no.value();
+        if (node->name() != keyFilter)
+            continue;
+        int position = node->getAttributeInt("position");
+        mappedNodes[position] = node;
+    }
+    return mappedNodes;
+}
+
+BoxBuilder& ReaderXml::actuatorsHumidifiers() {
+    _builder->box().name("humidifiers").
+        box().name("products");
+
+    // Create humidifier products
+    auto products = _doc->find("Greenhouse/Fogs/Products")->children();
+    for (auto pr = products.begin(); pr != products.end(); ++pr) {
+        XmlNode &product(*pr.value());
+        XmlNode *nameNode = product.peak("Name");
+        if (!nameNode)
+            nameNode = product.find("name");
+        QString name = makeId(nameNode->value());
+        _builder->
+        box("HumidifierProduct").name(name).
+            port("efficiency").equals(product.find("Efficiency")->toDouble()).
+            port("maxRate").equals(product.find("MaxHumidification")->toDouble()).
+            port("parasiticLoad").equals(product.find("MaxParasitLoad")->toDouble()).
+        endbox();
+    }
+    _builder->endbox();
+
+    // Create humidifiers
+    auto humidifiers = mapByPosition(_doc->find("Greenhouse/Fogs")->children(), "Fog");
+    for (auto hu = humidifiers.begin(); hu != humidifiers.end(); ++hu) {
+        XmlNode &humidifier(*hu.value());
+        if (humidifier.name() != "Fog")
+            continue;
+        QString productName = humidifier.find("Product")->value();
+        if (productName.toLower() == "none")
+            continue;
+        QString name = "humidifier" + QString::number(hu.key());
+        _builder->
+        box("ActuatorHumidifier").name(name).
+            port("productName").equals(makeId(productName)).
+            port("numberInstalled").equals(humidifier.find("Number")->toDouble()).
+            port("state").imports("controllers/humidification[state]").
+        endbox();
+
+    }
+
+        // Create Sum boxes
+        _builder->
+        box("Sum").name("powerUse").
+            port("values").imports("../ActuatorHumidifier::*[powerUse]").
+        endbox().
+        box("Sum").name("vapourFlux").
+            port("values").imports("../ActuatorHumidifier::*[vapourFlux]").
+        endbox().
+    endbox(); // humidifiers
 
     return *_builder;
 }
@@ -1157,7 +1226,7 @@ BoxBuilder& ReaderXml::outputVariables() {
     for (auto variable = variables->children().begin(); variable != variables->children().end(); ++variable) {
         QString path = variable.value()->getAttributeString("path"),
                 name = variable.value()->getAttributeString("name").trimmed();
-        _builder->aux(name).imports(path);
+        _builder->aux(name).computes(path);
     }
     _builder->endbox();
     return *_builder;

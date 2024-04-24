@@ -4,6 +4,7 @@
 */
 #include <QTextStream>
 #include <base/box_builder.h>
+#include <base/environment.h>
 #include <base/phys_math.h>
 #include <base/publish.h>
 #include <base/test_num.h>
@@ -43,9 +44,10 @@ Budget::Budget(QString name, base::Box *parent)
     : Box(name, parent)
 {
     help("resolves energy and water budgets across layers and volumes");
-    Input(radPrecision).equals(0.1).unit("W/m2 | μmol/m2/s").help("Precision of numerical solution to radiation budget");
+    Input(radPrecision).equals(0.1).unit("W/m2 | &micro;mol/m2/s").help("Precision of numerical solution to radiation budget");
     Input(tempPrecision).equals(2.0).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");
+    Input(writeLog).equals(false).help("Write log output");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("gh/geometry[averageHeight]");
     Input(groundArea).imports("gh/geometry[groundArea]");
@@ -54,6 +56,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(outdoorsRh).imports("outdoors[rh]");
     Input(outdoorsCo2).imports("outdoors[co2]");
     Input(transpirationRate).imports("gh/plant[transpiration]");
+    Input(humidificationRate).imports("actuators/humidifiers/vapourFlux[value]");
     Input(Pn).imports("gh/plant[Pn]");
     Input(co2Injection).imports("gh/actuators/co2[value]");
     Input(heatPipeFlux).imports("gh/actuators/heatPipes[heatFlux]");
@@ -79,11 +82,11 @@ Budget::Budget(QString name, base::Box *parent)
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
     Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
     Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
-    Output(sunParAbsorbedInCover).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
-    Output(sunParAbsorbedInScreens).unit("μmol/m2/s").help("Ignoring transmission and reflection of sunlight");
-    Output(sunParHittingPlant).unit("μmol/m2/s").help("Sunlight PAR hitting plant canopy");
-    Output(growthLightParHittingPlant).unit("μmol/m2/s").help("Growth light PAR hitting plant canopy");
-    Output(totalPar).unit("μmol/m2/s").help("Total PAR hitting plant canopy");
+    Output(sunParAbsorbedInCover).unit("&micro;mol/m2/s").help("Ignoring transmission and reflection of sunlight");
+    Output(sunParAbsorbedInScreens).unit("&micro;mol/m2/s").help("Ignoring transmission and reflection of sunlight");
+    Output(sunParHittingPlant).unit("&micro;mol/m2/s").help("Sunlight PAR hitting plant canopy");
+    Output(growthLightParHittingPlant).unit("&micro;mol/m2/s").help("Growth light PAR hitting plant canopy");
+    Output(totalPar).unit("&micro;mol/m2/s").help("Total PAR hitting plant canopy");
 }
 
 void Budget::amend() {
@@ -293,8 +296,6 @@ void Budget::initialize() {
     ventilationController->initializeFamily();
     // Find write for detailed output
     outputWriter = findOne<Box*>("outputWriter");
-    // Log test output
-//    logger.open("C:/MyDocuments/QDev/UniSim3/output/unisim_log.txt");
 }
 
 void Budget::reset() {
@@ -307,6 +308,9 @@ void Budget::reset() {
     // Hand-held controllers and actuators
     heatingController->resetFamily();
     ventilationController->resetFamily();
+    // Log output
+    if (writeLog)
+        logger.open(environment().outputFileNamePath("vg_log.txt"));
 }
 
 void Budget::update() {
@@ -332,17 +336,15 @@ void Budget::update() {
     sunParHittingPlant = std::max(
             budgetLayerSky->parEmissionBottom - sunParAbsorbedInCover - sunParAbsorbedInScreens, 0.);
     totalPar = growthLightParHittingPlant + sunParHittingPlant;
+
+    if (writeLog && !writeHighRes)
+        writeToLog();
 }
 
 void Budget::cleanup() {
-//    logger.close();
+    if (writeLog)
+        logger.close();
 }
-
-//    logger.write(QString::number(step) + ": " + convert<QString>(dateTime));
-//    logger.write(dump(lwParam, Dump::WithHeader));
-//    logger.write(dump(lwState, Dump::WithHeader));
-    //        logger.write(convert<QString>(subSteps) + ": " + convert<QString>(_subTimeStep));
-    //        logger.write(dump(lwState, Dump::WithHeader));
 
 void Budget::updateLayersAndVolumes() {
     const int maxSubSteps = 1000;
@@ -382,8 +384,11 @@ void Budget::updateLayersAndVolumes() {
         timePassed += subTimeStep;
         subDateTime = dateTime.addMSecs(static_cast<int>(1000.*timePassed));
 
-        if (writeHighRes && lt(timePassed, timeStep))
+        if (writeHighRes && lt(timePassed, timeStep)) {
             outputWriter->cleanupFamily();
+            if (writeLog)
+                writeToLog();
+        }
 
         ++subSteps;
     }
@@ -448,6 +453,7 @@ WaterIntegration waterIntegration(
         double x,  // time step
         double y0, // indoors ah
         double T,  // transpiration
+        double H,  // humidification
         double cn, // condensation rate
         double C,  // sah of cover
         double v,  // ventilation rate
@@ -456,8 +462,9 @@ WaterIntegration waterIntegration(
     if (y0 < C)
         cn = 0.;
     const double
+        TH            = T + H,
         indoorsAh0    = y0,
-        indoorsAh1    = (cn + v > 0.) ? (-exp(x*(-(cn + v)))*(cn*C - y0*(cn + v) + T + v*V) + cn*C + T + v*V)/(cn + v) : 0.,
+        indoorsAh1    = (cn + v > 0.) ? (-exp(x*(-(cn + v)))*(cn*C - y0*(cn + v) + TH + v*V) + cn*C + TH + v*V)/(cn + v) : 0.,
         avgAh         = (indoorsAh0 + indoorsAh1)/2,
         transpiration = T*x,
         condensation  = std::max(cn*(avgAh - C)*x, 0.),
@@ -485,6 +492,7 @@ void Budget::updateWaterBalance(double timeStep) {
         timeStep,
         indoorsAh,
         transpirationRate/averageHeight,
+        humidificationRate/averageHeight,
         2e-3*coverPerGroundArea/averageHeight,
         coverSah,
         v,
@@ -721,5 +729,10 @@ QString Budget::dump(const Parameters &p, Dump header) {
     return string;
 }
 
+void Budget::writeToLog() {
+    logger.write(QString::number(step) + ":" + convert<QString>(subSteps) + ": " + convert<QString>(subDateTime));
+    logger.write(dump(lwParam, Dump::WithHeader));
+    logger.write(dump(lwState, Dump::WithHeader));
+}
 
 }

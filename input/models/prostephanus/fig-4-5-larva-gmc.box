@@ -1,0 +1,33 @@
+#using cmbp
+Simulation sim {
+  .steps = ./gmc[steps]
+  SequenceByStep gmc {
+    .min = 5
+    .max = 25
+    .by  = 1
+  }
+  ExponentialPeak devRateGmc {
+    .x = gmc[value]
+    .optimum = 15.14
+    .d1 = 5.169
+    .d2 = 16.42
+  }
+  ExponentialPeak survivalGmc {
+    .x = gmc[value]
+    .optimum = 15.10
+    .d1 = 5.258
+    .d2 = 19.58
+  }
+  OutputR {
+    PageR {
+      .xAxis = gmc[value]
+      .width = 7
+      .height =3.5
+      PlotR {
+        .layout = "merged"
+        .ports = devRateGmc[value] | survivalGmc[value]
+      }
+    }
+  }
+}
+

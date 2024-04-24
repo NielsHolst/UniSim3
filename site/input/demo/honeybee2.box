@@ -1,0 +1,52 @@
+// honeybee2.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/01/2009
+    .end  = 31/12/2009
+    .latitude = 60
+  }
+  Sun sun {
+  }
+  Box honeybee {
+    Box queen {
+      ProportionalSignal fecundity {
+        .input = sun[dayLength]
+        .minSignal = 0
+        .maxSignal = 1500
+        .threshold = 8
+        .thresholdBand = 4
+      }
+    }
+    Stage egg {
+      .inflow = ../queen/fecundity[value]
+      .duration = 5
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 14
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 3
+    }
+    Stage worker {
+      .inflow = ../pupa[outflow]
+      .duration = 28
+    }
+  }
+  OutputR {
+    Box p {
+      &eggsPerDay = queen/fecundity[value]
+    }
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = sun[dayLength] | p[eggsPerDay] | *[content] 
+        .ggplot = "scale_x_datetime( 
+                      breaks = date_breaks('months'), 
+                      labels = date_format('%b') 
+                    )"
+      }
+    }
+  }
+}

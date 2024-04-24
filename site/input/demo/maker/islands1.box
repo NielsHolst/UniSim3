@@ -1,0 +1,41 @@
+// islands1.box
+Simulation sim {
+  .iterations = 4
+  .steps = 5
+  Box random {
+    RandomiserMonteCarlo randomiser {
+    }
+    RandomUniform latitude {
+      .min = 10
+      .max = 20
+    }
+    RandomUniform longitude {
+      .min = -40
+      .max = -30
+    }
+    RandomUniformInt initFox {
+      .min = 10
+      .max = 20
+    }
+    RandomUniformInt initRabbit {
+      .min = 200
+      .max = 1000
+    }
+  }
+  Box island {
+    &latitude = random/latitude[value]
+    &longitude = random/longitude[value]
+    Box fox {
+      &value = random/initFox[value]
+    }
+    Box rabbit {
+      &value = random/initRabbit[value]
+    }
+  } 
+  OutputText {
+    .ports = sim[iteration] | island[*] | island/*[*]
+    OutputSelector {
+      .final = TRUE
+    }
+  }
+}

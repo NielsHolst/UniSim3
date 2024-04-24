@@ -34,3 +34,14 @@ void TestRegExp::testMatchPairedApostrophes() {
     QCOMPARE(texts.size(), 1);
     QCOMPARE(texts.at(0), R"("new model.box")");
 }
+
+void TestRegExp::testNumberInParentheses() {
+    static QRegularExpression re(R"([^(]*\([0-9]*\).*)");
+    QRegularExpressionMatch match;
+    QString s0 = "saccharina-growth-rate.box",
+            s1 = "saccharina-growth-rate(0).box";
+    match = re.match(s0);
+    QVERIFY(!match.hasMatch());
+    match = re.match(s1);
+    QVERIFY(match.hasMatch());
+}

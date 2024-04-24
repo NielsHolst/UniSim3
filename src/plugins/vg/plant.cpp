@@ -31,11 +31,11 @@ Plant::Plant(QString name, Box *parent)
     Input(lai).equals(1.).unit("m2/m2").help("Leaf area index in the cultivated area");
     Input(coverage).equals(0.9).unit("m2/m2").help("Proportion of floor covered by plants");
 
-    Input(Jmax).equals(194).unit("μmol/m2/s").help("Maximum rate of electron transport at 25 oC");
-    Input(Vcmax).equals(112).unit("μmol/m2/s").help("Maximum carboxylation rate at 25 oC");
+    Input(Jmax).equals(194).unit("&micro;mol/m2/s").help("Maximum rate of electron transport at 25 oC");
+    Input(Vcmax).equals(112).unit("&micro;mol/m2/s").help("Maximum carboxylation rate at 25 oC");
     Input(GammaStar).equals(41).unit("ppm").help("CO2 compensation point");
     Input(Km).equals(600).unit("Pa").help("Michaelis-Menten coefficient for Farquhar model");
-    Input(Rd0).equals(0.49).unit("μmol/m2/s").help("Respiration rate at 25 oC");
+    Input(Rd0).equals(0.49).unit("&micro;mol/m2/s").help("Respiration rate at 25 oC");
 
     Input(alpha).equals(0.24).help("Slope of light response curve");
     Input(theta).equals(0.85).help("Shape of light response curve");
@@ -55,15 +55,15 @@ Plant::Plant(QString name, Box *parent)
     useLayerAsOutput();
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
-    Output(incidentPar).unit("μmol PAR/m2 ground/s").help("PAR hitting the canopy");
-    Output(Pn).unit("μmol CO2/m2 ground/s").help("Net photosynthetic rate");
-    Output(Pg).unit("μmol CO2/m2 ground/s").help("Gross photosynthetic rate");
-    Output(Rd).unit("μmol CO2/m2 ground/s").help("Respiration rate");
+    Output(incidentPar).unit("&micro;mol PAR/m2 ground/s").help("PAR hitting the canopy");
+    Output(Pn).unit("&micro;mol CO2/m2 ground/s").help("Net photosynthetic rate");
+    Output(Pg).unit("&micro;mol CO2/m2 ground/s").help("Gross photosynthetic rate");
+    Output(Rd).unit("&micro;mol CO2/m2 ground/s").help("Respiration rate");
     Output(growthRate).unit("g carbohydrate/m2 ground").help("Carbohydrate biomass produced in this time step");
-    Output(leafAm).unit("μmol CO2/m2 leaf/s").help("Leaf net photosynthetic rate");
-    Output(leafAc).unit("μmol CO2/m2 leaf/s").help("Leaf net photosynthetic rate; Rubisco-limited");
-    Output(leafAj).unit("μmol CO2/m2 leaf/s").help("Leaf net photosynthetic rate; electron transport-limited");
-    Output(leafRd).unit("μmol CO2/m2 leaf/s").help("Leaf respiration rate");
+    Output(leafAm).unit("&micro;mol CO2/m2 leaf/s").help("Leaf net photosynthetic rate");
+    Output(leafAc).unit("&micro;mol CO2/m2 leaf/s").help("Leaf net photosynthetic rate; Rubisco-limited");
+    Output(leafAj).unit("&micro;mol CO2/m2 leaf/s").help("Leaf net photosynthetic rate; electron transport-limited");
+    Output(leafRd).unit("&micro;mol CO2/m2 leaf/s").help("Leaf respiration rate");
     Output(leafGrowthRate).unit("g carbohydrate/m2 leaf").help("Carbohydrate biomass produced in this time step");
     Output(lue).unit("g carbohydrate/micromole PAR absorbed").help("Light use efficiency");
 }

@@ -17,8 +17,9 @@ insert_file_number = function(filePath, number) {
 save_figure_page = function(page, filePath) {
   print(paste("Saving figure:", filePath, "..."))
   # ggsave(filePath, page$Grob, width=page$Width, height=page$Height, units="in") 
-  png(filePath)
-  print(page)
+  
+  png(filePath, width=page$Width, height=page$Height)
+  print(page$Grob)
   dev.off()
 }
 

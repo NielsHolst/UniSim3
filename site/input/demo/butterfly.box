@@ -1,0 +1,47 @@
+// Butterfly model
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/05/2009
+    .end   = 30/09/2009
+  }
+  Records weather {
+    .fileName = "weather/flakkebjerg 2009.txt"
+  }
+  Box butterfly {
+    DayDegrees time {
+      .T0 = 5
+      .T  = weather[Tavg]
+    }
+    Stage egg {
+      .initial  = 100 
+      .duration = 140
+      .timeStep = ../time[step]
+    }
+    Stage larva {
+      .inflow   = ../egg[outflow]
+      .duration = 200
+      .timeStep = ../time[step]
+    }
+    Stage pupa {
+      .inflow   = ../larva[outflow]
+      .duration = 100
+      .timeStep = ../time[step]
+    }
+    Stage adult {
+      .inflow   = ../pupa[outflow]
+      .duration = 28
+      .timeStep = 1
+    }
+  }
+  OutputR {
+    PageR {
+      // .xAxis = calendar[date]
+      PlotR {
+        .ports = weather[Tavg]
+      }
+      PlotR {
+        .ports = Stage::*[content]
+      }
+    }
+  }
+}

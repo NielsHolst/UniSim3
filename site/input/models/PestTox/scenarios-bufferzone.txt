@@ -1,0 +1,3 @@
+BufferZone	Distance
+BufferZone1	0
+BufferZone2	30

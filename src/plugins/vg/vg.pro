@@ -15,6 +15,7 @@ HEADERS +=  \
     actuator_growth_light.h \
     actuator_heat_pump.h \
     actuator_heat_pipe.h \
+    actuator_humidifier.h \
     actuator_screen.h \
     actuator_ventilation.h \
     average_cover.h \
@@ -40,6 +41,8 @@ HEADERS +=  \
     heat_pipes.h \
     heat_pump_product.h \
     heat_pumps_max_state.h \
+    humidification_controller.h \
+    humidifier_product.h \
     ig_indoors_humidity.h \
     layer.h \
     layer_parameters.h \
@@ -69,6 +72,7 @@ SOURCES += \
     actuator_growth_light.cpp \
     actuator_heat_pipe.cpp \
     actuator_heat_pump.cpp \
+    actuator_humidifier.cpp \
     actuator_screen.cpp \
     actuator_ventilation.cpp \
     average_cover.cpp \
@@ -94,6 +98,8 @@ SOURCES += \
     heat_pipes.cpp \
     heat_pump_product.cpp \
     heat_pumps_max_state.cpp \
+    humidification_controller.cpp \
+    humidifier_product.cpp \
     ig_indoors_humidity.cpp \
     layer.cpp \
     layer_parameters.cpp \

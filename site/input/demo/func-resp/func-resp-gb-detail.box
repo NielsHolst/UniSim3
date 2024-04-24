@@ -1,0 +1,6 @@
+// func-resp-gb-detail.box
+Simulation {
+  OutputR {
+    .scripts = "func-resp-gb-detail.R"
+  }
+}

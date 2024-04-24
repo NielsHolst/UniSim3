@@ -88,9 +88,9 @@ QString PageR::toScript() {
     s << functionName() << " <- function(df, ...) {\n";
     if (_doPopUp) {
       s << "  open_plot_window("
-        << port("width")->value<int>()
+        << port("width")->value<double>()
         << ", "
-        << port("height")->value<int>()
+        << port("height")->value<double>()
         << ")\n";
     }
     if (plotAsList) {

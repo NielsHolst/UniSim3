@@ -1,0 +1,28 @@
+// random_binomial1.box
+Simulation sim {
+  .steps = 100
+  Box random {
+    RandomiserMonteCarlo randomiser {
+      .drawAtUpdate = TRUE
+    }
+    RandomBinomial x {
+      .P = 0.6
+    }
+    RandomBinomial y {
+      .P = 0.9
+    }
+  }
+  Box positive {
+    Accumulator x {
+      .change = if (random/x[value]) then 1 else 0
+    }
+    Accumulator y {
+      .change = if (random/y[value]) then 1 else 0
+    }
+  }
+  OutputR {
+    OutputText {
+      .ports = random/*[value] | positive/*[value]
+    }
+  }
+}

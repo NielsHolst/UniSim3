@@ -26,9 +26,9 @@ CanopyPhotosynthesis::CanopyPhotosynthesis(QString name, Box *parent)
     Input(growthRespiration).equals(0.3).unit("[0;1]").help("Relative growth respiration");
     Input(trackPn).imports("..[trackPn]");
 
-    Output(An).help("Net canopy assimilation rate").unit("μmol CO2/m2 leaf/s");
-    Output(Ag).help("Gross canopy assimilation rate").unit("μmol CO2/m2 leaf/s");
-    Output(Ar).help("Canopy respiration rate").unit("μmol CO2/m2 leaf/s");
+    Output(An).help("Net canopy assimilation rate").unit("&micro;mol CO2/m2 leaf/s");
+    Output(Ag).help("Gross canopy assimilation rate").unit("&micro;mol CO2/m2 leaf/s");
+    Output(Ar).help("Canopy respiration rate").unit("&micro;mol CO2/m2 leaf/s");
 
     Output(Pn).help("Net canopy growth rate").unit("g dry mass/ground m2/h");
     Output(Pg).help("Gross canopy growth rate").unit("g dry mass/ground m2/h");
@@ -72,11 +72,11 @@ void CanopyPhotosynthesis::reset() {
 }
 
 void CanopyPhotosynthesis::update() {
-    // μmol CO2/m2 leaf/s
+    // &micro;mol CO2/m2 leaf/s
     An = vector_op::sum(leafAn);
     Ag = vector_op::sum(leafAg);
     Ar = Ag - An;
-    // μmol CO2/m2 ground/s
+    // &micro;mol CO2/m2 ground/s
     Pn = An*lai;
     Pg = Ag*lai;
     Pr = Ar*lai;

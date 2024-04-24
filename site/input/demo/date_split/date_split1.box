@@ -1,0 +1,15 @@
+// date_split1.box
+Simulation sim {
+  .steps = 3
+  Calendar calendar {
+    .begin = 24/12/2018
+  }
+  DateSplit dmy {
+    .date   = calendar[date]
+  }
+  OutputR {
+    OutputText {
+      .ports = dmy[output::*]
+    }
+  }
+}

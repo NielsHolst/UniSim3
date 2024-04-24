@@ -37,11 +37,11 @@ aphid.subdir = src/plugins/aphid
 aphid.depends = base
 unisim.depends = aphid
 
-#SUBDIRS += cmbp
-#cmbp.subdir = src/plugins/cmbp
-#cmbp.depends = base
-#unisim.depends = cmbp
-#
+SUBDIRS += cmbp
+cmbp.subdir = src/plugins/cmbp
+cmbp.depends = base
+unisim.depends = cmbp
+
 #SUBDIRS += PestTox
 #PestTox.subdir = src/plugins/PestTox
 #PestTox.depends = base

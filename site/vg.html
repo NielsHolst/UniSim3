@@ -172,22 +172,19 @@
 <h2>ActuatorHeatPump</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>productName</td><td>string</td><td>"" </td><td>Name of product holding heat pump parameters</td></tr>
+<tr><td>number</td><td>int</td><td>1 </td><td>Number of heat pumps</td></tr>
 <tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[groundArea]</span></td></tr>
 <tr><td>indoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[temperature]</span></td></tr>
-<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors/humidity[rh]</span></td></tr>
-<tr><td>state</td><td>double</td><td>-</td><td>&larr; <span class="table-interface-code">setpoints/elementary/heatPumpsOn[value]</span> (Running state relative to full effect)</td></tr>
-<tr><td>number</td><td>int</td><td>1 0,1,2,...</td><td>Number of heat pumps</td></tr>
-<tr><td>maxCoolingPower</td><td>double</td><td>78.4 kW</td><td>Maximum cooling power</td></tr>
-<tr><td>coolingEfficiency</td><td>double</td><td>0.69</td><td>Effective proportion of cooling power [0;1]</td></tr>
-<tr><td>maxFlowRate</td><td>double</td><td>2.5 m3/s</td><td>Maximum air flow rate</td></tr>
-<tr><td>maxPowerUserParasitic</td><td>double</td><td>2.2 kW</td><td>Maximum basic power use</td></tr>
-<tr><td>coolingTemperature</td><td>double</td><td>10.0 oC</td><td>Temperature of the cooling aggregate</td></tr>
+<tr><td>indoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">indoors[rh]</span></td></tr>
+<tr><td>state</td><td>double</td><td>0.0</td><td>Running state relative to full effect [0;1]</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>maxCoolingLoad</td><td>double</td><td>0.0 kW</td><td>Maximum cooling power</td></tr>
 <tr><td>condensationRate</td><td>double</td><td>0.0 kg/m2/s</td><td>Rate of water condensed in the unit</td></tr>
-<tr><td>powerUseCooling</td><td>double</td><td>0.0 kW/m2</td><td>Power used for cooling</td></tr>
-<tr><td>powerUserParasitic</td><td>double</td><td>0.0 kW/m2</td><td>Power lost</td></tr>
-<tr><td>powerUse</td><td>double</td><td>0.0 kW/m2</td><td>Power used (total)</td></tr>
-<tr><td>heat</td><td>double</td><td>0.0 kW/m2</td><td>Heat generated</td></tr>
+<tr><td>powerUseCooling</td><td>double</td><td>0.0 W/m2</td><td>Power used for cooling</td></tr>
+<tr><td>powerUserParasitic</td><td>double</td><td>0.0 W/m2</td><td>Power lost</td></tr>
+<tr><td>powerUse</td><td>double</td><td>0.0 W/m2</td><td>Power used (total)</td></tr>
+<tr><td>cooling</td><td>double</td><td>0.0 W/m2</td><td>Cooling effect >= 0. An equal amount of heat is available for any <span class="table-interface-code">HeatBuffer</span></td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -284,52 +281,6 @@
 <div class="end macro"></div>
 </div> <!-- border-grey -->
 
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='averagematerial'>xxx</p><div class='border-grey'>
-<div class='insert macro'>#plugins/vg/averagematerial.html</div>
-<div class="begin macro"></div>
-<h2>AverageMaterial</h2>
-<h3>Interface</h3>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>swAbsorptivityTop</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the top [0;1]</td></tr>
-<tr><td>swReflectivityTop</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the top [0;1]</td></tr>
-<tr><td>swTransmissivityTop</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the top [0;1]</td></tr>
-<tr><td>swAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Short-wave absorptivity at the bottom [0;1]</td></tr>
-<tr><td>swReflectivityBottom</td><td>double</td><td>0.0</td><td>Short-wave reflectivity at the bottom [0;1]</td></tr>
-<tr><td>swTransmissivityBottom</td><td>double</td><td>1.0</td><td>Short-wave transmissivity at the bottom [0;1]</td></tr>
-<tr><td>lwAbsorptivityTop</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the top [0;1]</td></tr>
-<tr><td>lwReflectivityTop</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the top [0;1]</td></tr>
-<tr><td>lwTransmissivityTop</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the top [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottom</td><td>double</td><td>0.0</td><td>Long-wave absorptivity at the bottom [0;1]</td></tr>
-<tr><td>lwReflectivityBottom</td><td>double</td><td>0.0</td><td>Long-wave reflectivity at the bottom [0;1]</td></tr>
-<tr><td>lwTransmissivityBottom</td><td>double</td><td>1.0</td><td>Long-wave transmissivity at the bottom [0;1]</td></tr>
-<tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
-<tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
-<tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
-<tr><td>myAreas</td><td>vec_double</td><td>c() </td><td></td></tr>
-<tr><td>myWeights</td><td>vec_double</td><td>c() </td><td></td></tr>
-<tr><td>allAreas</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[area]</span></td></tr>
-<tr><td>allWeights</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">shelter/faces/*[weight]</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-</div> <!-- border-grey -->
-
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='averagescreen'>xxx</p><div class='border-grey'>
 <div class='insert macro'>#plugins/vg/averagescreen.html</div>
 <div class="begin macro"></div>
@@ -366,10 +317,12 @@
 <h2>Budget</h2>
 <h3>Interface</h3>
 <table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>radPrecision</td><td>double</td><td>0.1 W/m2 | <tr><td>tempPrecision</td><td>double</td><td>2.0 K</td><td>Max. allowed temperature change in a sub-step among layers</td></tr>
+<tr><td>radPrecision</td><td>double</td><td>0.1 W/m2 | &micro;mol/m2/s</td><td>Precision of numerical solution to radiation budget</td></tr>
+<tr><td>tempPrecision</td><td>double</td><td>2.0 K</td><td>Max. allowed temperature change in a sub-step among layers</td></tr>
 <tr><td>writeHighRes</td><td>bool</td><td>FALSE </td><td>Write output at finest time resolution (indicated by <span class="table-interface-code">subDateTime</span>)</td></tr>
 <tr><td>timeStep</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">calendar[timeStepSecs]</span></td></tr>
 <tr><td>averageHeight</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[averageHeight]</span></td></tr>
+<tr><td>groundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[groundArea]</span></td></tr>
 <tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/geometry[coverPerGroundArea]</span></td></tr>
 <tr><td>outdoorsTemperature</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[temperature]</span></td></tr>
 <tr><td>outdoorsRh</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">outdoors[rh]</span></td></tr>
@@ -378,6 +331,8 @@
 <tr><td>Pn</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/plant[Pn]</span></td></tr>
 <tr><td>co2Injection</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/co2[value]</span></td></tr>
 <tr><td>heatPipeFlux</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes[heatFlux]</span></td></tr>
+<tr><td>heatPumpCooling</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">sum(actuators/heatPumps/*[cooling])</span></td></tr>
+<tr><td>heatPumpCondensationRate</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">sum(actuators/heatPumps/*[condensationRate])</span></td></tr>
 <tr><td>heatPipesOn</td><td>vec_bool</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes/*[isHeating]</span></td></tr>
 <tr><td>isVentilating</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/ventilation[isVentilating]</span></td></tr>
 <tr><td>isHeating</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">gh/actuators/heatPipes[isHeating]</span></td></tr>
@@ -391,13 +346,19 @@
 <tr><td>radIterations</td><td>int</td><td>0 </td><td>Number of iterations taken to resolve radiation budget</td></tr>
 <tr><td>maxDeltaT</td><td>double</td><td>0.0 K</td><td>Max. temperature change in a sub-step</td></tr>
 <tr><td>transpiration</td><td>double</td><td>0.0 kg/m2</td><td>Plant transpiration</td></tr>
-<tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation on cover</td></tr>
+<tr><td>condensationCover</td><td>double</td><td>0.0 kg/m2</td><td>Condensation on cover</td></tr>
+<tr><td>condensationHeatPump</td><td>double</td><td>0.0 kg/m2</td><td>Water removed by heat pumps</td></tr>
 <tr><td>ventedWater</td><td>double</td><td>0.0 kg/m2</td><td>Water loss by ventilation</td></tr>
 <tr><td>ventilationHeatLoss</td><td>double</td><td>0.0 W/m2</td><td>Sensible heat lost by ventilation</td></tr>
 <tr><td>indoorsSensibleHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of change in indoors air sensible heat</td></tr>
 <tr><td>indoorsLatentHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of change in indoors air latent heat</td></tr>
 <tr><td>coverLatentHeatFlux</td><td>double</td><td>0.0 W/m2</td><td>Rate of condensation heat influx to cover</td></tr>
-<tr><td>sunParAbsorbedInCover</td><td>double</td><td>0.0 <tr><td>sunParAbsorbedInScreens</td><td>double</td><td>0.0 <tr><td>sunParHittingPlant</td><td>double</td><td>0.0 <tr><td>growthLightParHittingPlant</td><td>double</td><td>0.0 <tr><td>totalPar</td><td>double</td><td>0.0 </tbody></table>
+<tr><td>sunParAbsorbedInCover</td><td>double</td><td>0.0 &micro;mol/m2/s</td><td>Ignoring transmission and reflection of sunlight</td></tr>
+<tr><td>sunParAbsorbedInScreens</td><td>double</td><td>0.0 &micro;mol/m2/s</td><td>Ignoring transmission and reflection of sunlight</td></tr>
+<tr><td>sunParHittingPlant</td><td>double</td><td>0.0 &micro;mol/m2/s</td><td>Sunlight PAR hitting plant canopy</td></tr>
+<tr><td>growthLightParHittingPlant</td><td>double</td><td>0.0 &micro;mol/m2/s</td><td>Growth light PAR hitting plant canopy</td></tr>
+<tr><td>totalPar</td><td>double</td><td>0.0 &micro;mol/m2/s</td><td>Total PAR hitting plant canopy</td></tr>
+</tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
 
@@ -433,6 +394,7 @@
 <tr><td>radiationDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net radiation</td></tr>
 <tr><td>convectionDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net convection/conduction</td></tr>
 <tr><td>totalDeltaT</td><td>double</td><td>0.0 oC</td><td>Total change in temperature</td></tr>
+<tr><td>totalDeltaTEnergy</td><td>double</td><td>0.0 J/m2</td><td>Change in thermal heat contained in layer</td></tr>
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation (top+bottom)</td></tr>
 <tr><td>netRadiation</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>netConvection</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
@@ -474,11 +436,13 @@
 <tr><td>radiationDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net radiation</td></tr>
 <tr><td>convectionDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net convection/conduction</td></tr>
 <tr><td>totalDeltaT</td><td>double</td><td>0.0 oC</td><td>Total change in temperature</td></tr>
+<tr><td>totalDeltaTEnergy</td><td>double</td><td>0.0 J/m2</td><td>Change in thermal heat contained in layer</td></tr>
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation (top+bottom)</td></tr>
 <tr><td>netRadiation</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>netConvection</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>condInsideDeltaT</td><td>double</td><td>0.0 oC</td><td>Temperature change caused by inside condensation</td></tr>
 <tr><td>condOutsideDeltaT</td><td>double</td><td>0.0 oC</td><td>Temperature change caused by outside condensation</td></tr>
+<tr><td>lwCoverSkyBalance</td><td>double</td><td>0.0 W/m2 ground</td><td>Long-wave balance; negative means net loss</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -516,6 +480,7 @@
 <tr><td>radiationDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net radiation</td></tr>
 <tr><td>convectionDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net convection/conduction</td></tr>
 <tr><td>totalDeltaT</td><td>double</td><td>0.0 oC</td><td>Total change in temperature</td></tr>
+<tr><td>totalDeltaTEnergy</td><td>double</td><td>0.0 J/m2</td><td>Change in thermal heat contained in layer</td></tr>
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation (top+bottom)</td></tr>
 <tr><td>netRadiation</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>netConvection</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
@@ -557,6 +522,7 @@
 <tr><td>radiationDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net radiation</td></tr>
 <tr><td>convectionDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net convection/conduction</td></tr>
 <tr><td>totalDeltaT</td><td>double</td><td>0.0 oC</td><td>Total change in temperature</td></tr>
+<tr><td>totalDeltaTEnergy</td><td>double</td><td>0.0 J/m2</td><td>Change in thermal heat contained in layer</td></tr>
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation (top+bottom)</td></tr>
 <tr><td>netRadiation</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>netConvection</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
@@ -596,6 +562,7 @@
 <tr><td>radiationDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net radiation</td></tr>
 <tr><td>convectionDeltaT</td><td>double</td><td>0.0 oC</td><td>Change in temperature due to net convection/conduction</td></tr>
 <tr><td>totalDeltaT</td><td>double</td><td>0.0 oC</td><td>Total change in temperature</td></tr>
+<tr><td>totalDeltaTEnergy</td><td>double</td><td>0.0 J/m2</td><td>Change in thermal heat contained in layer</td></tr>
 <tr><td>condensation</td><td>double</td><td>0.0 kg/m2</td><td>Condensation (top+bottom)</td></tr>
 <tr><td>netRadiation</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
 <tr><td>netConvection</td><td>double</td><td>0.0 W/m2</td><td>Net radiation (absorption - emission</td></tr>
@@ -617,26 +584,6 @@
 <tr><td>rh</td><td>double</td><td>0.0 %</td><td>Relative humidity</td></tr>
 <tr><td>co2</td><td>double</td><td>0.0 ppm</td><td>CO2 concentration</td></tr>
 <tr><td>heatInflux</td><td>double</td><td>0.0 W/m2</td><td>Total convective/conductive heat influx</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-</div> <!-- border-grey -->
-
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='canopyphotosynthesis'>xxx</p><div class='border-grey'>
-<div class='insert macro'>#plugins/vg/canopyphotosynthesis.html</div>
-<div class="begin macro"></div>
-<h2>CanopyPhotosynthesis</h2>
-<h3>Interface</h3>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>lai</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">/crop[lai]</span></td></tr>
-<tr><td>leafAn</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*/leafPhotosynthesis[An]</span></td></tr>
-<tr><td>leafAg</td><td>vec_double</td><td>- </td><td>&larr; <span class="table-interface-code">./*/leafPhotosynthesis[Ag]</span></td></tr>
-<tr><td>growthRespiration</td><td>double</td><td>0.3</td><td>Relative growth respiration [0;1]</td></tr>
-<tr><td>trackPn</td><td>bool</td><td>- </td><td>&larr; <span class="table-interface-code">..[trackPn]</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>An</td><td>double</td><td>0.0 <tr><td>Ag</td><td>double</td><td>0.0 <tr><td>Ar</td><td>double</td><td>0.0 <tr><td>Pn</td><td>double</td><td>0.0 g dry mass/ground m2/h</td><td>Net canopy growth rate</td></tr>
-<tr><td>Pg</td><td>double</td><td>0.0 g dry mass/ground m2/h</td><td>Gross canopy growth rate</td></tr>
-<tr><td>Pr</td><td>double</td><td>0.0 g dry mass/ground m2/h</td><td>Canopy respiration rate</td></tr>
-<tr><td>trackedPn</td><td>vec_double</td><td>c() </td><td>Pn values if 'trackPn' is true</td></tr>
 </tbody></table>
 <div class="end macro"></div>
 </div> <!-- border-grey -->
@@ -663,27 +610,6 @@
 <tr><td>Utop</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the top</td></tr>
 <tr><td>Ubottom</td><td>double</td><td>0.0 W/K/m2 layer</td><td>Heat transfer coefficient at the bottom</td></tr>
 <tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 layer</td><td>Area-specific heat capacity</td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
-</tbody></table>
-<div class="end macro"></div>
-</div> <!-- border-grey -->
-
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='crop'>xxx</p><div class='border-grey'>
-<div class='insert macro'>#plugins/vg/crop.html</div>
-<div class="begin macro"></div>
-<h2>Crop</h2>
-<h3>Interface</h3>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>lai</td><td>double</td><td>3.0 m2/m2</td><td>Leaf area index</td></tr>
-<tr><td>coverage</td><td>double</td><td>1.0</td><td>Proportion of floor area with crop [0;1]</td></tr>
-<tr><td>k</td><td>double</td><td>0.7</td><td>Light extinction coefficient [0;1]</td></tr>
-<tr><td>gammaStar</td><td>double</td><td>48.95 ppm</td><td>CO2 compensation point</td></tr>
-<tr><td>Jmax</td><td>double</td><td>115.67 <tr><td>lightRespiration</td><td>double</td><td>0.29 <tr><td>ballBerryIntercept</td><td>double</td><td>0.106 </td><td>Minimum stomatal conductance for CO2 (g0)</td></tr>
-<tr><td>ballBerrySlope</td><td>double</td><td>1.64 </td><td>Slope og stomatal conductance for CO2 (g1)</td></tr>
-<tr><td>Vcmax</td><td>double</td><td>98.0 </td><td>Not used</td></tr>
-<tr><td>alpha</td><td>double</td><td>0.84 </td><td>Not used</td></tr>
-<tr><td>trackPn</td><td>bool</td><td>FALSE </td><td>Track Pn values?</td></tr>
 <tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td colspan=4><span class="table-interface-normal"><em>None</em></span></td></tr>
 </tbody></table>
@@ -890,33 +816,6 @@
 <div class="end macro"></div>
 </div> <!-- border-grey -->
 
-<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='layeradjusted'>xxx</p><div class='border-grey'>
-<div class='insert macro'>#plugins/vg/layeradjusted.html</div>
-<div class="begin macro"></div>
-<h2>LayerAdjusted</h2>
-<h3>Interface</h3>
-<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
-<tr><td>coverPerGroundArea</td><td>double</td><td>- </td><td>&larr; <span class="table-interface-code">geometry[coverPerGroundArea]</span></td></tr>
-<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>swAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>swTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityTopAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwAbsorptivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwReflectivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>lwTransmissivityBottomAdj</td><td>double</td><td>0.0</td><td>Parameter adjusted for chalk and state [0;1]</td></tr>
-<tr><td>UtopAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>UbottomAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-<tr><td>heatCapacityAdj</td><td>double</td><td>0.0 </td><td>Parameter adjusted for chalk and state</td></tr>
-</tbody></table>
-<div class="end macro"></div>
-</div> <!-- border-grey -->
-
 <p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='leakageventilation'>xxx</p><div class='border-grey'>
 <div class='insert macro'>#plugins/vg/leakageventilation.html</div>
 <div class="begin macro"></div>
@@ -989,9 +888,12 @@
 <tr><td>re</td><td>double</td><td>200.0 m/s</td><td>Boundary layer resistance (H2O)</td></tr>
 <tr><td>lai</td><td>double</td><td>1.0 m2/m2</td><td>Leaf area index in the cultivated area</td></tr>
 <tr><td>coverage</td><td>double</td><td>0.9 m2/m2</td><td>Proportion of floor covered by plants</td></tr>
-<tr><td>Jmax</td><td>double</td><td>194.0 <tr><td>Vcmax</td><td>double</td><td>112.0 <tr><td>GammaStar</td><td>double</td><td>41.0 ppm</td><td>CO2 compensation point</td></tr>
+<tr><td>Jmax</td><td>double</td><td>194.0 &micro;mol/m2/s</td><td>Maximum rate of electron transport at 25 oC</td></tr>
+<tr><td>Vcmax</td><td>double</td><td>112.0 &micro;mol/m2/s</td><td>Maximum carboxylation rate at 25 oC</td></tr>
+<tr><td>GammaStar</td><td>double</td><td>41.0 ppm</td><td>CO2 compensation point</td></tr>
 <tr><td>Km</td><td>double</td><td>600.0 Pa</td><td>Michaelis-Menten coefficient for Farquhar model</td></tr>
-<tr><td>Rd0</td><td>double</td><td>0.49 <tr><td>alpha</td><td>double</td><td>0.24 </td><td>Slope of light response curve</td></tr>
+<tr><td>Rd0</td><td>double</td><td>0.49 &micro;mol/m2/s</td><td>Respiration rate at 25 oC</td></tr>
+<tr><td>alpha</td><td>double</td><td>0.24 </td><td>Slope of light response curve</td></tr>
 <tr><td>theta</td><td>double</td><td>0.85 </td><td>Shape of light response curve</td></tr>
 <tr><td>EaVJ</td><td>double</td><td>29680.0 </td><td>Temperature response of Jmax</td></tr>
 <tr><td>EdVJ</td><td>double</td><td>200000.0 </td><td>Temperature response of Jmax</td></tr>
@@ -1022,8 +924,16 @@
 <tr><td>heatCapacity</td><td>double</td><td>0.0 J/K/m2 ground</td><td>Area-specific heat capacity</td></tr>
 <tr><td>temperature</td><td>double</td><td>0.0 oC</td><td>Leaf temperature</td></tr>
 <tr><td>transpiration</td><td>double</td><td>0.0 kg/m2 ground/s</td><td>Transpiration rate</td></tr>
-<tr><td>incidentPar</td><td>double</td><td>0.0 <tr><td>Pn</td><td>double</td><td>0.0 <tr><td>Pg</td><td>double</td><td>0.0 <tr><td>Rd</td><td>double</td><td>0.0 <tr><td>growthRate</td><td>double</td><td>0.0 g carbohydrate/m2 ground</td><td>Carbohydrate biomass produced in this time step</td></tr>
-<tr><td>leafAm</td><td>double</td><td>0.0 <tr><td>leafAc</td><td>double</td><td>0.0 <tr><td>leafAj</td><td>double</td><td>0.0 <tr><td>leafRd</td><td>double</td><td>0.0 <tr><td>leafGrowthRate</td><td>double</td><td>0.0 g carbohydrate/m2 leaf</td><td>Carbohydrate biomass produced in this time step</td></tr>
+<tr><td>incidentPar</td><td>double</td><td>0.0 &micro;mol PAR/m2 ground/s</td><td>PAR hitting the canopy</td></tr>
+<tr><td>Pn</td><td>double</td><td>0.0 &micro;mol CO2/m2 ground/s</td><td>Net photosynthetic rate</td></tr>
+<tr><td>Pg</td><td>double</td><td>0.0 &micro;mol CO2/m2 ground/s</td><td>Gross photosynthetic rate</td></tr>
+<tr><td>Rd</td><td>double</td><td>0.0 &micro;mol CO2/m2 ground/s</td><td>Respiration rate</td></tr>
+<tr><td>growthRate</td><td>double</td><td>0.0 g carbohydrate/m2 ground</td><td>Carbohydrate biomass produced in this time step</td></tr>
+<tr><td>leafAm</td><td>double</td><td>0.0 &micro;mol CO2/m2 leaf/s</td><td>Leaf net photosynthetic rate</td></tr>
+<tr><td>leafAc</td><td>double</td><td>0.0 &micro;mol CO2/m2 leaf/s</td><td>Leaf net photosynthetic rate; Rubisco-limited</td></tr>
+<tr><td>leafAj</td><td>double</td><td>0.0 &micro;mol CO2/m2 leaf/s</td><td>Leaf net photosynthetic rate; electron transport-limited</td></tr>
+<tr><td>leafRd</td><td>double</td><td>0.0 &micro;mol CO2/m2 leaf/s</td><td>Leaf respiration rate</td></tr>
+<tr><td>leafGrowthRate</td><td>double</td><td>0.0 g carbohydrate/m2 leaf</td><td>Carbohydrate biomass produced in this time step</td></tr>
 <tr><td>lue</td><td>double</td><td>0.0 g carbohydrate/micromole PAR absorbed</td><td>Light use efficiency</td></tr>
 </tbody></table>
 <div class="end macro"></div>
@@ -1258,7 +1168,7 @@
 <div class="end-index-headers"></div>
       <div class="left">
         <div class="begin-menu"></div>
-<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#virtual-greenhouse">Virtual Greenhouse</a></li><li><a href="#vg-plugin">vg plugin</a><ul><li><a href="#actuatorchalk">ActuatorChalk</a></li><li><a href="#actuatorgrowthlight">ActuatorGrowthLight</a></li><li><a href="#actuatorchalk">ActuatorChalk</a></li><li><a href="#actuatorgrowthlight">ActuatorGrowthLight</a></li><li><a href="#actuatorheatpipe">ActuatorHeatPipe</a></li><li><a href="#actuatorheatpump">ActuatorHeatPump</a></li><li><a href="#actuators">Actuators</a></li><li><a href="#actuatorscreen">ActuatorScreen</a></li><li><a href="#actuatorventilation">ActuatorVentilation</a></li><li><a href="#averagecover">AverageCover</a></li><li><a href="#averagematerial">AverageMaterial</a></li><li><a href="#averagescreen">AverageScreen</a></li><li><a href="#budget">Budget</a></li><li><a href="#budgetlayer">BudgetLayer</a></li><li><a href="#budgetlayercover">BudgetLayerCover</a></li><li><a href="#budgetlayerfloor">BudgetLayerFloor</a></li><li><a href="#budgetlayerscreen">BudgetLayerScreen</a></li><li><a href="#budgetlayersky">BudgetLayerSky</a></li><li><a href="#budgetvolume">BudgetVolume</a></li><li><a href="#canopyphotosynthesis">CanopyPhotosynthesis</a></li><li><a href="#cover">Cover</a></li><li><a href="#crop">Crop</a></li><li><a href="#face">Face</a></li><li><a href="#floor">Floor</a></li><li><a href="#geometry">Geometry</a></li><li><a href="#growthlightcontroller">GrowthLightController</a></li><li><a href="#growthlights">GrowthLights</a></li><li><a href="#heatpipes">HeatPipes</a></li><li><a href="#igindoorshumidity">IgIndoorsHumidity</a></li><li><a href="#layer">Layer</a></li><li><a href="#layeradjusted">LayerAdjusted</a></li><li><a href="#leakageventilation">LeakageVentilation</a></li><li><a href="#outdoors">Outdoors</a></li><li><a href="#pidcontroller">PidController</a></li><li><a href="#plant">Plant</a></li><li><a href="#screen">Screen</a></li><li><a href="#sensor">Sensor</a></li><li><a href="#shading">Shading</a></li><li><a href="#shadingagent">ShadingAgent</a></li><li><a href="#shelter">Shelter</a></li><li><a href="#shelterlayers">ShelterLayers</a></li><li><a href="#sky">Sky</a></li><li><a href="#soiltemperature">SoilTemperature</a></li><li><a href="#summary">Summary</a></li><li><a href="#uwind">UWind</a>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#virtual-greenhouse">Virtual Greenhouse</a></li><li><a href="#vg-plugin">vg plugin</a><ul><li><a href="#actuatorchalk">ActuatorChalk</a></li><li><a href="#actuatorgrowthlight">ActuatorGrowthLight</a></li><li><a href="#actuatorchalk">ActuatorChalk</a></li><li><a href="#actuatorgrowthlight">ActuatorGrowthLight</a></li><li><a href="#actuatorheatpipe">ActuatorHeatPipe</a></li><li><a href="#actuatorheatpump">ActuatorHeatPump</a></li><li><a href="#actuators">Actuators</a></li><li><a href="#actuatorscreen">ActuatorScreen</a></li><li><a href="#actuatorventilation">ActuatorVentilation</a></li><li><a href="#averagecover">AverageCover</a></li><li><a href="#averagescreen">AverageScreen</a></li><li><a href="#budget">Budget</a></li><li><a href="#budgetlayer">BudgetLayer</a></li><li><a href="#budgetlayercover">BudgetLayerCover</a></li><li><a href="#budgetlayerfloor">BudgetLayerFloor</a></li><li><a href="#budgetlayerscreen">BudgetLayerScreen</a></li><li><a href="#budgetlayersky">BudgetLayerSky</a></li><li><a href="#budgetvolume">BudgetVolume</a></li><li><a href="#cover">Cover</a></li><li><a href="#face">Face</a></li><li><a href="#floor">Floor</a></li><li><a href="#geometry">Geometry</a></li><li><a href="#growthlightcontroller">GrowthLightController</a></li><li><a href="#growthlights">GrowthLights</a></li><li><a href="#heatpipes">HeatPipes</a></li><li><a href="#igindoorshumidity">IgIndoorsHumidity</a></li><li><a href="#layer">Layer</a></li><li><a href="#leakageventilation">LeakageVentilation</a></li><li><a href="#outdoors">Outdoors</a></li><li><a href="#pidcontroller">PidController</a></li><li><a href="#plant">Plant</a></li><li><a href="#screen">Screen</a></li><li><a href="#sensor">Sensor</a></li><li><a href="#shading">Shading</a></li><li><a href="#shadingagent">ShadingAgent</a></li><li><a href="#shelter">Shelter</a></li><li><a href="#shelterlayers">ShelterLayers</a></li><li><a href="#sky">Sky</a></li><li><a href="#soiltemperature">SoilTemperature</a></li><li><a href="#summary">Summary</a></li><li><a href="#uwind">UWind</a>
         <div class="end-menu"></div>
       </div>
       <div class="end macro"></div>

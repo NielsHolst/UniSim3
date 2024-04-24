@@ -258,11 +258,13 @@ double Tdew(double temperature, double rh) {
     \return wet bulb temperature (oC)
  */
 double Twet(double temperature, double rh) {
-    return temperature*atan(0.151977*sqrt(rh + 8.313659)) +
-           atan(temperature+rh) -
-           atan(rh-1.676331) +
-           0.00391838*pow(rh,1.5)*atan(0.023101*rh) -
-           4.686035;
+    return std::min(
+                temperature*atan(0.151977*sqrt(rh + 8.313659)) +
+                atan(temperature+rh) -
+                atan(rh-1.676331) +
+                0.00391838*pow(rh,1.5)*atan(0.023101*rh) -
+                4.686035,
+                temperature);
 }
 
 //! Compute r.h. from temperatur and wet bulb temperature
