@@ -85,6 +85,8 @@ Simulation sim {
     }
     PageR {
       .xAxis = random/*[value]
+      .width = 7
+      .height = 5
       PlotR {
         .ports = max/*[at]
         .type = "SobolIndices"

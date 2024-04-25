@@ -118,13 +118,15 @@ void buildOutdoors(Box *parent) {
         port("radiation").imports("sensor[outdoorsGlobalRadiation]").
         port("windSpeed").imports("sensor[outdoorsWindSpeed]").
         port("radiation").imports("sensor[outdoorsGlobalRadiation]").
-        port("skyTemperature").imports("./skyTemperatureEstimate[temperature]").
-        box("SkyTemperature").name("skyTemperatureEstimate").
-            port("airTemperature").imports("sensor[outdoorsTemperature]").
-            port("rh").imports("sensor[indoorsRh]").
-        endbox().
+//        port("skyTemperature").imports("./skyTemperatureEstimate[temperature]").
+//        box("SkyTemperature").name("skyTemperatureEstimate").
+//            port("airTemperature").imports("sensor[outdoorsTemperature]").
+//            port("rh").imports("sensor[indoorsRh]").
+//        endbox().
         box().name("records").
         endbox().
+    endbox().
+    box("vg::Sky").name("sky").
     endbox();
 }
 

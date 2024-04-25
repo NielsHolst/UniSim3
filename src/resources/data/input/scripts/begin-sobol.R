@@ -149,7 +149,7 @@ plot_against_sample_size = function() {
   ggplot(M, aes(x=N, y=Effect, colour=Measure)) +
     geom_line() +
     geom_point() +
-    scale_x_continuous(trans="log2") +
+    scale_x_continuous(trans="log2", breaks=breaks, labels = scales::trans_format("log2", scales::math_format(2^.x))) +
     labs(y="Sobol' index") +
     ylim(-0.05,NA) +
     geom_hline(yintercept=0, colour="grey") +

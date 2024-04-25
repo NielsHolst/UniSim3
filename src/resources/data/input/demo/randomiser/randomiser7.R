@@ -1,6 +1,6 @@
 # randomiser7.R
 bins = 20
-ggarrange(
+P = ggarrange(
   ggplot(sim, aes(monteCarlo.x,  monteCarlo.y)) +
     geom_point(colour=red)
   ,
@@ -20,6 +20,13 @@ ggarrange(
     geom_histogram(colour=green, fill=green, alpha=0.3, bins=bins)
   ,
   nrow=2, ncol=3
-)
+) 
+print(P)
+
+# Hook for batch command
+figures = function(df) {
+  Pages = list(Page = list(Grob=P, Width=7.0, Height=7.0))
+}
+
 
 

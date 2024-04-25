@@ -6,3 +6,9 @@ P = ggplot(M, aes(date, PopulationSize, colour=LifeStage, group=iteration)) +
   theme(legend.position="none") +
   facet_wrap(~LifeStage, scales="free")
 print(P)
+
+# Hook for batch command
+figures = function(df) {
+  Pages = list(Page = list(Grob=P, Width=7.0, Height=4.0))
+}
+

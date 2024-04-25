@@ -25,8 +25,8 @@ duration = 1/slope
 open_plot_window(6,3.5)
 M = melt(sim, id.vars="Temperature", value.name="DevRate", variable.name="Model")
 P = ggplot(M, aes(x=Temperature, y=DevRate, colour=Model)) +
-  geom_abline(intercept=icept, slope=slope, colour=brown, size=3, alpha=0.6) +
-  geom_line(size=1) +
+  geom_abline(intercept=icept, slope=slope, colour=brown, linewidth=3, alpha=0.6) +
+  geom_line(linewidth=1) +
   geom_point(data=obs, colour=red, size=3) +
   geom_vline(xintercept=T0) +
   geom_hline(yintercept=0) +
@@ -35,4 +35,8 @@ P = ggplot(M, aes(x=Temperature, y=DevRate, colour=Model)) +
   labs(x="Temperature (oC)", y="1/L (per day)")
 print(P)
 
-all_figures = list(P)
+# Hook for batch command
+figures = function(df) {
+  Pages = list(Page = list(Grob=P, Width=6, Height=3.5))
+}
+

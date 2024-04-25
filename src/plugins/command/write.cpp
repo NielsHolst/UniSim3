@@ -14,7 +14,6 @@
 #include <base/exception.h>
 #include <base/publish.h>
 #include "write.h"
-#include "write_output.h"
 
 using std::unique_ptr;
 using namespace base;
@@ -25,7 +24,7 @@ PUBLISH(write)
 HELP(write, "write", "writes box script")
 
 write::write(QString name, Box *parent)
-    : Command(name, parent), _option(WriteOutput::Option::WriteUserScript), _doEdit(true)
+    : Command(name, parent), _option(BoxscriptConverter::Option::WriteUserScript), _doEdit(true)
 {
 }
 
@@ -46,7 +45,7 @@ void write::extractArgs() {
     for (int i = 0; i < s.size(); ++i) {
         auto ch = s.at(i);
         if (ch == 'a')
-            _option = WriteOutput::Option::WriteAll;
+            _option = BoxscriptConverter::Option::WriteAll;
         else if (ch == 'n')
             _doEdit = false;
         else
@@ -62,7 +61,7 @@ void write::writeFile() {
         QFile file;
         environment().openOutputFile(file, ".box");
         QTextStream text(&file);
-        WriteOutput output(root, _option);
+        BoxscriptConverter output(root, _option);
         text << output.toString();
 
         _filePath = environment().outputFilePath(".box");

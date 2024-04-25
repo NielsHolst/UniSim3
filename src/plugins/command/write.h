@@ -5,7 +5,7 @@
 #ifndef WRITE_H
 #define WRITE_H
 #include <base/command.h>
-#include "write_output.h"
+#include <base/boxscript_converter.h>
 
 namespace command {
 
@@ -22,7 +22,7 @@ private:
     void edit();
     // Data
     QString _filePath;
-    WriteOutput::Option _option;
+    base::BoxscriptConverter::Option _option;
     bool _doEdit;
 };
 

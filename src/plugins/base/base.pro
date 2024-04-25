@@ -32,6 +32,7 @@ HEADERS +=  \
     boxscript_ast.h \
     boxscript_ast_adapted.h \
     boxscript_config.h \
+    boxscript_converter.h \
     boxscript_def.h \
     boxscript_error_handler.h \
     boxscript_parser.h \
@@ -116,6 +117,7 @@ SOURCES +=  \
     box_builder.cpp \
     boxscript.cpp \
     boxscript_ast.cpp \
+    boxscript_converter.cpp \
     boxscript_parser.cpp \
     boxscript_preprocessor.cpp \
     caller.cpp \

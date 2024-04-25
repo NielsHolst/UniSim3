@@ -39,6 +39,8 @@ Simulation sim {
   OutputR {
     PageR {
       .xAxis = temperature[value]
+      .width = 7
+      .height = 4
       PlotR {
         .ports = humps/*[value]
         .ncol = 2

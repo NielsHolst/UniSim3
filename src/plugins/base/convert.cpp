@@ -67,6 +67,10 @@ QPair<QTime, int> convertGuarded(int h, int m, int s) {
 }
 
 QPair<QTime, int> convertGuarded(QString s) {
+    // Ignore decimals in seconds
+    auto period = s.lastIndexOf(".");
+    if (period > -1)
+        s = s.left(period);
     QStringList strings = s.split(":");
     QVector<int> numbers;
     bool ok;

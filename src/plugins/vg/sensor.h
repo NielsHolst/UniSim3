@@ -23,6 +23,7 @@ private:
         indoorsTemperatureIn,
         indoorsRhIn,
         indoorsCo2In,
+        indoorsLightIntensityIn,
         indoorsWindspeedIn,
         outdoorsTemperatureIn,
         outdoorsRhIn,

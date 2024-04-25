@@ -3,7 +3,7 @@ Simulation sim {
   .silent = TRUE
   .unattended = TRUE
   Box global {
-    &beginDate = 2023/01/01
+    &beginDate = 01/01/2023
   }
   Box scenarios {
     &Uinsulation = 0.5
@@ -12,7 +12,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 2023/01/03T06:00:00
+    .end = 31/12/2023
     .timeStep = 180
     .timeUnit = "s"
   }

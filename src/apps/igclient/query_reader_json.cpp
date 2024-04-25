@@ -135,12 +135,14 @@ ig::ScreenLayer QueryReaderJson::findScreenLayer(QJsonObject object, QString nam
 
 ig::ScreenPosition QueryReaderJson::findScreenPosition(QJsonObject object, QString name) const {
     static QMap<QString, ig::ScreenPosition> lookup = {
-        {"Roof1", ig::ScreenPosition::Roof1},
-        {"Roof2", ig::ScreenPosition::Roof2},
-        {"Side1", ig::ScreenPosition::Side1},
-        {"Side2", ig::ScreenPosition::Side2},
-        {"End1",  ig::ScreenPosition::End1},
-        {"End2",  ig::ScreenPosition::End2}
+        {"FlatRoof",  ig::ScreenPosition::FlatRoof},
+        {"WholeRoof", ig::ScreenPosition::WholeRoof},
+        {"Roof1",     ig::ScreenPosition::Roof1},
+        {"Roof2",     ig::ScreenPosition::Roof2},
+        {"Side1",     ig::ScreenPosition::Side1},
+        {"Side2",     ig::ScreenPosition::Side2},
+        {"End1",      ig::ScreenPosition::End1},
+        {"End2",      ig::ScreenPosition::End2}
     };
     auto value = findValue(object, name);
     if (!value.isString())
@@ -176,7 +178,7 @@ ig::Variable QueryReaderJson::findVariableFromValue(QJsonObject object, QString 
 }
 
 void QueryReaderJson::parseQuery(QJsonObject object) {
-    PARSE_OBJECT(TimeStamp);
+    parseTimeStampTformat(object);
     PARSE_OBJECT(GreenHouse);
     PARSE_OBJECT(Culture);
     PARSE_OBJECT(Construction);
@@ -197,6 +199,11 @@ void QueryReaderJson::parseTimeStamp(QJsonObject object) {
 }
 
 void QueryReaderJson::parseTimeStampTformat(QJsonObject object) {
+    QString dateTimeStr = findValue(object, "TimeStamp").toString();
+    QDateTime dt = base::convert<QDateTime>(dateTimeStr);
+    QDate date = dt.date();
+    double hour = dt.time().hour() + dt.time().minute()/60 + dt.time().second()/3600;
+    /*
     QJsonValue
         offset = findValue(object, "BaseUtcOffset"),
         ymdhms = findValue(object, "TimeStamp");
@@ -209,10 +216,11 @@ void QueryReaderJson::parseTimeStampTformat(QJsonObject object) {
     int year = 2000+numbers.at(0)%4;
     QDate date(year, numbers.at(1), numbers.at(2));
     double hour = numbers.at(3) + numbers.at(4)/60. + numbers.at(5)/60./60.;
+    */
     // Fill in
     _query.timeStamp.dayOfYear = date.dayOfYear();
     _query.timeStamp.timeOfDay = hour;
-    _query.timeStamp.timeZone = offset.toDouble();
+    _query.timeStamp.timeZone = 1.; //offset.toDouble();
 }
 
 void QueryReaderJson::parseGreenHouse(QJsonObject object) {
@@ -349,7 +357,16 @@ void QueryReaderJson::parseScreen(QJsonObject object) {
     screen.layer = findScreenLayer(object, "Layer");
     screen.position = findScreenPosition(object, "Position");
     screen.effect = findVariable(object, "Effect");
-    _screens.push_back(screen);
+    if (screen.position == ig::ScreenPosition::FlatRoof || ig::ScreenPosition::WholeRoof) {
+        ig::Screen roofScreen = screen;
+        roofScreen.position = ig::ScreenPosition::Roof1;
+        _screens.push_back(roofScreen);
+        roofScreen.position = ig::ScreenPosition::Roof2;
+        _screens.push_back(roofScreen);
+    }
+    else {
+        _screens.push_back(screen);
+    }
 }
 
 ig::ScreenMaterial QueryReaderJson::parseScreenMaterial(QJsonObject object) {

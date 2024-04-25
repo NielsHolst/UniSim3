@@ -2,29 +2,27 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#include <base/box.h>
-#include <base/mega_factory.h>
-#include <base/port.h>
-#include <base/port_type.h>
-#include "write_output.h"
+#include "box.h"
+#include "mega_factory.h"
+#include "port.h"
+#include "port_type.h"
+#include "boxscript_converter.h"
 
-using namespace base;
+namespace base {
 
-namespace command {
-
-WriteOutput::WriteOutput(Box *root, Option option)
+BoxscriptConverter::BoxscriptConverter(Box *root, Option option)
     : _root(root), _option(option)
 {
 }
 
-QString WriteOutput::toString() {
+QString BoxscriptConverter::toString() {
     if (!MegaFactory::usingPlugin().isEmpty())
         _s = "#using " + MegaFactory::usingPlugin() + "\n";
     toString(_root, 0);
     return _s;
 }
 
-void WriteOutput::toString(Box *box, int level) {
+void BoxscriptConverter::toString(Box *box, int level) {
     // Skip this box
     if (!box->doWriteOnCommand())
         return;
@@ -37,7 +35,7 @@ void WriteOutput::toString(Box *box, int level) {
     // Write ports
     for (Port *port : box->portsInOrder()) {
         bool drop = false;
-        if (_option == WriteOutput::Option::WriteUserScript) {
+        if (_option == Option::WriteUserScript) {
             if (port->type() == PortType::Output)
                 drop = true;
             else if (port->type() == PortType::Input && port->status() != PortStatus::UserDefined)
@@ -56,16 +54,16 @@ void WriteOutput::toString(Box *box, int level) {
 }
 
 
-void WriteOutput::toString(Port *port, int level) {
+void BoxscriptConverter::toString(Port *port, int level) {
     QString fill = QString().fill(' ', 2*level);
     _s += fill + prefixString(port) + port->objectName() +
           " = " + assignmentString(port);
-    if (_option == WriteOutput::Option::WriteAll)
+    if (_option == Option::WriteAll)
         _s += " " + flags(port);
     _s += "\n";
 }
 
-QString WriteOutput::prefixString(Port *port) {
+QString BoxscriptConverter::prefixString(Port *port) {
     QMap<PortType, QString> prefix = {
         {PortType::Input    , "."},
         {PortType::Output   , "//"},
@@ -74,7 +72,7 @@ QString WriteOutput::prefixString(Port *port) {
     return prefix.value(port->type());
 }
 
-QString WriteOutput::assignmentString(Port *port) {
+QString BoxscriptConverter::assignmentString(Port *port) {
     auto expr = port->expression();
     auto stack = expr.stack();
     bool portHoldsOnlyBoxPtrs = (stack.size() == 1 && expr.type(0) == Expression::Type::BoxPtrs);
@@ -86,7 +84,7 @@ QString WriteOutput::assignmentString(Port *port) {
     return s.isNull() ? "" : s;
 }
 
-QString WriteOutput::flags(Port *port) {
+QString BoxscriptConverter::flags(Port *port) {
     QString info;
     switch (port->type()) {
     case PortType::Input:

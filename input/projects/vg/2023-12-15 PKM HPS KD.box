@@ -6,8 +6,8 @@ Simulation sim {
   Calendar calendar {
     .latitude = 55.4038
     .longitude = 10.4024
-    .begin = 2023/01/01T12:00:00
-    .end   = 2023/01/03T06:00:00
+    .begin = 01/01/2023
+    .end   = 31/12/2023
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -1059,7 +1059,7 @@ Simulation sim {
       }
     }
     OutputSelector selector {
-      .period = 1
+      .period = 10
       .useLocalDecimalChar = FALSE
       .skipFormats = FALSE
     }

@@ -1,0 +1,245 @@
+[
+    {
+        "BaseUtcOffset": 1.0,
+        "Co2Dispenser": {
+            "InjectionRate": null
+        },
+        "CompartmentId": 263,
+        "Construction": {
+            "End1": {
+                "Absorptivity": 0.05,
+                "Emissivity": 0.05,
+                "Haze": 0.0,
+                "HeatCapacity": 1.0,
+                "Transmissivity": 0.01,
+                "UValue": 0.5
+            },
+            "End2": {
+                "Absorptivity": 0.05,
+                "Emissivity": 0.05,
+                "Haze": 0.0,
+                "HeatCapacity": 1.0,
+                "Transmissivity": 0.01,
+                "UValue": 0.5
+            },
+            "Floor": {
+                "Emissivity": 0.85,
+                "HeatCapacity": 42000.0,
+                "UIndoors": 7.5,
+                "USoil": 7.5
+            },
+            "Infiltration": 0.1,
+            "InternalShading": 0.59,
+            "Length": 101.5,
+            "Roof1": {
+                "Absorptivity": 0.1,
+                "Emissivity": 0.1,
+                "Haze": 0.0,
+                "HeatCapacity": 1.0,
+                "Transmissivity": 0.21,
+                "UValue": 6.5
+            },
+            "Roof2": {
+                "Absorptivity": 0.1,
+                "Emissivity": 0.1,
+                "Haze": 0.0,
+                "HeatCapacity": 1.0,
+                "Transmissivity": 0.21,
+                "UValue": 6.5
+            },
+            "RoofInclination": 26.0,
+            "Side1": {
+                "Absorptivity": 0.05,
+                "Emissivity": 0.05,
+                "Haze": 0.0,
+                "HeatCapacity": 1.0,
+                "Transmissivity": 0.01,
+                "UValue": 0.5
+            },
+            "Side2": {
+                "Absorptivity": 0.0,
+                "Emissivity": 0.26,
+                "Haze": 0.0,
+                "HeatCapacity": 1.0,
+                "Transmissivity": 0.15,
+                "UValue": 2.4
+            },
+            "SpanCount": 1,
+            "SpanWidth": 20.0,
+            "WallHeight": 3.0
+        },
+        "Culture": {
+            "Coverage": 0.95,
+            "CultureModel": {
+                "alpha": 0.9125,
+                "g0": 0.1,
+                "g1": 1.64,
+                "Gs25": 55.47,
+                "Jmax25": 146.52,
+                "k": 0.7,
+                "Rl25": 0.74,
+                "Vcmax25": 71.61
+            },
+            "LeafAreaIndex": {
+                "Origin": "NotAvailable",
+                "Value": 1.0
+            }
+        },
+        "Dehumidifiers": [
+        ],
+        "GreenHouse": {
+            "Direction": 0.0,
+            "Latitude": 55.31,
+            "Longitude": 10.32
+        },
+        "GrowthLights": [
+        ],
+        "HeatPipes": [
+            {
+                "b": 1.1563,
+                "FlowRate": {
+                    "Origin": "UserDefined",
+                    "Value": 15.0
+                },
+                "InnerDiameter": 30.0,
+                "k": 0.0008,
+                "Material": "Iron",
+                "TemperatureInFlow": {
+                    "Origin": "Measured",
+                    "Value": 62.64208984375
+                },
+                "TemperatureOutFlow": {
+                    "Origin": "NotAvailable",
+                    "Value": 0.0
+                },
+                "WaterVolume": 2.58286040014885
+            },
+            {
+                "b": 1.1563,
+                "FlowRate": {
+                    "Origin": "UserDefined",
+                    "Value": 15.0
+                },
+                "InnerDiameter": 18.0,
+                "k": 0.0008,
+                "Material": "Iron",
+                "TemperatureInFlow": {
+                    "Origin": "Measured",
+                    "Value": 49.5883026123047
+                },
+                "TemperatureOutFlow": {
+                    "Origin": "NotAvailable",
+                    "Value": 0.0
+                },
+                "WaterVolume": 1.29143020007442
+            }
+        ],
+        "IndoorClimate": {
+            "Co2": {
+                "Origin": "Measured",
+                "Value": 929.711303710938
+            },
+            "LightIntensity": {
+                "Origin": "NotAvailable",
+                "Value": 0.0
+            },
+            "RelativeHumidity": {
+                "Origin": "Measured",
+                "Value": 74.7294998168945
+            },
+            "Temperature": {
+                "Origin": "Measured",
+                "Value": 21.1236457824707
+            }
+        },
+        "OutdoorClimate": {
+            "Co2": {
+                "Origin": "UserDefined",
+                "Value": 415.0
+            },
+            "Irradiation": {
+                "Origin": "Measured",
+                "Value": 377.628662109375
+            },
+            "RelativeHumidity": {
+                "Origin": "Measured",
+                "Value": 0.0
+            },
+            "Temperature": {
+                "Origin": "Measured",
+                "Value": 7.44927644729614
+            },
+            "WindDirection": {
+                "Origin": "Measured",
+                "Value": 98.7350692749023
+            },
+            "WindSpeed": {
+                "Origin": "Measured",
+                "Value": 6.81062602996826
+            }
+        },
+        "Screens": [
+            {
+                "Effect": {
+                    "Origin": "Measured",
+                    "Value": 0.0
+                },
+                "Layer": "Inner",
+                "Material": {
+                    "EmissivityInner": 0.02,
+                    "EmissivityOuter": 0.61,
+                    "EnergySaving": 25.0,
+                    "Haze": 0.0,
+                    "HeatCapacity": 0.0,
+                    "TransmissivityAir": 0.0,
+                    "TransmissivityLight": 0.39,
+                    "UValue": 2.7
+                },
+                "Position": "WholeRoof"
+            },
+            {
+                "Effect": {
+                    "Origin": "Measured",
+                    "Value": 0.0
+                },
+                "Layer": "Outer",
+                "Material": {
+                    "EmissivityInner": 0.02,
+                    "EmissivityOuter": 0.99,
+                    "EnergySaving": 78.0,
+                    "Haze": 0.0,
+                    "HeatCapacity": 0.0,
+                    "TransmissivityAir": 0.0,
+                    "TransmissivityLight": 0.01,
+                    "UValue": 3.2
+                },
+                "Position": "WholeRoof"
+            }
+        ],
+        "TimeStamp": "2024-04-25T07:04:29.6366095Z",
+        "Vents": [
+            {
+                "Height": 1.0,
+                "Length": 101.0,
+                "MaxOpening": 45.0,
+                "NumberOfVents": 1.0,
+                "Opening": {
+                    "Origin": "Measured",
+                    "Value": 0.0
+                },
+                "Porosity": 1.0
+            },
+            {
+                "Height": 1.0,
+                "Length": 101.0,
+                "MaxOpening": 45.0,
+                "NumberOfVents": 1.0,
+                "Opening": {
+                    "Origin": "Measured",
+                    "Value": 0.0
+                },
+                "Porosity": 1.0
+            }
+        ]
+    }
+]

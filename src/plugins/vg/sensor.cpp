@@ -24,6 +24,7 @@ Sensor::Sensor(QString name, Box *parent)
     Input(indoorsTemperatureIn).equals(missing);
     Input(indoorsRhIn).equals(missing);
     Input(indoorsCo2In).equals(missing);
+    Input(indoorsLightIntensityIn).equals(missing);
     Input(indoorsWindspeedIn).equals(missing);
     Input(outdoorsTemperatureIn).equals(missing);
     Input(outdoorsRhIn).equals(missing);

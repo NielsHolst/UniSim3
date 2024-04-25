@@ -2,21 +2,18 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html
 */
-#ifndef WRITE_OUTPUT_H
-#define WRITE_OUTPUT_H
+#ifndef BOXSCRIPT_CONVERTER_H
+#define BOXSCRIPT_CONVERTER_H
 #include <QVector>
 
 namespace base {
-    class Box;
-    class Port;
-}
+class Box;
+class Port;
 
-namespace command {
-
-class WriteOutput{
+class BoxscriptConverter{
 public:
     enum class Option{WriteUserScript, WriteAll};
-    WriteOutput(base::Box *root, Option option);
+    BoxscriptConverter(base::Box *root, Option option);
     QString toString();
 private:
     // Data

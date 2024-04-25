@@ -13,6 +13,8 @@ Simulation sim {
   OutputR {
     PageR {
       .xAxis = calendar[date]
+      .width = 6
+      .height = 3.5
       PlotR {
         .layout = "merged"
         .ports = weather[Tavg] | dd18[change] | dd18[value]

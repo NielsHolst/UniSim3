@@ -42,15 +42,15 @@ cmbp.subdir = src/plugins/cmbp
 cmbp.depends = base
 unisim.depends = cmbp
 
-#SUBDIRS += PestTox
-#PestTox.subdir = src/plugins/PestTox
-#PestTox.depends = base
-#unisim.depends = PestTox
-#
-#SUBDIRS += saccharina
-#saccharina.subdir = src/plugins/saccharina
-#saccharina.depends = base
-#unisim.depends = saccharina#
+SUBDIRS += PestTox
+PestTox.subdir = src/plugins/PestTox
+PestTox.depends = base
+unisim.depends = PestTox
+
+SUBDIRS += saccharina
+saccharina.subdir = src/plugins/saccharina
+saccharina.depends = base
+unisim.depends = saccharina#
 
 ###SUBDIRS += coffee
 ###coffee.subdir = src/plugins/coffee
@@ -66,17 +66,17 @@ unisim.depends = cmbp
 # InfoGrow modules
 #
 
-#SUBDIRS += iglib
-#iglib.subdir = src/lib/iglib
-#iglib.depends = base
+SUBDIRS += iglib
+iglib.subdir = src/lib/iglib
+iglib.depends = base
 
-#SUBDIRS += igclient
-#igclient.subdir = src/apps/igclient
-#igclient.depends = iglib
-#igclient.depends = base
-#igclient.depends = boxes
-#igclient.depends = command
-#igclient.depends = vg
+SUBDIRS += igclient
+igclient.subdir = src/apps/igclient
+igclient.depends = iglib
+igclient.depends = base
+igclient.depends = boxes
+igclient.depends = command
+igclient.depends = vg
 
 #
 # Unit tests

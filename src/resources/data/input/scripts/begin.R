@@ -46,7 +46,7 @@ scale_linetype_discrete = function(...) {
   scale_linetype_manual(..., values = rep(c(rep(1, n), rep(7, n)), 5))
 }
 
-update_geom_defaults("line", list(size=1))
+update_geom_defaults("line", list(linewidth=1))
 
 ggplot_theme = function(fontSize) {
   if (fontSize==0) {
@@ -228,7 +228,8 @@ plot_one_x = function(df, x, y, ncol, nrow, dir, layout) {
   
   # Put the one x column on the x-axis
   # and the Value column on the y-axis
-  P = ggplot(M, aes_string(x=x, y="Value", color=color))
+  # P = ggplot(M, aes_string(x=x, y="Value", color=color))  - deprecated use if aes_string
+  P = ggplot(M, aes(.data[[x]], Value, color=.data[[color]]))
   
   # Use lines for time series otherwise points
   if (is_time_series) {
@@ -288,12 +289,12 @@ plot_many_x = function(df, x, y, ncol, nrow, dir, layout) {
   color = if (many_iterations & is_time_series) "iteration" else "Response"
   
   # Put  xValue on the x-axis and ResponseValue on the y-axis
-  P = ggplot(M, aes_string(x="xValue", y="ResponseValue", color=color)) +
+  P = ggplot(M, aes(x=xValue, y=ResponseValue, color=.data[[color]])) +
         xlab("") + ylab("")
   
   # Use lines for time series otherwise points
   if (is_time_series) {
-    P = P + geom_line(aes_string(group=iterationColumn))
+    P = P + geom_line(aes(group=.data[[iterationColumn]]))
   } else {
     P = P + geom_point()
   }

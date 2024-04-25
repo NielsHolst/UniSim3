@@ -9,31 +9,63 @@ output_path = function() {
 
 insert_file_number = function(filePath, number) {
   paste0(
-    # substr(filePath, 1, nchar(filePath)-4),
     filePath,
-    "-", number, suffix)
+    "_", number, suffix)
 }
  
 save_figure_page = function(page, filePath) {
   print(paste("Saving figure:", filePath, "..."))
-  # ggsave(filePath, page$Grob, width=page$Width, height=page$Height, units="in") 
-  
-  png(filePath, width=page$Width, height=page$Height)
+  png(filePath, page$Width, page$Height, "in", res=72)
   print(page$Grob)
   dev.off()
 }
 
+check_figure_inputs = function() {
+  for (i in 1:length(all_figures)) {
+    if (!("FilePath" %in% names(all_figures[[i]])))
+      print(paste("Incomplete figure", i))
+  }
+}
+
 save_figure = function(figure) {
+  if (!("FilePath" %in% names(figure)))
+    stop("Incomplete figure")
   filePath = figure$FilePath
+  baseName = figure$FileBaseName
+  fileType = figure$FileType
   pages = figure$Pages[[1]]
   numPages = length(pages)
-  if (numPages == 1) {
-    save_figure_page(pages[[1]], paste0(filePath, suffix))
+  filePathBaseName = paste0(filePath, "/", baseName)
+  
+  if (!dir.exists(filePath))
+    dir.create(filePath, recursive=TRUE)
+  if (numPages == 0) {
+    print(paste0("No figure produced by ", paste0(filePathBaseName, fileType), "; skipped"))
+  } else if (numPages == 1) {
+    silent = save_figure_page(pages[[1]], paste0(filePathBaseName, suffix))
   } else {
     for (i in 1:numPages) {
-      save_figure_page(pages[[i]], insert_file_number(filePath, i))
+      silent = save_figure_page(pages[[i]], insert_file_number(filePathBaseName, i))
     }
   } 
+}
+
+check_figure_output = function(figure) {
+  filePath = figure$FilePath
+  baseName = figure$FileBaseName
+  fileType = figure$FileType
+  pages = figure$Pages[[1]]
+  numPages = length(pages)
+  expected = figure$PagesExpected
+  filePathName = paste0(filePath, "/", baseName, fileType)
+  if (expected & numPages == 0) {
+    print(paste("Expected figure was not produced for script:", filePathName))
+  }
+}
+
+source_script = function(script) {
+  print(paste0("Sourcing ", script, "..."))
+  source(script)
 }
 
 Sys.setenv(LANG = "en_US.UTF-8") # use English spelling for e.g. months
@@ -41,7 +73,16 @@ Sys.setenv(LANG = "en_US.UTF-8") # use English spelling for e.g. months
 work_dir = paste0(output_path(), "/batch_output")
 if (!dir.exists(work_dir)) dir.create(work_dir)
 
+print("Checking figure inputs..")
+check_figure_inputs()
+print("Done")
+
 setwd(work_dir)
 l_ply(all_figures, save_figure)
 
 print(paste("Figures written as PNG files to", work_dir))
+
+print("Checking figure outputs..")
+l_ply(all_figures, check_figure_output)
+print("Done")
+

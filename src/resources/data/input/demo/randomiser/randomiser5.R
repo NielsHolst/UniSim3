@@ -11,3 +11,8 @@ P = ggplot(M, aes(Date, colour=LifeStage, fill=LifeStage))  +
   scale_fill_manual(  values=c(blue, green, violet)) +
   labs(x = "Date of maximum occurence", y="Relative density")
 print(P)
+
+# Hook for batch command
+figures = function(df) {
+  Pages = list(Page = list(Grob=P, Width=7.0, Height=4.0))
+}

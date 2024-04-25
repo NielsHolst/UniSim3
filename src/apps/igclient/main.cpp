@@ -2,9 +2,12 @@
 
 #include <iostream>
 #include <string>
+#include <QCoreApplication>
 #include <QFileInfo>
 #include <QString>
 #include <base/box.h>
+#include <base/boxscript_converter.h>
+#include <base/dialog_quiet.h>
 #include <base/exception.h>
 #include <iglib/iglib.h>
 #include "query_reader_json.h"
@@ -14,14 +17,14 @@ using namespace ig;
 using namespace std;
 
 const QString path =
-  "C:/Users/au152367/Documents/QDev/UniSim3/input/projects/ig";
-//               "D:/Documents/QDev/UniSim3/input/projects/ig";
+  "C:/MyDocuments/QDev/UniSim3/input/projects/ig";
 
 const QString fileName =
-//"2022-09-06-116";
-//"2022-08-30-ver-2-3-63";
-//"2022-09-07-ver-3-0-3";
-"2022-11-18-par";
+        //"2022-09-06-116";
+        //"2022-08-30-ver-2-3-63";
+        //"2022-09-07-ver-3-0-3";
+        //"2022-11-18-par";
+        "2024-04-25 for meget lys";
 
 void writeBoxScript() {
     QString filePath = path + "/" + fileName + ".box";
@@ -29,11 +32,13 @@ void writeBoxScript() {
     if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         ThrowException("Cannot open file for output").value(filePath);
     QTextStream text(&file);
-    text << Box::root()->toText("Ia");
+    BoxscriptConverter converter(Box::root(), BoxscriptConverter::Option::WriteUserScript);
+    text << converter.toString();
 }
 
 int main(int, char **)
 {
+    new DialogQuiet(qApp);
     int result = 0;
     QueryReaderJson reader;
     QString filePath = path + "/" + fileName + ".json";
