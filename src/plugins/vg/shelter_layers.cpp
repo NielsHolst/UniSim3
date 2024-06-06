@@ -18,7 +18,6 @@ ShelterLayers::ShelterLayers(QString name, Box *parent)
 	: Box(name, parent)
 {
     help("contains average covers and screens");
-    doWriteOnCommand(false);
 }
 
 } //namespace

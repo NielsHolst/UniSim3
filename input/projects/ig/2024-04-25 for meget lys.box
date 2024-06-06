@@ -1,0 +1,35 @@
+Simulation greenhouse {
+  .steps = 3
+  Calendar calendar {
+    .latitude = 55.31
+    .longitude = 10.32
+    .timeZone = 1
+    .begin = 2001/04/26T07:00:00
+    .timeStep = 30
+    .timeUnit = "s"
+    Sun sun {
+    }
+  }
+  Sensor sensor {
+    .indoorsTemperatureIn = 21.1236
+    .indoorsRhIn = 74.7295
+    .indoorsCo2In = 929.711
+    .indoorsLightIntensityIn = -999.0
+    .indoorsWindspeedIn = -999.0
+    .outdoorsTemperatureIn = 7.44928
+    .outdoorsRhIn = 0.0
+    .outdoorsCo2In = 415.0
+    .outdoorsGlobalRadiationIn = 377.629
+    .outdoorsWindSpeedIn = 6.81063
+    .soilTemperatureIn = -999.0
+  }
+  Outdoors outdoors {
+    .co2 = sensor[outdoorsCo2]
+    .temperature = sensor[outdoorsTemperature]
+    .rh = sensor[outdoorsRh]
+    .radiation = sensor[outdoorsGlobalRadiation]
+    .windSpeed = sensor[outdoorsWindSpeed]
+    Box records {
+    }
+  }
+}

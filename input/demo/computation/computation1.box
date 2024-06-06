@@ -6,7 +6,7 @@ Simulation sim {
   }
   Box pop { 
     &r = 1.05
-    &density = if    (comp[step]=="reset" ) then 100.0 
+    &density = if    (comp[step]=="initialize" || comp[step]=="reset" ) then 100.0 
                elsif (comp[step]=="update") then .[r] * .[density]
                else .[density]
   }

@@ -1,3 +1,4 @@
+#using cmbp
 Simulation sim {
   .steps = 160
   Stage fecundity {
@@ -8,6 +9,8 @@ Simulation sim {
   }
   OutputR {
     PageR {
+      .width = 7
+      .height =3.5
       PlotR {
         .ports = fecundity[outflow]
         .ggplot = "geom_line(size=1.1) + 

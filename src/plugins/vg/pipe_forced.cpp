@@ -34,7 +34,7 @@ PipeForced::PipeForced(QString name, Box *parent)
     Input(Tinflow).equals(60.).help("Temperature of inflowing water").unit("oC");
     Input(k).equals(1.66e-4).help("Heat pipe parameter").unit("K/mm/min");
     Input(b).equals(1.23).help("Heat pipe parameter").unit(">1");
-    Input(knownToutflow).help("If zero then Toutflow will be calculated").unit("oC");
+    Input(knownToutflow).help("If <= 0 then Toutflow will be calculated").unit("oC");
     Output(transitTime).help("Transit time of water through pipe").unit("min");
     Output(Toutflow).help("Temperature of outflowing water").unit("oC");
     Output(energyFlux).help("Effect of pipe per greenhouse area").unit("W/m2");

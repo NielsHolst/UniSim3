@@ -9,6 +9,7 @@
 #include <base/boxscript_converter.h>
 #include <base/dialog_quiet.h>
 #include <base/exception.h>
+#include <base/mega_factory.h>
 #include <iglib/iglib.h>
 #include "query_reader_json.h"
 
@@ -24,7 +25,8 @@ const QString fileName =
         //"2022-08-30-ver-2-3-63";
         //"2022-09-07-ver-3-0-3";
         //"2022-11-18-par";
-        "2024-04-25 for meget lys";
+        //"2024-04-25 for meget lys";
+        "2024-06-06 hus 154";
 
 void writeBoxScript() {
     QString filePath = path + "/" + fileName + ".box";
@@ -46,6 +48,7 @@ int main(int, char **)
         Response r;
         if (QFileInfo::exists(filePath)) {
             cout << "\nParsing...\n";
+            MegaFactory::usingPlugin("vg");
             Query q = reader.parse(filePath);
 
             cout << "\nComputing...\n";
@@ -54,7 +57,7 @@ int main(int, char **)
             cout << "\nComputing...\n";
             r = compute(q);
             cout << "\nRESPONSE 2:\n" << responseToString(r) << "\n";
-            cout << "Writing boxscript written to " << qPrintable(path) << "\n";
+            cout << "Writing boxscript to " << qPrintable(path) << "\n";
             writeBoxScript();
         }
         else {

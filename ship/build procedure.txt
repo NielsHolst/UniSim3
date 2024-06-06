@@ -4,7 +4,7 @@
 - Update SUB version number.
 - Note that the bin target folder will be erased before building.
 - Note that the batch file will switch UniSim3.pro to release mode before building and then restore it to debug mode at the end.
-- Note that C:\data\QDev\UniSim3\input will be copied to C:\data\QDev\UniSim3\src\resources\data\input. Subsequently, the resource file in C:\data\QDev\UniSim3\src\resources\application.qrc will be updated accordingly.
+- Note that C:\data\QDev\UniSim3\input demo+models+scripts will be copied to C:\data\QDev\UniSim3\src\resources\data\input. Subsequently, the resource file in C:\data\QDev\UniSim3\src\resources\application.qrc will be updated accordingly.
 
 2. Check that the input folder contains the correct files in
 - demo

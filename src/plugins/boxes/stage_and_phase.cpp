@@ -48,6 +48,7 @@ void StageAndPhase::createDistributedDelay() {
 
 void StageAndPhase::myReset() {
     content = initial;
+    scalarInflow = 0.;
     inflow.resize(phaseK);
     outflow.resize(phaseK);
     outflow.fill(0.);

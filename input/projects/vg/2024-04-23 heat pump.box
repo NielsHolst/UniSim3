@@ -12,7 +12,7 @@ Simulation sim {
     .latitude = 55.4038
     .longitude = 10.4024
     .begin = global[beginDate] - 1
-    .end = 31/12/2023
+    .end = 4/01/2023
     .timeStep = 180
     .timeUnit = "s"
   }

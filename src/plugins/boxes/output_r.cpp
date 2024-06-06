@@ -197,11 +197,6 @@ void OutputR::writeScript() {
            << toScript()
            << "\n"
            <<
-           "if (exists(\"scenarios\")) {\n"
-           "  sim$iteration = factor(sim$iteration)\n"
-           "  levels(sim$iteration) = scenarios\n"
-           "}\n"
-           <<
            showPlotsCode();
     _file.close();
 }

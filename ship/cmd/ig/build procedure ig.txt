@@ -15,6 +15,7 @@
 - Open ig project.
 - Choose 32-bit target.
 - Set target to release
+- Update version number in iglib.h comment
 - Build.
 
 5. Edit QDev\UniSim2\ship\cmd\igbuild.bat:

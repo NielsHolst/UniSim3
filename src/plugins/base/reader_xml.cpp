@@ -751,14 +751,24 @@ BoxBuilder& ReaderXml::setpoint(QString xmlName, const Setpoint &setpoint) {
         _builder->port("endTime").equals(setpoint.toTime);
     bool
         hasValue = !setpoint.value.isEmpty(),
-        hasEquation = !setpoint.equation.isEmpty();
+        hasEquations = !setpoint.equations.isEmpty(),
+        hasAlternative = !setpoint.equationAlternative.isEmpty();
     if (hasValue)
-        if (hasEquation)
+        if (hasEquations)
             ThrowException("Setpoint cannot have both a value and an <Eq> element").hint(xmlName);
+        else if (hasAlternative)
+            ThrowException("Setpoint cannot have both a value and an <Sp> element").hint(xmlName);
         else
             _builder->port("signalInside").equals(setpoint.value);
-    else if (hasEquation)
-        _builder->port("signalInside").computes(setpoint.equation);
+    else if (hasEquations) {
+        if (hasAlternative) {
+            QString eq = setpoint.equations.join(" els") + " else " + setpoint.equationAlternative;
+            _builder->port("signalInside").computes(eq);
+        }
+        else {
+            ThrowException("Setpoint with an <Eq> element also need an <Sp> element").hint(xmlName);
+        }
+    }
     else
         ThrowException("Setpoint value is empty").hint(xmlName);
     _builder->endbox();
@@ -1199,8 +1209,13 @@ ReaderXml::Setpoints ReaderXml::getSetpoints(QString name) {
         setpoint.fromTime = spNode.getAttributeString("FromTime");
         setpoint.toTime   = spNode.getAttributeString("ToTime");
         setpoint.value    = spNode.value();
-        XmlNode *eqNode = spNode.peak("Eq");
-        setpoint.equation = eqNode ? eqNode->value() : "";
+
+        XmlNode *eqNode = spNode.peak("Sp");
+        setpoint.equationAlternative = eqNode ? eqNode->value() : "";
+
+        auto eqs = spNode.children("Eq", XmlNode::NoMatch::Accept);
+        for (XmlNode *node : eqs.values())
+            setpoint.equations << node->value();
         result << setpoint;
         ++sp;
     }

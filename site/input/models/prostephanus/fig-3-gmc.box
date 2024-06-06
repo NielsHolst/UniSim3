@@ -1,3 +1,4 @@
+#using cmbp
 Simulation sim {
   .steps = ./rh[steps]
   SequenceByStep rh {
@@ -11,6 +12,8 @@ Simulation sim {
   OutputR {
     PageR {
       .xAxis = rh[value]
+      .width = 7
+      .height =3.5
       PlotR {
         .ports = gmc[value]
       }

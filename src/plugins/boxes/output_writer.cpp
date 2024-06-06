@@ -181,8 +181,10 @@ void OutputWriter::writeColumnLabels() {
 
 void OutputWriter::writeColumnFormats() {
     QStringList list;
-    for (auto port : _ports)
-        list << port->format();
+    for (auto port : _ports) {
+        for (int i = 0; i < port->size(); ++i)
+            list << port->format();
+    }
     _stream << list.join("\t") << "\n";
 }
 

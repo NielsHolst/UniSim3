@@ -592,7 +592,7 @@
   <Output>
     <Period>10</Period>
     <UseLocalDecimalChar>0</UseLocalDecimalChar>
-    <SkipFormats>0</SkipFormats>
+    <SkipFormats>1</SkipFormats>
     <Variables>
       <Variable name="actCo2" path="actuators/co2[value]"/>
       <Variable name="actHeatingPower" path="actuators/heatPipes[heatFlux]"/>

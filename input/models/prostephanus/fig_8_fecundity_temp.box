@@ -1,0 +1,20 @@
+#using cmbp
+Simulation sim {
+  .steps = 35
+  &temperature = .[step]
+  Fecundity fecundity {
+    .T = sim[temperature]
+  }
+  OutputR {
+    PageR {
+      .xAxis = sim[temperature]
+      .width = 7
+      .height =3.5
+      PlotR {
+        .ports = fecundity[value]
+        .ggplot = "xlim(15,35) + labs(x='Temperature', y='Gross reproductive rate')" 
+      }
+    }
+  }
+}
+

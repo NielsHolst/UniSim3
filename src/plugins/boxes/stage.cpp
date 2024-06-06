@@ -39,7 +39,7 @@ void Stage::createDistributedDelay() {
 
 void Stage::myReset() {
     content = initial;
-    outflow = 0.;
+    inflow = phaseOutflowProportion = outflow = 0.;
     _firstUpdate = true;
     _dd->resize(k);
     update();   // Otherwise, outflow will be one simulation step late

@@ -1,0 +1,137 @@
+Simulation sim {
+  Box weather {
+    &temperature = 20.5
+    &sunshine = 132.9
+  }
+  Box hibernation {
+    &threshold = -6.2
+  }
+  Box mouse {
+    &density = 1002.7
+  }
+  Box rabbit {
+    &density = 2.1
+  }
+  Box homeRange {
+    &distance = 5.5
+  }
+  Box N {
+    &demand = 0.12
+    &supply = 0.08
+  }
+  Box P {
+    &demand = 0.001
+    &supply = 0.009
+  }
+  Box equations {
+    &aboveThreshold    = (weather[temperature] > hibernation[threshold]) // TRUE
+    &tempInside        = weather[temperature] + 2.5                      // 23.0
+    &biomass           = 2300*mouse[density] + 6.7*rabbit[density]       // 2.306e6
+    &homeArea          = 3.1412*(homeRange[distance]/2)^2                // 23.76
+    &supplyDemandRatio = min(N[supply]/N[demand], P[supply]/P[demand])   // 0.0667
+    &demand            = if (.[aboveThreshold] || weather[sunshine] > 500) then 7.6 else 0  // 7.6
+  }
+  Box vectors {
+    &scalars = 3 + 9            // 12
+    &mixed   = 3 + c(7, 9, 13)  // (10 12 16)
+    &a = c(7, 9, 13)
+    &b = c(-2, -11, 8)
+    &vectors = .[a] + .[b]      // (5 -2 21)
+    &square = c(2,3)^2          // (4 9)
+    &a_squared = .[a]^2         // (49 81 169)
+  }
+  Box functions {
+    &a = 5
+    &b = 7
+    &c = 11
+    Box vector {
+      &v = c(10, 20)
+    }
+    Box sum {
+      &x = sum(functions[*])                       // 23
+      &y = sum(gone[*])                            // 0
+      &z = sum(functions/vector[v])                // 30
+      &w = sum(functions[*] | functions/vector[v]) // 53
+    }
+    Box mean {
+      &x = mean(functions[*])                       // 7.667
+      &y = mean(gone[*])                            // 0
+      &z = mean(functions/vector[v])                // 15.0
+      &w = mean(functions[*] | functions/vector[v]) // 10.6
+    }
+    Box count {
+      &x = count(..[*])                // 3
+      &y = count(./gone[*])            // 0
+      &z = count(../vector[v])         // 1
+      &w = count(..[*] | ../vector[v]) // 4
+    }
+    Box exists {
+      &a = exists(./right[])  // TRUE
+      &b = exists(./right[x]) // TRUE
+      &c = exists(./right[y]) // FALSE
+      &d = exists(./wrong[])  // FALSE
+      &e = exists(./wrong[x]) // FALSE
+      Box right {
+        &x = 7
+      }
+    }
+    Box math {
+      &a = 100
+      &b = log10(.[a]) // 2.0
+      &c = c(.[a], .[b]) // (100 2.0)
+      &d = log(.[c]) // (4.61 0.693)
+      &e = log10(c(1, 100, 10)) // (0.0 2.0 1.0)
+      &f = min(c(7,-5, 6)) // -5
+      &g = max(c(0, 1, .[a], .[b], .[c])) // 100.0
+    }
+    Box logical {
+      &a = 7
+      &b = 800
+      &c = (.[a] > 100)       // FALSE
+      &d = (.[b] > 200)       // TRUE
+      &e = any(c(.[c], .[d])) // TRUE
+      &f = all(c(.[c], .[d])) // FALSE
+      &g = all(.[d])          // TRUE
+    }
+    Box conditions {
+      &a = 5
+      &b = 7
+      &c = 11
+      &d = if .[a] > .[b] then .[a] else .[b]                     // 7
+      &e = if .[a] > .[b] then 1 elsif .[a] < .[b] then -1 else 0 // -1
+    }
+    Box combine {
+      &a = 5
+      &b = 7
+      &c = "message"
+      &d = c(5.6, -3.7)        // (5.6 -3.7)
+      &e = c(.[a], .[b], .[c]) // ("5" "7" "message")
+      &f = c(.[a], .[b], 2.1)  // (5.0 7.0 2.1)
+      &g = c(.[d], .[e])       // ("5.6" "-3.7" "5" "7" "message")
+    }
+    Box names {
+      &a = name(./A[])   // "A"
+      &b = name(./A/B[]) // "B" 
+      &c = names(./A[] | ./A/*[]) // ("B" "A") 
+      Box A {
+        Box B {
+        }
+      }
+    }
+  }
+  OutputR {
+    OutputText {
+    // Uncomment the output that you want to study
+      .ports = 
+      equations[*] 
+      // vectors[*] 
+      // functions/sum[*]
+      // functions/mean[*]
+      // functions/count[*]
+      // functions/exists[*]
+      // functions/math[*]
+      // functions/logical[*]
+      // functions/conditions[*]
+    }
+  }
+}

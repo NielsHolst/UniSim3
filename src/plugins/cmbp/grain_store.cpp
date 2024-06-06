@@ -18,7 +18,7 @@ GrainStore::GrainStore(QString name, Box *parent)
 {
     Input(Tmin).help("Outdoors daily minimum temperature (oC)");
     Input(Tmax).help("Outdoors daily maximum temperature (oC)");
-    Input(Toffset).help("Offset for temprature inside the store (oC)");
+    Input(Toffset).help("Offset for temperature inside the store (oC)");
     Input(mass).equals(500).help("Mass of stored grain (kg)");
     Output(T).help("Store temperature (oC");
 }

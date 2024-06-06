@@ -18,9 +18,11 @@ public:
     void update();
 private:
     // Input
-    double maxFecundity, r, T, sexRatio;
+    double a, b, c, T, sexRatio, calibration;
     // Output
     double value;
+    // Methods
+    double f(double T) const;
 };
 
 }

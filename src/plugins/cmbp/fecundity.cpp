@@ -16,10 +16,13 @@ PUBLISH(Fecundity)
 Fecundity::Fecundity(QString name, Box *parent)
     : Box(name, parent)
 {
-    Input(maxFecundity).help("Life-time fecundity of a female at 30oC");
-    Input(r).help("Increase in fecundity with temperature");
+    help("models life time net per capita fecundity of P. truncatus");
+    Input(a).equals(4.525).help("Parabola specifying female R0 (aT^2 + bT + c");
+    Input(b).equals(-186.3).help("Parabola specifying female R0 (aT^2 + bT + c");
+    Input(c).equals(1959.).help("Parabola specifying female R0 (aT^2 + bT + c");
     Input(T).help("Store temperature (oC)");
     Input(sexRatio).equals(0.5).help("Sex ratio [0;1]");
+    Input(calibration).equals(1.).help("Relatoive calibration");
     Output(value).help("Life-time fecundity scaled by temperature");
 }
 
@@ -28,9 +31,16 @@ void Fecundity::reset() {
 }
 
 void Fecundity::update() {
-    value = (T>30.) ? maxFecundity : exp(r*T)/exp(r*30)*maxFecundity;
-    value *= sexRatio;
+    if (T < 20.)
+        value = f(20.);
+    else if (T > 30.)
+        value = f(30.);
+    else
+        value = f(T);
 }
 
+double Fecundity::f(double T) const {
+    return calibration*sexRatio*(a*T*T + b*T + c);
+}
 
 }

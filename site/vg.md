@@ -230,6 +230,144 @@ Layers are further described by their area-specific heat capacity ($C_i$; J/K/m^
 
 #### Boxscript example with cover and screens
 
+The first two boxes inside the `gh` box describe the physical characteristics of the greenhouse: the `geometry` box describes its dimensions while the `construction` box supplies details of the physical characteristics of the greenhouse materials. This is the layout:
+
+```
+Box gh {
+  Geometry geometry{
+    .numSpans = 25
+    .spanWidth = 4
+    .length = 100
+    .height = 3.5
+    .roofPitch = 26
+  }
+  Box construction
+    LeakageVentilation leakage
+    Shelter shelter
+      UWind Utop
+      Shading shading
+        ShadingAgent chalk
+        :
+      Box products
+        Box covers
+          Cover Single_glass_4mm
+          Cover PC_3_wall_16_mm
+          :
+        Box screens
+          Screen Harmony_3600
+          Screen Radiant_9000
+          :
+      Faces faces
+        Face roof1
+        Face roof2
+        Face side1
+        Face side2
+        Face end1
+        Face end2
+      ShelterLayers layers
+        AverageCover cover
+        Box screens
+          AverageScreen screen1
+          AverageScreen screen2
+          AverageScreen screen3
+}
+```
+
+The `LeakageVentilation` box models the general leakage (passive ventilation) of the greenhouse, which depends on the outdoors wind speed. Increasing wind speed will increase not only the leakage but also the U-value of the cover, as modelled by the `UWind` box. Shading (whitening) is currently provided only for the greenhouse as a whole and not for each face individually. The `Shading` box calculates the joint effect of the `ShadingAgent` boxes that it holds: 
+
+```
+Shading shading {
+  ShadingAgent chalk {
+  	.swReflectivity = 0.60
+  	.lwReflectivity = 0.70
+  	.state = controllers/shading[value]
+  }
+  ShadingAgent white80 {
+  	.swReflectivity = 0.80
+  	.lwReflectivity = 0.85
+  	.state = controllers/shading[value]
+  }
+
+```
+
+ The `state` (between 0 and 1) of each agent is supplied by a controller, which again depends on the setpoints for shading.
+
+The physical parameters for cover and screen materials are held by the `covers` and `screens` boxed inside the `products` box.  Covers and screens share the same basic set of parameters, only screens have three additional parameters (shown last, below; the `energySaving` parameter is for calibration use). Here is an example:
+
+```
+Screen Harmony_3600 {
+  .swAbsorptivityTop = 0.1
+  .swReflectivityTop = 0.4
+  .swTransmissivityTop = 0.5
+  .swAbsorptivityBottom = 0.1 
+  .swReflectivityBottom = 0.4 
+  .swTransmissivityBottom = 0.5
+  .lwAbsorptivityTop = 0.1 
+  .lwReflectivityTop = 0.4 
+  .lwTransmissivityTop = 0.5 
+  .lwAbsorptivityBottom = 0.1 
+  .lwReflectivityBottom = 0.4 
+  .lwTransmissivityBottom = 0.5
+  .Utop = 0.6 // W/K/m2 layer
+  .Ubottom = 0.6 // W/K/m2 layer
+  .heatCapacity = 80.0 // J/K/m2 layer 
+  .energySaving = 0.0 // %  
+  .Uinsulation = 1.25 // W/K/m2 layer 
+  .UinsulationEffectivity = 0.95
+}
+```
+
+Each of the six faces may have any combination of a cover product and zero or more screen products:
+
+```
+Faces faces {
+  Face roof1 {
+    .cover = "Single_glass_4mm" 
+    .screens = "Harmony_3600+Radiant_9000+none" 
+    .weight = 1.0 
+  
+  Face roof2 {
+    .cover = "Single_glass_4mm" const
+    .screens = "Harmony_3600+Radiant_9000+none" 
+    .weight = 1.0
+ }
+  Face side1 {
+    .cover = "PC_3_wall_16_mm" 
+    .screens = "Harmony_3600+none+none" 
+    .weight = 0.6
+  }
+  :
+}
+```
+
+The covers and screens are identified by their product names (as defined in `products/covers` and `products/screens`). Screens are mentioned in order from nearest the cover and inwards, separated by `+`. There can be as many layers of screens as needed (three in this example) but there must be the same number of screen layers in all faces. Vacant screen layers are written as `none`. If no faces has any screen then give them all a `none` screen. The `weight` parameter specifies the weight of the face when the average radiative parameters values of the cover are averaged across all six faces. 
+
+The `AverageCover` box calculates the average parameter values across all six cover faces, likewise the `AverageScreen` box for each of the screen layers present (three in this example). Most of the inputs needed by these boxes are created automatically but you need to tell which actuator determines the state of each screen layer:
+
+```
+ShelterLayers layers {
+  AverageCover cover {
+  }
+  Box screens {
+    AverageScreen screen1 {
+      .state = actuators/screens/layer1[state]
+    }
+    AverageScreen screen2 {
+      .state = actuators/screens/layer2[state]
+    }
+    AverageScreen screen3 {
+      .state = actuators/screens/layer3[state]
+    }
+  }
+}
+```
+
+In this example, there is a separate actuator dedicated to each of the three screen layers. 
+
+
+
+
+
 The `construction` box holds two child boxes, `geometry` and `shelter`. The shelter box holds definitions of different cover and screen materials inside the `covers` and `screens` box, respectively. In the boxscript below, one kind of cover is defined (named `glass`) and four kinds of screens (named `energy`, `shade1`, `shade2` and `blackout`). You can name the materials as you want.
 
 The `faces` box (lines 67-98) holds the named materials of cover and screens for each of the six shelter faces. There may be more than one layer of screens installed. These screen layers are written in sequence starting nearest the glass. For example, with up to three layers installed on a face, you might have faces with screens specified as `energy+shade1+blackout`, `none+shade2+blackout`, `energy+none+blackout` or `none+none+blackout`, or any other combination of screen materials defined by the names of the `shelter/screens/*` boxes. All six faces must have the same number of screens defined. If a face has no screen in a certain layer, it is written as `none`.

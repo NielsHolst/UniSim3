@@ -220,6 +220,7 @@ files = c(
   "commands.html",
   "boxscript.html",
   "models.html",
+  "prostephanus.html",
   "cereal-aphids.html",
   "vg.html",
   "saccharina.html",

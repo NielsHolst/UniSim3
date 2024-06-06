@@ -1,0 +1,10 @@
+Experiment	Immigration	WeatherFile	GrainMass	NumImmigrants	ImmigrationDay	StartDate
+Mono 1992-93	Initial 20	Mono9394.txt	200	20	0	01/09/1992
+Mono 1992-93	Initial 50	Mono9394.txt	200	50	0	01/09/1992
+Mono 1992-93	Late 20	Mono9394.txt	200	20	30	01/09/1992
+Mono 1993-94	Initial 20	Mono9394.txt	75	20	0	01/09/1993
+Mono 1993-94	Initial 50	Mono9394.txt	75	50	0	01/09/1993
+Mono 1993-94	Late 20	Mono9394.txt	75	20	30	01/09/1993
+IITA 1994-95	Initial 20	Iita9495.txt	750	20	0	01/09/1994
+IITA 1994-95	Initial 50	Iita9495.txt	750	50	0	01/09/1994
+IITA 1994-95	Late 20	Iita9495.txt	750	20	30	01/09/1994

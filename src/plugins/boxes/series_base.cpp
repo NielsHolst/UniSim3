@@ -15,7 +15,8 @@ SeriesBase::SeriesBase(QString name, Box *parent)
 }
 
 void SeriesBase::setValues() {
-    values = numbers;
+    if (values.isEmpty())
+        values = numbers;
     numValues = values.size();
 }
 

@@ -30,6 +30,7 @@ ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
     Input(b).equals(1.25).help("Calibration parameter(!=1)");
     Input(propLw).equals(0.5).help("Proportion of energy emitted as long-wave radiation").unit("[0;1]");
     Input(inflowTemperature).help("Water temperature at entry").unit("oC");
+    Input(knownOutflowTemperature).help("Water temperature at exist; used only if positive").unit("oC");
     Input(minTemperature).imports("setpoints/heating/minTemperature[value]", CA).help("Minimum inflow temperature").unit("oC");
     Input(maxTemperature).imports("setpoints/heating/maxTemperature[value]", CA).help("Maximum inflow temperature").unit("oC");
     Input(indoorsTemperature).imports("indoors[temperature]",CA).unit("oC");
@@ -54,23 +55,23 @@ void ActuatorHeatPipe::reset() {
 
 void ActuatorHeatPipe::update() {
     double
-        dT = inflowTemperature - indoorsTemperature,
-        transitTime = volume/flowRate*3600.;
-    if (dT > 0.) {
+        dT = inflowTemperature - indoorsTemperature;
+    if (knownOutflowTemperature > 0.) {
+        outflowTemperature = knownOutflowTemperature;
+        temperatureDrop = inflowTemperature - outflowTemperature;
+    }
+    else if (dT > 0.) {
         double
+            transitTime = volume/flowRate*3600.,
             x = k*(b-1.)*transitTime + pow(dT, 1-b);
         temperatureDrop = dT - pow(x, 1./(1.-b));
         outflowTemperature = inflowTemperature - temperatureDrop;
-        energyFlux = CpWater*temperatureDrop*flowRate/groundArea*1000./3600.;
-//        netEnergyFlux = CpWater*temperatureDrop*flowRate/groundArea*1000./3600.;
     }
     else {
-        temperatureDrop = energyFlux = 0.;
+        temperatureDrop = 0.;
         outflowTemperature = inflowTemperature;
     }
-
-//    energyFlux = _heatBuffer*timeStep/transitTime;
-//    _heatBuffer += netEnergyFlux*timeStep - energyFlux;
+    energyFlux = CpWater*temperatureDrop*flowRate/groundArea*1000./3600.;
 
     lwEmissionTop = lwEmissionBottom = propLw*energyFlux/2.;
     // Convection flux is negative because pipes are loosing energy

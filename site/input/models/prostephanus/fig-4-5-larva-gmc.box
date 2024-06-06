@@ -1,3 +1,4 @@
+#using cmbp
 Simulation sim {
   .steps = ./gmc[steps]
   SequenceByStep gmc {
@@ -20,6 +21,8 @@ Simulation sim {
   OutputR {
     PageR {
       .xAxis = gmc[value]
+      .width = 7
+      .height =3.5
       PlotR {
         .layout = "merged"
         .ports = devRateGmc[value] | survivalGmc[value]

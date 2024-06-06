@@ -1,3 +1,4 @@
+#using cmbp
 Simulation sim {
   .steps = ./N[steps]
   SequenceByStep N {
@@ -12,6 +13,8 @@ Simulation sim {
   OutputR {
     PageR {
       .xAxis = N[value]
+      .width = 7
+      .height =3.5
       PlotR {
         .ports = survival[value]
         .ggplot = "geom_line(size=1.1) + ylim(0,1)"

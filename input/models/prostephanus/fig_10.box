@@ -1,0 +1,122 @@
+#using cmbp
+Simulation sim {
+  .steps = 300
+  .iterations = ./scenarios[iterations]
+  
+  Scenarios scenarios {
+    .fileName = "fig_10_scenarios.txt"
+  }
+  
+  Calendar calendar {
+    .begin = scenarios[StartDate]
+  }
+  
+  GrainStore store {
+    .mass = 75.0
+    .Tmin = ./weather[Tmin]
+    .Tmax = ./weather[Tmax]
+    &gmc = ./weather[Gmc]
+    Records weather {
+      .fileName = scenarios[WeatherFile]
+    }
+  }
+  
+  Box pt {
+    Stage egg {
+      .duration = 1
+      .k = 72
+      .timeStep = ./devRate[value]
+      .inflow = fecundity[outflow]
+      DevRate devRate {
+        .T = store[T]
+        .b1 = 0.124870
+        .b2 = 41.78020
+        .b3 = 7.972116
+        .b4 = -0.053245
+      }
+    }
+    Stage larva {
+      .inflow = egg[outflow]
+      .k = 30
+      .duration = 1
+      .timeStep = ./devRate[value]
+      .growthFactor = ./survival[value]
+      Box devRate {
+        &value = ./byTemperature[value] * ./byGmc[value]
+        DevRate byTemperature {
+          .T = store[T]
+          .b1 = 0.098864
+          .b2 = 41.62845
+          .b3 = 10.06714
+          .b4 = -0.050082
+        }
+        ExponentialPeak byGmc {
+          .x = store[gmc]
+          .optimum = 15.14
+          .d1 = 5.169
+          .d2 = 16.42
+        }
+      }
+      Box survival {
+        &value = ./byDensity[value] * ./byGmc[value]
+        SurvivalByDensity byDensity {
+          .N = adult[content]
+          .e1 = -0.0483
+        }
+        ExponentialPeak byGmc {
+          .x = store[gmc]
+          .optimum = 15.10
+          .d1 = 5.258
+          .d2 = 19.58
+        }
+      }
+    }
+    Stage pupa {
+      .inflow = larva[outflow]
+      .k = 35
+      .duration = 1
+      .timeStep = ./devRate[value]
+      DevRate devRate {
+        .T = store[T]
+        .b1 = 0.125756
+        .b2 = 41.49327
+        .b3 = 7.919346
+        .b4 = -0.073723
+      }
+    }
+    Immigration immigrants {
+      .day = scenarios[ImmigrationDay]
+      .number = scenarios[NumImmigrants]
+      .storeMass = store[mass]
+    }
+    Stage adult {
+      .inflow = sum(immigrants[value] | pupa[outflow])
+      .duration = 55
+      .k = 4
+      .instantLossRate = emigration[value]
+    }
+    Stage fecundity {
+      .inflow = ../adult[inflow]
+      .duration = 45
+      .k = 4
+      .instantLossRate = emigration[value]
+      .growthFactor = ./fec[value]
+      Fecundity fec {
+        .T = store[T]
+        .calibration = 1
+      }
+    }
+    Emigration emigration {
+      .N = adult[content]
+      .e2 = 0.00076
+      .e3 = 0.346
+    }
+  }
+  OutputR {
+    .scripts = "fig_10.R"
+    OutputText {
+      .ports = store[T] | store[gmc] | adult[value] | scenarios[Experiment] | scenarios[Immigration]
+    }
+  }
+}
+

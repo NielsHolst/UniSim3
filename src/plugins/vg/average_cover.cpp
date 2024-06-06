@@ -6,6 +6,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/box_builder.h>
+#include <base/phys_math.h>
 #include <base/publish.h>
 #include <base/vector_op.h>
 #include "average_cover.h"
@@ -13,6 +14,7 @@
 
 using namespace base;
 using std::min;
+using phys_math::minmax;
 
 namespace vg {
 
@@ -26,7 +28,8 @@ AverageCover::AverageCover(QString name, Box *parent)
     Input(swShading).imports("shelter/shading[swReflectivity]");
     Input(lwShading).imports("shelter/shading[lwReflectivity]");
     Input(faceAreas).imports("shelter/faces/*[area]");
-    Input(screenStates).imports("actuators/screens/*[state]");
+//    Input(screenStates).imports("actuators/screens/*[state]");
+    Input(screenStates).imports("../screens/*[state]");
     NamedOutput("UbottomAdj", Ubottom).help("Alias");
     NamedOutput("UtopAdj", Utop).help("Alias");
 }
@@ -58,24 +61,32 @@ LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVec
         &swShading(adjustments.at(1)),
         &lwShading(adjustments.at(2));
 
-    // Add shading to reflectivity
-    adj.swReflectivityTop    = 1. - (1. - *p.swReflectivityTop)   *(1. - swShading);
-    adj.lwReflectivityTop    = 1. - (1. - *p.lwReflectivityTop)   *(1. - lwShading);
-    adj.swReflectivityBottom = 1. - (1. - *p.swReflectivityBottom)*(1. - swShading);
-    adj.lwReflectivityBottom = 1. - (1. - *p.lwReflectivityBottom)*(1. - lwShading);
+    // Reduce transmissivity
+    adj.swTransmissivityTop     = *p.swTransmissivityTop    * (1.- transmissivityReduction) * (1. - swShading);
+    adj.lwTransmissivityTop     = *p.lwTransmissivityTop    * (1.- transmissivityReduction) * (1. - lwShading);
+    adj.swTransmissivityBottom  = *p.swTransmissivityBottom * (1.- transmissivityReduction) * (1. - swShading);
+    adj.lwTransmissivityBottom  = *p.lwTransmissivityBottom * (1.- transmissivityReduction) * (1. - lwShading);
 
-    // General transmissivity reduction is attributed to increased absorptivity, shared between top and bottom
-    // But ensure that absorptivity + reflectivity <= 1.
-    adj.swAbsorptivityTop    = min(*p.swAbsorptivityTop    + transmissivityReduction/2., 1. - adj.swReflectivityTop);
-    adj.lwAbsorptivityTop    = min(*p.lwAbsorptivityTop    + transmissivityReduction/2., 1. - adj.lwReflectivityTop);
-    adj.swAbsorptivityBottom = min(*p.swAbsorptivityBottom + transmissivityReduction/2., 1. - adj.swReflectivityBottom);
-    adj.lwAbsorptivityBottom = min(*p.lwAbsorptivityBottom + transmissivityReduction/2., 1. - adj.lwReflectivityBottom);
+    double
+        sumRS = transmissivityReduction + swShading,
+        partR = (sumRS > 0.) ? transmissivityReduction/sumRS : 0.,
+//      partS = (sumRS > 0.) ? swShading/sumRS : 0.,
+        swAbsTopChange = partR*(*p.swTransmissivityTop    - adj.swTransmissivityTop   ),
+        lwAbsTopChange = partR*(*p.lwTransmissivityTop    - adj.lwTransmissivityTop   ),
+        swAbsBotChange = partR*(*p.swTransmissivityBottom - adj.swTransmissivityBottom),
+        lwAbsBotChange = partR*(*p.lwTransmissivityBottom - adj.lwTransmissivityBottom);
 
-    // Transmissivity takes rest
-    adj.swTransmissivityTop     = 1. - adj.swReflectivityTop    - adj.swAbsorptivityTop;
-    adj.lwTransmissivityTop     = 1. - adj.lwReflectivityTop    - adj.lwAbsorptivityTop;
-    adj.swTransmissivityBottom  = 1. - adj.swReflectivityBottom - adj.swAbsorptivityBottom;
-    adj.lwTransmissivityBottom  = 1. - adj.lwReflectivityBottom - adj.lwAbsorptivityBottom;
+    // Increase absorptivity by change in transmissivity
+    adj.swAbsorptivityTop    = std::min(*p.swAbsorptivityTop    + swAbsTopChange, 1. - *p.swReflectivityTop);
+    adj.lwAbsorptivityTop    = std::min(*p.lwAbsorptivityTop    + lwAbsTopChange, 1. - *p.lwReflectivityTop);
+    adj.swAbsorptivityBottom = std::min(*p.swAbsorptivityBottom + swAbsBotChange, 1. - *p.swReflectivityBottom);
+    adj.lwAbsorptivityBottom = std::min(*p.lwAbsorptivityBottom + lwAbsBotChange, 1. - *p.lwReflectivityBottom);
+
+    // Take rest
+    adj.swReflectivityTop    = 1. - adj.swTransmissivityTop    - adj.swAbsorptivityTop;
+    adj.lwReflectivityTop    = 1. - adj.lwTransmissivityTop    - adj.lwAbsorptivityTop;
+    adj.swReflectivityBottom = 1. - adj.swTransmissivityBottom - adj.swAbsorptivityBottom;
+    adj.lwReflectivityBottom = 1. - adj.lwTransmissivityBottom - adj.lwAbsorptivityBottom;
 
     // Unaffected by shading and transmissivity reduction
     adj.Utop         = *p.Utop;

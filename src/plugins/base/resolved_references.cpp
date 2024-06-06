@@ -42,7 +42,10 @@ void ResolvedReferences::check() {
 }
 
 bool ResolvedReferences::fixed() {
-    bool isFixed = my()._ports.isFixed && my()._boxes.isFixed;
+    bool
+            portsFixed = my()._ports.isFixed,
+            boxesFixed = my()._boxes.isFixed,
+            isFixed = portsFixed && boxesFixed;
     if (isFixed && !my()._orderChecked) {
         my().checkOrder();
         my()._orderChecked = true;

@@ -8,7 +8,7 @@
 #include <base/port.h>
 #include <base/publish.h>
 #include "scenarios.h"
-#include "output_r.h"
+//#include "output_r.h"
 
 using namespace base;
 
@@ -50,18 +50,23 @@ void Scenarios::reset() {
 }
 
 void Scenarios::debrief() {
-    if (!title.isEmpty()) {
-        OutputR *outputR = findMaybeOne<OutputR*>("*");
-        if (outputR) {
-            QStringList scenarios;
-            for (auto s : _df.col(title))
-                scenarios << ("\"" + s + "\"");
-            outputR->addRCode(
-                "scenariosTitle = \"" + title + "\"\n" +
-                "scenarios = c(" + scenarios.join(",") + ")\n"
-            );
-        }
-    }
+    dialog().information("Scenarios::debrief()");
+//    OutputR *outputR = findMaybeOne<OutputR*>("*");
+//    if (outputR) {
+//        if (title.isEmpty()) {
+//            outputR->addRCode(
+//                "scenarios = NULL\n";
+//            );
+//        } else {
+//            QStringList scenarios;
+//            for (auto s : _df.col(title))
+//                scenarios << ("\"" + s + "\"");
+//            outputR->addRCode(
+//                "scenariosTitle = \"" + title + "\"\n" +
+//                "scenarios = c(" + scenarios.join(",") + ")\n"
+//            );
+//        }
+//    }
 }
 
 void Scenarios::readDataFrame() {

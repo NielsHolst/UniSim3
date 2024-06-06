@@ -49,23 +49,24 @@ void Shelter::amend() {
     }
 
     // Build shelter layers; must be unique
-    if (findMaybeOne<Box*>("./layers"))
-        ThrowException("Child box called \"layers\" is not allowed in Shelter box").context(this);
-
-    BoxBuilder builder(this);
-    builder.
-    box("ShelterLayers").name("layers").
-        box("AverageCover").name("cover").
-        endbox().
-        box().name("screens");
-            for (int layer=0; layer<numLayers; ++layer) {
-                builder.
-                box("AverageScreen").name("screen" + QString::number(layer+1)).
-                endbox();
-            }
+    if (!findMaybeOne<Box*>("./layers")) {
+        BoxBuilder builder(this);
         builder.
-        endbox(). // end screens
-    endbox(); // end layers
+        box("ShelterLayers").name("layers").
+            box("AverageCover").name("cover").
+            endbox().
+            box().name("screens");
+                for (int layer=0; layer<numLayers; ++layer) {
+                    builder.
+                    box("AverageScreen").name("screen" + QString::number(layer+1)).
+                    endbox();
+                }
+            builder.
+            endbox(). // end screens
+        endbox(); // end layers
+        Box *layers = findOne<Box*>("./layers");
+        layers->doWriteOnCommand(false);
+    }
 }
 
 } //namespace

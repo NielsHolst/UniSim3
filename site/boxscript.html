@@ -193,7 +193,7 @@ Simulation sim {
 <pre><code class="command">> run demo/port_types/null.box
 </code></pre>
 <p>The script contains a sequence of indirections so long that it takes some steps of simulation, before all references have become disentangled. Here is the boxscript contrived for this demonstration:</p>
-<pre><code class="listing">// null.box
+<pre><code class="listing"><a href="input/demo/port_types/null.box">// null.box&#9207;</a>
 Simulation sim {
   .steps = 5
   Box A {
@@ -234,47 +234,157 @@ null   14  13  12  11  10         1    1
 <p class='hidden-anchor' id='expressions'>xxx</p><div class='border-grey'>
 <h2>Expressions</h2>
 <p>You write an expression on the right-hand side of the equal sign whereever you assign a value to a port. Here are some examples:</p>
-<pre><code class="listing">.aboveThreshold    = (Weather[temperature] &gt; hibernation[threshold])
-&amp;tempInside        = Weather[temperature] + 2.5
-.biomass           = 2300*mouse[density] + 6.7*rabbit[density]
-&amp;homeArea          = 3.1412*(homeRange[distance]/2)^2
-.supplyDemandRatio = min(N[supply]/N[demand], P[supply]/P[demand]) <span style="color: var(--col-red)">legal??</span>
-&amp;demand            = if (.[aboveThreshold] || weather[sunshine] &gt; 500) then 7.6 else 0</code></pre>
-<p>To remind you that expressions can be assigned to both input and auxiliary ports, I have written every other line as either an input (with leading <code>.</code>) or an auxiliary (with a leading <code>&amp;</code>) port. The expression in the first line will result in a value of <code>bool</code> type while the others are all of <code>double</code> type.</p>
-<p>Expressions are formulated with the common arithmetic operators: <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. In addition, you can use <code>^</code> for exponentiation, <code>&amp;&amp;</code> for logical <em>and</em>, <code>||</code> for logical <em>or</em> and <code>!</code> for logical negation. Parentheses <code>()</code> work as expected. Expressions may also inclode <a href='#functions'>functions</a> and <a href='#conditionals'>conditionals</a>.</p>
-<h3 id='scalar-and-vector-operations'><li>Scalar and vector operations</li></h3>
-<p>An expression may mix scalar and vector types. If more then one vector is present, they must be of the same size. If scalars are mixed with vectors, the result will be a vector. The principles reflect those of R. Here are examples showing the addition of scalar and vector integers:</p>
-$$
-\begin{split}
-3+9&=12 \\[6pt]
-3+\begin{bmatrix}
-    7 \\
-    9 \\
-    13
-\end{bmatrix} &=
-\begin{bmatrix}
-    10 \\
-    12 \\
-    16
-\end{bmatrix} \\[6pt]
-\begin{bmatrix}
-    7 \\
-    9 \\
-    13
-\end{bmatrix} +
-\begin{bmatrix}
-    -2 \\
-    -11 \\
-    8
-\end{bmatrix} &=
-\begin{bmatrix}
-    8 \\
-    -2 \\
-    21
-\end{bmatrix}\end{split}
-$$
-<p><em>More text here...</em></p>
-<h3 id='mixed-type-operations-and-conversions'><li>Mixed-type operations and conversions</li></h3>
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+&aboveThreshold    = (weather[temperature] > hibernation[threshold])
+.tempInside        = weather[temperature] + 2.5
+&biomass           = 2300*mouse[density] + 6.7*rabbit[density]
+.homeArea          = 3.1412*(homeRange[distance]/2)^2
+&supplyDemandRatio = min(N[supply]/N[demand], P[supply]/P[demand]) 
+.demand            = if (.[aboveThreshold] || weather[sunshine] > 500) then 7.6 else 0
+</code></pre>
+<p>To remind you that expressions can be assigned to both input and auxiliary ports, I have written every other line as either an input port (with a leading <code>.</code>) or an auxiliary port (with a leading <code>&amp;</code>). Now would maybe be a good time to check up on the <a href='intro.html#objects'>three kinds of ports</a> (input, output and auxiliary).</p>  
+<p>The syntax of BoxScript expressions should give you only few surprises as long as you remember that whereever you want to put a variable, it must be given as <a href='#paths'>path</a> referring to an available port.</p> 
+<p>The details of the syntax is described in the following:</p>
+<ul class="h3-links">
+  <li><a href="#operators">Operators</a></li>
+  <li><a href="#conditions">Conditions</a></li>
+  <li><a href="#functions">Functions</a></li>
+  <li><a href="#type-conversions">Type conversions</a></li>
+  <li><a href="#scalars-and-vectors">Scalars and vectors</a></li>
+</ul>
+
+<h3 id='operators'><li>Operators</li></h3>
+You should feel at home with the operators available in BoxScript. You've got binary operators (<code>+ - * / ^ > >= &lt; &lt;=</code>) and a unary operator (<code>-</code>) for arithmetic and, binary operators (<code>== != && ||</code>) and a unary operator (<code>!</code>) for logic. Operators take precedence as you expect, and you may use parentheses as you wish.
+<h3 id='conditions'><li>Conditions</li></h3>
+<p>You can write conditions in BoxScript to provide two or more alternative expressions:</p>
+<ul>
+<li><code>if <em>condition</em> then <em>expression</em> else <em>expression</em></code></li>
+<li><code>if <em>condition</em> then <em>expression</em> elsif <em>condition</em> then <em>expression</em> elsif ... else <em>expression</em></code></li>
+</ul>
+If you start an expression with an <code>if</code>, you must always end the expression with an <code>else</code>. You can string together as many <code>elsif</code> conditions as needed but you must still provide a final <code>else</code>. Here is an example with and without <code>elsif</code>:
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box conditions {
+  &a = 5
+  &b = 7
+  &c = 11
+  &d = if .[a] > .[b] then .[a] else .[b]                      // 7
+  &e = if .[a] > .[b] then 1 elsif .[a] &lt; .[b] then -1 else 0  // -1
+}
+</code></pre> 
+<p>Wait! What's with that period in <code>.[a]</code>? Well, that is an example of a <a href='#paths'>path</a>. The period refers to the box itself. Consequently, <code>a</code> can be used as if it were a local variable, except that other boxes could access it too by the path <code>conditions[a]</code>.</p>
+</code></pre> 
+<h3 id='functions'><li>Functions</li></h3>
+BoxScript comes with these built-in functions:
+<ul>
+  <li><code>sum</code></li>
+  <li><code>mean</code></li>
+  <li><code>count</code></li>
+  <li><code>exists</code></li>
+  <li><code>log</code></li>
+  <li><code>log10</code></li>
+  <li><code>min</code></li>
+  <li><code>max</code></li>
+  <li><code>any</code></li>
+  <li><code>all</code></li>
+  <li><code>c</code></li>
+  <li><code>name</code></li>
+</ul>
+The <code>sum</code>, <code>mean</code> and <code>count</code> functions will flatten all arguments into one vector, as exemplified here for the <code>sum</code> function:
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box functions {
+  &a = 5
+  &b = 7
+  &c = 11
+  Box vector {
+    &v = c(10, 20)
+  }
+  Box sum {
+    &x = sum(..[*])                // 23
+    &y = sum(./gone[*])            // 0
+    &z = sum(../vector[v])         // 30
+    &w = sum(..[*] | ../vector[v]) // 53
+  }
+}
+</code></pre> 
+The <code>count</code> and <code>exists</code> functions can count and check the existence of (existence being equivalent to a count > 0) both ports and boxes:
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box functions {
+  &a = 5
+  &b = 7
+  &c = 11
+  Box vector {
+    &v = c(10, 20)
+  }
+  Box count {
+    &x = count(..[*])                // 3
+    &y = count(./gone[*])            // 0
+    &z = count(../vector[v])         // 2 
+    &w = count(..[*] | ../vector[v]) // 5
+  }
+  Box exists {
+    &a = exists(./right[])  // TRUE
+    &b = exists(./right[x]) // TRUE
+    &c = exists(./right[y]) // FALSE
+    &d = exists(./wrong[])  // FALSE
+    &e = exists(./wrong[x]) // FALSE
+    Box right {
+      &x = 7
+    }
+  }
+}
+</code></pre> 
+<p>Note that to look up boxes, you need to specify an empty port as in <code>right[]</code>. Vectors are flattened by <code>count</code>, which is why <code>w</code> gives a count of 5 not 4.</p>
+<p>The <code>log</code> (natural log), <code>log10</code>,  <code>min</code> and <code>max</code> functions will return a scalar for a scalar argument, and a vector for a vector argument:</p>
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box math {
+  &a = 100
+  &b = log10(.[a])                    // 2.0
+  &c = c(.[a], .[b])                  // (100 2.0)
+  &d = log(.[c])                      // (4.61 0.693)
+  &e = log10(c(1, 100, 10))           // (0.0 2.0 1.0)
+  &f = min(c(7,-5, 6))                // -5
+  &g = max(c(0, 1, .[a], .[b], .[c])) // 100.0
+}
+</code></pre> 
+<p>The <code>any</code> and <code>all</code> functions will tell you whether any or all of the values given as arguments evaluate to true. They will always return a scalar (or fail, in case of an empty vector as argument):</p>
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box logic {
+  &a = 7
+  &b = 800
+  &c = (.[a] > 100)       // FALSE
+  &d = (.[b] > 200)       // TRUE
+  &e = any(c(.[c], .[d])) // TRUE
+  &f = all(c(.[c], .[d])) // FALSE
+  &g = all(.[d])          // TRUE
+}
+</code></pre> 
+<p>The <code>c</code> function is named after its R equivalent. It combines items into a vector:</p>
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box combine {
+  &a = 5
+  &b = 7
+  &c = "message"
+  &d = c(5.6, -3.7)        // (5.6 -3.7)
+  &e = c(.[a], .[b], .[c]) // ("5" "7" "message")
+  &f = c(.[a], .[b], 2.1)  // (5.0 7.0 2.1)
+  &g = c(.[d], .[e])       // ("5.6" "-3.7" "5" "7" "message")
+}
+</code></pre> 
+<p>Unlike, in R, however, the <code>c</code> function in BoxScript will accept items of different types, but the items in the resulting vector will all be of the same type, according to the <a href='#type-conversions'>type conversion rules</a>. Thus, in the example above, vector <code>e</code> contains strings and vector <code>f</code> contains doubles. You cannot have vectors of vectors in BoxScript, hence vector <code>g</code> has flattended the two vectors <code>d</code> and <code>e</code> into one vector.</p>
+<p>The <code>name</code> and <code>names</code> functions are used to extract the name of one or several boxes, respectively:</p>
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+Box names {
+  &a = name(./A[])   // "A"
+  &b = name(./A/B[]) // "B" 
+  &c = names(./A[] | ./A/*[]) // ("B" "A") 
+  Box A {
+    Box B {
+    }
+  }
+}
+</code></pre> 
+<p>As for the <code>count</code> and <code>exists</code> functions, you use an empty port to specify the <a href='#paths'>path</a> to a box (as in <code>./A[]</code>). When paths are resolved, <a href='intro.html#objects'>nodes</a> are always ordered child-first, which is why <code>c</code> evaluates to <code>("B" "A")</code> and not <code>("A" "B")</code>   </p>
+<h3 id='type-conversions'><li>Type conversions</li></h3>
 <p>There are two cases where types can be mixed:</p>
 <ul>
 <li>inside an expression</li>
@@ -355,19 +465,48 @@ $$
     </tr>
   </tbody>
 </table>
-<p>Sections missing from the Expressions sections:</p>
-<ul>
-<li>Operators</li>
-<li>Functions</li>
-<ul>
-  <li>c</li>
-  <li>max</li>
-  <li>min</li>
-  <li>sum</li>
-</ul>
-<li>Conditionals</li>
-<li>Nodes?</li>
-</ul>
+<h3 id='scalars-and-vectors'><li>Scalars and vectors</li></h3>
+<p>An expression may mix scalar and vector types. If more then one vector is present, they must be of the same size. If scalars are mixed with vectors, the result will be a vector. The principles reflect those of R. Here are examples showing the addition of scalar and vector integers:</p>
+$$
+\begin{split}
+3+9&=12 \\[6pt]
+3+\begin{bmatrix}
+    7 \\
+    9 \\
+    13
+\end{bmatrix} &=
+\begin{bmatrix}
+    10 \\
+    12 \\
+    16
+\end{bmatrix} \\[6pt]
+\begin{bmatrix}
+    7 \\
+    9 \\
+    13
+\end{bmatrix} +
+\begin{bmatrix}
+    -2 \\
+    -11 \\
+    8
+\end{bmatrix} &=
+\begin{bmatrix}
+    5 \\
+    -2 \\
+    21
+\end{bmatrix}\end{split}
+$$
+Here is how these equations (and some more) could be tested in BoxScript:
+<pre><code class="listing"><a href="input/demo/expressions/expressions.box">// expressions.box&#9207;</a>
+&scalars = 3 + 9
+&mixed   = 3 + c(7, 9, 13)
+&a = c(7, 9, 13)
+&b = c(-2, -11, 8)
+&vectors = .[a] + .[b]
+&square = c(2,3)^2 // (4 9)
+&a_squared = .[a]^2 // (49 81 169)
+</code></pre>
+
 </div>
 <p class='hidden-anchor' id='paths'>xxx</p><div class='border-grey'>
 <h2>Paths</h2>
@@ -381,9 +520,10 @@ $$
 </ul>
 
 <h3 id='overview'><li>Overview</li></h3>
+<p>First, let's study a typical path. Paths can get convoluted but mostly (and preferentially) they are not:</p>
 <pre><code class="listing">butterfly/larva[inflow]
 </code></pre>
-<p>Here, we&#39;ve got three nodes: two boxes (<code>butterfly</code> and <code>larva</code>) and a port (<code>inflow</code>). A path like this my match zero or more ports in the boxscript. </p>
+<p>Here, we&#39;ve got three <a href='intro.html#objects'>nodes</a>: Two boxes (<code>butterfly</code> and <code>larva</code>) and a port (<code>inflow</code>). A path like this may match zero or more ports in the boxscript. </p>
 <h3 id='joker'><li>Joker</li></h3>
 <p>The joker can be used in place of any node in the path:</p>
 <pre><code class="listing">&amp;eggs = *[eggs]
@@ -854,8 +994,8 @@ Simulation sim {
   }
   Box pop { 
     &amp;r = 1.05
-    &amp;density = if    (comp[step]==&quot;reset&quot; ) then 100.0 
-               elsif (comp[step]==&quot;update&quot;) then .[r] * .[density]
+    &amp;density = if    (comp[step]=="initialize" || comp[step]=="reset" ) then 100.0 
+               elsif (comp[step]=="update") then .[r] * .[density]
                else .[density]
   }
   OutputR {
@@ -1934,7 +2074,7 @@ copies an R script to the clipboard
 <p class='hidden-anchor' id='outputselector'>xxx</p><div class='border-grey'>
 <h2>OutputSelector</h2>
 <ul class="h3-links">
-  <li><a href="#loutput-selector-usage">Usage</a></li>
+  <li><a href="#output-selector-usage">Usage</a></li>
   <li><a href="#skip-a-number-of-lines">Skip a number of lines</a></li>
   <li><a href="#skip-lines-until-a-certain-time">Skip lines until a certain time</a></li>
   <li><a href="#periodic-output">Periodic output</a></li>
@@ -3142,8 +3282,8 @@ Simulation sim {
       <div class="right">
         <div class="border-red">
           <h2>Try it!</h2>
-          <p><a href="download.html">Download</a> the latest version with the newly published Cereal Aphid-Fungus model. Also includes the Virtual Greenhouse model. </p>
-          <p class="date">5 Oct 2023</p>
+          <p><a href="download.html">Download</a> the latest version of Universal Simulator with the freshly updated Virtual Greenhouse model. </p>
+          <p class="date">2 May 2024</p>
         </div>
         <div class="border-violet">
           <h2>Model just published</h2>

@@ -57,11 +57,6 @@ void Expression::clear() {
 }
 
 bool Expression::isConstant() const {
-    QString comp = Computation::toString(Computation::currentStep());
-    const Port *p = parent();
-    if (p && p->name() == "childrenOfA")
-        dialog().information(comp + " A " + p->fullName() + " " + QString::number(p->isConstant()));
-
     bool result = true;
     // If expression has been resolved then check all imports for constness
     if (_isResolved) {
@@ -81,8 +76,6 @@ bool Expression::isConstant() const {
             }
         }
     }
-    if (p && p->name() == "childrenOfA")
-        dialog().information(comp + " Z " + p->fullName() + " " + QString::number(result));
     return result;
 
     //    // The expression is constant if it is not empty and it contains no references
@@ -341,7 +334,7 @@ Value::Type argumentsType(Expression::Stack &stack, int arity) {
             ThrowException("Value or Path expected").value(Expression::typeName(*it));
         }
     }
-    return hasBoxPtrs ? Value::Type::VecString : ValueCollection::type(args);
+    return hasBoxPtrs ? Value::Type::Path : ValueCollection::type(args);
 }
 
 template <class T> QVector<T> popArguments(Expression::Stack &stack, int arity) {
@@ -388,22 +381,22 @@ T mean(QVector<T> v) {
 }
 
 template <class T>
-double funcLog(QVector<T> v) {
+QVector<double> funcLog(QVector<T> v) {
     if (v.isEmpty())
-        ThrowException("Cannot find 'log10' of empty vector");
-    T y = v.first();
+        ThrowException("Cannot take 'log' of empty vector");
+    QVector<double >y;
     for (auto x : v)
-            y = log(x);
+            y << log(x);
     return y;
 }
 
 template <class T>
-double funcLog10(QVector<T> v) {
+QVector<double> funcLog10(QVector<T> v) {
     if (v.isEmpty())
-        ThrowException("Cannot find 'log10' of empty vector");
-    T y = v.first();
+        ThrowException("Cannot take 'log10' of empty vector");
+    QVector<double >y;
     for (auto x : v)
-            y = log10(x);
+            y << log10(x);
     return y;
 }
 
@@ -462,6 +455,10 @@ inline auto toStringList(QVector<QString> v) {
     return QStringList(v.begin(), v.end());
 }
 
+inline bool enforceDouble(QString funcName) {
+    return (funcName == "mean" || funcName == "log" || funcName == "log10");
+}
+
 void Expression::reduceByFunctionCall(Stack &stack) {
     // Pop function
     FunctionCall &func    = get<FunctionCall>(stack.back());
@@ -472,6 +469,13 @@ void Expression::reduceByFunctionCall(Stack &stack) {
     using Type = Value::Type;
     func.type = argumentsType(stack, func.arity);
     Type &type(func.type);
+
+    if (enforceDouble(func.name)) {
+        if (type == Type::Int)
+            type = Type::Double;
+        else if (type == Type::VecInt)
+            type = Type::VecDouble;
+    }
 
     // Functions that accepts null type
     if (func.name == "sum") {
@@ -511,6 +515,7 @@ void Expression::reduceByFunctionCall(Stack &stack) {
             case Type::Time    : count = popArguments<QTime    >(stack, func.arity).size(); break;
             case Type::DateTime: count = popArguments<QDateTime>(stack, func.arity).size(); break;
             case Type::BareDate: count = popArguments<BareDate >(stack, func.arity).size(); break;
+            case Type::Path    : count = popArgumentsBoxPtrs(stack).size(); break;
             default: ThrowException("Illegal argument type for "+func.name).value(Value::typeName(type)).context(_parent);
             }
             if (func.name == "exists")
@@ -600,7 +605,7 @@ void Expression::reduceByFunctionCall(Stack &stack) {
     else if (func.name == "name") {
         if (func.arity > 1)
             ThrowException("Only one argument is allowed for 'name' function").value(func.arity).context(_parent);
-        auto boxes = popArgumentsBoxPtrs(stack);
+            auto boxes = popArgumentsBoxPtrs(stack);
         QVector<QString> boxNames = names(boxes);
         switch (boxNames.size()) {
         case 0:

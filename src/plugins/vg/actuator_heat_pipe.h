@@ -22,7 +22,7 @@ private:
     // Inputs
     double volume, flowRate, minTemperature, maxTemperature,
         k, b, propLw,
-        indoorsTemperature, groundArea, timeStep;
+        indoorsTemperature, knownOutflowTemperature, groundArea, timeStep;
     // Outputs
     double transitTime,
         inflowTemperature, outflowTemperature, temperatureDrop,

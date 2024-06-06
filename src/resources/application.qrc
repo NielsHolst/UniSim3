@@ -23,6 +23,7 @@
     <file>data/input/demo/date_time_signal/date_time_signal2.box</file>
     <file>data/input/demo/date_time_signal/date_time_signal3.box</file>
     <file>data/input/demo/day_degrees/day_degrees1.box</file>
+    <file>data/input/demo/expressions/expressions.box</file>
     <file>data/input/demo/expressions/type-conversions.box</file>
     <file>data/input/demo/fixed_signal/fixed_signal1.box</file>
     <file>data/input/demo/func-resp/func-resp-energy-budget.box</file>
@@ -164,6 +165,7 @@
     <file>data/input/models/PestTox/scenarios-bufferzone.txt</file>
     <file>data/input/models/PestTox/weather/free_radicals_table.txt</file>
     <file>data/input/models/PestTox/weather/Pathumthani.txt</file>
+    <file>data/input/models/prostephanus/fecundity.R</file>
     <file>data/input/models/prostephanus/fig-10-pop-dyn.box</file>
     <file>data/input/models/prostephanus/fig-2-dev-rate.box</file>
     <file>data/input/models/prostephanus/fig-3-gmc.box</file>

@@ -30,7 +30,7 @@ private:
         heatPumpCooling, heatPumpCondensationRate,
         babyTimeStep;
     QVector<bool> heatPipesOn;
-    bool writeHighRes, writeLog, isHeating, isVentilating;
+    bool writeHighRes, writeLog, isHeating, isVentilating, controlClimate;
 
     int step;
     QDateTime dateTime;

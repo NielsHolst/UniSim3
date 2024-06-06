@@ -17,6 +17,7 @@ private slots:
     void testExponentiation();
     void testFunctionCall();
     void testParentheses();
+    void textBoxScriptExpression();
 };
 
 DECLARE_TEST(TestExpression)

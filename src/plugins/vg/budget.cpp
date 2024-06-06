@@ -48,6 +48,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(tempPrecision).equals(2.0).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");
     Input(writeLog).equals(false).help("Write log output");
+    Input(controlClimate).equals(true).help("Should climate be controlled according to setpoints?");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("gh/geometry[averageHeight]");
     Input(groundArea).imports("gh/geometry[groundArea]");
@@ -66,7 +67,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(isVentilating).imports("gh/actuators/ventilation[isVentilating]");
     Input(isHeating).imports("gh/actuators/heatPipes[isHeating]");
     Input(babyTimeStep).equals(1.).unit("s").help("Length of first time step after climate control action");
-    Input(step).imports("sim[step]");
+    Input(step).imports("/.[step]");
     Input(dateTime).imports("calendar[dateTime]");
 
     Output(subDateTime).help("Date time within integration time step");
@@ -231,14 +232,14 @@ void Budget::addLayers() {
     numLayers = static_cast<int>(layers.size());
 
     // Find controllers and actuators
-    heatingSp             = findOne<Box*>("setpoints/heating");
-    heatingController     = findOne<Box*>("controllers/heatPipes");
-    ventilationSp         = findOne<Box*>("setpoints/ventilation");
-    ventilationController = findOne<Box*>("controllers/ventilation");
-    ventilationActuator   = findOne<Box*>("actuators/ventilation");
-    heatPumpsSp           = findOne<Box*>("setpoints/heatPumps");
-    heatPumpsController   = findOne<Box*>("controllers/heatPumps");
-    heatPumpsActuator     = findOne<Box*>("actuators/heatPumps");
+    heatingSp             = controlClimate ? findOne<Box*>("setpoints/heating") : nullptr;
+    heatingController     = controlClimate ? findOne<Box*>("controllers/heatPipes") : nullptr;
+    ventilationSp         = controlClimate ? findOne<Box*>("setpoints/ventilation") : nullptr;
+    ventilationController = controlClimate ? findOne<Box*>("controllers/ventilation") : nullptr;
+    ventilationActuator   = controlClimate ? findOne<Box*>("actuators/ventilation") : nullptr;
+    heatPumpsSp           = controlClimate ? findOne<Box*>("setpoints/heatPumps") : nullptr;
+    heatPumpsController   = controlClimate ? findOne<Box*>("controllers/heatPumps") : nullptr;
+    heatPumpsActuator     = controlClimate ? findOne<Box*>("actuators/heatPumps") : nullptr;
 }
 
 void Budget::addState() {
@@ -288,14 +289,18 @@ void Budget::addParameters() {
 }
 
 void Budget::initialize() {
-    actuatorVentilation = findOne<ActuatorVentilation*>("actuators/ventilation");
-    ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
     // Hand-held controllers and actuators
-    heatingController->initializeFamily();
-    ventilationController->initializeFamily();
+    actuatorVentilation = findOne<ActuatorVentilation*>("actuators/ventilation");
+    ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
+    if (controlClimate) {
+        heatingController->initializeFamily();
+        ventilationController->initializeFamily();
+    }
     // Find write for detailed output
-    outputWriter = findOne<Box*>("outputWriter");
+    outputWriter = findMaybeOne<Box*>("outputWriter");
+    if (!outputWriter)
+        writeHighRes = false;
 }
 
 void Budget::reset() {
@@ -306,8 +311,10 @@ void Budget::reset() {
     // Correct baby step to be max 1% of the time step
     babyTimeStep = std::min(babyTimeStep, timeStep/100.);
     // Hand-held controllers and actuators
-    heatingController->resetFamily();
-    ventilationController->resetFamily();
+    if (controlClimate) {
+        heatingController->resetFamily();
+        ventilationController->resetFamily();
+    }
     // Log output
     if (writeLog)
         logger.open(environment().outputFileNamePath("vg_log.txt"));
@@ -327,15 +334,16 @@ void Budget::update() {
     indoorsSensibleHeatFlux = (indoorsTemp1 - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
     indoorsLatentHeatFlux = (ahFromRh(indoorsTemp0, indoorsRh0) - ahFromRh(indoorsTemp1, indoorsRh1))*LHe*averageHeight/timeStep;
 
-    // Approximate outputs ignoring reflection and transmission between layers
-    growthLightParHittingPlant = budgetLayerGrowthLights->parEmissionBottom;
+    // Approximate outputs
     sunParAbsorbedInCover = budgetLayerCover->parAbsorbedTop;
     sunParAbsorbedInScreens = 0.;
     for (auto ptrAbsorbed : _sunParAbsorbedInScreens)
         sunParAbsorbedInScreens += *ptrAbsorbed;
-    sunParHittingPlant = std::max(
-            budgetLayerSky->parEmissionBottom - sunParAbsorbedInCover - sunParAbsorbedInScreens, 0.);
-    totalPar = growthLightParHittingPlant + sunParHittingPlant;
+
+    growthLightParHittingPlant = budgetLayerGrowthLights->parEmissionBottom;
+    totalPar = budgetLayerPlant->parAbsorbedTop    / budgetLayerPlant->attachedLayer->swAbsorptivityTop +
+               budgetLayerPlant->parAbsorbedBottom / budgetLayerPlant->attachedLayer->swAbsorptivityBottom;
+    sunParHittingPlant = std::max(totalPar - growthLightParHittingPlant, 0.);
 
     if (writeLog && !writeHighRes)
         writeToLog();
@@ -368,18 +376,20 @@ void Budget::updateLayersAndVolumes() {
         updateWaterBalance(subTimeStep);
         applyDeltaT();
 
-        heatingSp->updateFamily();
-        heatingController->updateFamily();
-        heatingActuator->updateFamily();
-        budgetLayerHeatPipes->updateFamily();
+        if (controlClimate) {
+            heatingSp->updateFamily();
+            heatingController->updateFamily();
+            heatingActuator->updateFamily();
+            budgetLayerHeatPipes->updateFamily();
 
-        ventilationSp->updateFamily();
-        ventilationController->updateFamily();
-        ventilationActuator->updateFamily();
+            ventilationSp->updateFamily();
+            ventilationController->updateFamily();
+            ventilationActuator->updateFamily();
 
-        heatPumpsSp->updateFamily();
-        heatPumpsController->updateFamily();
-        heatPumpsActuator->updateFamily();
+            heatPumpsSp->updateFamily();
+            heatPumpsController->updateFamily();
+            heatPumpsActuator->updateFamily();
+        }
 
         timePassed += subTimeStep;
         subDateTime = dateTime.addMSecs(static_cast<int>(1000.*timePassed));

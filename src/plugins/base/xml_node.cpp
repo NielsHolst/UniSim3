@@ -95,11 +95,15 @@ XmlNode* XmlNode::parent() {
     return _parent;
 }
 
-QMultiMap<QString, XmlNode*> & XmlNode::children(QString childName) {
+QMultiMap<QString, XmlNode*> & XmlNode::children(QString childName, NoMatch noMatch) {
     if (childName.isEmpty())
         return _children;
-    else if (!_children.contains(childName))
-        ThrowException("XML node has no child with that name").value(_name).value2(childName);
+    else if (!_children.contains(childName)) {
+        if (noMatch == NoMatch::Error)
+            ThrowException("XML node has no child with that name").value(_name).value2(childName);
+        else
+            return _children;
+    }
 
     _subset.clear();
     for (auto child = _children.lowerBound(childName); child != _children.upperBound(childName); ++child)

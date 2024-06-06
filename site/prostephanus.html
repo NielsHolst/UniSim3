@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <div class="insert macro">#head.html</div>
+  <div class="begin macro"></div>
+      <head>
+      <meta charset="UTF-8"/>
+      <title>EcolMod Lab</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <meta name="description" content=""/>
+      <link rel="icon" href="media/squirrel-32x32.ico">
+      <link rel="stylesheet" type="text/css" href="basic.css"/>
+      <link rel="stylesheet" type="text/css" href="my-flex.css"/>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    </head>
+  <div class="end macro"></div>
+  <body>
+  <div class="insert macro">#header.html#models#Prostephanus truncatus model</div>
+  <div class="begin macro"></div>
+    <div id="header" class="border-blue">
+      <div id="title">
+        <img src="media/squirrel.gif"/>
+        <div>
+          <h1 id="top">Ecological Modelling Laboratory</h1>
+          <p class="slogan">Prostephanus truncatus model</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html" id="home">Home</a>
+        <a href="intro.html" id="intro">Intro</a>
+        <a href="commands.html" id="commands">Commands</a>
+        <a href="boxscript.html" id="boxscript">BoxScript</a>
+        <a href="models.html" id="current">Models</a>
+        <a href="download.html" id="download">Download</a>
+        <a href="about.html" id="about">About</a>
+      </nav>
+    </div>
+  <div class="end macro"></div>
+    <div class="wide-panel">
+      
+      <div class="begin-index-headers"></div>
+      <div class="central">
+
+
+<p class='hidden-anchor' id='prostephanus-model'>xxx</p><div class='border-grey'>
+<h1>Prostephanus model</h1>
+<p>The model originally published in <a href="https://doi.org/10.1093/ee/27.1.59">Meikle et al. (1998)</a>)was re-implemented in modern BoxScript. You can find the boxscripts below ordered by the original figure numbers. You can run the boxscripts yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. Then, for example, to run the <a href="input/models/prostephanus/fig_2_dev_rate.box">fig_2_dev_rate.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
+<pre><code class="command">> run models/prostephanus/fig_2_dev_rate.box
+</code></pre>
+<p>Then paste the clipboard at the R prompt to see the output. A full description of how to handle and run boxscripts are found in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
+</div>        
+
+<p class='hidden-anchor' id='the-cmbp-plugin'>xxx</p><div class='border-grey'>
+<h1>The cmbp plugin</h1>
+<p>The <code>aphid</code> plugin contains the model building blocks needed to run the <a href='#cereal-aphid-fungus-model'>cereal aphid-fungus model</a>. The functionality of the building blocks (<a href='intro.html#classes'>classes</a>) is described below</p>
+<p>You can run the boxscripts shown in the sub-sections below yourself. For that purpose you must <a href='download.html#download-universal-simulator'>install Universal Simulator</a>. For example, to run the  <a href="input/models/aphid/aphid_juvenile_survival.box">aphid_juvenile_survival.box&#9207;</a> script, you write at the Universal Simulator prompt:</p>
+<pre><code class="command">> run models/aphid/aphid_juvenile_survival.box
+</code></pre>
+<p>Paste the clipboard at the R prompt to see the output as described in <a href='intro.html#running-simulations'>Running simulations</a>.</p>
+</div> 
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='devrate'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/devrate.html</div>
+<div class="begin macro"></div>
+<h2>DevRate</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>b1</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>b2</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>b3</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>b4</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>T</td><td>double</td><td>0.0 </td><td>Ambient temperature (oC)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Daily development rate</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='emigration'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/emigration.html</div>
+<div class="begin macro"></div>
+<h2>Emigration</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>e2</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>e3</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>N</td><td>double</td><td>0.0 </td><td>Adult density</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Peak curve</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='exponentialpeak'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/exponentialpeak.html</div>
+<div class="begin macro"></div>
+<h2>ExponentialPeak</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>d1</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>d2</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>x</td><td>double</td><td>0.0 </td><td>Independent variable</td></tr>
+<tr><td>optimum</td><td>double</td><td>0.0 </td><td>x-value at peak y</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Peak curve</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='fecundity'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/fecundity.html</div>
+<div class="begin macro"></div>
+<h2>Fecundity</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>a</td><td>double</td><td>4.525 </td><td>Parabola specifying female R0 (aT^2 + bT + c</td></tr>
+<tr><td>b</td><td>double</td><td>-186.3 </td><td>Parabola specifying female R0 (aT^2 + bT + c</td></tr>
+<tr><td>c</td><td>double</td><td>1959.0 </td><td>Parabola specifying female R0 (aT^2 + bT + c</td></tr>
+<tr><td>T</td><td>double</td><td>0.0 </td><td>Store temperature (oC)</td></tr>
+<tr><td>sexRatio</td><td>double</td><td>0.5 </td><td>Sex ratio [0;1]</td></tr>
+<tr><td>calibration</td><td>double</td><td>1.0 </td><td>Relatoive calibration</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Life-time fecundity scaled by temperature</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='grainmoisturecontent'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/grainmoisturecontent.html</div>
+<div class="begin macro"></div>
+<h2>GrainMoistureContent</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>c1</td><td>double</td><td>0.523 </td><td>Regression parameter</td></tr>
+<tr><td>c2</td><td>double</td><td>-0.00967 </td><td>Regression parameter</td></tr>
+<tr><td>c3</td><td>double</td><td>7.06e-05 </td><td>Regression parameter</td></tr>
+<tr><td>rh</td><td>double</td><td>0.0 </td><td>Ambient relative humidity (%)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Grain moisture content (%)</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='grainstore'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/grainstore.html</div>
+<div class="begin macro"></div>
+<h2>GrainStore</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>Tmin</td><td>double</td><td>0.0 </td><td>Outdoors daily minimum temperature (oC)</td></tr>
+<tr><td>Tmax</td><td>double</td><td>0.0 </td><td>Outdoors daily maximum temperature (oC)</td></tr>
+<tr><td>Toffset</td><td>double</td><td>0.0 </td><td>Offset for temperature inside the store (oC)</td></tr>
+<tr><td>mass</td><td>double</td><td>500.0 </td><td>Mass of stored grain (kg)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>T</td><td>double</td><td>0.0 </td><td>Store temperature (oC</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='immigration'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/immigration.html</div>
+<div class="begin macro"></div>
+<h2>Immigration</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>number</td><td>double</td><td>0.0 </td><td>Nuber of P.t. arriving</td></tr>
+<tr><td>storeMass</td><td>double</td><td>500.0 </td><td>Size of store (kg maize)</td></tr>
+<tr><td>day</td><td>int</td><td>0 </td><td>Day of immigration (no. of days after start)</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Immigrant increase in P.t. density (per kg</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+<p class='hidden-anchor' id='interface'>xxx</p><p class='hidden-anchor' id='survivalbydensity'>xxx</p><div class='border-grey'>
+<div class='insert macro'>#plugins/cmbp/survivalbydensity.html</div>
+<div class="begin macro"></div>
+<h2>SurvivalByDensity</h2>
+<h3>Interface</h3>
+<table id="table-interface"><thead><tr><th>Inputs</th><th>Type</th><th>Default</th><th>Purpose / Expression</th></tr></thead><tbody>
+<tr><td>e1</td><td>double</td><td>0.0 </td><td>Regression parameter</td></tr>
+<tr><td>N</td><td>double</td><td>0.0 </td><td>Adult density</td></tr>
+<tr><th>Outputs</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>value</td><td>double</td><td>0.0 </td><td>Peak curve</td></tr>
+</tbody></table>
+<div class="end macro"></div>
+</div> <!-- border-grey -->
+
+
+        
+        
+        
+      </div> <!-- central -->
+      <div class="end-index-headers"></div>
+      
+      <div class="left">
+        <div class="begin-menu"></div>
+<ul class="border-grey"><a href="#"><img class="squirrel-link" src="media/squirrel.gif"/ title="Go to top of page"></a><li><a href="#prostephanus-model">Prostephanus model</a><ul><li><a href="#background">Background</a></li></ul></li><li><a href="#the-cmbp-plugin">The cmbp plugin</a><ul><li><a href="#cmbpdocumentation">cmbpDocumentation</a></li><li><a href="#devrate">DevRate</a></li><li><a href="#emigration">Emigration</a></li><li><a href="#exponentialpeak">ExponentialPeak</a></li><li><a href="#fecundity">Fecundity</a></li><li><a href="#grainmoisturecontent">GrainMoistureContent</a></li><li><a href="#grainstore">GrainStore</a></li><li><a href="#immigration">Immigration</a></li><li><a href="#survivalbydensity">SurvivalByDensity</a>
+        <div class="end-menu"></div>
+      </div>
+      <div class="end macro"></div>
+      <div class="insert macro">#right.html</div>
+      <div class="begin macro"></div>
+      <div class="right">
+        <div class="border-red">
+          <h2>Try it!</h2>
+          <p><a href="download.html">Download</a> the latest version of Universal Simulator with the freshly updated Virtual Greenhouse model. </p>
+          <p class="date">2 May 2024</p>
+        </div>
+        <div class="border-violet">
+          <h2>Model just published</h2>
+          <p>Read <a href="https://link.springer.com/article/10.1007/s10340-023-01674-w">our paper</a> on the Cereal Aphid-Fungus model and study the <a href="models.html">detailed documentation</a>. Any questions? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+          <p class="date">2 Aug 2023</p>
+        </div>
+        <div class="border-pink">
+          <h2>Home page overhaul</h2>
+          <p>We remain candy-coloured until further notice.</p>
+          <p class="date">1 Aug 2023</p>
+        </div>
+        <div class="border-orange">
+          <h2>Contact</h2>
+          <p>Any questions concerning our models and tools? Interested in visiting the lab? Want to chat online? <a href="mailto:niels.holst@agro.au.dk">Write us</a>.</p>
+        </div>
+      </div>
+      <div class="end macro"></div>
+    </div>
+    <div class="insert macro">#footer.html</div>
+    <div class="begin macro"></div>
+    <div id="footer" class="border-brown">
+      <p>The Ecological Modelling Laboratory is the lab of</p>
+      <p>Senior Scientist Niels Holst, Dept. of Agroecology, Aarhus University, Denmark</p>
+    </div>
+    <div class="end macro"></div>
+  </body>
+</html>

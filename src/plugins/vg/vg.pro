@@ -50,7 +50,6 @@ HEADERS +=  \
     light_sum.h \
     outdoors.h \
     pid_controller.h \
-    pipe_forced.h \
     plant.h \
     plant_instrument.h \
     screen.h \

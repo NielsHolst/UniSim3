@@ -23,7 +23,7 @@ Logger::~Logger() {
 
 void Logger::open(QString fileNamePath) {
     file.setFileName(fileNamePath);
-    file.open(QIODeviceBase::Text | QIODeviceBase::WriteOnly);
+    file.open(QIODevice::Text | QIODevice::WriteOnly);
     str.setDevice(&file);
     isOpen = true;
 }

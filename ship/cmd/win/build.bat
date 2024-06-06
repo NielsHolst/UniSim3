@@ -9,7 +9,7 @@ cd \MyDocuments\QDev\UniSim3\ship\cmd\win
 rem Set up version
 set MAJOR=3
 set MINOR=0
-set SUB=20
+set SUB=22
 set VERSION=release
 echo Building version %MAJOR%.%MINOR%.%SUB% %VERSION%
 

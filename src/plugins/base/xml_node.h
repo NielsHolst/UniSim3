@@ -16,6 +16,7 @@ namespace base {
 class XmlNode
 {
 public:
+    enum class NoMatch{Accept, Error} ;
     XmlNode(QString name, XmlNode *parent);
     ~XmlNode();
     XmlNode* detachChild();
@@ -36,7 +37,7 @@ public:
     XmlNode* peak(QString path);
     XmlNode* find(QString path);
     XmlNode* parent();
-    QMultiMap<QString, XmlNode *> &children(QString childName="");
+    QMultiMap<QString, XmlNode *> &children(QString childName="", NoMatch noMatch=NoMatch::Error);
 private:
     // Data
     QString _name, _value;

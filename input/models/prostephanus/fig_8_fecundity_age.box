@@ -1,0 +1,29 @@
+#using cmbp
+Simulation sim {
+  .iterations = scenarios[iterations]
+  .steps = 160
+  Scenarios scenarios {
+    .fileName = "fig_8_fecundity_age_scenarios.txt"
+  }
+  Fecundity GRR {
+    .T = scenarios[Temperature]
+  }
+  Stage eggLaying {
+    .initial = 1
+    .growthFactor = GRR[value]
+    .duration = 45
+    .k = 4
+  }
+  OutputR {
+    PageR {
+      .width = 7
+      .height =3.5
+      PlotR {
+        .ports = eggLaying[outflow]
+        .layout = "merged"
+        .ggplot = "labs(x='Age', y='Net eggs laid per day', colour='Temperature') + guides(colour = guide_legend(reverse=TRUE))"
+      }
+    }
+  }
+}
+

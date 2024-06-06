@@ -1,3 +1,4 @@
+#using cmbp
 Simulation sim {
   .steps = 250
   .iterations = ./scenarios[iterations]
@@ -84,7 +85,7 @@ Simulation sim {
         .b4 = -0.073723
       }
     }
-    cmbp::Immigration immigrants {
+    Immigration immigrants {
       .day = scenarios[DayImmigrants]
       .number = scenarios[PtImmigrants]
       .storeMass = store[mass]
@@ -108,7 +109,7 @@ Simulation sim {
         .sexRatio = 0.5
       }
     }
-    cmbp::Emigration emigration {
+    Emigration emigration {
       .N = adult[content]
       .e2 = 0.00076
       .e3 = 0.346
@@ -120,6 +121,8 @@ Simulation sim {
     }
     PageR {
       .nrow = 1
+      .width = 10
+      .height = 6
       PlotR {
         .layout = "merged"
         .ports = store[T] | store[gmc]
@@ -130,6 +133,8 @@ Simulation sim {
       }
     }
     PageR {
+      .width = 7
+      .height =3.5
       PlotR {
         .layout = "merged"
         .ports = outputs[*]

@@ -267,9 +267,9 @@ void Port::evaluate() {
         (Computation::currentStep() <= Computation::Step::Reset ||
          _value.type() == Value::Type::Uninitialized ||
          !ResolvedReferences::fixed()))
-        // Overwrite value's type, as an auxillary port may change type:  Its expression
-        // is evaluated again and again, and additional references (with other types) may have been resolved
-        _value.overwrite(_expression.evaluate());
+            // Overwrite value's type, as an auxillary port may change type:  Its expression
+            // is evaluated again and again, and additional references (with other types) may have been resolved
+            _value.overwrite(_expression.evaluate());
     else {
         // Update value, keeping its type, which for inputs and outputs were defined
         // in the C++ code; the expression's type will be converted to the value's types
