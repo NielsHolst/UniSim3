@@ -228,8 +228,8 @@ plot_one_x = function(df, x, y, ncol, nrow, dir, layout) {
   
   # Put the one x column on the x-axis
   # and the Value column on the y-axis
-  # P = ggplot(M, aes_string(x=x, y="Value", color=color))  - deprecated use if aes_string
-  P = ggplot(M, aes(.data[[x]], Value, color=.data[[color]]))
+  # P = ggplot(M, aes_string(x=x, y="Value", color=color))  # deprecated use if aes_string
+  P = ggplot(M, aes(.data[[x]], Value, group=.data[[color]], color=.data[[color]]))
   
   # Use lines for time series otherwise points
   if (is_time_series) {
@@ -289,7 +289,7 @@ plot_many_x = function(df, x, y, ncol, nrow, dir, layout) {
   color = if (many_iterations & is_time_series) "iteration" else "Response"
   
   # Put  xValue on the x-axis and ResponseValue on the y-axis
-  P = ggplot(M, aes(x=xValue, y=ResponseValue, color=.data[[color]])) +
+  P = ggplot(M, aes(x=xValue, y=ResponseValue, group=.data[[color]], color=.data[[color]])) +
         xlab("") + ylab("")
   
   # Use lines for time series otherwise points
@@ -328,7 +328,7 @@ plot_merged = function(df, x, y, ncol, nrow, dir) {
 
 plot_density = function(df, ports, ncol, nrow, dir) {
   M = melt(df[ports], value.name="Value", variable.name="Variable")
-  ggplot(M, aes(x=Value, colour=Variable, fill=Variable)) +
+  ggplot(M, aes(x=Value, group=Variable, colour=Variable, fill=Variable)) +
     geom_density(alpha=0.3) +
     labs(y="") + 
     facet_wrap(~Variable, scales="free", ncol=ncol, nrow=nrow, dir=dir) +
@@ -341,7 +341,7 @@ plot_density = function(df, ports, ncol, nrow, dir) {
 
 plot_histogram = function(df, ports, bins, ncol, nrow, dir) {
   M = melt(df[ports], value.name="Value", variable.name="Variable")
-  ggplot(M, aes(x=Value, colour=Variable, fill=Variable)) +
+  ggplot(M, aes(x=Value, group=Variable, colour=Variable, fill=Variable)) +
     geom_histogram(alpha=0.3, bins=bins) +
     labs(y="") + 
     facet_wrap(~Variable, scales="free", ncol=ncol, nrow=nrow, dir=dir) +

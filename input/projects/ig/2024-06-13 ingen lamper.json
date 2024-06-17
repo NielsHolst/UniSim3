@@ -1,0 +1,214 @@
+[
+  {
+    "CompartmentId": 278,
+    "BaseUtcOffset": 0.0,
+    "TimeStamp": "2024-06-13T12:05:17.0375502Z",
+    "GreenHouse": {
+      "Latitude": 64.13,
+      "Longitude": -20.31,
+      "Direction": 0.0
+    },
+    "Culture": {
+      "LeafAreaIndex": {
+        "Value": 1.0,
+        "Origin": "NotAvailable"
+      },
+      "Coverage": 1.0,
+      "CultureModel": {
+        "k": 0.7,
+        "Jmax25": 146.52,
+        "Vcmax25": 71.61,
+        "g0": 0.1,
+        "g1": 1.64,
+        "Gs25": 55.47,
+        "Rl25": 0.74,
+        "alpha": 0.9125
+      }
+    },
+    "Construction": {
+      "Length": 48.0,
+      "SpanWidth": 10.5,
+      "SpanCount": 2,
+      "WallHeight": 3.5,
+      "RoofInclination": 0.0,
+      "InternalShading": 0.2,
+      "Infiltration": 1.0,
+      "End1": {
+        "Emissivity": 0.1,
+        "Absorptivity": 0.1,
+        "Transmissivity": 0.6000000000000001,
+        "Haze": 0.0,
+        "UValue": 6.5,
+        "HeatCapacity": 1.0
+      },
+      "End2": {
+        "Emissivity": 0.1,
+        "Absorptivity": 0.1,
+        "Transmissivity": 0.6000000000000001,
+        "Haze": 0.0,
+        "UValue": 6.5,
+        "HeatCapacity": 1.0
+      },
+      "Side1": {
+        "Emissivity": 0.1,
+        "Absorptivity": 0.1,
+        "Transmissivity": 0.6000000000000001,
+        "Haze": 0.0,
+        "UValue": 6.5,
+        "HeatCapacity": 1.0
+      },
+      "Side2": {
+        "Emissivity": 0.05,
+        "Absorptivity": 0.05,
+        "Transmissivity": 0.39999999999999999,
+        "Haze": 0.0,
+        "UValue": 0.5,
+        "HeatCapacity": 1.0
+      },
+      "Roof1": {
+        "Emissivity": 0.1,
+        "Absorptivity": 0.1,
+        "Transmissivity": 0.6000000000000001,
+        "Haze": 0.0,
+        "UValue": 6.5,
+        "HeatCapacity": 1.0
+      },
+      "Roof2": {
+        "Emissivity": 0.1,
+        "Absorptivity": 0.1,
+        "Transmissivity": 0.6000000000000001,
+        "Haze": 0.0,
+        "UValue": 6.5,
+        "HeatCapacity": 1.0
+      },
+      "Floor": {
+        "Emissivity": 0.85,
+        "UIndoors": 7.5,
+        "USoil": 7.5,
+        "HeatCapacity": 42000.0
+      }
+    },
+    "Co2Dispenser": {
+      "InjectionRate": null
+    },
+    "OutdoorClimate": {
+      "Temperature": {
+        "Value": 14.47286605834961,
+        "Origin": "Measured"
+      },
+      "Irradiation": {
+        "Value": 335.12786865234377,
+        "Origin": "Measured"
+      },
+      "RelativeHumidity": {
+        "Value": 0.0,
+        "Origin": "Measured"
+      },
+      "Co2": {
+        "Value": 415.0,
+        "Origin": "UserDefined"
+      },
+      "WindSpeed": {
+        "Value": 7.329456806182861,
+        "Origin": "Measured"
+      },
+      "WindDirection": {
+        "Value": 80.64800262451172,
+        "Origin": "Measured"
+      }
+    },
+    "IndoorClimate": {
+      "Temperature": {
+        "Value": 24.95016860961914,
+        "Origin": "Measured"
+      },
+      "LightIntensity": {
+        "Value": 0.0,
+        "Origin": "NotAvailable"
+      },
+      "RelativeHumidity": {
+        "Value": 70.51219940185547,
+        "Origin": "Measured"
+      },
+      "Co2": {
+        "Value": 480.46875,
+        "Origin": "Measured"
+      }
+    },
+    "HeatPipes": [
+      {
+        "Material": "Iron",
+        "InnerDiameter": 30.0,
+        "WaterVolume": 1.3571680263507907,
+        "b": 1.1563,
+        "k": 0.0008,
+        "FlowRate": {
+          "Value": 15.0,
+          "Origin": "UserDefined"
+        },
+        "TemperatureInFlow": {
+          "Value": 71.14813995361328,
+          "Origin": "Measured"
+        },
+        "TemperatureOutFlow": {
+          "Value": 0.0,
+          "Origin": "NotAvailable"
+        }
+      },
+      {
+        "Material": "Iron",
+        "InnerDiameter": 30.0,
+        "WaterVolume": 0.3732212072464674,
+        "b": 1.1563,
+        "k": 0.0008,
+        "FlowRate": {
+          "Value": 15.0,
+          "Origin": "UserDefined"
+        },
+        "TemperatureInFlow": {
+          "Value": 29.198883056640626,
+          "Origin": "Measured"
+        },
+        "TemperatureOutFlow": {
+          "Value": 0.0,
+          "Origin": "NotAvailable"
+        }
+      }
+    ],
+    "Vents": [
+      {
+        "Length": 48.0,
+        "Height": 0.5,
+        "NumberOfVents": 1.0,
+        "MaxOpening": 45.0,
+        "Porosity": 1.0,
+        "Opening": {
+          "Value": 0.10226666450500488,
+          "Origin": "Measured"
+        }
+      },
+      {
+        "Length": 48.0,
+        "Height": 0.5,
+        "NumberOfVents": 1.0,
+        "MaxOpening": 45.0,
+        "Porosity": 1.0,
+        "Opening": {
+          "Value": 0.0,
+          "Origin": "Measured"
+        }
+      }
+    ],
+    "GrowthLights": [
+      {
+        "Type": "Hpsl",
+        "LampPower": 192.85714285714287,
+        "LampAndBallastPower": 215.35714285714287,
+        "ParEfficiency": 1.642,
+        "AgeCorrectedEfficiency": 1.0
+      }
+    ],
+    "Screens": [],
+    "Dehumidifiers": []
+  }
+]

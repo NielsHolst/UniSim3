@@ -368,23 +368,6 @@ double coverage(ig::Query q) {
     return q.culture.coverage;
 }
 
-void buildGrowthLight(Box *parent, const GrowthLight *g, double coverage) {
-    if (coverage<0. || coverage>1.)
-        ThrowException("Culture coverage must be in the interval [0;1]").value(coverage);
-    double propLw = (g->type == Led) ? 0.1 : 0.5;
-
-    BoxBuilder builder(parent);
-    builder.
-        box("vg::GrowthLight").name("growthLight").
-            port("parPhotonCoef").equals(g->parEfficiency).
-            port("propLw").equals(propLw).
-            port("intensity").equals(g->lampPower/coverage).
-            port("ballast").equals((g->lampAndBallastPower - g->lampPower)/coverage).
-            port("ageCorrectedEfficiency").equals(g->ageCorrectedEfficiency).
-            port("on").equals(g->lampPower>0.).
-        endbox();
-}
-
 QString growthLightName(int number) {
     return "bank" + QString::number(number+1);
 }
@@ -398,17 +381,17 @@ void buildGrowthLightProduct(BoxBuilder &builder, const ig::GrowthLight &g, int 
     endbox();
 }
 
-void buildActuatorGrowthLight(BoxBuilder &builder, const ig::GrowthLight &g, int number, double groundArea) {
+void buildActuatorGrowthLight(BoxBuilder &builder, const ig::GrowthLight &g, int number) {
     builder.
     box("ActuatorGrowthLight").name(growthLightName(number)).
         port("productName").equals(growthLightName(number)).
-        port("numberInstalled").equals(1/groundArea).
+        port("numberInstalled").equals(1.).
         port("efficiency").equals(g.ageCorrectedEfficiency).
         port("isOn").equals(true).
     endbox();
 }
 
-void buildGrowthLights(BoxBuilder &builder, const GrowthLights &lights, double groundArea, double coverage) {
+void buildGrowthLights(BoxBuilder &builder, const GrowthLights &lights, double coverage) {
     builder.
     box("vg::GrowthLights").name("growthLights").
         box().name("products");
@@ -416,7 +399,7 @@ void buildGrowthLights(BoxBuilder &builder, const GrowthLights &lights, double g
                 buildGrowthLightProduct(builder, lights.array[i], i, coverage);
         builder.endbox(); // products
         for (int i=0; i < lights.size; ++i)
-            buildActuatorGrowthLight(builder, lights.array[i], i, groundArea);
+            buildActuatorGrowthLight(builder, lights.array[i], i);
     builder.endbox(); //growthLights
 }
 
@@ -450,7 +433,7 @@ BoxBuilder& buildActuators(BoxBuilder &builder, const Query &q) {
         box().name("screens").endbox();
         buildPipes(builder, q.heatPipes);
         buildVentilation(builder, q.vents, groundArea(q));
-        buildGrowthLights(builder, q.growthLights, groundArea(q), coverage(q));
+        buildGrowthLights(builder, q.growthLights, coverage(q));
         buildActuatorCo2(builder, q.co2Dispenser);
         builder.box().name("humidifiers").
             box().name("vapourFlux").

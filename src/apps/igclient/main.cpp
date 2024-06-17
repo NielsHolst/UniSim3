@@ -26,8 +26,8 @@ const QString fileName =
         //"2022-09-07-ver-3-0-3";
         //"2022-11-18-par";
         //"2024-04-25 for meget lys";
-        "2024-06-06 hus 154";
-
+        //"2024-06-06 hus 154";
+        "2024-06-13 ingen lamper";
 void writeBoxScript() {
     QString filePath = path + "/" + fileName + ".box";
     QFile file(filePath);

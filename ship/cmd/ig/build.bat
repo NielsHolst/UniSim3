@@ -1,13 +1,11 @@
 echo on
-REM D:
-REM set PATH=D:\Documents\QDev\UniSim2\ship\cmd\ig\
 set PATH=C:\MyDocuments\QDev\UniSim3\ship\cmd\ig\
 
 cd %PATH%
 pause
 
 # Set version and target platform (32 or 64 bits)
-set VERSION=3.0.20
+set VERSION=3.0.24
 set QT_PATH=C:\Qt\5.15.2\mingw81_32
 
 set IGLIB_BIN=iglib\bin

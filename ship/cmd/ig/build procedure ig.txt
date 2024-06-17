@@ -18,12 +18,12 @@
 - Update version number in iglib.h comment
 - Build.
 
-5. Edit QDev\UniSim2\ship\cmd\igbuild.bat:
+5. Edit QDev\UniSim2\ship\cmd\ig\build.bat:
 - Update the UniSim version number.
 - Check the QT path which may differ between computers.
 
-6. Run QDev\UniSim2\ship\cmd\igbuild.bat
+6. Run QDev\UniSim2\ship\cmd\ig\build.bat
 
 7. Code-sign with QDev\certificates\codesign-iglib.bat
 
-8. Zip iglib_3.x.x and upload it to Dropbox.
+8. Zip iglib_3.x.x and upload it to ecolmod.org/download med FileZilla.
