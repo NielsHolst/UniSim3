@@ -1,7 +1,3 @@
----
-title: Saccharina
-layout: default
----
 $$
 % Weight
 \newcommand{\wSC} {\mathcal{S}^{C}}
