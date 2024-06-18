@@ -65,7 +65,7 @@ QString Exception::what() const {
     QString text;
 
     if (environment().runMode() == Environment::RunMode::WithoutDialog)
-        text = "In file: " + environment().latestLoadArg() + "\n";
+        text = "In file: " + environment().currentLoadArg() + "\n";
 
     text += QString{"Error: %1"}.arg(_message);
 

@@ -1055,7 +1055,7 @@ Simulation sim {
       &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
       &indoorsCo2 = budget/indoors[co2]
       &heatPumpState = controllers/heatPumps/state[value]
-      &heatPumpPowerUSe = actuators/heatPumps/powerUse[value]
+      &heatPumpPowerUse = actuators/heatPumps/powerUse[value]
       &heatPumpCooling = actuators/heatPumps/cooling[value]
       &heatFluxFloor = budget/cover[convectionBottom]
       &heatFluxCover = budget/cover[convectionTop]

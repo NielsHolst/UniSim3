@@ -19,10 +19,11 @@ public:
     enum class NoMatch{Accept, Error} ;
     XmlNode(QString name, XmlNode *parent);
     ~XmlNode();
-    XmlNode* detachChild();
+    XmlNode *cutRoot();
     void addAttribute(QString name, QString value);
     void setValue(QString value);
     QString name() const;
+    QString fullName() const;
 
     QString value() const;
     bool toBool() const;

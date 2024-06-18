@@ -21,12 +21,16 @@ XmlNode::~XmlNode() {
     }
 }
 
-XmlNode* XmlNode::detachChild() {
+XmlNode* XmlNode::cutRoot() {
+    if (_parent != nullptr)
+        ThrowException("Root node expected").value(_name);
     if (_children.size() != 1)
         ThrowException("Only one child expexted").value(_name);
-    XmlNode *first = _children.values()[0];
+    XmlNode *newRoot = _children.values()[0];
     _children.clear();
-    return first;
+    delete this;
+    newRoot->_parent = nullptr;
+    return newRoot;
 }
 
 void XmlNode::addAttribute(QString name, QString value) {
@@ -41,6 +45,10 @@ QString XmlNode::name() const {
     return _name;
 }
 
+QString XmlNode::fullName() const {
+    return _parent ? _parent->fullName() + "/" +_name : _name;
+}
+
 QString XmlNode::value() const {
     return _value;
 }
@@ -53,7 +61,7 @@ int XmlNode::toInt() const {
     bool ok;
     int value = _value.toInt(&ok);
     if (!ok)
-        ThrowException("Integer value expected").value(_name);
+        ThrowException("Integer value expected").value(_name).hint(fullName());
     return value;
 }
 
@@ -61,7 +69,7 @@ double XmlNode::toDouble() const {
     bool ok;
     double value = _value.toDouble(&ok);
     if (!ok)
-        ThrowException("Number value expected").value(_name);
+        ThrowException("Number value expected").value(_name).hint(fullName());
     return value;
 }
 
@@ -70,7 +78,9 @@ bool XmlNode::hasAttribute(QString name) const {
 }
 
 QString XmlNode::getAttributeString(QString name) const {
-    return _attributes.value(name, "");
+    if (!_attributes.keys().contains(name))
+        ThrowException("Attribute not found").value(name).hint(fullName());
+    return _attributes.value(name);
 }
 
 int XmlNode::getAttributeInt(QString name) const {

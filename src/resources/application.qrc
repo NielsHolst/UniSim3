@@ -166,17 +166,32 @@
     <file>data/input/models/PestTox/weather/free_radicals_table.txt</file>
     <file>data/input/models/PestTox/weather/Pathumthani.txt</file>
     <file>data/input/models/prostephanus/fecundity.R</file>
-    <file>data/input/models/prostephanus/fig-10-pop-dyn.box</file>
-    <file>data/input/models/prostephanus/fig-2-dev-rate.box</file>
-    <file>data/input/models/prostephanus/fig-3-gmc.box</file>
-    <file>data/input/models/prostephanus/fig-4-5-larva-gmc.box</file>
-    <file>data/input/models/prostephanus/fig-6-survival.box</file>
-    <file>data/input/models/prostephanus/fig-7-emigration.box</file>
-    <file>data/input/models/prostephanus/fig-8-fecundity.box</file>
+    <file>data/input/models/prostephanus/fig_10.box</file>
+    <file>data/input/models/prostephanus/fig_10.R</file>
+    <file>data/input/models/prostephanus/fig_10_scenarios.txt</file>
+    <file>data/input/models/prostephanus/fig_2_dev_rate.box</file>
+    <file>data/input/models/prostephanus/fig_3_gmc.box</file>
+    <file>data/input/models/prostephanus/fig_4_5_larva_gmc.box</file>
+    <file>data/input/models/prostephanus/fig_6_survival.box</file>
+    <file>data/input/models/prostephanus/fig_7_emigration.box</file>
+    <file>data/input/models/prostephanus/fig_8_fecundity_age.box</file>
+    <file>data/input/models/prostephanus/fig_8_fecundity_age_scenarios.txt</file>
+    <file>data/input/models/prostephanus/fig_8_fecundity_temp.box</file>
     <file>data/input/models/prostephanus/Iita9495.txt</file>
     <file>data/input/models/prostephanus/Mono9394.txt</file>
+    <file>data/input/models/prostephanus/obs.txt</file>
     <file>data/input/models/prostephanus/reference.txt</file>
-    <file>data/input/models/prostephanus/scenarios.txt</file>
+    <file>data/input/models/sitophilus/figs_5_6.box</file>
+    <file>data/input/models/sitophilus/fig_2_dev_rate.box</file>
+    <file>data/input/models/sitophilus/line_parabola (0).R</file>
+    <file>data/input/models/sitophilus/line_parabola (1).R</file>
+    <file>data/input/models/sitophilus/line_parabola (2).R</file>
+    <file>data/input/models/sitophilus/line_parabola (3).R</file>
+    <file>data/input/models/sitophilus/line_parabola.md</file>
+    <file>data/input/models/sitophilus/line_parabola.R</file>
+    <file>data/input/models/sitophilus/obs_dev_rate.R</file>
+    <file>data/input/models/sitophilus/obs_dev_rate.txt</file>
+    <file>data/input/models/vg/vg_2024-04-29_version_3.0.21.box</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>

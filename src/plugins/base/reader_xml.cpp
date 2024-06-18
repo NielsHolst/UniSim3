@@ -104,7 +104,7 @@ ReaderXml::Format ReaderXml::readRoot() {
 }
 
 void ReaderXml::readDocument() {
-    XmlNode *current = new XmlNode("container", nullptr);
+    XmlNode *current = new XmlNode("root", nullptr);
     QString text, name;
     while (current && !_reader.atEnd()) {
         auto type = _reader.tokenType();
@@ -129,8 +129,7 @@ void ReaderXml::readDocument() {
     }
     if (!current || current->parent())
         ThrowException("XML file is not well-structured").value(_file.fileName());
-    _doc = current->detachChild();
-    delete current;
+    _doc = current->cutRoot();
 }
 
 void ReaderXml::addAttributes(XmlNode *node) {
@@ -146,7 +145,7 @@ void ReaderXml::collectScreenProducts() {
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
         XmlNode *product = pr.value();
-        QString productName = productId(product->getAttributeString("name"));
+        QString productName = productId(product->getAttributeString("name"), "Greenhouse/Screens/Products");
         if (productName != "none")
             _screenProducts[productName] = QSet<int>();
     }
@@ -155,7 +154,7 @@ void ReaderXml::collectScreenProducts() {
     for (auto sc = screens->children().begin(); sc != screens->children().end(); ++sc) {
         XmlNode *screen = sc.value();
         if (screen->name() == "Screen") {
-            QString productName = productId(screen->find("Product")->value());
+            QString productName = productId(screen->find("Product")->value(), "Greenhouse/Screens");
             if (productName != "none") {
                 if (!_screenProducts.contains(productName))
                     ThrowException("Undefined screen product name").value(productName);
@@ -511,12 +510,12 @@ void ReaderXml::readVirtualGreenhouse() {
 }
 
 BoxBuilder& ReaderXml::shadingAgents() {
-    _chosenShadingAgent = productId(_doc->find("Greenhouse/ShadingAgents/ChosenProduct")->value());
+    _chosenShadingAgent = productId(_doc->find("Greenhouse/ShadingAgents/ChosenProduct")->value(), "Greenhouse/ShadingAgents/ChosenProduct");
     bool chosenExists = false;
     XmlNode *products = _doc->find("Greenhouse/ShadingAgents/Products");
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
         XmlNode *product = pr.value();
-        QString id = productId(product->getAttributeString("name"));
+        QString id = productId(product->getAttributeString("name"), "Greenhouse/ShadingAgents/Products");
         double
             swReflectivity = getChildValueDouble(product, "SwReflectivity"),
             lwReflectivity = getChildValueDouble(product, "LwReflectivity");
@@ -542,7 +541,7 @@ BoxBuilder& ReaderXml::shelterCovers() {
 
     for (auto pr = products->children().begin(); pr != products->children().end(); ++pr) {
         XmlNode *product = pr.value();
-        QString id = productId(product->getAttributeString("name"));
+        QString id = productId(product->getAttributeString("name"), "Greenhouse/Panes/Products");
 
         double
             swt = getChildValueDouble(product, "PaneTransmission"),
@@ -575,10 +574,12 @@ BoxBuilder& ReaderXml::shelterCovers() {
     return *_builder;
 }
 
-const QString ReaderXml::productId(QString productName) {
+const QString ReaderXml::productId(QString productName, QString path) {
     QString id = makeId(productName);
-    if (!isValidNodeName(id))
-        ThrowException("Invalid name of product").value(id).hint("Must begin with a letter followed by letters and numbers");
+    if (!isValidNodeName(id)) {
+        QString msg = "Invalid product name '%1' found in '%2'";
+        ThrowException("Invalid name of product").value(msg.arg(productName).arg(path)).hint("Must begin with a letter followed by letters and numbers");
+    }
     if (id.compare("none", Qt::CaseInsensitive) == 0)
         id = "none";
     return id;
@@ -599,7 +600,7 @@ BoxBuilder& ReaderXml::shelterScreensOnlyUsed() {
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     for (auto product = products->children().begin(); product != products->children().end(); ++product) {
         // Create screen products
-        QString id = productId(product.value()->getAttributeString("name"));
+        QString id = productId(product.value()->getAttributeString("name"), "Greenhouse/Screens/Products");
         double
             t = getChildValueDouble(product.value(), "Transmission"),
             rtop = getChildValueDouble(product.value(), "ReflectionOutwards"),
@@ -642,7 +643,7 @@ BoxBuilder& ReaderXml::shelterScreensAll() {
     double UinsulationEffectivity = _doc->find("Greenhouse/screenPerfection")->toDouble();
     XmlNode *products = _doc->find("Greenhouse/Screens/Products");
     for (auto product = products->children().begin(); product != products->children().end(); ++product) {
-        QString id = productId(product.value()->getAttributeString("name"));
+        QString id = productId(product.value()->getAttributeString("name"), "Greenhouse/Screens/Products");
         if (id == "none")
             continue;
         double
@@ -688,7 +689,7 @@ QString ReaderXml::findPaneProduct(QString position) {
            int panePosition = getPosition(pane.value());
            if (panePosition <= 6 && panePosition == pos) {
                 XmlNode *product = pane.value()->find("Product");
-                return productId(product->value());
+                return productId(product->value(), "Greenhouse/Panes");
            }
         }
     }
@@ -942,11 +943,10 @@ BoxBuilder& ReaderXml::actuatorsHeatPumps() {
           box().name("products");
      for (auto pr = products.begin(); pr != products.end(); ++pr) {
          XmlNode &product(*pr.value());
-         XmlNode *nameNode = product.peak("Name");
-         QString name = makeId(nameNode->value());
-         if (productNamesUsed.contains(name)) {
+         QString id = productId(product.getAttributeString("name"), "Greenhouse/HeatPumps/Products");
+         if (productNamesUsed.contains(id)) {
              _builder->
-             box("HeatPumpProduct").name(name).
+             box("HeatPumpProduct").name(id).
                  port("maxCoolingLoad").equals(product.find("MaxCoolingLoad")->toDouble()).
                  port("coolingEfficiency").equals(product.find("CoolingEfficiency")->toDouble()).
                  port("maxFlowRate").equals(product.find("MaxFlowRate")->toDouble()).
@@ -980,6 +980,9 @@ BoxBuilder& ReaderXml::actuatorsHeatPumps() {
          endbox().
          box("Sum").name("cooling").
              port("values").imports("../ActuatorHeatPump::*[cooling]").
+         endbox().
+         box("Sum").name("condensation").
+             port("values").imports("../ActuatorHeatPump::*[condensationRate]").
          endbox().
      endbox();
 
@@ -1111,12 +1114,13 @@ BoxBuilder& ReaderXml::actuatorsHumidifiers() {
     auto products = _doc->find("Greenhouse/Fogs/Products")->children();
     for (auto pr = products.begin(); pr != products.end(); ++pr) {
         XmlNode &product(*pr.value());
-        XmlNode *nameNode = product.peak("Name");
-        if (!nameNode)
-            nameNode = product.find("name");
-        QString name = makeId(nameNode->value());
+//        XmlNode *nameNode = product.peak("Name");
+//        if (!nameNode)
+//            nameNode = product.find("name");
+//        QString name = makeId(nameNode->value());
+        QString id = productId(product.getAttributeString("name"), "Greenhouse/Fogs/Products");
         _builder->
-        box("HumidifierProduct").name(name).
+        box("HumidifierProduct").name(id).
             port("efficiency").equals(product.find("Efficiency")->toDouble()).
             port("maxRate").equals(product.find("MaxHumidification")->toDouble()).
             port("parasiticLoad").equals(product.find("MaxParasitLoad")->toDouble()).
@@ -1203,7 +1207,6 @@ ReaderXml::Setpoints ReaderXml::getSetpoints(QString name) {
         XmlNode &spNode(*sp.value());
         Setpoint setpoint;
         setpoint.index    = spNode.getAttributeInt("index");
-        setpoint.name     = spNode.getAttributeString("name");
         setpoint.fromDate = spNode.getAttributeString("FromDate");
         setpoint.toDate   = spNode.getAttributeString("ToDate");
         setpoint.fromTime = spNode.getAttributeString("FromTime");
