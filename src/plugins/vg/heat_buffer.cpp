@@ -1,9 +1,9 @@
-/* Copyright 2005-2021 by
-** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and
-** Oliver Koerner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and
-** Jesper M. Aaslyng, Danish Technological Instutute [jeaa at teknologisk.dk].
+/* Copyright 2005-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
+** Oliver Körner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and 
+** Jesper M. Aaslyng, HortiAdvice [jeaa at hortiadvice.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
-** See: www.gnu.org/licenses/lgpl.html
+** See: www.gnu.org/licenses/lgpl.html.
 */
 #include <base/publish.h>
 #include <base/phys_math.h>
@@ -12,6 +12,7 @@
 
 using namespace base;
 using namespace phys_math;
+using namespace TestNum;
 
 namespace vg {
 
@@ -36,6 +37,7 @@ HeatBuffer::HeatBuffer(QString name, Box *parent)
 
     Output(inputDemand).help("Power demanded to reach `maxTemperature` during `timeStep`").unit("W/m2");
     Output(inputSupply).help("Power supplied by `inputResource` in response to `inputDemand`").unit("W/m2");
+    Output(inputOverflow).help("Power supplied by `inputResource` but left unused, because the buffer was full").unit("W/m2");
     Output(outputResource).help("Power available to fulfill `outputDemand`").unit("W/m2");
     Output(outputSupply).help("Power supplied by `outputResource` in response to `outputDemand`").unit("W/m2");
     Output(heatLoss).help("Power lost to surroundings").unit("W");
@@ -59,8 +61,12 @@ void HeatBuffer::update() {
     temperature -= heatLoss*CpSpec;
     // Increase buffer temperature by power input
     inputDemand = (temperature < maxTemperature) ? (maxTemperature - temperature)/CpSpec : 0.;
-    inputSupply = TestNum::eqZero(inputDemand) ? 0. : inputDemand*(1. - exp(-uptakeEfficiency*inputResource*groundArea/inputDemand));
+    double potentialInput = uptakeEfficiency*inputResource*groundArea;
+    inputSupply = TestNum::eqZero(inputDemand) ? 0. : inputDemand*(1. - exp(-potentialInput/inputDemand));
     temperature += inputSupply*CpSpec;
+    // Compute any unused input
+    inputOverflow = potentialInput - inputSupply;
+    snapToZero(inputOverflow, 1e-3);
     // Decrease buffer temperature by power output
     const double minTemperature = std::max(externalTemperature, 0.),
                  grossDemand = outputDemand/extractionEfficiency;
@@ -73,6 +79,7 @@ void HeatBuffer::update() {
     // Unit conversions
     inputDemand /= groundArea;
     inputSupply /= groundArea;
+    inputOverflow /= groundArea;
 }
 
 } //namespace

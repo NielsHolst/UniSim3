@@ -1,8 +1,8 @@
-/* Copyright 2016-2021 by
-** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and
+/* Copyright 2016-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Antonio Agüera García [antonio.aguera at gmail.com].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
-** See: www.gnu.org/licenses/lgpl.html
+** See: www.gnu.org/licenses/lgpl.html.
 */
 #ifndef MUSSEL_TEMP_SCALE_H
 #define MUSSEL_TEMP_SCALE_H

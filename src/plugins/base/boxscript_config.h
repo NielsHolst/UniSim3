@@ -1,9 +1,8 @@
-/*=============================================================================
-    Copyright (c) 2001-2015 Joel de Guzman
-
-    Distributed under the Boost Software License, Version 1.0. (See accompanying
-    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-=============================================================================*/
+/* Copyright 2005-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
+** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
+** See: www.gnu.org/licenses/lgpl.html.
+*/
 #ifndef BOXSCRIPT_CONFIG_H
 #define BOXSCRIPT_CONFIG_H
 

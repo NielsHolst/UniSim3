@@ -279,10 +279,10 @@ void buildFaces(BoxBuilder &builder) {
 }
 
 BoxBuilder& buildConstruction(BoxBuilder &builder, const Query &q) {
-    double
-        stateScreen1 = std::max(0., value(q.screens.array[0].effect)),
-        stateScreen2 = std::max(0., value(q.screens.array[1].effect)),
-        stateScreen3 = std::max(0., value(q.screens.array[2].effect));
+    double stateScreen[3];
+    for (int i=0; i<3; ++i) {
+        stateScreen[i] = minmax(0., (i < q.screens.size) ? value(q.screens.array[i].effect) : 0., 1.);
+    }
     builder.
     box("vg::Geometry").name("geometry").
         port("numSpans").equals(q.construction.spanCount).
@@ -314,13 +314,13 @@ BoxBuilder& buildConstruction(BoxBuilder &builder, const Query &q) {
                 endbox().
                 box().name("screens").
                     box("AverageScreen").name("screen1").
-                        aux("state").equals(stateScreen1).
+                        aux("state").equals(stateScreen[0]).
                     endbox().
                     box("AverageScreen").name("screen2").
-                        aux("state").equals(stateScreen2).
+                        aux("state").equals(stateScreen[1]).
                     endbox().
                     box("AverageScreen").name("screen3").
-                        aux("state").equals(stateScreen3).
+                        aux("state").equals(stateScreen[2]).
                     endbox().
                 endbox(). //screens
             endbox(). //layers

@@ -1,6 +1,7 @@
-/* Copyright 2005-2021 by Niels Holst, Aarhus University [niels.holst at agro.au.dk].
+/* Copyright 2005-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
-** See: www.gnu.org/licenses/lgpl.html
+** See: www.gnu.org/licenses/lgpl.html.
 */
 #include <bitset>
 #include <math.h>
@@ -252,7 +253,8 @@ double Tdew(double temperature, double rh) {
 }
 
 //! Compute wet bulb temperature from temperature and r.h.
-/*! See DOI: 10.1175/JAMC-D-11-0143.1
+/*! The wet-bulb temperature is the lowest temperature that can be reached under current ambient conditions by the evaporation of water only
+    See DOI: 10.1175/JAMC-D-11-0143.1
     \param temperature (oC)
     \param rh relative humidity (%)
     \return wet bulb temperature (oC)

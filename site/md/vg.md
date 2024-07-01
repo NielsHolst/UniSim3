@@ -198,11 +198,11 @@ Volumes may exchange heat and humidity with neighbouring volumes and layers.
 
 ### Layers
 
-Besides layers the greenhouse and its environment is conceptualised as a stack of $i=1..n$ horizontal layers. This is a typical stack:
+Besides volumes the greenhouse and its environment is conceptualised as a stack of $i=1..n$ horizontal layers. This is a typical stack:
 
 1. sky
 2. cover (e.g., glass)
-3. screen 
+3. screens 
 4. growth light 
 5. plant canopy
 6. heat pipe

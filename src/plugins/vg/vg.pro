@@ -16,6 +16,7 @@ HEADERS +=  \
     actuator_heat_pump.h \
     actuator_heat_pipe.h \
     actuator_humidifier.h \
+    actuator_pad_and_fan.h \
     actuator_screen.h \
     actuator_ventilation.h \
     average_cover.h \
@@ -40,6 +41,7 @@ HEADERS +=  \
     heat_buffer.h \
     heat_pipes.h \
     heat_pump_product.h \
+    heat_pumps.h \
     heat_pumps_max_state.h \
     humidification_controller.h \
     humidifier_product.h \
@@ -49,6 +51,8 @@ HEADERS +=  \
     leakage_ventilation.h \
     light_sum.h \
     outdoors.h \
+    pad_and_fan_product.h \
+    pad_and_fans.h \
     pid_controller.h \
     plant.h \
     plant_instrument.h \
@@ -72,6 +76,7 @@ SOURCES += \
     actuator_heat_pipe.cpp \
     actuator_heat_pump.cpp \
     actuator_humidifier.cpp \
+    actuator_pad_and_fan.cpp \
     actuator_screen.cpp \
     actuator_ventilation.cpp \
     average_cover.cpp \
@@ -96,6 +101,7 @@ SOURCES += \
     heat_buffer.cpp \
     heat_pipes.cpp \
     heat_pump_product.cpp \
+    heat_pumps.cpp \
     heat_pumps_max_state.cpp \
     humidification_controller.cpp \
     humidifier_product.cpp \
@@ -105,6 +111,8 @@ SOURCES += \
     leakage_ventilation.cpp \
     light_sum.cpp \
     outdoors.cpp \
+    pad_and_fan_product.cpp \
+    pad_and_fans.cpp \
     pid_controller.cpp \
     plant.cpp \
     plant_instrument.cpp \

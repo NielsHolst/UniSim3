@@ -1,8 +1,7 @@
-/*
- * PsychroLib (version 2.5.0) (https://github.com/psychrometrics/psychrolib).
- * Copyright (c) 2018-2020 The PsychroLib Contributors for the current library implementation.
- * Copyright (c) 2017 ASHRAE Handbook — Fundamentals for ASHRAE equations and coefficients.
- * Licensed under the MIT License.
+/* Copyright 2005-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
+** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
+** See: www.gnu.org/licenses/lgpl.html.
 */
 
 /******************************************************************************************************

@@ -1,6 +1,7 @@
-/* Copyright 2005-2021 by Niels Holst, Aarhus University [niels.holst at agro.au.dk].
+/* Copyright 2005-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
-** See: www.gnu.org/licenses/lgpl.html
+** See: www.gnu.org/licenses/lgpl.html.
 */
 #include <QXmlStreamAttributes>
 #include <QRegularExpression>
@@ -273,6 +274,9 @@ void ReaderXml::readVirtualGreenhouse() {
                     setpoint("heatPumpMode", "mode");
                     setpoint("heatPumpMaxPowerUse", "maxPowerUse").
                 endbox().
+                box().name("padAndFans");
+                    setpoint("PadFansState", "state").
+                endbox().
                 box().name("ventilation");
                     setpoint("VentTemp", "offset");
                     setpoint("crackVentilation", "crack").
@@ -388,6 +392,9 @@ void ReaderXml::readVirtualGreenhouse() {
                         endbox().
                     endbox().
                 endbox().
+                box().name("padAndFans").
+                    aux("state").imports("setpoints/padAndFans/state[value]").
+                endbox().
                 box("IgnoredBox").name("ventilation").
                     box("Sum").name("desiredMaxTemperature").
                         port("values").computes("../../desiredMinTemperature[value] | setpoints/ventilation/offset[value]").
@@ -434,6 +441,7 @@ void ReaderXml::readVirtualGreenhouse() {
             box("Actuators").name("actuators");
                 actuatorsHeatPipes();
                 actuatorsHeatPumps();
+                actuatorsPadAndFan();
                 actuatorsVentilation();
                 actuatorsHumidifiers();
                 actuatorsScreens();
@@ -479,13 +487,6 @@ void ReaderXml::readVirtualGreenhouse() {
             box("Budget").name("budget").
             endbox();
             actuatorsHeatBuffer().
-
-//            box("Summary").name("summary").
-//                box("Distribution").name("Tin").
-//                    port("input").imports("gh/budget/indoors[temperature]").
-//                    port("sections").computes("c(10,50,90)").
-//                endbox().
-//            endbox().
         endbox().
         box("OutputR").name("output");
             outputVariables().
@@ -920,7 +921,7 @@ BoxBuilder& ReaderXml::actuatorsHeatBuffer() {
         port("U").equals(heatPump->find("U")->toDouble()).
         port("uptakeEfficiency").equals(heatPump->find("UptakeEfficiency")->toDouble()).
         port("extractionEfficiency").equals(heatPump->find("ExtractionEfficiency")->toDouble()).
-        port("inputResource").imports("actuators/heatPumps/cooling[value]").
+        port("inputResource").imports("actuators/heatPumps[energyToBuffer]").
         port("outputDemand").imports("actuators/heatPipes[heatFlux]").
     endbox();
     return *_builder;
@@ -939,7 +940,7 @@ BoxBuilder& ReaderXml::actuatorsHeatPumps() {
     }
 
      // Create heat pump products
-    _builder->box().name("heatPumps").
+    _builder->box("HeatPumps").name("heatPumps").
           box().name("products");
      for (auto pr = products.begin(); pr != products.end(); ++pr) {
          XmlNode &product(*pr.value());
@@ -969,26 +970,66 @@ BoxBuilder& ReaderXml::actuatorsHeatPumps() {
              box("ActuatorHeatPump").name(name).
                  port("productName").equals(makeId(heatPump.find("Product")->value())).
                  port("number").equals(heatPump.find("Number")->toInt()).
+                 port("sendToBuffer").equals(heatPump.find("HeatRecovery")->toBool()).
                  port("state").imports("controllers/heatPumps/state[value]").
              endbox();
          }
 
      }
-     _builder->
-         box("Sum").name("powerUse").
-             port("values").imports("../ActuatorHeatPump::*[powerUse]").
-         endbox().
-         box("Sum").name("cooling").
-             port("values").imports("../ActuatorHeatPump::*[cooling]").
-         endbox().
-         box("Sum").name("condensation").
-             port("values").imports("../ActuatorHeatPump::*[condensationRate]").
-         endbox().
-     endbox();
-
+     _builder->endbox();
     return *_builder;
 }
 
+BoxBuilder& ReaderXml::actuatorsPadAndFan() {
+    auto products = _doc->find("Greenhouse/PadFans/Products")->children(),
+         padFans  = _doc->find("Greenhouse/PadFans")->children();
+
+    // Collect names of pad&fan products used
+    QSet<QString> productNamesUsed;
+    for (auto hp = padFans.begin(); hp != padFans.end(); ++hp) {
+        XmlNode &padFan(*hp.value());
+        if (padFan.name() == "PadFan" && padFan.find("Number")->toInt() > 0)
+            productNamesUsed << makeId(padFan.find("Product")->value());
+    }
+
+    // Create pad&fan products
+   _builder->box("PadAndFans").name("padAndFans").
+         box().name("products");
+    for (auto pr = products.begin(); pr != products.end(); ++pr) {
+        XmlNode &product(*pr.value());
+        QString id = productId(product.getAttributeString("name"), "Greenhouse/PadAndFans/Products");
+        if (productNamesUsed.contains(id)) {
+            _builder->
+            box("PadAndFanProduct").name(id).
+                port("coolingEfficiency").equals(product.find("Efficiency")->toDouble()).
+                port("flowRateMax").equals(product.find("MaxFlowRate")->toDouble()).
+                port("powerUseMax").equals(product.find("MaxPowerUse")->toDouble()).
+                port("powerUserParasitic").equals(product.find("MaxParasitLoad")->toDouble()).
+            endbox();
+        }
+    }
+    _builder->endbox();
+
+    // Create pad&fans
+    for (auto pf = padFans.begin(); pf != padFans.end(); ++pf) {
+        XmlNode &padFan(*pf.value());
+        if (padFan.name() != "PadFan")
+            continue;
+        QString name = "padAndFan" + padFan.getAttributeString("position");
+        int number = padFan.find("Number")->toInt();
+        if (number > 0) {
+            _builder->
+            box("ActuatorPadAndFan").name(name).
+                port("productName").equals(makeId(padFan.find("Product")->value())).
+                port("number").equals(padFan.find("Number")->toInt()).
+                port("state").imports("controllers/padAndFans[state]").
+            endbox();
+        }
+
+    }
+    _builder->endbox();
+    return *_builder;
+}
 
 BoxBuilder& ReaderXml::actuatorsVentilation() {
     double ventArea;
@@ -1114,10 +1155,6 @@ BoxBuilder& ReaderXml::actuatorsHumidifiers() {
     auto products = _doc->find("Greenhouse/Fogs/Products")->children();
     for (auto pr = products.begin(); pr != products.end(); ++pr) {
         XmlNode &product(*pr.value());
-//        XmlNode *nameNode = product.peak("Name");
-//        if (!nameNode)
-//            nameNode = product.find("name");
-//        QString name = makeId(nameNode->value());
         QString id = productId(product.getAttributeString("name"), "Greenhouse/Fogs/Products");
         _builder->
         box("HumidifierProduct").name(id).

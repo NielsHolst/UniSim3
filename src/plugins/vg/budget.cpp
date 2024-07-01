@@ -1,6 +1,9 @@
-/* Copyright 2005-2021 by Niels Holst, Aarhus University [niels.holst at agro.au.dk].
+/* Copyright 2005-2024 by
+** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
+** Oliver Körner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and 
+** Jesper M. Aaslyng, HortiAdvice [jeaa at hortiadvice.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
-** See: www.gnu.org/licenses/lgpl.html
+** See: www.gnu.org/licenses/lgpl.html.
 */
 #include <QTextStream>
 #include <base/box_builder.h>
@@ -61,8 +64,10 @@ Budget::Budget(QString name, base::Box *parent)
     Input(Pn).imports("gh/plant[Pn]");
     Input(co2Injection).imports("gh/actuators/co2[value]");
     Input(heatPipeFlux).imports("gh/actuators/heatPipes[heatFlux]");
-    Input(heatPumpCooling).computes("sum(actuators/heatPumps/*[cooling])");
-    Input(heatPumpCondensationRate).computes("sum(actuators/heatPumps/*[condensationRate])");
+    Input(heatPumpCooling).imports("actuators/heatPumps[cooling]");
+    Input(heatPumpCondensationRate).imports("actuators/heatPumps[condensation]");
+    Input(padAndFanCooling).imports("actuators/padAndFans[cooling]");
+    Input(padAndFanVapourFlux).imports("actuators/padAndFans[vapourFlux]");
     Input(heatPipesOn).imports("gh/actuators/heatPipes/*[isHeating]");
     Input(isVentilating).imports("gh/actuators/ventilation[isVentilating]");
     Input(isHeating).imports("gh/actuators/heatPipes[isHeating]");
@@ -502,7 +507,7 @@ void Budget::updateWaterBalance(double timeStep) {
         timeStep,
         indoorsAh,
         transpirationRate/averageHeight,
-        humidificationRate/averageHeight,
+        (humidificationRate + padAndFanVapourFlux)/averageHeight,
         2e-3*coverPerGroundArea/averageHeight,
         coverSah,
         v,
@@ -510,10 +515,10 @@ void Budget::updateWaterBalance(double timeStep) {
     );
     const double insideCondensation = w.condensation*averageHeight;
     // Outputs
-    transpiration     +=  w.transpiration*averageHeight;
-    condensationCover      -= insideCondensation;
-    ventedWater       -= w.ventilation*averageHeight;       // kg/m3 * m   = kg/m2
-    condensationHeatPump   -= heatPumpCondensationRate*timeStep; // kg/m2/s * s = kg/m2
+    transpiration        += w.transpiration*averageHeight;
+    condensationCover    -= insideCondensation;
+    ventedWater          -= w.ventilation*averageHeight;       // kg/m3 * m   = kg/m2
+    condensationHeatPump -= heatPumpCondensationRate*timeStep; // kg/m2/s * s = kg/m2
 
     // Indoors state update
     // Since heat pump condensation is so small, it is simply subtracted
@@ -676,7 +681,7 @@ void Budget::updateDeltaT(double timeStep) {
     }
     double propVentilation   = 1. - exp(-(*ventilationRate)/3600.*timeStep),
            ventilationDeltaT = (outdoorsTemperature - indoorsVol->temperature)*propVentilation;
-    indoorsDeltaT = (indoorsVol->heatInflux - heatPumpCooling)*timeStep/indoorsHeatCapacity + ventilationDeltaT;
+    indoorsDeltaT = (indoorsVol->heatInflux - (heatPumpCooling + padAndFanCooling))*timeStep/indoorsHeatCapacity + ventilationDeltaT;
     ventilationHeatLoss = ventilationDeltaT*averageHeight*RhoAir*CpAir/timeStep;
     if (fabs(indoorsDeltaT) > fabs(_maxDeltaT))
         _maxDeltaT = fabs(indoorsDeltaT);

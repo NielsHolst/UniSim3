@@ -1,0 +1,288 @@
+#using vg
+Simulation greenhouse {
+  .steps = 3
+  Calendar calendar {
+    .latitude = 55.54
+    .longitude = 11.96
+    .timeZone = 1
+    .begin = 2001/06/28T12:00:00
+    .timeStep = 30
+    .timeUnit = "s"
+    Sun sun {
+    }
+  }
+  Sensor sensor {
+    .indoorsTemperatureIn = 31.9
+    .indoorsRhIn = 50.9
+    .indoorsCo2In = -999.0
+    .indoorsLightIntensityIn = -999.0
+    .indoorsWindspeedIn = -999.0
+    .outdoorsTemperatureIn = 24.6
+    .outdoorsRhIn = 0.0
+    .outdoorsCo2In = -999.0
+    .outdoorsGlobalRadiationIn = 745.217
+    .outdoorsWindSpeedIn = -999.0
+    .soilTemperatureIn = -999.0
+  }
+  Outdoors outdoors {
+    .co2 = sensor[outdoorsCo2]
+    .temperature = sensor[outdoorsTemperature]
+    .rh = sensor[outdoorsRh]
+    .radiation = sensor[outdoorsGlobalRadiation]
+    .windSpeed = sensor[outdoorsWindSpeed]
+    Box records {
+    }
+    SoilTemperature soilTemperature {
+    }
+  }
+  Sky sky {
+  }
+  Box gh {
+    Geometry geometry {
+      .numSpans = 1
+      .spanWidth = 100.0
+      .length = 100.0
+      .height = 3.0
+      .roofPitch = 0.0
+    }
+    Box construction {
+      LeakageVentilation leakage {
+        .leakage = 1.0
+      }
+      Shelter shelter {
+        .transmissivityReduction = 0.2
+        UWind Utop {
+        }
+        Box shading {
+          &swReflectivity = 0.0
+          &lwReflectivity = 0.0
+        }
+        Box products {
+          Box covers {
+            Cover roof1 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 3.97
+              .Ubottom = 3.97
+              .heatCapacity = 1.0
+            }
+            Cover roof2 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 3.97
+              .Ubottom = 3.97
+              .heatCapacity = 1.0
+            }
+            Cover side1 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 3.97
+              .Ubottom = 3.97
+              .heatCapacity = 1.0
+            }
+            Cover side2 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 3.97
+              .Ubottom = 3.97
+              .heatCapacity = 1.0
+            }
+            Cover end1 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 3.97
+              .Ubottom = 3.97
+              .heatCapacity = 1.0
+            }
+            Cover end2 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.4
+              .swTransmissivityTop = 0.6
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.4
+              .swTransmissivityBottom = 0.6
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 3.97
+              .Ubottom = 3.97
+              .heatCapacity = 1.0
+            }
+          }
+          Box screens {
+            Screen none {
+            }
+          }
+        }
+        Faces faces {
+          Face roof1 {
+            .cover = "roof1"
+            .screens = "none+none+none"
+            .area = gh/geometry[roofArea] / 2
+            .weight = 1.0
+          }
+          Face roof2 {
+            .cover = "roof2"
+            .screens = "none+none+none"
+            .area = gh/geometry[roofArea] / 2
+            .weight = 1.0
+          }
+          Face side1 {
+            .cover = "side1"
+            .screens = "none+none+none"
+            .area = gh/geometry[sideArea] / 2
+            .weight = 0.6
+          }
+          Face side2 {
+            .cover = "side2"
+            .screens = "none+none+none"
+            .area = gh/geometry[sideArea] / 2
+            .weight = 0.6
+          }
+          Face end1 {
+            .cover = "end1"
+            .screens = "none+none+none"
+            .area = gh/geometry[endArea] / 2
+            .weight = 0.2
+          }
+          Face end2 {
+            .cover = "end2"
+            .screens = "none+none+none"
+            .area = gh/geometry[endArea] / 2
+            .weight = 0.2
+          }
+        }
+        ShelterLayers layers {
+          AverageCover cover {
+          }
+          Box screens {
+            AverageScreen screen1 {
+              &state = 0.0
+            }
+            AverageScreen screen2 {
+              &state = 0.0
+            }
+            AverageScreen screen3 {
+              &state = 0.0
+            }
+          }
+        }
+      }
+    }
+    Actuators actuators {
+      Box screens {
+      }
+      HeatPipes heatPipes {
+      }
+      ActuatorVentilation ventilation {
+        .ventAreaRatio = 0.0
+        .opening = 0.0
+        .crackOpening = 0.0
+      }
+      GrowthLights growthLights {
+        Box products {
+        }
+      }
+      Box co2 {
+        &value = 0.0
+      }
+      Box humidifiers {
+        Box vapourFlux {
+          &value = 0.0
+        }
+      }
+      Box heatPumps {
+        Box heatPump1 {
+          &cooling = 0.0
+          &condensationRate = 0.0
+        }
+      }
+    }
+    Plant plant {
+      .k_sw = 0.7
+      .k_lw = 1.0
+      .g0 = 0.1
+      .g1 = 1.64
+      .lai = 1.0
+      .coverage = 1.0
+      .Jmax = 146.52
+      .Vcmax = 71.61
+      .GammaStar = 55.47
+      .Rd0 = 0.74
+      .alpha = 0.9125
+    }
+    Floor floor {
+      .swAbsorptivityTop = 0.9
+      .swReflectivityTop = 0.1
+      .swTransmissivityTop = 0.0
+      .swAbsorptivityBottom = 0.0
+      .swReflectivityBottom = 0.0
+      .swTransmissivityBottom = 1.0
+      .lwAbsorptivityTop = 0.9
+      .lwReflectivityTop = 0.1
+      .lwTransmissivityTop = 0.0
+      .lwAbsorptivityBottom = 0.0
+      .lwReflectivityBottom = 0.0
+      .lwTransmissivityBottom = 1.0
+      .Utop = 7.5
+      .Ubottom = 7.5
+      .heatCapacity = 42000.0
+    }
+    Budget budget {
+      .controlClimate = FALSE
+    }
+  }
+}
