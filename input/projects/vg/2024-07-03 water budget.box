@@ -1129,7 +1129,7 @@ Simulation sim {
       // &fogPowerUse = actuators/humidifiers/powerUse[value]
       &floorT = budget/floor[temperature]
       // &coverT = budget/cover[temperature]
-      &condensationHeatPump = budget[condensationHeatPump]
+      // &condensationHeatPump = budget[condensationHeatPump]
       &condensationCover = budget[condensationCover]
       // &balanceVent = budget[ventilationHeatLoss]
       // &balanceLw = budget/cover[lwAbsorbedTop] - budget/cover[lwEmissionTop]
@@ -1155,7 +1155,7 @@ Simulation sim {
       .xAxis = calendar[dateTime]
       // .maximizeWindow = TRUE
       PlotR  {
-        .ports = output/variables[*] | budget[subSteps]
+        .ports = output/variables[*] | budget[subSteps] |budget[waterBudgetCorr]
         .nrow = 3
       }
     }

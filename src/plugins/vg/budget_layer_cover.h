@@ -16,7 +16,7 @@ public:
     BudgetLayerCover(QString name, base::Box *parent);
     double updateCondensation();
     void updateLwEmission();
-    double updateDeltaTByCondensation(double insideCondensation, double outsideCondensation);
+    double updateDeltaTByCondensation(double condensation);
 private:
     // Input
     double coverPerGroundArea, indoorsRh;

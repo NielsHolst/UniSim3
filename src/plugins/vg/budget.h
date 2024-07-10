@@ -50,7 +50,8 @@ private:
         condensationCover, transpiration, ventedWater, condensationHeatPump, heatPumpDrying,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
         sunParAbsorbedInCover, sunParAbsorbedInScreens, sunParHittingPlant,
-        growthLightParHittingPlant, totalPar;
+        growthLightParHittingPlant, totalPar,
+        waterBudgetCorr;
     QDateTime subDateTime;
 
     // Volumes
