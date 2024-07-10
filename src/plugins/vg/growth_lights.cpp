@@ -17,7 +17,7 @@ namespace vg {
 PUBLISH(GrowthLights)
 
 GrowthLights::GrowthLights(QString name, Box *parent)
-    : Layer(name, parent)
+    : LayerAsOutput(name, parent)
 {
     help("sums power use and radiation from growth light");
     Input(parEmissionBottomLights).imports("./*[parEmissionBottom]");
@@ -27,7 +27,6 @@ GrowthLights::GrowthLights(QString name, Box *parent)
     Input(convectionBottomLights).imports("./*[convectionBottom]");
     Input(convectionTopLights)   .imports("./*[convectionTop]");
     Input(powerUsageLights).imports("./*[powerUsage]");
-    useLayerAsOutput();
     Output(parEmissionBottom).help("PAR emission downwards").unit("micromole PAR/m2/s");
     Output(swEmissionBottom).help("Short-wave emission downwards").unit("W/m2");
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");

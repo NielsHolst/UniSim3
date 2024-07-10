@@ -7,11 +7,11 @@
 */
 #ifndef FLOOR_H
 #define FLOOR_H
-#include "layer.h"
+#include "layer_as_input.h"
 
 namespace vg {
 
-class Floor : public Layer
+class Floor : public LayerAsInput
 {
 public:
     Floor(QString name, Box *parent);

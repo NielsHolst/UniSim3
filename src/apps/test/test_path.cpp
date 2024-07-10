@@ -84,6 +84,50 @@ void TestPath::testFindClassName() {
     UNEXPECTED_EXCEPTION;
 }
 
+void TestPath::testFindMany() {
+    bool excepted(false);
+    using Boxes = QVector<Box*>;
+    using Ports = QVector<Port*>;
+    Computation::changeStep(Computation::Step::Construct);
+
+    BoxBuilder builder;
+    try {
+        builder.
+            box("Simulation").name("sim").
+                box().name("A").
+                    aux("x").
+                    box().name("B").endbox().
+                endbox().
+                box().name("B").
+                    aux("x").
+                    aux("y").
+                endbox().
+                box().name("C").endbox().
+            endbox();
+    }
+    UNEXPECTED_EXCEPTION;
+
+    auto root = std::unique_ptr<Box>( builder.root() );
+    try {
+        root->initializeFamily();
+    }
+    UNEXPECTED_EXCEPTION;
+    QVector<Box*> B;
+    QVector<Port*> x;
+    try {
+        B = root->findMany<Box*>("A/B|sim/B");
+        QCOMPARE(B.size(), 2);
+        QCOMPARE(B[0]->parent()->name(), "A");
+        QCOMPARE(B[1]->parent()->name(), "sim");
+
+        x = root->findMany<Port*>("sim/B[x]|sim/A[x]");
+        QCOMPARE(x.size(), 2);
+        QCOMPARE(x[0]->parent()->name(), "A");
+        QCOMPARE(x[1]->parent()->name(), "B");
+    }
+    UNEXPECTED_EXCEPTION;
+}
+
 void TestPath::testLookInChildrenNotSelf() {
     bool excepted(false);
     using Ports = QVector<Port*>;

@@ -28,6 +28,7 @@ ActuatorHeatPump::ActuatorHeatPump(QString name, Box *parent)
     Input(state).imports("controllers/padAndFans[state]");
     Input(sendToBuffer).equals(true).help("Send heat to buffer?");
 
+    Output(maxCoolingLoad).help("From product").unit("kW");
     Output(condensation).help("Rate of water condensed in the unit").unit("kg/m2/s");
     Output(powerUseCooling).help("Power used for cooling").unit("W/m2");
     Output(powerUserParasitic).help("Power lost").unit("W/m2");

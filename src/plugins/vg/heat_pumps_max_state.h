@@ -27,6 +27,7 @@ private:
     double value;
     // data
     double _maxCoolingLoadsTotal;
+    bool _firstUpdate;
 };
 
 } //namespace

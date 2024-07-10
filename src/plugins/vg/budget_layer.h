@@ -17,14 +17,14 @@ class Layer;
 class BudgetLayer : public base::Box {
 public:
     BudgetLayer(QString name, base::Box *parent);
-    void attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bottom);
     void reset() final;
-    void updateConvection();
-    virtual double updateCondensation();
     virtual void updateLwEmission();
+    virtual void updateConvection();
+    virtual double updateCondensation();
     virtual double updateDeltaT(double timeStep);
-    void updateDeltaTEnergy();
+    void attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bottom);
     void updateNetRadiation();
+    void updateDeltaTEnergy();
     void checkParameters() const;
 private:
     // Inputs
@@ -43,8 +43,6 @@ private:
         swAbsorbedTop, swAbsorbedBottom,
         convectionTop, convectionBottom,
         radiationDeltaT, convectionDeltaT;
-    // Data
-    double rollBackTemperature;
 protected:
     // Outputs
     double
@@ -52,10 +50,11 @@ protected:
         lwAbsorbedTop, lwAbsorbedBottom,
         lwEmissionTop, lwEmissionBottom,
         parAbsorbedTop, parAbsorbedBottom,
-        netRadiation, netConvection,
+        netRadiation,
         condensation, totalDeltaT, totalDeltaTEnergy;
     // Data
-    const double *emissivityTop, *emissivityBottom,
+    const double
+        *emissivityTop, *emissivityBottom,
         *Utop, *Ubottom,
         *heatCapacity,
         *temperatureVolumeTop, *temperatureVolumeBottom,
@@ -64,9 +63,6 @@ private:
     // Data
     const Layer *attachedLayer;
     BudgetVolume *volumeTop, *volumeBottom;
-    bool
-        lwEmissionTopUpdatedExternally, lwEmissionBottomUpdatedExternally,
-        convectionTopUpdatedExternally, convectionBottomUpdatedExternally;
     // Friends
     friend class Budget;
 };

@@ -49,8 +49,7 @@ private:
     double subTimeStep, maxDeltaT, ventilationHeatLoss,
         condensationCover, transpiration, ventedWater, condensationHeatPump, heatPumpDrying,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
-        sunParAbsorbedInCover, sunParAbsorbedInScreens, sunParHittingPlant,
-        growthLightParHittingPlant, totalPar;
+        sunParHittingPlant, growthLightParHittingPlant, totalPar;
     QDateTime subDateTime;
 
     // Volumes
@@ -79,11 +78,10 @@ private:
     Floor *floor;
 
     // Controllers etc.
-    QVector<Box*> handheldBoxes;
     Box
-//        *heatingSp, *heatingController,
-//        *ventilationSp, *ventilationController, *ventilationActuator,
-//        *heatPumpsSp, *heatPumpsController, *heatPumpsActuator,
+        *heatingSp, *ventilationSp, *heatPumpsSp,
+        *heatingController, *ventilationController, *heatPumpsController,
+        *ventilationActuator, *heatPumpsActuator,
         *outputWriter;
 
     // State
@@ -101,7 +99,7 @@ private:
     Parameters swParam, lwParam;
 
     // Actuators
-//    ActuatorVentilation *actuatorVentilation;
+    ActuatorVentilation *actuatorVentilation;
     const double *ventilationRate;
 
     // Methods
@@ -122,7 +120,7 @@ private:
     void updateLwEmission();
     void updateNetRadiation();
     void updateWaterBalance(double subTimeStep);
-    void updateInSubSteps();
+    void updateLayersAndVolumes();
     void updateCo2();
 //    void resetState();
     void distributeRadDown(State &s, const Parameters &p);

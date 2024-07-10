@@ -27,6 +27,8 @@
 
 #include <base/dialog.h>
 
+using std::min;
+using std::max;
 using namespace base;
 using namespace phys_math;
 using namespace TestNum;
@@ -60,7 +62,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(outdoorsRh).imports("outdoors[rh]");
     Input(outdoorsCo2).imports("outdoors[co2]");
     Input(transpirationRate).imports("gh/plant[transpiration]");
-    Input(humidificationRate).imports("actuators/humidifiers[vapourFlux]");
+    Input(humidificationRate).imports("actuators/humidifiers/vapourFlux[value]");
     Input(Pn).imports("gh/plant[Pn]");
     Input(co2Injection).imports("gh/actuators/co2[value]");
     Input(heatPipeFlux).imports("gh/actuators/heatPipes[heatFlux]");
@@ -88,8 +90,6 @@ Budget::Budget(QString name, base::Box *parent)
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
     Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
     Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
-    Output(sunParAbsorbedInCover).unit("&micro;mol/m2/s").help("Ignoring transmission and reflection of sunlight");
-    Output(sunParAbsorbedInScreens).unit("&micro;mol/m2/s").help("Ignoring transmission and reflection of sunlight");
     Output(sunParHittingPlant).unit("&micro;mol/m2/s").help("Sunlight PAR hitting plant canopy");
     Output(growthLightParHittingPlant).unit("&micro;mol/m2/s").help("Growth light PAR hitting plant canopy");
     Output(totalPar).unit("&micro;mol/m2/s").help("Total PAR hitting plant canopy");
@@ -160,7 +160,13 @@ void Budget::addLayers() {
     }
     if (growthLights) {
         builder.
-            box("BudgetLayerGrowthLights").name("growthLights").
+            box("BudgetLayer").name("growthLights").
+                port("parEmissionBottom").imports("actuators/growthLights[parEmissionBottom]").
+                port("swEmissionBottom") .imports("actuators/growthLights[swEmissionBottom]").
+                port("lwEmissionTop")    .imports("actuators/growthLights[lwEmissionTop]").
+                port("lwEmissionBottom") .imports("actuators/growthLights[lwEmissionBottom]").
+                port("convectionTop")    .imports("actuators/growthLights[convectionTop]").
+                port("convectionBottom") .imports("actuators/growthLights[convectionBottom]").
             endbox();
     }
     if (plant) {
@@ -171,11 +177,16 @@ void Budget::addLayers() {
             endbox();
     }
     builder.
-        box("BudgetLayerHeatPipes").name("heatPipes").
+        box("BudgetLayer").name("heatPipes").
+            port("lwEmissionTop")   .imports("actuators/heatPipes[lwEmissionTop]").
+            port("lwEmissionBottom").imports("actuators/heatPipes[lwEmissionBottom]").
+            port("convectionTop")   .imports("actuators/heatPipes[convectionTop]").
+            port("convectionBottom").imports("actuators/heatPipes[convectionBottom]").
+            port("temperature")     .imports("actuators/heatPipes[inflowTemperatureAvg]").
         endbox();
     builder.
-        box("BudgetLayer").name("floor").
-    endbox();
+        box("BudgetLayerFloor").name("floor").
+        endbox();
 
 
     // Attach sky
@@ -223,6 +234,16 @@ void Budget::addLayers() {
 
     // Done adding layers
     numLayers = static_cast<int>(layers.size());
+
+    // Find controllers and actuators
+    heatingSp             = controlClimate ? findOne<Box*>("setpoints/heating") : nullptr;
+    heatingController     = controlClimate ? findOne<Box*>("controllers/heatPipes") : nullptr;
+    ventilationSp         = controlClimate ? findOne<Box*>("setpoints/ventilation") : nullptr;
+    ventilationController = controlClimate ? findOne<Box*>("controllers/ventilation") : nullptr;
+    ventilationActuator   = controlClimate ? findOne<Box*>("actuators/ventilation") : nullptr;
+    heatPumpsSp           = controlClimate ? findOne<Box*>("setpoints/heatPumps") : nullptr;
+    heatPumpsController   = controlClimate ? findOne<Box*>("controllers/heatPumps") : nullptr;
+    heatPumpsActuator     = controlClimate ? findOne<Box*>("actuators/heatPumps") : nullptr;
 }
 
 void Budget::addState() {
@@ -273,29 +294,14 @@ void Budget::addParameters() {
 
 void Budget::initialize() {
     indoorsHeatCapacity = RhoAir*CpAir*averageHeight;
-    // Hand-held setpoints, controllers and actuators
-    handheldBoxes = findMany<Box*>(
-        "setpoints/heating|"
-        "setpoints/heatPumps|"
-        "setpoints/ventilation|"
-        "setPoints/padAndFans|"
-        "setPoints/humidification|"
-
-        "controllers/desiredMinTemperature|"
-        "controllers/heatPipes|"
-        "controllers/heatPumps|"
-        "controllers/ventilation|"
-        "controllers/padAndFans|"
-        "controllers/humidification|"
-
-        "actuators/heatPipes|"
-        "actuators/heatPumps|"
-        "actuators/ventilation|"
-        "actuators/padAndFans|"
-        "actuators/humidifiers"
-    );
-    ventilationRate = findOne<ActuatorVentilation*>("actuators/ventilation")->port("value")->valuePtr<double>();
-    // Find writer for detailed output
+    // Hand-held controllers and actuators
+    actuatorVentilation = findOne<ActuatorVentilation*>("actuators/ventilation");
+    ventilationRate = actuatorVentilation->port("value")->valuePtr<double>();
+    if (controlClimate) {
+        heatingController->initializeFamily();
+        ventilationController->initializeFamily();
+    }
+    // Find write for detailed output
     outputWriter = findMaybeOne<Box*>("outputWriter");
     if (!outputWriter)
         writeHighRes = false;
@@ -308,6 +314,11 @@ void Budget::reset() {
     _maxDeltaT = tempPrecision;
     // Correct baby step to be max 1% of the time step
     babyTimeStep = std::min(babyTimeStep, timeStep/100.);
+    // Hand-held controllers and actuators
+    if (controlClimate) {
+        heatingController->resetFamily();
+        ventilationController->resetFamily();
+    }
     // Log output
     if (writeLog)
         logger.open(environment().outputFileNamePath("vg_log.txt"));
@@ -318,7 +329,7 @@ void Budget::update() {
     const double
             indoorsTemp0 = indoorsVol->temperature,
             indoorsRh0   = indoorsVol->rh;
-    updateInSubSteps();
+    updateLayersAndVolumes();
     updateCo2();
 
     const double
@@ -342,7 +353,7 @@ void Budget::cleanup() {
         logger.close();
 }
 
-void Budget::updateInSubSteps() {
+void Budget::updateLayersAndVolumes() {
     const int maxSubSteps = 1000;
     maxDeltaT = 0.;
     subSteps = 0;
@@ -365,8 +376,18 @@ void Budget::updateInSubSteps() {
         applyDeltaT();
 
         if (controlClimate) {
-            for (Box *box : handheldBoxes)
-                box->updateFamily();
+            heatingSp->updateFamily();
+            heatingController->updateFamily();
+            heatingActuator->updateFamily();
+            budgetLayerHeatPipes->updateFamily();
+
+            ventilationSp->updateFamily();
+            ventilationController->updateFamily();
+            ventilationActuator->updateFamily();
+
+            heatPumpsSp->updateFamily();
+            heatPumpsController->updateFamily();
+            heatPumpsActuator->updateFamily();
         }
 
         timePassed += subTimeStep;
@@ -399,7 +420,7 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
         distributeRadiation(swState,  swParam);
         distributeRadiation(parState, swParam);
     }
-    distributeRadiation(lwState, lwParam);
+    distributeRadiation(lwState,  lwParam);
 
     updateNetRadiation();
     updateConvection();
@@ -426,85 +447,54 @@ void Budget::updateConvection() {
         layer->updateConvection();
 }
 
-namespace {
-
-struct WaterIntegration {
-    double
-        indoorsAh,
-        deltaAH,
-        transpiration,
-        condensation,
-        ventilation;
-};
-
-WaterIntegration waterIntegration(
-        double x,  // time step
-        double y0, // indoors ah
-        double T,  // transpiration
-        double H,  // humidification
-        double cn, // condensation rate
-        double C,  // sah of cover
-        double v,  // ventilation rate
-        double V)  // outdoors ah
-{
-    if (y0 < C)
-        cn = 0.;
-    const double
-        TH            = T + H,
-        indoorsAh0    = y0,
-        indoorsAh1    = (cn + v > 0.) ? (-exp(x*(-(cn + v)))*(cn*C - y0*(cn + v) + TH + v*V) + cn*C + TH + v*V)/(cn + v) : 0.,
-        avgAh         = (indoorsAh0 + indoorsAh1)/2,
-        transpiration = T*x,
-        condensation  = std::max(cn*(avgAh - C)*x, 0.),
-        ventilation   = v*(avgAh-V)*x;
-
-    return WaterIntegration{
-        indoorsAh1,
-        indoorsAh1 - indoorsAh0,
-        transpiration,
-        condensation,
-        ventilation
-    };
-}
-
-}
-
 void Budget::updateWaterBalance(double timeStep) {
     const double
-       indoorsAh  = ahFromRh(indoorsVol->temperature,  indoorsVol->rh),
-       outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh),
-       coverSah   = sah(budgetLayerCover->temperature),
-       v          = (*ventilationRate)/3600.;
+        c   = 2e-3*coverPerGroundArea/averageHeight,
+        v   = (*ventilationRate)/3600.,
+        cv  = c + v,
+        tau = exp(-cv*timeStep),
+        T   = transpirationRate/averageHeight,
+        indoorsAh0  = ahFromRh(indoorsVol->temperature,  indoorsVol->rh),
+        outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh),
+        coverSah   = sah(budgetLayerCover->temperature);
+    const bool
+        hasCondensation = (coverSah < indoorsAh0);
+    double
+        transpiration = 0.,
+        condensation  = 0.,
+        advection     = 0.;
+    if (cv > 0.) {
+        transpiration = (1. - tau)*T/cv,
+        condensation  = hasCondensation ? c*(coverSah    - tau*(coverSah - indoorsAh0))/cv : 0.,
+        advection     = v*(outdoorsAh  - tau*(outdoorsAh - indoorsAh0))/cv;
+    }
+//    if (condensationCover > 0.)
+//        dialog().information("Cover condensation: " + QString::number(condensationCover));
+//    if (ventedWater > 0.)
+//        dialog().information("ventedWater: " + QString::number(ventedWater));
 
-    WaterIntegration w = waterIntegration(
-        timeStep,
-        indoorsAh,
-        transpirationRate/averageHeight,
-        (humidificationRate + padAndFanVapourFlux)/averageHeight,
-        2e-3*coverPerGroundArea/averageHeight,
-        coverSah,
-        v,
-        outdoorsAh
-    );
-    const double insideCondensation = w.condensation*averageHeight;
     // Outputs
-    transpiration        += w.transpiration*averageHeight;
-    condensationCover    -= insideCondensation;
-    ventedWater          -= w.ventilation*averageHeight;       // kg/m3 * m   = kg/m2
-    condensationHeatPump -= heatPumpCondensationRate*timeStep; // kg/m2/s * s = kg/m2
+    const double
+        indoorsAh    = transpiration  + condensation + advection,
+        indoorsAhAvg = (indoorsAh0 + indoorsAh)/2.;
 
-    // Indoors state update
-    // Since heat pump condensation is so small, it is simply subtracted
-    indoorsVol->rh     = rhFromAh(indoorsVol->temperature, std::max(w.indoorsAh - heatPumpCondensationRate*timeStep/averageHeight, 0.));
+    // State
+    indoorsVol->rh             = rhFromAh(indoorsVol->temperature, indoorsAh);
+    Budget::transpiration     += transpirationRate;
+    Budget::condensationCover -= hasCondensation ? c*(indoorsAhAvg - coverSah) : 0.;
+    Budget::ventedWater       -= v*(indoorsAhAvg - outdoorsAh);
+
+//    condensationHeatPump -= heatPumpCondensationRate*timeStep; // kg/m2/s * s = kg/m2
+
 
     // Outside latent heat
     const double
-       condRate   = 2e-3*coverPerGroundArea,
-       outsideCondensation  = std::max(condRate*(outdoorsAh - coverSah)*timeStep, 0.);
+        condRate   = 2e-3*coverPerGroundArea,
+        outsideCondensation  = std::max(condRate*(outdoorsAh - coverSah)*timeStep, 0.);
 
     // Update cover temperature
-    coverLatentHeatFlux = LHe*(insideCondensation + outsideCondensation);
-    double deltaT = budgetLayerCover->updateDeltaTByCondensation(insideCondensation, outsideCondensation);
+    coverLatentHeatFlux = LHe*(condensationCover + outsideCondensation);
+    double deltaT = budgetLayerCover->updateDeltaTByCondensation(condensationCover, outsideCondensation);
     budgetLayerCover->updateDeltaTEnergy();
     if (fabs(deltaT) > _maxDeltaT)
         _maxDeltaT = fabs(deltaT);
@@ -637,6 +627,10 @@ void Budget::distributeRadiation(State &s, const Parameters &p) {
         residual = *s.F.at(0);
         for (int i=1; i<numLayers; ++i)
             residual += *s.F.at(i) + *s.F_.at(i);
+//        if (step == 153) {
+//            dialog().information(dump(lwState, Dump::WithHeader));
+//            dialog().information(QString::number(radIterations) + " " + QString::number(residual));
+//        }
     } while (residual > radPrecision && radIterations < maxIterations);
     if (radIterations == maxIterations)
        ThrowException("Radiation budget did not converge").value(residual).
@@ -667,7 +661,7 @@ void Budget::applyDeltaT() {
 }
 
 void Budget::babyStep() {
-    // Force a tentative, short subTimeStep to assess the rate of temperature change
+    // Force a tentative, short _subTimeStep to assess the rate of temperature change
     _maxDeltaT = subTimeStep*tempPrecision/babyTimeStep;
 }
 

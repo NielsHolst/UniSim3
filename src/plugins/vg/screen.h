@@ -7,12 +7,11 @@
 */
 #ifndef SCREEN_H
 #define SCREEN_H
-#include "layer.h"
-#include "layer_adjusted.h"
+#include "layer_as_input.h"
 
 namespace vg {
 
-class Screen : public Layer
+class Screen : public LayerAsInput
 {
 public:
     Screen(QString name, Box *parent);

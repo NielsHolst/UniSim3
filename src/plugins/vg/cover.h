@@ -7,11 +7,11 @@
 */
 #ifndef COVER_H
 #define COVER_H
-#include "layer.h"
+#include "layer_as_input.h"
 
 namespace vg {
 
-class Cover : public Layer
+class Cover : public LayerAsInput
 {
 public:
     Cover(QString name, Box *parent);

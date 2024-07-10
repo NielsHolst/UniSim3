@@ -25,7 +25,8 @@ HEADERS +=  \
     budget.h \
     budget_layer.h \
     budget_layer_cover.h \
-    budget_layer_floor.h \
+    budget_layer_growth_lights.h \
+    budget_layer_heat_pipes.h \
     budget_layer_screen.h \
     budget_layer_sky.h \
     budget_volume.h \
@@ -45,8 +46,11 @@ HEADERS +=  \
     heat_pumps_max_state.h \
     humidification_controller.h \
     humidifier_product.h \
+    humidifiers.h \
     ig_indoors_humidity.h \
     layer.h \
+    layer_as_input.h \
+    layer_as_output.h \
     layer_parameters.h \
     leakage_ventilation.h \
     light_sum.h \
@@ -85,7 +89,8 @@ SOURCES += \
     budget.cpp \
     budget_layer.cpp \
     budget_layer_cover.cpp \
-    budget_layer_floor.cpp \
+    budget_layer_growth_lights.cpp \
+    budget_layer_heat_pipes.cpp \
     budget_layer_screen.cpp \
     budget_layer_sky.cpp \
     budget_volume.cpp \
@@ -105,8 +110,11 @@ SOURCES += \
     heat_pumps_max_state.cpp \
     humidification_controller.cpp \
     humidifier_product.cpp \
+    humidifiers.cpp \
     ig_indoors_humidity.cpp \
     layer.cpp \
+    layer_as_input.cpp \
+    layer_as_output.cpp \
     layer_parameters.cpp \
     leakage_ventilation.cpp \
     light_sum.cpp \

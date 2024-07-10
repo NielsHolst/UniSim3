@@ -52,7 +52,6 @@ BudgetLayer::BudgetLayer(QString name, base::Box *parent)
     Output(totalDeltaTEnergy).unit("J/m2").help("Change in thermal heat contained in layer");
     Output(condensation).unit("kg/m2").help("Condensation (top+bottom)");
     Output(netRadiation).unit("W/m2").help("Net radiation (absorption - emission");
-    Output(netConvection).unit("W/m2").help("Net radiation (absorption - emission");
 }
 
 void BudgetLayer::attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bottom)
@@ -79,14 +78,6 @@ void BudgetLayer::attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bo
 
 void BudgetLayer::reset() {
     temperature = initTemperature;
-    lwEmissionTopUpdatedExternally    = (port("lwEmissionTop")->status()    == PortStatus::UserDefined);
-    lwEmissionBottomUpdatedExternally = (port("lwEmissionBottom")->status() == PortStatus::UserDefined);
-    convectionTopUpdatedExternally    = (port("convectionTop")->status()    == PortStatus::UserDefined);
-    convectionBottomUpdatedExternally = (port("convectionBottom")->status() == PortStatus::UserDefined);
-    if (convectionTopUpdatedExternally && !temperatureVolumeTop)
-        ThrowException("Volume on top is missing").context(this);
-    if (convectionBottomUpdatedExternally && !temperatureVolumeBottom)
-        ThrowException("Volume below is missing").context(this);
     update();
 }
 
@@ -123,21 +114,14 @@ void BudgetLayer::updateDeltaTEnergy() {
 }
 
 void BudgetLayer::updateLwEmission() {
-    if (!lwEmissionTopUpdatedExternally)
-        lwEmissionTop    = Sigma*(*emissivityTop)*p4K(temperature);
-    if (!lwEmissionBottomUpdatedExternally)
-        lwEmissionBottom = Sigma*(*emissivityBottom)*p4K(temperature);
+    lwEmissionTop    = Sigma*(*emissivityTop)*p4K(temperature);
+    lwEmissionBottom = Sigma*(*emissivityBottom)*p4K(temperature);
 }
 
 void BudgetLayer::updateConvection() {
     // Flux is positive if volume is warmer than layer
-    if (!convectionTopUpdatedExternally) {
-        convectionTop    = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeTop)    - temperature)*(*Utop);
-    }
-    if (!convectionBottomUpdatedExternally) {
-        convectionBottom = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeBottom) - temperature)*(*Ubottom);
-    }
-    netConvection = convectionTop + convectionBottom;
+    convectionTop    = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeTop)    - temperature)*(*Utop);
+    convectionBottom = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeBottom) - temperature)*(*Ubottom);
 
     // Transfer fluxes to neighbouring volumes
     if (volumeBottom)

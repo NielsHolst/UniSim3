@@ -5,22 +5,29 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <base/publish.h>
-#include "cover.h"
-
-using namespace base;
+#ifndef HUMIDIFIERS_H
+#define HUMIDIFIERS_H
+#include <base/box.h>
 
 namespace vg {
 
-PUBLISH(Cover)
-
-Cover::Cover(QString name, Box *parent)
-    : LayerAsInput(name, parent)
-{
-    help("holds cover radiation and heat parameters");
-    port("checkBoundaries")->equals(true);
-}
+class Humidifiers : public base::Box {
+public:
+    Humidifiers(QString name, base::Box *parent);
+    void reset();
+    void update();
+private:
+    // Inputs
+    QVector<double>
+        powerUses,
+        vapourFluxes;
+    // Outputs
+    double
+        powerUse,
+        vapourFlux;
+};
 
 } //namespace
 
 
+#endif

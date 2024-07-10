@@ -28,10 +28,7 @@ AverageCover::AverageCover(QString name, Box *parent)
     Input(swShading).imports("shelter/shading[swReflectivity]");
     Input(lwShading).imports("shelter/shading[lwReflectivity]");
     Input(faceAreas).imports("shelter/faces/*[area]");
-//    Input(screenStates).imports("actuators/screens/*[state]");
     Input(screenStates).imports("../screens/*[state]");
-    NamedOutput("UbottomAdj", Ubottom).help("Alias");
-    NamedOutput("UtopAdj", Utop).help("Alias");
 }
 
 void AverageCover::reset() {

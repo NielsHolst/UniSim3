@@ -7,14 +7,14 @@
 */
 #ifndef AVERAGE_SHELTER_LAYER_H
 #define AVERAGE_SHELTER_LAYER_H
-#include "layer.h"
+#include "layer_as_output.h"
 #include "layer_parameters.h"
 
 namespace vg {
 
 class Face;
 
-class AverageShelterLayer : public Layer
+class AverageShelterLayer : public LayerAsOutput
 {
 public:
     AverageShelterLayer(QString name, Box *parent);

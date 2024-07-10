@@ -7,11 +7,11 @@
 */
 #ifndef PLANT_H
 #define PLANT_H
-#include "layer.h"
+#include "layer_as_output.h"
 
 namespace vg {
 
-class Plant : public Layer
+class Plant : public LayerAsOutput
 {
 public:
     Plant(QString name, Box *parent);

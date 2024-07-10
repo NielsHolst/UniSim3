@@ -14,9 +14,9 @@ class TestPath : public QObject
 private slots:
     void testFindBox();
     void testFindClassName();
+    void testFindMany();
     void testLookInChildrenNotSelf();
     void testFindBoxVsPort();
-
 };
 
 DECLARE_TEST(TestPath)

@@ -15,10 +15,9 @@ namespace vg {
 PUBLISH(Floor)
 
 Floor::Floor(QString name, Box *parent)
-    : Layer(name, parent)
+    : LayerAsInput(name, parent)
 {
     help("holds floor radiation and heat parameters");
-    useLayerAsInput();
 }
 
 } //namespace

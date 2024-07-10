@@ -5,22 +5,20 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <base/publish.h>
-#include "cover.h"
-
-using namespace base;
+#ifndef BUDGET_LAYER_HEAT_PIPES_H
+#define BUDGET_LAYER_HEAT_PIPES_H
+#include "budget_layer.h"
 
 namespace vg {
 
-PUBLISH(Cover)
+class BudgetLayerHeatPipes : public BudgetLayer {
+public:
+    BudgetLayerHeatPipes(QString name, base::Box *parent);
+    // Radiation and heat are not determined by temperature
+    virtual void updateLwEmission() {}
+    virtual void updateConvection() {}
+};
 
-Cover::Cover(QString name, Box *parent)
-    : LayerAsInput(name, parent)
-{
-    help("holds cover radiation and heat parameters");
-    port("checkBoundaries")->equals(true);
 }
 
-} //namespace
-
-
+#endif

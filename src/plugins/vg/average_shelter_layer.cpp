@@ -14,13 +14,12 @@ using namespace base;
 namespace vg {
 
 AverageShelterLayer::AverageShelterLayer(QString name, Box *parent)
-    : Layer(name, parent)
+    : LayerAsOutput(name, parent)
 {
     help("computes average parameters for covers and screens");
     Input(areas).imports("shelter/faces/*[area]");
     Input(weights).imports("shelter/faces/*[weight]");
     Input(groundArea).imports("gh/geometry[groundArea]");
-    useLayerAsOutput();
     port("Utop")->unit("W/K/m2 ground");
     port("Ubottom")->unit("W/K/m2 ground");
     port("heatCapacity")->unit("J/K/m2 ground");

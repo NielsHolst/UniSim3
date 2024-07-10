@@ -17,10 +17,9 @@ namespace vg {
 PUBLISH(Sky)
 
 Sky::Sky(QString name, Box *parent)
-    : Layer(name, parent)
+    : LayerAsOutput(name, parent)
 {
     help("computes sky temperature from temperature and RH");
-    useLayerAsOutput();
     QString maybeTsky = "if exists(outdoors[Tsky]) then outdoors[Tsky] else -273.0";
     Input(intercept).equals(0.732).help("Emissivity intercept on dew point temperature").unit("[0;1]");
     Input(slope).equals(0.00635).help("Emissivity slope on dew point temperature").unit("/K");

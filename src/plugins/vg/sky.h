@@ -8,11 +8,11 @@
 #ifndef SKY_H
 #define SKY_H
 
-#include "layer.h"
+#include "layer_as_output.h"
 
 namespace vg {
 
-class Sky : public Layer
+class Sky : public LayerAsOutput
 {
 public:
     Sky(QString name, Box *parent);

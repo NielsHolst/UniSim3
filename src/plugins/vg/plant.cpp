@@ -20,7 +20,7 @@ namespace vg {
 PUBLISH(Plant)
 
 Plant::Plant(QString name, Box *parent)
-    : Layer(name, parent)
+    : LayerAsOutput(name, parent)
 {
     Input(k_sw).equals(0.7).unit("[0;1]").help("Short-wave extinction coefficient");
     Input(k_lw).equals(1.).unit("[0;1]").help("Long-wave extinction coefficient");
@@ -52,7 +52,6 @@ Plant::Plant(QString name, Box *parent)
     Input(indoorsCo2).imports("gh/budget/indoors[co2]");
     Input(timeStep).imports("calendar[timeStepSecs]");
 
-    useLayerAsOutput();
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
     Output(incidentPar).unit("&micro;mol PAR/m2 ground/s").help("PAR hitting the canopy");

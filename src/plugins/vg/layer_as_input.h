@@ -5,22 +5,17 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <base/publish.h>
-#include "cover.h"
-
-using namespace base;
+#ifndef LAYER_AS_INPUT_H
+#define LAYER_AS_INPUT_H
+#include "layer.h"
 
 namespace vg {
 
-PUBLISH(Cover)
-
-Cover::Cover(QString name, Box *parent)
-    : LayerAsInput(name, parent)
+class LayerAsInput : public vg::Layer
 {
-    help("holds cover radiation and heat parameters");
-    port("checkBoundaries")->equals(true);
-}
+public:
+    LayerAsInput(QString name, base::Box *parent);
+};
 
 } //namespace
-
-
+#endif

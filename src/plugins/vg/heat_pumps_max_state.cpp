@@ -28,14 +28,18 @@ HeatPumpsMaxState::HeatPumpsMaxState(QString name, Box *parent)
 }
 
 void HeatPumpsMaxState::reset() {
-    _maxCoolingLoadsTotal = 0.;
-    Q_ASSERT(numbers.size() == maxCoolingLoads.size());
-    for (int i=0; i <numbers.size(); ++i)
-        _maxCoolingLoadsTotal += numbers.at(i)*maxCoolingLoads.at(i);
-    update();
+    _firstUpdate = true;
 }
 
 void HeatPumpsMaxState::update() {
+    // This code block cannot be moved to reset() because actuators are declared further down in the boxscript
+    if (_firstUpdate) {
+        _firstUpdate = false;
+        _maxCoolingLoadsTotal = 0.;
+        Q_ASSERT(numbers.size() == maxCoolingLoads.size());
+        for (int i=0; i <numbers.size(); ++i)
+            _maxCoolingLoadsTotal += numbers.at(i)*maxCoolingLoads.at(i);
+    }
     value = TestNum::eqZero(mode) ? 0. : std::min(maxPowerUse/_maxCoolingLoadsTotal, 1.);
 }
 

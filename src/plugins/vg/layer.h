@@ -21,8 +21,6 @@ private:
     bool checkBoundaries;
 protected:
     // Methods
-    void useLayerAsInput();
-    void useLayerAsOutput();
     void makeTransparent();
     void checkParameters() const;
 private:
