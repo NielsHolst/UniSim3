@@ -23,8 +23,6 @@ public:
     virtual double updateCondensation();
     virtual double updateDeltaT(double timeStep);
     void attach(const Layer *layer, BudgetVolume *top, BudgetVolume *bottom);
-    void updateNetRadiation();
-    void updateDeltaTEnergy();
     void checkParameters() const;
 private:
     // Inputs

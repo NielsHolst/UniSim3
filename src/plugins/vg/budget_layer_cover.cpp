@@ -46,9 +46,13 @@ void BudgetLayerCover::updateLwEmission() {
 }
 
 double BudgetLayerCover::updateDeltaTByCondensation(double insideCondensation, double outsideCondensation) {
-    condInsideDeltaT  = LHe*insideCondensation/(*heatCapacity);
-    condOutsideDeltaT = LHe*outsideCondensation/(*heatCapacity);
-    return totalDeltaT += condInsideDeltaT + condOutsideDeltaT;
+    // Add condensation (kg/m2) energy and DeltaT to values set på radiation and convection
+    const double
+        deltaEnergy = LHe*(insideCondensation + outsideCondensation),
+        deltaT      = deltaEnergy/(*heatCapacity);
+    totalDeltaTEnergy += deltaEnergy;
+    totalDeltaT       += deltaT;
+    return totalDeltaT;
 }
 
 }

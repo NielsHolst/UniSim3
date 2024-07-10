@@ -81,14 +81,12 @@ void BudgetLayer::reset() {
     update();
 }
 
-
-void BudgetLayer::updateNetRadiation() {
+double BudgetLayer::updateDeltaT(double timeStep) {
+    // Update net radiation
     netRadiation =   swAbsorbedTop + swAbsorbedBottom
                    + lwAbsorbedTop + lwAbsorbedBottom
                    - lwEmissionTop - lwEmissionBottom;
-}
 
-double BudgetLayer::updateDeltaT(double timeStep) {
     if (eqZero(*heatCapacity)) {
         radiationDeltaT =
         convectionDeltaT =
@@ -105,12 +103,8 @@ double BudgetLayer::updateDeltaT(double timeStep) {
         // Change total
         totalDeltaT = radiationDeltaT + convectionDeltaT;
     }
-    updateDeltaTEnergy();
-    return totalDeltaT;
-}
-
-void BudgetLayer::updateDeltaTEnergy() {
     totalDeltaTEnergy = totalDeltaT*(*heatCapacity);
+    return totalDeltaT;
 }
 
 void BudgetLayer::updateLwEmission() {

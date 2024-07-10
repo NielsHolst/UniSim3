@@ -401,7 +401,6 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
     }
     distributeRadiation(lwState, lwParam);
 
-    updateNetRadiation();
     updateConvection();
     updateDeltaT(subTimeStep);
     // Update max temperature within simulation time step
@@ -412,11 +411,6 @@ void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
 void Budget::updateLwEmission() {
     for (BudgetLayer *layer : layers)
         layer->updateLwEmission();
-}
-
-void Budget::updateNetRadiation() {
-    for (BudgetLayer *layer : layers)
-        layer->updateNetRadiation();
 }
 
 void Budget::updateConvection() {
@@ -505,7 +499,6 @@ void Budget::updateWaterBalance(double timeStep) {
     // Update cover temperature
     coverLatentHeatFlux = LHe*(insideCondensation + outsideCondensation);
     double deltaT = budgetLayerCover->updateDeltaTByCondensation(insideCondensation, outsideCondensation);
-    budgetLayerCover->updateDeltaTEnergy();
     if (fabs(deltaT) > _maxDeltaT)
         _maxDeltaT = fabs(deltaT);
 }
