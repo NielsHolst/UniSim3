@@ -51,7 +51,7 @@ private:
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
         sunParAbsorbedInCover, sunParAbsorbedInScreens, sunParHittingPlant,
         growthLightParHittingPlant, totalPar,
-        waterBudgetCorr;
+        coverConductance;
     QDateTime subDateTime;
 
     // Volumes

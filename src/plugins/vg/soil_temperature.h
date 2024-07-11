@@ -20,17 +20,20 @@ public:
     void update();
 private:
     // Inputs
+    int avgPeriod;
     double
         outdoorsTemperature,
-        initial, min, max;
+        min, max;
     bool atMidnight;
     // Outputs
     double value;
     // Data
-    const int _bufSize = 7;
     base::CircularBuffer<double> _buf;
     double _dailySum;
+    bool _doRefill;
     int _steps;
+    // Methods
+    void fillBuffer(double temperature);
 };
 
 } //namespace

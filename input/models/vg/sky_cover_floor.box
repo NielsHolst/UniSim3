@@ -10,7 +10,7 @@ Simulation sim {
     .latitude = 61.4978
     .longitude = 23.761
     .begin = global[beginDate] - 1
-    .end = 2024/07/30T00:00:00
+    .end = 2024/07/07T00:00:00
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -21,6 +21,7 @@ Simulation sim {
       .ignoreYear = TRUE
     }
     SoilTemperature soilTemperature {
+      .initial = 17
     }
   }
   Sky sky {
@@ -1126,7 +1127,7 @@ Simulation sim {
       // &fogVapourFlux = actuators/humidifiers/vapourFlux[value]
       // &fogState = controllers/humidification[state]
       // &fogPowerUse = actuators/humidifiers/powerUse[value]
-      // &floorT = budget/floor[temperature]
+      &floorT = budget/floor[temperature]
       // &coverT = budget/cover[temperature]
       // &condensationHeatPump = budget[condensationHeatPump]
       &condensationCover = budget[condensationCover]
@@ -1154,7 +1155,7 @@ Simulation sim {
       .xAxis = calendar[dateTime]
       // .maximizeWindow = TRUE
       PlotR  {
-        .ports = output/variables[*] | budget[subSteps] | soilTemperature[value] | budget[coverConductance]
+        .ports = output/variables[*] | budget[subSteps] |budget[waterBudgetCorr]
         .nrow = 3
       }
     }

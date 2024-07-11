@@ -93,7 +93,7 @@ Budget::Budget(QString name, base::Box *parent)
     Output(sunParHittingPlant).unit("&micro;mol/m2/s").help("Sunlight PAR hitting plant canopy");
     Output(growthLightParHittingPlant).unit("&micro;mol/m2/s").help("Growth light PAR hitting plant canopy");
     Output(totalPar).unit("&micro;mol/m2/s").help("Total PAR hitting plant canopy");
-    Output(waterBudgetCorr);
+    Output(coverConductance);
 }
 
 void Budget::amend() {
@@ -497,8 +497,12 @@ void Budget::updateWaterBalance(double timeStep) {
        indoorsAh  = ahFromRh(indoorsVol->temperature,  indoorsVol->rh),
        outdoorsAh = ahFromRh(outdoorsTemperature, outdoorsRh),
        coverSah   = sah(budgetLayerCover->temperature),
-       c          = 2e-3*coverPerGroundArea/averageHeight,
+       indoorsVirtT = virtualTemperatureFromAh(indoorsVol->temperature,       indoorsVol->rh),
+       coverVirtT   = virtualTemperatureFromAh(budgetLayerCover->temperature, indoorsVol->rh),
+//       c          = 2e-3*coverPerGroundArea/averageHeight,
+       c          = (indoorsVirtT > coverVirtT) ? 1.64e-3*pow(indoorsVirtT - coverVirtT, 0.333)*coverPerGroundArea/averageHeight : 0.,
        v          = (*ventilationRate)/3600.;
+    coverConductance = c;
 
     WaterIntegration w = waterIntegration(
         timeStep,
@@ -534,7 +538,6 @@ void Budget::updateWaterBalance(double timeStep) {
 
     d_condensationCover *= correction;
     d_ventedWater       *= correction;
-    waterBudgetCorr = correction;
 
 //    double correctedSum =
 //            - d_condensationCover
