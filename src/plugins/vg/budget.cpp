@@ -513,41 +513,43 @@ void Budget::updateWaterBalance(double timeStep) {
     double
         // kg/m3 * m   = kg/m2
         d_condensationCover    = w.condensation*averageHeight,
-        d_ventedWater          = w.ventilation*averageHeight,
+        d_ventedWater          = w.ventilation*averageHeight;
+    const double
         // kg/m2/s * s = kg/m2
         d_transpiration        = transpirationRate*timeStep,
         d_humidification       = humidificationRate*timeStep,
-        d_condensationHeatPump = heatPumpCondensationRate*timeStep;
-    const double
-        d_sum =
-           - d_condensationCover
-           - d_ventedWater
-           + d_transpiration
-           + d_humidification
-           - d_condensationHeatPump,
-        correction = w.deltaAh/d_sum;
+        d_padAndFanVapourFlux  = padAndFanVapourFlux*timeStep,
+        d_heatPumpCondensation = heatPumpCondensationRate*timeStep,
+        d_ET                   = d_transpiration + d_humidification + d_padAndFanVapourFlux - d_heatPumpCondensation,
+        correction             = (d_ET- w.deltaAh)/(d_condensationCover + d_ventedWater);
+//    const double
+//        d_sum =
+//           - d_condensationCover
+//           - d_ventedWater
+//           + d_transpiration
+//           + d_humidification
+//           - d_condensationHeatPump,
+//        correction = w.deltaAh/d_sum;
 
-    d_condensationCover    *= correction;
-    d_ventedWater          *= correction;
-    d_transpiration        *= correction;
-    d_humidification       *= correction;
-    d_condensationHeatPump *= correction;
+
+    d_condensationCover *= correction;
+    d_ventedWater       *= correction;
     waterBudgetCorr = correction;
 
-    double correctedSum =
-            - d_condensationCover
-            - d_ventedWater
-            + d_transpiration
-            + d_humidification
-            - d_condensationHeatPump;
-    if (TestNum::ne(w.deltaAh, correctedSum, 0.01))
-        ThrowException("Mismath").value(w.deltaAh).value2(correctedSum);
+//    double correctedSum =
+//            - d_condensationCover
+//            - d_ventedWater
+//            + d_transpiration
+//            + d_humidification
+//            - d_condensationHeatPump;
+    if (TestNum::ne(w.deltaAh, d_ET - d_condensationCover - d_ventedWater, 0.01))
+        ThrowException("Mismath").value(w.deltaAh).value2(d_ET - d_condensationCover - d_ventedWater);
 
     // Outputs
     condensationCover    -= d_condensationCover;
     ventedWater          -= d_ventedWater;
     transpiration        += d_transpiration;
-    condensationHeatPump -= d_condensationHeatPump;
+    condensationHeatPump -= d_heatPumpCondensation;
 
     // Indoors state update
     indoorsVol->rh     = rhFromAh(indoorsVol->temperature, indoorsAh + w.deltaAh);
