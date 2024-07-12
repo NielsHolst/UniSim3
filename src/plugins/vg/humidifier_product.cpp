@@ -19,9 +19,10 @@ HumidifierProduct::HumidifierProduct(QString name, Box *parent)
     : Box(name, parent)
 {
     help("holds humidifier product parameters");
-    Input(efficiency).equals(0.8).help("Efficiency at decreasing temperature to wet-bulb temperature").unit("[0;1]");
-    Input(maxRate).equals(2.).help("Maximum humidification rate").unit("kg/s");
-    Input(parasiticLoad).equals(2.2).help("Maximum basic power use").unit("kW");
+    Input(efficiency).help("Not used");
+    Input(maxRate).equals(1.2).help("Maximum humidification rate").unit("kg/s");
+    Input(maxPowerUse).equals(2.4).help("Maximum power use for fogging").unit("kW");
+    Input(parasiticLoad).equals(0.1).help("Maximum basic power use").unit("kW");
 }
 
 } //namespace

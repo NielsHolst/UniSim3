@@ -32,27 +32,37 @@ private:
         radPrecision, tempPrecision,
         timeStep, averageHeight, groundArea, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
-        transpirationRate, humidificationRate, Pn, co2Injection,
-        heatPipeFlux,
-        heatPumpCooling, heatPumpCondensationRate,
-        padAndFanCooling, padAndFanVapourFlux,
         babyTimeStep;
-    QVector<bool> heatPipesOn;
-    bool writeHighRes, writeLog, isHeating, isVentilating, controlClimate;
-
+    bool writeHighRes, writeLog, controlClimate;
     int step;
     QDateTime dateTime;
-    base::Logger logger;
+
+    // Direct inputs
+    struct {
+        double
+            zero = 0.;
+        const double
+            *ventilationRate,
+            *transpirationRate,
+            *humidificationRate,
+            *Pn,
+            *co2Injection,
+            *heatPumpCooling,
+            *heatPumpCondensationRate,
+            *padAndFanCooling,
+            *padAndFanVapourFlux;
+    } in;
 
     // Output
     int radIterations, subSteps;
     double subTimeStep, maxDeltaT, ventilationHeatLoss,
-        condensationCover, transpiration, ventedWater, condensationHeatPump, heatPumpDrying,
+        wfTranspiration, wfHumidification, wfVentilation, wfCover, wfHeatPump, wfPadAndFan,
+        coverConductance,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
-        sunParAbsorbedInCover, sunParAbsorbedInScreens, sunParHittingPlant,
-        growthLightParHittingPlant, totalPar,
-        coverConductance;
+        sunParHittingPlant, growthLightParHittingPlant, totalPar;
     QDateTime subDateTime;
+
+    base::Logger logger;
 
     // Volumes
     QVector<BudgetVolume*> volumes;
@@ -67,7 +77,8 @@ private:
         *budgetLayerSky,
         *budgetLayerGrowthLights,
         *budgetLayerPlant,
-        *budgetLayerHeatPipes;
+        *budgetLayerHeatPipes,
+        *budgetLayerFloor;
     int numLayers;
 
     // Boxes
@@ -81,11 +92,7 @@ private:
 
     // Controllers etc.
     QVector<Box*> handheldBoxes;
-    Box
-//        *heatingSp, *heatingController,
-//        *ventilationSp, *ventilationController, *ventilationActuator,
-//        *heatPumpsSp, *heatPumpsController, *heatPumpsActuator,
-        *outputWriter;
+    Box *outputWriter;
 
     // State
     struct State {
@@ -101,10 +108,6 @@ private:
     };
     Parameters swParam, lwParam;
 
-    // Actuators
-//    ActuatorVentilation *actuatorVentilation;
-    const double *ventilationRate;
-
     // Methods
     enum class UpdateOption{IncludeSwPar, ExcludeSwPar};
     void addVolumes();
@@ -119,13 +122,13 @@ public:
     void update();
     void cleanup();
 private:
+    const double * ptrOrZero(QString path);
     void updateSubStep(double subTimeStep, UpdateOption option);
     void updateLwEmission();
     void updateNetRadiation();
     void updateWaterBalance(double subTimeStep);
     void updateInSubSteps();
     void updateCo2();
-//    void resetState();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);

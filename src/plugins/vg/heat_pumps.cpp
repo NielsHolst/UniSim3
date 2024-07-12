@@ -20,11 +20,13 @@ HeatPumps::HeatPumps(QString name, Box *parent)
     : Box(name, parent)
 {
     help("sums heat pump outputs");
+    Input(maxCoolingLoads    ).imports("./*[maxCoolingLoad]");
     Input(powerUsePumps      ).imports("./*[powerUse]");
     Input(coolingPumps       ).imports("./*[cooling]");
     Input(energyToBufferPumps).imports("./*[energyToBuffer]");
     Input(condensationPumps  ).imports("./*[condensation]");
-    Output(powerUse).help("Power use (total)").unit("W/m2");
+    Output(maxCoolingLoad).help("Maximum total power use of heat pumps").unit("W/m2");
+    Output(powerUse).help("Maximum total power use of heat pumps").unit("W/m2");
     Output(cooling).help("Cooling effect >= 0. An equal amount of heat is available for the `HeatBuffer` if `sendToBuffer` is set").unit("W/m2");
     Output(energyToBuffer).help("Cooling energy >= 0, sent to heat buffer").unit("W/m2");
     Output(condensation).help("Rate of water condensed in the unit").unit("kg/m2/s");
@@ -35,6 +37,7 @@ void HeatPumps::reset() {
 }
 
 void HeatPumps::update() {
+    maxCoolingLoad = sum(maxCoolingLoads);
     powerUse       = sum(powerUsePumps);
     cooling        = sum(coolingPumps);
     energyToBuffer = sum(energyToBufferPumps);

@@ -2,7 +2,7 @@
   <XML_Version>3.2</XML_Version>
   <Description>
     <LongDesc>Greenhouse 10.000 m2 with HeatPumps</LongDesc>
-    <WeatherFile>DNK_Odense.txt</WeatherFile>
+    <WeatherFile>DNK_Odense.txt</WeatherFile> <!--NH min sti-->
     <Country>Finland</Country>
     <Location>Tempera                                           </Location>
     <Longitude>23.761</Longitude>
@@ -127,7 +127,7 @@
     <HeatBuffer>
       <HeatBuffer index="1" layer="1" position="1">
         <Volume>25</Volume>
-        <MaxTemperature>70</MaxTemperature> 
+        <MaxTemperature>70</MaxTemperature>
         <U>10</U>
         <UptakeEfficiency>0.85</UptakeEfficiency>
         <ExtractionEfficiency>0.85</ExtractionEfficiency>
@@ -135,7 +135,7 @@
     </HeatBuffer>
     <HeatExchangers>
       <Products>
-        <Product Name="0.85">
+        <Product name="0.85">
           <MaxFlowRate>missing</MaxFlowRate>
           <MaxLoad>missing</MaxLoad>
           <Efficiency>missing</Efficiency>
@@ -145,35 +145,35 @@
       </Products>
       <HeatExchanger index="1" layer="1" position="1">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="2">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="3">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="4">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="5">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="6">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="7">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
       <HeatExchanger index="1" layer="1" position="8">
         <Product>0.85</Product>
-        <Number>0</Number>
+        <Number>0.85</Number>
       </HeatExchanger>
     </HeatExchangers>
     <Heatpipes>
@@ -191,7 +191,7 @@
       <Heatpipe index="0" layer="0" position="2">
         <Product>41 mm Steel</Product>
         <PipeMaterialDesc>Iron</PipeMaterialDesc>
-        <InnerDiameter>0.0390</InnerDiameter>n
+        <InnerDiameter>0.0390</InnerDiameter>
         <CommonFlowTemperature>80</CommonFlowTemperature>
         <heatPipeFlowRate>50</heatPipeFlowRate>
         <PipeLengthPerSqm>1.6</PipeLengthPerSqm>
@@ -220,42 +220,49 @@
       <HeatPump index="1" layer="1" position="1">
         <Product>Heat pump test 1</Product>
         <Number>10</Number>
-        <HeatRecovery>1</HeatRecovery> 
+        <HeatRecovery>1</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="2">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="3">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="4">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="5">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="6">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="7">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
       <HeatPump index="1" layer="1" position="8">
         <Product>None</Product>
         <Number>0</Number>
+        <HeatRecovery>0</HeatRecovery>
       </HeatPump>
     </HeatPumps>
     <Lamps>
       <Products>
-        <Product Name="E HP Na 1000W">
+        <Product name="E HP Na 1000W">
           <Manufacture>NoName</Manufacture>
-          <Name>E HP Na 1000W</Name>
+          <name>E HP Na 1000W</name>
           <LampType>HpSl</LampType>
           <Power>1035</Power>
           <MinPeriodOn>10</MinPeriodOn>
@@ -266,9 +273,9 @@
           <BallastPropLw>0.2</BallastPropLw>
           <LifeTime>12000</LifeTime>
         </Product>
-        <Product Name="None">
+        <Product name="None">
           <Manufacture>None</Manufacture>
-          <Name>None</Name>
+          <name>None</name>
           <LampType>Led</LampType>
           <Power>0</Power>
           <MinPeriodOn>10</MinPeriodOn>
@@ -301,15 +308,21 @@
     </Lamps>
     <PadFans>
       <Products>
-        <Product name="Fancy Pad"> 
-          <Efficiency>0.8</Efficiency>
-          <MaxPowerUse>10.0</MaxPowerUse> 
-          <MaxFlowRate>61.52</MaxFlowRate>
-          <MaxParasitLoad>2.0</MaxParasitLoad>
+        <Product name="None">
+          <Efficiency>0</Efficiency>
+          <MaxFlowRate>0</MaxFlowRate>
+          <MaxParasitLoad>0</MaxParasitLoad>
+          <MaxPowerUse>0</MaxPowerUse>
+        </Product>
+        <Product name="PadFan Test 1">
+          <Efficiency>0.9</Efficiency>
+          <MaxFlowRate>100</MaxFlowRate>
+          <MaxParasitLoad>100</MaxParasitLoad>
+          <MaxPowerUse>1000</MaxPowerUse>
         </Product>
       </Products>
       <PadFan index="1" layer="1" position="1">
-        <Product>Fancy Pad</Product>
+        <Product>PadFan Test 1</Product>
         <Number>2</Number>
       </PadFan>
       <PadFan index="1" layer="1" position="2">
@@ -503,12 +516,18 @@
         <Width>3</Width>
         <Number>200</Number>
         <VentTransmissivity>1</VentTransmissivity>
-        <MaxFlowRate>1</MaxFlowRate>
-        <MaxCoolingLoad>1</MaxCoolingLoad>
-        <CoolingEfficiency>1</CoolingEfficiency>
+        <Efficiency>1</Efficiency>
+        <MaxHumidification>1</MaxHumidification>
         <MaxParasitLoad>1</MaxParasitLoad>
-        <CoolingTemperature>1</CoolingTemperature>
-        <HeatRecovery>1</HeatRecovery>
+        <MaxFlowRate>2.5000</MaxFlowRate>
+        <MaxCoolingLoad>78.4000</MaxCoolingLoad>
+        <CoolingEfficiency>0.6900</CoolingEfficiency>
+        <MaxParasitLoad>2.2000</MaxParasitLoad>
+        <CoolingTemperature>10.0000</CoolingTemperature>
+        <Efficiency>0.9000</Efficiency>
+        <MaxFlowRate>100.0000</MaxFlowRate>
+        <MaxParasitLoad>100.0000</MaxParasitLoad>
+        <MaxPowerUse>1000.0000</MaxPowerUse>
       </Vent>
     </Vents>
     <ShadingAgents>
@@ -523,32 +542,28 @@
   </Greenhouse>
   <Climate>
     <Setpoint>
-      <HeatingTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">19</HeatingTemp>
-      <HeatingTemp index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">21</HeatingTemp>
-      <VentTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1</VentTemp>
-      <VentTemp index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">3</VentTemp>
-      <Tavg index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">21</Tavg>
-      <TavgDays index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">3</TavgDays>
-      <TavgMax index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">25</TavgMax>
-      <TavgMin index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">15</TavgMin>
+      <HeatingTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">20</HeatingTemp>
+      <HeatingTemp index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">20</HeatingTemp>
+      <VentTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</VentTemp>
+      <VentTemp index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</VentTemp>
+      <Tavg index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">20</Tavg>
+      <TavgDays index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</TavgDays>
+      <TavgMax index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">28</TavgMax>
+      <TavgMin index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</TavgMin>
       <TavgOn index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</TavgOn>
-      <heatPumpMaxPowerUse index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">500</heatPumpMaxPowerUse>
+      <heatPumpMaxPowerUse index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">50</heatPumpMaxPowerUse>
       <heatPumpMode index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1</heatPumpMode>
-      <HeatPumpTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">2</HeatPumpTemp>
-      <PadFansState index="0" FromDate="01/04" FromTime="00:00" ToDate="31/08" ToTime="00:00">  
-        <Sp>0</Sp>
-        <Eq>if outdoors[radiation] > 600 then 1</Eq>
-        <Eq>if outdoors[radiation] > 500 then 0.8</Eq>
-      </PadFansState>
+      <HeatPumpTemp index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">3</HeatPumpTemp>
+      <PadFansState index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</PadFansState>
       <crackVentilation index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.05</crackVentilation>
       <crackVentilationTemperatureMin index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">-5</crackVentilationTemperatureMin>
       <crackVentilationTemperatureMinBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1</crackVentilationTemperatureMinBand>
-      <screenActive1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">shade1+energy1</screenActive1>
-      <screenActive1Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">missing</screenActive1Layer>
-      <screenActive2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">missing</screenActive2>
-      <screenActive2Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">missing</screenActive2Layer>
-      <screenActive3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">missing</screenActive3>
-      <screenActive3Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">missing</screenActive3Layer>
+      <screenActive1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">none</screenActive1>
+      <screenActive1Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">Energy+Shade</screenActive1Layer>
+      <screenActive2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">none</screenActive2>
+      <screenActive2Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">None</screenActive2Layer>
+      <screenActive3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">none</screenActive3>
+      <screenActive3Layer index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">None</screenActive3Layer>
       <screenEnergyThreshold1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThreshold1>
       <screenEnergyThreshold2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThreshold2>
       <screenEnergyThresholdBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</screenEnergyThresholdBand>
@@ -562,23 +577,23 @@
       <screenShadeThreshold3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">500</screenShadeThreshold3>
       <ShadingAgentReduction index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</ShadingAgentReduction>
       <AssLightActive1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1</AssLightActive1>
-      <AssLightActive1 index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</AssLightActive1>
+      <AssLightActive1 index="1" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">1</AssLightActive1>
       <AssLightActive2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</AssLightActive2>
       <AssLightActive3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</AssLightActive3>
-      <AssLightOn1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</AssLightOn1>
+      <AssLightOn1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</AssLightOn1>
       <AssLightOff1 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">600</AssLightOff1>
-      <AssLightOn2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</AssLightOn2>
+      <AssLightOn2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</AssLightOn2>
       <AssLightOff2 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">600</AssLightOff2>
-      <AssLightOn3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</AssLightOn3>
-      <AssLightLightSum index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">12</AssLightLightSum>
+      <AssLightOn3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">40</AssLightOn3>
+      <AssLightLightSum index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">15</AssLightLightSum>
       <AssLightLightSumDays index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">3</AssLightLightSumDays>
       <AssLightOff3 index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">600</AssLightOff3>
-      <MaxRelHmd index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">85</MaxRelHmd>
+      <MaxRelHmd index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">90</MaxRelHmd>
       <MaxHeatAddHighRH index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">2</MaxHeatAddHighRH>
       <rhMaxBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">5</rhMaxBand>
       <minPipeTemperature index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">20</minPipeTemperature>
-      <maxPipeTemperature index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">95</maxPipeTemperature>
-      <FogActive index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">missing</FogActive>
+      <maxPipeTemperature index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">90</maxPipeTemperature>
+      <FogActive index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0</FogActive>
       <CO2Setpoint index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">900</CO2Setpoint>
       <CO2Capacity index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">50</CO2Capacity>
       <CO2VentilationBand index="0" FromDate="01/01" FromTime="00:00" ToDate="31/12" ToTime="00:00">0.2</CO2VentilationBand>
@@ -609,8 +624,8 @@
       <Variable name="balanceConv" path="budget/cover[convectionTop]" />
       <Variable name="balanceLw" path="budget/cover[lwAbsorbedTop] - budget/cover[lwEmissionTop]" />
       <Variable name="balanceVent" path="budget[ventilationHeatLoss]" />
-      <Variable name="condensationCover" path="budget[condensationCover]" />
-      <Variable name="condensationHeatPump" path="budget[condensationHeatPump]" />
+      <!-- <Variable name="condensationCover" path="budget[condensationCover]" /> --> <!--NH omdøbt; se wf outputs-->
+      <!-- <Variable name="condensationHeatPump" path="budget[condensationHeatPump]" /> --> <!--NH omdøbt; se wf outputs-->
       <Variable name="coverT" path="budget/cover[temperature]" />
       <Variable name="floorT" path="budget/floor[temperature]" />
       <Variable name="fogPowerUse" path="actuators/humidifiers/powerUse[value]" />
@@ -618,17 +633,15 @@
       <Variable name="fogVapourFlux" path="actuators/humidifiers/vapourFlux[value]" />
       <Variable name="grossAssimilationRate" path="plant[Pg]" />
       <Variable name="heatBufferOutput" path="heatBuffer[outputSupply]" />
+      <Variable name="heatBufferOverFlow" path="heatBuffer[inputOverflow]" />
       <Variable name="heatBufferTemp" path="heatBuffer[temperature]" />
-      <Variable name="heatBufferOverflow" path="heatBuffer[inputOverflow]" /> 
       <Variable name="heatFluxCover" path="budget/cover[convectionTop]" />
       <Variable name="heatFluxFloor" path="budget/cover[convectionBottom]" />
-      
-      <Variable name="heatPumpCondensation" path="actuators/heatPumps[condensation]" /> 
-      <Variable name="heatPumpCooling " path="actuators/heatPumps[cooling]" /> 
-      <Variable name="heatPumpPowerUse" path="actuators/heatPumps[powerUse]" />  
-      <Variable name="heatPumpRecovery" path="actuators/heatPumps[energyToBuffer]" />  
+      <Variable name="heatPumpCondensation" path="actuators/heatPumps[condensation]" />
+      <Variable name="heatPumpCooling " path="actuators/heatPumps[cooling]" />
+      <Variable name="heatPumpPowerUse" path="actuators/heatPumps[powerUse]" />
+      <Variable name="heatPumpRecovery" path="actuators/heatPumps[energyToBuffer]" />
       <Variable name="heatPumpState" path="controllers/heatPumps/state[value]" />
-
       <Variable name="indoorsCo2" path="budget/indoors[co2]" />
       <Variable name="indoorsGrowthLightPar" path="actuators/growthLights[parEmissionBottom]" />
       <Variable name="indoorsRh" path="budget/indoors[rh]" />
@@ -648,12 +661,10 @@
       <Variable name="outdoorsRh" path="outdoors[rh]" />
       <Variable name="outdoorsT" path="outdoors[temperature]" />
       <Variable name="outdoorsWindSpeed" path="outdoors[windSpeed]" />
-
-      <Variable name="padFanCooling " path="actuators/padAndFans[cooling]" /> 
-      <Variable name="padFanPowerUse" path="actuators/padAndFans[powerUse]" />  
-      <Variable name="padFanVapourFlux" path="actuators/padAndFans[vapourFlux]" />  
-      <Variable name="padFanState" path="controllers/padAndFans[state]" /> 
-
+      <Variable name="padFanCooling" path="actuators/padAndFans[cooling]" />
+      <Variable name="padFanPowerUse" path="actuators/padAndFans[powerUse]" />
+      <Variable name="padFanState" path="controllers/padAndFans[state]" />
+      <Variable name="padFanVapourFlux" path="actuators/padAndFans[vapourFlux]" />
       <Variable name="pipeT" path="budget/heatPipes[temperature]" />
       <Variable name="respirationRate" path="plant[Rd]" />
       <Variable name="screen1T" path="budget/screen1[temperature]" />
@@ -669,11 +680,17 @@
       <Variable name="transpiration" path="plant[transpiration]" />
       <Variable name="Uinside" path="shelter/layers/cover[Ubottom]" /> <!--NH output omdøbt-->
       <Variable name="Uoutside" path="shelter/layers/cover[Utop]" />   <!--NH output omdøbt-->
-      <Variable name="ventedWater" path="budget[ventedWater]" />
+      <!-- <Variable name="ventedWater" path="budget[ventedWater]" /> --> <!--NH omdøbt; se wf outputs-->
       <Variable name="ventOpening" path="actuators/ventilation[opening]" />
+      
+      <Variable name="wfTranspiration" path="budget[wfTranspiration]" /> <!-- NH water flux -->
+      <Variable name="wfHumidification" path="budget[wfHumidification]" /> <!-- NH water flux -->
+      <Variable name="wfVentilation" path="budget[wfVentilation]" /> <!-- NH water flux -->
+      <Variable name="wfCover" path="budget[wfCover]" /> <!-- NH water flux -->
+      <Variable name="wfHeatPump" path="budget[wfHeatPump]" /> <!-- NH water flux -->
+      <Variable name="wfPadAndFan" path="budget[wfPadAndFan]" /> <!-- NH water flux -->
     </Variables>
   </Output>
-  <!--NH Du kan godt slette nedenstående-->
   <Status>
     <LigthSum>
       <Period>10</Period>

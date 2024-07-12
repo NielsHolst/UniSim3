@@ -10,7 +10,7 @@ Simulation sim {
     .latitude = 61.4978
     .longitude = 23.761
     .begin = global[beginDate] - 1
-    .end = 2024/07/30T00:00:00
+    .end = 2024/07/07T14:00:00
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -272,7 +272,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 2.0
+            .signalInside = 3.0
           }
         }
         PrioritySignal mode {
@@ -290,7 +290,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 500.0
+            .signalInside = 50.0
           }
         }
       }
@@ -359,7 +359,7 @@ Simulation sim {
             .endDate = 31/12
             .beginTime = 00:00:00
             .endTime = 00:00:00
-            .signalInside = 0.0
+            .signalInside = 1.0
           }
         }
       }
@@ -910,36 +910,36 @@ Simulation sim {
         }
       }
       HeatPumps heatPumps {
-        // Box products {
-          // HeatPumpProduct Heat_pump_test_1 {
-            // .maxCoolingLoad = 78.4
-            // .coolingEfficiency = 0.69
-            // .maxFlowRate = 2.5
-            // .parasiticLoad = 2.2
-            // .coolingTemperature = 10.0
-          // }
-        // }
-        // ActuatorHeatPump heatPump1 {
-          // .productName = "Heat_pump_test_1"
-          // .number = 10
-          // .state = controllers/heatPumps/state[value]
-          // .sendToBuffer = TRUE
-        // }
+        Box products {
+          HeatPumpProduct Super_Pump {
+            .maxCoolingLoad = 78.4
+            .coolingEfficiency = 0.69
+            .maxFlowRate = 2.5
+            .parasiticLoad = 2.2
+            .coolingTemperature = 10.0
+          }
+        }
+        ActuatorHeatPump heatPump1 {
+          .productName = "Super_Pump"
+          .number = 10
+          .state = controllers/heatPumps/state[value]
+          .sendToBuffer = TRUE
+        }
       }
       PadAndFans padAndFans {
-        // Box products {
-          // PadAndFanProduct Fancy_Pad {
-            // .coolingEfficiency = 0.8
-            // .powerUseMax = 10.0
-            // .flowRateMax = 61.52
-            // .powerUserParasitic = 2.0
-          // }
-        // }
-        // ActuatorPadAndFan padAndFan1 {
-          // .productName = "Fancy_Pad"
-          // .number = 2
-          // .state = controllers/padAndFans[state]
-        // }
+        Box products {
+          PadAndFanProduct Fancy_Pad {
+            .coolingEfficiency = 0.8
+            .powerUseMax = 10.0
+            .flowRateMax = 61.52
+            .powerUserParasitic = 2.0
+          }
+        }
+        ActuatorPadAndFan padAndFan1 {
+          .productName = "Fancy_Pad"
+          .number = 2
+          .state = controllers/padAndFans[state]
+        }
       }
       ActuatorVentilation ventilation {
         .ventAreaRatio = 0.36
@@ -947,20 +947,19 @@ Simulation sim {
         .temperatureCoef = 14.0
         .opening = controllers/ventilation/opening[value]
       }
-      Humidifiers humidifiers { //NH
-        // Box products {
-          // HumidifierProduct none {
-            // .efficiency = 0.0
-            // .maxRate = 100.0
-            // .parasiticLoad = 0.0
-          // }
-        // }
-        // Sum powerUse {
-          // .values = ../ActuatorHumidifier::*[powerUse]
-        // }
-        // Sum vapourFlux {
-          // .values = ../ActuatorHumidifier::*[vapourFlux]
-        // }
+      Humidifiers humidifiers { 
+        Box products {
+          HumidifierProduct Wetty {
+            .efficiency = 0.8
+            .maxRate = 0.010
+            .parasiticLoad = 2.0
+          }
+        }
+        ActuatorHumidifier humidifier1 {
+          .productName = "Wetty"
+          .number = 2
+          .state = controllers/humidification[state]
+        }
       }
       Box screens {
         ActuatorScreen layer1 {
@@ -1073,89 +1072,18 @@ Simulation sim {
   OutputR output {
     Box variables {
       &ventOpening = actuators/ventilation[opening]
-      &ventedWater = budget[ventedWater]
-      // &Uoutside = shelter/layers/cover[UtopAdj]
-      // &Uinside = shelter/layers/cover[UbottomAdj]
-      &transpiration = plant[transpiration]
-      // &spVentilationTemperature = controllers/ventilation/desiredMaxTemperature[value]
-      // &spHeatPumpTemperature = controllers/heatPumps/desiredMaxTemperature[value]
-      // &spHeatingTemperature = controllers/desiredMinTemperature[value]
-      // &spCo2 = setpoints/co2/concentration[value]
-      // &soilT = outdoors[soilTemperature]
-      // &skyT = budget/sky[temperature]
-      // &sensibleVentFlux = budget[ventilationHeatLoss]
-      // &screen3T = budget/screen3[temperature]
-      // &screen2T = budget/screen2[temperature]
-      // &screen1T = budget/screen1[temperature]
-      // &respirationRate = plant[Rd]
-      // &pipeT = budget/heatPipes[temperature]
-      // &padFanState = controllers/padAndFans[state]
-      &padFanVapourFlux = actuators/padAndFans[vapourFlux]
-      // &padFanPowerUse = actuators/padAndFans[powerUse]
-      // &padFanCooling = actuators/padAndFans[cooling]
-      // &outdoorsWindSpeed = outdoors[windSpeed]
-      // &outdoorsT = outdoors[temperature]
-      // &outdoorsRh = outdoors[rh]
-      // &outdoorsPar = outdoors[par]
-      // &outdoorsLight = outdoors[radiation]
-      // &netGrowthRateLeaf = plant[leafGrowthRate]
-      // &netGrowthRate = plant[growthRate]
-      // &netAssimilationRate = plant[Pn]
-      // &lwEmissionCover = budget/cover[lwEmissionTop]
-      // &lwAbsorbedCover = budget/cover[lwAbsorbedTop]
-      // &lightUseEfficiency = plant[lue]
-      // &lightSum = lightSum[value]
       &leafT = budget/plant[temperature]
-      // &indoorsTotalPar = plant[incidentPar]
-      // &indoorsTavg = indoorsTemperature[average]
       &indoorsT = budget/indoors[temperature]
       &indoorsRh = budget/indoors[rh]
-      // &indoorsGrowthLightPar = actuators/growthLights[parEmissionBottom]
-      // &indoorsCo2 = budget/indoors[co2]
-      // &heatPumpState = controllers/heatPumps/state[value]
-      // &heatPumpRecovery = actuators/heatPumps[energyToBuffer]
-      // &heatPumpPowerUse = actuators/heatPumps[powerUse]
-      // &heatPumpCooling = actuators/heatPumps[cooling]
-      &heatPumpCondensation = actuators/heatPumps[condensation]
-      // &heatFluxFloor = budget/cover[convectionBottom]
-      // &heatFluxCover = budget/cover[convectionTop]
-      // &heatBufferOverflow = heatBuffer[inputOverflow]
-      // &heatBufferTemp = heatBuffer[temperature]
-      // &heatBufferOutput = heatBuffer[outputSupply]
-      // &grossAssimilationRate = plant[Pg]
-      // &fogVapourFlux = actuators/humidifiers/vapourFlux[value]
-      // &fogState = controllers/humidification[state]
-      // &fogPowerUse = actuators/humidifiers/powerUse[value]
-      // &floorT = budget/floor[temperature]
-      // &coverT = budget/cover[temperature]
-      // &condensationHeatPump = budget[condensationHeatPump]
-      &condensationCover = budget[condensationCover]
-      // &balanceVent = budget[ventilationHeatLoss]
-      // &balanceLw = budget/cover[lwAbsorbedTop] - budget/cover[lwEmissionTop]
-      // &balanceConv = budget/cover[convectionTop]
-      // &airFluxTotal = actuators/ventilation[value]
-      // &actVentilation = actuators/ventilation[ventFlux]
-      // &actScreen3 = actuators/screens/layer3[state]
-      // &actScreen2 = actuators/screens/layer2[state]
-      // &actScreen1 = actuators/screens/layer1[state]
-      // &actPipeTempOut2 = actuators/heatPipes/circuit2[outflowTemperature]
-      // &actPipeTempOut1 = actuators/heatPipes/circuit1[outflowTemperature]
-      // &actPipeTempIn2 = actuators/heatPipes/circuit2[inflowTemperature]
-      // &actPipeTempIn1 = actuators/heatPipes/circuit1[inflowTemperature]
-      // &actLightPower = actuators/growthLights[powerUsage]
-      // &actLightPar = actuators/growthLights[parEmissionBottom]
-      // &actLight3 = actuators/growthLights/bank3[powerUsage]
-      // &actLight2 = actuators/growthLights/bank2[powerUsage]
-      // &actLight1 = actuators/growthLights/bank1[powerUsage]
-      // &actHeatingPower = actuators/heatPipes[heatFlux]
-      // &actCo2 = actuators/co2[value]
+      &hpPowerUse = heatPumps[powerUse]
     }
     PageR  {
       .xAxis = calendar[dateTime]
       // .maximizeWindow = TRUE
       PlotR  {
-        .ports = output/variables[*] | budget[subSteps] | soilTemperature[value] | budget[coverConductance]
-        .nrow = 3
+        .ports = output/variables[*] | budget[subSteps] | soilTemperature[value] | budget[coverConductance] |
+                 budget[wfTranspiration] | budget[wfHumidification] | budget[wfVentilation] | budget[wfCover] | budget[wfHeatPump] | budget[wfPadAndFan]
+        .nrow = 4
       }
     }
     OutputSelector selector {

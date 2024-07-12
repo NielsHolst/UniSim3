@@ -191,7 +191,10 @@
     <file>data/input/models/sitophilus/line_parabola.R</file>
     <file>data/input/models/sitophilus/obs_dev_rate.R</file>
     <file>data/input/models/sitophilus/obs_dev_rate.txt</file>
+    <file>data/input/models/vg/DNK_Odense.txt</file>
+    <file>data/input/models/vg/sky_cover_floor.box</file>
     <file>data/input/models/vg/vg_2024-04-29_version_3.0.21.box</file>
+    <file>data/input/models/vg/virtual_temperature.R</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>
     <file>data/input/scripts/end-batch.R</file>

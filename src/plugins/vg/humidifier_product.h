@@ -18,7 +18,7 @@ public:
     HumidifierProduct(QString name, Box *parent);
 private:
     // Inputs
-    double efficiency, maxRate, parasiticLoad;
+    double efficiency, maxPowerUse, maxRate, parasiticLoad;
 };
 
 } //namespace

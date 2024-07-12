@@ -21,11 +21,12 @@ public:
 private:
     // Inputs
     QString productName;
-    int numberInstalled;
+    int number;
     double state, groundArea, greenhouseVolume, inflowTemperature, inflowRh, timeStep;
     // Outputs
-    double efficiency, maxRate, parasiticLoad,
-        powerUse, vapourFlux;
+    double powerUse, vapourFlux;
+    // Data
+    double maxPowerUse, maxRate, parasiticLoad;
 };
 
 } //namespace

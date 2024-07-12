@@ -21,17 +21,13 @@ ActuatorHumidifier::ActuatorHumidifier(QString name, Box *parent)
 {
     help("models a humidifier");
     Input(productName).help("Name of product holding humidifier parameters");
-    Input(numberInstalled).unit("int").help("Number of humidifiers installed");
+    Input(number).unit("int").help("Number of humidifiers installed");
     Input(state).equals(1.).help("Running state relative to full effect").unit("[0;1]");
-
     Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(greenhouseVolume).imports("gh/geometry[volume]",CA);
     Input(inflowTemperature).imports("outdoors[temperature]",CA);
     Input(inflowRh).imports("outdoors[rh]",CA);
     Input(timeStep).imports("calendar[timeStepSecs]",CA);
-
-    Output(efficiency).help("Efficiency at decreasing temperature to wet-bulb temperature");
-    Output(maxRate).help("Total maximum humidification rate of installed humidifiers").unit("kg/s");;
     Output(powerUse).help("Power used for cooling").unit("W/m2");
     Output(vapourFlux).help("Rate of water humidification").unit("kg/m2/s");
 }
@@ -40,34 +36,35 @@ ActuatorHumidifier::ActuatorHumidifier(QString name, Box *parent)
 
 void ActuatorHumidifier::reset() {
     if (productName.toLower() == "none") {
-        numberInstalled = 0;
+        number = 0;
         return;
     }
     Box *product = findOne<Box*>("../products/" + productName);
-    UPDATE_INPUT(efficiency);
-    UPDATE_INPUT(maxRate)*numberInstalled;
-    UPDATE_INPUT(parasiticLoad)*numberInstalled;
+    UPDATE_INPUT(maxRate)*number;
+    UPDATE_INPUT(maxPowerUse)*number;
+    UPDATE_INPUT(parasiticLoad)*number;
     update();
 }
 
 void ActuatorHumidifier::update() {
-    if (state == 0.) {
-        powerUse = vapourFlux = 0.;
-        return;
-    }
-    double
-        inflowTwet = Twet(inflowTemperature, inflowRh),
-        inflowSh = shFromRh(inflowTemperature, inflowRh), // kg/kg
-        outflowTemperature = inflowTemperature - efficiency*(inflowTemperature - inflowTwet),
-        outflowRh = rhFromTwet(outflowTemperature, inflowTwet),
-        outflowSh = shFromRh(outflowTemperature, outflowRh), // kg/kg
-        demandedVapourFlux = (outflowSh - inflowSh)*rhoAir(inflowTemperature)*greenhouseVolume/timeStep;
-            // kg/s = kg water / kg air * kg air / m3 air * m3 air / s
-    vapourFlux = std::min(demandedVapourFlux, maxRate*state);
-    powerUse = evaporationHeat(inflowTemperature)*vapourFlux + 1000.*parasiticLoad; // W = J/kg * kg/s
-    // Correct for ground area
-    vapourFlux /= groundArea;
-    powerUse /= groundArea;
+    powerUse = vapourFlux = 0.;
+//    if (state == 0.) {
+//        powerUse = vapourFlux = 0.;
+//        return;
+//    }
+//    double
+//        inflowTwet = Twet(inflowTemperature, inflowRh),
+//        inflowSh = shFromRh(inflowTemperature, inflowRh), // kg/kg
+//        outflowTemperature = inflowTemperature - efficiency*(inflowTemperature - inflowTwet),
+//        outflowRh = rhFromTwet(outflowTemperature, inflowTwet),
+//        outflowSh = shFromRh(outflowTemperature, outflowRh), // kg/kg
+//        demandedVapourFlux = (outflowSh - inflowSh)*rhoAir(inflowTemperature)*greenhouseVolume/timeStep;
+//            // kg/s = kg water / kg air * kg air / m3 air * m3 air / s
+//    vapourFlux = std::min(demandedVapourFlux, maxRate*state);
+//    powerUse = evaporationHeat(inflowTemperature)*vapourFlux + 1000.*parasiticLoad; // W = J/kg * kg/s
+//    // Correct for ground area
+//    vapourFlux /= groundArea;
+//    powerUse /= groundArea;
 }
 
 } //namespace

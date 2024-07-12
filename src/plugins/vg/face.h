@@ -16,6 +16,7 @@ class Face : public base::Box
 {
 public: 
     Face(QString name, Box *parent);
+    void amend();
     void reset();
     const LayerParametersPtrs& coverParameters() const;
     const LayerParametersPtrs& screenParameters(int index) const;

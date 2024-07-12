@@ -32,20 +32,18 @@ void Shelter::amend() {
         ThrowException("Shelter must have 6 faces").value(_faces.size()).context(this);
 
     // Collect screens referred to
-    int numLayers = 0;
-    QVector<QStringList> screenNamesByFace;
+    int numLayers = -999;
     for (Box *face : _faces) {
         Port *port = face->peakPort("screens");
         if (!port)
             ThrowException("Face must have a port called 'screens'").
             value(face->fullName()).context(this);
-        QStringList screenNames = port->value<QString>().split("+");
-        if (numLayers == 0)
+        QStringList screenNames = port->value<QString>().split("+", Qt::SkipEmptyParts);
+        if (numLayers == -999)
             numLayers = screenNames.size();
         else if (numLayers != screenNames.size())
             ThrowException("All faces must have the same number of screen layers").
             value(numLayers).value2(screenNames.size()).hint(port->fullName()).context(this);
-        screenNamesByFace << screenNames;
     }
 
     // Build shelter layers; must be unique

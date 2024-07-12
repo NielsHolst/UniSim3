@@ -20,27 +20,14 @@ HeatPumpsMaxState::HeatPumpsMaxState(QString name, Box *parent)
     : Box(name, parent)
 {
     help("models a heat pump");
-    Input(numbers).imports("actuators/heatPumps/*[number]");
-    Input(maxCoolingLoads).imports("actuators/heatPumps/*[maxCoolingLoad]");
-    Input(mode).imports("setpoints/heatPumps/mode[value]");
+    Input(maxCoolingLoad).imports("actuators/heatPumps[maxCoolingLoad]");
     Input(maxPowerUse).imports("setpoints/heatPumps/maxPowerUse[value]");
+    Input(mode).imports("setpoints/heatPumps/mode[value]");
     Output(value).help("Running state relative to full effect").unit("[0;1]");
 }
 
-void HeatPumpsMaxState::reset() {
-    _firstUpdate = true;
-}
-
 void HeatPumpsMaxState::update() {
-    // This code block cannot be moved to reset() because actuators are declared further down in the boxscript
-    if (_firstUpdate) {
-        _firstUpdate = false;
-        _maxCoolingLoadsTotal = 0.;
-        Q_ASSERT(numbers.size() == maxCoolingLoads.size());
-        for (int i=0; i <numbers.size(); ++i)
-            _maxCoolingLoadsTotal += numbers.at(i)*maxCoolingLoads.at(i);
-    }
-    value = TestNum::eqZero(mode) ? 0. : std::min(maxPowerUse/_maxCoolingLoadsTotal, 1.);
+    value = TestNum::eqZero(mode) ? 0. : std::min(maxPowerUse/maxCoolingLoad, 1.);
 }
 
 } //namespace

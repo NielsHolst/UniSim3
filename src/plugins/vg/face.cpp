@@ -20,15 +20,30 @@ Face::Face(QString name, Box *parent)
 {
     help("models the greenhouse faces");
     Input(cover).equals("glass").help("A material listed in shelter/covers");
-    Input(screens).help("Zero or more screen materials listed in shelter/screens");
+    Input(screens).help("Zero or more screen materials listed in shelter/screens; '+' separated");
     Input(area).unit("m2").help("Area of face");
     Input(weight).equals(1.).unit("[0;1]").help("Weight given to face in radiation budget");
     Output(screenMaterials).help("Vector of screen material names");
     Output(numScreens).help("Number of screens on this face");
 }
 
+void Face::amend() {
+    static QMap<QString, QString> areaEqs =
+    {
+        {"roof1", "gh/geometry[roofArea] / 2"},
+        {"roof2", "gh/geometry[roofArea] / 2"},
+        {"side1", "gh/geometry[sideArea] / 2"},
+        {"side2", "gh/geometry[sideArea] / 2"},
+        {"end1" , "gh/geometry[endArea]  / 2"},
+        {"end2" , "gh/geometry[endArea]  / 2"}
+    };
+    if (!areaEqs.contains(name()))
+        ThrowException("Illegal name of face").value(name()).hint("Must be one of roof1, roof2, side1, side2, end1, end2");
+    port("area")->computes(areaEqs.value(name()));
+}
+
 void Face::reset() {
-    QStringList list = screens.split("+");
+    QStringList list = screens.split("+", Qt::SkipEmptyParts);
     screenMaterials = QVector<QString>(list.cbegin(), list.cend());
     numScreens = screenMaterials.size();
     _cover.setPointers(findOne<Box*>("shelter/products/covers/" + cover));

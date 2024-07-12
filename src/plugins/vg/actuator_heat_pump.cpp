@@ -25,10 +25,9 @@ ActuatorHeatPump::ActuatorHeatPump(QString name, Box *parent)
     Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(indoorsTemperature).imports("indoors[temperature]",CA);
     Input(indoorsRh).imports("indoors[rh]",CA);
-    Input(state).imports("controllers/padAndFans[state]");
+    Input(state).imports("controllers/heatPumps/state[value]");
     Input(sendToBuffer).equals(true).help("Send heat to buffer?");
-
-    Output(maxCoolingLoad).help("From product").unit("kW");
+    Output(maxCoolingLoad).help("From product (with converted units )").unit("W/m2");
     Output(condensation).help("Rate of water condensed in the unit").unit("kg/m2/s");
     Output(powerUseCooling).help("Power used for cooling").unit("W/m2");
     Output(powerUserParasitic).help("Power lost").unit("W/m2");
@@ -37,29 +36,34 @@ ActuatorHeatPump::ActuatorHeatPump(QString name, Box *parent)
     Output(energyToBuffer).help("Cooling energy >= 0, sent to heat buffer").unit("W/m2");
 }
 
-#define UPDATE_INPUT(x) x = product->port(#x)->value<double>()
-
 void ActuatorHeatPump::reset() {
     // Copy product parameters
     Box *product = findOne<Box*>("../products/" + productName);
-    UPDATE_INPUT(maxCoolingLoad);
-    UPDATE_INPUT(coolingEfficiency);
-    UPDATE_INPUT(maxFlowRate);
-    UPDATE_INPUT(parasiticLoad);
-    UPDATE_INPUT(coolingTemperature);
+    p.maxCoolingLoad     = product->port("maxCoolingLoad")->value<double>();
+    p.coolingEfficiency  = product->port("coolingEfficiency")->value<double>();
+    p.maxFlowRate        = product->port("maxFlowRate")->value<double>();
+    p.parasiticLoad      = product->port("parasiticLoad")->value<double>();
+    p.coolingTemperature = product->port("coolingTemperature")->value<double>();
     update();
+    // Correct max load for number of units and area
+    double k = 1000.*number/groundArea;
+    maxCoolingLoad = k*p.maxCoolingLoad;
 }
 
 void ActuatorHeatPump::update() {
     // Compute for one unit
-    powerUseCooling = maxCoolingLoad/coolingEfficiency*state; // kW
+    // Condensation
     const double
         beforeAh = ahFromRh(indoorsTemperature, indoorsRh), // kg/m3
-        afterAh = ahFromRh(coolingTemperature, 100.); // kg/m3
-    condensation = std::max(beforeAh - afterAh, 0.)*maxFlowRate*state;   // kg/s
-    powerUserParasitic = parasiticLoad*state;
+        afterAh = ahFromRh(p.coolingTemperature, 100.); // kg/m3
+    condensation = std::max(beforeAh - afterAh, 0.)*p.maxFlowRate*state;   // kg/s
+
+    // Power use
+    powerUseCooling = std::max(p.maxCoolingLoad - p.parasiticLoad, 0.)*state; // kW
+    powerUserParasitic = p.parasiticLoad*state;
     powerUse = powerUseCooling + powerUserParasitic;
-    cooling = powerUseCooling + LHe*condensation*1e-3; // J/kg * kg/s * kW/(1000*W) = kW
+    cooling = powerUseCooling*p.coolingEfficiency + LHe*condensation*1e-3; // J/kg * kg/s * kW/(1000*W) = kW
+
     energyToBuffer = sendToBuffer ? cooling : 0.;
 
     // Correct condensation for number of units and area

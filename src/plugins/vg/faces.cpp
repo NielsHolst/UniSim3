@@ -25,7 +25,14 @@ void Faces::amend() {
     // Ensure that products/screens contain a "none" screen
     Box *noneScreen = findMaybeOne<Box*>("shelter/products/screens/none");
     if (!noneScreen) {
-        Box *screens    = findOne<Box*>("shelter/products/screens");
+        Box *screens = findMaybeOne<Box*>("shelter/products/screens");
+        if (!screens) {
+            Box *products = findMaybeOne<Box*>("shelter/products");
+            BoxBuilder builder(products);
+            builder.box().name("screens").
+            endbox();
+        }
+        screens = findOne<Box*>("shelter/products/screens");
         BoxBuilder builder(screens);
         builder.box("Screen").name("none").
         endbox();

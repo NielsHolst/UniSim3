@@ -16,18 +16,12 @@ class HeatPumpsMaxState : public base::Box
 {
 public: 
     HeatPumpsMaxState(QString name, Box *parent);
-    void reset();
     void update();
 private:
     // Inputs
-    QVector<double> maxCoolingLoads;
-    QVector<int> numbers;
-    double mode, maxPowerUse;
+    double maxCoolingLoad, maxPowerUse, mode;
     // Outputs
     double value;
-    // data
-    double _maxCoolingLoadsTotal;
-    bool _firstUpdate;
 };
 
 } //namespace

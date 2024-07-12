@@ -32,9 +32,11 @@ private:
         cooling,
         energyToBuffer,
         condensation,
-    // Data (copied from heat pump product)
         maxCoolingLoad;
-    double coolingEfficiency, maxFlowRate, parasiticLoad, coolingTemperature;
+    // Data (copied from heat pump product)
+    struct {
+        double maxCoolingLoad, coolingEfficiency, maxFlowRate, parasiticLoad, coolingTemperature;
+    } p;
 
 };
 

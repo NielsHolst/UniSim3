@@ -25,8 +25,8 @@ AverageCover::AverageCover(QString name, Box *parent)
 {
     help("computes average cover radiation and heat parameters");
     Input(transmissivityReduction).imports("shelter[transmissivityReduction]");
-    Input(swShading).imports("shelter/shading[swReflectivity]");
-    Input(lwShading).imports("shelter/shading[lwReflectivity]");
+    Input(swShading).computes("if exists(shelter/shading[swReflectivity]) then shelter/shading[swReflectivity] else 0.");
+    Input(lwShading).computes("if exists(shelter/shading[lwReflectivity]) then shelter/shading[lwReflectivity] else 0.");
     Input(faceAreas).imports("shelter/faces/*[area]");
     Input(screenStates).imports("../screens/*[state]");
 }

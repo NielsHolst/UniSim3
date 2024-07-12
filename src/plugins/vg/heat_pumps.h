@@ -19,12 +19,14 @@ public:
 private:
     // Inputs
     QVector<double>
+        maxCoolingLoads,
         powerUsePumps,
         coolingPumps,
         energyToBufferPumps,
         condensationPumps;
     // Outputs
     double
+        maxCoolingLoad,
         powerUse,
         cooling,
         energyToBuffer,
