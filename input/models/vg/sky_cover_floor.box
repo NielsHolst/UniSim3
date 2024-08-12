@@ -101,6 +101,7 @@ Simulation sim {
     }
   }
   OutputR output {
+    .scripts = "density_plots.R"
     Sah sah {
       .temperature = indoors[temperature]
     }

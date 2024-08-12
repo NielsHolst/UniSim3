@@ -332,6 +332,12 @@ void Budget::reset() {
         logger.open(environment().outputFileNamePath("vg_log.txt"));
 }
 
+namespace {
+    double guardedRatio(double a, double b) {
+        return (b == 0.) ? 0. : a/b;
+    }
+}
+
 void Budget::update() {
     checkParameters();
     const double
@@ -346,8 +352,8 @@ void Budget::update() {
     growthLightParHittingPlant = budgetLayerGrowthLights ? budgetLayerGrowthLights->parEmissionBottom : 0.;
     // If no plant then use floor instead
     BudgetLayer *refLayer = budgetLayerPlant ? budgetLayerPlant : budgetLayerFloor;
-    totalPar = refLayer->parAbsorbedTop    / refLayer->attachedLayer->swAbsorptivityTop +
-               refLayer->parAbsorbedBottom / refLayer->attachedLayer->swAbsorptivityBottom;
+    totalPar = guardedRatio(refLayer->parAbsorbedTop   , refLayer->attachedLayer->swAbsorptivityTop   ) +
+               guardedRatio(refLayer->parAbsorbedBottom, refLayer->attachedLayer->swAbsorptivityBottom);
     sunParHittingPlant = std::max(totalPar - growthLightParHittingPlant, 0.);
 
     if (writeLog && !writeHighRes)
@@ -501,14 +507,14 @@ WaterIntegration waterIntegration(
         double v,   // ventilation rate
         double V)   // outdoors ah
 {
+    // No condensation possible?
+    if (ah0 < C)
+        c = 0.;
     // Only evapotranspiration
     if (fabs(c+v) < 1e-9) {
         return WaterIntegration {ET*dt, ET*dt, 0., 0.};
     }
-
     // Else integrate
-    if (ah0 < C)
-        c = 0.;
     const double
         tau          = exp(-(c+v)*dt),
         ah1          = (c + v != 0.) ? (ET + c*C + v*V - tau*(c*C - ah0*(c + v) + ET + v*V))/(c + v) : ah0 + ET*dt,
