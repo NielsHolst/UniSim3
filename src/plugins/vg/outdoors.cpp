@@ -30,6 +30,7 @@ Outdoors::Outdoors(QString name, Box *parent)
     Input(propUv).equals(0.07).help("Proportion of UV in radiation").unit("[0;1]");
     Input(windSpeed).imports("./records[Windspeed]").help("Outdoors wind speed").unit("m/s");
     Output(par).help("Sunlight PAR").unit("mymol PAR/m2/s");
+    Output(ah).unit("kg/m3").help("Absolute humidity");
     Output(soilTemperature).imports("./soilTemperature[value]").unit("oC");
 }
 
@@ -48,6 +49,7 @@ void Outdoors::reset() {
 
 void Outdoors::update() {
     par = 4.57*propPar*radiation;
+    ah = ahFromRh(temperature, rh);
 }
 
 } //namespace

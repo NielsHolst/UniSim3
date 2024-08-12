@@ -19,13 +19,14 @@ public:
     void reset() final;
     void addLayer(const BudgetLayer *layer);
     void addHeatInflux(double flux);
+    void updateRh();
 private:
     // Inputs
     double
         initTemperature, initRh, initCo2;
     // Outputs
     double
-        temperature, rh, co2,
+        temperature, rh, ah, co2,
         heatInflux;
     // Data
     QVector<const BudgetLayer *> layers;

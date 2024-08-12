@@ -101,10 +101,11 @@ void Budget::addVolumes() {
     BoxBuilder builder(this);
     builder.
         box("BudgetVolume").name("outdoorsVol").
-            port("initTemperature").imports("/outdoors[temperature]").
-            port("temperature").imports("/outdoors[temperature]").
-            port("initRh").imports("/outdoors[rh]").
-            port("rh").imports("/outdoors[rh]").
+            port("initTemperature").imports("outdoors[temperature]").
+            port("temperature").imports("outdoors[temperature]").
+            port("initRh").imports("outdoors[rh]").
+            port("rh").imports("outdoors[rh]").
+            port("ah").imports("outdoors[ah]").
         endbox().
         box("BudgetVolume").name("indoors").
             port("initTemperature").equals(20.).
@@ -335,15 +336,11 @@ void Budget::update() {
     checkParameters();
     const double
             indoorsTemp0 = indoorsVol->temperature,
-            indoorsRh0   = indoorsVol->rh;
+            indoorsAh0   = indoorsVol->ah;
     updateInSubSteps();
     updateCo2();
-
-    const double
-            indoorsTemp1 = indoorsVol->temperature,
-            indoorsRh1   = indoorsVol->rh;
-    indoorsSensibleHeatFlux = (indoorsTemp1 - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
-    indoorsLatentHeatFlux = (ahFromRh(indoorsTemp0, indoorsRh0) - ahFromRh(indoorsTemp1, indoorsRh1))*LHe*averageHeight/timeStep;
+    indoorsSensibleHeatFlux = (indoorsVol->temperature - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
+    indoorsLatentHeatFlux   = (indoorsVol->ah          - indoorsAh0)  *LHe         *averageHeight/timeStep;
 
     // Approximate outputs
     growthLightParHittingPlant = budgetLayerGrowthLights ? budgetLayerGrowthLights->parEmissionBottom : 0.;
@@ -487,36 +484,48 @@ void Budget::applyDeltaT() {
 namespace {
 
 struct WaterIntegration {
+    // All in kg/m3
     double
         deltaAh,
+        evapotranspiration,
         condensation,
         ventilation;
 };
 
 WaterIntegration waterIntegration(
-        double x,  // time step
-        double y0, // indoors ah
-        double ET, // evapotranspiration
-        double c,  // cover condensation rate
-        double C,  // sah of cover
-        double v,  // ventilation rate
-        double V)  // outdoors ah
+        double dt,  // time step
+        double ah0, // indoors ah
+        double ET,  // evapotranspiration
+        double c,   // cover condensation rate
+        double C,   // sah of cover
+        double v,   // ventilation rate
+        double V)   // outdoors ah
 {
-    if (y0 < C)
+    // Only evapotranspiration
+    if (fabs(c+v) < 1e-9) {
+        return WaterIntegration {ET*dt, ET*dt, 0., 0.};
+    }
+
+    // Else integrate
+    if (ah0 < C)
         c = 0.;
     const double
-        indoorsAh0    = y0,
-        tau           = exp(-x*(c+v)),
-        indoorsAh1 = (c + v != 0.) ? (ET + c*C + v*V - tau*(c*C - y0*(c + v) + ET + v*V))/(c + v) : y0 + ET*x,
-        avgAh         = (indoorsAh0 + indoorsAh1)/2.,
-        condensation  = std::max(c*(avgAh - C)*x, 0.),
-        ventilation   = v*(avgAh-V)*x;
+        tau          = exp(-(c+v)*dt),
+        ah1          = (c + v != 0.) ? (ET + c*C + v*V - tau*(c*C - ah0*(c + v) + ET + v*V))/(c + v) : ah0 + ET*dt,
+        deltaAh      = ah1 - ah0,
+        avgAh        = (ah0 + ah1)/2.;
 
-    return WaterIntegration{
-        indoorsAh1 - indoorsAh0,
-        condensation,
-        ventilation
-    };
+    // Break down water budget
+    WaterIntegration w;
+    w.deltaAh = deltaAh;
+    w.evapotranspiration = ET*dt;
+    const double
+        C1 = c*(avgAh - C),
+        V1 = v*(avgAh - V),
+        k = (ET - deltaAh/dt) / (C1 + V1);
+    w.condensation = k*C1;
+    w.ventilation  = k*V1;
+    return w;
 }
 
 inline double g(double volumeVirtT, double coverVirtT) {
@@ -527,47 +536,46 @@ inline double g(double volumeVirtT, double coverVirtT) {
 
 void Budget::updateWaterBalance(double timeStep) {
     const double
-       indoorsAh     = ahFromRh(indoorsVol->temperature,  indoorsVol->rh),
-       outdoorsAh    = ahFromRh(outdoorsTemperature, outdoorsRh),
+       indoorsAh     = indoorsVol->ah,
+       outdoorsAh    = outdoorsVol->ah,
        coverSah      = sah(budgetLayerCover->temperature),
        indoorsVirtT  = virtualTemperatureFromAh(indoorsVol->temperature,       indoorsAh),
-       outdoorsVirtT = virtualTemperatureFromAh(outdoorsTemperature,           outdoorsAh),
        coverVirtT    = virtualTemperatureFromAh(budgetLayerCover->temperature, indoorsAh),
-       c             = g(indoorsVirtT, coverVirtT)*coverPerGroundArea/averageHeight,
        v             = (*in.ventilationRate)/3600.;
-    coverConductance = c;
+    coverConductance = coverPerGroundArea*g(indoorsVirtT, coverVirtT);
 
     WaterIntegration w = waterIntegration(
         timeStep,
         indoorsAh,
         (*in.transpirationRate + *in.humidificationRate + *in.padAndFanVapourFlux - *in.heatPumpCondensationRate)/averageHeight,
-        c,
+        coverConductance,
         coverSah,
         v,
         outdoorsAh
     );
-    // Deltas
-    double
-        // kg/m3 * m   = kg/m2
+
+    // Net condensation and ventilation
+    const double
+        // kg/m2 = kg/m3 * m
         d_condensationCover    = w.condensation*averageHeight,
         d_ventedWater          = w.ventilation*averageHeight;
-    const double
-        // kg/m2/s * s = kg/m2
+
+    // Evapotranspiration
+    double
+        // kg/m2 = kg/m2/s * s
         d_transpiration        = *in.transpirationRate*timeStep,
         d_humidification       = *in.humidificationRate*timeStep,
         d_padAndFanVapourFlux  = *in.padAndFanVapourFlux*timeStep,
         d_heatPumpCondensation = *in.heatPumpCondensationRate*timeStep;
 
-    // Correction of condensation and vented water to match net change in indoors humidity
-    if (d_condensationCover + d_ventedWater != 0.) {
-        const double
-            d_ET       = d_transpiration + d_humidification + d_padAndFanVapourFlux - d_heatPumpCondensation,
-            correction = (d_ET- w.deltaAh)/(d_condensationCover + d_ventedWater);
-        d_condensationCover *= correction;
-        d_ventedWater       *= correction;
-        if (TestNum::ne(w.deltaAh, d_ET - d_condensationCover - d_ventedWater, 0.01))
-            ThrowException("Mismatch").value(w.deltaAh).value2(d_ET - d_condensationCover - d_ventedWater);
-    }
+    // Correction of evapotranspiration sum
+    const double
+        d_sum = d_transpiration + d_humidification + d_padAndFanVapourFlux - d_heatPumpCondensation,
+        k = (fabs(d_sum) < 1e-6) ? 1. : w.evapotranspiration/d_sum;
+    d_transpiration        *= k;
+    d_humidification       *= k;
+    d_padAndFanVapourFlux  *= k;
+    d_heatPumpCondensation *= k;
 
     // Outputs
     wfTranspiration  += d_transpiration;
@@ -578,16 +586,21 @@ void Budget::updateWaterBalance(double timeStep) {
     wfPadAndFan      += d_padAndFanVapourFlux;
 
     // Indoors state update
-    indoorsVol->rh     = rhFromAh(indoorsVol->temperature, indoorsAh + w.deltaAh);
+    indoorsVol->ah   += w.deltaAh;
+    const double indoorsSah = sah(indoorsVol->temperature);
+    if (indoorsVol->ah > indoorsSah)
+        indoorsVol->ah = indoorsSah;
+    indoorsVol->updateRh();
 
     // Outside latent heat
     const double
-       condRate   = 2e-3*coverPerGroundArea,
-       outsideCondensation  = std::max(condRate*(outdoorsAh - coverSah)*timeStep, 0.),
-       coverCondensation = d_condensationCover + outsideCondensation;
+       outdoorsVirtT       = virtualTemperatureFromAh(outdoorsTemperature, outdoorsAh),
+       c                   = coverPerGroundArea*g(outdoorsVirtT, coverVirtT),
+       outsideCondensation = std::max(c*(outdoorsAh - coverSah)*timeStep, 0.),
+       coverCondensation   = d_condensationCover + outsideCondensation;
 
     // Update cover temperature
-    coverLatentHeatFlux = LHe*coverCondensation;
+    coverLatentHeatFlux = LHe*coverCondensation/timeStep;
     double deltaT = budgetLayerCover->updateDeltaTByCondensation(coverCondensation);
     if (fabs(deltaT) > _maxDeltaT)
         _maxDeltaT = fabs(deltaT);

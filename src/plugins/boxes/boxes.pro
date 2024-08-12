@@ -11,6 +11,7 @@ include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 QT += widgets
 
 HEADERS +=  \
+    ah_from_rh.h \
     accumulator.h \
     all_types.h \
     boxes_documentation.h \
@@ -83,6 +84,7 @@ HEADERS +=  \
     running_average_timed.h \
     running_sum_steps.h \
     running_sum_timed.h \
+    sah.h \
     sandy.h \
     scenarios.h \
     select_file.h \
@@ -112,6 +114,7 @@ HEADERS +=  \
 	
 SOURCES +=  \
     accumulator.cpp \
+    ah_from_rh.cpp \
     all_types.cpp \
     boxes_documentation.cpp \
     briere.cpp \
@@ -181,6 +184,7 @@ SOURCES +=  \
     running_average_timed.cpp \
     running_sum_steps.cpp \
     running_sum_timed.cpp \
+    sah.cpp \
     sandy.cpp \
     scenarios.cpp \
     select_file.cpp \

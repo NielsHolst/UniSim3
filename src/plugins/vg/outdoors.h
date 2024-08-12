@@ -21,7 +21,7 @@ public:
     void update();
 private:
     // Inputs
-    double temperature, windSpeed, rh,
+    double temperature, windSpeed, rh, ah,
     radiation, propPar, propUv,
     co2, soilTemperature;
 

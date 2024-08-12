@@ -1,13 +1,13 @@
 #using vg
 Simulation sim {
   Box global {
-    &beginDate = 01/07/2024
+    &beginDate = 01/02/2024
   }
   Calendar calendar {
     .latitude = 61.5
     .longitude = 23.8
     .begin = global[beginDate] - 1
-    .end = 07/07/2024
+    .end = 07/02/2024
     .timeStep = 180
     .timeUnit = "s"
   }
@@ -121,6 +121,13 @@ Simulation sim {
       }
       PlotR  {
         .ports = budget[wfVentilation] | budget[wfCover]
+        .layout = "merged"
+      }
+    }
+    PageR  {
+      .xAxis = calendar[dateTime]
+      PlotR  {
+        .ports = budget/*[temperature]
         .layout = "merged"
       }
     }
