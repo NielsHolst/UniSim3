@@ -57,17 +57,27 @@ QString BoxScriptPreprocessor::readFile(QString filePath, FileIncludes earlierIn
     return expandIncludes(filePath, code, earlierIncludes);
 }
 
+namespace {
+
+QString getSlice(QString source, int from, int to) {
+    const int n = to - from +1;
+    return (n > 0) ? source.mid(from, n) : "";
+}
+
+}
+
 QString BoxScriptPreprocessor::expandIncludes(QString sourceFilePath, QString code, FileIncludes earlierIncludes) {
     // New code is collated while the original code is unchanged
     QString newCode;
     // Find all includes in this file
     Positions includes = findDirective(code, "include");
-    bool hasIncludes = !includes.isEmpty();
-    // If file has includes then the new code runs until the first include
-    if (hasIncludes)
-        newCode = code.mid(0, includes.at(0).begin-1);
+    // Current position in source file
+    int pos = 0;
     // Replace every include with included file
     for (Position include : includes) {
+        // Copy original source from current position until beginning of next include
+        newCode += getSlice(code, pos, include.begin - 1);
+
         // Extract the include file path
         QString line = code.mid(include.begin, include.end - include.begin),
                 includeFilePath = extractIncludeFilePath(line);
@@ -75,16 +85,17 @@ QString BoxScriptPreprocessor::expandIncludes(QString sourceFilePath, QString co
         FileInclude newFileInclude = FileInclude{sourceFilePath, includeFilePath};
         checkCyclicIncludes(newFileInclude, earlierIncludes);
         earlierIncludes << newFileInclude;
+
         // Append code from included file, embraced in comments
         QString paths = "(" + sourceFilePath + " -> " + includeFilePath + ")\n";
         newCode +=
                 "\n// begin-include " + paths +
                 readFile(includeFilePath, earlierIncludes) +
                 "\n// end-include "  + paths;
+        pos = include.end + 1;
     }
-    // If file had include we are new at the end of the last include, or else we are still at the beginning
-    int at = hasIncludes ? includes.last().end : 0;
-    newCode += code.mid(at);
+    // Copy rest of original
+    newCode += code.mid(pos);
     // Return the new code
     return newCode;
 }
@@ -138,30 +149,25 @@ void BoxScriptPreprocessor::setUsing(QString pluginName) {
 BoxScriptPreprocessor::Positions BoxScriptPreprocessor::findDirective(QString code, QString directive) const {
     Positions positions;
     QString find = "#" + directive;
-    int at = 0;
-    while (true) {
-        at = code.indexOf(find, at);
-        if (at==-1 || isComment(code.mid(0,at)))
-            break;
-        int begin = at;
-        at = code.indexOf("\n", at);
-        positions << Position{begin, at};
+    for (int pos = code.indexOf(find); pos > -1; pos = code.indexOf(find, pos)) {
+        // Find line beginning
+        int beginLine = pos;
+        QChar ch;
+        for (int i = pos; i>-1; --i)
+            ch = code.at(i);
+        while (code.at(beginLine) != '\n' && beginLine > 0)
+            --beginLine;
+        // Is the directive commented?
+        const bool isCommented = (code.mid(beginLine, pos - beginLine).indexOf("//") > -1);
+        // Extract directive
+        const int begin = pos,
+                  end   = code.indexOf("\n", pos);
+        pos = end;
+        // Only add uncommented directive
+        if (!isCommented)
+            positions << Position{begin, end};
     }
     return positions;
-}
-
-bool BoxScriptPreprocessor::isComment(QString s) const {
-    // Search backwards for comment slashes in this line
-    bool comment = false;
-    for (int i = s.size()-2; i>=0; --i) {
-        if (s.at(i) == QChar::CarriageReturn)
-            break;
-        else if (s.mid(i,i+1) == "//") {
-            comment = true;
-            break;
-        }
-    }
-    return comment;
 }
 
 QString BoxScriptPreprocessor::extractIncludeFilePath(QString includeLine) const {

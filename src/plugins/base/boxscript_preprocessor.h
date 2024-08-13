@@ -34,7 +34,6 @@ private:
     QString readFile(QString filePath, FileIncludes earlierIncludes);
     QString expandIncludes(QString sourceFilePath, QString code, FileIncludes earlierIncludes);
     Positions findDirective(QString code, QString directive) const;
-    bool isComment(QString s) const;
     QString extractIncludeFilePath(QString includeLine) const;
     void checkCyclicIncludes(FileInclude newFileInclude, FileIncludes earlierIncludes) const;
     QString backtrack(FileIncludes earlierIncludes) const;

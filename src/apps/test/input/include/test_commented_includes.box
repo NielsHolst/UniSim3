@@ -1,0 +1,13 @@
+Simulation sim { // #include "xyz.box"
+// #include "xyz.box"
+  #include "parcel_a.box" 
+  #include "parcel_b.box"
+  Box mainA {
+  }
+  Box mainB { // #include "xyz.box"
+    #include "parcel_c.box"
+  }
+  Box mainC {
+  }
+  #include "parcel_d.box"
+}

@@ -1,0 +1,3 @@
+Season	BeginDate	EndDate
+Winter	01/01/2001	07/01/2001
+Summer	01/07/2001	07/07/2001

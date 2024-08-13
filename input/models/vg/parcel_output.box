@@ -1,0 +1,10 @@
+  OutputR output {
+    .keepPlots = FALSE
+    .scripts = "density_plots.R"
+    OutputText {
+      .ports = calendar[dateTime] | seasons[Season] | indoors[temperature] | indoors[rh] | budget[totalPar]
+    }
+    OutputSelector selector {
+      .beginDateTime = global/beginDate[value]
+    }
+  }

@@ -18,9 +18,13 @@ public:
     void update();
 private:
     // Input
+    QString dmy;
     int day, month, year;
     // Output
     QDate date;
+    // Methods
+    void fromString();
+    void fromDetails();
 };
 
 }

@@ -1,0 +1,21 @@
+  .iterations = 2
+  Scenarios seasons {
+    .fileName = "verification_scenarios.txt"
+    .title = "Season"
+  }
+  Box global {
+    Date beginDate {
+      .dmy = seasons[BeginDate]
+    }
+    Date endDate {
+      .dmy = seasons[EndDate]
+    }
+  }
+  Calendar calendar {
+    .latitude = 61.5
+    .longitude = 23.8
+    .begin = global/beginDate[value] - 5
+    .end = global/endDate[value]
+    .timeStep = 180
+    .timeUnit = "s"
+  }

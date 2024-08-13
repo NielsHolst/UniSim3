@@ -35,6 +35,7 @@ HEADERS +=  \
     test_functions.h \
     test_gradient_ascent.h \
     test_import_export.h \
+    test_include.h \
     test_maker.h \
     test_node.h \
     test_operate.h \
@@ -73,6 +74,7 @@ SOURCES +=  \
     test_functions.cpp \
     test_gradient_ascent.cpp \
     test_import_export.cpp \
+    test_include.cpp \
     test_maker.cpp \
     test_node.cpp \
     test_operate.cpp \

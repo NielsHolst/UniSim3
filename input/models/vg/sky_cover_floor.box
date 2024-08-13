@@ -1,16 +1,6 @@
 #using vg
 Simulation sim {
-  Box global {
-    &beginDate = 01/07/2024
-  }
-  Calendar calendar {
-    .latitude = 61.5
-    .longitude = 23.8
-    .begin = global[beginDate] - 1
-    .end = 07/07/2024
-    .timeStep = 180
-    .timeUnit = "s"
-  }
+  #include "parcel_prelude.box"
   Outdoors outdoors {
     Records records {
       .fileName = "DNK_Odense.txt"
@@ -100,33 +90,5 @@ Simulation sim {
     Budget budget {
     }
   }
-  OutputR output {
-    .scripts = "density_plots.R"
-    Sah sah {
-      .temperature = indoors[temperature]
-    }
-    PageR  {
-      .xAxis = calendar[dateTime]
-      // .nrow = 2
-      PlotR  {
-        .ports = indoors[ah] | outdoors[ah]
-        .layout = "merged"
-      }
-      PlotR  {
-        .ports = indoors[rh] | outdoors[rh]
-        .layout = "merged"
-      }
-      PlotR  {
-        .ports = indoors[temperature] | outdoors[temperature]
-        .layout = "merged"
-      }
-      PlotR  {
-        .ports = budget[wfVentilation] | budget[wfCover]
-        .layout = "merged"
-      }
-    }
-    OutputSelector selector {
-      .beginDateTime = global[beginDate]
-    }
-  }
+  #include "parcel_output.box"
 }

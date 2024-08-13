@@ -3,6 +3,7 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
+#include <base/convert.h>
 #include <base/exception.h>
 #include <base/publish.h>
 #include "date.h"
@@ -16,7 +17,8 @@ PUBLISH(Date)
 Date::Date(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("constructs a date from day, month and year");
+    help("constructs a date from a DMY string, or from day, month and year");
+    Input(dmy).unit("DMY").help("A date string");
     Input(day).equals(1).help("Day of month").unit("[1;31]");
     Input(month).equals(1).help("Month").unit("[1;12]");
     Input(year).equals(2000).help("Year");
@@ -30,6 +32,17 @@ void Date::reset() {
 }
 
 void Date::update() {
+    if (dmy.isEmpty())
+        fromDetails();
+    else
+        fromString();
+}
+
+void Date::fromString() {
+    date = convert<QDate>(dmy);
+}
+
+void Date::fromDetails(){
     date = QDate(year, month, day);
     if (!date.isValid()) {
         QString s("%1/%2/%3");
