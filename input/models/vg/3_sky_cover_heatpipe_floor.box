@@ -1,0 +1,218 @@
+#using vg
+Simulation sim {
+  #include "parcel_prelude.box"
+  Sky sky {
+  }
+  Box gh {
+    Geometry geometry {
+      .numSpans = 25
+      .spanWidth = 4.0
+      .length = 100.0
+      .height = 4.0
+      .roofPitch = 26.0
+    }
+    Box construction {
+      LeakageVentilation leakage {
+        .leakage = 1.0
+      }
+      Shelter shelter {
+        UWind Utop {
+        }
+        Box products {
+          Box covers {
+            Cover Single_glass_4mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.1
+              .swTransmissivityTop = 0.8
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.1
+              .swTransmissivityBottom = 0.8
+              .lwAbsorptivityTop = 0.83
+              .lwReflectivityTop = 0.15
+              .lwTransmissivityTop = 0.02
+              .lwAbsorptivityBottom = 0.83
+              .lwReflectivityBottom = 0.15
+              .lwTransmissivityBottom = 0.02
+              .Utop = shelter/Utop[value]
+              .Ubottom = 6.5
+              .heatCapacity = 8400.0
+            }
+          }
+        }
+        Faces faces {
+          Face roof1 {
+            .cover = "Single_glass_4mm"
+            .weight = 1.0
+          }
+          Face roof2 {
+            .cover = "Single_glass_4mm"
+            .weight = 1.0
+          }
+          Face side1 {
+            .cover = "Single_glass_4mm"
+            .weight = 0.6
+          }
+          Face side2 {
+            .cover = "Single_glass_4mm"
+            .weight = 0.6
+          }
+          Face end1 {
+            .cover = "Single_glass_4mm"
+            .weight = 0.2
+          }
+          Face end2 {
+            .cover = "Single_glass_4mm"
+            .weight = 0.2
+          }
+        }
+      }
+    }
+    
+    Box setpoints {
+      Box rhMax {
+        Box threshold {
+          &value = 85.0
+        }
+        Box band {
+          &value = 5.0
+        }
+      }
+      Box heating {
+        Box base {
+          &value = 21.0
+        }
+        Box humidityOffset {
+          &value = 2.0
+        }
+      }
+      Box heatPipes {
+        Box minTemperature {
+          &value = 20.0
+        }
+        Box maxTemperature {
+          &value = 95.0
+        }
+      }
+      Box ventilation {
+        Box offset {
+          &value = 3.0
+        }
+        Box crack {
+          &value = 0.05
+        }
+        Box temperature {
+          Box threshold {
+            &value = -5.0
+          }
+          Box band {
+            &value = 1.0
+          }
+        }
+      }
+    }
+    Box controllers {
+      Box desiredMinTemperature {
+        &value = rhControlled[value]
+        ProportionalSignal humidityOffset {
+          .input = indoors[rh]
+          .threshold = setpoints/rhMax/threshold[value]
+          .thresholdBand = setpoints/rhMax/band[value]
+          .maxSignal = setpoints/heating/humidityOffset[value]
+          .increasingSignal = TRUE
+        }
+        Sum rhControlled {
+          .values = setpoints/heating/base[value] | ../humidityOffset[value]
+        }
+      }
+      Box heatPipes { 
+        Accumulator inflowTemperature {
+          .change = ./controller[controlVariable]
+          .minValue = setpoints/heatPipes/minTemperature[value]
+          .maxValue = setpoints/heatPipes/maxTemperature[value]
+          PidController controller {
+            .sensedValue = indoors[temperature]
+            .desiredValue = controllers/desiredMinTemperature[value]
+            .Kprop = 0.05
+            .timeStep = budget[subTimeStep]
+          }
+        }
+      }
+      Box ventilation { 
+        Sum desiredMaxTemperature {
+          .values = ../../desiredMinTemperature[value]|setpoints/ventilation/offset[value]
+        }
+        ProportionalSignal crack {
+          .input = indoors[rh]
+          .threshold = setpoints/rhMax/threshold[value]
+          .thresholdBand = setpoints/rhMax/band[value]
+          .maxSignal = ./max[value]
+          .increasingSignal = TRUE
+          ProportionalSignal max {
+            .input = outdoors[temperature]
+            .threshold = setpoints/ventilation/temperature/threshold[value]
+            .thresholdBand = setpoints/ventilation/temperature/band[value]
+            .maxSignal = setpoints/ventilation/crack[value]
+            .increasingSignal = TRUE
+          }
+        }
+        Accumulator opening {
+          .change = ./controller[controlVariable]
+          .minValue = ../crack[value]
+          .maxValue = 1.0
+          PidController controller {
+            .sensedValue = indoors[temperature]
+            .desiredValue = ../../desiredMaxTemperature[value]
+            .Kprop = -0.0001
+            .timeStep = budget[subTimeStep]
+          }
+        }
+      }
+    }
+    Box actuators {  // Actuators??
+      HeatPipes heatPipes {
+        ActuatorHeatPipe circuit1 {
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.5
+          .inflowTemperature = controllers/heatPipes/inflowTemperature[value]
+          .minTemperature = setpoints/heatPipes/minTemperature[value]
+          .maxTemperature = setpoints/heatPipes/maxTemperature[value]
+          .indoorsTemperature = indoors[temperature]
+        }
+        ActuatorHeatPipe circuit2 {
+          .volume = 76.4538
+          .flowRate = 50.0
+          .k = 0.01
+          .b = 1.5
+          .propLw = 0.5
+          .inflowTemperature = controllers/heatPipes/inflowTemperature[value]
+          .minTemperature = setpoints/heatPipes/minTemperature[value]
+          .maxTemperature = setpoints/heatPipes/maxTemperature[value]
+          .indoorsTemperature = indoors[temperature]
+        }
+      }
+      ActuatorVentilation ventilation {
+        .ventAreaRatio = 0.36
+        .windCoef = 50.0
+        .temperatureCoef = 14.0
+        .opening = controllers/ventilation/opening[value]
+      }
+    }
+    Floor floor {
+      .swAbsorptivityTop = 0.6
+      .swReflectivityTop = 0.4
+      .swTransmissivityTop = 0.0
+      .lwAbsorptivityTop = 0.6
+      .lwReflectivityTop = 0.4
+      .lwTransmissivityTop = 0.0
+      .Utop = 7.5
+      .Ubottom = 0.1
+      .heatCapacity = 42000.0
+    }
+    Budget budget {
+    }
+  }
+  #include "parcel_output.box"
+}

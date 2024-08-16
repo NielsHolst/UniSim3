@@ -475,6 +475,8 @@ void Budget::updateDeltaT(double timeStep) {
     }
     double propVentilation   = 1. - exp(-(*in.ventilationRate)/3600.*timeStep),
            ventilationDeltaT = (outdoorsTemperature - indoorsVol->temperature)*propVentilation;
+//           ventilationDeltaT = std::max(outdoorsTemperature - indoorsVol->temperature, 0.)*propVentilation;
+    // (disallow heating by warmer outside air)
     indoorsDeltaT = (indoorsVol->heatInflux - (*in.heatPumpCooling + *in.padAndFanCooling))*timeStep/indoorsHeatCapacity + ventilationDeltaT;
     ventilationHeatLoss = ventilationDeltaT*averageHeight*RhoAir*CpAir/timeStep;
     if (fabs(indoorsDeltaT) > fabs(_maxDeltaT))

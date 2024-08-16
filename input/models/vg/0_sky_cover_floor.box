@@ -1,15 +1,6 @@
 #using vg
 Simulation sim {
   #include "parcel_prelude.box"
-  Outdoors outdoors {
-    Records records {
-      .fileName = "DNK_Odense.txt"
-      .cycle = TRUE
-      .ignoreYear = TRUE
-    }
-    SoilTemperature soilTemperature {
-    }
-  }
   Sky sky {
   }
   Box gh {
@@ -90,39 +81,12 @@ Simulation sim {
     Budget budget {
     }
   }
-  OutputR output {
-    Sah sah {
-      .temperature = indoors[temperature]
-    }
-    PageR  {
+  OutputR {
+    PageR {
       .xAxis = calendar[dateTime]
-      // .nrow = 2
-      PlotR  {
-        .ports = indoors[ah] | outdoors[ah]
-        .layout = "merged"
+      PlotR {
+        .ports = budget/sky[swEmissionBottom] | budget/sky[swAbsorbedBottom] | budget/sky[swCoverSkyBalance] | budget/cover[lwCoverSkyBalance] 
       }
-      PlotR  {
-        .ports = indoors[rh] | outdoors[rh]
-        .layout = "merged"
-      }
-      PlotR  {
-        .ports = indoors[temperature] | outdoors[temperature]
-        .layout = "merged"
-      }
-      PlotR  {
-        .ports = budget[wfVentilation] | budget[wfCover]
-        .layout = "merged"
-      }
-    }
-    PageR  {
-      .xAxis = calendar[dateTime]
-      PlotR  {
-        .ports = budget/*[temperature]
-        .layout = "merged"
-      }
-    }
-    OutputSelector selector {
-      .beginDateTime = global[beginDate]
     }
   }
 }

@@ -21,7 +21,7 @@ private:
     // Input
     double coverPerGroundArea, indoorsRh;
     // Output
-    double condInsideDeltaT, condOutsideDeltaT, lwCoverSkyBalance;
+    double condInsideDeltaT, condOutsideDeltaT, lwCoverSkyBalance, swCoverSkyBalance;
     // Friends
     friend class Budget;
 };

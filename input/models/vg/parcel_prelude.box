@@ -12,10 +12,22 @@
     }
   }
   Calendar calendar {
-    .latitude = 61.5
-    .longitude = 23.8
+    // Copenhagen
+    .latitude = 55.7
+    .longitude = 12.6
     .begin = global/beginDate[value] - 5
     .end = global/endDate[value]
     .timeStep = 180
     .timeUnit = "s"
+  }
+  Outdoors outdoors {
+    Records records {
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+      .ignoreYear = TRUE
+    }
+    SoilTemperature soilTemperature {
+    }
+  }
+  Sun sun {
   }

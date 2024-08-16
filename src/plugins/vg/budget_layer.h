@@ -63,6 +63,7 @@ private:
     BudgetVolume *volumeTop, *volumeBottom;
     // Friends
     friend class Budget;
+    friend class BudgetLayerSky;
 };
 
 }

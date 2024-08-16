@@ -20,6 +20,11 @@ BudgetLayerSky::BudgetLayerSky(QString name, base::Box *parent)
     : BudgetLayer(name, parent)
 {
     setClassName("vg", "BudgetLayer");
+    Output(swCoverSkyBalance).unit("W/m2 ground").help("Long-wave balance; negative means net loss from cover");
+}
+
+void BudgetLayerSky::update() {
+    swCoverSkyBalance = swEmissionBottom - swAbsorbedBottom;
 }
 
 void BudgetLayerSky::updateLwEmission() {

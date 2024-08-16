@@ -14,7 +14,10 @@ namespace vg {
 class BudgetLayerSky : public BudgetLayer {
 public:
     BudgetLayerSky(QString name, base::Box *parent);
+    void update();
     void updateLwEmission();
+    // Outputs
+    double swCoverSkyBalance;
     // Friends
     friend class Budget;
 };

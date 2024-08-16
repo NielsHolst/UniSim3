@@ -1,15 +1,6 @@
 #using vg
 Simulation sim {
   #include "parcel_prelude.box"
-  Outdoors outdoors {
-    Records records {
-      .fileName = "DNK_Odense.txt"
-      .cycle = TRUE
-      .ignoreYear = TRUE
-    }
-    SoilTemperature soilTemperature {
-    }
-  }
   Sky sky {
   }
   Box gh {
