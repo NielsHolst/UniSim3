@@ -50,6 +50,7 @@ Budget::Budget(QString name, base::Box *parent)
     Input(tempPrecision).equals(2.0).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");
     Input(writeLog).equals(false).help("Write log output");
+    Input(isSkippingOutput).imports("OutputSelector::*[isSkipping]");
     Input(controlClimate).equals(true).help("Should climate be controlled according to setpoints?");
     Input(timeStep).imports("calendar[timeStepSecs]");
     Input(averageHeight).imports("gh/geometry[averageHeight]");
@@ -356,6 +357,7 @@ void Budget::update() {
                guardedRatio(refLayer->parAbsorbedBottom, refLayer->attachedLayer->swAbsorptivityBottom);
     sunParHittingPlant = std::max(totalPar - growthLightParHittingPlant, 0.);
 
+    // Log as needed
     if (writeLog && !writeHighRes)
         writeToLog();
 }
@@ -411,8 +413,7 @@ void Budget::updateInSubSteps() {
         // Force written output according to option
         if (writeHighRes && lt(timePassed, timeStep)) {
             outputWriter->cleanupFamily();
-            if (writeLog)
-                writeToLog();
+            writeToLog();
         }
 
         // Count sub-steps with major simulation time step
@@ -801,10 +802,29 @@ QString Budget::dump(const Parameters &p, Dump header) {
     return string;
 }
 
+QString Budget::dumpVolumes(Dump header) {
+    QString string;
+    QTextStream result(&string);
+    if (header == Dump::WithHeader)
+        result << "i\tvolume\tinflux\tT\n";
+    int i = 0;
+    for (auto volume : volumes) {
+        result
+            << i++ << "\t"
+            << volume->name() << "\t"
+            << volume->port("heatInflux")->value<QString>() << "\t"
+            << volume->port("temperature")->value<QString>() << "\n";
+    }
+    return string;
+}
+
 void Budget::writeToLog() {
-    logger.write(QString::number(step) + ":" + convert<QString>(subSteps) + ": " + convert<QString>(subDateTime));
-    logger.write(dump(lwParam, Dump::WithHeader));
-    logger.write(dump(lwState, Dump::WithHeader));
+    if (!isSkippingOutput) {
+        logger.write(QString::number(step) + "\t" + convert<QString>(subSteps) + "\t" + convert<QString>(subDateTime));
+        logger.write(dump(lwParam, Dump::WithHeader));
+        logger.write(dump(lwState, Dump::WithHeader));
+        logger.write(dumpVolumes(Dump::WithHeader));
+    }
 }
 
 }

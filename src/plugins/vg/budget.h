@@ -33,7 +33,7 @@ private:
         timeStep, averageHeight, groundArea, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
         babyTimeStep;
-    bool writeHighRes, writeLog, controlClimate;
+    bool writeHighRes, writeLog, controlClimate, isSkippingOutput;
     int step;
     QDateTime dateTime;
 
@@ -140,6 +140,7 @@ private:
     enum class Dump{WithHeader, WithoutHeader};
     QString dump(const State &s, Dump header = Dump::WithoutHeader);
     QString dump(const Parameters &p, Dump header = Dump::WithoutHeader);
+    QString dumpVolumes(Dump header);
     void writeToLog();
 };
 

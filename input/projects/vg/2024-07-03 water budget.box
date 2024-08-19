@@ -1058,6 +1058,7 @@ Simulation sim {
       .heatCapacity = 42000.0
     }
     Budget budget {
+      .writeLog = TRUE
     }
     HeatBuffer heatBuffer {
       .volume = 25.0
