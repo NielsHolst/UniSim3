@@ -51,7 +51,6 @@ void Scenarios::reset() {
 }
 
 void Scenarios::debrief() {
-    dialog().information("Scenarios::debrief()");
 //    OutputR *outputR = findMaybeOne<OutputR*>("*");
 //    if (outputR) {
 //        if (title.isEmpty()) {

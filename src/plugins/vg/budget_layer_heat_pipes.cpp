@@ -26,5 +26,18 @@ BudgetLayerHeatPipes::BudgetLayerHeatPipes(QString name, base::Box *parent)
     port("temperature")     ->imports("actuators/heatPipes[inflowTemperatureAvg]");
 }
 
+
+void BudgetLayerHeatPipes::updateLwEmission() {
+    port("lwEmissionTop")->evaluate();
+    port("lwEmissionBottom")->evaluate();
+}
+
+void BudgetLayerHeatPipes::updateConvection() {
+    port("convectionTop")->evaluate();
+    port("convectionBottom")->evaluate();
+    transferConvectionToVolumes();
+}
+
+
 }
 

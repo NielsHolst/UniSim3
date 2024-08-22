@@ -14,9 +14,8 @@ namespace vg {
 class BudgetLayerHeatPipes : public BudgetLayer {
 public:
     BudgetLayerHeatPipes(QString name, base::Box *parent);
-    // Radiation and heat are not determined by temperature
-    virtual void updateLwEmission() {}
-    virtual void updateConvection() {}
+    void updateLwEmission();
+    void updateConvection();
 };
 
 }

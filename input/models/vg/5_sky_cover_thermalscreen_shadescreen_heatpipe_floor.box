@@ -1,6 +1,6 @@
 #using vg
 Simulation sim {
- #include "parcel_prelude.box"  
+ #include "parcels/parcel_prelude.box"  
   Sky sky {
   }
   Box gh {
@@ -304,5 +304,5 @@ Simulation sim {
     Budget budget {
     }
   }
-  #include "parcel_output.box"
+  #include "parcels/parcel_output.box"
 }

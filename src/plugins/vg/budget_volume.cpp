@@ -28,7 +28,7 @@ BudgetVolume::BudgetVolume(QString name, base::Box *parent)
     Output(rh).unit("%").help("Relative humidity");
     Output(ah).unit("kg/m3").help("Absolute humidity");
     Output(co2).unit("ppm").help("CO2 concentration");
-    Output(heatInflux).unit("W/m2").help("Total convective/conductive heat influx");
+    Output(heatInflux).unit("W/m2").help("Convective heat influx");
 }
 
 void BudgetVolume::addLayer(const BudgetLayer *layer) {

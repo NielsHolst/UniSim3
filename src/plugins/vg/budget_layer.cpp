@@ -116,7 +116,10 @@ void BudgetLayer::updateConvection() {
     // Flux is positive if volume is warmer than layer
     convectionTop    = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeTop)    - temperature)*(*Utop);
     convectionBottom = eqZero(*heatCapacity) ? 0. : ((*temperatureVolumeBottom) - temperature)*(*Ubottom);
+    transferConvectionToVolumes();
+}
 
+void BudgetLayer::transferConvectionToVolumes() {
     // Transfer fluxes to neighbouring volumes
     if (volumeBottom)
         volumeBottom->addHeatInflux(-convectionBottom);

@@ -1,6 +1,6 @@
 #using vg
 Simulation sim {
- #include "parcel_prelude.box"  
+ #include "parcels/parcel_prelude.box"  
   Sky sky {
   }
   Box gh {
@@ -158,10 +158,10 @@ Simulation sim {
       Box screens {
         Box energy {
           Box threshold {
-            &value = 5.0
+            &value = 15.0
           }
           Box band {
-            &value = 5.0
+            &value = 15.0
           }
         }
         Box shade {
@@ -281,11 +281,11 @@ Simulation sim {
       }
       Box screens {
         ActuatorScreen layer1 {
-          .lagPeriod = 10.0
+          .lagPeriod = 20.0
           .desiredState = controllers/screens/energy[value]
         }
         ActuatorScreen layer2 {
-          .lagPeriod = 10.0
+          .lagPeriod = 20.0
           .desiredState = controllers/screens/shade[value]
         }
       }
@@ -320,5 +320,5 @@ Simulation sim {
     Budget budget {
     }
   }
-  #include "parcel_output.box"
+  #include "parcels/parcel_output.box"
 }

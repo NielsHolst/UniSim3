@@ -36,6 +36,29 @@ namespace {
                y0 + k*x :
                exp(-v*x)*( y0 + (k/v + z)*(exp(v*x)-1.) );
     }
+
+    QString fix(double x, int dec=2) {
+        return QString("%1").arg(x, 0, 'f', dec);
+    }
+
+    const struct {
+        QStringList portNames = {
+            "swEmissionTop", "swEmissionBottom",
+            "swAbsorbedTop", "swAbsorbedBottom",
+            "lwEmissionTop", "lwEmissionBottom",
+            "lwAbsorbedTop", "lwAbsorbedBottom",
+            "convectionTop", "convectionBottom",
+            "condensation"
+        };
+        QVector<int> sign = {
+           -1, -1,
+            1,  1,
+           -1, -1,
+            1,  1,
+            1,  1,
+            1
+        };
+    } flux;
 }
 
 namespace vg {
@@ -76,14 +99,15 @@ Budget::Budget(QString name, base::Box *parent)
     Output(wfHeatPump).unit("L/m2/h").help("Water flux by heat pumps");
     Output(wfPadAndFan).unit("L/m2/h").help("Water flux by pad and fan");
 
-    Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation");
+    Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation; positive if outdoors warmer than indoors");
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
     Output(indoorsLatentHeatFlux).unit("W/m2").help("Rate of change in indoors air latent heat");
     Output(coverLatentHeatFlux).unit("W/m2").help("Rate of condensation heat influx to cover");
     Output(sunParHittingPlant).unit("&micro;mol/m2/s").help("Sunlight PAR hitting plant canopy");
     Output(growthLightParHittingPlant).unit("&micro;mol/m2/s").help("Growth light PAR hitting plant canopy");
     Output(totalPar).unit("&micro;mol/m2/s").help("Total PAR hitting plant canopy");
-    Output(coverConductance);
+    Output(coverConductance).unit("/s").help("Conductance for condensation on inside of cover");
+    Output(checkSum).help("Sum of energy flows; must approximate zero");
 }
 
 void Budget::amend() {
@@ -330,7 +354,7 @@ void Budget::reset() {
     babyTimeStep = std::min(babyTimeStep, timeStep/100.);
     // Log output
     if (writeLog)
-        logger.open(environment().outputFileNamePath("vg_log.txt"));
+        logger.open(environment().outputFileNamePath("vg.log"));
 }
 
 namespace {
@@ -346,6 +370,8 @@ void Budget::update() {
             indoorsAh0   = indoorsVol->ah;
     updateInSubSteps();
     updateCo2();
+    updateCheckSum();
+
     indoorsSensibleHeatFlux = (indoorsVol->temperature - indoorsTemp0)*RhoAir*CpAir*averageHeight/timeStep;
     indoorsLatentHeatFlux   = (indoorsVol->ah          - indoorsAh0)  *LHe         *averageHeight/timeStep;
 
@@ -406,6 +432,8 @@ void Budget::updateInSubSteps() {
                 box->updateFamily();
         }
 
+
+
         // Keep track of time passed
         timePassed += subTimeStep;
         subDateTime = dateTime.addMSecs(static_cast<int>(1000.*timePassed));
@@ -433,13 +461,17 @@ void Budget::updateInSubSteps() {
 }
 
 void Budget::updateSubStep(double subTimeStep, UpdateOption option) {
+    // Volume heat fluxes to be summed from neighbouring layers
+    for (BudgetVolume *volume : volumes)
+        volume->heatInflux = 0.;
+
     // Reset to find maximum temperature change during sub-step
     _maxDeltaT = 0.;
     // Update radiation budget
     updateLwEmission();
-    if (option == UpdateOption::IncludeSwPar) {
-        swState.init();
+    if (option == UpdateOption::IncludeSwPar) {        swState.init();
         parState.init();
+
     }
     lwState.init();
 
@@ -462,10 +494,9 @@ void Budget::updateLwEmission() {
 }
 
 void Budget::updateConvection() {
-    for (BudgetVolume *volume : volumes)
-        volume->heatInflux = 0.;
-    for (BudgetLayer *layer : layers)
+    for (BudgetLayer *layer : layers) {
         layer->updateConvection();
+    }
 }
 
 void Budget::updateDeltaT(double timeStep) {
@@ -633,6 +664,23 @@ void Budget::updateCo2() {
     indoorsVol->co2 = indoorsCo2/1.829e-3;
 }
 
+void Budget::updateCheckSum() {
+    double
+        sumLayers = 0.,
+        sumVolumes = 0.;
+    for (BudgetLayer *layer : layers) {
+        int j = 0;
+        for (QString portName : flux.portNames) {
+            double value = flux.sign.at(j++)*layer->port(portName)->value<double>();
+            sumLayers += value;
+        }
+    }
+    for (auto volume : volumes) {
+        sumVolumes += volume->port("heatInflux")->value<double>();
+    }
+    checkSum = sumLayers + sumVolumes;
+}
+
 void Budget::State::init() {
     int n = A.size();
     for (int i=0; i<n; ++i) {
@@ -771,13 +819,13 @@ QString Budget::dump(const State &s, Dump header) {
         result
             << i << "\t"
             << layers.at(i)->name() << "\t"
-            << *s.E.at(i) << "\t"
-            << *s.E_.at(i) << "\t"
-            << *s.F.at(i) << "\t"
-            << *s.F_.at(i) << "\t"
-            << *s.A.at(i) << "\t"
-            << *s.A_.at(i) << "\t"
-            << layers.at(i)->temperature << "\n";
+            << fix(*s.E.at(i),3) << "\t"
+            << fix(*s.E_.at(i),3) << "\t"
+            << fix(*s.F.at(i),3) << "\t"
+            << fix(*s.F_.at(i),3) << "\t"
+            << fix(*s.A.at(i),3) << "\t"
+            << fix(*s.A_.at(i),3) << "\t"
+            << fix(layers.at(i)->temperature) << "\n";
     }
     return string;
 }
@@ -792,12 +840,12 @@ QString Budget::dump(const Parameters &p, Dump header) {
         result
             << i << "\t"
             << layers.at(i)->name() << "\t"
-            << *p.a.at(i) << "\t"
-            << *p.a_.at(i) << "\t"
-            << *p.r.at(i) << "\t"
-            << *p.r_.at(i) << "\t"
-            << *p.t.at(i) << "\t"
-            << *p.t_.at(i) << "\n";
+            << fix(*p.a.at(i),3) << "\t"
+            << fix(*p.a_.at(i),3) << "\t"
+            << fix(*p.r.at(i),3) << "\t"
+            << fix(*p.r_.at(i),3) << "\t"
+            << fix(*p.t.at(i),3) << "\t"
+            << fix(*p.t_.at(i),3) << "\n";
     }
     return string;
 }
@@ -807,14 +855,57 @@ QString Budget::dumpVolumes(Dump header) {
     QTextStream result(&string);
     if (header == Dump::WithHeader)
         result << "i\tvolume\tinflux\tT\n";
+    double sum = 0.;
     int i = 0;
     for (auto volume : volumes) {
+        double heatInflux  = volume->port("heatInflux")->value<double>(),
+               temperature = volume->port("temperature")->value<double>();
         result
             << i++ << "\t"
             << volume->name() << "\t"
-            << volume->port("heatInflux")->value<QString>() << "\t"
-            << volume->port("temperature")->value<QString>() << "\n";
+            << fix(heatInflux) << "\t"
+            << fix(temperature) << "\n";
+        sum += heatInflux;
     }
+    result << "\tsum\t" << fix(sum) << "\n";
+    return string;
+}
+
+QString Budget::dumpLayers() {
+
+    QString string;
+    QTextStream result(&string);
+    // Write header
+    result << "i\tlayer\t" << flux.portNames.join("\t") << "\tsum\n";
+    // Write layers with sum
+    int i = 0;
+    for (BudgetLayer *layer : layers) {
+        result
+            << i++ << "\t"
+            << layer->name() << "\t";
+        double sum = 0.;
+        int j = 0;
+        for (QString portName : flux.portNames) {
+            double value = flux.sign.at(j++)*layer->port(portName)->value<double>();
+            result << fix(value) << "\t";
+            sum += value;
+        }
+        result << fix(sum) << "\n";
+    }
+    // Write column sums
+    result << "\tsum\t";
+    double total = 0.;
+    int j = 0;
+    for (QString portName : flux.portNames) {
+        double sum = 0.;
+        for (BudgetLayer *layer : layers) {
+            sum += flux.sign.at(j)*layer->port(portName)->value<double>();
+        }
+        result << fix(sum) << "\t";
+        total += sum;
+        j++;
+    }
+    result << fix(total) << "\n";
     return string;
 }
 
@@ -824,6 +915,7 @@ void Budget::writeToLog() {
         logger.write(dump(lwParam, Dump::WithHeader));
         logger.write(dump(lwState, Dump::WithHeader));
         logger.write(dumpVolumes(Dump::WithHeader));
+        logger.write(dumpLayers());
     }
 }
 

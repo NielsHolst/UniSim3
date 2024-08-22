@@ -50,6 +50,13 @@ save_figure = function(figure) {
   } 
 }
 
+figure_to_markdown = function(figure) {
+  if (!("FilePath" %in% names(figure)))
+    stop("Incomplete figure")
+  with(figure, paste0("![", FileBaseName, "](", FilePath, "/", FileBaseName, ".png)\n"))
+}
+
+
 check_figure_output = function(figure) {
   filePath = figure$FilePath
   baseName = figure$FileBaseName
@@ -79,8 +86,15 @@ print("Done")
 
 setwd(work_dir)
 l_ply(all_figures, save_figure)
+paste("Figures written as PNG files to", work_dir) |> print()
 
-print(paste("Figures written as PNG files to", work_dir))
+md = laply(all_figures, figure_to_markdown)
+file_name = "all_figures.md"
+f = file(file_name, "wt", encoding="UTF-8")
+writeLines(md, f, sep="\n")
+close(f)
+paste0("Markdown file written to ", work_dir, "/", file_name) |> print()
+
 
 print("Checking figure outputs..")
 l_ply(all_figures, check_figure_output)

@@ -27,5 +27,16 @@ BudgetLayerGrowthLights::BudgetLayerGrowthLights(QString name, base::Box *parent
     port("convectionBottom") ->imports("actuators/growthLights[convectionBottom]");
 }
 
+void BudgetLayerGrowthLights::updateLwEmission() {
+    port("lwEmissionTop")->evaluate();
+    port("lwEmissionBottom")->evaluate();
+}
+
+void BudgetLayerGrowthLights::updateConvection() {
+    port("convectionTop")->evaluate();
+    port("convectionBottom")->evaluate();
+    transferConvectionToVolumes();
+}
+
 }
 

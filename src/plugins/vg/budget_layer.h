@@ -57,6 +57,8 @@ protected:
         *heatCapacity,
         *temperatureVolumeTop, *temperatureVolumeBottom,
         *state;
+    // Methods
+    void transferConvectionToVolumes();
 private:
     // Data
     const Layer *attachedLayer;

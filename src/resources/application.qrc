@@ -191,9 +191,18 @@
     <file>data/input/models/sitophilus/line_parabola.R</file>
     <file>data/input/models/sitophilus/obs_dev_rate.R</file>
     <file>data/input/models/sitophilus/obs_dev_rate.txt</file>
+    <file>data/input/models/vg/1_sky_cover_floor.box</file>
+    <file>data/input/models/vg/2_sky_cover_floor_ventilated.box</file>
+    <file>data/input/models/vg/3_sky_cover_heatpipe_floor.box</file>
+    <file>data/input/models/vg/4_sky_cover_thermalscreen_heatpipe_floor.box</file>
+    <file>data/input/models/vg/4_sky_cover_thermalscreen_heatpipe_floor_winter.box</file>
+    <file>data/input/models/vg/5_sky_cover_thermalscreen_shadescreen_heatpipe_floor.box</file>
+    <file>data/input/models/vg/6_sky_cover_thermalscreen_shadescreen_plant_heatpipe_floor.box</file>
     <file>data/input/models/vg/DNK_Odense.txt</file>
-    <file>data/input/models/vg/sky_cover_floor.box</file>
-    <file>data/input/models/vg/vg_2024-04-29_version_3.0.21.box</file>
+    <file>data/input/models/vg/parcels/parcel_output.box</file>
+    <file>data/input/models/vg/parcels/parcel_prelude.box</file>
+    <file>data/input/models/vg/scenario_plots.R</file>
+    <file>data/input/models/vg/verification_scenarios.txt</file>
     <file>data/input/models/vg/virtual_temperature.R</file>
     <file>data/input/scripts/begin-sobol.R</file>
     <file>data/input/scripts/begin.R</file>

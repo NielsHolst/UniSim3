@@ -5,19 +5,22 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#ifndef BUDGET_LAYER_GROWTH_LIGHTS_H
-#define BUDGET_LAYER_GROWTH_LIGHTS_H
-#include "budget_layer.h"
+#include <base/phys_math.h>
+#include <base/publish.h>
+#include "budget_layer_plant.h"
+
+using namespace base;
+using namespace phys_math;
 
 namespace vg {
 
-class BudgetLayerGrowthLights : public BudgetLayer {
-public:
-    BudgetLayerGrowthLights(QString name, base::Box *parent);
-    void updateLwEmission();
-    void updateConvection();
-};
+PUBLISH(BudgetLayerPlant)
+
+BudgetLayerPlant::BudgetLayerPlant(QString name, base::Box *parent)
+    : BudgetLayer(name, parent)
+{
+    setClassName("vg", "BudgetLayer");
+}
 
 }
 
-#endif

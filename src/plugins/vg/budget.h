@@ -59,7 +59,8 @@ private:
         wfTranspiration, wfHumidification, wfVentilation, wfCover, wfHeatPump, wfPadAndFan,
         coverConductance,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
-        sunParHittingPlant, growthLightParHittingPlant, totalPar;
+        sunParHittingPlant, growthLightParHittingPlant, totalPar,
+        checkSum;
     QDateTime subDateTime;
 
     base::Logger logger;
@@ -129,6 +130,7 @@ private:
     void updateWaterBalance(double subTimeStep);
     void updateInSubSteps();
     void updateCo2();
+    void updateCheckSum();
     void distributeRadDown(State &s, const Parameters &p);
     void distributeRadUp(State &s, const Parameters &p);
     void distributeRadiation(State &s, const Parameters &p);
@@ -141,6 +143,7 @@ private:
     QString dump(const State &s, Dump header = Dump::WithoutHeader);
     QString dump(const Parameters &p, Dump header = Dump::WithoutHeader);
     QString dumpVolumes(Dump header);
+    QString dumpLayers();
     void writeToLog();
 };
 

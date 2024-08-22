@@ -73,9 +73,10 @@ QStringList batch::getFilePaths(QDir dir, QString fileMask) {
     QStringList filePaths;
     dir.setNameFilters(QStringList() << fileMask);
     for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::Files)) {
-        // Discard file names with a version number (parenthesized number) in them
+        // Discard file names with a version number (parenthesized number) in them,
+        // or which resides inside a "parcels" folder
         QString s = fileInfo.absoluteFilePath();
-        if (!re.match(s).hasMatch())
+        if (!re.match(s).hasMatch() && !s.contains("/parcels/"))
             filePaths << s;
     }
     for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot)) {

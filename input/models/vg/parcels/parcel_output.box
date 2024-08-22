@@ -1,0 +1,16 @@
+  OutputR output {
+    .keepPlots = FALSE
+    .scripts = "scenario_plots.R"
+    Box outputs {
+      &balanceCover = budget/sky[swCoverSkyBalance]  +  budget/cover[lwCoverSkyBalance] + budget/cover[convectionTop]
+      // &heating      = actuators/heatPipes[heatFlux]
+      &ventilation  = budget[ventilationHeatLoss]
+    }
+    OutputText {
+      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | budget[checkSum] | outputs[*] | actuators/screens/*[state]
+    }
+    OutputSelector selector {
+      .beginDateTime = global/beginDate[value]
+      // .period = 5
+    }
+  }
