@@ -8,8 +8,8 @@
 */
 #include <cmath>
 #include <base/phys_math.h>
+#include <base/solar_math.h>
 #include <base/publish.h>
-#include <base/test_num.h>
 #include "sun.h"
 
 using namespace std;
@@ -27,16 +27,24 @@ Sun::Sun(QString name, Box *parent)
 {
     help("computes sun-earth astronomy");
     Input(latitude).imports("calendar[latitude]");
-    Input(dayOfYear).imports("calendar[dayOfYear]");
-    Input(time).imports("calendar[time]");
-    Output(dayLength).help("Astronomic day length").unit("h");
-    Output(sinb).help("Sine of solar height over the horizon").unit("[-1;1]");
-    Output(sunrise).help("Time of sunrise").unit("h:m:s");
-    Output(sunset).help("Time of sunset").unit("h:m:s");
+    Input(longitude).imports("calendar[longitude]");
+    Input(dateTime).imports("calendar[dateTime]");
+    Input(timeZone).imports("calendar[timeZone]");
+    Input(altitude).help("Altitude above sea level").unit("m");
+
+    Output(sunrise).help("Time of sunrise").unit("time");
+    Output(noon).help("Time of nonw").unit("time");
+    Output(sunset).help("Time of sunset").unit("time");
+    Output(solarTime).help("Solar time (noon=12:00:00").unit("time");
+
+    Output(dayLength).help("Day length from sunrise to sunset").unit("h");
+    Output(elevation).help("Solar angle to horizon").unit("[-90;90]");
+    Output(azimuth).help("Compass direction to sun (north=0)").unit("[0;360]");
+    Output(isDay).help("Is the sun up?").unit("bool");
+    Output(isNight).help("Has the sun set?").unit("bool");
+
     Output(solarConstant).help("The irradiation at the top of the atmosphere").unit("W/m2");
     Output(angot).help("The irradiation on Earth surface under optimal atmospheric conditions").unit("W/m2");
-    Output(isDay).help("Tells if it's between sunrise and sunset").unit("bool");
-    Output(isNight).help("Tells if it's between sunset and sunrise").unit("bool");
 }
 
 void Sun::reset() {
@@ -44,33 +52,18 @@ void Sun::reset() {
 }
 
 void Sun::update() {
-/* See
- *  http://www.marsop.info/marsopdoc/metamp/05010401.HTM
- */
-    double dec = -asin(sin(23.45*RAD)*cos(2*PI*(dayOfYear+10.)/365.)),
-           sinLD = sin(RAD*latitude)*sin(dec),
-           cosLD = cos(RAD*latitude)*cos(dec);
-    Q_ASSERT(TestNum::neZero(cosLD));
-    double aob = sinLD/cosLD;
-    if (aob > 1) aob = 1.;
-    if (aob < -1) aob = -1.;
-    dayLength = 12.*(1. + 2.*asin(aob)/PI);
-    int halfDay = dayLength/2.*60.*60.;
-    sunrise = QTime(12,00).addSecs(-halfDay); // Shouldn't solar noon be used?
-    sunset = QTime(12,00).addSecs(halfDay);
-
-    double h = time.hour() + time.minute()/60. + time.second()/3600.;
-    sinb = sinLD + cosLD*cos(2.*PI*(h + 12.)/24.);
-    if (sinb < 0.) sinb = 0.;
-    // From Kropff & Laar (1993), pp. 235-236
-    double dsinb = 3600.*(dayLength*sinLD + 24.*cosLD*sqrt(1. - aob*aob)/PI);
-    double dsinbe = 3600.*(dayLength*(sinLD + 0.4*(sinLD*sinLD + cosLD*cosLD*0.5)) +
-                           12.*cosLD*(2. + 3.*0.4*sinLD)*sqrt(1. - aob*aob)/PI);
-    solarConstant = 1370.*(1. + 0.033*cos(2.*PI*dayOfYear/365.));
-    angot = solarConstant*dsinb*sinb*(1. + 0.4*sinb)/dsinbe; // This is symmetrical around noon. So, shouldn't solar time be used?
-
-    isNight = (time > sunset) || (time < sunrise);
-    isDay = !isNight;
+    auto sun = calcSun(latitude, longitude, dateTime, timeZone);
+    sunrise = sun.sunrise;
+    noon = sun.noon;
+    sunset = sun.sunset;
+    solarTime = sun.solarTime;
+    dayLength = sun.dayLength;
+    elevation = sun.elevation;
+    azimuth = sun.azimuth;
+    isDay = (elevation > 0.);
+    isNight = !isDay;
+    solarConstant = extraterrestrialFlux(dateTime.date());
+    angot = solarConstant*clearSkyTransmittance(elevation, altitude);
 }
 
 } //namespace

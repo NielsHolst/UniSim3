@@ -5,7 +5,7 @@
 */
 #ifndef SUN_H
 #define SUN_H
-#include <QTime>
+#include <QDateTime>
 #include <base/box.h>
 
 namespace boxes {
@@ -19,14 +19,13 @@ public:
 
 private:
     // inputs
-    double latitude;
-    int dayOfYear;
-    QTime time;
+    double latitude, longitude, timeZone, altitude;
+    QDateTime dateTime;
 
     // outputs
-    QTime sunrise, sunset;
-    double dayLength,
-        sinb, solarConstant, angot;
+    QTime sunrise, noon, sunset, solarTime;
+    double dayLength, elevation, azimuth,
+        solarConstant, angot;
     bool isDay, isNight;
 };
 

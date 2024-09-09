@@ -1,0 +1,48 @@
+Simulation sim {
+  Calendar calendar {
+    // Copenhagen
+    .latitude = 55.7
+    .longitude = 12.6
+    .begin = 1/1/2020
+    .end = 31/1/2020
+    .timeStep = 15
+    .timeUnit = "m"
+  }
+  Sun sun {
+  }
+  OutputR {
+    .keepPlots = FALSE
+    Box var {
+      TimeToHours sunrise {
+        .time = sun[sunrise]
+      }
+      TimeToHours noon {
+        .time = sun[noon]
+      }
+      TimeToHours sunset {
+        .time = sun[sunset]
+      }
+    }
+    PageR {
+      .xAxis = calendar[dateTime]
+      .ncol = 1
+      PlotR {
+        .ports = var/*[value]
+        .layout = "merged"
+      }
+      PlotR {
+        .ports = sun[elevation]
+      }
+      PlotR {
+        .ports = sun[azimuth]
+      }
+      PlotR {
+        .ports = sun[solarConstant]
+      }
+      PlotR {
+        .ports = sun[angot]
+      }
+    }
+    
+  }
+}

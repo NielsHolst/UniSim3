@@ -12,7 +12,7 @@
 #include <QPair>
 
 /*! \file phys_math.h
- * General physical functions and constants
+// General physical functions and constants
  */
 
 namespace phys_math {

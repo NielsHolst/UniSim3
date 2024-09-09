@@ -3,30 +3,26 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#ifndef SOLAR_TIME_H
-#define SOLAR_TIME_H
-#include <QDate>
-#include <QDateTime>
+#ifndef TIME_TO_HOURS_H
+#define TIME_TO_HOURS_H
 #include <QTime>
 #include <base/box.h>
 
 namespace boxes {
 
-class SolarTime : public base::Box
+class TimeToHours : public base::Box
 {
-public: 
-    SolarTime(QString name, Box *parent);
+public:
+    TimeToHours(QString name, Box *parent);
     void reset();
-	void update();
+    void update();
 private:
-    // inputs
-    double latitude, longitude;
-    int dayOfYear, timeZone;
+    // Input
     QTime time;
-    // outputs
-    QTime trueSolarTime;
-    double azimuth;
+    // Output
+    double value;
 };
 
-} //namespace
+}
+
 #endif

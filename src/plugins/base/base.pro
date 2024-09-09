@@ -93,6 +93,7 @@ HEADERS +=  \
     save_grammar_atom.h \
     save_grammar_base.h \
     save_grammar_notepad.h \
+    solar_math.h \
 #    save_graph_base.h \
 #    save_graph_graphviz.h \
     success.h \
@@ -164,6 +165,7 @@ SOURCES +=  \
     save_grammar_atom.cpp \
     save_grammar_base.cpp \
     save_grammar_notepad.cpp \
+    solar_math.cpp \
 #    save_graph_base.cpp \
 #    save_graph_graphviz.cpp \
     table.cpp \

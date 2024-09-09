@@ -48,6 +48,7 @@ HEADERS +=  \
     test_references.h \
     test_reg_exp.h \
     test_simulation.h \
+    test_solar_math.h \
     test_unique_names.h \
     test_value.h \
     test_value_collection.h
@@ -86,6 +87,7 @@ SOURCES +=  \
     test_reader_boxscript_x3.cpp \
     test_references.cpp \
     test_reg_exp.cpp \
+    test_solar_math.cpp \
     test_simulation.cpp \
     test_unique_names.cpp \
     test_value.cpp \

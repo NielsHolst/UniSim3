@@ -98,7 +98,6 @@ HEADERS +=  \
     sine_wave_temperature.h \
     sliding_signal.h \
     sobol_g_function.h \
-    solar_time.h \
     split.h \
     stage_base.h \
     stage.h \
@@ -108,6 +107,7 @@ HEADERS +=  \
     super_functional_response.h \
     supply_budget.h \
     threshold_signal.h \
+    time_to_hours.h \
     values_base.h \
     vector_scaled.h \
     vector_sum.h
@@ -198,7 +198,6 @@ SOURCES +=  \
     sine_wave_temperature.cpp \
     sliding_signal.cpp \
     sobol_g_function.cpp \
-    solar_time.cpp \
     split.cpp \
     stage_base.cpp \
     stage.cpp \
@@ -208,6 +207,7 @@ SOURCES +=  \
     super_functional_response.cpp \
     supply_budget.cpp \
     threshold_signal.cpp \
+    time_to_hours.cpp \
     values_base.cpp \
     vector_scaled.cpp \
     vector_sum.cpp
