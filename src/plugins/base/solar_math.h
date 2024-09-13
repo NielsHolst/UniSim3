@@ -10,15 +10,6 @@
 
 namespace phys_math {
 
-qint64 excelDateValue(QDate date);
-// Excel codes a date as days since 1/1/1900, pretending 1900 was a leap year
-
-double extraterrestrialFlux(QDate date);
-// W/m2 at the top of the atmosphere
-
-double clearSkyTransmittance(double sunElevation, double altitude);
-// Optimal W/m2 at the soil surface
-
 struct Sun {
     QTime
         sunrise, noon, sunset, solarTime;
@@ -30,6 +21,18 @@ struct Sun {
 };
 
 Sun calcSun(double latitude, double longitude, QDateTime dateTime, double timeZone);
+
+qint64 excelDateValue(QDate date);
+// Excel codes a date as days since 1/1/1900, pretending 1900 was a leap year
+
+double extraterrestrialFlux(QDate date);
+// W/m2 at the top of the atmosphere
+
+double clearSkyTransmittance(double sunElevation, double altitude);
+// Optimal W/m2 at the soil surface
+
+double angleOfIncidence(double sunElevation, double sunAzimuth, double surfaceSlope, double surfaceAzimuth);
+
 
 
 } //namespace

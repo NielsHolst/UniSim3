@@ -22,11 +22,11 @@ public:
     void updateParameters(int layerIndex, const QVector<double> &adjustments);
     // Input
 protected:
-    double groundArea;
-    QVector<double> areas, weights;
+    double groundArea, coverArea;
+    QVector<double> areas, swWeights, lwWeights;
     // Data
     QVector<Face*> _faces;
-    double _weights1[6], _weights2[6];
+    QVector<double> _areaWeights, _areaPerGround, _swWeightsTop, _lwWeightsTop;
     QVector<double> _adjustments;
 private:
     // Methods

@@ -102,6 +102,7 @@ void AverageCover::correctUbottom() {
     // U is a conductance
     // R = 1/U is a resistance
     // Compute Ubottom weighed over all six surfaces
+    // This overrides the calculation of Ubottom in updateParameters(...)
     Ubottom = 0;
     int i = 0;
     for (Face *face : _faces) {

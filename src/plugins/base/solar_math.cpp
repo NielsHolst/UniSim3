@@ -143,11 +143,22 @@ Sun calcSun(double latitude, double longitude, QDateTime dateTime, double timeZo
   return sun;
 }
 
-
 double extraterrestrialFlux(QDate date) {
     // From Solar Engineering of Thermal Processes, eq. 1.4.1a
     const int n = date.dayOfYear();
     return 1367.*(1. + 0.033*cos(2.*PI*n/365.));
+}
+
+inline double dsin(double x) {
+    return sin(x*PI/180.);
+}
+
+inline double dcos(double x) {
+    return cos(x*PI/180.);
+}
+
+inline double dacos(double x) {
+    return acos(x)/PI*180.;
 }
 
 double clearSkyTransmittance(double sunElevation, double altitude) {
@@ -162,7 +173,29 @@ double clearSkyTransmittance(double sunElevation, double altitude) {
         a1 = 0.5055 + sqr(0.00595*(6.5 - A)),
         k =  0.2711 + sqr(0.01858*(2.5 - A));
     return
-        a0 + a1*exp(-k/sin(RADIANS(sunElevation)));
+        a0 + a1*exp(-k/dsin(sunElevation));
+}
+
+inline double saz(double naz) { // South-related azimuth from north-related azimuth
+    return naz - 180.;
+}
+
+double angleOfIncidence(double sunElevation, double sunAzimuth, double surfaceSlope, double surfaceAzimuth) {
+    // After Solar Engineering of Thermal Processes, eq. 1.6.3
+    // sun_elevation: Above the horizon
+    // sun_azimuth  : Solar azimuth angle (north = 0)
+    // surf_slope   : Slope of the inclined surface = angle to the surface from horizontal (0..180)
+    // surf_azimuth : Surface azimuth angle of horizontal side of surface
+    // aoi < 0 means surface is backlit
+    const double
+        tz = 90. - sunElevation,
+        g = saz(sunAzimuth),
+        b = surfaceSlope;
+    double
+        gs = saz(surfaceAzimuth);
+        gs = (gs < 0.) ? gs + 90. : gs - 90.;
+    return
+        90. - dacos( (dcos(tz)*dcos(b) + dsin(tz)*dsin(b)*dcos(gs-g)) );
 }
 
 } //namespace

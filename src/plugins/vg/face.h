@@ -18,16 +18,21 @@ public:
     Face(QString name, Box *parent);
     void amend();
     void reset();
+    void update();
     const LayerParametersPtrs& coverParameters() const;
     const LayerParametersPtrs& screenParameters(int index) const;
     const LayerParametersPtrs& parameters(int index) const;
 private:
     // Inputs
     QString cover, screens;
-    double area, weight;
+    double area,
+        sunElevation, sunAzimuth,
+        faceSlope, faceAzimuth;
+    ;
     // Outputs
     QVector<QString> screenMaterials;
     int numScreens;
+    double aoi, swWeight, lwWeight;
     // Data
     LayerParametersPtrs _cover;
     QVector<LayerParametersPtrs> _screens;
