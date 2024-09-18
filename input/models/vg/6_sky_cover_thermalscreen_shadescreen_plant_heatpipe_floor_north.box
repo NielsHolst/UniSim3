@@ -82,15 +82,15 @@ Simulation sim {
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face side1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face side2 {
             .cover = "Single_glass_4mm"
@@ -98,11 +98,11 @@ Simulation sim {
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face end2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
         }
       }

@@ -30,6 +30,8 @@ void UWind::reset() {
 }
 
 void UWind::update() {
+    if (windSpeed < 0.)
+        ThrowException("Negative wind speed").value(windSpeed).context(this);
     value = UwindMinimum + pow(windSpeed,UwindExponent)*UwindSlope;
 }
 

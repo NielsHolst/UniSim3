@@ -22,6 +22,7 @@ HEADERS +=  \
     computation.h \
     date.h \
     date_split.h \
+    date_time.h \
     day_degrees.h \
     date_time_signal.h \
     demand_budget.h \
@@ -124,6 +125,7 @@ SOURCES +=  \
     computation.cpp \
     date.cpp \
     date_split.cpp \
+    date_time.cpp \
     date_time_signal.cpp \
     day_degrees.cpp \
     demand_budget.cpp \

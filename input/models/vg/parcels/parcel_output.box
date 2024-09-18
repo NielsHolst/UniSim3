@@ -7,7 +7,14 @@
       &ventilation  = budget[ventilationHeatLoss]
     }
     OutputText {
-      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | budget[checkSum] | outputs[*] | actuators/screens/*[state]
+      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | 
+      // side1[swWeight] |
+      // layers/cover[_swWeightsTop] |
+      actuators/screens/screen2[state] | outdoors[radiation] |
+      layers/screens/screen2[swAbsorptivityTop] |
+      layers/screens/screen2[swReflectivityTop] |
+      layers/screens/screen2[swTransmissivityTop] 
+      // indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | budget[checkSum] | outputs[*] | Utop[value]
     }
     OutputSelector selector {
       .beginDateTime = global/beginDate[value]

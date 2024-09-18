@@ -1,7 +1,25 @@
 #using vg
 Simulation sim {
- #include "parcels/parcel_prelude.box"  
-  Sky sky {
+  Calendar calendar {
+    // Copenhagen
+    .latitude = 55.7
+    .longitude = 12.6
+    .begin = 1/1/2024
+    .end = 2/1/2024
+    .timeStep = 180
+    .timeUnit = "s"
+  }
+  Outdoors outdoors {
+    Records records {
+      .fileName = "DNK_Odense.txt"
+      .cycle = TRUE
+      .ignoreYear = TRUE
+    }
+    SoilTemperature soilTemperature {
+    }
+  }
+  Sun sun {
+  }  Sky sky {
   }
   Box gh {
     Geometry geometry {
@@ -82,15 +100,15 @@ Simulation sim {
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face side1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face side2 {
             .cover = "Single_glass_4mm"
@@ -98,11 +116,11 @@ Simulation sim {
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face end2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
         }
       }
@@ -314,5 +332,12 @@ Simulation sim {
     Budget budget {
     }
   }
-  #include "parcels/parcel_output.box"
+  OutputR {
+    PageR {
+      .xAxis = calendar[dateTime]
+      PlotR {
+        .ports = faces/*[swWeight]
+      }
+    }
+  }
 }

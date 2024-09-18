@@ -186,7 +186,7 @@ namespace boxscript { namespace parser
     auto const integer_def = int_;
     auto const joker_def = lexeme[x3::string("*")];
     auto const joker_name_def = name | joker | dots;
-    auto const name_def = lexeme[char_("a-zA-Z") >> *char_("a-zA-Z0-9_")];
+    auto const name_def = lexeme[char_("a-zA-Z_") >> *char_("a-zA-Z0-9_")];
     auto const number_def = lexeme[double_ | int_];
     auto const operand_def = bool_ | function_call | date_time | date | bare_date | time | number |
                              path | quoted_string | grouped_expression;

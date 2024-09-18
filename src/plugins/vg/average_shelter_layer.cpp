@@ -5,15 +5,16 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
+#include <base/phys_math.h>
 #include <base/test_num.h>
 #include <base/vector_op.h>
 #include "average_shelter_layer.h"
 #include "face.h"
 
 using namespace base;
-using TestNum::eq;
-using vector_op::sum;
-using vector_op::sumOfProducts;
+using namespace phys_math;
+using namespace TestNum;
+using namespace     vector_op;
 
 namespace vg {
 
@@ -29,6 +30,8 @@ AverageShelterLayer::AverageShelterLayer(QString name, Box *parent)
     port("Utop")->unit("W/K/m2 ground");
     port("Ubottom")->unit("W/K/m2 ground");
     port("heatCapacity")->unit("J/K/m2 ground");
+
+    Output(_swWeightsTop);
 }
 
 void AverageShelterLayer::initialize() {
@@ -47,41 +50,23 @@ void AverageShelterLayer::initialize() {
     double
         lwWeightsTopSum = sumOfProducts(areas, lwWeights);
     for (int i=0; i<6; ++i) {
-        _lwWeightsTop[i] = lwWeights.at(i)*areas.at(i)/lwWeightsTopSum;
+        _lwWeightsTop[i] = safeDiv(lwWeights.at(i)*areas.at(i), lwWeightsTopSum);
     }
-    double
-        sum3 = sum(_lwWeightsTop);
     Q_ASSERT(eq(sum(_lwWeightsTop), 1.));
 }
-
-//namespace {
-//    void scaleToOne(double &a, double &b, double &c) {
-//        const double sum = a + b + c;
-//        a /= sum;
-//        b /= sum;
-//        c /= sum;
-//    }
-//}
 
 void AverageShelterLayer::updateParameters(const int layerIndex, const QVector<double> &adjustments) {
     double
         swWeightsTopSum = sumOfProducts(areas, swWeights);
     for (int i=0; i<6; ++i) {
-        _swWeightsTop[i] = swWeights.at(i)*areas.at(i)/swWeightsTopSum;
+        _swWeightsTop[i] = safeDiv(swWeights.at(i)*areas.at(i), swWeightsTopSum);
         _areaWeights[i] = areas.at(i)/coverArea;
         _areaPerGround[i] = areas.at(i)/groundArea;
     }
-//    double
-//        sum1 = sum(areas),
-//        sum2 = sum(_swWeightsTop),
-//        sum4 = sum(_areaWeights),
-//        sum5 = sum(_areaPerGround);
     Q_ASSERT(eq(sum(areas), coverArea));
     Q_ASSERT(eq(sum(_swWeightsTop), 1.));
     Q_ASSERT(eq(sum(_areaWeights), 1.));
     Q_ASSERT(eq(sum(_areaPerGround), coverArea/groundArea));
-
-
 
     // Compute Layer parameter values weighed over all six surfaces
     swReflectivityTop = swReflectivityBottom = swTransmissivityTop = swTransmissivityBottom = swAbsorptivityTop = swAbsorptivityBottom =
@@ -113,21 +98,10 @@ void AverageShelterLayer::updateParameters(const int layerIndex, const QVector<d
         Ubottom      += _areaPerGround.at(i)*p.Ubottom;
         ++i;
     }
-    double
-            sum1 = swReflectivityTop + swTransmissivityTop + swAbsorptivityTop,
-            sum2 = lwReflectivityTop + lwTransmissivityTop + lwAbsorptivityTop,
-            sum3 = swReflectivityBottom + swTransmissivityBottom + swAbsorptivityBottom,
-            sum4 = lwReflectivityBottom + lwTransmissivityBottom + lwAbsorptivityBottom;
     Q_ASSERT(eq(swReflectivityTop + swTransmissivityTop + swAbsorptivityTop, 1.));
     Q_ASSERT(eq(lwReflectivityTop + lwTransmissivityTop + lwAbsorptivityTop, 1.));
     Q_ASSERT(eq(swReflectivityBottom + swTransmissivityBottom + swAbsorptivityBottom, 1.));
     Q_ASSERT(eq(lwReflectivityBottom + lwTransmissivityBottom + lwAbsorptivityBottom, 1.));
-
-//    // Correct the weighted sums
-//    scaleToOne(swReflectivityTop,    swTransmissivityTop,    swAbsorptivityTop);
-//    scaleToOne(lwReflectivityTop,    lwTransmissivityTop,    lwAbsorptivityTop);
-//    scaleToOne(swReflectivityBottom, swTransmissivityBottom, swAbsorptivityBottom);
-//    scaleToOne(lwReflectivityBottom, lwTransmissivityBottom, lwAbsorptivityBottom);
 }
 
 } //namespace

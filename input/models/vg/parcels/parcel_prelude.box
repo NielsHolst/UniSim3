@@ -4,11 +4,11 @@
     .title = "Season"
   }
   Box global {
-    Date beginDate {
-      .dmy = seasons[BeginDate]
+    DateTime beginDate {
+      .dateTimeString = seasons[BeginDate]
     }
-    Date endDate {
-      .dmy = seasons[EndDate]
+    DateTime endDate {
+      .dateTimeString = seasons[EndDate]
     }
   }
   Calendar calendar {

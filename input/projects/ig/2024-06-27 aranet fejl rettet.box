@@ -163,126 +163,15 @@ Simulation greenhouse {
             }
           }
           Box screens {
-            Screen none {
-            }
           }
         }
         Faces faces {
           Face roof1 {
             .cover = "roof1"
             .screens = "none+none+none"
-            .area = gh/geometry[roofArea] / 2
-            .weight = 1.0
-          }
-          Face roof2 {
-            .cover = "roof2"
-            .screens = "none+none+none"
-            .area = gh/geometry[roofArea] / 2
-            .weight = 1.0
-          }
-          Face side1 {
-            .cover = "side1"
-            .screens = "none+none+none"
-            .area = gh/geometry[sideArea] / 2
-            .weight = 0.6
-          }
-          Face side2 {
-            .cover = "side2"
-            .screens = "none+none+none"
-            .area = gh/geometry[sideArea] / 2
-            .weight = 0.6
-          }
-          Face end1 {
-            .cover = "end1"
-            .screens = "none+none+none"
-            .area = gh/geometry[endArea] / 2
-            .weight = 0.2
-          }
-          Face end2 {
-            .cover = "end2"
-            .screens = "none+none+none"
-            .area = gh/geometry[endArea] / 2
-            .weight = 0.2
-          }
-        }
-        ShelterLayers layers {
-          AverageCover cover {
-          }
-          Box screens {
-            AverageScreen screen1 {
-              &state = 0.0
-            }
-            AverageScreen screen2 {
-              &state = 0.0
-            }
-            AverageScreen screen3 {
-              &state = 0.0
-            }
           }
         }
       }
-    }
-    Actuators actuators {
-      Box screens {
-      }
-      HeatPipes heatPipes {
-      }
-      ActuatorVentilation ventilation {
-        .ventAreaRatio = 0.0
-        .opening = 0.0
-        .crackOpening = 0.0
-      }
-      GrowthLights growthLights {
-        Box products {
-        }
-      }
-      Box co2 {
-        &value = 0.0
-      }
-      Box humidifiers {
-        Box vapourFlux {
-          &value = 0.0
-        }
-      }
-      Box heatPumps {
-        Box heatPump1 {
-          &cooling = 0.0
-          &condensationRate = 0.0
-        }
-      }
-    }
-    Plant plant {
-      .k_sw = 0.7
-      .k_lw = 1.0
-      .g0 = 0.1
-      .g1 = 1.64
-      .lai = 1.0
-      .coverage = 1.0
-      .Jmax = 146.52
-      .Vcmax = 71.61
-      .GammaStar = 55.47
-      .Rd0 = 0.74
-      .alpha = 0.9125
-    }
-    Floor floor {
-      .swAbsorptivityTop = 0.9
-      .swReflectivityTop = 0.1
-      .swTransmissivityTop = 0.0
-      .swAbsorptivityBottom = 0.0
-      .swReflectivityBottom = 0.0
-      .swTransmissivityBottom = 1.0
-      .lwAbsorptivityTop = 0.9
-      .lwReflectivityTop = 0.1
-      .lwTransmissivityTop = 0.0
-      .lwAbsorptivityBottom = 0.0
-      .lwReflectivityBottom = 0.0
-      .lwTransmissivityBottom = 1.0
-      .Utop = 7.5
-      .Ubottom = 7.5
-      .heatCapacity = 42000.0
-    }
-    Budget budget {
-      .controlClimate = FALSE
     }
   }
 }

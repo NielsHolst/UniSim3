@@ -104,7 +104,16 @@ inline double dsin(double x) {
 
 void Face::update() {
     aoi = angleOfIncidence(sunElevation, sunAzimuth, faceSlope, faceAzimuth);
-    swWeight = (sunElevation > 0.) ? dsin(aoi) : 1.;
+    Q_ASSERT(aoi >= -180. && aoi <= 180);
+    // At night all faces have equal weight; there could be sw radiation from growth lights
+    if (sunElevation < 0.)
+        swWeight = 1.;
+    // When face is backwards lit, it counts as zero
+    else if (aoi < 0.)
+        swWeight = 0.;
+    // Else the sun is up and shining in the face of the surface
+    else
+        swWeight = dsin(aoi);
 }
 
 const LayerParametersPtrs& Face::coverParameters() const {

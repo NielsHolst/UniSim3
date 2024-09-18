@@ -64,9 +64,7 @@ void run::doRun() {
     QString msg = noError ? "Finished" : "Interrupted";
     QString msgIteration = message("iteration", "iterations", "iteration");
     msg += messageTime();
-    msg += msgIteration;
-    if (msgIteration.isEmpty())
-        msg += message((noError ? "finalStep" : "step"), "steps", "step");
+    msg += message("iteration", "iterations", "iteration") + message((noError ? "finalStep" : "step"), "steps", "step");
 
     if (noError)
         dialog().information(msg);

@@ -9,7 +9,9 @@ sim$isDay = factor(sim$isDay)
 levels(sim$isDay) = c("NightTime", "DayTime")
 sim$Cycle = sim$isDay
 
-vars = intersect(colnames(sim), c("temperature", "rh", "totalPar", "balanceCover", "heating", "ventilation"))
+sw = c("swAbsorptivityTop", "swReflectivityTop", "swTransmissivityTop", "swAbsorptivityBottom", "swReflectivityBottom", "swTransmissivityBottom")
+w  = c("roof1.swWeight", "roof2.swWeight", "side1.swWeight", "side2.swWeight", "end1.swWeight", "end2.swWeight")
+vars = intersect(colnames(sim), c("temperature", "rh", "totalPar", "balanceCover", "heating", "ventilation", "Utop", "layer1.state", "layer2.state", w, sw))
 M = melt(sim, id.vars=c("Season", "Cycle", "dateTime"), 
          measure.vars=vars, 
          variable.name="Variable", value.name="Value")
