@@ -31,3 +31,6 @@
   }
   Sun sun {
   }
+  SunDiffuseRadiation sunDiffuseRadiation {
+    .globalRadiation = outdoors[radiation]
+  }

@@ -29,6 +29,7 @@ Face::Face(QString name, Box *parent)
     Input(faceAzimuth).unit("[0;180]").help("Compass direction along face");
     Input(sunElevation).imports("sun[elevation]");
     Input(sunAzimuth).imports("sun[azimuth]");
+    Input(sunDiffuseRadiation).imports("sunDiffuseRadiation[value]");
     Input(lwWeight).help("Weight given to face in long-wave radiation budget");
 
     Output(swWeight).help("Weight given to face in short-wave radiation budget");
@@ -113,7 +114,7 @@ void Face::update() {
         swWeight = 0.;
     // Else the sun is up and shining in the face of the surface
     else
-        swWeight = dsin(aoi);
+        swWeight = sunDiffuseRadiation + (1. - sunDiffuseRadiation)*dsin(aoi);
 }
 
 const LayerParametersPtrs& Face::coverParameters() const {

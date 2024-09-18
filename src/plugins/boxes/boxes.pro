@@ -105,6 +105,7 @@ HEADERS +=  \
     stage_and_phase.h \
     sum.h \
     sun.h \
+    sun_diffuse_radiation.h \
     super_functional_response.h \
     supply_budget.h \
     threshold_signal.h \
@@ -206,6 +207,7 @@ SOURCES +=  \
     stage_and_phase.cpp \
     sum.cpp \
     sun.cpp \
+    sun_diffuse_radiation.cpp \
     super_functional_response.cpp \
     supply_budget.cpp \
     threshold_signal.cpp \

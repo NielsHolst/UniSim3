@@ -26,7 +26,7 @@ private:
     // Inputs
     QString cover, screens;
     double area,
-        sunElevation, sunAzimuth,
+        sunElevation, sunAzimuth, sunDiffuseRadiation,
         faceSlope, faceAzimuth;
     ;
     // Outputs

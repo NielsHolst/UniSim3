@@ -10,6 +10,7 @@
       .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | 
       // side1[swWeight] |
       // layers/screen2[_swWeightsTop] |
+      sunDiffuseRadiation[value] |
       actuators/screens/layer2[state] | outdoors[radiation] |
       layers/screens/screen2[swAbsorptivityTop] |
       layers/screens/screen2[swReflectivityTop] |
