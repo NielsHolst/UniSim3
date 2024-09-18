@@ -9,8 +9,8 @@
     OutputText {
       .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | 
       // side1[swWeight] |
-      // layers/cover[_swWeightsTop] |
-      actuators/screens/screen2[state] | outdoors[radiation] |
+      // layers/screen2[_swWeightsTop] |
+      actuators/screens/layer2[state] | outdoors[radiation] |
       layers/screens/screen2[swAbsorptivityTop] |
       layers/screens/screen2[swReflectivityTop] |
       layers/screens/screen2[swTransmissivityTop] 

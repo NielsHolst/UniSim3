@@ -82,7 +82,7 @@ Simulation sim {
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "none+none"
+            .screens = "LS_Harmony_3647_FR+SuperShade"
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
@@ -275,11 +275,9 @@ Simulation sim {
       }
       Box screens {
         ActuatorScreen layer1 {
-          .lagPeriod = 20.0
           .desiredState = controllers/screens/energy[value]
         }
         ActuatorScreen layer2 {
-          .lagPeriod = 20.0
           .desiredState = controllers/screens/shade[value]
         }
       }

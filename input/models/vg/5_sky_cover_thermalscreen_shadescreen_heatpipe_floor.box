@@ -281,11 +281,9 @@ Simulation sim {
       }
       Box screens {
         ActuatorScreen layer1 {
-          .lagPeriod = 10.0
           .desiredState = controllers/screens/energy[value]
         }
         ActuatorScreen layer2 {
-          .lagPeriod = 10.0
           .desiredState = controllers/screens/shade[value]
         }
       }

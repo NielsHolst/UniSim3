@@ -9,10 +9,9 @@ sim$isDay = factor(sim$isDay)
 levels(sim$isDay) = c("NightTime", "DayTime")
 sim$Cycle = sim$isDay
 
-sw = c("swAbsorptivityTop", "swReflectivityTop", "swTransmissivityTop", "swAbsorptivityBottom", "swReflectivityBottom", "swTransmissivityBottom")
-w  = c("roof1.swWeight", "roof2.swWeight", "side1.swWeight", "side2.swWeight", "end1.swWeight", "end2.swWeight")
-vars = intersect(colnames(sim), c("temperature", "rh", "totalPar", "balanceCover", "heating", "ventilation", "Utop", "layer1.state", "layer2.state", w, sw))
-M = melt(sim, id.vars=c("Season", "Cycle", "dateTime"), 
+ids = c("Season", "Cycle", "dateTime")
+vars = setdiff(colnames(sim), c(ids, "isDay", "iteration", "step"))
+M = melt(sim, id.vars=ids, 
          measure.vars=vars, 
          variable.name="Variable", value.name="Value")
 M$Season = reorder_levels(M$Season, 2:1)
@@ -71,7 +70,7 @@ P3 = ggplot(M) +
     legend.position = 'none'
   )
 
-open_plot_window(12,4)
+open_plot_window(14,4)
 print(P3)
 
 
