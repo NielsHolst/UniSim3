@@ -1,6 +1,6 @@
 #using vg
 Simulation sim {
- #include "parcels/parcel_prelude.box"  
+ #include "../parcels/parcel_prelude.box"  
   Sky sky {
   }
   Box gh {
@@ -86,7 +86,7 @@ Simulation sim {
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face side1 {
             .cover = "Single_glass_4mm"
@@ -94,15 +94,15 @@ Simulation sim {
           }
           Face side2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
           Face end2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
+            .screens = "none+none"
           }
         }
       }
@@ -312,5 +312,5 @@ Simulation sim {
     Budget budget {
     }
   }
-  #include "parcels/parcel_output.box"
+  #include "../parcels/parcel_output.box"
 }

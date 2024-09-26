@@ -1,24 +1,2 @@
-  OutputR output {
-    .keepPlots = FALSE
-    .scripts = "scenario_plots.R"
-    Box outputs {
-      &balanceCover = budget/sky[swCoverSkyBalance]  +  budget/cover[lwCoverSkyBalance] + budget/cover[convectionTop]
-      // &heating      = actuators/heatPipes[heatFlux]
-      &ventilation  = budget[ventilationHeatLoss]
-    }
-    OutputText {
-      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | 
-      // side1[swWeight] |
-      // layers/screen2[_swWeightsTop] |
-      sunDiffuseRadiation[value] |
-      actuators/screens/layer2[state] | outdoors[radiation] |
-      layers/screens/screen2[swAbsorptivityTop] |
-      layers/screens/screen2[swReflectivityTop] |
-      layers/screens/screen2[swTransmissivityTop] 
-      // indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | budget[checkSum] | outputs[*] | Utop[value]
-    }
-    OutputSelector selector {
-      .beginDateTime = global/beginDate[value]
-      // .period = 5
-    }
-  }
+// #include "../parcels/parcel_output_two_weeks.box"
+#include "../parcels/parcel_output_year.box"

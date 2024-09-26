@@ -1,6 +1,6 @@
 #using vg
 Simulation sim {
- #include "parcels/parcel_prelude.box"  
+  #include "../parcels/parcel_prelude.box"
   Sky sky {
   }
   Box gh {
@@ -38,71 +38,25 @@ Simulation sim {
               .heatCapacity = 8400.0
             }
           }
-          Box screens {
-            Screen LS_Harmony_3647_FR {
-              .swAbsorptivityTop = 0.1
-              .swReflectivityTop = 0.4
-              .swTransmissivityTop = 0.5
-              .swAbsorptivityBottom = 0.1
-              .swReflectivityBottom = 0.4
-              .swTransmissivityBottom = 0.5
-              .lwAbsorptivityTop = 0.1
-              .lwReflectivityTop = 0.4
-              .lwTransmissivityTop = 0.5
-              .lwAbsorptivityBottom = 0.1
-              .lwReflectivityBottom = 0.4
-              .lwTransmissivityBottom = 0.5
-              .Utop = 0.6
-              .Ubottom = 0.6
-              .heatCapacity = 80.0
-              .Uinsulation = 1.25
-              .UinsulationEffectivity = 0.95
-            }
-            Screen SuperShade {
-              .swAbsorptivityTop = 0.1
-              .swReflectivityTop = 0.7
-              .swTransmissivityTop = 0.2
-              .swAbsorptivityBottom = 0.1
-              .swReflectivityBottom = 0.4
-              .swTransmissivityBottom = 0.5
-              .lwAbsorptivityTop = 0.1
-              .lwReflectivityTop = 0.7
-              .lwTransmissivityTop = 0.2
-              .lwAbsorptivityBottom = 0.1
-              .lwReflectivityBottom = 0.4
-              .lwTransmissivityBottom = 0.5
-              .Utop = 0.6
-              .Ubottom = 0.6
-              .heatCapacity = 80.0
-              .Uinsulation = 1.25
-              .UinsulationEffectivity = 0.95
-            }
-          }
         }
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            .screens = "none+none"
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
           }
           Face side1 {
             .cover = "Single_glass_4mm"
-            .screens = "none+none"
           }
           Face side2 {
             .cover = "Single_glass_4mm"
-            .screens = "LS_Harmony_3647_FR+SuperShade"
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-            .screens = "none+none"
           }
           Face end2 {
             .cover = "Single_glass_4mm"
-            .screens = "none+none"
           }
         }
       }
@@ -146,24 +100,6 @@ Simulation sim {
           }
           Box band {
             &value = 1.0
-          }
-        }
-      }
-      Box screens {
-        Box energy {
-          Box threshold {
-            &value = 15.0
-          }
-          Box band {
-            &value = 15.0
-          }
-        }
-        Box shade {
-          Box threshold {
-            &value = 500.0
-          }
-          Box band {
-            &value = 50.0
           }
         }
       }
@@ -225,22 +161,6 @@ Simulation sim {
           }
         }
       }
-      Box screens {
-        ProportionalSignal energy {
-          .input = outdoors[radiation]
-          .threshold = setpoints/screens/energy/threshold[value]
-          .thresholdBand = setpoints/screens/energy/band[value]
-          .maxSignal = 1.0
-          .increasingSignal = FALSE
-        }
-        ProportionalSignal shade {
-          .input = outdoors[radiation]
-          .threshold = setpoints/screens/shade/threshold[value]
-          .thresholdBand = setpoints/screens/shade/band[value]
-          .maxSignal = 1.0
-          .increasingSignal = TRUE
-        }
-      }
     }
     Box actuators {  // Actuators??
       HeatPipes heatPipes {
@@ -273,30 +193,6 @@ Simulation sim {
         .temperatureCoef = 14.0
         .opening = controllers/ventilation/opening[value]
       }
-      Box screens {
-        ActuatorScreen layer1 {
-          .desiredState = controllers/screens/energy[value]
-        }
-        ActuatorScreen layer2 {
-          .desiredState = controllers/screens/shade[value]
-        }
-      }
-    }
-    Plant plant {
-      .k_sw = 0.7
-      .g0 = 0.0943
-      .g1 = 1.64
-      .re = 200.0
-      .lai = 2.5
-      .coverage = 0.95
-      .Jmax = 145.52
-      .Vcmax = 88.12
-      .GammaStar = 53.21
-      .Km = 600.0
-      .Rd0 = 0.68
-      .alpha = 0.8991
-      .theta = 0.85
-      .Q10 = 1.03
     }
     Floor floor {
       .swAbsorptivityTop = 0.6
@@ -312,5 +208,5 @@ Simulation sim {
     Budget budget {
     }
   }
-  #include "parcels/parcel_output.box"
+  #include "../parcels/parcel_output.box"
 }

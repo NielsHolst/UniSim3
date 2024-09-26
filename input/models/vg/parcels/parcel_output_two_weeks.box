@@ -1,0 +1,25 @@
+  OutputR output {
+    .keepPlots = FALSE
+    .scripts = "../R/plot_two_weeks.R"
+    Box outputs {
+      &balanceCover = budget/sky[swCoverSkyBalance]  +  budget/cover[lwCoverSkyBalance] + budget/cover[convectionTop]
+      &ventilation  = budget[ventilationHeatLoss]
+      // &heating      = actuators/heatPipes[heatFlux]
+    }
+    OutputText {
+      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | 
+      // side1[swWeight] |
+      // layers/screen2[_swWeightsTop] |
+      // sunDiffuseRadiation[value] |
+      // actuators/screens/layer2[state] | outdoors[radiation] |
+      // layers/screens/screen2[swAbsorptivityTop] |
+      // layers/screens/screen2[swReflectivityTop] |
+      // layers/screens/screen2[swTransmissivityTop] 
+       // budget[checkSum] | Utop[value]
+      indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | outputs[*] 
+    }
+    OutputSelector selector {
+      .beginDateTime = global/beginDate[value]
+      // .period = 5
+    }
+  }

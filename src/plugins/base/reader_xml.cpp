@@ -213,6 +213,11 @@ void ReaderXml::readVirtualGreenhouse() {
             box("SoilTemperature").name("soilTemperature").
             endbox().
         endbox().
+        box("Sun").name("sun").
+        endbox().
+        box("SunDiffuseRadiation").name("sunDiffuseRadiation").
+            port("globalRadiation").imports("outdoors[radiation]").
+        endbox().
         box("Sky").name("sky").
         endbox().
         box().name("gh").
@@ -704,32 +709,32 @@ BoxBuilder& ReaderXml::shelterFaces() {
     box("Face").name("roof1").
         port("cover").equals(findPaneProduct("roof1")).
         port("screens").equals(screens.value("roof1").join("+")).
-        port("weight").equals(_doc->find("Greenhouse/Positions/roof1/Weight")->value()).
+//        port("weight").equals(_doc->find("Greenhouse/Positions/roof1/Weight")->value()).
     endbox().
     box("Face").name("roof2").
         port("cover").equals(findPaneProduct("roof2")).
         port("screens").equals(screens.value("roof2").join("+")).
-        port("weight").equals(_doc->find("Greenhouse/Positions/roof2/Weight")->value()).
+//        port("weight").equals(_doc->find("Greenhouse/Positions/roof2/Weight")->value()).
     endbox().
     box("Face").name("side1").
         port("cover").equals(findPaneProduct("side1")).
         port("screens").equals(screens.value("side1").join("+")).
-        port("weight").equals(_doc->find("Greenhouse/Positions/side1/Weight")->value()).
+//        port("weight").equals(_doc->find("Greenhouse/Positions/side1/Weight")->value()).
     endbox().
     box("Face").name("side2").
         port("cover").equals(findPaneProduct("side2")).
         port("screens").equals(screens.value("side2").join("+")).
-        port("weight").equals(_doc->find("Greenhouse/Positions/side2/Weight")->value()).
+//        port("weight").equals(_doc->find("Greenhouse/Positions/side2/Weight")->value()).
     endbox().
     box("Face").name("end1").
         port("cover").equals(findPaneProduct("end1")).
         port("screens").equals(screens.value("end1").join("+")).
-        port("weight").equals(_doc->find("Greenhouse/Positions/end1/Weight")->value()).
+//        port("weight").equals(_doc->find("Greenhouse/Positions/end1/Weight")->value()).
     endbox().
     box("Face").name("end2").
         port("cover").equals(findPaneProduct("end2")).
         port("screens").equals(screens.value("end2").join("+")).
-        port("weight").equals(_doc->find("Greenhouse/Positions/end2/Weight")->value()).
+//        port("weight").equals(_doc->find("Greenhouse/Positions/end2/Weight")->value()).
     endbox();
     return *_builder;
 }

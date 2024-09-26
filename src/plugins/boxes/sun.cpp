@@ -3,9 +3,7 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-/* Day length and solar elevation equations copied from the FORTRAN code of Kroppf &
-** Laar (1993). Modelling Crop-Weed Interactions. CAB International.
-*/
+
 #include <cmath>
 #include <base/phys_math.h>
 #include <base/solar_math.h>

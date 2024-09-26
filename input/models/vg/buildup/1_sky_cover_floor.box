@@ -1,6 +1,6 @@
 #using vg
 Simulation sim {
-  #include "parcels/parcel_prelude.box"
+  #include "../parcels/parcel_prelude.box"
   Sky sky {
   }
   Box gh {
@@ -42,27 +42,21 @@ Simulation sim {
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
-            // .weight = 1.0
           }
           Face roof2 {
             .cover = "Single_glass_4mm"
-            // .weight = 1.0
           }
           Face side1 {
             .cover = "Single_glass_4mm"
-            // .weight = 0.6
           }
           Face side2 {
             .cover = "Single_glass_4mm"
-            // .weight = 0.6
           }
           Face end1 {
             .cover = "Single_glass_4mm"
-// k            .weight = 0.2
           }
           Face end2 {
             .cover = "Single_glass_4mm"
- // k           .weight = 0.2
           }
         }
       }
@@ -81,5 +75,5 @@ Simulation sim {
     Budget budget {
     }
   }
-  #include "parcels/parcel_output.box"
+  #include "../parcels/parcel_output.box"
 }
