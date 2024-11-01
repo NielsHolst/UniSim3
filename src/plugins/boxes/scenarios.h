@@ -11,7 +11,8 @@
 #include <base/data_frame.h>
 
 namespace base {
-class DataFrame;
+    class DataFrame;
+//    class Port;
 }
 
 namespace boxes {
@@ -21,15 +22,13 @@ class Scenarios : public base::Box
 public:
     Scenarios(QString name, Box *parent);
     void amend();
-    void initialize();
     void reset();
-    void debrief();
 
 private:
     // Inputs
     QString fileName, title;
     // Outputs
-    QVector<QString> values;
+    QVector<QString> _values;
     int iterations;
     // methods
     void readDataFrame();
@@ -38,6 +37,7 @@ private:
     // data
     base::DataFrame _df;
     int _ixRow;
+//    QVector<base::Port*> _columnPorts;
 };
 
 }

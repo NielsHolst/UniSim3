@@ -1,0 +1,30 @@
+        LeakageVentilation leakage {
+          .leakage = 1.0
+        }
+        Box shading {
+          &swTransmissivity = 1 //1 - scenarios[swShading]
+          &lwTransmissivity = 1 //1 - scenarios[lwShading]
+        }
+        UWind Utop {
+        }
+        Box products {
+          Box covers {
+            Cover Single_glass_4mm {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.1
+              .swTransmissivityTop = 0.8
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.1
+              .swTransmissivityBottom = 0.8
+              .lwAbsorptivityTop = 0.83
+              .lwReflectivityTop = 0.15
+              .lwTransmissivityTop = 0.02
+              .lwAbsorptivityBottom = 0.83
+              .lwReflectivityBottom = 0.15
+              .lwTransmissivityBottom = 0.02
+              .Utop = shelter/Utop[value]
+              .Ubottom = 6.5
+              .heatCapacity = 6700e3   // 10 kg/m2 surface * 670 J/g/K
+            }
+          }
+        }

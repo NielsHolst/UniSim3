@@ -20,7 +20,10 @@ public:
     void update();
 private:
     // Inputs
-    double transmissivityReduction, swShading, lwShading;
+    double propFrame,
+        swReflectivityFrame, lwReflectivityFrame,
+        swTransmissivityChalk, lwTransmissivityChalk,
+        heatCapacityFrame;
     QVector<double> screenStates, faceAreas;
     // Data
     QVector<const double*> _Uinsulations[6], _s;

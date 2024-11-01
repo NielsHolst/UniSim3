@@ -66,17 +66,17 @@ unisim.depends = vg
 # InfoGrow modules
 #
 
-#SUBDIRS += iglib
-#iglib.subdir = src/lib/iglib
-#iglib.depends = base
-#
-#SUBDIRS += igclient
-#igclient.subdir = src/apps/igclient
-#igclient.depends = iglib
-#igclient.depends = base
-#igclient.depends = boxes
-#igclient.depends = command
-#igclient.depends = vg
+SUBDIRS += iglib
+iglib.subdir = src/lib/iglib
+iglib.depends = base
+
+SUBDIRS += igclient
+igclient.subdir = src/apps/igclient
+igclient.depends = iglib
+igclient.depends = base
+igclient.depends = boxes
+igclient.depends = command
+igclient.depends = vg
 
 #
 # Unit tests

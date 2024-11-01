@@ -27,7 +27,7 @@ ActuatorVentilation::ActuatorVentilation(QString name, Box *parent)
     Input(temperatureCoef).equals(14.).help("Proportionality of air flux with temperature difference").unit("/h/K");
     Input(opening).unit("[0;1]").help("Ventilation relative to `maxVentFlux`");
     Input(windSpeed).imports("outdoors[windSpeed]", CA);
-    Input(leakage).imports("gh/construction/leakage[value]", CA);
+    Input(leakage).imports("gh/construction/shelter/leakage[value]", CA);
     Input(crackOpening).imports("gh/controllers/ventilation/crack[value]", CA);
     Input(outdoorsTemperature).imports("outdoors[temperature]", CA);
     Input(indoorsTemperature).imports("gh/budget/indoors[temperature]", CA);

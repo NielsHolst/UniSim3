@@ -5,30 +5,19 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#ifndef SHELTER_H
-#define SHELTER_H
-#include "base/box.h"
-
-namespace base {
-    class BoxBuilder;
-}
+#ifndef FRAME_H
+#define FRAME_H
+#include "layer_as_input.h"
 
 namespace vg {
 
-class Shelter : public base::Box
+class Frame : public LayerAsInput
 {
 public:
-    Shelter(QString name, Box *parent);
-    void amend();
-    void reset();
+    Frame(QString name, Box *parent);
 private:
-    // Inputs
-    double propFrame,
-        swReflectivityFrame, lwReflectivityFrame,
-        weightFrame, specHeatCapacityFrame;
-    // Outputs
-    double
-        heatCapacityFrame;
+    //Inputs
+    double coverage;
 };
 
 } //namespace

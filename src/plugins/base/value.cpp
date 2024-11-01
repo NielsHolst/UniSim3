@@ -195,6 +195,25 @@ QString Value::typeName() const {
     return typeName(type());
 }
 
+Value::Type Value::guessType(QString s) {
+    if (canConvert<int>(s))
+        return Value::Type::Int;
+    else if (canConvert<double>(s))
+        return Value::Type::Double;
+    else if (canConvert<QDate>(s))
+        return Value::Type::Date;
+    else if (canConvert<QTime>(s))
+        return Value::Type::Time;
+    else if (canConvert<QDateTime>(s))
+        return Value::Type::DateTime;
+    else if (canConvert<BareDate>(s))
+        return Value::Type::BareDate;
+    else if (canConvert<bool>(s))
+        return Value::Type::Bool;
+    else
+        return Value::Type::String;
+}
+
 QString Value::typeName(Type type){
     switch(type) {
     case Type::Uninitialized: return "uninitialized";

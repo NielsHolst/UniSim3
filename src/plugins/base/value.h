@@ -153,6 +153,9 @@ public:
     static QString typeName(Type type);
     // Return the value's type name
 
+    static Type guessType(QString s);
+    // Guess type from string; only applies to scalars, c(...) syntax interpreted as a string
+
     QString outputFormat() const;
     // Format code for value in ouput file
 

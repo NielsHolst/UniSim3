@@ -99,7 +99,8 @@ BoxBuilder& BoxBuilder::port(QString name) {
 BoxBuilder& BoxBuilder::aux(QString name, QString type) {
     if (!currentBox())
         ThrowException("'aux' port out of context");
-
+    if (name == "swTransmissivity")
+        dialog().information("TEST " + name);
     _currentPort = new Port(name, PortType::Auxiliary, currentBox());
     if (!type.isEmpty())
         _currentPort->initialize(Value::create(type));

@@ -24,9 +24,12 @@ AverageCover::AverageCover(QString name, Box *parent)
     : AverageShelterLayer(name, parent)
 {
     help("computes average cover radiation and heat parameters");
-    Input(transmissivityReduction).imports("shelter[transmissivityReduction]");
-    Input(swShading).computes("if exists(shelter/shading[swReflectivity]) then shelter/shading[swReflectivity] else 0.");
-    Input(lwShading).computes("if exists(shelter/shading[lwReflectivity]) then shelter/shading[lwReflectivity] else 0.");
+    Input(propFrame).imports("shelter[propFrame]");
+    Input(swReflectivityFrame).imports("shelter[swReflectivityFrame]");
+    Input(lwReflectivityFrame).imports("shelter[lwReflectivityFrame]");
+    Input(heatCapacityFrame).imports("shelter[heatCapacityFrame]");
+    Input(swTransmissivityChalk).computes("if exists(shelter/shading[swTransmissivity]) then shelter/shading[swTransmissivity] else 1.");
+    Input(lwTransmissivityChalk).computes("if exists(shelter/shading[lwTransmissivity]) then shelter/shading[lwTransmissivity] else 1.");
     Input(faceAreas).imports("shelter/faces/*[area]");
     Input(screenStates).imports("../screens/*[state]");
 }
@@ -54,47 +57,43 @@ void AverageCover::reset() {
 LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVector<double> &adjustments) {
     LayerParameters adj;
     const double
-        &transmissivityReduction(adjustments.at(0)),
-        &swShading(adjustments.at(1)),
-        &lwShading(adjustments.at(2));
+        &propFrame(adjustments.at(0)),
+        &swReflectivityFrame(adjustments.at(1)),
+        &lwReflectivityFrame(adjustments.at(2)),
+        &swTransmissivityChalk(adjustments.at(3)),
+        &lwTransmissivityChalk(adjustments.at(4)),
+        &heatCapacityFrame(adjustments.at(5));
 
-    // Reduce transmissivity
-    adj.swTransmissivityTop     = *p.swTransmissivityTop    * (1.- transmissivityReduction) * (1. - swShading);
-    adj.lwTransmissivityTop     = *p.lwTransmissivityTop    * (1.- transmissivityReduction) * (1. - lwShading);
-    adj.swTransmissivityBottom  = *p.swTransmissivityBottom * (1.- transmissivityReduction) * (1. - swShading);
-    adj.lwTransmissivityBottom  = *p.lwTransmissivityBottom * (1.- transmissivityReduction) * (1. - lwShading);
+    // Reduce transmissivity by frame and chalk
+    adj.swTransmissivityTop     = *p.swTransmissivityTop    * (1. - propFrame) * swTransmissivityChalk;
+    adj.lwTransmissivityTop     = *p.lwTransmissivityTop    * (1. - propFrame) * lwTransmissivityChalk;
+    adj.swTransmissivityBottom  = *p.swTransmissivityBottom * (1. - propFrame) * swTransmissivityChalk;
+    adj.lwTransmissivityBottom  = *p.lwTransmissivityBottom * (1. - propFrame) * lwTransmissivityChalk;
 
-    double
-        sumRS = transmissivityReduction + swShading,
-        partR = (sumRS > 0.) ? transmissivityReduction/sumRS : 0.,
-//      partS = (sumRS > 0.) ? swShading/sumRS : 0.,
-        swAbsTopChange = partR*(*p.swTransmissivityTop    - adj.swTransmissivityTop   ),
-        lwAbsTopChange = partR*(*p.lwTransmissivityTop    - adj.lwTransmissivityTop   ),
-        swAbsBotChange = partR*(*p.swTransmissivityBottom - adj.swTransmissivityBottom),
-        lwAbsBotChange = partR*(*p.lwTransmissivityBottom - adj.lwTransmissivityBottom);
+    // Weigh absorptivities across frame and sheet
+    adj.swAbsorptivityTop    = *p.swAbsorptivityTop    * (1. - propFrame) + (1. - swReflectivityFrame) * propFrame ;
+    adj.lwAbsorptivityTop    = *p.lwAbsorptivityTop    * (1. - propFrame) + (1. - lwReflectivityFrame) * propFrame ;
+    adj.swAbsorptivityBottom = *p.swAbsorptivityBottom * (1. - propFrame) + (1. - swReflectivityFrame) * propFrame ;
+    adj.lwAbsorptivityBottom = *p.lwAbsorptivityBottom * (1. - propFrame) + (1. - lwReflectivityFrame) * propFrame ;
 
-    // Increase absorptivity by change in transmissivity
-    adj.swAbsorptivityTop    = std::min(*p.swAbsorptivityTop    + swAbsTopChange, 1. - *p.swReflectivityTop);
-    adj.lwAbsorptivityTop    = std::min(*p.lwAbsorptivityTop    + lwAbsTopChange, 1. - *p.lwReflectivityTop);
-    adj.swAbsorptivityBottom = std::min(*p.swAbsorptivityBottom + swAbsBotChange, 1. - *p.swReflectivityBottom);
-    adj.lwAbsorptivityBottom = std::min(*p.lwAbsorptivityBottom + lwAbsBotChange, 1. - *p.lwReflectivityBottom);
-
-    // Take rest
+    // Reflectivity takes rest
     adj.swReflectivityTop    = 1. - adj.swTransmissivityTop    - adj.swAbsorptivityTop;
     adj.lwReflectivityTop    = 1. - adj.lwTransmissivityTop    - adj.lwAbsorptivityTop;
     adj.swReflectivityBottom = 1. - adj.swTransmissivityBottom - adj.swAbsorptivityBottom;
     adj.lwReflectivityBottom = 1. - adj.lwTransmissivityBottom - adj.lwAbsorptivityBottom;
 
-    // Unaffected by shading and transmissivity reduction
+    // Weigh heat capacities across frame and sheet
+    adj.heatCapacity = *p.heatCapacity*(1. - propFrame) + heatCapacityFrame*propFrame;
+
+    // Unaffected by frame and chalk
     adj.Utop         = *p.Utop;
     adj.Ubottom      = *p.Ubottom;
-    adj.heatCapacity = *p.heatCapacity;
     return adj;
 }
 
 
 void AverageCover::update() {
-    updateParameters(0, {transmissivityReduction, swShading, lwShading});
+    updateParameters(0, {propFrame, swReflectivityFrame, lwReflectivityFrame, swTransmissivityChalk, lwTransmissivityChalk, heatCapacityFrame});
     correctUbottom();
 }
 

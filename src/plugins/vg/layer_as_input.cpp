@@ -34,7 +34,7 @@ LayerAsInput::LayerAsInput(QString name, Box *parent)
     // When used as input these ports are per layer area
     Input(Utop).unit("W/K/m2 layer").help("Heat transfer coefficient at the top");
     Input(Ubottom).unit("W/K/m2 layer").help("Heat transfer coefficient at the bottom");
-    Input(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 layer");
+    Input(heatCapacity).help("Area-specific heat capacity").unit("J/K/m2 surface");
     makeTransparent();
 }
 

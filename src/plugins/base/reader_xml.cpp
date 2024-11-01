@@ -178,9 +178,9 @@ void ReaderXml::readVirtualGreenhouse() {
     }
 
     double
-        floorReflectance        = _doc->find("Greenhouse/floor-reflectance")->toDouble(),
-        transmissivityReduction = _doc->find("Greenhouse/GreenhouseReductionFactorLight")->toDouble();
-    XmlNode *stopInStep    = _doc->peak("Description/StopInStep");
+        floorReflectance = _doc->find("Greenhouse/floor-reflectance")->toDouble(),
+        propFrame        = _doc->find("Greenhouse/GreenhouseReductionFactorLight")->toDouble();
+    XmlNode *stopInStep  = _doc->peak("Description/StopInStep");
 
     MegaFactory::usingPlugin("vg");
     _builder->
@@ -229,11 +229,11 @@ void ReaderXml::readVirtualGreenhouse() {
                 port("roofPitch").equals(_doc->find("Greenhouse/RoofPitch")->value()).
             endbox().
             box().name("construction").
-                box("LeakageVentilation").name("leakage").
-                    port("leakage").equals(_doc->find("Greenhouse/leakage")->value()).
-                endbox().
                 box("Shelter").name("shelter").
-                    port("transmissivityReduction").equals(transmissivityReduction).
+                    port("propFrame").equals(propFrame).
+                    box("LeakageVentilation").name("leakage").
+                        port("leakage").equals(_doc->find("Greenhouse/leakage")->value()).
+                    endbox().
                     box("UWind").name("Utop").
                         port("UwindSlope").equals(_doc->find("Greenhouse/UwindSlope")->value()).
                     endbox().

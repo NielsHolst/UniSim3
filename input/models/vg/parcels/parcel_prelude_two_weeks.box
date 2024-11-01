@@ -1,21 +1,20 @@
   .iterations = 2
-  Scenarios seasons {
+  Scenarios scenarios {
     .fileName = "verification_scenarios.txt"
-    .title = "Season"
   }
   Box global {
     DateTime beginDate {
-      .dateTimeString = seasons[BeginDate]
+      .dateTimeString = scenarios[BeginDate]
     }
     DateTime endDate {
-      .dateTimeString = seasons[EndDate]
+      .dateTimeString = scenarios[EndDate]
     }
   }
   Calendar calendar {
     // Copenhagen
     .latitude = 55.7
     .longitude = 12.6
-    .begin = global/beginDate[value] - 5
+    .begin = global/beginDate[value] - 15
     .end = global/endDate[value]
     .timeStep = 180
     .timeUnit = "s"

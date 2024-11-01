@@ -12,33 +12,8 @@ Simulation sim {
       .roofPitch = 26.0
     }
     Box construction {
-      LeakageVentilation leakage {
-        .leakage = 1.0
-      }
       Shelter shelter {
-        UWind Utop {
-        }
-        Box products {
-          Box covers {
-            Cover Single_glass_4mm {
-              .swAbsorptivityTop = 0.1
-              .swReflectivityTop = 0.1
-              .swTransmissivityTop = 0.8
-              .swAbsorptivityBottom = 0.1
-              .swReflectivityBottom = 0.1
-              .swTransmissivityBottom = 0.8
-              .lwAbsorptivityTop = 0.83
-              .lwReflectivityTop = 0.15
-              .lwTransmissivityTop = 0.02
-              .lwAbsorptivityBottom = 0.83
-              .lwReflectivityBottom = 0.15
-              .lwTransmissivityBottom = 0.02
-              .Utop = shelter/Utop[value]
-              .Ubottom = 6.5
-              .heatCapacity = 8400.0
-            }
-          }
-        }
+        #include "../parcels/parcel_shelter.box"
         Faces faces {
           Face roof1 {
             .cover = "Single_glass_4mm"
@@ -75,5 +50,9 @@ Simulation sim {
     Budget budget {
     }
   }
+  Box script {
+    &value = "../R/post_1_sky_cover_floor.R"
+  }
+
   #include "../parcels/parcel_output.box"
 }

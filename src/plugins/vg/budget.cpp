@@ -166,6 +166,7 @@ void Budget::addLayers() {
             port("parEmissionBottom").imports("outdoors[par]").
         endbox().
         box("BudgetLayerCover").name("cover").
+//            port("initTemperature").computes("(2*budget/indoors[initTemperature] + budget/outdoorsVol[initTemperature]) / 3").
         endbox();
     QStringList screenNames;
     for (AverageScreen *screen : screens) {
@@ -324,7 +325,7 @@ void Budget::initialize() {
     // Set pointers to direct inputs
     Box *actuatorVentilation = findMaybeOne<Box*>("actuators/ventilation");
     in.ventilationRate = actuatorVentilation ? actuatorVentilation->port("value")->valuePtr<double>() :
-                                               findOne<Port*>("construction/leakage[value]")->valuePtr<double>();
+                                               findOne<Port*>("shelter/leakage[value]")->valuePtr<double>();
     in.transpirationRate = ptrOrZero("gh/plant[transpiration]");
     in.humidificationRate = ptrOrZero("actuators/humidifiers[vapourFlux]");
     in.Pn = ptrOrZero("gh/plant[Pn]");

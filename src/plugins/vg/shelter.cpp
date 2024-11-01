@@ -22,7 +22,12 @@ Shelter::Shelter(QString name, Box *parent)
     : Box(name, parent)
 {
     help("holds parameters of the greenhouse shelter");
-    Input(transmissivityReduction).unit("[0;1]").help("Reduced cover transmission due to beams, dirt, etc.");
+    Input(propFrame).equals(0.2).unit("[0;1]").help("Proportion of shelter covered by the frame");
+    Input(swReflectivityFrame).equals(0.2).unit("[0;1]").help("Short-wave reflectivity of the frame");
+    Input(lwReflectivityFrame).equals(0.15).unit("[0;1]").help("Long-wave reflectivity of the frame");
+    Input(specHeatCapacityFrame).equals(490).unit("J/g/K").help("Specific heat capacity of frame material");
+    Input(weightFrame).equals(27.5).unit("kg/m2 ground").help("Weight of frame material");
+    Output(heatCapacityFrame).unit("J/m2 ground/K").help("Heat capacity of frame");
 }
 
 void Shelter::amend() {
@@ -65,6 +70,10 @@ void Shelter::amend() {
         Box *layers = findOne<Box*>("./layers");
         layers->doWriteOnCommand(false);
     }
+}
+
+void Shelter::reset() {
+    heatCapacityFrame = specHeatCapacityFrame*weightFrame*1e3; // convert kg to g
 }
 
 } //namespace

@@ -1,22 +1,27 @@
   OutputR output {
     .keepPlots = FALSE
-    .scripts = "../R/plot_two_weeks.R"
-    Box outputs {
-      &balanceCover = budget/sky[swCoverSkyBalance]  +  budget/cover[lwCoverSkyBalance] + budget/cover[convectionTop]
-      &ventilation  = budget[ventilationHeatLoss]
-      // &heating      = actuators/heatPipes[heatFlux]
+    .scripts = c("../R/plot_two_weeks.R", script[value])
+    Box balances {
+      &swSky   = budget/sky[swAbsorbedBottom] - budget/sky[swEmissionBottom]
+      &lwSky   = budget/sky[lwAbsorbedBottom] - budget/sky[lwEmissionBottom]
+      &swCover = budget/cover[swAbsorbedTop] + budget/cover[swAbsorbedBottom] - budget/cover[swEmissionTop] - budget/cover[swEmissionBottom]
+      &lwCover = budget/cover[lwAbsorbedTop] + budget/cover[lwAbsorbedBottom] - budget/cover[lwEmissionTop] - budget/cover[lwEmissionBottom]
+      &swFloor = budget/floor[swAbsorbedTop] - budget/floor[swEmissionTop] 
+      &lwFloor = budget/floor[lwAbsorbedTop] - budget/floor[lwEmissionTop]  
+    }
+    Box rad {
+      &sky   = ../balances[swSky]   + ../balances[lwSky]
+      &cover = ../balances[swCover] + ../balances[lwCover]
+      &floor = ../balances[swFloor] + ../balances[lwFloor]
+    }
+    Box sensors {
+      &pyranometer = budget/sky[swEmissionBottom] - budget/sky[swAbsorbedBottom]
+      &pyrradiometer = .[pyranometer] + budget/sky[lwEmissionBottom] - budget/sky[lwAbsorbedBottom]
     }
     OutputText {
-      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] | 
-      // side1[swWeight] |
-      // layers/screen2[_swWeightsTop] |
-      // sunDiffuseRadiation[value] |
-      // actuators/screens/layer2[state] | outdoors[radiation] |
-      // layers/screens/screen2[swAbsorptivityTop] |
-      // layers/screens/screen2[swReflectivityTop] |
-      // layers/screens/screen2[swTransmissivityTop] 
-       // budget[checkSum] | Utop[value]
-      indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | outputs[*] 
+      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] 
+      // | budget/BudgetLayer::*[temperature]
+      | sensors[*] 
     }
     OutputSelector selector {
       .beginDateTime = global/beginDate[value]

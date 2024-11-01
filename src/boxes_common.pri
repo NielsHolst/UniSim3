@@ -7,7 +7,7 @@
 #-------------------------------------------------
 
 # AUTO-CONFIG-BEGIN
-CONFIG += release
+CONFIG += debug
 VERSION = 3.0.29
 CONFIG += skip_target_version_ext
 # AUTO-CONFIG-END

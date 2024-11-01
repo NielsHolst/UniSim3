@@ -44,6 +44,17 @@ template <class T, class U> T convert(U ) {
             .value2(QString("To  : ") + typeid(T).name());
 }
 
+// Check if T is convertible to U; if so result is returned in y
+template <class T, class U> bool canConvert(U x) {
+    try {
+        convert<T>(x);
+    }
+    catch(const Exception &) {
+        return false;
+    }
+    return true;
+}
+
 // Needed forward declarations
 template<> inline QString convert(QDate x);
 template<> inline QString convert(QTime x);
