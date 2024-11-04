@@ -2,7 +2,7 @@
           .leakage = 1.0
         }
         Box shading {
-          &swTransmissivity = 1 //1 - scenarios[swShading]
+          &swTransmissivity = 1 - scenarios[swShading]
           &lwTransmissivity = 1 //1 - scenarios[lwShading]
         }
         UWind Utop {

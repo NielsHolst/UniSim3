@@ -169,6 +169,9 @@ public:
     static Value create(QString type);
     // Create a value from type name
 
+    static Value create(Type type);
+    // Create a value from its type
+
     bool isNull() const;
     bool operator==(const Value &x) const;
     bool operator!=(const Value &x) const  { return !(*this==x); }

@@ -24,7 +24,8 @@
       | sensors[*] 
     }
     OutputSelector selector {
-      .beginDateTime = global/beginDate[value]
+      .beginDateTime = scenarios[BeginDate]
+      // global/beginDate[value]
       // .period = 5
     }
   }

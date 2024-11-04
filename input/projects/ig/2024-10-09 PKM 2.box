@@ -1,0 +1,56 @@
+#using vg
+Simulation greenhouse {
+  .steps = 3
+  Calendar calendar {
+    .latitude = 55.31
+    .longitude = 10.32
+    .timeZone = 1
+    .begin = 2001/10/10T14:00:00
+    .timeStep = 30
+    .timeUnit = "s"
+    Sun sun {
+    }
+  }
+  Sensor sensor {
+    .indoorsTemperatureIn = 24.5012
+    .indoorsRhIn = 81.9798
+    .indoorsCo2In = 360.284
+    .indoorsLightIntensityIn = -999.0
+    .indoorsWindspeedIn = -999.0
+    .outdoorsTemperatureIn = 15.3248
+    .outdoorsRhIn = 0.0
+    .outdoorsCo2In = 415.0
+    .outdoorsGlobalRadiationIn = 251.984
+    .outdoorsWindSpeedIn = 0.12432
+    .soilTemperatureIn = -999.0
+  }
+  Outdoors outdoors {
+    .co2 = sensor[outdoorsCo2]
+    .temperature = sensor[outdoorsTemperature]
+    .rh = sensor[outdoorsRh]
+    .radiation = sensor[outdoorsGlobalRadiation]
+    .windSpeed = sensor[outdoorsWindSpeed]
+    Box records {
+    }
+    SoilTemperature soilTemperature {
+    }
+  }
+  Sky sky {
+  }
+  Box gh {
+    Geometry geometry {
+      .numSpans = 1
+      .spanWidth = 20.0
+      .length = 101.5
+      .height = 3.0
+      .roofPitch = 26.0
+    }
+    Box construction {
+      LeakageVentilation leakage {
+        .leakage = 0.1
+      }
+      Shelter shelter {
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@
 
 namespace base {
     class DataFrame;
-//    class Port;
+    class Port;
 }
 
 namespace boxes {
@@ -28,7 +28,6 @@ private:
     // Inputs
     QString fileName, title;
     // Outputs
-    QVector<QString> _values;
     int iterations;
     // methods
     void readDataFrame();
@@ -37,7 +36,7 @@ private:
     // data
     base::DataFrame _df;
     int _ixRow;
-//    QVector<base::Port*> _columnPorts;
+    QVector<base::Port*> _columnPorts;
 };
 
 }

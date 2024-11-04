@@ -28,9 +28,6 @@ Scenarios::Scenarios(QString name, Box *parent)
 
 void Scenarios::amend() {
     readDataFrame();
-    _values.fill(QString(), _df.numCol());
-    _ixRow = 0;
-    copyValues();
     createColumnOutputs();
     iterations = _df.numRow();
 }
@@ -46,21 +43,31 @@ void Scenarios::readDataFrame() {
         ThrowException("Data frame file is empty").value(fileName).context(this);
     if (!title.isEmpty() && !_df.colNames().contains(title))
         ThrowException("Column name not found in scenarios file").value1(title).value2(fileName).context(this);
+    _ixRow = 0;
 }
 
 void Scenarios::createColumnOutputs() {
-    for (QString colname : _df.colNames()) {
-        int ixCol = _df.ixCol(colname);
-        Port *newPort = new Port(colname, PortType::Auxiliary, this);
-        newPort->equals(_values[ixCol]);
-//        _columnPorts << &NamedOutput(colname, values[ixCol]).equals(values[ixCol]).noClear();
+    for (int col = 0; col < _df.numCol(); ++col) {
+        // Get string value
+        QString s = _df.at(0, col);
+        // Create value of guessed type
+        Value value = Value::create( Value::guessType(s) );
+        // Create an aux port with column name
+        Port *newPort = new Port(_df.colNames().at(col), PortType::Auxiliary, this);
+        // Assign value to port thereby fixing the port value's type
+        newPort->equals(value);
+        newPort->noClear();
+        _columnPorts << newPort;
     }
 }
 
 void Scenarios::copyValues() {
-    int i(0);
-    for (QString value : _df.row(_ixRow))
-        _values[i++] = value;
+    for (int col = 0; col < _df.numCol(); ++col) {
+        // Get string value
+        QString s = _df.at(_ixRow, col);
+        // Assign string value to port (the port's type will not be changed)
+        _columnPorts[col]->equals(s);
+    }
 }
 
 } //namespace

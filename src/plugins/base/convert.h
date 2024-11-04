@@ -87,7 +87,11 @@ template<> inline bool convert(const char *x) {return convert<bool>(QString(x));
 template<> inline int convert(bool x)    {return x;}
 template<> inline int convert(int x)     {return x;}
 template<> inline int convert(double x)  {return boost::numeric_cast<int>(x+0.5);}
-template<> inline int convert(QString x) {return x.toInt();}
+template<> inline int convert(QString x) {bool ok;
+                                          int value = x.toInt(&ok);
+                                          if (!ok) ThrowException("Cannot convert string to int").value(x);
+                                          return value;
+                                         }
 template<> inline int convert(QDate x)   {return x.dayOfYear();}
 template<> inline int convert(QTime x)   {return x.hour();}
 template<> inline int convert(QDateTime x) {return x.date().dayOfYear();}
@@ -98,7 +102,11 @@ template<> inline int convert(const char *x)  {return convert<int>(QString(x));}
 template<> inline double convert(bool x)   {return x;}
 template<> inline double convert(int x)    {return x;}
 template<> inline double convert(double x) {return x;}
-template<> inline double convert(QString x){return x.toDouble();}
+template<> inline double convert(QString x){bool ok;
+                                            double value = x.toDouble(&ok);
+                                            if (!ok) ThrowException("Cannot convert string to double").value(x);
+                                            return value;
+                                           }
 template<> inline double convert(QDate x)  {return x.dayOfYear();}
 template<> inline double convert(QTime x)  {return x.hour() + x.minute()/60. + x.second()/3600.;}
 template<> inline double convert(QDateTime x)   {return convert<double>(x.date()) +

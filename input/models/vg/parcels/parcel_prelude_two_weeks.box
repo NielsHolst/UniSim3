@@ -2,20 +2,20 @@
   Scenarios scenarios {
     .fileName = "verification_scenarios.txt"
   }
-  Box global {
-    DateTime beginDate {
-      .dateTimeString = scenarios[BeginDate]
-    }
-    DateTime endDate {
-      .dateTimeString = scenarios[EndDate]
-    }
-  }
+  // Box global {
+    // DateTime beginDate {
+      // .dateTimeString = scenarios[BeginDate]
+    // }
+    // DateTime endDate {
+      // .dateTimeString = scenarios[EndDate]
+    // }
+  // }
   Calendar calendar {
     // Copenhagen
     .latitude = 55.7
     .longitude = 12.6
-    .begin = global/beginDate[value] - 15
-    .end = global/endDate[value]
+    .begin = scenarios[BeginDate] - 15 //global/beginDate[value] - 15
+    .end = scenarios[EndDate] // global/endDate[value]
     .timeStep = 180
     .timeUnit = "s"
   }

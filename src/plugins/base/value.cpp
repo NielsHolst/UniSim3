@@ -264,6 +264,29 @@ Value Value::create(QString type) {
         ThrowException("Unknown value type").value(type);
 }
 
+Value Value::create(Type type) {
+    static QMap<Type, Value> map = {
+        {Type::Uninitialized, Value()},
+        {Type::Null, Value()},
+        {Type::Bool, Value(bool())},
+        {Type::Int, Value(int())},
+        {Type::Double, Value(double())},
+        {Type::String, Value(QString())},
+        {Type::Date, Value(QDate())},
+        {Type::DateTime, Value(QDateTime())},
+        {Type::BareDate, Value(BareDate())},
+        {Type::Path, Value(Path())},
+        {Type::VecBool, Value(QVector<bool>())},
+        {Type::VecInt, Value(QVector<int>())},
+        {Type::VecDouble, Value(QVector<double>())},
+        {Type::VecString, Value(QVector<QString>())},
+        {Type::VecDate, Value(QVector<QDate>())},
+        {Type::VecDateTime, Value(QVector<QDateTime>())},
+        {Type::VecBareDate, Value(QVector<BareDate>())}
+    };
+    return map.value(type);
+}
+
 bool Value::isNull() const {
     return type() == Type::Null;
 }
