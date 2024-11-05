@@ -83,8 +83,6 @@ BoxBuilder& buildCalendar(BoxBuilder &builder, const Query &q) {
         port("begin").equals(dateTime).
         port("timeStep").equals(30).
         port("timeUnit").equals("s").
-        box("Sun").name("sun").
-        endbox().
     endbox();
     return builder;
 }
@@ -123,6 +121,16 @@ BoxBuilder& buildOutdoors(BoxBuilder &builder) {
         endbox().
     endbox().
     box("vg::Sky").name("sky").
+    endbox();
+    return builder;
+}
+
+BoxBuilder& buildSun(BoxBuilder &builder) {
+    builder.
+    box("Sun").name("sun").
+    endbox().
+    box("SunDiffuseRadiation").name("sunDiffuseRadiation").
+        port("globalRadiation").imports("sensor[outdoorsGlobalRadiation]").
     endbox();
     return builder;
 }
@@ -194,21 +202,14 @@ void buildProductsCovers(BoxBuilder &builder, const Query &q) {
 static QStringList screenNames;
 
 QString screenName(const ig::Screen &screen) {
-    return "screen_" + QString::number((int) screen.position) + "_" + QString::number((int) screen.layer);
+    QString s = "screen_" + QString::number((int) screen.position) + "_" + QString::number((int) screen.layer);
+    return s;
 }
 
 QString screenName(ig::ScreenPosition position, ig::ScreenLayer layer) {
-    return "screen_" + QString::number((int) position) + "_" + QString::number((int) layer);
+    QString s = "screen_" + QString::number((int) position) + "_" + QString::number((int) layer);
+    return s;
 }
-
-//QStringList findScreenNames(ig::ScreenPosition position) {
-//    QStringList result;
-//    for (auto name : screenNames) {
-//        if (name.startsWith("screen_" + QString::number((int) position) + "_"))
-//            result << name;
-//    }
-//    return result;
-//}
 
 void buildProductsScreen(BoxBuilder &builder, const ig::Screen &screen) {
     ig::ScreenMaterial mat = screen.material;
@@ -246,7 +247,7 @@ void buildProductsScreens(BoxBuilder &builder, const Query &q) {
     builder.endbox(); //screens
 }
 
-void buildFace(BoxBuilder &builder, QString name, ig::ScreenPosition position, double weight, QString area) {
+void buildFace(BoxBuilder &builder, QString name, ig::ScreenPosition position, /*double weight,*/ QString area) {
     QStringList names;
     QString sname;
 
@@ -261,7 +262,7 @@ void buildFace(BoxBuilder &builder, QString name, ig::ScreenPosition position, d
     box("Face").name(name).
         port("cover").equals(name).
         port("screens").equals(names.join("+")).
-        port("weight").equals(weight).
+//        port("weight").equals(weight).
         port("area").computes(area).
     endbox();
 }
@@ -269,20 +270,16 @@ void buildFace(BoxBuilder &builder, QString name, ig::ScreenPosition position, d
 void buildFaces(BoxBuilder &builder) {
     builder.
     box("Faces").name("faces");
-        buildFace(builder, "roof1", ig::ScreenPosition::Roof1, 1.0, "gh/geometry[roofArea] / 2");
-        buildFace(builder, "roof2", ig::ScreenPosition::Roof2, 1.0, "gh/geometry[roofArea] / 2");
-        buildFace(builder, "side1", ig::ScreenPosition::Side1, 0.6, "gh/geometry[sideArea] / 2");
-        buildFace(builder, "side2", ig::ScreenPosition::Side2, 0.6, "gh/geometry[sideArea] / 2");
-        buildFace(builder, "end1",  ig::ScreenPosition::End1,  0.2, "gh/geometry[endArea]  / 2");
-        buildFace(builder, "end2",  ig::ScreenPosition::End2,  0.2, "gh/geometry[endArea]  / 2");
+        buildFace(builder, "roof1", ig::ScreenPosition::Roof1, /*1.0,*/ "gh/geometry[roofArea] / 2");
+        buildFace(builder, "roof2", ig::ScreenPosition::Roof2, /*1.0,*/ "gh/geometry[roofArea] / 2");
+        buildFace(builder, "side1", ig::ScreenPosition::Side1, /*0.6,*/ "gh/geometry[sideArea] / 2");
+        buildFace(builder, "side2", ig::ScreenPosition::Side2, /*0.6,*/ "gh/geometry[sideArea] / 2");
+        buildFace(builder, "end1",  ig::ScreenPosition::End1,  /*0.2,*/ "gh/geometry[endArea]  / 2");
+        buildFace(builder, "end2",  ig::ScreenPosition::End2,  /*0.2,*/ "gh/geometry[endArea]  / 2");
     builder.endbox(); //faces
 }
 
 BoxBuilder& buildConstruction(BoxBuilder &builder, const Query &q) {
-    double stateScreen[3];
-    for (int i=0; i<3; ++i) {
-        stateScreen[i] = minmax(0., (i < q.screens.size) ? value(q.screens.array[i].effect) : 0., 1.);
-    }
     builder.
     box("vg::Geometry").name("geometry").
         port("numSpans").equals(q.construction.spanCount).
@@ -292,11 +289,11 @@ BoxBuilder& buildConstruction(BoxBuilder &builder, const Query &q) {
         port("roofPitch").equals(q.construction.roofInclination).
     endbox().
     box().name("construction").
-        box("vg::LeakageVentilation").name("leakage").
-            port("leakage").equals(q.construction.infiltration).
-        endbox().
         box("vg::Shelter").name("shelter").
-            port("transmissivityReduction").equals(q.construction.internalShading).
+            port("propFrame").equals(q.construction.internalShading).
+            box("vg::LeakageVentilation").name("leakage").
+                port("leakage").equals(q.construction.infiltration).
+            endbox().
             box("UWind").name("Utop").
             endbox().
             box().name("shading").
@@ -314,19 +311,35 @@ BoxBuilder& buildConstruction(BoxBuilder &builder, const Query &q) {
                 endbox().
                 box().name("screens").
                     box("AverageScreen").name("screen1").
-                        aux("state").equals(stateScreen[0]).
                     endbox().
                     box("AverageScreen").name("screen2").
-                        aux("state").equals(stateScreen[1]).
                     endbox().
                     box("AverageScreen").name("screen3").
-                        aux("state").equals(stateScreen[2]).
                     endbox().
                 endbox(). //screens
             endbox(). //layers
         endbox(). // shelter
     endbox(); // construction
     return builder;
+}
+
+void buildActuatorScreens(BoxBuilder &builder, const Screens &screens) {
+    double stateScreen[3];
+    for (int i=0; i<3; ++i) {
+        stateScreen[i] = minmax(0., (i < screens.size) ? value(screens.array[i].effect) : 0., 1.);
+    }
+    builder.
+    box().name("screens").
+        box().name("layer1").
+            aux("state").equals(stateScreen[0]).
+        endbox().
+        box().name("screen2").
+            aux("state").equals(stateScreen[1]).
+        endbox().
+        box().name("screen3").
+            aux("state").equals(stateScreen[2]).
+        endbox().
+    endbox();
 }
 
 void buildPipe(BoxBuilder &builder, const HeatPipe &heatPipe, int number) {
@@ -429,8 +442,8 @@ void buildActuatorCo2(BoxBuilder &builder, const ig::Co2Dispenser &co2Dispenser)
 
 BoxBuilder& buildActuators(BoxBuilder &builder, const Query &q) {
     builder.
-    box("Actuators").name("actuators").
-        box().name("screens").endbox();
+    box("Actuators").name("actuators");
+        buildActuatorScreens(builder, q.screens);
         buildPipes(builder, q.heatPipes);
         buildVentilation(builder, q.vents, groundArea(q));
         buildGrowthLights(builder, q.growthLights, coverage(q));
@@ -496,18 +509,7 @@ BoxBuilder& buildBudget(BoxBuilder &builder) {
     builder.
     box("Budget").name("budget").
         port("controlClimate").equals(false).
-//      box("BudgetVolume").name("outdoorsVol").endbox().
-//      box("BudgetVolume").name("indoors").endbox().
-//      box("BudgetVolume").name("soilVol").endbox().
-//      box("BudgetLayerSky").name("sky").endbox().
-//      box("BudgetLayerCover").name("cover").endbox().
-//      box("BudgetLayerScreen").name("screen1").endbox().
-//      box("BudgetLayerScreen").name("screen2").endbox().
-//      box("BudgetLayerScreen").name("screen3").endbox().
-//      box("BudgetLayer").name("growthLights").endbox().
-//      box("BudgetLayer").name("plant").endbox().
-//      box("BudgetLayer").name("heatPipes").endbox().
-//      box("BudgetLayerFloor").name("floor").endbox().
+        port("isSkippingOutput").equals(true).
     endbox();
     return builder;
 }
@@ -525,7 +527,8 @@ Box* build(const Query &q) {
             port("steps").equals(3);
             buildCalendar(builder, q);
             buildSensor(builder, q);
-            buildOutdoors(builder).
+            buildOutdoors(builder);
+            buildSun(builder).
             box().name("gh");
                 buildConstruction(builder, q);
                 buildActuators(builder, q);

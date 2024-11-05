@@ -22,13 +22,15 @@ AverageScreen::AverageScreen(QString name, Box *parent)
     : AverageShelterLayer(name, parent)
 {
     help("computes average screen radiation and heat parameters");
+    QString number = QString::number(screenIndex() + 1);
+    Input(state).imports("actuators/screens/layer" + number + "[state]");
 }
 
-void AverageScreen::amend() {
-    QString number = QString::number(screenIndex());
-    if (!peakPort("state"))
-        Input(state).imports("actuators/screens/layer" + number + "[state]");
-}
+//void AverageScreen::amend() {
+//    QString number = QString::number(screenIndex());
+//    if (!peakPort("state"))
+//        Input(state).imports("actuators/screens/layer" + number + "[state]");
+//}
 
 void AverageScreen::reset() {
     update();
@@ -68,7 +70,6 @@ void AverageScreen::update() {
 
 int AverageScreen::screenIndex() const {
     bool ok;
-//    QString s = objectName(), n = objectName().mid(6);
     int index = objectName().mid(6).toInt(&ok);
     return ok ? index : 0;
 }

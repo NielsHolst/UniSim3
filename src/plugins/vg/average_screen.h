@@ -15,7 +15,7 @@ class AverageScreen : public AverageShelterLayer
 {
 public: 
     AverageScreen(QString name, Box *parent);
-    void amend();
+//    void amend();
     void reset();
     void update();
 private:

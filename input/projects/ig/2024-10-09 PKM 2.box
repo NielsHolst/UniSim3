@@ -8,8 +8,6 @@ Simulation greenhouse {
     .begin = 2001/10/10T14:00:00
     .timeStep = 30
     .timeUnit = "s"
-    Sun sun {
-    }
   }
   Sensor sensor {
     .indoorsTemperatureIn = 24.5012
@@ -37,6 +35,11 @@ Simulation greenhouse {
   }
   Sky sky {
   }
+  Sun sun {
+  }
+  SunDiffuseRadiation sunDiffuseRadiation {
+    .globalRadiation = sensor[outdoorsGlobalRadiation]
+  }
   Box gh {
     Geometry geometry {
       .numSpans = 1
@@ -46,11 +49,494 @@ Simulation greenhouse {
       .roofPitch = 26.0
     }
     Box construction {
-      LeakageVentilation leakage {
-        .leakage = 0.1
-      }
       Shelter shelter {
+        .propFrame = 0.4
+        LeakageVentilation leakage {
+          .leakage = 0.1
+        }
+        UWind Utop {
+        }
+        Box shading {
+          &swReflectivity = 0.0
+          &lwReflectivity = 0.0
+        }
+        Box products {
+          Box covers {
+            Cover roof1 {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.4
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.4
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 6.5
+              .Ubottom = 6.5
+              .heatCapacity = 8300.0
+            }
+            Cover roof2 {
+              .swAbsorptivityTop = 0.1
+              .swReflectivityTop = 0.5
+              .swTransmissivityTop = 0.4
+              .swAbsorptivityBottom = 0.1
+              .swReflectivityBottom = 0.5
+              .swTransmissivityBottom = 0.4
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 6.5
+              .Ubottom = 6.5
+              .heatCapacity = 8300.0
+            }
+            Cover side1 {
+              .swAbsorptivityTop = 0.05
+              .swReflectivityTop = 0.75
+              .swTransmissivityTop = 0.2
+              .swAbsorptivityBottom = 0.05
+              .swReflectivityBottom = 0.75
+              .swTransmissivityBottom = 0.2
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 0.5
+              .Ubottom = 0.5
+              .heatCapacity = 8300.0
+            }
+            Cover side2 {
+              .swAbsorptivityTop = 0.0
+              .swReflectivityTop = 0.66
+              .swTransmissivityTop = 0.34
+              .swAbsorptivityBottom = 0.0
+              .swReflectivityBottom = 0.66
+              .swTransmissivityBottom = 0.34
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 2.4
+              .Ubottom = 2.4
+              .heatCapacity = 8300.0
+            }
+            Cover end1 {
+              .swAbsorptivityTop = 0.05
+              .swReflectivityTop = 0.75
+              .swTransmissivityTop = 0.2
+              .swAbsorptivityBottom = 0.05
+              .swReflectivityBottom = 0.75
+              .swTransmissivityBottom = 0.2
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 0.5
+              .Ubottom = 0.5
+              .heatCapacity = 8300.0
+            }
+            Cover end2 {
+              .swAbsorptivityTop = 0.05
+              .swReflectivityTop = 0.75
+              .swTransmissivityTop = 0.2
+              .swAbsorptivityBottom = 0.05
+              .swReflectivityBottom = 0.75
+              .swTransmissivityBottom = 0.2
+              .lwAbsorptivityTop = 0.9
+              .lwReflectivityTop = 0.1
+              .lwTransmissivityTop = 0.0
+              .lwAbsorptivityBottom = 0.9
+              .lwReflectivityBottom = 0.1
+              .lwTransmissivityBottom = 0.0
+              .Utop = 0.5
+              .Ubottom = 0.5
+              .heatCapacity = 8300.0
+            }
+          }
+          Box screens {
+            Screen screen_2_2 {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.0
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.0
+              .lwTransmissivityBottom = 0.39
+              .Utop = 2.7
+              .Ubottom = 2.7
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_4_2 {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.0
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.0
+              .lwTransmissivityBottom = 0.39
+              .Utop = 2.7
+              .Ubottom = 2.7
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_6_2 {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.0
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.0
+              .lwTransmissivityBottom = 0.39
+              .Utop = 2.7
+              .Ubottom = 2.7
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_3_2 {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.0
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.0
+              .lwTransmissivityBottom = 0.39
+              .Utop = 2.7
+              .Ubottom = 2.7
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_5_2 {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.0
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.0
+              .lwTransmissivityBottom = 0.39
+              .Utop = 2.7
+              .Ubottom = 2.7
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_7_2 {
+              .swAbsorptivityTop = 0.61
+              .swReflectivityTop = 0.0
+              .swTransmissivityTop = 0.39
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 0.0
+              .swTransmissivityBottom = 0.39
+              .lwAbsorptivityTop = 0.61
+              .lwReflectivityTop = 0.0
+              .lwTransmissivityTop = 0.39
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 0.0
+              .lwTransmissivityBottom = 0.39
+              .Utop = 2.7
+              .Ubottom = 2.7
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_2_0 {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 8.67362e-18
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 8.67362e-18
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 8.67362e-18
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 8.67362e-18
+              .lwTransmissivityBottom = 0.01
+              .Utop = 3.2
+              .Ubottom = 3.2
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_3_0 {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 8.67362e-18
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 8.67362e-18
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 8.67362e-18
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 8.67362e-18
+              .lwTransmissivityBottom = 0.01
+              .Utop = 3.2
+              .Ubottom = 3.2
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_4_0 {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 8.67362e-18
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 8.67362e-18
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 8.67362e-18
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 8.67362e-18
+              .lwTransmissivityBottom = 0.01
+              .Utop = 3.2
+              .Ubottom = 3.2
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_5_0 {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 8.67362e-18
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 8.67362e-18
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 8.67362e-18
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 8.67362e-18
+              .lwTransmissivityBottom = 0.01
+              .Utop = 3.2
+              .Ubottom = 3.2
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_6_0 {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 8.67362e-18
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 8.67362e-18
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 8.67362e-18
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 8.67362e-18
+              .lwTransmissivityBottom = 0.01
+              .Utop = 3.2
+              .Ubottom = 3.2
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen screen_7_0 {
+              .swAbsorptivityTop = 0.99
+              .swReflectivityTop = 8.67362e-18
+              .swTransmissivityTop = 0.01
+              .swAbsorptivityBottom = 0.02
+              .swReflectivityBottom = 8.67362e-18
+              .swTransmissivityBottom = 0.01
+              .lwAbsorptivityTop = 0.99
+              .lwReflectivityTop = 8.67362e-18
+              .lwTransmissivityTop = 0.01
+              .lwAbsorptivityBottom = 0.02
+              .lwReflectivityBottom = 8.67362e-18
+              .lwTransmissivityBottom = 0.01
+              .Utop = 3.2
+              .Ubottom = 3.2
+              .heatCapacity = 0.0
+              .Uinsulation = 1.25
+              .UinsulationEffectivity = 0.95
+            }
+            Screen none {
+            }
+          }
+        }
+        Faces faces {
+          Face roof1 {
+            .cover = "roof1"
+            .screens = "screen_2_0+none+screen_2_2"
+            .area = geometry[roofArea] / 2
+          }
+          Face roof2 {
+            .cover = "roof2"
+            .screens = "screen_3_0+none+screen_3_2"
+            .area = geometry[roofArea] / 2
+          }
+          Face side1 {
+            .cover = "side1"
+            .screens = "screen_4_0+none+screen_4_2"
+            .area = geometry[sideArea] / 2
+          }
+          Face side2 {
+            .cover = "side2"
+            .screens = "screen_5_0+none+screen_5_2"
+            .area = geometry[sideArea] / 2
+          }
+          Face end1 {
+            .cover = "end1"
+            .screens = "screen_6_0+none+screen_6_2"
+            .area = geometry[endArea] / 2
+          }
+          Face end2 {
+            .cover = "end2"
+            .screens = "screen_7_0+none+screen_7_2"
+            .area = geometry[endArea] / 2
+          }
+        }
+        ShelterLayers layers {
+          AverageCover cover {
+          }
+          Box screens {
+            AverageScreen screen1 {
+            }
+            AverageScreen screen2 {
+            }
+            AverageScreen screen3 {
+            }
+          }
+        }
       }
+    }
+    Actuators actuators {
+      Box screens {
+        Box layer1 {
+          &state = 1.0
+        }
+        Box screen2 {
+          &state = 1.0
+        }
+        Box screen3 {
+          &state = 1.0
+        }
+      }
+      HeatPipes heatPipes {
+        ActuatorHeatPipe circuit1 {
+          .volume = 2.58286
+          .flowRate = 15.0
+          .k = 0.0008
+          .b = 1.1563
+          .inflowTemperature = 33.3746
+          .knownOutflowTemperature = -999.0
+          .minTemperature = 30.0
+          .maxTemperature = 80.0
+          .indoorsTemperature = sensor[indoorsTemperature]
+        }
+        ActuatorHeatPipe circuit2 {
+          .volume = 1.29143
+          .flowRate = 15.0
+          .k = 0.0008
+          .b = 1.1563
+          .inflowTemperature = 24.0666
+          .knownOutflowTemperature = -999.0
+          .minTemperature = 30.0
+          .maxTemperature = 80.0
+          .indoorsTemperature = sensor[indoorsTemperature]
+        }
+      }
+      ActuatorVentilation ventilation {
+        .ventAreaRatio = 0.000379689
+        .opening = 0.0
+        .crackOpening = 0.0
+      }
+      GrowthLights growthLights {
+        Box products {
+        }
+      }
+      Box co2 {
+        &value = 0.0
+      }
+      Box humidifiers {
+        Box vapourFlux {
+          &value = 0.0
+        }
+      }
+      Box heatPumps {
+        Box heatPump1 {
+          &cooling = 0.0
+          &condensationRate = 0.0
+        }
+      }
+    }
+    Plant plant {
+      .k_sw = 0.7
+      .k_lw = 1.0
+      .g0 = 0.1
+      .g1 = 1.64
+      .lai = 1.0
+      .coverage = 0.95
+      .Jmax = 146.52
+      .Vcmax = 71.61
+      .GammaStar = 55.47
+      .Rd0 = 0.74
+      .alpha = 0.9125
+    }
+    Floor floor {
+      .swAbsorptivityTop = 0.85
+      .swReflectivityTop = 0.15
+      .swTransmissivityTop = 0.0
+      .swAbsorptivityBottom = 0.0
+      .swReflectivityBottom = 0.0
+      .swTransmissivityBottom = 1.0
+      .lwAbsorptivityTop = 0.85
+      .lwReflectivityTop = 0.15
+      .lwTransmissivityTop = 0.0
+      .lwAbsorptivityBottom = 0.0
+      .lwReflectivityBottom = 0.0
+      .lwTransmissivityBottom = 1.0
+      .Utop = 7.5
+      .Ubottom = 7.5
+      .heatCapacity = 42000.0
+    }
+    Budget budget {
+      .isSkippingOutput = TRUE
+      .controlClimate = FALSE
     }
   }
 }

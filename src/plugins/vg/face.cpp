@@ -94,6 +94,8 @@ void Face::reset() {
     _screens.clear();
     for (QString &screen : screenMaterials) {
         LayerParametersPtrs p;
+        auto test = findMany<Box*>("shelter/products/screens/" + screen);
+        QStringList test2 = Node::fullNames(test);
         p.setPointers(findOne<Box*>("shelter/products/screens/" + screen));
         _screens << p;
     }

@@ -31,7 +31,7 @@ private:
         outdoorsGlobalRadiationIn,
         outdoorsWindSpeedIn,
         soilTemperatureIn,
-        sinb;
+        solarElevation;
     // Outputs
     double
         indoorsTemperature,

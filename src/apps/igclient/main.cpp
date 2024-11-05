@@ -36,6 +36,7 @@ void writeBoxScript() {
     QFile file(filePath);
     if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         ThrowException("Cannot open file for output").value(filePath);
+    cout << "\nWriting boxscript: "<< qPrintable(filePath) << "\n";
     QTextStream text(&file);
     BoxscriptConverter converter(Box::root(), BoxscriptConverter::Option::WriteUserScript);
     text << converter.toString();
@@ -60,7 +61,6 @@ int main(int, char **)
             cout << "\nComputing...\n";
             r = compute(q);
             cout << "\nRESPONSE 2:\n" << responseToString(r) << "\n";
-            cout << "Writing boxscript to " << qPrintable(path) << "\n";
             writeBoxScript();
         }
         else {

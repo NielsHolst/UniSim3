@@ -12,6 +12,9 @@
 
 using namespace base;
 using TestNum::eq;
+using phys_math::PI;
+using phys_math::sqr;
+using phys_math::p4;
 
 namespace vg {
 
@@ -32,7 +35,7 @@ Sensor::Sensor(QString name, Box *parent)
     Input(outdoorsGlobalRadiationIn).equals(missing);
     Input(outdoorsWindSpeedIn).equals(missing);
     Input(soilTemperatureIn).equals(missing);
-    Input(sinb).imports("sun[sinb]");
+    Input(solarElevation).imports("sun[elevation]");
     Output(indoorsTemperature);
     Output(indoorsRh);
     Output(indoorsAh);
@@ -71,11 +74,16 @@ bool Sensor::isMissing(double value) const {
     return eq(value, missing);
 }
 
+
+inline double radians(double x) {
+   return x*PI/180.;
+}
+
 double Sensor::estimateGlobalRadiation() const {
-    const double &T(outdoorsTemperature);
-    double y = 0.1802 + 13.4796*sinb + 0.0102*T - 10.9866*sinb*sinb + 0.00043*T*T
-            - 0.0598*sinb*T + 0.005115*sinb*sinb*T*T;
-    y = y*y*y*y;
+    const double &T(outdoorsTemperature), &sinb(sin(radians(solarElevation)));
+    double y = 0.1802 + 13.4796*sinb + 0.0102*T - 10.9866*sqr(sinb) + 0.00043*sqr(T)
+            - 0.0598*sinb*T + 0.005115*sqr(sinb)*sqr(T);
+    y = p4(y);
     return (y > 750.) ? 750 : y;
 
 }

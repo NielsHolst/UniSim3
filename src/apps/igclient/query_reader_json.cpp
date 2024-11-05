@@ -286,6 +286,7 @@ ig::FloorMaterial QueryReaderJson::findFloorMaterial(QJsonObject object, QString
 }
 
 void QueryReaderJson::parseHeatPipes(QJsonArray objects) {
+    _heatPipes.clear();
     for (QJsonArray::const_iterator it=objects.constBegin(); it!=objects.end(); ++it) {
         parseHeatPipe(it->toObject());
     }
@@ -307,6 +308,7 @@ void QueryReaderJson::parseHeatPipe(QJsonObject object) {
 }
 
 void QueryReaderJson::parseVents(QJsonArray objects) {
+    _vents.clear();
     for (QJsonArray::const_iterator it=objects.constBegin(); it!=objects.end(); ++it) {
         parseVent(it->toObject());
     }
@@ -326,6 +328,7 @@ void QueryReaderJson::parseVent(QJsonObject object) {
 }
 
 void QueryReaderJson::parseGrowthLights(QJsonArray objects) {
+    _growthLights.clear();
     for (QJsonArray::const_iterator it=objects.constBegin(); it!=objects.end(); ++it) {
         parseGrowthLight(it->toObject());
     }
@@ -344,6 +347,7 @@ void QueryReaderJson::parseGrowthLight(QJsonObject object) {
 }
 
 void QueryReaderJson::parseScreens(QJsonArray objects) {
+    _screens.clear();
     for (QJsonArray::const_iterator it=objects.constBegin(); it!=objects.end(); ++it) {
         parseScreen(it->toObject());
     }
@@ -357,12 +361,11 @@ void QueryReaderJson::parseScreen(QJsonObject object) {
     screen.layer = findScreenLayer(object, "Layer");
     screen.position = findScreenPosition(object, "Position");
     screen.effect = findVariable(object, "Effect");
-    if (screen.position == ig::ScreenPosition::FlatRoof || ig::ScreenPosition::WholeRoof) {
-        ig::Screen roofScreen = screen;
-        roofScreen.position = ig::ScreenPosition::Roof1;
-        _screens.push_back(roofScreen);
-        roofScreen.position = ig::ScreenPosition::Roof2;
-        _screens.push_back(roofScreen);
+    if (screen.position == ig::ScreenPosition::FlatRoof || screen.position == ig::ScreenPosition::WholeRoof) {
+        screen.position = ig::ScreenPosition::Roof1;
+        _screens.push_back(screen);
+        screen.position = ig::ScreenPosition::Roof2;
+        _screens.push_back(screen);
     }
     else {
         _screens.push_back(screen);
