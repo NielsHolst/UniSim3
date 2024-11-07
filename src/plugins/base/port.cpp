@@ -260,8 +260,6 @@ void Port::touch() {
 }
 
 void Port::evaluate() {
-//    if (name() == "lwWeight")
-//        dialog().information("TEST Port::evaluate()");
     // A constant port, a port with an empty expression, or a port to path needs no evaluation
     if (_isConstant || _expression.isEmpty() || _value.type() == Value::Type::Path)
         return;

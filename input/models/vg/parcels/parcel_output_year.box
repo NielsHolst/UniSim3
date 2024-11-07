@@ -12,6 +12,6 @@
       // | budget/cover[lwAbsorbedBottom] | budget/cover[swAbsorbedBottom]
     }
     OutputSelector selector {
-      .beginDateTime = global/beginDate[value]
+      .beginDateTime = global[beginDate]
     }
   }

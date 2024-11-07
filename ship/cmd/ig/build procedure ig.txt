@@ -26,4 +26,4 @@
 
 7. Code-sign with QDev\certificates\codesign-iglib.bat
 
-8. Zip iglib_3.x.x and upload it to ecolmod.org/download med FileZilla.
+8. Zip iglib_3.x.x and upload it to public_html/download med FileZilla.

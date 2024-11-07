@@ -19,13 +19,12 @@
       &pyrradiometer = .[pyranometer] + budget/sky[lwEmissionBottom] - budget/sky[lwAbsorbedBottom]
     }
     OutputText {
-      .ports = calendar[dateTime] | sun[isDay] | seasons[Season] 
+      .ports = calendar[dateTime] | sun[isDay] | scenarios[Scenario] 
       // | budget/BudgetLayer::*[temperature]
       | sensors[*] 
     }
     OutputSelector selector {
-      .beginDateTime = scenarios[BeginDate]
-      // global/beginDate[value]
+      .beginDateTime = global[beginDate]
       // .period = 5
     }
   }

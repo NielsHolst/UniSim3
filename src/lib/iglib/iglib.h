@@ -1,4 +1,4 @@
-// Version 3.0.23 [breaking versions <= 3.0.6]
+// Version 3.0.30 [breaking versions <= 3.0.6]
 // To use with iglib.dll, remember to define IGLIB_DLL as follows:
 // #define IGLIB_DLL dllimport
 
