@@ -89,15 +89,11 @@ void Face::reset() {
     QStringList list = screens.split("+", Qt::SkipEmptyParts);
     screenMaterials = QVector<QString>(list.cbegin(), list.cend());
     numScreens = screenMaterials.size();
-    _cover.setPointers(findOne<Box*>("shelter/products/covers/" + cover));
+    _cover = dynamic_cast<LayerParameters*>( findOne<Box*>("shelter/products/covers/" + cover) );
 
     _screens.clear();
     for (QString &screen : screenMaterials) {
-        LayerParametersPtrs p;
-        auto test = findMany<Box*>("shelter/products/screens/" + screen);
-        QStringList test2 = Node::fullNames(test);
-        p.setPointers(findOne<Box*>("shelter/products/screens/" + screen));
-        _screens << p;
+        _screens << dynamic_cast<LayerParameters*>( findOne<Box*>("shelter/products/screens/" + screen) );
     }
 }
 
@@ -119,16 +115,7 @@ void Face::update() {
         swWeight = sunDiffuseRadiation + (1. - sunDiffuseRadiation)*dsin(aoi);
 }
 
-const LayerParametersPtrs& Face::coverParameters() const {
-    return _cover;
-}
-
-const LayerParametersPtrs& Face::screenParameters(int index) const {
-    Q_ASSERT(index < screens.size());
-    return _screens.at(index);
-}
-
-const LayerParametersPtrs& Face::parameters(int index) const {
+const LayerParameters* Face::parameters(int index) const {
     if (index == 0)
         return _cover;
     Q_ASSERT(index-1 < screens.size());

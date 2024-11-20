@@ -54,7 +54,8 @@ void AverageCover::reset() {
 }
 
 
-LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVector<double> &adjustments) {
+//LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVector<double> &adjustments) {
+LayerParameters AverageCover::transform(const LayerParameters *p, const QVector<double> &adjustments) {
     LayerParameters adj;
     const double
         &propFrame(adjustments.at(0)),
@@ -65,16 +66,16 @@ LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVec
         &heatCapacityFrame(adjustments.at(5));
 
     // Reduce transmissivity by frame and chalk
-    adj.swTransmissivityTop     = *p.swTransmissivityTop    * (1. - propFrame) * swTransmissivityChalk;
-    adj.lwTransmissivityTop     = *p.lwTransmissivityTop    * (1. - propFrame) * lwTransmissivityChalk;
-    adj.swTransmissivityBottom  = *p.swTransmissivityBottom * (1. - propFrame) * swTransmissivityChalk;
-    adj.lwTransmissivityBottom  = *p.lwTransmissivityBottom * (1. - propFrame) * lwTransmissivityChalk;
+    adj.swTransmissivityTop     = p->swTransmissivityTop    * (1. - propFrame) * swTransmissivityChalk;
+    adj.lwTransmissivityTop     = p->lwTransmissivityTop    * (1. - propFrame) * lwTransmissivityChalk;
+    adj.swTransmissivityBottom  = p->swTransmissivityBottom * (1. - propFrame) * swTransmissivityChalk;
+    adj.lwTransmissivityBottom  = p->lwTransmissivityBottom * (1. - propFrame) * lwTransmissivityChalk;
 
     // Weigh absorptivities across frame and sheet
-    adj.swAbsorptivityTop    = *p.swAbsorptivityTop    * (1. - propFrame) + (1. - swReflectivityFrame) * propFrame ;
-    adj.lwAbsorptivityTop    = *p.lwAbsorptivityTop    * (1. - propFrame) + (1. - lwReflectivityFrame) * propFrame ;
-    adj.swAbsorptivityBottom = *p.swAbsorptivityBottom * (1. - propFrame) + (1. - swReflectivityFrame) * propFrame ;
-    adj.lwAbsorptivityBottom = *p.lwAbsorptivityBottom * (1. - propFrame) + (1. - lwReflectivityFrame) * propFrame ;
+    adj.swAbsorptivityTop    = p->swAbsorptivityTop    * (1. - propFrame) + (1. - swReflectivityFrame) * propFrame ;
+    adj.lwAbsorptivityTop    = p->lwAbsorptivityTop    * (1. - propFrame) + (1. - lwReflectivityFrame) * propFrame ;
+    adj.swAbsorptivityBottom = p->swAbsorptivityBottom * (1. - propFrame) + (1. - swReflectivityFrame) * propFrame ;
+    adj.lwAbsorptivityBottom = p->lwAbsorptivityBottom * (1. - propFrame) + (1. - lwReflectivityFrame) * propFrame ;
 
     // Reflectivity takes rest
     adj.swReflectivityTop    = 1. - adj.swTransmissivityTop    - adj.swAbsorptivityTop;
@@ -83,11 +84,11 @@ LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVec
     adj.lwReflectivityBottom = 1. - adj.lwTransmissivityBottom - adj.lwAbsorptivityBottom;
 
     // Weigh heat capacities across frame and sheet
-    adj.heatCapacity = *p.heatCapacity*(1. - propFrame) + heatCapacityFrame*propFrame;
+    adj.heatCapacity = p->heatCapacity*(1. - propFrame) + heatCapacityFrame*propFrame;
 
     // Unaffected by frame and chalk
-    adj.Utop         = *p.Utop;
-    adj.Ubottom      = *p.Ubottom;
+    adj.Utop         = p->Utop;
+    adj.Ubottom      = p->Ubottom;
     return adj;
 }
 
@@ -105,10 +106,10 @@ void AverageCover::correctUbottom() {
     Ubottom = 0;
     int i = 0;
     for (Face *face : _faces) {
-        const LayerParametersPtrs &p(face->parameters(0));
+        const LayerParameters &p(*face->parameters(0));
         // Add up Uinsulation of screens and them to Ubottom of the cover
         // On one face, resistances are in a series and hence additive
-        double sumRface = 1./(*p.Ubottom);
+        double sumRface = 1./(p.Ubottom);
         int layer = 0;
         for (const double *Uinsulation : _Uinsulations[i])
             sumRface += screenStates.at(layer++)/(*Uinsulation);

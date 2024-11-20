@@ -12,10 +12,10 @@ Simulation sim {
       .roofPitch = 26.0
     }
     Box construction {
-      LeakageVentilation leakage {
-        .leakage = 1.0
-      }
       Shelter shelter {
+        LeakageVentilation leakage {
+          .leakage = 1.0
+        }
         UWind Utop {
         }
         Box products {
@@ -141,7 +141,7 @@ Simulation sim {
         }
       }
     }
-    Box actuators {  // Actuators??
+    Box actuators {  
       ActuatorVentilation ventilation {
         .ventAreaRatio = 0.36
         .windCoef = 50.0

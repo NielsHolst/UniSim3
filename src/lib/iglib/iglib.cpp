@@ -306,7 +306,7 @@ BoxBuilder& buildConstruction(BoxBuilder &builder, const Query &q) {
             builder.endbox(); // products
             buildFaces(builder);
             builder.
-            box("ShelterLayers").name("layers").
+            box().name("layers").
                 box("AverageCover").name("cover").
                 endbox().
                 box().name("screens").

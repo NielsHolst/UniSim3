@@ -22,7 +22,7 @@ private:
     // Input
     double state;
     // Methods
-    LayerParameters transform(const LayerParametersPtrs &p, const QVector<double> &adjustments);
+    LayerParameters transform(const LayerParameters *p, const QVector<double> &adjustments);
     int screenIndex() const;
 };
 

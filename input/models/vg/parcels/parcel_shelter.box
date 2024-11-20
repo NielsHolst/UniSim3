@@ -3,7 +3,7 @@
         }
         Box shading {
           &swTransmissivity = 1 - scenarios[swShading]
-          &lwTransmissivity = 1 //1 - scenarios[lwShading]
+          &lwTransmissivity = 1 - scenarios[lwShading]
         }
         UWind Utop {
         }

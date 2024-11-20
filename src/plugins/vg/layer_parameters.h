@@ -8,15 +8,10 @@
 #ifndef LAYER_PARAMETERS_H
 #define LAYER_PARAMETERS_H
 
-namespace base {
-    class Box;
-}
-
 namespace vg {
 
 struct LayerParameters
 {
-    LayerParameters();
     // Parameters serving as inputs or outputs
     double
         swAbsorptivityTop, swAbsorptivityBottom,
@@ -27,22 +22,6 @@ struct LayerParameters
         lwTransmissivityTop, lwTransmissivityBottom,
         Utop, Ubottom,
         heatCapacity;
-    // Methods
-    void makeTransparent();
-};
-
-struct LayerParametersPtrs {
-    LayerParametersPtrs() {}
-    void setPointers(base::Box *box);
-    const double
-        *swReflectivityTop,   *swReflectivityBottom,
-        *swTransmissivityTop, *swTransmissivityBottom,
-        *lwReflectivityTop,   *lwReflectivityBottom,
-        *lwTransmissivityTop, *lwTransmissivityBottom,
-        *swAbsorptivityTop,   *swAbsorptivityBottom,
-        *lwAbsorptivityTop,   *lwAbsorptivityBottom,
-        *Utop,                *Ubottom,
-        *heatCapacity;
 };
 
 } //namespace

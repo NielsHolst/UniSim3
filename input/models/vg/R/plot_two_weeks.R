@@ -1,5 +1,5 @@
 add_day_cycle = function(sim) {
-  sim$Season = factor(sim$Season)
+  sim$Scenario = factor(sim$Scenario)
   sim$isDay = factor(sim$isDay)
   levels(sim$isDay) = c("NightTime", "DayTime")
   sim$Cycle = sim$isDay
@@ -16,12 +16,12 @@ plot_title = function() {
 two_weeks_plot = function() {
   C = add_day_cycle(sim)
   
-  ids = c("Season", "Cycle", "dateTime")
+  ids = c("Scenario", "Cycle", "dateTime")
   vars = setdiff(colnames(C), c(ids, "isDay", "iteration", "step"))
   M = melt(C, id.vars=ids, 
            measure.vars=vars, 
            variable.name="Variable", value.name="Value")
-  M$Season = reorder_levels(M$Season, 2:1)
+  M$Scenario = reorder_levels(M$Scenario, 2:1)
   M$CycleIndex = 0
 
 
@@ -56,7 +56,7 @@ two_weeks_plot = function() {
   }
 
 
-  Quartiles = ddply(subset(M, !is.na(CycleId)), .(Season, CycleId, Cycle, Variable), summarise,
+  Quartiles = ddply(subset(M, !is.na(CycleId)), .(Scenario, CycleId, Cycle, Variable), summarise,
     From = min(dateTime),
     To = max(dateTime),
     Q1 = quantile(Value, 0.25),
@@ -72,7 +72,7 @@ two_weeks_plot = function() {
     scale_fill_manual(values=c("black", orange)) +
     geom_line(aes(dateTime, Value, colour=Variable)) +
     labs(title=plot_title(), x="", y="") +
-    facet_wrap(Season~Variable, scales="free", nrow=2) +
+    facet_wrap(Scenario~Variable, scales="free", nrow=2) +
     theme(
       legend.position = 'none'
     )
@@ -85,6 +85,6 @@ figures <- function(df) {
 
 # Main
 
-Plot = two_weeks_plot()
-open_plot_window(14,4)
-print(Plot)
+# Plot = two_weeks_plot()
+# open_plot_window(14,4)
+# print(Plot)

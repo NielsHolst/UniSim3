@@ -50,9 +50,9 @@ Simulation sim {
     Budget budget {
     }
   }
-  Box script {
-    &value = "../R/post_1_sky_cover_floor.R"
-  }
+  // Box script {
+    // &value = "../R/post_1_sky_cover_floor.R"
+  // }
 
   #include "../parcels/parcel_output.box"
 }

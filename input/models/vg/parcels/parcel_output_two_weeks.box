@@ -1,6 +1,7 @@
   OutputR output {
     .keepPlots = FALSE
-    .scripts = c("../R/plot_two_weeks.R", script[value])
+    // .scripts = c("../R/plot_two_weeks.R", script[value])
+    .scripts = "../R/plot_two_weeks.R"
     Box balances {
       &swSky   = budget/sky[swAbsorbedBottom] - budget/sky[swEmissionBottom]
       &lwSky   = budget/sky[lwAbsorbedBottom] - budget/sky[lwEmissionBottom]
@@ -19,7 +20,7 @@
       &pyrradiometer = .[pyranometer] + budget/sky[lwEmissionBottom] - budget/sky[lwAbsorbedBottom]
     }
     OutputText {
-      .ports = calendar[dateTime] | sun[isDay] | scenarios[Scenario] 
+      .ports = calendar[dateTime] | sun[isDay] | scenarios[Scenario] | shelter/shading[*]
       // | budget/BudgetLayer::*[temperature]
       | sensors[*] 
     }

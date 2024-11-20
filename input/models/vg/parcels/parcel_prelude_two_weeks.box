@@ -1,4 +1,4 @@
-  .iterations = 2
+  .iterations = scenarios[iterations]
   Scenarios scenarios {
     .fileName = "verification_scenarios.txt"
   }

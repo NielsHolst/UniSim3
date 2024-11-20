@@ -55,7 +55,7 @@ void Shelter::amend() {
     if (!findMaybeOne<Box*>("./layers")) {
         BoxBuilder builder(this);
         builder.
-        box("ShelterLayers").name("layers").
+        box().name("layers").
             box("AverageCover").name("cover").
             endbox().
             box().name("screens");
