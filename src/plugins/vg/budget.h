@@ -56,7 +56,8 @@ private:
     // Output
     int radIterations, subSteps;
     double subTimeStep, maxDeltaT, ventilationHeatLoss,
-        wfTranspiration, wfHumidification, wfVentilation, wfCover, wfHeatPump, wfPadAndFan,
+        wfAh, wfTranspiration, wfHumidification, wfVentilation, wfCover, wfHeatPump, wfPadAndFan,
+        deltaAh, ETIntgr, condensationIntgr, ventilationIntgr,
         coverConductance,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
         sunParHittingPlant, growthLightParHittingPlant, totalPar,

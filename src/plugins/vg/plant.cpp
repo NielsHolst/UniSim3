@@ -25,9 +25,10 @@ Plant::Plant(QString name, Box *parent)
     Input(k_sw).equals(0.7).unit("[0;1]").help("Short-wave extinction coefficient");
     Input(k_lw).equals(1.).unit("[0;1]").help("Long-wave extinction coefficient");
     Input(sigma).equals(0.2).help("Scattering coefficient");
-    Input(g0).equals(0.1).unit("m/s").help("Ball-Berry model of stomatal resistance (H2O): intercept");
-    Input(g1).equals(1.64).unit("m3/mol").help("Ball-Berry model of stomatal resistance (H2O): slope");
+    Input(g0).equals(0.1).unit("m/s").help("Unused; Ball-Berry model of stomatal resistance (H2O): intercept");
+    Input(g1).equals(1.64).unit("m3/mol").help("Unused; Ball-Berry model of stomatal resistance (H2O): slope");
     Input(re).equals(200.).unit("m/s").help("Boundary layer resistance (H2O)");
+    Input(riMin).equals(82.).unit("m/s").help("Minimum internal resistance (H2O)");
     Input(lai).equals(1.).unit("m2/m2").help("Leaf area index in the cultivated area");
     Input(coverage).equals(0.9).unit("m2/m2").help("Proportion of floor covered by plants");
 
@@ -47,6 +48,7 @@ Plant::Plant(QString name, Box *parent)
     Input(delsC).equals(629.26).help("Temperature response of Vcmax");
     Input(Q10  ).equals(1.92).help("Temperature response of respiration");
 
+    Input(outdoorsRadiation).imports("outdoors[radiation]");
     Input(indoorsTemperature).imports("gh/budget/indoors[temperature]");
     Input(indoorsRh).imports("gh/budget/indoors[rh]");
     Input(indoorsCo2).imports("gh/budget/indoors[co2]");
@@ -54,7 +56,9 @@ Plant::Plant(QString name, Box *parent)
 
     Output(temperature).unit("oC").help("Leaf temperature");
     Output(transpiration).unit("kg/m2 ground/s").help("Transpiration rate");
+    Output(netRadiation).unit("W/m2").help("Net radiation of plant canopy");
     Output(incidentPar).unit("&micro;mol PAR/m2 ground/s").help("PAR hitting the canopy");
+    Output(ri).unit("m/s").help("Internal resistance (H2O)");
     Output(Pn).unit("&micro;mol CO2/m2 ground/s").help("Net photosynthetic rate");
     Output(Pg).unit("&micro;mol CO2/m2 ground/s").help("Gross photosynthetic rate");
     Output(Rd).unit("&micro;mol CO2/m2 ground/s").help("Respiration rate");
@@ -98,13 +102,14 @@ void Plant::restoreState() {
     update();
 }
 
-void Plant::updateByRadiation(double netRadiation, double parAbsorbed) {
-    netRadiation_ = netRadiation;
-    incidentPar  = parAbsorbed/swAbsorptivityTop;
+void Plant::updateByRadiation(double _netRadiation, double _swAbsorbed, double parAbsorbed) {
+    netRadiation  = _netRadiation;
+    swAbsorbed    = _swAbsorbed;
+    ri            = riCalc();
+    incidentPar   = parAbsorbed/swAbsorptivityTop;
     svp_          = svp(indoorsTemperature);
     vp_           = vpFromRh(indoorsTemperature, indoorsRh);
     svpSlope_     = svpSlope(indoorsTemperature);
-    ri_           = ri();
     updateTemperature();
     updateTranspiration();
     updateLeafPhotosynthesis();
@@ -150,19 +155,21 @@ void Plant::updateRadiative() {
 }
 
 void Plant::updateTemperature() {
+    // Stanghellini, eq. 3.5
     double
-        a = (ri_+re)/2./lai/RhoAir/CpAir*netRadiation_ - 1./Psychr*(svp_ - vp_),
-        b = 1. + svpSlope_/Psychr + ri_/re;
+        a = (ri+re)/2./lai/RhoAir/CpAir*netRadiation - 1./Psychr*(svp_ - vp_),
+        b = 1. + svpSlope_/Psychr + ri/re;
     temperature = indoorsTemperature + a/b;
 }
 
 void Plant::updateTranspiration() {
-    if (leZero(netRadiation_))
+    // Stanghellini, eq. 3.4
+    if (leZero(netRadiation))
         transpiration =  0.;
     else {
         double
-            a = svpSlope_/Psychr*netRadiation_ + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
-            b = LHe*(1. + svpSlope_/Psychr + ri_/re);
+            a = svpSlope_/Psychr*netRadiation/2./lai + 2.*lai*RhoAir*CpAir/Psychr/re*(svp_ - vp_),
+            b = LHe*(1. + svpSlope_/Psychr + ri/re);
         transpiration = a/b;
     }
 }
@@ -173,7 +180,7 @@ void Plant::updateLeafPhotosynthesis() {
     JmaxAdj_  = Jmax *TJmax();
 
     double
-        &GS(ri_),
+        &GS(ri),
         &GB(re),
         // Added: Total conductance
         GT = GS*GB/(GS + GB),
@@ -216,9 +223,50 @@ void Plant::updateCanopyPhotosynthesis() {
     growthRate = Pn*co2ToBiomass*timeStep*1e-6; // convert from micro gram to gram;
 }
 
-double Plant::ri() const {
-    return 1./(g0 + g1*indoorsRh/100.*Pn/indoorsCo2);
+namespace {
+ double ri_Is(double swAbsorbed, double lai) {
+    const double
+        C1 = 4.30,
+        C2 = 0.54,
+        swAbsorbedAvg = swAbsorbed/2./lai;
+  return (swAbsorbedAvg + C1)/(swAbsorbedAvg + C2);
 }
+
+double ri_To(double leafTemperature) {
+    const double
+        C3 = 2.3e-2,
+        Tm = 24.5;
+  return 1. + C3*sqr(leafTemperature - Tm);
+}
+
+double ri_co2(double co2, bool isDaytime) {
+  if (isDaytime) {
+      const double
+        C4 = 6.1e-7;
+      return std::min(1. + C4*sqr(co2 - 200.), 1.5);
+  } else {
+    return 1.;
+  }
+}
+
+double ri_vpd(double vpd) {
+  const double
+    C5 = 4.3;
+  return std::min(1. + C5*sqr(vpd), 3.8);
+}
+
+}
+
+
+double Plant::riCalc() const {
+    const double
+        vpd = std::max(svp(temperature) - vpFromRh(temperature, indoorsRh), 0.);
+    return riMin*ri_Is(swAbsorbed, lai)*ri_To(temperature)*ri_co2(indoorsCo2, outdoorsRadiation < 3.)*ri_vpd(vpd);
+}
+
+//double Plant::riCalc() const {
+//    return 1./(g0 + g1*indoorsRh/100.*Pn/indoorsCo2);
+//}
 
 double Plant::reflectivity(double k) const {
     return (exp(-k*lai) - exp(k*lai)) / (rhoh_*exp(-k*lai) - exp(k*lai)/rhoh_);

@@ -1,8 +1,5 @@
 # Prelude
-# rm(list=ls(all=TRUE))
-# graphics.off()
-library(plyr)
-library(reshape2)
+source("setup.R")
 
 distribute_rad_down = function(rad) {
   n = nrow(rad)

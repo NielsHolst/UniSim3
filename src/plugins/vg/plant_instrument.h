@@ -22,7 +22,7 @@ public:
     void update();
 private:
     // Input
-    double netRadiation, parAbsorbed;
+    double netRadiation, swAbsorbed, parAbsorbed;
     // Data
     Plant *plant;
 };

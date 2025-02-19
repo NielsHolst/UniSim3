@@ -92,6 +92,7 @@ Budget::Budget(QString name, base::Box *parent)
     Output(radIterations).help("Number of iterations taken to resolve radiation budget");
     Output(maxDeltaT).unit("K").help("Max. temperature change in a sub-step");
 
+    Output(wfAh).unit("L/m2/h").help("Water flux in greenhouse air");
     Output(wfTranspiration).unit("L/m2/h").help("Water flux by plant transpiration");
     Output(wfHumidification).unit("L/m2/h").help("Water flux by humidifiers (fogging)");
     Output(wfVentilation).unit("L/m2/h").help("Water flux by ventilation");
@@ -370,6 +371,16 @@ void Budget::update() {
             indoorsTemp0 = indoorsVol->temperature,
             indoorsAh0   = indoorsVol->ah;
     updateInSubSteps();
+
+    // Convert water fluxes from L/m2 to L/m2/h
+    wfAh             *= 3600./timeStep;
+    wfTranspiration  *= 3600./timeStep;
+    wfHumidification *= 3600./timeStep;
+    wfVentilation    *= 3600./timeStep;
+    wfCover          *= 3600./timeStep;
+    wfHeatPump       *= 3600./timeStep;
+    wfPadAndFan      *= 3600./timeStep;
+
     updateCo2();
     updateCheckSum();
 
@@ -378,6 +389,7 @@ void Budget::update() {
 
     // Approximate outputs
     growthLightParHittingPlant = budgetLayerGrowthLights ? budgetLayerGrowthLights->parEmissionBottom : 0.;
+
     // If no plant then use floor instead
     BudgetLayer *refLayer = budgetLayerPlant ? budgetLayerPlant : budgetLayerFloor;
     totalPar = guardedRatio(refLayer->parAbsorbedTop   , refLayer->attachedLayer->swAbsorptivityTop   ) +
@@ -402,12 +414,14 @@ void Budget::updateInSubSteps() {
     subDateTime = dateTime;
     babyStep();
     // Water fluxes to be summed
+    wfAh =
     wfTranspiration =
     wfHumidification =
     wfVentilation   =
     wfCover  =
     wfHeatPump =
     wfPadAndFan = 0.;
+
     // Loop through minor time steps
     while (lt(timePassed, timeStep) && subSteps < maxSubSteps) {
         subTimeStep = std::min(subTimeStep*tempPrecision/_maxDeltaT, timeStep - timePassed);
@@ -418,6 +432,8 @@ void Budget::updateInSubSteps() {
         // Update plant
         if (plant)
             plant->updateByRadiation(budgetLayerPlant->netRadiation,
+                                     budgetLayerPlant->swAbsorbedTop +
+                                     budgetLayerPlant->swAbsorbedBottom,
                                      budgetLayerPlant->parAbsorbedTop +
                                      budgetLayerPlant->parAbsorbedBottom);
 
@@ -448,14 +464,6 @@ void Budget::updateInSubSteps() {
         // Count sub-steps with major simulation time step
         ++subSteps;
     }
-    // Convert water fluxes from kg/m2 to L/m2/h
-    const double c = 3600./timeStep;
-    wfTranspiration  *= c;
-    wfHumidification *= c;
-    wfVentilation    *= c;
-    wfCover          *= c;
-    wfHeatPump       *= c;
-    wfPadAndFan      *= c;
     // Too many minor steps?
     if (subSteps == maxSubSteps)
         dialog().error("On" + convert<QString>(dateTime) + ": Energy budget did not converge");
@@ -528,44 +536,41 @@ struct WaterIntegration {
     // All in kg/m3
     double
         deltaAh,
-        evapotranspiration,
         condensation,
         ventilation;
 };
 
 WaterIntegration waterIntegration(
-        double dt,  // time step
-        double ah0, // indoors ah
-        double ET,  // evapotranspiration
-        double c,   // cover condensation rate
-        double C,   // sah of cover
-        double v,   // ventilation rate
-        double V)   // outdoors ah
+        double dt,  // time step (s)
+        double ah0, // indoors ah (kg/m3)
+        double ET,  // evapotranspiration (kg/m3/s)
+        double c,   // cover condensation rate (kg/m3/s)
+        double C,   // sah of cover (per s)
+        double v,   // ventilation rate (kg/m3/s)
+        double V)   // outdoors ah (per s)
 {
     // No condensation possible?
     if (ah0 < C)
         c = 0.;
     // Only evapotranspiration
     if (fabs(c+v) < 1e-9) {
-        return WaterIntegration {ET*dt, ET*dt, 0., 0.};
+        return WaterIntegration {ET*dt, 0., 0.};
     }
     // Else integrate
     const double
-        tau          = exp(-(c+v)*dt),
-        ah1          = (c + v != 0.) ? (ET + c*C + v*V - tau*(c*C - ah0*(c + v) + ET + v*V))/(c + v) : ah0 + ET*dt,
-        deltaAh      = ah1 - ah0,
-        avgAh        = (ah0 + ah1)/2.;
+        tau = exp(-(c+v)*dt),
+        ah1 = (c + v != 0.) ? (ET + c*C + v*V - tau*(c*C - ah0*(c + v) + ET + v*V))/(c + v) : ah0 + ET*dt;
 
     // Break down water budget
+    const double
+        deltaAh = ah1 - ah0,
+        avgAh   = (ah0 + ah1)/2.,
+        C1      = c*(avgAh - C),
+        V1      = v*(avgAh - V);
     WaterIntegration w;
     w.deltaAh = deltaAh;
-    w.evapotranspiration = ET*dt;
-    const double
-        C1 = c*(avgAh - C),
-        V1 = v*(avgAh - V),
-        k = (ET - deltaAh/dt) / (C1 + V1);
-    w.condensation = k*C1;
-    w.ventilation  = k*V1;
+    w.condensation = C1/(C1 + V1)*(ET*dt - deltaAh);
+    w.ventilation  = V1/(C1 + V1)*(ET*dt - deltaAh);
     return w;
 }
 
@@ -579,6 +584,7 @@ void Budget::updateWaterBalance(double timeStep) {
     const double
        indoorsAh     = indoorsVol->ah,
        outdoorsAh    = outdoorsVol->ah,
+       ET            = (*in.transpirationRate + *in.humidificationRate + *in.padAndFanVapourFlux - *in.heatPumpCondensationRate)/averageHeight,
        coverSah      = sah(budgetLayerCover->temperature),
        indoorsVirtT  = virtualTemperatureFromAh(indoorsVol->temperature,       indoorsAh),
        coverVirtT    = virtualTemperatureFromAh(budgetLayerCover->temperature, indoorsAh),
@@ -588,46 +594,30 @@ void Budget::updateWaterBalance(double timeStep) {
     WaterIntegration w = waterIntegration(
         timeStep,
         indoorsAh,
-        (*in.transpirationRate + *in.humidificationRate + *in.padAndFanVapourFlux - *in.heatPumpCondensationRate)/averageHeight,
+        ET,
         coverConductance,
         coverSah,
         v,
         outdoorsAh
     );
 
-    // Net condensation and ventilation
-    const double
-        // kg/m2 = kg/m3 * m
-        d_condensationCover    = w.condensation*averageHeight,
-        d_ventedWater          = w.ventilation*averageHeight;
+    // Update outputs (L/m2)
+    // Integrated condensation, ventilation and change in indoors humidity
+//    const double c1 = averageHeight*3600./timeStep; // kg/m3 * m * s/h / s
+    const double c1 = averageHeight; // L/m2 = kg/m3 * m
+    wfCover          -= w.condensation*c1;
+    wfVentilation    -= w.ventilation*c1;
+    wfAh             += w.deltaAh*c1;
 
-    // Evapotranspiration
-    double
-        // kg/m2 = kg/m2/s * s
-        d_transpiration        = *in.transpirationRate*timeStep,
-        d_humidification       = *in.humidificationRate*timeStep,
-        d_padAndFanVapourFlux  = *in.padAndFanVapourFlux*timeStep,
-        d_heatPumpCondensation = *in.heatPumpCondensationRate*timeStep;
+    // Evapotranspiration rates are fixed during time step
+    const double c2 = timeStep; // L/m2 = kg/m2/s * s
+    wfTranspiration  += *in.transpirationRate*c2;
+    wfHumidification += *in.humidificationRate*c2;
+    wfPadAndFan      += *in.padAndFanVapourFlux*c2;
+    wfHeatPump       -= *in.heatPumpCondensationRate*c2;
 
-    // Correction of evapotranspiration sum
-    const double
-        d_sum = d_transpiration + d_humidification + d_padAndFanVapourFlux - d_heatPumpCondensation,
-        k = (fabs(d_sum) < 1e-6) ? 1. : w.evapotranspiration/d_sum;
-    d_transpiration        *= k;
-    d_humidification       *= k;
-    d_padAndFanVapourFlux  *= k;
-    d_heatPumpCondensation *= k;
-
-    // Outputs
-    wfTranspiration  += d_transpiration;
-    wfHumidification += d_humidification;
-    wfVentilation    -= d_ventedWater;
-    wfCover          -= d_condensationCover;
-    wfHeatPump       -= d_heatPumpCondensation;
-    wfPadAndFan      += d_padAndFanVapourFlux;
-
-    // Indoors state update
-    indoorsVol->ah   += w.deltaAh;
+    // Update indoors humidity
+    indoorsVol->ah += w.deltaAh;
     const double indoorsSah = sah(indoorsVol->temperature);
     if (indoorsVol->ah > indoorsSah)
         indoorsVol->ah = indoorsSah;
@@ -636,9 +626,9 @@ void Budget::updateWaterBalance(double timeStep) {
     // Outside latent heat
     const double
        outdoorsVirtT       = virtualTemperatureFromAh(outdoorsTemperature, outdoorsAh),
-       c                   = coverPerGroundArea*g(outdoorsVirtT, coverVirtT),
+       c                   = /*coverPerGroundArea**/g(outdoorsVirtT, coverVirtT),
        outsideCondensation = std::max(c*(outdoorsAh - coverSah)*timeStep, 0.),
-       coverCondensation   = d_condensationCover + outsideCondensation;
+       coverCondensation   = w.condensation*averageHeight + outsideCondensation;
 
     // Update cover temperature
     coverLatentHeatFlux = LHe*coverCondensation/timeStep;

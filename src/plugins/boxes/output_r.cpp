@@ -40,6 +40,7 @@ OutputR::OutputR(QString name, Box *parent)
     Input(height).equals(7).help("Height of pop-up windows (only used if popUp is set)");
     Input(maximizeWindow).equals(false).help("Maximize plot window size?");
     Input(fontSize).equals(0).help("Only used if >0");
+    Input(lineWidth).equals(1.0).help("Width of lines in plots");
     Input(plotAsList).equals(false).help("Put plots into an R list?");
     Input(saveDataFrame).equals(false).help("Save output as R data frame?");
     Input(skipFormats).imports("OutputWriter::*[skipFormats]");
@@ -82,6 +83,9 @@ void OutputR::initialize() {
 
 QString OutputR::toScript() {
     QString s;
+
+    s = "update_geom_defaults('line', list(linewidth=" + QString::number(lineWidth) + "))\n";
+
     for (PageR *page : _pages)
         s += page->toScript();
     s += "plot_all <- function(df) {\n";

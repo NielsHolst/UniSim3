@@ -33,7 +33,7 @@ private:
     // Input
     bool showPlots, clearPlots, keepPlots, clearMemory, popUp, saveDataFrame, plotAsList, skipFormats, maximizeWindow, hasError;
     int showLines;
-    double width, height, fontSize;
+    double width, height, fontSize, lineWidth;
     QString code;
     QVector<QString> plotTypes, scripts;
 

@@ -17,14 +17,14 @@ public:
     Plant(QString name, Box *parent);
     void reset();
     void update();
-    void updateByRadiation(double netRadiation, double parAbsorbed);
+    void updateByRadiation(double netRadiation, double swAbsorbed, double parAbsorbed);
     double calcGrowthRate(double temperature, double co2);
     void saveState();
     void restoreState();
 private:
     // Inputs
     double k_sw, k_lw, sigma,
-        g0, g1, re,
+        g0, g1, re, riMin,
         lai, coverage,
 
         Jmax, Vcmax, GammaStar, Km, Rd0,
@@ -34,18 +34,18 @@ private:
         EaVC, EdVC, delsC,
         Q10,
 
+        outdoorsRadiation,
         indoorsTemperature, indoorsRh, indoorsCo2,
         timeStep;
     // Output
     double temperature, transpiration,
-        incidentPar,
-        leafAm, leafAc, leafAj, leafRd, leafGrowthRate,
+        netRadiation, swAbsorbed, incidentPar,
+        ri, leafAm, leafAc, leafAj, leafRd, leafGrowthRate,
         Pn, Pg, Rd, growthRate,
         lue;
     // Data
     double
-        netRadiation_,
-        rhoh_, vp_, svp_, svpSlope_, ri_,
+        rhoh_, vp_, svp_, svpSlope_,
         absorbedTotal_,
         VcmaxAdj_, JmaxAdj_;
     struct {
@@ -60,7 +60,7 @@ private:
     void updateLeafPhotosynthesis();
     void updateCanopyPhotosynthesis();
 
-    double ri() const;
+    double riCalc() const;
     double reflectivity(double k) const;
     double absorptivity(double k) const;
     double Tadj(double EaV, double EdV, double dels) const;

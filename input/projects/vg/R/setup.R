@@ -1,15 +1,14 @@
-# Prelude
-setwd("~/QDev/UniSim3/input/models/vg/R")
 library(ggplot2)
-library(ggpubr)
 library(plyr)
 library(reshape2)
 
-#
-# Set up default ggplot colours and theme
-#
-
-theme_set(theme_bw())
+theme_set(
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(margin = unit(c(0.8,0,0,0), "char")),
+    axis.title.y = element_text(margin = unit(c(0,0.8,0,0), "char"))
+  )
+)
 
 # See https://data-se.netlify.com/2018/12/12/changing-the-default-color-scheme-in-ggplot2/
 red = '#e41a1c'     # 228  26  28
@@ -22,6 +21,8 @@ pink = '#f781bf'
 grey = '#999999'
 black = '#000000'
 my_colours = c(red,blue,green,violet,orange,brown,pink,grey,black) 
+
+update_geom_defaults("line", list(linewidth=1))
 
 my_colour = function(i) { 
   strtoi(c(
@@ -40,14 +41,7 @@ scale_fill_discrete = function(...) {
   scale_fill_manual(..., values = rep(my_colours, n_rep_colours))
 }
 
-show_colours = function() {
+scale_linetype_discrete = function(...) {
   n = length(my_colours)
-  M = data.frame(
-    Colour = factor(1:n),
-    Value = rep(1, n)
-  )
-
-  windows(8,5)
-  ggplot(M, aes(Colour, Value, colour=Colour)) +
-    geom_point(size=10)
+  scale_linetype_manual(..., values = rep(c(rep(1, n), rep(7, n)), 5))
 }

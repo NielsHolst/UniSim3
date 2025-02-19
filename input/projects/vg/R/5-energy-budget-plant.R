@@ -77,17 +77,6 @@ Tplant = function(Arad, rh, Tin=25, ri=9.5, re=200) {
   Tin + a/b
 }
 
-Arad=0
-ri=10
-re=200
-lai=1
-Lai=1
-
-Tin = 20
-rh = 70
-vp(rh, Tin)
-svp(Tin)
-
 transpiration = function(Arad, rh, Tin=25) {
   co2 = 900
   re = 218
@@ -322,6 +311,7 @@ distribute_lw_conv_adv_plant = function(budget, dt, n) {
 # plot_transpiration()
 # plot_latent_heat()
 
+
 # Set up
 sub_dt     = 30
 B1         = budget_lw_con_adv_plant(sub_dt)
@@ -340,8 +330,3 @@ list(
   TotalBalanceVolumes = sum(final$Volumes$SumNetHV),
   TotalBalance        = sum(final$Layers$SumNetAH) + sum(final$Volumes$SumNetHV)
 )
-
-budget=B1
-dt=180
-n=6
-i=1

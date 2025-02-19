@@ -1,0 +1,177 @@
+Simulation sim {
+  Box calibration {
+    &threshold = 15.0
+  }
+  Calendar calendar {
+    .begin = 1/8/2009
+    .end   = 31/12/2010
+  }
+  Sun sun {
+    .latitude  = 56.16
+    .longitude = 10.21
+  }
+  Records weather {
+    .fileName = "flakkebjerg 2009.txt"
+    .cycle = TRUE
+  }
+  Box pieris {
+    Stage egg {
+      .inflow = oviposition[outflow]
+      .duration = 1
+      .timeStep = ./time[step]
+      LobryRossoFlandrois time {
+        .maximum = 0.354
+        .Tmin = 1.9
+        .Topt = 30.5
+        .Tmax = 36.0
+      }
+    }
+    Box larva {
+      LobryRossoFlandrois time {
+        .maximum = 0.092
+        .Tmin = 1.5
+        .Topt = 29.9
+        .Tmax = 35.2
+      }
+      Box duration {
+        &instar1  = 0.25 
+        &instar23 = 0.25 
+        &instar4  = 0.25 
+        &instar5  = 0.25 
+      }
+      Box diversion {
+        &instar1  = if (sun[dayLength] < calibration[threshold]) then 0.033 else 0.0 
+        &instar23 = if (sun[dayLength] < calibration[threshold]) then 0.063 else 0.0 
+        &instar4  = if (sun[dayLength] < calibration[threshold]) then 0.31  else 0.0 
+        &instar5  = if (sun[dayLength] < calibration[threshold]) then 0.88  else 0.0 
+      }
+      Stage instar1 {
+        .inflow = pieris/egg[outflow]
+        .duration = pieris/larva/duration[instar1]
+        .timeStep = pieris/larva/time[step]
+      }
+      Box instar23 {        
+        &inflowTotal = ./normal[inflowTotal] + ./toHibernation[inflowTotal]
+        &outflowTotal = ./normal[outflowTotal] + ./toHibernation[outflowTotal]
+        &balance      = .[inflowTotal] - .[outflowTotal]
+        Stage normal {
+          .inflow   = larva/instar1[outflow] * (1 - diversion[instar1])
+          .duration = larva/duration[instar23]
+          .timeStep = larva/time[step]
+        }
+        Stage toHibernation {
+          .inflow   = larva/instar1[outflow] *  diversion[instar1]
+          .duration = larva/duration[instar23]
+          .timeStep = larva/time[step]
+        }
+      }
+      Box instar4 {        
+        &inflowTotal = ./normal[inflowTotal] + ./toHibernation[inflowTotal]
+        &outflowTotal = ./normal[outflowTotal] + ./toHibernation[outflowTotal]
+        &balance      = .[inflowTotal] - .[outflowTotal]
+        Stage normal {
+          .inflow   = larva/instar23/normal[outflow] * (1 - diversion[instar23])
+          .duration = larva/duration[instar4]
+          .timeStep = larva/time[step]
+        }
+        Stage toHibernation {
+          .inflow   = larva/instar23/normal[outflow] * diversion[instar23] + larva/instar23/toHibernation[outflow]
+          .duration = larva/duration[instar4]
+          .timeStep = larva/time[step]
+        }
+      }
+      Box instar5 {        
+        &inflowTotal = ./normal[inflowTotal] + ./toHibernation[inflowTotal]
+        &outflowTotal = ./normal[outflowTotal] + ./toHibernation[outflowTotal]
+        &balance      = .[inflowTotal] - .[outflowTotal]
+        Stage normal {
+          .inflow   = larva/instar4/normal[outflow] * (1 - diversion[instar4])
+          .duration = larva/duration[instar5]
+          .timeStep = larva/time[step]
+        }
+        Stage toHibernation {
+          .inflow   = larva/instar4/normal[outflow] * diversion[instar4] + larva/instar4/toHibernation[outflow]
+          .duration = larva/duration[instar5]
+          .timeStep = larva/time[step]
+        }
+      }
+      Box normal{
+        &value = sum(larva/instar1[content] | larva/*/normal[content])
+      }
+      Box toHibernation { 
+        &value = sum(larva/*/toHibernation[content])
+      }
+    }
+    Box pupa {
+        &inflowTotal = ./normal[inflowTotal] + ./hibernation[inflowTotal]
+        &outflowTotal = ./normal[outflowTotal] + ./hibernation[outflowTotal]
+        &balance      = .[inflowTotal] - .[outflowTotal] + 1
+      Stage normal {
+        .inflow = larva/instar5/normal[outflow] * (1 - diversion[instar5])
+        .duration = 1
+        .timeStep = max(./time[step], 0.)
+        LobryRossoFlandrois time {
+          .maximum = 0.180
+          .Tmin   = -0.22
+          .Topt = 29.3
+          .Tmax = 35.0
+        }
+      }
+      Stage hibernation {
+        .initial = 1
+        .inflow = larva/instar5/normal[outflow] * diversion[instar5] + larva/instar5/toHibernation[outflow]
+        .duration = 1
+        .timeStep = max(./time[step], 0.)
+        LobryRossoFlandrois time {
+          .maximum = 0.00634
+          .Tmin   = -4.1
+          .Topt =  1.6
+          .Tmax = 30.9
+        }
+      }
+      Stage postHibernation {
+        .inflow = ../hibernation[outflow]
+        .duration = 1
+        .timeStep = ./time[step]
+        LobryRossoFlandrois time {
+          .maximum = 0.152
+          .Tmin   = 2.0
+          .Topt = 29.6
+          .Tmax = 36.9
+        }
+      }
+    }
+    Stage adult {
+      .inflow = ../pupa/normal[outflow] + ../pupa/postHibernation[outflow] 
+      // .inflow = ../pupa/postHibernation[outflow] 
+      .duration = 14
+      .timeStep = 1
+    }
+    Stage oviposition {
+      .inflow = ../adult[inflow]
+      .duration = 14
+      .timeStep = 1
+    }
+  }
+  OutputR {
+    .keepPlots = FALSE
+    Box code {
+      &ggplot = "labs(x='') + scale_x_date(date_breaks='2 months', date_labels='%m')"
+    }
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .layout = "merged"
+        .ports = sun[dayLength] | calibration[threshold]
+        .ggplot = code[ggplot]
+      }
+    }
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = pupa/*[value] | adult[value] | egg[value] | larva/normal[value] | larva/toHibernation[value]
+        .ggplot = code[ggplot]
+      }
+    }
+  }
+}

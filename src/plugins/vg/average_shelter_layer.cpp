@@ -75,7 +75,7 @@ void AverageShelterLayer::updateParameters(const int layerIndex, const QVector<d
 
     int i = 0;
     for (Face *face : _faces) {
-        LayerParameters p = transform(face->parameters(layerIndex), adjustments);
+        LayerParameters p = transformFaceParameters(face->parameters(layerIndex), adjustments);
         swReflectivityTop   += _swWeightsTop.at(i)*p.swReflectivityTop;
         swTransmissivityTop += _swWeightsTop.at(i)*p.swTransmissivityTop;
         swAbsorptivityTop   += _swWeightsTop.at(i)*p.swAbsorptivityTop;

@@ -1,4 +1,5 @@
 # Prelude
+setwd("C:/MyDocuments/QDev/UniSim3/input/projects/vg/R")
 source("5-energy-budget-plant.R")
 
 abs_humidity = function(press_humidity, T) {
@@ -18,7 +19,7 @@ plot_abs_humidity = function() {
 
   windows(5,3)
   ggplot(M, aes(T, AH, colour=factor(RH))) +
-    geom_line(size=1) +
+    geom_line() +
     labs(
       x="Temperature (oC)", 
       y="Absolute humidity (kg/m3)",
@@ -58,7 +59,7 @@ plot_condensation_estimation = function() {
 
   windows(5,3)
   ggplot(M, aes(RHin, 1000*Condensation, colour=factor(Tglass))) +
-    geom_line(size=1) +
+    geom_line() +
     geom_point(data=Lacroix, colour="black", size=2.5) +
     scale_colour_manual(values=c(orange, brown, violet)) +
     labs(
@@ -83,7 +84,7 @@ plot_condensation = function() {
   windows(5,3)
   ggplot(M, aes(Tglass, 1000*Condensation, colour=factor(RHin))) +
     geom_vline(xintercept=24, size=1, linetype="dashed", alpha=0.5) +
-    geom_line(size=1) +
+    geom_line() +
     labs(
       x="Glass temperature (oC)", 
       y="Condensation rate\n(g/m2 ground/s)",
@@ -124,7 +125,7 @@ plot_latent_heat = function() {
 
   windows(5,3)
   ggplot(M, aes(RHout, LatentHeat, colour=factor(RHin0))) +
-    geom_line(size=1) +
+    geom_line() +
     labs(
       x="Outdoors RH (%)", 
       y="Latent heat flux (W/m2)",
@@ -137,7 +138,7 @@ plot_latent_heat = function() {
     )
   windows(5,3)
   ggplot(M, aes(RHout, LatentHeat, colour=factor(RHin0))) +
-    geom_line(size=1) +
+    geom_line() +
     labs(
       x="Outdoors RH (%)", 
       y="Change in glass temperature (K/s)",
@@ -160,7 +161,7 @@ plot_abs_hum_flux = function() {
 
   windows(5,3)
   ggplot(M, aes(RHout, 1000*AbsHumFlux, colour=factor(RHin0))) +
-    geom_line(size=1) +
+    geom_line() +
     labs(
       x="Outdoors RH (%)", 
       y="Mass movement of water vapour\n(g/m2/s)",
@@ -177,9 +178,8 @@ plot_abs_hum_flux = function() {
 # Main
 #
 
-# setwd("~/sites/ecolmod3/media/models/vg")
-# plot_abs_humidity()
-# plot_condensation_estimation()
-# plot_condensation()
-# plot_abs_hum_flux()
+plot_abs_humidity()
+plot_condensation_estimation()
+plot_condensation()
+plot_abs_hum_flux()
 

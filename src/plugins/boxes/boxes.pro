@@ -41,6 +41,7 @@ HEADERS +=  \
     hump.h \
     ignored_box.h \
     layout_r.h \
+    lobry_rosso_flandrois.h \
     maker.h \
     maximum.h \
     maximum_at.h \
@@ -145,6 +146,7 @@ SOURCES +=  \
     hump.cpp \
     ignored_box.cpp \
     layout_r.cpp \
+    lobry_rosso_flandrois.cpp \
     maker.cpp \
     maximum.cpp \
     maximum_at.cpp \

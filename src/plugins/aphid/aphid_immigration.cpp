@@ -32,18 +32,9 @@ AphidImmigration::AphidImmigration(QString name, Box *parent)
 
 void AphidImmigration::reset() {
     exposed.resize(k);
-//    bool withoutFungus = findOne<Box*>("..")->name().contains("withoutFungus");
-//    if (withoutFungus)
-//        port("propExposedImmigrants")->equals(0.);
 }
 
 void AphidImmigration::update() {
-//    auto prop = port("propExposedImmigrants");
-//    QString original = prop->expression().originalAsString(),
-//            stack    = prop->expression().stackAsString();
-//    dialog().information(original);
-//    dialog().information(stack);
-//    prop->evaluate();
     total = (cropGrowthStage>fromCropGrowthStage && cropGrowthStage<toCropGrowthStage) ? immigrationRate : 0.;
     susceptible = total*(1.-propExposedImmigrants);
     // Number followed by all zeros in the rest of the vector

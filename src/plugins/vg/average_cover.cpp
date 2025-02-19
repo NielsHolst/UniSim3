@@ -54,8 +54,7 @@ void AverageCover::reset() {
 }
 
 
-//LayerParameters AverageCover::transform(const LayerParametersPtrs &p, const QVector<double> &adjustments) {
-LayerParameters AverageCover::transform(const LayerParameters *p, const QVector<double> &adjustments) {
+LayerParameters AverageCover::transformFaceParameters(const LayerParameters *p, const QVector<double> &adjustments) {
     LayerParameters adj;
     const double
         &propFrame(adjustments.at(0)),

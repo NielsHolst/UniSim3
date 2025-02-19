@@ -28,7 +28,7 @@ private:
     // Data
     QVector<const double*> _Uinsulations[6], _s;
     // Methods
-    LayerParameters transform(const LayerParameters *p, const QVector<double> &adjustments);
+    LayerParameters transformFaceParameters(const LayerParameters *p, const QVector<double> &adjustments);
     void correctUbottom();
 };
 

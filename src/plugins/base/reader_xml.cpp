@@ -199,7 +199,7 @@ void ReaderXml::readVirtualGreenhouse() {
         box("Calendar").name("calendar").
             port("latitude").equals(_doc->find("Description/Latitude")->value()).
             port("longitude").equals(_doc->find("Description/Longitude")->value()).
-            port("begin").computes("global[beginDate] - 1").
+            port("begin").computes("global[beginDate] - 5").
             port("end").equals(_doc->find("Description/StopTime")->value()).
             port("timeStep").equals(static_cast<int>(_doc->find("Description/TimeStep")->toDouble()*60)).
             port("timeUnit").equals("s").

@@ -37,7 +37,7 @@ void AverageScreen::reset() {
 }
 
 //LayerParameters AverageScreen::transform(const LayerParametersPtrs &p, const QVector<double> &adjustments) {
-LayerParameters AverageScreen::transform(const LayerParameters *p, const QVector<double> &adjustments) {
+LayerParameters AverageScreen::transformFaceParameters(const LayerParameters *p, const QVector<double> &adjustments) {
     LayerParameters adj;
     const double
         &state(adjustments.at(0));

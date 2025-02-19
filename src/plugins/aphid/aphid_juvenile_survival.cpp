@@ -19,9 +19,9 @@ AphidJuvenileSurvival::AphidJuvenileSurvival(QString name, Box *parent)
     : Box(name, parent)
 {
     help("computes juvenile survival");
-    Input(cropGrowthStage).help("Crop growth stage \\((G)\\)").unit("Zadoks");
-    Input(temperature).help("Daily average temperature \\((T)\\)").unit("oC");
-    Output(value).help("Juvenile survival \\((y)\\)").unit("[0;1] d-1");
+    Input(cropGrowthStage).help("Crop growth stage (`G`))").unit("Zadoks");
+    Input(temperature).help("Daily average temperature (`T`)").unit("oC");
+    Output(value).help("Juvenile survival (`y`)").unit("[0;1] d-1");
 }
 
 void AphidJuvenileSurvival::reset() {

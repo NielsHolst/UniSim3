@@ -32,20 +32,20 @@ vg.subdir = src/plugins/vg
 vg.depends = base
 unisim.depends = vg
 
-SUBDIRS += aphid
-aphid.subdir = src/plugins/aphid
-aphid.depends = base
-unisim.depends = aphid
+#SUBDIRS += aphid
+#aphid.subdir = src/plugins/aphid
+#aphid.depends = base
+#unisim.depends = aphid
 
-SUBDIRS += cmbp
-cmbp.subdir = src/plugins/cmbp
-cmbp.depends = base
-unisim.depends = cmbp
+#SUBDIRS += cmbp
+#cmbp.subdir = src/plugins/cmbp
+#cmbp.depends = base
+#unisim.depends = cmbp
 
-SUBDIRS += PestTox
-PestTox.subdir = src/plugins/PestTox
-PestTox.depends = base
-unisim.depends = PestTox
+#SUBDIRS += PestTox
+#PestTox.subdir = src/plugins/PestTox
+#PestTox.depends = base
+#unisim.depends = PestTox
 
 #SUBDIRS += saccharina
 #saccharina.subdir = src/plugins/saccharina
@@ -82,14 +82,14 @@ unisim.depends = PestTox
 # Unit tests
 #
 
-SUBDIRS += test
-test.subdir = src/apps/test
-test.depends = base
+#SUBDIRS += test
+#test.subdir = src/apps/test
+#test.depends = base
 
-SUBDIRS += test_boxes
-test_boxes.subdir = src/plugins/test_boxes
-test_boxes.depends = base
+#SUBDIRS += test_boxes
+#test_boxes.subdir = src/plugins/test_boxes
+#test_boxes.depends = base
 
-SUBDIRS += test_boxes2
-test_boxes2.subdir = src/plugins/test_boxes2
-test_boxes2.depends = base
+#SUBDIRS += test_boxes2
+#test_boxes2.subdir = src/plugins/test_boxes2
+#test_boxes2.depends = base

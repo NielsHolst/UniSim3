@@ -1,0 +1,76 @@
+// butterfly1.box
+Simulation sim {
+  Calendar calendar {
+    .begin = 01/03/2009
+    .end  = 20/08/2009
+  }
+  Records weather {
+    .fileName = "data/flakkebjerg 2009.txt"
+  }
+  Box butterfly {
+    Stage adult1 {
+      .initial = 1
+      .duration = 14
+      .timeStep = 1
+    }
+    Stage fecundity {
+      .initial   = 1
+      .duration = ../adult1[duration]
+      .timeStep = ../adult1[timeStep]
+      .growthFactor = 100
+    }
+    Stage egg {
+      .inflow = ../fecundity[outflow]
+      .duration = 140
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 5
+        .T = weather[Tavg]
+      }
+    }
+    Stage larva {
+      .inflow = ../egg[outflow]
+      .duration = 200
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 8
+        .T = weather[Tavg]
+      }
+    }
+    Stage pupa {
+      .inflow = ../larva[outflow]
+      .duration = 100
+      .timeStep = ./time[step]
+      DayDegrees time {
+        .T0 = 10
+        .T = weather[Tavg]
+      }
+    }
+    Stage adult2 {
+      .inflow = ../pupa[outflow]
+      .duration = 28
+      .timeStep = 1
+    }
+  }
+  OutputR {
+    .keepPlots = FALSE
+    .fontSize = 20
+    .lineWidth = 2
+    Box output {
+      &SpringAdults = adult1[content]
+      &Eggs = egg[content]
+      &Larvae = larva[content]
+      &Pupae = pupa[content]
+      &SummerAdults = adult2[content]
+    }
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ncol = 1
+        .ports = output[*]
+        .ggplot = "labs(x='')"
+      }
+    }
+  }
+}
+

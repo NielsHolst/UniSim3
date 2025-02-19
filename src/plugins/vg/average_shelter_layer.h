@@ -30,7 +30,7 @@ protected:
     QVector<double> _adjustments;
 private:
     // Methods
-    virtual LayerParameters transform(const LayerParameters *p, const QVector<double> &adjustments) = 0;
+    virtual LayerParameters transformFaceParameters(const LayerParameters *p, const QVector<double> &adjustments) = 0;
 };
 
 } //namespace

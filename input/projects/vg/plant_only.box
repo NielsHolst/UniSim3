@@ -1,0 +1,28 @@
+#using vg
+Simulation sim {
+  .steps = 5
+  Plant plant {
+    .lai = 1.9
+    .coverage = 1
+    .indoorsTemperature = 21
+    .indoorsRh = 80
+    .indoorsCo2 = 900
+    .timeStep = 180
+    PlantInstrument instrument {
+      .netRadiation = 200
+      .parAbsorbed = 100
+    }
+  }
+  OutputR {
+    .keepPlots = FALSE
+    Box outputs {
+      &transpiration = 60e3*plant[transpiration]
+    }
+    PageR {
+      .xAxis = sim[step]
+      PlotR {
+        .ports = plant[temperature] | outputs[*]
+      }
+    }
+  }
+}
