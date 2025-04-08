@@ -86,6 +86,9 @@ Budget::Budget(QString name, base::Box *parent)
     Input(step).imports("/.[step]");
     Input(dateTime).imports("calendar[dateTime]");
 
+    Input(condensateRecycling).equals(0.5).unit("[0;1]").help("Proportion of condensate that eventually evaporates");
+    Input(condensateEvaporation).unit("L/m2").help("Amount of condensate evaporated");
+
     Output(subDateTime).help("Date time within integration time step");
     Output(subTimeStep).unit("s").help("Length of integration sub-time step");
     Output(subSteps).help("Number of sub-steps taken to resolve the whole budget");
@@ -99,6 +102,8 @@ Budget::Budget(QString name, base::Box *parent)
     Output(wfCover).unit("L/m2/h").help("Water flux by condensation on cover");
     Output(wfHeatPump).unit("L/m2/h").help("Water flux by heat pumps");
     Output(wfPadAndFan).unit("L/m2/h").help("Water flux by pad and fan");
+
+    Output(condensateProduction).unit("L/m2").help("Amount of condensate produced");
 
     Output(ventilationHeatLoss).unit("W/m2").help("Sensible heat lost by ventilation; positive if outdoors warmer than indoors");
     Output(indoorsSensibleHeatFlux).unit("W/m2").help("Rate of change in indoors air sensible heat");
@@ -372,6 +377,9 @@ void Budget::update() {
             indoorsAh0   = indoorsVol->ah;
     updateInSubSteps();
 
+    // Condensate in L/m2
+    condensateProduction = -wfCover*condensateRecycling;
+
     // Convert water fluxes from L/m2 to L/m2/h
     wfAh             *= 3600./timeStep;
     wfTranspiration  *= 3600./timeStep;
@@ -448,8 +456,6 @@ void Budget::updateInSubSteps() {
             for (Box *box : handheldBoxes)
                 box->updateFamily();
         }
-
-
 
         // Keep track of time passed
         timePassed += subTimeStep;
@@ -569,7 +575,7 @@ WaterIntegration waterIntegration(
         V1      = v*(avgAh - V);
     WaterIntegration w;
     w.deltaAh = deltaAh;
-    w.condensation = C1/(C1 + V1)*(ET*dt - deltaAh);
+    w.condensation = std::max(C1/(C1 + V1)*(ET*dt - deltaAh), 0.); // Rounding error may give a neglible, negative amount
     w.ventilation  = V1/(C1 + V1)*(ET*dt - deltaAh);
     return w;
 }
@@ -580,11 +586,12 @@ inline double g(double volumeVirtT, double coverVirtT) {
 
 }
 
-void Budget::updateWaterBalance(double timeStep) {
+void Budget::updateWaterBalance(double subTimeStep) {
     const double
+       evaporation   = condensateEvaporation/timeStep, // kg/m2/s
        indoorsAh     = indoorsVol->ah,
        outdoorsAh    = outdoorsVol->ah,
-       ET            = (*in.transpirationRate + *in.humidificationRate + *in.padAndFanVapourFlux - *in.heatPumpCondensationRate)/averageHeight,
+       ET            = (*in.transpirationRate + *in.humidificationRate + *in.padAndFanVapourFlux - *in.heatPumpCondensationRate + evaporation)/averageHeight,
        coverSah      = sah(budgetLayerCover->temperature),
        indoorsVirtT  = virtualTemperatureFromAh(indoorsVol->temperature,       indoorsAh),
        coverVirtT    = virtualTemperatureFromAh(budgetLayerCover->temperature, indoorsAh),
@@ -592,7 +599,7 @@ void Budget::updateWaterBalance(double timeStep) {
     coverConductance = coverPerGroundArea*g(indoorsVirtT, coverVirtT);
 
     WaterIntegration w = waterIntegration(
-        timeStep,
+        subTimeStep,
         indoorsAh,
         ET,
         coverConductance,
@@ -603,14 +610,13 @@ void Budget::updateWaterBalance(double timeStep) {
 
     // Update outputs (L/m2)
     // Integrated condensation, ventilation and change in indoors humidity
-//    const double c1 = averageHeight*3600./timeStep; // kg/m3 * m * s/h / s
     const double c1 = averageHeight; // L/m2 = kg/m3 * m
     wfCover          -= w.condensation*c1;
     wfVentilation    -= w.ventilation*c1;
     wfAh             += w.deltaAh*c1;
 
     // Evapotranspiration rates are fixed during time step
-    const double c2 = timeStep; // L/m2 = kg/m2/s * s
+    const double c2 = subTimeStep; // L/m2 = kg/m2/s * s
     wfTranspiration  += *in.transpirationRate*c2;
     wfHumidification += *in.humidificationRate*c2;
     wfPadAndFan      += *in.padAndFanVapourFlux*c2;
@@ -626,13 +632,13 @@ void Budget::updateWaterBalance(double timeStep) {
     // Outside latent heat
     const double
        outdoorsVirtT       = virtualTemperatureFromAh(outdoorsTemperature, outdoorsAh),
-       c                   = /*coverPerGroundArea**/g(outdoorsVirtT, coverVirtT),
-       outsideCondensation = std::max(c*(outdoorsAh - coverSah)*timeStep, 0.),
-       coverCondensation   = w.condensation*averageHeight + outsideCondensation;
+       c3                  = /*coverPerGroundArea**/g(outdoorsVirtT, coverVirtT),
+       outsideCondensation = std::max(c3*(outdoorsAh - coverSah)*subTimeStep, 0.),
+       coverCondensation   = w.condensation*c1 + outsideCondensation; // kg/m2 = kg/m3 * m
 
     // Update cover temperature
-    coverLatentHeatFlux = LHe*coverCondensation/timeStep;
-    double deltaT = budgetLayerCover->updateDeltaTByCondensation(coverCondensation);
+    coverLatentHeatFlux = LHe*(coverCondensation/subTimeStep - evaporation);  // W/m2 = J/kg * (kg/m2 /s + kg/m2/s
+    double deltaT = budgetLayerCover->updateDeltaTByEvapoCondensation(coverCondensation - evaporation*subTimeStep); // kg/m2 = kg/m2 + kg/m2/s * s
     if (fabs(deltaT) > _maxDeltaT)
         _maxDeltaT = fabs(deltaT);
 }
@@ -796,6 +802,8 @@ void Budget::babyStep() {
 }
 
 void Budget::checkParameters() const {
+    if ((condensateRecycling < 0.) || (condensateRecycling > 1.))
+        ThrowException("Parameter 'condensateRecycling' must have a value between 0 and 1").value(condensateRecycling).context(this);
     for (auto layer : layers)
         layer->checkParameters();
 }

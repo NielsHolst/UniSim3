@@ -32,6 +32,7 @@ private:
         radPrecision, tempPrecision,
         timeStep, averageHeight, groundArea, coverPerGroundArea,
         outdoorsTemperature, outdoorsRh, outdoorsCo2,
+        condensateEvaporation, condensateRecycling,
         babyTimeStep;
     bool writeHighRes, writeLog, controlClimate, isSkippingOutput;
     int step;
@@ -57,7 +58,7 @@ private:
     int radIterations, subSteps;
     double subTimeStep, maxDeltaT, ventilationHeatLoss,
         wfAh, wfTranspiration, wfHumidification, wfVentilation, wfCover, wfHeatPump, wfPadAndFan,
-        deltaAh, ETIntgr, condensationIntgr, ventilationIntgr,
+        deltaAh, condensateProduction,
         coverConductance,
         indoorsSensibleHeatFlux, indoorsLatentHeatFlux, coverLatentHeatFlux,
         sunParHittingPlant, growthLightParHittingPlant, totalPar,

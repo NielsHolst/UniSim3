@@ -45,10 +45,10 @@ void BudgetLayerCover::updateLwEmission() {
     lwCoverSkyBalance = lwAbsorbedTop - lwEmissionTop;
 }
 
-double BudgetLayerCover::updateDeltaTByCondensation(double condensation) {
+double BudgetLayerCover::updateDeltaTByEvapoCondensation(double et) {
     // Add condensation (kg/m2) energy and DeltaT to values set by radiation and convection
     const double
-        deltaEnergy = LHe*condensation,
+        deltaEnergy = LHe*et,
         deltaT      = deltaEnergy/(*heatCapacity);
     totalDeltaTEnergy += deltaEnergy;
     totalDeltaT       += deltaT;

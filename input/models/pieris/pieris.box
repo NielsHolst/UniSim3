@@ -1,6 +1,6 @@
 Simulation sim {
   Box calibration {
-    &threshold = 15.0
+    &threshold = 11.0
   }
   Calendar calendar {
     .begin = 1/8/2009
@@ -143,7 +143,6 @@ Simulation sim {
     }
     Stage adult {
       .inflow = ../pupa/normal[outflow] + ../pupa/postHibernation[outflow] 
-      // .inflow = ../pupa/postHibernation[outflow] 
       .duration = 14
       .timeStep = 1
     }

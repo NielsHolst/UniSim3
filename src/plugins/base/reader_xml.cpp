@@ -178,8 +178,10 @@ void ReaderXml::readVirtualGreenhouse() {
     }
 
     double
-        floorReflectance = _doc->find("Greenhouse/floor-reflectance")->toDouble(),
-        propFrame        = _doc->find("Greenhouse/GreenhouseReductionFactorLight")->toDouble();
+        floorReflectance    = _doc->find("Greenhouse/floor-reflectance")->toDouble(),
+        propFrame           = _doc->find("Greenhouse/GreenhouseReductionFactorLight")->toDouble(),
+        condensateLifeTime  = _doc->find("Greenhouse/CondensateLifeTime")->toDouble() * 3600., // hours to seconds
+        condensateRecycling = _doc->find("Greenhouse/CondensateRecycling")->toDouble(); // proportion
     XmlNode *stopInStep  = _doc->peak("Description/StopInStep");
 
     MegaFactory::usingPlugin("vg");
@@ -489,6 +491,13 @@ void ReaderXml::readVirtualGreenhouse() {
                 port("heatCapacity").equals(_doc->find("Greenhouse/floor-heatCapacity")->toDouble()).
             endbox().
             box("Budget").name("budget").
+                port("condensateRecycling").equals(condensateRecycling).
+                port("condensateEvaporation").imports("condensate[outflow]").
+            endbox().
+            box("Stage").name("condensate").
+                port("duration").equals(condensateLifeTime).
+                port("inflow").imports("budget[condensateProduction]").
+                port("timeStep").imports("calendar[timeStepSecs]").
             endbox();
             actuatorsHeatBuffer().
         endbox().

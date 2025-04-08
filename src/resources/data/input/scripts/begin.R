@@ -138,7 +138,7 @@ read_output = function(file_path) {
     if (length(ix_date) > 0 ) {
       for (i in 1:length(ix_date)) {
         ix = ix_date[i]
-        U[,ix] = parse_date_time(U[,ix], c(cl$Rformat[ix]))
+        U[,ix] = parse_date_time(U[,ix], c(cl$Rformat[ix])) |> as.Date()
       }
     }
   }
