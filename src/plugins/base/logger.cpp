@@ -1,13 +1,11 @@
-/* Copyright 2005-2024 by
+/* Copyright 2005-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <iostream>
 #include <QDateTime>
 #include <QDir>
-#include "dialog.h"
-#include "environment.h"
+#include "dialog_base.h"
 #include "logger.h"
 
 namespace base {
@@ -24,9 +22,10 @@ Logger::~Logger() {
 
 void Logger::open(QString fileNamePath) {
     file.setFileName(fileNamePath);
-    file.open(QIODevice::Text | QIODevice::WriteOnly);
-    str.setDevice(&file);
-    isOpen = true;
+    bool ok = file.open(QIODevice::Text | QIODevice::WriteOnly);
+    if (ok)
+        str.setDevice(&file);
+    isOpen = ok;
 }
 
 void Logger::write(QString s) {

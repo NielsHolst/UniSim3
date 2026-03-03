@@ -1,4 +1,4 @@
-#include <base/dialog.h>
+#include <base/dialog_base.h>
 #include <base/publish.h>
 #include <base/unique_name.h>
 #include <base/vector_op.h>

@@ -1,4 +1,4 @@
-/* Copyright 2005-2024 by
+/* Copyright 2005-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Oliver Körner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and 
 ** Jesper M. Aaslyng, HortiAdvice [jeaa at hortiadvice.dk].
@@ -22,15 +22,14 @@ AverageScreen::AverageScreen(QString name, Box *parent)
     : AverageShelterLayer(name, parent)
 {
     help("computes average screen radiation and heat parameters");
-    QString number = QString::number(screenIndex() + 1);
-    Input(state).imports("actuators/screens/layer" + number + "[state]");
+    // QString number = QString::number(screenIndex() + 1);
+    // Input(state).imports("actuators/screens/layer" + number + "[state]");
 }
 
-//void AverageScreen::amend() {
-//    QString number = QString::number(screenIndex());
-//    if (!peakPort("state"))
-//        Input(state).imports("actuators/screens/layer" + number + "[state]");
-//}
+void AverageScreen::amend() {
+   QString number = QString::number(screenIndex());
+   Input(state).imports("actuators/screens/layer" + number + "[state]");
+}
 
 void AverageScreen::reset() {
     update();

@@ -5,7 +5,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/phys_math.h>
-#include <base/dialog.h>
+#include <base/dialog_base.h>
 #include <base/publish.h>
 #include "f_nitrogen.h"
 

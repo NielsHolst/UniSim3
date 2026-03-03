@@ -7,6 +7,8 @@ for /f %%i in ('dir /S /B /AD debug') do rmdir /S /Q "%%i"
 for /f %%i in ('dir /S /B /AD release') do rmdir /S /Q "%%i"
 for /f %%i in ('dir /S /B ..\build-*-Desktop*') do rmdir /S /Q "%%i"
 
+rmdir /S /Q .qtcreator
+rmdir /S /Q build
 rmdir /S /Q output
 rmdir /S /Q bin
 rmdir /S /Q bind

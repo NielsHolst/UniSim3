@@ -1,4 +1,4 @@
-/* Copyright 2005-2024 by
+/* Copyright 2005-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Oliver Körner, Leibniz-Institute of Vegetable and Ornamental Crops [koerner at igzev.de] and 
 ** Jesper M. Aaslyng, HortiAdvice [jeaa at hortiadvice.dk].
@@ -25,7 +25,7 @@
 #include "plant.h"
 #include "sky.h"
 
-#include <base/dialog.h>
+#include <base/dialog_base.h>
 
 using std::min;
 using std::max;

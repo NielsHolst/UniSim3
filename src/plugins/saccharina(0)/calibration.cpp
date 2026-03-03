@@ -5,7 +5,7 @@
 ** See: www.gnu.org/licenses/lgpl.html
 */
 #include <base/data_frame.h>
-#include <base/dialog.h>
+#include <base/dialog_base.h>
 #include <base/environment.h>
 #include <base/phys_math.h>
 #include <base/publish.h>

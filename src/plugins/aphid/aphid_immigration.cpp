@@ -1,4 +1,4 @@
-/* Copyright 2018-2024 by
+/* Copyright 2018-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Stéphanie Saussure, Norwegian Institute of Bioeconomy Research [stephanie.saussure at gmail.com].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
@@ -7,7 +7,7 @@
 #include <base/publish.h>
 #include "aphid_immigration.h"
 
-//#include <base/dialog.h>
+//#include <base/dialog_base.h>
 
 using namespace base;
 

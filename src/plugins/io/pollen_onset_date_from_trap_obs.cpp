@@ -1,11 +1,11 @@
-/* Copyright 2013-2024 by
+/* Copyright 2013-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
 #include <base/convert.h>
 #include <base/data_grid.h>
-#include <base/dialog.h>
+#include <base/dialog_base.h>
 #include <base/publish.h>
 #include "pollen_onset_date_from_trap_obs.h"
 

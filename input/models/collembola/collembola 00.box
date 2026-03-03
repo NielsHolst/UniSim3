@@ -1,0 +1,65 @@
+Simulation sim {
+  Calendar calendar {
+    .begin = 1/5/2009
+    .end   = 31/7/2009
+  }
+  Records weather {
+    .fileName = "flakkebjerg 2009.txt"
+  }
+  Box collembola {
+    Stage egg {
+      .initial = 30
+      // .inflow = adult/fecundity[value]
+      .duration = 1
+      .timeStep = ./time[step]
+      LobryRossoFlandrois time {
+        .maximum = 0.127
+        .Tmin = -5.15
+        .Topt = 26.8
+        .Tmax = 28.0
+      }
+    }
+    Stage juvenile {
+      .inflow = egg[outflow]
+      .duration = 1
+      .timeStep = ./time[step]
+      .growthFactor = 0.9
+      LobryRossoFlandrois time {
+        .maximum = 0.0561
+        .Tmin = -5.53
+        .Topt = 21.7
+        .Tmax = 30.0
+      }
+    }
+    Stage adult {
+      .inflow = juvenile[outflow]
+      .duration = 1
+      .timeStep = ./time[step]
+      LobryRossoFlandrois time {
+        .maximum = 0.0109
+        .Tmin = -0.661
+        .Topt = 30.0
+        .Tmax = 30.0
+      }
+      // Fecundity fecundity {
+        // .temperature = weather[Tavg]
+        // .soilMoisture = -1500
+      // }
+    }
+  }
+  OutputR {
+    Box code {
+      &ggplot = "labs(x='') + scale_x_date(date_breaks='1 month', date_labels='%m')"
+    }
+    PageR {
+      .xAxis = calendar[date]
+      .height = 3
+      .width = 7
+      PlotR {
+        .layout = "merged"
+        .ports = collembola/*[value] 
+        .ggplot = code[ggplot]
+      }
+    }
+  }
+}

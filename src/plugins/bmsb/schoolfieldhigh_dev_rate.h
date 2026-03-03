@@ -1,4 +1,4 @@
-/* Copyright 2018-2024 by
+/* Copyright 2018-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Byju N. Govindan, University of Minnesota [ngbyju at umn.edu].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.

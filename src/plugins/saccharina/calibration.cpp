@@ -1,11 +1,11 @@
-/* Copyright 2019-2024 by
+/* Copyright 2019-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Teis Boderskov, Aarhus University [tebo atbios.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
 #include <base/data_frame.h>
-#include <base/dialog.h>
+#include <base/dialog_base.h>
 #include <base/environment.h>
 #include <base/phys_math.h>
 #include <base/publish.h>

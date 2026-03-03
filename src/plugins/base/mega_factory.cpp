@@ -1,4 +1,4 @@
-/* Copyright 2005-2024 by
+/* Copyright 2005-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
@@ -13,7 +13,7 @@
 #include <QStringList>
 #include "box.h"
 #include "computation.h"
-#include "dialog.h"
+#include "dialog_base.h"
 #include "exception.h"
 #include "factory_plug_in.h"
 #include "mega_factory.h"

@@ -1,4 +1,4 @@
-/* Copyright 2012-2024 by
+/* Copyright 2012-2026 by
 ** Niels Holst, Aarhus University [niels.holst at agro.au.dk] and 
 ** Clement N. Mweya, National Institute for Medical Research, Tukuyu, Tanzania [cmweya at nimr.or.tz].
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
