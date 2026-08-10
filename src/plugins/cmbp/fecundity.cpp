@@ -14,15 +14,12 @@ namespace cmbp {
 PUBLISH(Fecundity)
 
 Fecundity::Fecundity(QString name, Box *parent)
-    : Box(name, parent)
+    : base::Box(name, parent)
 {
-    help("models life time net per capita fecundity of P. truncatus");
-    Input(a).equals(4.525).help("Parabola specifying female R0 (aT^2 + bT + c");
-    Input(b).equals(-186.3).help("Parabola specifying female R0 (aT^2 + bT + c");
-    Input(c).equals(1959.).help("Parabola specifying female R0 (aT^2 + bT + c");
+    Input(maxFecundity).equals(700.).help("Life-time fecundity of a female at 30oC");
+    Input(r).equals(0.2359).help("Exponential increase in fecundity with temperature");
     Input(T).help("Store temperature (oC)");
     Input(sexRatio).equals(0.5).help("Sex ratio [0;1]");
-    Input(calibration).equals(1.).help("Relatoive calibration");
     Output(value).help("Life-time fecundity scaled by temperature");
 }
 
@@ -31,16 +28,8 @@ void Fecundity::reset() {
 }
 
 void Fecundity::update() {
-    if (T < 20.)
-        value = f(20.);
-    else if (T > 30.)
-        value = f(30.);
-    else
-        value = f(T);
-}
-
-double Fecundity::f(double T) const {
-    return calibration*sexRatio*(a*T*T + b*T + c);
+    value = (T>30.) ? maxFecundity : exp(r*T)/exp(r*30)*maxFecundity;
+    value *= sexRatio;
 }
 
 }

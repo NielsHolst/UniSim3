@@ -16,7 +16,7 @@ PUBLISH(ForagerRecruitment)
 ForagerRecruitment::ForagerRecruitment(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("");
+    Help("");
     Output(value).help("");
 }
 

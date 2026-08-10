@@ -16,7 +16,7 @@ PUBLISH(RunningAverageTimed)
 RunningAverageTimed::RunningAverageTimed(QString name, Box *parent)
     : RunningSumTimed(name, parent)
 {
-    help("computes running average in a time window");
+    Help("computes running average in a time window");
 }
 
 void RunningAverageTimed::update() {

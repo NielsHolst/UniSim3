@@ -21,7 +21,6 @@
 #include "port_type.h"
 #include "port_status.h"
 #include "value.h"
-#include "success.h"
 
 namespace base {
 
@@ -34,7 +33,8 @@ private:
     bool
         _clearAtReset,      // Is value set to T() at reset()? Defaults to true for output and aux ports
         _acceptNull,        // Accept evaluation yielding Null?
-        _isConstant;        // Does the value remain fixed following its first evaluation?
+        _isConstant,        // Does the value remain fixed following its first evaluation?
+        _isNeverConstant;   // Will the value never be constant?
     int
         _nullCount;         // Count of evaluations yielding Null
     QString
@@ -76,6 +76,7 @@ public:
     void define();
     void setConstness(bool isConstant);
     void updateConstness();
+    void setIsNeverConstant();
 
     // Change value
     void clear();

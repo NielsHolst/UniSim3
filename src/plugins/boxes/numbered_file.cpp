@@ -16,7 +16,7 @@ PUBLISH(NumberedFile)
 NumberedFile::NumberedFile(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("creates a numbered file name");
+    Help("creates a numbered file name");
     Input(fileName).help("File name with extension, with/without a path");
     Input(evaluationOrder).help("Number to append to file name");
     Input(numberWidth).help("Number will be left-filled with zero up to this width");

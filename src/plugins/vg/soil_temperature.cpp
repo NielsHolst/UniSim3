@@ -19,7 +19,7 @@ PUBLISH(SoilTemperature)
 SoilTemperature::SoilTemperature(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models soil temperature under the greenhouse");
+    Help("models soil temperature under the greenhouse");
     Input(avgPeriod).equals(7).unit(">0").help("Number of days to use for calculation");
     Input(min).equals(2.).unit("oC").help("Minimum soil temperature");
     Input(max).equals(40.).unit("oC").help("Maximum soil temperature");

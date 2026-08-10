@@ -19,7 +19,7 @@ PUBLISH(ActuatorHeatPump)
 ActuatorHeatPump::ActuatorHeatPump(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models a heat pump");
+    Help("models a heat pump");
     Input(productName).help("Name of product holding heat pump parameters");
     Input(number).equals(1).help("Number of heat pumps");
     Input(groundArea).imports("gh/geometry[groundArea]",CA);

@@ -19,7 +19,7 @@ PUBLISH (ZValues)
 ZValues::ZValues(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages zvalues of the pesticide");
+    Help("manages zvalues of the pesticide");
     Input(MW).unit("g/mol").equals(169.07).help("Molar mass of the pesticide");
     Input(Pd).unit("m").equals(0.01).help("Penetration depth");
     Input(VP).unit("Pa").equals(2.45e-5).help("Vapour pressure at reference temperature");

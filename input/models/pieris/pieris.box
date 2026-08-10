@@ -1,6 +1,6 @@
 Simulation sim {
   Box calibration {
-    &threshold = 11.0
+    &threshold = 20.0
   }
   Calendar calendar {
     .begin = 1/8/2009

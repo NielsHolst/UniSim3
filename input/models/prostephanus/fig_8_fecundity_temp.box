@@ -1,18 +1,22 @@
 #using cmbp
 Simulation sim {
-  .steps = 35
-  &temperature = .[step]
+  .steps = ./temperature[steps]
+  SequenceByStep temperature {
+    .min = 10
+    .max = 35
+    .by  = 0.1
+  }  
   Fecundity fecundity {
-    .T = sim[temperature]
+    .T = temperature[value]
   }
   OutputR {
     PageR {
-      .xAxis = sim[temperature]
+      .xAxis = temperature[value]
       .width = 7
       .height =3.5
       PlotR {
         .ports = fecundity[value]
-        .ggplot = "xlim(15,35) + labs(x='Temperature', y='Gross reproductive rate')" 
+        .ggplot = "xlim(15,35) + labs(x='Temperature', y='Total eggs laid per capita')" 
       }
     }
   }

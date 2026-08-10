@@ -17,7 +17,7 @@ PUBLISH(FoodWebCalcParasiteHost)
 
 FoodWebCalcParasiteHost::FoodWebCalcParasiteHost(QString name, Box *parent)
     : FoodWebCalcBase(name, parent) {
-    help("computes food web acquisition among Parasite/Host objects");
+    Help("computes food web acquisition among Parasite/Host objects");
 }
 
 void FoodWebCalcParasiteHost::amend() {

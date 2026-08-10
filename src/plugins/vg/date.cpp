@@ -19,7 +19,7 @@ PUBLISH(Date)
 Date::Date(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("constructs a date from a DMY string, or from day, month and year");
+    Help("constructs a date from a DMY string, or from day, month and year");
     Input(dateString).unit("date").help("A date string");
     Input(day).equals(1).help("Day of month").unit("[1;31]");
     Input(month).equals(1).help("Month").unit("[1;12]");

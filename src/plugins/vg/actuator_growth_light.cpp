@@ -19,7 +19,7 @@ PUBLISH(ActuatorGrowthLight)
 ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models power use and radiation from growth light");
+    Help("models power use and radiation from growth light");
     Input(productName).help("Name of product holding lamp parameters");
     Input(numberInstalled).unit("/m2").help("Number of lamps installed");
     Input(efficiency).equals(1.).help("Proportion of intensity actually emitted").unit("[0;1]");
@@ -32,7 +32,7 @@ ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
     Output(lwEmissionBottom).help("Long-wave emission downwards").unit("W/m2");
     Output(lwEmissionTop).help("Long-wave emission upwards").unit("W/m2");
     Output(convectionBottom).help("Convective heat downwards").unit("W/m2");
-    Output(convectionTop).   help("Convective heat upwards").unit("W/m2");
+    Output(convectionTop).   Help("Convective heat upwards").unit("W/m2");
     Output(minPeriodOn).help("Minimum period that light stays on").unit("min");
     Output(powerUsage).help("Current power usage").unit("W/m2");
 }

@@ -19,7 +19,7 @@ PUBLISH(AbsoluteHumidity)
 AbsoluteHumidity::AbsoluteHumidity(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("converts relative humidity to absolute humidity");
+    Help("converts relative humidity to absolute humidity");
     Input(rh).unit("%").help("Relative humidity");
     Input(temperature).unit("oC").help("Temperature");
     Output(value).unit("kg/m3").help("Absolute humidity");

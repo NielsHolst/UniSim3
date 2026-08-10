@@ -1,0 +1,66 @@
+#using callosobruchus
+Simulation sim {
+  .steps = 60 //79
+  // .iterations = 3
+  Box settings {
+    &temperature = 30
+    &adultLifetime = 7 // days
+    &initialAdults = 40
+    &seedCapacity = 9
+  }
+  Calendar calendar {
+  }
+  Stock stock {  
+    .size = 0.1 //kg
+    .seedsPerKg = 7000.
+  }
+  DensityDependent densityDependent {
+    .seedCapacity = 9
+    .seedsTotal = stock[seedsTotal]
+    .beetlesProducedTotal = juvenile[outflowTotal]
+  }
+  Stage adult {
+    .initial = settings[initialAdults]
+    .inflow = juvenile[outflow]
+    .timeStep = 1
+    .duration = settings[adultLifetime] 
+    Fecundity fecundity {
+      .temperature = settings[temperature]
+    }
+    Stage oviposition {
+      .initial = ..[initial] 
+      .inflow = ..[inflow]   
+      .timeStep = ..[timeStep]
+      .duration = ..[duration]
+      .growthFactor = ../fecundity[value]
+    }
+  }
+  Stage juvenile {
+    .inflow = adult/oviposition[outflow]
+    .timeStep = ./time[step]
+    .duration = 1.
+    .growthFactor = densityDependent[survival]
+    LobryRossoFlandrois time {
+      .T = settings[temperature]
+      .maximum = 0.0456
+      .Tmin = 8.8
+      .Topt = 34.0
+      .Tmax = 41.2
+    }
+  }
+  OutputR {
+    // OutputSelector {
+      // .final = TRUE
+    // }
+    Box outputs {
+      &adultTotal = adult[outflowTotal] + adult[initial]
+    }
+    PageR {
+      .xAxis = sim[step]
+      PlotR {
+        .ports = adult[value] | juvenile[value] | juvenile[outflow] | densityDependent[survival] | densityDependent[damage] |
+                 outputs[*]
+      }
+    }
+  }
+}

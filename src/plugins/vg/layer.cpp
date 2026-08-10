@@ -25,7 +25,7 @@ Layer::Layer(QString name, Box *parent)
     : Box(name, parent),
       LayerParameters()
 {
-    help("holds radiative and heat parameters of a layer");
+    Help("holds radiative and heat parameters of a layer");
     Input(checkBoundaries).equals(false).unit("bool").help("Check parameter boundaries?");
 }
 

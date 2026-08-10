@@ -4,7 +4,7 @@ Simulation sim {
   SequenceByStep gmc {
     .min = 5
     .max = 25
-    .by  = 1
+    .by  = 0.1
   }
   ExponentialPeak devRateGmc {
     .x = gmc[value]

@@ -16,7 +16,7 @@ PUBLISH(SuperFunctionalResponse)
 
 SuperFunctionalResponse::SuperFunctionalResponse(QString name, Box *parent)
     : Box(name, parent) {
-    help("computes a Frazer-Gilbert functional response");
+    Help("computes a Frazer-Gilbert functional response");
     Input(attacker).help("Attacker density").unit("#attackers");
     Input(host).help("Resource density").unit("#hosts");
     Input(demand).help("Number of attacks demanded").unit("#attacks");

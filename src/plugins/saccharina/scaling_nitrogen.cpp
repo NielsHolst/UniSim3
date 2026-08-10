@@ -16,7 +16,7 @@ PUBLISH(ScalingNitrogen)
 ScalingNitrogen::ScalingNitrogen(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("scales photosynthesis by plant nitrogen concentration");
+    Help("scales photosynthesis by plant nitrogen concentration");
     Input(concN).unit("g N/g dw").help("Plant nitrogen concentration");
     Input(concNmin).unit("g N/g dw").help("Minimum plant nitrogen concentration for growth");
     Input(concNopt).unit("g N/g dw").help("Optimal plant nitrogen concentration for growth");

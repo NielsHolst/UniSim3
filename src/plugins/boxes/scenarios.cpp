@@ -20,7 +20,7 @@ PUBLISH(Scenarios)
 Scenarios::Scenarios(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("runs scenarios from a text file");
+    Help("runs scenarios from a text file");
     Input(fileName).equals("scenarios.txt").help("Text file with columns, one for each output produced. One iteration is run for each line").equals("scenarios.txt");
     Input(title).equals("Scenario").help("Name of column that holds title of scenario (optional)");
     Output(iterations).help("Number of iterations needed to run scenarios").noClear();
@@ -30,6 +30,7 @@ void Scenarios::amend() {
     readDataFrame();
     createColumnOutputs();
     iterations = _df.numRow();
+    copyValues();
 }
 
 void Scenarios::reset() {
@@ -57,6 +58,7 @@ void Scenarios::createColumnOutputs() {
         // Assign value to port thereby fixing the port value's type
         newPort->equals(value);
         newPort->noClear();
+        newPort->setIsNeverConstant();
         _columnPorts << newPort;
     }
 }

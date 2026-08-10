@@ -3,7 +3,6 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <iostream>
 #include "box.h"
 #include "computation.h"
 #include "dialog_base.h"
@@ -25,7 +24,7 @@ double Box::_diagnoseMax = std::numeric_limits<double>::max();
 Box::Box(QString name, Box *parent)
     : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _ignore(false), _timer(this)
 {
-    help("is a container of boxes and ports");
+    Help("is a container of boxes and ports");
     setClassName("base", "Box");
     if (!_latest || parent)
         _latest = this;
@@ -73,13 +72,14 @@ const Port* Box::port(QString name, Caller caller) const {
     return port;
 }
 
-void Box::help(QString s) {
+Box& Box::bareHelp(QString s) {
     _help = s;
+    return *this;
 }
 
-QString Box::help() const {
+QString Box::bareHelp() const {
     // Use help text only in derived classes
-    return (className()=="Box") ? "is just as a container box" : _help;
+    return (className()=="Box") ? "is an empty box" : _help;
 }
 
 void Box::sideEffects(QString s) {
@@ -104,6 +104,33 @@ void Box::ignore(bool doIgnore) {
 
 bool Box::ignore() const {
     return _ignore;
+}
+
+// Box& Box::documentClassName(QString name) {
+//     _documentClassName = name;
+//     return *this;
+// }
+
+// QString Box::documentClassName() const {
+//     return (_documentClassName == "") ? className() : _documentClassName;
+// }
+
+Box& Box::sourceCodeFilePathName(QString name) {
+    _sourceCodeFilePathNames.push_front(name);
+    return *this;
+}
+
+QString Box::sourceCodeFilePathName() const {
+    return QFileInfo(_sourceCodeFilePathNames.first()).canonicalFilePath();
+    // QFileInfo fileInfo = QFileInfo(_sourceCodeFilePathNames.first());
+    // QString path = fileInfo.canonicalPath(),
+    //     baseName = fileInfo.baseName(),
+    //     filePathName = path + "/" + baseName + ".typ";
+    // return QFileInfo::exists(filePathName) ? filePathName : "";
+}
+
+QStringList Box::sourceCodeFilePathNames() const {
+    return _sourceCodeFilePathNames;
 }
 
 bool Box::hasRoot() {
@@ -139,11 +166,11 @@ QString Box::profileReport() {
     QString result = "Box\tTask\tmsecs\tPct\n";
     auto report = collectTimerReport();
     double total = 0.;
-    for (auto rep : report)
+    for (const auto &rep : std::as_const(report))
         total += rep.duration;
     std::sort(report.begin(), report.end(),
               [](Timer::ReportItem a, Timer::ReportItem b) { return a.duration > b.duration; });
-    for (auto item : report) {
+    for (auto& item : report) {
         result +=
                 item.parent->fullName() + "\t" +
                 item.name + "\t" +
@@ -236,6 +263,8 @@ void Box::resetFamily() {
             box->resetFamily();
     }
     clearPorts();
+    if (name() == "GRR")
+        dialog().information("TEST");
     evaluatePorts();
     _timer.start("reset");
     if (_debugOn)
@@ -314,29 +343,29 @@ const QVector<Port*> &Box::portsInOrder() {
 }
 
 void Box::clearPorts() {
-    for (Port *port : _portsInOrder)
+    for (Port *port : std::as_const(_portsInOrder))
         port->clear();
 }
 
 void Box::touchPorts() {
-    for (Port *port : _portsInOrder)
+    for (Port *port : std::as_const(_portsInOrder))
         port->touch();
 }
 
 void Box::evaluatePorts() {
     _timer.start("evaluatePorts");
-    for (Port *port : _portsInOrder)
+    for (Port *port : std::as_const(_portsInOrder))
         port->evaluate();
     _timer.stop("evaluatePorts");
 }
 
 void Box::verifyPorts() {
     if (_debugOn) {
-        for (Port *port : _portsInOrder)
+        for (Port *port : std::as_const(_portsInOrder))
             port->verifyValue();
     }
     if (_diagnoseOn) {
-        for (Port *port : _portsInOrder) {
+        for (Port *port : std::as_const(_portsInOrder)) {
             port->verifyValue();
             if (port->value().type() == Value::Type::Double) {
                 double val = port->value<double>();
@@ -352,7 +381,7 @@ void Box::verifyPorts() {
 void Box::registerPorts() {
     for (Box *box : children<Box*>())
         box->registerPorts();
-    for (Port *port : _portsInOrder)
+    for (Port *port : std::as_const(_portsInOrder))
         port->registerExports();
 }
 

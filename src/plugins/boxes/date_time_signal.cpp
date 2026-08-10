@@ -6,6 +6,8 @@
 #include <base/publish.h>
 #include "date_time_signal.h"
 
+#include <base/dialog_base.h>
+
 using namespace base;
 
 namespace boxes {
@@ -14,7 +16,9 @@ PUBLISH(DateTimeSignal)
 
 DateTimeSignal::DateTimeSignal(QString name, Box *parent)
     : BaseSignal(name, parent){
-    help("sets a signal according to date (ignoring year) and time of day");
+    Help("sets a signal according to date (ignoring year) and time of day");
+
+    dialog().information("TEST DateTimeSignal: " + className(Namespace::Include));
     Input(currentDateTime).imports("calendar[dateTime]");
     Input(beginDate).equals(BareDate(1,1)).help("The beginning of the date interval");
     Input(endDate).equals(BareDate(12,31)).help("The end of the date interval");

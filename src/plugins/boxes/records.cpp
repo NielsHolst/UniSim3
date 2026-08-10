@@ -24,7 +24,7 @@ PUBLISH(Records)
 Records::Records(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("reads inputs from records in a text file");
+    Help("reads inputs from records in a text file");
     Input(fileName).help("Name of file with records; columns separated by white space").equals("records.txt");
     Input(dateColumnName).help("Name of column with date").equals("Date");
     Input(timeColumnName).help("Name of column with time").equals("Time");

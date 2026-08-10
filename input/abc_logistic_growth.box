@@ -1,0 +1,17 @@
+#using abc
+Simulation sim {
+  .steps = 120
+  LogisticGrowth mouse {
+    .r = 0.08
+    .K = 4000
+    .N0 = 50
+  }
+  OutputR {
+    PageR {
+      .xAxis = sim[step]
+      PlotR {
+        .ports = mouse[N] | mouse[dN]
+      }
+    }
+  }
+}

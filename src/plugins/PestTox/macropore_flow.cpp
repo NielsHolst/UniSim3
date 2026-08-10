@@ -19,7 +19,7 @@ PUBLISH (MacroporeFlow)
 MacroporeFlow::MacroporeFlow(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages fate of pesticide due to macropore flow");
+    Help("manages fate of pesticide due to macropore flow");
     Input(fsand).unit("fraction").equals(0.25).help("Fraction of sand in the soil");
     Input(fsilt).unit("fraction").equals(0.25).help("Fraction of silt in the soil");
     Input(fclay).unit("fraction").equals(0.5).help("Fraction of clay in the soil");

@@ -1,0 +1,17 @@
+  OutputR output {
+    .keepPlots = FALSE
+    .scripts = "../R/plot_year.R"
+    Box outputs {
+      &balanceCover = budget/sky[swCoverSkyBalance]  +  budget/cover[lwCoverSkyBalance] + budget/cover[convectionTop]
+      &ventilation  = budget[ventilationHeatLoss]
+    }
+    OutputText {
+      .ports = calendar[dateTime] | sun[isDay] |
+      indoors[temperature] | indoors[rh] | indoors[ah] | budget[totalPar] | outputs[*] 
+      // | budget/cover[lwEmissionBottom] | budget/cover[swEmissionBottom]
+      // | budget/cover[lwAbsorbedBottom] | budget/cover[swAbsorbedBottom]
+    }
+    OutputSelector selector {
+      .beginDateTime = global[beginDate]
+    }
+  }

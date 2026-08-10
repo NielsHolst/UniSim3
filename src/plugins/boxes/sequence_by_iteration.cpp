@@ -15,7 +15,7 @@ PUBLISH(SequenceByIteration)
 SequenceByIteration::SequenceByIteration(QString name, Box *parent)
     : SequenceBase(name, parent)
 {
-    help("produces a sequence of numbers changing by every iteration");
+    Help("produces a sequence of numbers changing by every iteration");
     Output(iterations).noClear().help("The number of iterations needed to run through all values");
 }
 

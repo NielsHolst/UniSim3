@@ -18,7 +18,7 @@ PUBLISH(NitrogenUptake)
 NitrogenUptake::NitrogenUptake(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates the nitrogen uptake rate");
+    Help("calculates the nitrogen uptake rate");
     Input(beta).equals(10.).unit("g N/dm2/(mmol N/L)/h").help("Effiency of nitrogen uptake");
     Input(demand).imports("demand/nitrogenTotal[value]");
     Input(area).imports("area[value]");

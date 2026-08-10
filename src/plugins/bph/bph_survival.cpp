@@ -14,7 +14,7 @@ PUBLISH(BphSurvival)
 BphSurvival::BphSurvival(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes BPH density-dependenty survival");
+    Help("computes BPH density-dependenty survival");
     Input(density).help("BPH density");
     Input(atDensity).equals(1).help("At this density use set survival");
     Input(survival).help("Set survival");

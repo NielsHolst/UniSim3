@@ -3,7 +3,6 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <iostream>
 #include <cmath>
 #include <QString>
 #include <QTextStream>
@@ -24,7 +23,7 @@ PUBLISH(Stage)
 Stage::Stage(QString name, Box *parent)
     : StageBase(name, parent)
 {
-    help("models a distributed delay");
+    Help("models a distributed delay");
     Input(inflow).help("Amount of inflow");
     Input(phaseOutflowProportion).help("Proportion that will change phase in next time step");
     Output(outflow).help("Outflow emerging from the stage");

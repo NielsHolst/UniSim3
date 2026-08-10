@@ -92,6 +92,7 @@ Node *MegaFactory::createObject(QString className, QString objectName, Box *pare
             if (showStep)
                 Computation::changeStep(Computation::Step::Construct);
             creation = factory->create(classNameProper, objectName, parent);
+            creation->setPluginName(factory->id());
             if (showStep)
                 Computation::changeStep(Computation::Step::Modify);
             namespaceName = factory->id();

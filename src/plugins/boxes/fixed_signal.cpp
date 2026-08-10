@@ -14,7 +14,7 @@ PUBLISH(FixedSignal)
 
 FixedSignal::FixedSignal(QString name, Box *parent)
     : BaseSignal(name, parent){
-    help("fixes a signal at the initial value");
+    Help("fixes a signal at the initial value");
 }
 
 bool FixedSignal::computeFlag() {

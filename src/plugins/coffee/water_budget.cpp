@@ -14,7 +14,7 @@ PUBLISH(WaterBudget)
 
 WaterBudget::WaterBudget(QString name, QObject *parent)
     : Box(name, parent) {
-    help("models the water budget");
+    Help("models the water budget");
     Input(slope).equals(5.).unit("%").help("Slope of terrain");
     Input(runoffLaiCoef).equals(0.5).unit("mm/m2/m2").help("Lessens runoff with increasing leaf area index");
     Input(concWaterFieldCap).imports("soil/thresholds[fieldCap]");

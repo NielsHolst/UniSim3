@@ -20,7 +20,7 @@ PUBLISH(HeatPipes)
 HeatPipes::HeatPipes(QString name, Box *parent)
     : LayerAsOutput(name, parent)
 {
-    help("sums power use and radiation from growth light");
+    Help("sums power use and radiation from growth light");
     Input(lwEmissionTopPipes)    .imports("./*[lwEmissionTop]");
     Input(lwEmissionBottomPipes) .imports("./*[lwEmissionBottom]");
     Input(convectionTopPipes)    .imports("./*[convectionTop]");

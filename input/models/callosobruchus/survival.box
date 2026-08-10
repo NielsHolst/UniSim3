@@ -1,0 +1,25 @@
+#using callosobruchus
+Simulation sim {
+  .steps = ./eggsTotal[steps]
+  SequenceByStep eggsTotal {
+    .min = 0
+    .max = 250e3
+    .by  = 1e3
+  }
+  Survival survival {
+    .seedsTotal = 10e3
+    .eggsTotal = eggsTotal[value]
+    .seedCapacity = 9
+  }
+  OutputR {
+    PageR {
+      .xAxis = eggsTotal[value]
+      .width = 7
+      .height =3.5
+      PlotR {
+        .ports = survival[value]
+      }
+    }
+  }
+}
+

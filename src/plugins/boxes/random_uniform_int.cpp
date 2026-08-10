@@ -18,7 +18,7 @@ PUBLISH(RandomUniformInt)
 RandomUniformInt::RandomUniformInt(QString name, Box *parent)
     : RandomBaseTyped<int>(name, parent)
 {
-    help("produces random integer numbers from the uniform distribution");
+    Help("produces random integer numbers from the uniform distribution");
     port("max")->help("Maximum value (included)");
 }
 

@@ -26,7 +26,7 @@ PUBLISH(Calendar)
 Calendar::Calendar(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("keeps check on date and time");
+    Help("keeps check on date and time");
     Input(latitude).equals(52).help("Latitude").unit("[-90,90]");
     Input(longitude).equals(11).help("Longitiude").unit("[-180,180]");
     Input(timeZone).equals(1).help("Time zone").unit("h");
@@ -70,7 +70,7 @@ void Calendar::reset() {
     // Set up steps
     if (end.isValid()) {
         if (begin >= end)
-            ThrowException("Begin date must be before end data").
+            ThrowException("Begin date must be before end date").
                     value(convert<QString>(begin)).value2(convert<QString>(end)).
                     context(this);
         auto totalSecs = begin.secsTo(end);

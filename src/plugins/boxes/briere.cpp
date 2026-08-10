@@ -14,7 +14,7 @@ PUBLISH(Briere)
 
 Briere::Briere(QString name, Box *parent)
     : PhysiologicalTime(name, parent) {
-    help("computes non-linear development rate per day");
+    Help("computes non-linear development rate per day");
     Input(T0).unit("oC").help("Lower temperature threshold");
     Input(Tmax).unit("oC").help("Upper temperature threshold");
     Input(a).unit("/oC").help("Scaling parameter");

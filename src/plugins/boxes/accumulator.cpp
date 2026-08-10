@@ -18,7 +18,7 @@ PUBLISH(Accumulator)
 Accumulator::Accumulator(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("accumulates values");
+    Help("accumulates values");
     Input(initial).help("Initial `value` at reset");
     Input(change).help("Change added to `value`");
     Input(minValue).equals(std::numeric_limits<double>::lowest()).help("Minimum possible `value`");

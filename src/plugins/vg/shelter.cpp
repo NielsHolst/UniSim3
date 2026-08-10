@@ -21,7 +21,7 @@ PUBLISH(Shelter)
 Shelter::Shelter(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("holds parameters of the greenhouse shelter");
+    Help("holds parameters of the greenhouse shelter");
     Input(propFrame).equals(0.2).unit("[0;1]").help("Proportion of shelter covered by the frame");
     Input(swReflectivityFrame).equals(0.2).unit("[0;1]").help("Short-wave reflectivity of the frame");
     Input(lwReflectivityFrame).equals(0.15).unit("[0;1]").help("Long-wave reflectivity of the frame");

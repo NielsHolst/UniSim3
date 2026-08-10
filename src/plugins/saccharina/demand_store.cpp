@@ -16,7 +16,7 @@ PUBLISH(DemandStore)
 DemandStore::DemandStore(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes store's elementary demand");
+    Help("computes store's elementary demand");
     Input(element).unit("[C|N|P]").help("One letter denoting kind of store");
     Input(concentration).unit("g element/g dw").help("Store elementary concentration");
     Input(idealStructure).imports("proportions[idealStructure]");

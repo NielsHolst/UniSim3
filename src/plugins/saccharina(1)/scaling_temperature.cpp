@@ -16,7 +16,7 @@ PUBLISH(ScalingTemperature)
 ScalingTemperature::ScalingTemperature(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("scales growth demand and photosynthesis by temperature");
+    Help("scales growth demand and photosynthesis by temperature");
     Input(T).unit("oC").help("Current temperature");
     Input(T0).unit("oC").help("Minimum temperature");
     Input(Topt1).unit("oC").help("Lower temperature optimum");

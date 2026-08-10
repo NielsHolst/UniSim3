@@ -5,14 +5,14 @@ Simulation sim {
   Scenarios scenarios {
     .fileName = "fig_8_fecundity_age_scenarios.txt"
   }
-  Fecundity GRR {
-    .T = scenarios[Temperature]
-  }
   Stage eggLaying {
     .initial = 1
-    .growthFactor = GRR[value]
-    .duration = 45
-    .k = 4
+    .growthFactor = fecundity[value]
+    .duration = 50
+    .k = 4  
+    Fecundity fecundity {
+      .T = scenarios[Temperature]
+    }
   }
   OutputR {
     PageR {
@@ -21,7 +21,9 @@ Simulation sim {
       PlotR {
         .ports = eggLaying[outflow]
         .layout = "merged"
-        .ggplot = "labs(x='Age', y='Net eggs laid per day', colour='Temperature') + guides(colour = guide_legend(reverse=TRUE))"
+        .ggplot = "labs(x='Age (days)', y='Eggs laid per capita per day', colour='Temperature') + 
+                  scale_colour_discrete(labels = c('1' = '20 C','2' = '25 C','3' = '27 C','4' = '30 C')) +
+                  guides(colour = guide_legend(reverse=TRUE))"
       }
     }
   }

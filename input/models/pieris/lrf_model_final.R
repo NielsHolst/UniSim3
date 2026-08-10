@@ -3,7 +3,7 @@ graphics.off()
 library(ggplot2)
 library(reshape2)
 
-source("~/Rdev/setup.R")
+# source("~/Rdev/setup.R")
 
 
 f = function(T, p) {

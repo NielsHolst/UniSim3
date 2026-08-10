@@ -17,7 +17,7 @@ PUBLISH (WaterViscosity)
 WaterViscosity::WaterViscosity(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages viscosity of water");
+    Help("manages viscosity of water");
     Input(temperature).unit("Â°C").equals(25.).help("Daily soil temperature");
 
     Output(value).unit("centipoise").help("Viscosity of water");

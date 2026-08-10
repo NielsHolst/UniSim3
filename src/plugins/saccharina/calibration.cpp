@@ -22,7 +22,7 @@ PUBLISH(Calibration)
 Calibration::Calibration(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates deviation from observations");
+    Help("calculates deviation from observations");
     Input(obsFileName).help("Name of file with observations");
     Input(date).imports("calendar[date]");
     Input(biomass).imports("biomass/whole[dw]");

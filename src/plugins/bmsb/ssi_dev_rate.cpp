@@ -16,7 +16,7 @@ PUBLISH(SSIDevRate)
 SSIDevRate::SSIDevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using SSI model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily developmental rate using SSI model; later replace daily rate to hourly rate");
         Input(TPhi).equals(12).help("Development rate at the intrinsic optimum temperature TÎ¦ (1/day) assuming no enzyme inactivation (days -1)");
         Input(dailytempC).equals(12).help("Absolute temperature (K) (237.15Â° K = 0Â°C)");
         Input(rhoPhi).equals(12).help("Length of day (hours)");
@@ -36,8 +36,6 @@ void SSIDevRate::reset() {
 }
 
 void SSIDevRate::update() {
-    help("hourly temperature will later replace daily temp to estimate SSI rate");
-    help("Note that input parameter supplied in degree Celsius for Temperature must be converted to in degree Kelvin");
         double dailytempK  = dailytempC + 273.15;
         numerator   = ((rhoPhi) * (dailytempK/TPhi)) * (exp( (HA/R) * ((1/TPhi)-(1/dailytempK))));
         denominator = (1 + (exp((HL/R) * ((1/TL) - (1/dailytempK)))) + (exp((HH/R) * ((1/TH) - (1/dailytempK)))));

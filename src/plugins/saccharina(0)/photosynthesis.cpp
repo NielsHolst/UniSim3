@@ -18,7 +18,7 @@ PUBLISH(Photosynthesis)
 Photosynthesis::Photosynthesis(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates the rate of photosynthesis");
+    Help("calculates the rate of photosynthesis");
     Input(Iabsorbed).imports("../lightAbsorption[value]");
     Input(area).imports("area[value]");
     Input(frondAngle).imports("area[frondAngle]");

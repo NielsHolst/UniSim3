@@ -27,10 +27,11 @@ unisim.depends = command
 # Simulation model modules
 #
 
-SUBDIRS += collembola
-collembola.subdir = src/plugins/collembola
-collembola.depends = base
-unisim.depends = collembola
+SUBDIRS += callosobruchus
+callosobruchus.subdir = src/plugins/callosobruchus
+callosobruchus.depends = base
+unisim.depends = callosobruchus
+
 
 #SUBDIRS += vg
 #vg.subdir = src/plugins/vg
@@ -42,10 +43,10 @@ unisim.depends = collembola
 #aphid.depends = base
 #unisim.depends = aphid
 #
-#SUBDIRS += cmbp
-#cmbp.subdir = src/plugins/cmbp
-#cmbp.depends = base
-#unisim.depends = cmbp
+SUBDIRS += cmbp
+cmbp.subdir = src/plugins/cmbp
+cmbp.depends = base
+unisim.depends = cmbp
 #
 #SUBDIRS += PestTox
 #PestTox.subdir = src/plugins/PestTox

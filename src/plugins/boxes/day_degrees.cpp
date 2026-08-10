@@ -14,7 +14,7 @@ PUBLISH(DayDegrees)
 
 DayDegrees::DayDegrees(QString name, Box *parent)
     : PhysiologicalTime(name, parent) {
-    help("computes linear day-degrees");
+    Help("computes linear day-degrees");
     Input(T0).equals(0).unit("oC").help("Lower temperature threshold");
     Input(Topt).equals(100).unit("oC").help("Optimum temperate; linear decline from here to `Tmax`");
     Input(Tmax).equals(100).unit("oC").help("Upper temperature threshold");

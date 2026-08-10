@@ -17,7 +17,7 @@ PUBLISH(BetaRate)
 BetaRate::BetaRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using Briere2 model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily developmental rate using Briere2 model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(mu).equals(-3.6875).help("mu");
         Input(Tb).equals(19.5904).help("Estimate of basal temperature)");
@@ -32,8 +32,6 @@ void BetaRate::reset() {
 }
 
 void BetaRate::update() {
-        help("hourly temperature will later replace daily temp to estimate Beta model based rate");
-        help("Note that input parameter Tb and Tc must be supplied in degree Celsius for Temperature");
 //      Beta model as in devRate packege in R: (rT = exp(mu) * (T - Tb)^aa * (Tc - T)^bb)
         ovprate     = (exp(mu) *  pow((dailytempC - Tb), (aa)) * pow((Tc - dailytempC),(bb)));
 }

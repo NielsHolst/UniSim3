@@ -12,7 +12,7 @@ namespace boxes {
 RunningBase::RunningBase(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("is a base class for running sum and average");
+    Help("is a base class for running sum and average");
     Input(initial).help("Value at reset");
     Input(input).help("The input to sum or average");
     Output(value).help("Running sum or average");;

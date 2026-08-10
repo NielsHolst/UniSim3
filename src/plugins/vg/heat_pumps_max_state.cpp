@@ -19,7 +19,7 @@ PUBLISH(HeatPumpsMaxState)
 HeatPumpsMaxState::HeatPumpsMaxState(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models a heat pump");
+    Help("models a heat pump");
     Input(maxCoolingLoad).imports("actuators/heatPumps[maxCoolingLoad]");
     Input(maxPowerUse).imports("setpoints/heatPumps/maxPowerUse[value]");
     Input(mode).imports("setpoints/heatPumps/mode[value]");

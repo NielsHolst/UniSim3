@@ -11,7 +11,17 @@ library("scales")
 library("splines")
 library("stringr")
 
-theme_set(theme_bw())
+my_theme = function(font_size = 12) {
+  theme_bw(base_size = font_size) +
+  theme(
+    strip.background = element_rect(fill="#F0F0F0"),
+    axis.title.x = element_text(margin = unit(c(0.8, 0, 0, 0), "char")),
+    axis.title.y = element_text(margin = unit(c(0, 0.8, 0, 0), "char"))
+  )
+}
+
+theme_set(my_theme())
+
 
 # See https://data-se.netlify.com/2018/12/12/changing-the-default-color-scheme-in-ggplot2/
 red = '#e41a1c'
@@ -98,9 +108,18 @@ is_rstudio = function() {
   !is.na(Sys.getenv("RSTUDIO", unset = NA))
 }
 
+close_empty_plot_windows = function() {
+  for (d in dev.list()) {
+    dev.set(d)
+    plot = recordPlot()
+    if (length(plot[[1]]) == 0)
+      dev.off(d)
+  }
+}
+
 open_plot_window = function(width=7, height=7) {
-  # dev.new(width=width, height=height, noRStudioGD=TRUE)
   if (is_windows()) {
+    close_empty_plot_windows()
     windows(width=width, height=height) 
   } else {
     X11(width=width, height=height, type="cairo") 

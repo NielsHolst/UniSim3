@@ -14,7 +14,7 @@ PUBLISH(Light)
 
 Light::Light(QString name, QObject *parent)
     : Box(name, parent) {
-    help("models light interception");
+    Help("models light interception");
     Input(dayLength).imports("sun[dayLength]");
     Input(globRad).imports("weather[GlobRad]");
     Input(kCoffee).imports("coffee[k]");

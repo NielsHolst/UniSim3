@@ -17,7 +17,7 @@ PUBLISH(RandomUniform)
 RandomUniform::RandomUniform(QString name, Box *parent)
     : RandomBaseTyped<double>(name, parent)
 {
-    help("produces random numbers from the uniform distribution");
+    Help("produces random numbers from the uniform distribution");
 }
 
 void RandomUniform::drawValue() {

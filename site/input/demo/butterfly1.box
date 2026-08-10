@@ -42,14 +42,17 @@ Simulation sim {
     }
   }
   OutputR {
+    .fontSize = 20
     PageR {
       .xAxis = calendar[date]
       .ncol = 2
       PlotR {
         .ports = *[content]
+        .ggplot = "labs(x='')"
       }
       PlotR {
         .ports = *[outflowTotal]
+        .ggplot = "labs(x='')"
       }
     }
   }

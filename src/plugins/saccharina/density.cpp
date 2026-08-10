@@ -14,7 +14,7 @@ namespace saccharina {
 Density::Density(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("provides density in different units");
+    Help("provides density in different units");
     Output(dw).unit("g dw/m").help("Total dry weight");
     Output(C).unit("g C/m").help("Carbon weight");
     Output(N).unit("g N/m").help("Nitrogen weight");

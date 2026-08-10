@@ -6,6 +6,7 @@
 ** See: www.gnu.org/licenses/lgpl.html.
 */
 
+#include <base/publish.h>
 #include "collembola_documentation.h"
 
 using namespace base;

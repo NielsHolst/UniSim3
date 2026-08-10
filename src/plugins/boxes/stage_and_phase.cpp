@@ -24,7 +24,7 @@ PUBLISH(StageAndPhase)
 StageAndPhase::StageAndPhase(QString name, Box *parent)
     : StageBase(name, parent), _firstUpdate(true)
 {
-    help("models a 2-D distributed delay");
+    Help("models a 2-D distributed delay");
     Input(inflow).help("Amount of inflow (vector)");
     Input(scalarInflow).help("Amount of inflow (scalar)");
     Input(phaseK).equals(30).help("Phase distribution parameter");

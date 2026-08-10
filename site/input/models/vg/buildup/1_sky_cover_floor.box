@@ -1,0 +1,58 @@
+#using vg
+Simulation sim {
+  #include "../parcels/parcel_prelude.box"
+  Sky sky {
+  }
+  Box gh {
+    Geometry geometry {
+      .numSpans = 25
+      .spanWidth = 4.0
+      .length = 100.0
+      .height = 4.0
+      .roofPitch = 26.0
+    }
+    Box construction {
+      Shelter shelter {
+        #include "../parcels/parcel_shelter.box"
+        Faces faces {
+          Face roof1 {
+            .cover = "Single_glass_4mm"
+          }
+          Face roof2 {
+            .cover = "Single_glass_4mm"
+          }
+          Face side1 {
+            .cover = "Single_glass_4mm"
+          }
+          Face side2 {
+            .cover = "Single_glass_4mm"
+          }
+          Face end1 {
+            .cover = "Single_glass_4mm"
+          }
+          Face end2 {
+            .cover = "Single_glass_4mm"
+          }
+        }
+      }
+    }
+    Floor floor {
+      .swAbsorptivityTop = 0.6
+      .swReflectivityTop = 0.4
+      .swTransmissivityTop = 0.0
+      .lwAbsorptivityTop = 0.6
+      .lwReflectivityTop = 0.4
+      .lwTransmissivityTop = 0.0
+      .Utop = 7.5
+      .Ubottom = 0.1
+      .heatCapacity = 42000.0
+    }
+    Budget budget {
+    }
+  }
+  // Box script {
+    // &value = "../R/post_1_sky_cover_floor.R"
+  // }
+
+  #include "../parcels/parcel_output.box"
+}

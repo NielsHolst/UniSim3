@@ -20,7 +20,7 @@ PUBLISH (LeafUptake)
 LeafUptake::LeafUptake(QString name, Box *parent)
     : LossRate(name, parent)
 {
-    help("manages fate of pesticide on crop or leaf surface due to uptake");
+    Help("manages fate of pesticide on crop or leaf surface due to uptake");
     Input(leafType).equals("NonWaxy").help("either 'Waxy' or 'NonWaxy'");
     Input(Tair).unit("Â°C").imports("weather[Tavg]").help("Air temperature");
     Input(MV).imports("applications[molarVolume]").help("Molar volume");

@@ -5,7 +5,8 @@
 */
 #include "base_signal.h"
 #include "phys_math.h"
-#include "test_num.h"
+
+#include "dialog_base.h"
 
 using phys_math::infinity;
 
@@ -15,12 +16,15 @@ BaseSignal::BaseSignal(QString name, Box *parent)
     : Box(name, parent)
 {
     setClassName("base", "BaseSignal");
-    help("is a base class classes that compute signal");
+    Help("base::BaseSignal is a base class for setting signals");
+    // Doc("base::BaseSignal is a base class for setting signals");
+
+    dialog().information("TEST BaseSignal: " + className(Namespace::Include));
     Input(initialSignal).help("Value of `signal` at reset");
     Input(initialFlag).equals(false).help("Value of flag at reset");
     Output(signal).help("Value of the signal");
     Output(flagIsUp).help("Is the `signal` on?");
-    Output(flagJustRaised). help("Was the `signal` just set on?");
+    Output(flagJustRaised).help("Was the `signal` just set on?");
     Output(flagJustLowered).help("Was the `signal` just set off?");
     NamedOutput("value", signal).help("Synonym for `signal`");
 }

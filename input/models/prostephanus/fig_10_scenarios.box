@@ -1,24 +1,24 @@
 #using cmbp
 Simulation sim {
-  .steps = 250
+  .steps = 300
   .iterations = ./scenarios[iterations]
   
   Scenarios scenarios {
-    .fileName = "scenarios.txt"
-    .title = "Scenario"
+    .fileName = "fig_10_scenarios.txt"
+    .title = ""
   }
   
   Calendar calendar {
-    .begin = scenarios[InitDate]
+    .begin = scenarios[StartDate]
   }
   
   GrainStore store {
-    .mass = scenarios[StoreMass]
-    .Tmin = ./weather[Tmin]
-    .Tmax = ./weather[Tmax]
-    &gmc = ./weather[Gmc]
-    Records weather {
-      .fileName = scenarios[FileName]
+    .mass = 75.0
+    .Tmin = ./microclimate[Tmin]
+    .Tmax = ./microclimate[Tmax]
+    &gmc = ./microclimate[Gmc]
+    Records microclimate {
+      .fileName = scenarios[WeatherFile]
     }
   }
   
@@ -27,7 +27,7 @@ Simulation sim {
       .duration = 1
       .k = 72
       .timeStep = ./devRate[value]
-      .inflow = fecundity[outflow]
+      .inflow = oviposition[outflow]
       DevRate devRate {
         .T = store[T]
         .b1 = 0.124870
@@ -86,63 +86,36 @@ Simulation sim {
       }
     }
     Immigration immigrants {
-      .day = scenarios[DayImmigrants]
-      .number = scenarios[PtImmigrants]
+      .day = scenarios[ImmigrationDay]
+      .number = scenarios[NumImmigrants]
       .storeMass = store[mass]
     }
     Stage adult {
       .inflow = sum(immigrants[value] | pupa[outflow])
-      .duration = 55
+      .duration = 50
       .k = 4
       .instantLossRate = emigration[value]
-    }
-    Stage fecundity {
-      .inflow = sum(immigrants[value] | pupa[outflow])
-      .duration = adult[duration]
-      .k = adult[k]
-      .instantLossRate = emigration[value]
-      .growthFactor = ./fec[value]
-      cmbp::Fecundity fec {
-        .maxFecundity = 400
-        .r = 0.2359
-        .T = store[T]
-        .sexRatio = 0.5
+      Emigration emigration {
+        .N = adult[content]
+        .e2 = 0.00076
+        .e3 = 0.346
       }
-    }
-    Emigration emigration {
-      .N = adult[content]
-      .e2 = 0.00076
-      .e3 = 0.346
+      Stage oviposition {
+        .inflow = ..[inflow]
+        .duration = ..[duration]
+        .k = ..[k]
+        .instantLossRate = ..[instantLossRate]
+        .growthFactor = ./fecundity[value]
+        Fecundity fecundity {
+          .T = store[T]
+        }
+      }
     }
   }
   OutputR {
-    Box outputs {
-      &log10Adults = log10(adult[value] + 1)
-    }
-    PageR {
-      .nrow = 1
-      .width = 10
-      .height = 6
-      PlotR {
-        .layout = "merged"
-        .ports = store[T] | store[gmc]
-      }
-      PlotR {
-        .layout = "merged"
-        .ports = Stage::*[value]
-      }
-    }
-    PageR {
-      .width = 7
-      .height =3.5
-      PlotR {
-        .layout = "merged"
-        .ports = outputs[*]
-        .ggplot = "labs(colour='Scenario', x='Days', y='log10(adults+1)')"
-      }
-    }
-    OutputSelector {
-      .beginStep = 1
+    .scripts = "fig_10.R"
+    OutputText {
+      .ports = store[T] | store[gmc] | adult[value] | scenarios[Experiment] | scenarios[Immigration]
     }
   }
 }

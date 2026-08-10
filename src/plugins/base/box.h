@@ -14,6 +14,8 @@
 #include "port.h"
 #include "timer.h"
 
+#define Help(X) bareHelp(X); sourceCodeFilePathName(__FILE__)
+
 #define Input(X)  (*new base::Port(#X, base::PortType::Input , this)).initialize(& X)
 #define Output(X) (*new base::Port(#X, base::PortType::Output, this)).initialize(& X)
 
@@ -37,8 +39,8 @@ public:
     Port* port(QString name, Caller caller=Caller());
     const Port* port(QString name, Caller caller=Caller()) const;
 
-    void help(QString s);
-    QString help() const;
+    Box& bareHelp(QString s);
+    QString bareHelp() const;
 
     void sideEffects(QString s);
     QString sideEffects() const;
@@ -48,6 +50,13 @@ public:
 
     void ignore(bool doIgnore);
     bool ignore() const;
+
+    // Box& documentClassName(QString name);
+    // QString documentClassName() const;
+
+    Box& sourceCodeFilePathName(QString name);
+    QString sourceCodeFilePathName() const;
+    QStringList sourceCodeFilePathNames() const;
 
     static bool hasRoot();
     static Box* root();
@@ -101,6 +110,8 @@ public:
 private:
     // Data
     QString _help, _sideEffects, _additionalOutputs;
+        // _documentClassName,
+    QStringList _sourceCodeFilePathNames;
     QMap<QString,Port*> _portMap;
     QVector<Port*> _portsInOrder, _trackedPorts;
     bool _amended, _initialized, _cloned, _ignore;

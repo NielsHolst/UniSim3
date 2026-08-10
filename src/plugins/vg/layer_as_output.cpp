@@ -14,7 +14,7 @@ namespace vg {
 LayerAsOutput::LayerAsOutput(QString name, Box *parent)
     : Layer(name, parent)
 {
-    help("holds radiative and heat parameters of a layer used for parameter output");
+    Help("holds radiative and heat parameters of a layer used for parameter output");
     Output(swAbsorptivityTop).unit("[0;1]").help("Short-wave absorptivity at the top");
     Output(swReflectivityTop).unit("[0;1]").help("Short-wave reflectivity at the top");
     Output(swTransmissivityTop).equals(1.).unit("[0;1]").help("Short-wave transmissivity at the top");

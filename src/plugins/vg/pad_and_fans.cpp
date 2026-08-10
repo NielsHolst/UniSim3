@@ -19,7 +19,7 @@ PUBLISH(PadAndFans)
 PadAndFans::PadAndFans(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("sums heat pump outputs");
+    Help("sums heat pump outputs");
     Input(powerUses   ).imports("./*[powerUse]");
     Input(coolings    ).imports("./*[cooling]");
     Input(vapourFluxes).imports("./*[vapourFlux]");

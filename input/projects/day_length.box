@@ -1,0 +1,18 @@
+Simulation {
+  .steps = 365
+  Calendar calendar {
+    // Stockholm
+    .latitude = 59.55
+    .longitude = 18.01
+  }
+  Sun sun {
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .ports = sun[dayLength]
+      }
+    }
+  }
+}

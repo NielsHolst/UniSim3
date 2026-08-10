@@ -15,7 +15,7 @@ PUBLISH(TaylorDevRate)
 TaylorDevRate::TaylorDevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using Taylor model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily developmental rate using Taylor model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(Rm).equals(0.132).help("Estimate of coefficient Rm)");
         Input(Tm).equals(30.555).help("Estimate of coefficient Tm");
@@ -28,8 +28,6 @@ void TaylorDevRate::reset() {
 }
 
 void TaylorDevRate::update() {
-    help("hourly temperature will later replace daily temp to estimate Taylor model based dev rate");
-    help("Note that input parameter must be supplied in degree Celsius for Temperature");
 //      Taylor model as in devRate packege in R: (rT ~ Rm * exp(-1/2 * ((T - Tm)/To)^2))
         devrate     = ((Rm) *  exp((-1/2) * (((dailytempC - Tm)/T0) *((dailytempC - Tm)/T0))));
 }

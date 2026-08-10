@@ -21,7 +21,7 @@ PUBLISH(ActuatorVentilation)
 ActuatorVentilation::ActuatorVentilation(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("sets air flux through vents");
+    Help("sets air flux through vents");
     Input(ventAreaRatio).equals(0.40).unit("int").help("Total vent area in proportion to groundarea");
     Input(windCoef).equals(50.).help("Proportionality of air flux with windspeed").unit("/h/(m/s)");
     Input(temperatureCoef).equals(14.).help("Proportionality of air flux with temperature difference").unit("/h/K");

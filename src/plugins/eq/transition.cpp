@@ -15,7 +15,7 @@ PUBLISH(Transition)
 Transition::Transition(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes a value between min-max limits based on an input and threshold");
+    Help("computes a value between min-max limits based on an input and threshold");
     Input(input).help("The input that relates to the threshold");
     Input(threshold).equals(0.).help("The input threshold at which the output value begins changing");
     Input(thresholdBand).equals(1.).help("The interval above the threshold during which the output value is changing");;

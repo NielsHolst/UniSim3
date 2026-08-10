@@ -19,7 +19,7 @@ PUBLISH(PadAndFan)
 PadAndFan::PadAndFan(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models a pad-and-fan cooling system");
+    Help("models a pad-and-fan cooling system");
     Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(outdoorsTemperature).imports("outdoors/temperature[value]",CA);
     Input(outdoorsRh).imports("outdoors[rh]",CA);

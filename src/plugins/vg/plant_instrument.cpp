@@ -20,7 +20,7 @@ PUBLISH(PlantInstrument)
 PlantInstrument::PlantInstrument(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("instrumentalises a Plant object");
+    Help("instrumentalises a Plant object");
     Input(netRadiation).unit("W/m2").help("Net radiation of plant canopy");
     Input(swAbsorbed).unit("W/m2").help("Shortwave radiation absorbed by plant canopy");
     Input(parAbsorbed).unit("&micro;mol/m2/s").help("PAR absorbed by plant canopy");

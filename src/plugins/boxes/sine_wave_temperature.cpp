@@ -19,7 +19,7 @@ PUBLISH(SineWaveTemperature)
 
 SineWaveTemperature::SineWaveTemperature(QString name, Box *parent)
     : Box(name, parent) {
-    help("computes sine-wave interpolation from daily min-max temperatures");
+    Help("computes sine-wave interpolation from daily min-max temperatures");
     Input(recordsName).equals("weather").help("Name of Records box holding temperature");
     Input(TminName).equals("Tmin").help("Name of column holding daily min. temperature");
     Input(TmaxName).equals("Tmax").help("Name of column holding daily max. temperature");

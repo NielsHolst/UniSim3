@@ -16,7 +16,7 @@ PUBLISH(TimeToHours)
 TimeToHours::TimeToHours(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("converts time to hours since midnight");
+    Help("converts time to hours since midnight");
     Input(time).equals(QTime(0,0,0)).unit("time").help("Time of day");
     Output(value).help("Hours since midnight");
 }

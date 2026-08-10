@@ -34,6 +34,8 @@ help::~help() {
 }
 
 void help::doExecute() {
+    bool isSilent = environment().isSilent();
+    environment().isSilent(true); // Silent construction message
     switch (_args.size() - 1) {
     case 0:
         _option = "";
@@ -50,6 +52,7 @@ void help::doExecute() {
     default:
         dialog().error("Write: 'help ?' to see the possible command formats");
     }
+    environment().isSilent(isSilent);
 }
 
 void help::process(QString argument) {
@@ -189,7 +192,7 @@ void help::showPlugin() {
         createBox(_plugIn->id() + "::" + name);
         if (!_box)
             ThrowException("Cannot create object of class '" + name + "'");
-        info.addLine(name, _box->help());
+        info.addLine(name, _box->bareHelp());
     }
     QStringList all = headerLines + info.combined();
     dialog().information(all.join("\n"));

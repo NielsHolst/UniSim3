@@ -15,7 +15,7 @@ PUBLISH(RunningAverageSteps)
 RunningAverageSteps::RunningAverageSteps(QString name, Box *parent)
     : RunningSumSteps(name, parent)
 {
-    help("computes running average by no. of steps");
+    Help("computes running average by no. of steps");
 }
 
 void RunningAverageSteps::update() {

@@ -18,7 +18,7 @@ PUBLISH(Indoors)
 Indoors::Indoors(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("contains sub-models for indoors climate");
+    Help("contains sub-models for indoors climate");
 }
 
 void Indoors::amend() {

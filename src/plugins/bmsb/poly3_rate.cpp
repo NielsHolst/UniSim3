@@ -17,7 +17,7 @@ PUBLISH(Poly3Rate)
 Poly3Rate::Poly3Rate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using Poly3 (Polynomial) model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily developmental rate using Poly3 (Polynomial) model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a0).equals(3.472e+00).help("Estimate of coefficient a0)");
         Input(a1).equals(-5.624e-01).help("Estimate of coefficient a1");
@@ -31,8 +31,6 @@ void Poly3Rate::reset() {
 }
 
 void Poly3Rate::update() {
-    help("hourly temperature will later replace daily temp to estimate poly3 model based rate");
-    help("Note that input parameter must be supplied in degree Celsius for Temperature");
 //  Poly3 model as in devRate packege in R: (rT ~ a0 + a1 * T + a2 * T^2 + a3 * T^3 + a4 * T^4)
 //  We modeled survival. Hence survival rate is:
     survrate     = ((a0) +  (a1 * dailytempC) + (a2 * pow(dailytempC,2)) + (a3 * pow(dailytempC,3)));

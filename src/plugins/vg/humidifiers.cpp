@@ -19,7 +19,7 @@ PUBLISH(Humidifiers)
 Humidifiers::Humidifiers(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("sums heat pump outputs");
+    Help("sums heat pump outputs");
     Input(powerUses   ).imports("./*[powerUse]");
     Input(vapourFluxes).imports("./*[vapourFlux]");
     Output(powerUse).help("Power use (total)").unit("W/m2");

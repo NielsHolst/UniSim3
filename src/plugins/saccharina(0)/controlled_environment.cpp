@@ -16,7 +16,7 @@ PUBLISH(ControlledEnvironment)
 ControlledEnvironment::ControlledEnvironment(QString name, QObject *parent)
     : ControlledEnvironmentBase(name, parent)
 {
-    help("calculates area loss by erosion");
+    Help("calculates area loss by erosion");
 }
 
 void ControlledEnvironment::resetNitrogen() {

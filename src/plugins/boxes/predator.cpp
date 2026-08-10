@@ -17,7 +17,7 @@ PUBLISH(Predator)
 
 Predator::Predator(QString name, Box *parent)
     : Box(name, parent) {
-    help("defines the demand and supply of a predator");
+    Help("defines the demand and supply of a predator");
     Input(density).help("Density");
     Input(demand).help("Amount of resource needed");
     Output(supply).help("Total amount of resource acquired");

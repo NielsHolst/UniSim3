@@ -15,7 +15,7 @@ PUBLISH(Plant)
 Plant::Plant(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("models a plant for the Conductance Model");
+    Help("models a plant for the Conductance Model");
     Input(initWeight).equals(2.).help("Initial plant weight at time zero (g per plant)");
     Input(A).equals(0.03).help("Coefficient in allometric relation for crown zone area: {A*w^phi}");
     Input(phi).equals(0.67).help("Exponent in allometric relation for crown zone area:  {A*w^phi}");

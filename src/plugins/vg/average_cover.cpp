@@ -23,7 +23,7 @@ PUBLISH(AverageCover)
 AverageCover::AverageCover(QString name, Box *parent)
     : AverageShelterLayer(name, parent)
 {
-    help("computes average cover radiation and heat parameters");
+    Help("computes average cover radiation and heat parameters");
     Input(propFrame).imports("shelter[propFrame]");
     Input(swReflectivityFrame).imports("shelter[swReflectivityFrame]");
     Input(lwReflectivityFrame).imports("shelter[lwReflectivityFrame]");

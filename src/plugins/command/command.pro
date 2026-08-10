@@ -15,9 +15,10 @@ HEADERS +=  \
     clear.h \
     clip.h \
     command_documentation.h \
+    create.h \
     debug.h \
     diagnose.h \
-#    doc.h \
+    doc.h \
     edit.h \
     find.h \
     general.h \
@@ -62,8 +63,9 @@ SOURCES +=  \
     clear.cpp \
     clip.cpp \
     command_documentation.cpp \
+    create.cpp \
     debug.cpp \
-#    doc.cpp \
+    doc.cpp \
     diagnose.cpp \
     edit.cpp \
     find.cpp \

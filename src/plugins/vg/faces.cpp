@@ -18,7 +18,7 @@ PUBLISH(Faces)
 Faces::Faces(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("contains the six greenhouse faces");
+    Help("contains the six greenhouse faces");
 }
 
 void Faces::amend() {

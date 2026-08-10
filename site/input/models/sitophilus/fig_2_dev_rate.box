@@ -1,0 +1,23 @@
+Simulation sim {
+  .steps = T[steps]
+  SequenceByStep T {
+    .min = 10
+    .max = 43
+    .by = 0.25
+  }
+  Briere devRate {
+    .T = T[value]
+    .timeStepDays = 1
+    .T0 = 11.4
+    .Tmax = 41.7
+    .a = 0.09591 / 100
+  }
+  OutputR {
+    PageR {
+      .xAxis = T[value]
+      PlotR {
+        .ports = devRate[step]
+      }
+    }
+  }
+}

@@ -17,7 +17,7 @@ PUBLISH(Sum)
 Sum::Sum(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes sum of inputs");
+    Help("computes sum of inputs");
     Input(values).help("Input values");
     Output(value).help("Sum of inputs; zero if no inputs");
     Output(count).help("Number of inputs");

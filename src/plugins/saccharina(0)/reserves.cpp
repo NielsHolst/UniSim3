@@ -16,7 +16,7 @@ PUBLISH(Reserves)
 Reserves::Reserves(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("keeps track of reserves (C or N) as proportion of structural mass");
+    Help("keeps track of reserves (C or N) as proportion of structural mass");
     Input(initialProportion).unit("[0;1]").help("Initial proportion");
     Input(maxProportion).unit("[0;1]").help("Max proportion of reserves");
     Input(allocatedProportion).unit("[0;1]").help("Proportion after allocation of supplies");

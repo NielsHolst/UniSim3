@@ -20,6 +20,7 @@ Port::Port(QString name, PortType type, Node *parent)
       _status(PortStatus::TypeDefault),
       _acceptNull(false),
       _isConstant(type == PortType::Input),
+      _isNeverConstant(false),
       _unparsedExpression(""),
       _expression(this)
 {
@@ -219,6 +220,11 @@ void Port::setConstness(bool isConstant) {
     _isConstant = isConstant;
 }
 
+void Port::setIsNeverConstant() {
+    _isConstant = false;
+    _isNeverConstant = true;
+}
+
 void Port::updateConstness() {
     // If a port is const or it's an output, there is nothing to do ,
     // an output will keep its constness (which is nearly always false)
@@ -293,7 +299,7 @@ void Port::evaluate() {
 
     // Register if the value will remain constant after reset
     // Ensure outputs are never constant; otherwise Output(x).equals(1) would mean x remains constant forever
-    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output)
+    if (Computation::currentStep() <= Computation::Step::Reset && _type != PortType::Output && !_isNeverConstant)
         _isConstant = _expression.isConstant();
 }
 

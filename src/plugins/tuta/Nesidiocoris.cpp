@@ -15,7 +15,7 @@ PUBLISH(Nesidiocoris)
 
 Nesidiocoris::Nesidiocoris(QString name, QObject *parent)
     : Box(name, parent) {
-    help("computes linear day-degrees");
+    Help("computes linear day-degrees");
     Input(P).equals(0).help("a constant parameter");
     Input(m).equals(0).help("a constant parameter");
     Input(n).equals(0).help("a constant parameter");

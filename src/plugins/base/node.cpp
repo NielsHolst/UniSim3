@@ -3,12 +3,11 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
+#include <QFileInfo>
 #include "box.h"
 #include "exception.h"
 #include "node.h"
 #include "port.h"
-
-#include <iostream>
 
 namespace base {
 
@@ -71,6 +70,14 @@ void Node::setObjectName(QString name) {
     _objectName = name;
 }
 
+// void Node::setSourceCodeFilePathName(QString name) {
+//     _sourceCodeFilePathName = name;
+// }
+
+void Node::setPluginName(QString pluginName) {
+    _pluginName = pluginName;
+}
+
 void Node::setOrder(int order) {
     _order = order;
 }
@@ -94,6 +101,14 @@ void Node::enumerate(int &i) {
         port->enumerate(i);
     _order = i++;
 }
+
+// QString Node::docFilePathName() const {
+//     QFileInfo fileInfo = QFileInfo(sourceCodeFilePathName());
+//     QString path = fileInfo.filePath(),
+//         baseName = fileInfo.baseName(),
+//         filePathName = path + "/" + baseName + ".typ";
+//     return QFileInfo(filePathName).exists() ? filePathName : "";
+// }
 
 QString Node::fullName(const Node *node) {
     QStringList names;

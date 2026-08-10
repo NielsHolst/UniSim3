@@ -15,7 +15,7 @@ PUBLISH(AhFromRh)
 
 AhFromRh::AhFromRh(QString name, Box *parent)
     : Box(name, parent) {
-    help("computes absolute humidity from relative humidity");
+    Help("computes absolute humidity from relative humidity");
     Input(temperature).unit("oC").help("Temperature");
     Input(rh).unit("[0;100]").help("Relative humidity");
     Input(value).unit("kg/m3").help("Absolute humidity");

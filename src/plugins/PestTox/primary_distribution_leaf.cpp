@@ -17,7 +17,7 @@ PUBLISH (PrimaryDistributionLeaf)
 PrimaryDistributionLeaf::PrimaryDistributionLeaf(QString name, Box *parent)
     : PrimaryDistributionBase(name, parent)
 {
-    help("manages pesticide deposition on crop or leaf surface");
+    Help("manages pesticide deposition on crop or leaf surface");
     Input(fractionTakenAir).unit("g a.i/ha").imports("../surroundings[fractionTaken]").help("Dose taken by wind drift off-field edge");
     Input(stageContent).imports("crop/Stage::*[content]").help("Crop stage");
     Input(fractionsByCropStage).unit("fraction").help("Stage-specific fraction deposition");

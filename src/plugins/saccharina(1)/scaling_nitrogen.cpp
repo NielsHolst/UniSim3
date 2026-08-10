@@ -16,7 +16,7 @@ PUBLISH(ScalingNitrogen)
 ScalingNitrogen::ScalingNitrogen(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("scales photosynthesis by plant nitrogen");
+    Help("scales photosynthesis by plant nitrogen");
     Input(minValue).equals(0.5).unit("[0;1]").help("Minimum scaling value");
     Input(concN).imports("plant[concN]");
     Input(optNConc).imports("plant[optNConc]");

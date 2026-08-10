@@ -18,7 +18,7 @@ PUBLISH(Crop)
 Crop::Crop(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("holds crop parameters and sub-models");
+    Help("holds crop parameters and sub-models");
     Input(lai).equals(3.).unit("m2/m2").help("Leaf area index");
     Input(coverage).equals(1.0).unit("[0;1]").help("Proportion of floor area with crop");
     Input(k).equals(0.7).unit("[0;1]").help("Light extinction coefficient");

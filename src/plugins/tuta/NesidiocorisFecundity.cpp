@@ -15,7 +15,7 @@ PUBLISH(NesidiocorisFecundity)
 
 NesidiocorisFecundity::NesidiocorisFecundity(QString name, QObject *parent)
     : Box(name, parent) {
-    help("computes linear day-degrees");
+    Help("computes linear day-degrees");
     Input(a0).equals(0).help("a constant parameter");
     Input(a1).equals(0).help("a constant parameter");
     Input(a2).equals(0).help("a constant parameter");

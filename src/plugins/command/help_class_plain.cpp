@@ -18,7 +18,8 @@ HelpClassPlain::HelpClassPlain(Box *box)
 }
 
 QString HelpClassPlain::header() const {
-    return "\n" + _box->className() + " " + _box->help() + "\n\nInputs:\n";
+    return "\n" + _box->pluginName() + "::" + _box->className() + " " + _box->bareHelp() +
+           "\n\nInputs:\n";
 }
 
 QStringList HelpClassPlain::portLines(PortType type) const {

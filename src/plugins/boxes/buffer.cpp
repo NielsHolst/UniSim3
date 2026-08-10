@@ -18,7 +18,7 @@ PUBLISH(Buffer)
 Buffer::Buffer(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("is a first in-first out buffer");
+    Help("is a first in-first out buffer");
     Input(initial).help("Initial amount at first place in buffer");
     Input(input).help("Input to next place in buffer");
     Input(increment).help("Increment added to every place in buffer");

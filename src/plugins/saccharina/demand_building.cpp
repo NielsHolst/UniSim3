@@ -16,7 +16,7 @@ PUBLISH(DemandBuilding)
 DemandBuilding::DemandBuilding(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("computes building cost");
+    Help("computes building cost");
     Input(demandStructure).unit("g dw/m").help("Demand of structural tissue");
     Input(demandStoreC).unit("g C/m").help("Demand of carbon store");
     Input(demandStoreN).unit("g N/m").help("Demand of nitrogen store");

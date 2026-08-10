@@ -17,7 +17,7 @@ PUBLISH(LobryRossoFlandrois)
 
 LobryRossoFlandrois::LobryRossoFlandrois(QString name, Box *parent)
     : PhysiologicalTime(name, parent) {
-    help("computes non-linear development rate per day");
+    Help("computes non-linear development rate per day");
     Input(Tmin).unit("oC").help("Lower temperature threshold");
     Input(Topt).unit("oC").help("Optimal temperature");
     Input(Tmax).unit("oC").help("Upper temperature threshold");

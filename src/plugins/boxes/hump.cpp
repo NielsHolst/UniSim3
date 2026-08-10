@@ -16,7 +16,7 @@ PUBLISH(Hump)
 Hump::Hump(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("produces a hump- or ditch-shaped curve");
+    Help("produces a hump- or ditch-shaped curve");
     Input(x).help("x-value at which to calculate curve value");
     Input(x0).equals(0).help("Beginning of curve");
     Input(x1).equals(1).help("End of curve");;

@@ -1,0 +1,95 @@
+#using callosobruchus
+Simulation sim {
+  .steps = 80
+  .iterations = 3
+  Box settings {
+    &temperature = 30
+    &adultLifetime = 7 // days
+    &sexRatio = 0.5
+  }
+  FixedPreferences pref {
+    .p0 = 0.7
+    .p1 = 0.2
+  }
+  Calendar calendar {
+  }
+  Box store {
+    Stock stock {  
+      .size = 0.1 //kg
+      .undamagedTo1 = ovipositionDistribution[p0To1]
+      .undamagedTo2 = ovipositionDistribution[p0To2]
+    }
+    LobryRossoFlandrois time {
+      .T = settings[temperature]
+      .maximum = 0.0456
+      .Tmin = 8.8
+      .Topt = 34.0
+      .Tmax = 41.2
+    }
+    Stage parasitised1 {
+      .inflow = ovipositionDistribution[p0To1]
+      .timeStep = ../time[step]
+      .duration = 1.
+      .phaseOutflowProportion = if (.[value] > 0) then ovipositionDistribution[p1To2] / .[value] else 0.
+    }
+    Stage parasitised2 {
+      .inflow = ovipositionDistribution[p0To2]
+      .timeStep = ../time[step]
+      .duration = 1.
+      .phaseInflow = ../parasitised1[phaseOutflow]
+    }
+  }
+  Box callosobruchus {
+    Stage adult {
+      .initial = 5
+      .inflow = store/parasitised1[outflow] + 2*store/parasitised2[outflow]
+      .timeStep = 1
+      .duration = settings[adultLifetime] 
+    }
+    Stage oviposition {
+      .initial = ../adult[initial]
+      .inflow = ../adult[inflow]
+      .timeStep = ../adult[timeStep]
+      .duration = ../adult[duration]
+      .growthFactor = ./fecundity[value]*settings[sexRatio]
+      Fecundity fecundity {
+        .temperature = settings[temperature]
+      }
+    }
+    OvipositionDistribution ovipositionDistribution {
+      .numEggsLaid = callosobruchus/oviposition[outflow]
+      .p0 = pref[p0]
+      .p1 = pref[p1]
+      .p2 = pref[p2]
+      .parasitised0 = store/stock[seedsUndamaged]
+      .parasitised1 = store/parasitised1[value]
+      .parasitised2 = store/parasitised2[value]
+    }
+  }
+  Box outputs {
+    &pestDensity = callosobruchus/adult[value] / stock[size]
+    &day = sim[step]
+  }
+  OutputR {
+    .keepPlots = FALSE
+    PageR {
+      .xAxis = outputs[day]
+      .ncol = 1
+      PlotR {
+        .ports = callosobruchus/adult[value]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = stock[output::*]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = ovipositionDistribution[output::*] | ovipositionDistribution[numEggsLaid]
+      }
+      PlotR {
+        .layout = "merged"
+        .ports = parasitised1[value] | parasitised2[value]
+      }
+    }
+  }
+}

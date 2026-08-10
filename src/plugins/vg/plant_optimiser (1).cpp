@@ -20,7 +20,7 @@ Plant *PlantOptimiser::plant;
 PlantOptimiser::PlantOptimiser(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("optimises plant growth");
+    Help("optimises plant growth");
     Input(refTemperature).equals(25.).unit("oC").help("Reference value for comparison");
     Input(refCo2).equals(1800.).unit("ppm").help("Reference value for comparison");
     Output(growthRate).unit("g carbohydrate/m2 ground").help("Optimal carbohydrate biomass produced in this time step");

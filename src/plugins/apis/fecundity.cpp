@@ -16,7 +16,7 @@ PUBLISH(Fecundity)
 Fecundity::Fecundity(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes queen fecundity");
+    Help("computes queen fecundity");
     Input(maxFecundity).help("Max. queen fecundity (eggs per day)");
     Input(slope).help("Slope of brood number on log worker number (after Harbo 1986");
     Input(intercept).help("Intercept of brood number on log worker number (after Harbo 1986");

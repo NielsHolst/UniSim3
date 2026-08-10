@@ -17,7 +17,7 @@ PUBLISH(Poly4DevRate)
 Poly4DevRate::Poly4DevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using Poly4 (Polynomial) model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily developmental rate using Poly4 (Polynomial) model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a0).equals(3.472e+00).help("Estimate of coefficient a0)");
         Input(a1).equals(-5.624e-01).help("Estimate of coefficient a1");
@@ -32,8 +32,6 @@ void Poly4DevRate::reset() {
 }
 
 void Poly4DevRate::update() {
-    help("hourly temperature will later replace daily temp to estimate poly4 model based dev rate");
-    help("Note that input parameter must be supplied in degree Celsius for Temperature");
 //      Poly4 model as in devRate packege in R: (rT ~ a0 + a1 * T + a2 * T^2 + a3 * T^3 + a4 * T^4)
         devrate     = ((a0) +  (a1 * dailytempC) + (a2 * pow(dailytempC,2)) + (a3 * pow(dailytempC,3)) + (a4 * pow(dailytempC,4)));
 }

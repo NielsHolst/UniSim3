@@ -15,7 +15,7 @@ PUBLISH(RunningSumSteps)
 RunningSumSteps::RunningSumSteps(QString name, Box *parent)
     : RunningBase(name, parent)
 {
-    help("computes running sum by no. of steps");
+    Help("computes running sum by no. of steps");
     Input(count).equals(1).help("Number of steps to average over").unit(">0");
 }
 

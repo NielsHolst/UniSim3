@@ -16,7 +16,7 @@ PUBLISH(VectorScaled)
 VectorScaled::VectorScaled(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("scales a vector by a factor");
+    Help("scales a vector by a factor");
     Input(vector).help("Vector to be scaled");
     Input(factor).help("Scaling factor");
     Output(value).help("Scaled vector");

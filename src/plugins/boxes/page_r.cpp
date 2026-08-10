@@ -23,7 +23,7 @@ int PageR::_commonPageNumber;
 PageR::PageR(QString name, Box *parent)
     : Box(name, parent), _unresolved(true)
 {
-    help("produces a page of plots for R");
+    Help("produces a page of plots for R");
     Input(xAxis).computes("/.[step]").help("Port(s) on x-axis");
     Input(title).help("Title shown on page");
     Input(ncol).equals(-1).help("No. of columns to arrange plots in");

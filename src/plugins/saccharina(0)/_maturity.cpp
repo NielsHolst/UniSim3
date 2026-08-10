@@ -18,7 +18,7 @@ PUBLISH(Maturity)
 Maturity::Maturity(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates plant maturity as an index between 0 and 1");
+    Help("calculates plant maturity as an index between 0 and 1");
     Input(A).imports("area[value]");
     Input(a50).equals(3.).unit("dm2").help("Area at which erosion reaches 50%");
     Input(aSlope).equals(8.).help("Slope at A50");

@@ -79,9 +79,14 @@ inline bool geZero(double n, double feps = 1e-6) {
 
 // Fuzzy rounding in zero neighbourhood
 
-inline void snapToZero(double &n, double feps = 1e-6) {
+inline double snapToZero(double &n, double feps = 1e-6) {
     if (eqZero(n, feps))
         n = 0.;
+    return n;
+}
+
+inline double snapToZero(const double &n, double feps = 1e-6) {
+    return eqZero(n, feps) ? 0. : n;
 }
 
 void assureEqZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);

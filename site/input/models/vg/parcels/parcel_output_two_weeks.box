@@ -1,0 +1,31 @@
+  OutputR output {
+    .keepPlots = FALSE
+    // .scripts = c("../R/plot_two_weeks.R", script[value])
+    .scripts = "../R/plot_two_weeks.R"
+    Box balances {
+      &swSky   = budget/sky[swAbsorbedBottom] - budget/sky[swEmissionBottom]
+      &lwSky   = budget/sky[lwAbsorbedBottom] - budget/sky[lwEmissionBottom]
+      &swCover = budget/cover[swAbsorbedTop] + budget/cover[swAbsorbedBottom] - budget/cover[swEmissionTop] - budget/cover[swEmissionBottom]
+      &lwCover = budget/cover[lwAbsorbedTop] + budget/cover[lwAbsorbedBottom] - budget/cover[lwEmissionTop] - budget/cover[lwEmissionBottom]
+      &swFloor = budget/floor[swAbsorbedTop] - budget/floor[swEmissionTop] 
+      &lwFloor = budget/floor[lwAbsorbedTop] - budget/floor[lwEmissionTop]  
+    }
+    Box rad {
+      &sky   = ../balances[swSky]   + ../balances[lwSky]
+      &cover = ../balances[swCover] + ../balances[lwCover]
+      &floor = ../balances[swFloor] + ../balances[lwFloor]
+    }
+    Box sensors {
+      &pyranometer = budget/sky[swEmissionBottom] - budget/sky[swAbsorbedBottom]
+      &pyrradiometer = .[pyranometer] + budget/sky[lwEmissionBottom] - budget/sky[lwAbsorbedBottom]
+    }
+    OutputText {
+      .ports = calendar[dateTime] | sun[isDay] | scenarios[Scenario] | shelter/shading[*]
+      // | budget/BudgetLayer::*[temperature]
+      | sensors[*] 
+    }
+    OutputSelector selector {
+      .beginDateTime = global[beginDate]
+      // .period = 5
+    }
+  }

@@ -7,7 +7,6 @@
 */
 #pragma once
 #include <base/documentation.h>
-#include <base/publish.h>
 
 namespace collembola {
 

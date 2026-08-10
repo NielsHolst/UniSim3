@@ -16,7 +16,7 @@ PUBLISH(Intervention)
 Intervention::Intervention(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("scales a value by mortality");
+    Help("scales a value by mortality");
     Input(dayValue).equals(1).help("Number of Days)");
     Input(mortality).equals(0.0).help("returned mortality value");
     Input(interval).equals(4).help("intervention run every X days");

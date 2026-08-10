@@ -10,7 +10,7 @@ PUBLISH(Fibonacci)
 Fibonacci::Fibonacci(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("generates a Fibonacci sequence");
+    Help("generates a Fibonacci sequence");
     Output(value);
 }
 

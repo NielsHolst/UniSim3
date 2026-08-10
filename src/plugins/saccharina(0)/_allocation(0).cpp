@@ -18,7 +18,7 @@ PUBLISH(Allocation)
 Allocation::Allocation(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("allocates C and N supplies");
+    Help("allocates C and N supplies");
     Input(structuralProportionC).imports("/sim/structure[proportionC]");
     Input(structuralProportionN).imports("/sim/structure[proportionN]");
     Input(structuralMass).imports("structure[mass]");

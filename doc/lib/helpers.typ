@@ -1,0 +1,112 @@
+#let api = json("../generated/generated_api.json")
+#let demo-dir = "../../doc/generated/demo"
+#let demo-path(path) = demo-dir + "/" + path
+
+#let demo-image(path, args: (:)) = {
+  image(demo-path(path), ..args)
+}
+#let render-value(value) = {
+  if value == "$infinity$" {
+    $infinity$
+  } 
+  else if value == "$-infinity$" {
+    $-infinity$
+  }  
+  else {
+    raw(value)
+  }
+}
+
+#let class-label(module, class) = {
+  label(module + "::" + class)
+}
+
+#let class-info(module, class) = {
+  api.modules.at(module).classes.at(class)
+}
+
+#let inline-code(text) = {
+  let parts = text.split("`")
+
+  // An even number of parts means an unmatched backtick.
+  if calc.even(parts.len()) {
+    // Render unchanged rather than silently losing text.
+    return text
+  }
+
+  let result = []
+
+  for (index, part) in parts.enumerate() {
+    if calc.odd(index) {
+      // Text between backticks.
+      result += raw(part)
+    } else {
+      // Ordinary description text.
+      result += [#part]
+    }
+  }
+
+  result
+}
+#let parameter-table(parameters) = {
+  if parameters.len() == 0 {
+    return
+  }
+
+  table(
+    columns: (1.2fr, 1.5fr, 1fr, 3fr),
+    inset: 6pt,
+
+    [*Parameter*],
+    [*Type*],
+    [*Default*],
+    [*Description*],
+
+    ..parameters.map(p => (
+      raw(p.name),
+      raw(p.type),
+      render-value(p.default),
+      inline-code(p.description)
+    )).flatten(),
+  )
+}
+
+#let class-api(module, class) = {
+  let info = class-info(module, class)
+
+  [
+    #heading(level: 2)[Class: #class]
+    #label(module + "_" + class)
+  ]
+
+  if "inputs" in info and info.inputs.len() > 0 {
+    heading(level: 3)[Inputs]
+    parameter-table(info.inputs)
+  }
+
+  if "outputs" in info and info.outputs.len() > 0 {
+    heading(level: 3)[Outputs]
+    parameter-table(info.outputs)
+  }
+}
+
+#let code-with-link(url, label, body) = {
+  block(
+    fill: luma(245),
+    inset: 8pt,
+    radius: 4pt,
+    width: 100%,
+  )[
+    #link(url)[
+      #text(font: "DejaVu Sans Mono", fill: blue, size: 0.9em)[#label]
+    ] \
+    #raw(body)
+  ]
+}
+
+#let demo-figure(path, caption: none, args: (:)) = {
+  figure(
+    image(demo-path(path), ..args),
+    caption: caption,
+  )
+}

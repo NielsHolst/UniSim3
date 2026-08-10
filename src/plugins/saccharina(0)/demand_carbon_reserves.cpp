@@ -18,7 +18,7 @@ PUBLISH(DemandCarbonReserves)
 DemandCarbonReserves::DemandCarbonReserves(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates demand for carbon reserves (new)");
+    Help("calculates demand for carbon reserves (new)");
     Input(maxReservesProportionC).imports("reserves/carbon[maxProportion]");
     Input(reservesProportionC).imports("reserves/carbon[proportion]");
     Input(structuralMass).imports("structure[mass]");

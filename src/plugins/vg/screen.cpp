@@ -19,7 +19,7 @@ PUBLISH(Screen)
 Screen::Screen(QString name, Box *parent)
     : LayerAsInput(name, parent)
 {
-    help("holds screen radiation and heat parameters");
+    Help("holds screen radiation and heat parameters");
     Input(energySaving).unit("%").help("Documented energy saving used for calibration");
     Input(Uinsulation).equals(infinity()).unit("W/K/m2 layer").help("Insulation effect");
     Input(UinsulationEffectivity).equals(1.).unit("[0;1]").help("Effectivity of Uinsulation");

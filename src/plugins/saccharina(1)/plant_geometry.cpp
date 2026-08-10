@@ -17,7 +17,7 @@ PUBLISH(PlantGeometry)
 PlantGeometry::PlantGeometry(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models canopy dimensions");
+    Help("models canopy dimensions");
     Input(biomassStruct).imports("plant[biomassStruct]");
     Input(biomassTotal).imports("plant[biomassTotal]");
     Input(a).equals(0.330).unit("m2/g dw").help("Area-Wstruct coefficient");

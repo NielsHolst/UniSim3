@@ -17,7 +17,7 @@ PUBLISH(Briere2DevRate)
 Briere2DevRate::Briere2DevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using Briere2 model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily developmental rate using Briere2 model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(aa).equals(2.056e-04).help("Estimate of coefficient aa)");
         Input(bb).equals(1.031e+01).help("Estimate of coefficient bb");
@@ -31,8 +31,6 @@ void Briere2DevRate::reset() {
 }
 
 void Briere2DevRate::update() {
-		help("hourly temperature will later replace daily temp to estimate Briere2 model based dev rate");
-		help("Note that input parameter must be supplied in degree Celsius for Temperature");
 //      Briere2 model as in devRate packege in R: (rT ~ aa * T * (T - Tmin) * (Tmax - T)^(1/bb))
         devrate     = ((aa) *  (dailytempC) * (dailytempC - Tmin) * pow((Tmax - dailytempC),(1/bb)));
 }

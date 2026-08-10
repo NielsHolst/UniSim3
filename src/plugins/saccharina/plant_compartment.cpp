@@ -16,7 +16,7 @@ PUBLISH(PlantCompartment)
 PlantCompartment::PlantCompartment(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("models a plant compartment");
+    Help("models a plant compartment");
     Input(concC).unit("g C/g dw").help("Carbon concentration");
     Input(concN).unit("g N/g dw").help("Nitrogen concentration");
     Input(concP).unit("g P/g dw").help("Phosphorus concentration");

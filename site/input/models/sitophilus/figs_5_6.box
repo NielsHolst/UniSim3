@@ -1,0 +1,62 @@
+#using cmbp
+Simulation sim {
+  .steps = 250
+  .iterations = ./scenarios[iterations]
+  
+  Scenarios scenarios {
+    .fileName = "figs_5_6_scenarios.txt"
+  }
+  
+  Calendar calendar {
+    .begin = scenarios[StartDate]
+  }
+  
+  GrainStore store {
+    .mass = 75.0?
+    .Tmin = ./weather[Tmin]
+    .Tmax = ./weather[Tmax]
+    &gmc = ./weather[Gmc]
+    Records weather {
+      .fileName = scenarios[WeatherFile]
+    }
+  }
+  
+  Box sitophilus {
+    Briere devRate {
+    }
+    SzSurvival survival {
+    }
+    Stage egg {
+      .duration = 0.17
+      .k = 39
+      .step = devRate[step]
+    }
+    Stage larva {
+      .duration = 0.52
+      .k = 71
+      .step = devRate[step]
+    }
+    Stage pupa {
+      .duration = 0.17
+      .k = 72
+      .step = devRate[step]
+    }
+    Stage preAdult {
+      .duration = 0.17
+      .k = 26
+      .step = devRate[step]
+    }
+    Stage adult {
+      .duration = 80
+      .k = 4
+      .step = 1
+      SzFecundityScaling scaling{
+        .temperature = store[T]
+      }
+      SzGrossReproductiveRate GRR {
+      }
+      Stage oviposition {
+      }
+    }
+  }
+}

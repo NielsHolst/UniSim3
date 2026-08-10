@@ -17,7 +17,7 @@ PUBLISH(OutputSelector)
 OutputSelector::OutputSelector(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("selects what to output");
+    Help("selects what to output");
     Input(beginStep).equals(0).help("Output is written when this step is reached").unit("int");
     Input(beginDateTime).equals(QDateTime()).help("Output is written when this time point is reached (optional)").unit("DateTime");
     Input(step).imports("/.[step]");

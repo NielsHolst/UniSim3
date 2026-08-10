@@ -3,7 +3,6 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-#include <iostream>
 #include <cmath>
 #include <QString>
 #include <QTextStream>

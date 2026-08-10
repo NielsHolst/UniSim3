@@ -16,7 +16,7 @@ PUBLISH(DemandCarbonExudation)
 DemandCarbonExudation::DemandCarbonExudation(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates carbon exudation");
+    Help("calculates carbon exudation");
     Input(gamma).help("Exudation parameter (h-1)");
     Input(proportionC).imports("sim/structure[proportionC]");
     Input(structuralMass).imports("sim/structure[mass]");

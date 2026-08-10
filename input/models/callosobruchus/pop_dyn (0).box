@@ -1,0 +1,56 @@
+#using callosobruchus
+Simulation sim {
+  .steps = 90
+  Box settings {
+    &temperature = 30
+    &adultLifetime = 7 // days
+    &initialAdults = 20
+    &seedCapacity = 9
+  }
+  Calendar calendar {
+  }
+  Stock stock {  
+    .size = 0.1 //kg
+    .eggsTotal = eggsTotal[value]
+    .seedCapacity = settings[seedCapacity]
+  }
+  LobryRossoFlandrois time {
+    .T = settings[temperature]
+    .maximum = 0.0456
+    .Tmin = 8.8
+    .Topt = 34.0
+    .Tmax = 41.2
+  }
+  Stage adult {
+    .initial = settings[initialAdults]
+    .inflow = immature[outflow]
+    .timeStep = 1
+    .duration = settings[adultLifetime] 
+  }
+  Stage immature {
+    .initial = ../adult[initial] * ./fecundity[value]
+    .inflow = ../adult[inflow]   * ./fecundity[value]
+    .timeStep = ../adult[timeStep]
+    .duration = ../adult[duration]
+    .growthFactor = ./survival[value]
+    Fecundity fecundity {
+      .temperature = settings[temperature]
+    }
+    Box eggsTotal {
+      &value = ..[content] + ..[outflowTotal]
+    }
+    Survival survival {
+      .seedCapacity = settings[seedCapacity]
+      .eggsTotal = eggsTotal[value]
+      .seedsTotal = stock[seedsTotal]
+    }
+  }
+  OutputR {
+    PageR {
+      .xAxis = sim[step]
+      PlotR {
+        .ports = adult[value] | eggsTotal[value] | fecundity[value] | survival[value]
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@ PUBLISH(Growth)
 
 Growth::Growth(QString name, QObject *parent)
     : Box(name, parent) {
-    help("models coffee growth");
+    Help("models coffee growth");
     Input(temperature).imports("weather[Tavg]");
     Input(parAverage).imports("light[parShadeAvg]");
     Input(parIntercepted).imports("light[parInterceptedCoffee]");

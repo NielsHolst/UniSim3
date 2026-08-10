@@ -19,7 +19,7 @@ PesticideInducedMortality::PesticideInducedMortality(QString name, Box *parent)
 	: Box(name, parent)
 {
 
-    help("manages pesticide-induced mortality rate");
+    Help("manages pesticide-induced mortality rate");
     Input(LC50).unit("mg a.i/L").equals(0.).help("Lethal concentration that kills 50% of the population");
     Input(concentration).unit("mg a.i/L").equals(0.).help("Current pesticide concentration in the water");
     Input(slope).unit("volume/amount").equals(1.).help("Scale the specific toxicity of the simulated pesticide or sigmoidal function");

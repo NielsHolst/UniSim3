@@ -17,7 +17,7 @@ PUBLISH(SupplyCarbon)
 SupplyCarbon::SupplyCarbon(QString name, Box *parent)
     : SupplyBase(name, parent)
 {
-    help("computes photosynthetic supply of carbon");
+    Help("computes photosynthetic supply of carbon");
     Input(alpha).unit("g C/g dw/(mol PAR/m2)").help("Photosynthetic efficiency");
     Input(k).help("Canopy light extinction coefficient");
     Input(lai).unit("m2/m2").help("Leaf area index");

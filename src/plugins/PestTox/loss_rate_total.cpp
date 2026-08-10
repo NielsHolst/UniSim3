@@ -17,7 +17,7 @@ PUBLISH (LossRateTotal)
 LossRateTotal::LossRateTotal(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("manages total loss rate");
+    Help("manages total loss rate");
     Input(amount).imports("compartments/crop[load]").help("Amount from which losses are taken");
     Input(path).equals("../potential/*[finite]").help("Path to loss rates (per day)");
     Output(fractionLost).help("Fraction lost calculated from loss rates on path (per day)");

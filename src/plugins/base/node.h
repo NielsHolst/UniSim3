@@ -27,8 +27,10 @@ public:
     Node(QString name, Node *parent);
     virtual ~Node();
     void setParent(Node *parent);
+    void setPluginName(QString pluginName);
     void setClassName(QString nameSpaceName, QString className);
     void setObjectName(QString name);
+    // void setSourceCodeFilePathName(QString name);
     void setOrder(int order);
     void addAttribute(QString name, QString value);
     void removeChild(Node *child);
@@ -42,8 +44,11 @@ public:
     QString name()       const { return _objectName; }
     QString objectName() const { return _objectName; }
     QString fullName()   const { return fullName(this); }
+    QString pluginName() const { return _pluginName; }
+    // QString sourceCodeFilePathName() const { return _sourceCodeFilePathName; }
+    // QString docFilePathName() const;
 
-    static QString     fullName (const Node *node);
+    static QString fullName (const Node *node);
     template <class T=Node*> static QStringList fullNames(const QVector<const T *> &nodes);
     template <class T=Node*> static QStringList names    (const QVector<const T *> &nodes);
     template <class T=Node*> static QStringList fullNames(const QVector<      T *> &nodes);
@@ -66,7 +71,7 @@ public:
 private:
     // Data
     Pedigree _pedigree;
-    QString _objectName;
+    QString _objectName, _pluginName;
     Node *_parent;
     QVector<Node*> _children;
     int _order;

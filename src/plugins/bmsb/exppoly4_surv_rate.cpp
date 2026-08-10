@@ -17,7 +17,7 @@ PUBLISH(ExpPoly4SurvRate)
 ExpPoly4SurvRate::ExpPoly4SurvRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily survival rate using ExpPoly4 (ExpPolynomial) model; later replace daily rate to hourly rate");
+    Help("estimate the stage-specific daily survival rate using ExpPoly4 (ExpPolynomial) model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a0).equals(-1.494e+02).help("Estimate of coefficient a0)");
         Input(a1).equals(2.923e+01).help("Estimate of coefficient a1");
@@ -32,8 +32,6 @@ void ExpPoly4SurvRate::reset() {
 }
 
 void ExpPoly4SurvRate::update() {
-    help("hourly temperature will later replace daily temp to estimate exppoly4 model based surv rate");
-    help("Note that input parameter must be supplied in degree Celsius for Temperature");
 //        ExpPoly4 model as in devRate packege in R: (rT ~ a0 + a1 * T + a2 * T^2 + a3 * T^3 + a4 * T^4)
         survrate     = 1-exp((a0) +  (a1 * dailytempC) + (a2 * pow(dailytempC,2)) + (a3 * pow(dailytempC,3)) + (a4 * pow(dailytempC,4)));
 }

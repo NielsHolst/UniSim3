@@ -1,0 +1,31 @@
+  .iterations = scenarios[iterations]
+  Scenarios scenarios {
+    .fileName = "verification_scenarios.txt"
+  }
+  Box global {
+    &beginDate = scenarios[BeginDate]
+    &endDate = scenarios[EndDate]
+  }
+  Calendar calendar {
+    // Copenhagen
+    .latitude = 55.7
+    .longitude = 12.6
+    .begin = global[beginDate] - 15
+    .end = global[endDate]
+    .timeStep = 180
+    .timeUnit = "s"
+  }
+  Outdoors outdoors {
+    Records records {
+      .fileName = "../weather/DNK_Odense.txt"
+      .cycle = TRUE
+      .ignoreYear = TRUE
+    }
+    SoilTemperature soilTemperature {
+    }
+  }
+  Sun sun {
+  }
+  SunDiffuseRadiation sunDiffuseRadiation {
+    .globalRadiation = outdoors[radiation]
+  }

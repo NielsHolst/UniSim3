@@ -10,6 +10,7 @@
 #include <base/convert.h>
 #include <base/dialog_base.h>
 #include <base/environment.h>
+#include <base/mega_factory.h>
 #include <base/path.h>
 #include <base/port.h>
 #include <base/publish.h>
@@ -27,7 +28,7 @@ PUBLISH(Simulation)
 Simulation::Simulation(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("runs a simulation");
+    Help("runs a simulation");
     Input(iterations).equals(1).help("Number of iterations to run");
     Input(steps).computes("if exists(Calendar::*[steps]) then Calendar::*[steps] else 1");
     Input(stopIteration).equals(false).help("Stop running after this iteration?");
@@ -110,6 +111,7 @@ void Simulation::run() {
     executionTime = boost::numeric_cast<int>(time.elapsed());
     hasRun = true;
     Computation::changeStep(Computation::Step::Ready);
+    MegaFactory::usingPlugin(""); // forget using directive
 }
 
 void Simulation::show(QElapsedTimer time) {

@@ -18,7 +18,7 @@ public:
     void update();
 private:
     // Input
-    double a, b, c, T, sexRatio, calibration;
+    double maxFecundity, r, T, sexRatio;
     // Output
     double value;
     // Methods

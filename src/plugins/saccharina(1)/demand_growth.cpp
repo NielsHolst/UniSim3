@@ -16,7 +16,7 @@ PUBLISH(DemandGrowth)
 DemandGrowth::DemandGrowth(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates demand for structural growth");
+    Help("calculates demand for structural growth");
     Input(maxGrowthRate).equals(0.045).unit("d-1").help("Maximum relative growth rate");
     Input(massCStruct).imports("plant[massCStruct]");
     Input(propCStruct).imports("plant[propCStruct]");

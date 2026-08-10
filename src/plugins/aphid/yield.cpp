@@ -16,7 +16,7 @@ PUBLISH(Yield)
 Yield::Yield(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("estimates yield loss due to S. avenae");
+    Help("estimates yield loss due to S. avenae");
     Input(cropGrowthStage).help("Crop growth stage $(G)$").unit("Zadoks");
     Input(aphidIndex).help("Aphid density index of Entwistle-Dixon-Wratten $(I)$");
     Output(yield).help("Yield relative to uninfested crop $(Y)$").unit("[0;1]");

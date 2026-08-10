@@ -16,7 +16,7 @@ PUBLISH(DemandCarbonStructure)
 DemandCarbonStructure::DemandCarbonStructure(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates demand for structural growth");
+    Help("calculates demand for structural growth");
     Input(maxGrowthRate).unit("h-1").help("Maximum relative growth rate");
     Input(proportionC).imports("sim/structure[proportionC]");
     Input(structuralMass).imports("sim/structure[mass]");

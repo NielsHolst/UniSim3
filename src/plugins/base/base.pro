@@ -70,6 +70,7 @@ HEADERS +=  \
     mega_factory.h \
     minimise.h \
     monitor.h \
+    nbd.h \
     node.h \
     organisation.h \
     operate.h \
@@ -144,6 +145,7 @@ SOURCES +=  \
     history.cpp \
     logger.cpp \
     mega_factory.cpp \
+    nbd.cpp \
     node.cpp \
     operate.cpp \
     operator.cpp \

@@ -37,6 +37,7 @@ HEADERS +=  \
     test_import_export.h \
     test_include.h \
     test_maker.h \
+    test_nbd.h \
     test_node.h \
     test_operate.h \
     test_output_selector.h \
@@ -77,6 +78,7 @@ SOURCES +=  \
     test_import_export.cpp \
     test_include.cpp \
     test_maker.cpp \
+    test_nbd.cpp \
     test_node.cpp \
     test_operate.cpp \
     test_output_selector.cpp \

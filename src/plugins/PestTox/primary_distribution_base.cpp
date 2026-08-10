@@ -16,7 +16,7 @@ namespace PestTox {
 PrimaryDistributionBase::PrimaryDistributionBase(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages primary distribution");
+    Help("manages primary distribution");
     Input(fieldArea).unit("m2").imports("field[area]").help("Area of whole field");
     Input(doseApplied).unit("g a.i/ha").imports("applications[dose]").help("Dose of pesticide");
     Output(doseTaken).unit("g a.i/ha").help("Dose taken by this compartment");

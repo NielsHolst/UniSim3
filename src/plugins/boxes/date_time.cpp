@@ -17,7 +17,7 @@ PUBLISH(DateTime)
 DateTime::DateTime(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("constructs a datetime from a DMYHMS string, or from day, month, year, hour, minute and second");
+    Help("constructs a datetime from a DMYHMS string, or from day, month, year, hour, minute and second");
     Input(dateTimeString).unit("datetime").help("A datetime string");
     Input(day).equals(1).help("Day of month").unit("[1;31]");
     Input(month).equals(1).help("Month").unit("[1;12]");

@@ -16,7 +16,7 @@ PUBLISH(MaximumAt)
 MaximumAt::MaximumAt(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("keeps maximum value and its step");
+    Help("keeps maximum value and its step");
     Input(step).imports("/.[step]");
     Input(track).help("Value to track for max value");
     Output(at).help("Step in which maximum value was attained");
