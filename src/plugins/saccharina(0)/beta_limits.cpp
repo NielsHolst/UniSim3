@@ -17,7 +17,7 @@ PUBLISH(BetaLimits)
 BetaLimits::BetaLimits(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates beta limits from Pmax and g");
+    help("calculates beta limits from Pmax and g");
     Input(g).imports("parameters/g[value]");
     Input(kg).imports("parameters[kg] ").unit("-").help("Relative faster growth rate of young plants");
 

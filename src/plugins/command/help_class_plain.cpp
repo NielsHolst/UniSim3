@@ -18,7 +18,7 @@ HelpClassPlain::HelpClassPlain(Box *box)
 }
 
 QString HelpClassPlain::header() const {
-    return "\n" + _box->pluginName() + "::" + _box->className() + " " + _box->bareHelp() +
+    return "\n" + _box->pluginName() + "::" + _box->className() + " " + _box->help() +
            "\n\nInputs:\n";
 }
 

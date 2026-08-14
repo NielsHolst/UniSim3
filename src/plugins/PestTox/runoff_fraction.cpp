@@ -17,7 +17,7 @@ PUBLISH (RunoffFraction)
 RunoffFraction::RunoffFraction(QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("manages runoff fraction");
+    help("manages runoff fraction");
     Input(Q).unit("mm").equals(5.).help("Runoff amount");
     Input(P).unit("mm").equals(1.).help("Daily rainfall");
 

@@ -17,7 +17,7 @@ PUBLISH(Combinations)
 
 Combinations::Combinations(QString name, Box *parent)
     : Box(name, parent) {
-    Help("produces all combinations of child values");
+    help("produces all combinations of child values");
     Output(iterations).noClear().help("Total number of combinations");
 }
 

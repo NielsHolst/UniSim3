@@ -17,7 +17,7 @@ PUBLISH(AphidOffspring)
 AphidOffspring::AphidOffspring(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("splits new offspring into apterous and alate morphs");
+    help("splits new offspring into apterous and alate morphs");
     Input(offspringTotal).help("Total no. of offspring produced by susceptible aphids $(n_{total})$").unit("per tiller");
     Input(aphidDensity).help("Aphid density $(N)$").unit("per tiller");
     Input(cropGrowthStage).help("Crop growth stage $(G)$").unit("Zadoks");

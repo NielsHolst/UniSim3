@@ -11,7 +11,7 @@ namespace base {
 Documentation::Documentation(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("provides documentation");
+    Doc("base::Documentation provides documentation");
     Input(title);
     Input(authorNames);
     Input(authorInstitutes);

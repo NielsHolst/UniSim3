@@ -15,7 +15,7 @@ PUBLISH(Tuta)
 
 Tuta::Tuta(QString name, QObject *parent)
     : Box(name, parent) {
-    Help("computes linear day-degrees");
+    help("computes linear day-degrees");
     Input(a0).equals(0).help("a constant parameter");
     Input(a1).equals(0).help("a constant parameter");
     Input(a2).equals(0).help("a constant parameter");

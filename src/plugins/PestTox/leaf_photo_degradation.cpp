@@ -20,7 +20,7 @@ PUBLISH (LeafPhotoDegradation)
 LeafPhotoDegradation::LeafPhotoDegradation(QString name, Box *parent)
     : LossRate(name, parent), _freeRadicalsTable(nullptr)
 {
-    Help("manages fate of pesticide on crop or leaf surface due to photo-degradation");
+    help("manages fate of pesticide on crop or leaf surface due to photo-degradation");
     Input(dayOfYear).imports("calendar[dayOfYear]");
     Input(latitude).imports("calendar[latitude]");
     Input(fileName).help("File with table of (Julian day,latitude)-indexed free radicals concentration");

@@ -16,7 +16,7 @@ namespace PestTox {
 LossRate::LossRate(QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("manages instantaneous loss rate");
+    help("manages instantaneous loss rate");
     Output(instantaneous).unit("per s").help("Instantaneous loss rate");
     Output(finite).unit("per day").help("Finite loss rate");
 }

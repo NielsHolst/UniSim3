@@ -15,7 +15,7 @@ PUBLISH(Log10)
 Log10::Log10(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("computes log10(x)");
+    help("computes log10(x)");
     Input(x).equals(1).help("Input value");
     Output(value).help("Output value");
 }

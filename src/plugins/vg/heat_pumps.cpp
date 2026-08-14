@@ -19,7 +19,7 @@ PUBLISH(HeatPumps)
 HeatPumps::HeatPumps(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("sums heat pump outputs");
+    help("sums heat pump outputs");
     Input(maxCoolingLoads    ).imports("./*[maxCoolingLoad]");
     Input(powerUsePumps      ).imports("./*[powerUse]");
     Input(coolingPumps       ).imports("./*[cooling]");

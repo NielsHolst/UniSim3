@@ -18,7 +18,7 @@ PUBLISH (TopsoilDegradation)
 TopsoilDegradation::TopsoilDegradation(QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("manages fate of pesticide in the topsoil");
+    help("manages fate of pesticide in the topsoil");
     Input(inflow).unit("g a.i/ha").equals(0.).help("Inflow as pesticide deposition in the soil");
     Input(DT50).unit("day").equals(10.).help("Biodegradation half-life");
     Input(Sp).equals(0.).help("Soil porosity");

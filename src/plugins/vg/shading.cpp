@@ -17,7 +17,7 @@ PUBLISH(Shading)
 Shading::Shading(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models reflection caused by whitening");
+    help("models reflection caused by whitening");
     Input(swReflectivities).imports("./*[swReflectivity]");
     Input(lwReflectivities).imports("./*[lwReflectivity]");
     Input(states).imports("./*[state]");

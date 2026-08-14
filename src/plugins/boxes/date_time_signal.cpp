@@ -16,9 +16,7 @@ PUBLISH(DateTimeSignal)
 
 DateTimeSignal::DateTimeSignal(QString name, Box *parent)
     : BaseSignal(name, parent){
-    Help("sets a signal according to date (ignoring year) and time of day");
-
-    dialog().information("TEST DateTimeSignal: " + className(Namespace::Include));
+    Doc("boxes::DateTimeSignal sets a signal according to date (ignoring year) and time of day");
     Input(currentDateTime).imports("calendar[dateTime]");
     Input(beginDate).equals(BareDate(1,1)).help("The beginning of the date interval");
     Input(endDate).equals(BareDate(12,31)).help("The end of the date interval");

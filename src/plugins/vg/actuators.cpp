@@ -17,7 +17,7 @@ PUBLISH(Actuators)
 Actuators::Actuators(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("contains sub-models for actuators");
+    help("contains sub-models for actuators");
 }
 
 void Actuators::amend() {

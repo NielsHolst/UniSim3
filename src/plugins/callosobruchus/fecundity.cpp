@@ -13,7 +13,7 @@ PUBLISH(Fecundity)
 Fecundity::Fecundity(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models female life-time fecundity");
+    help("models female life-time fecundity");
     Input(sexRatio).equals(0.5).help("Proportion of females");
     Input(temperature).unit("oC").help("Store temperature");
     Input(slope).equals(1.279).unit("eggs per oC").help("Fecundity response on temperature");

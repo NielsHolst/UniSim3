@@ -19,7 +19,7 @@ PUBLISH(CanopyPhotosynthesis)
 CanopyPhotosynthesis::CanopyPhotosynthesis(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes canopy photosynthetic rate");
+    help("computes canopy photosynthetic rate");
     Input(lai).imports("/crop[lai]",CA);
     Input(leafAn).imports("./*/leafPhotosynthesis[An]",CA);
     Input(leafAg).imports("./*/leafPhotosynthesis[Ag]",CA);

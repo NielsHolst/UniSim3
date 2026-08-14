@@ -16,7 +16,7 @@ PUBLISH(Plant)
 Plant::Plant(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("keeps tracks of plant biomass and reserves");
+    help("keeps tracks of plant biomass and reserves");
     Input(optCConc).equals(0.35).unit("g C/g dw").help("Optimum total biomass carbon concentration");
     Input(optNConc).equals(0.05).unit("g C/g dw").help("Optimum total biomass nitrogen concentration");
     Input(propCStruct).imports("proportions[propCStruct]").unit("g C/g dw").help("Proportion of carbon in the structural biomass");

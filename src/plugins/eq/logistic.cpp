@@ -15,7 +15,7 @@ PUBLISH(Logistic)
 Logistic::Logistic(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("computes logistic growth in population density");
+    help("computes logistic growth in population density");
     Input(x).help("Population density");
     Input(r).help("Intrinsic rate of increase");
     Input(K).help("Carrying capacity");

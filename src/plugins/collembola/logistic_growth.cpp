@@ -18,7 +18,7 @@ PUBLISH(LogisticGrowth)
 LogisticGrowth::LogisticGrowth(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models logistic growth");
+    help("models logistic growth");
     Input(r).equals(0.02).unit("per day").help("Exponential growth rate");
     Input(K).equals(50.).unit("per km2").help("Carrying capacity");
     Input(N0).equals(3.5).unit("per km2").help("Initial density");

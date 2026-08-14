@@ -16,7 +16,7 @@ PUBLISH(FoodWebCalcPredatorPrey)
 
 FoodWebCalcPredatorPrey::FoodWebCalcPredatorPrey(QString name, Box *parent)
     : FoodWebCalcBase(name, parent) {
-    Help("computes food web acquisition among Predator/Prey objects");
+    help("computes food web acquisition among Predator/Prey objects");
 }
 
 void FoodWebCalcPredatorPrey::amend() {

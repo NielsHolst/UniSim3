@@ -13,7 +13,7 @@ template <class X, class Limits=X> class OnOffBase : public base::Box
 {
 public:
     OnOffBase(QString name, Box *parent) : Box(name, parent) {
-        Help("swithes on inside [xOn,xOff] interval");
+        help("swithes on inside [xOn,xOff] interval");
         Input(x).help("x-value at which to calculate value");
         Input(xOn).help("Lower threshold");
         Input(xOff).help("Upper threshold");

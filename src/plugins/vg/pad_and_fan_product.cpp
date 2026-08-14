@@ -17,7 +17,7 @@ PUBLISH(PadAndFanProduct)
 PadAndFanProduct::PadAndFanProduct(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("holds the parameters of a pad and fan product");
+    help("holds the parameters of a pad and fan product");
 
     Input(coolingEfficiency).equals(0.8).help("Efficiency of reaching wet-bulb temperature").unit("[0;1]");
     Input(powerUseMax).equals(4.).help("Power at `FlowRateMax`").unit("kW");

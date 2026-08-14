@@ -18,7 +18,7 @@ PUBLISH(AphidNetReproduction)
 AphidNetReproduction::AphidNetReproduction(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes net reproduction capacity for S. avenae");
+    help("computes net reproduction capacity for S. avenae");
     Input(R0opt).equals(51.6).help("Optimum net reproduction $(R_0^{opt})$").unit("per capita");
     Input(Tmin).equals(3).help("Minimum temperature under which no reproduction occur $(T_{min})$").unit("oC");
     Input(Tmax).equals(30).help("Maximum temperature over which no reproduction occur anymore $(T_{max})$").unit("oC");

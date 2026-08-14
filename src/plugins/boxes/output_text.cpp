@@ -16,7 +16,7 @@ PUBLISH(OutputText)
 OutputText::OutputText(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("defines output written to text file");
+    help("defines output written to text file");
     Input(ports).help("Path to port(s) to output");
 }
 

@@ -21,7 +21,7 @@ PUBLISH(Outdoors)
 Outdoors::Outdoors(QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("delivers readings of outdoors weather");
+    help("delivers readings of outdoors weather");
     Input(co2).equals(400.).help("Outdoors CO2 concentration").unit("ppm");
     Input(temperature).imports("./records[Tair]").help("Outdoors ambient temperature").unit("oC");
     Input(rh).imports("./records[Rhair]").help("Outdoors ambient relative humidity").unit("[0;100]");

@@ -17,7 +17,7 @@ PUBLISH(Briere2DevRate)
 Briere2DevRate::Briere2DevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the stage-specific daily developmental rate using Briere2 model; later replace daily rate to hourly rate");
+    help("estimate the stage-specific daily developmental rate using Briere2 model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(aa).equals(2.056e-04).help("Estimate of coefficient aa)");
         Input(bb).equals(1.031e+01).help("Estimate of coefficient bb");

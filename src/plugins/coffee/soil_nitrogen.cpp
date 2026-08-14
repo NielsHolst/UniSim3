@@ -15,7 +15,7 @@ PUBLISH(SoilNitrogen)
 
 SoilNitrogen::SoilNitrogen(QString name, QObject *parent)
     : Box(name, parent) {
-    Help("maintains mineral soil nitrogen");
+    help("maintains mineral soil nitrogen");
     Input(initial).equals(0.001).unit("kg N/m2").help("Initial mineral soil nitrogen");
     Input(fertilisation).equals(0.).unit("kg N/m2");
     Input(mineralisation).equals(0.).unit("kg N/m2");

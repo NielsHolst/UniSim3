@@ -18,7 +18,7 @@ PUBLISH(CadaverConversion)
 CadaverConversion::CadaverConversion(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("calculates the number of cadaver units based on the life stage of the aphid when becoming a cadaver");
+    help("calculates the number of cadaver units based on the life stage of the aphid when becoming a cadaver");
     Input(succumbedApterousNymphs).help("New apterous nymph cadavers").unit("per tiller");
     Input(succumbedAlateNymphs).help("New alate nymph cadavers").unit("per tiller");
     Input(succumbedApterousAdults).help("New apterous adult cadavers").unit("per tiller");

@@ -17,7 +17,7 @@ PUBLISH(ShadingAgent)
 ShadingAgent::ShadingAgent(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models reflection caused by whitening");
+    help("models reflection caused by whitening");
     Input(swReflectivity).help("Short-wave reflectivity potentially added to cover").unit("[0;1]");
     Input(lwReflectivity).help("Long-wave reflectivity potentially added to cover").unit("[0;1]");
     Input(state).help("State of shading agent").unit("[0;1]");

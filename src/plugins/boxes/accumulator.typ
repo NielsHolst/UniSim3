@@ -15,10 +15,25 @@ raw("// accumulator1.box"),
     .begin = 01/05/2009
     .end   = 30/09/2009
   }
+  Records weather {
+    .fileName = \"weather/flakkebjerg 2009.txt\"
+  }
+  Accumulator dd18 {
+    .change = if (weather[Tavg] > 18) then weather[Tavg] − 18 else 0
+  }
+  OutputR {
+    PageR {
+      .xAxis = calendar[date]
+      PlotR {
+        .layout = \"merged\"
+        .ports = weather[Tavg] | dd18[change] | dd18[value]
+      }
+    }
+  }
 }"
 )
 
-Note that in the output a port named value is by default labelled after its parent (here dd18):
+Note that in the output, if a port is named "value" then it is by default labelled after its parent name (here "dd18"):
 #demo-figure(
   "accumulator/accumulator1.png",
   caption: [Accumulator example],

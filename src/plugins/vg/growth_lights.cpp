@@ -19,7 +19,7 @@ PUBLISH(GrowthLights)
 GrowthLights::GrowthLights(QString name, Box *parent)
     : LayerAsOutput(name, parent)
 {
-    Help("sums power use and radiation from growth light");
+    help("sums power use and radiation from growth light");
     Input(parEmissionBottomLights).imports("./*[parEmissionBottom]");
     Input(swEmissionBottomLights).imports("./*[swEmissionBottom]");
     Input(lwEmissionBottomLights).imports("./*[lwEmissionBottom]");

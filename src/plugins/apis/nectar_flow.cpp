@@ -17,7 +17,7 @@ PUBLISH(NectarFlow)
 NectarFlow::NectarFlow(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("yields current nectar flow available from flowers");
+    help("yields current nectar flow available from flowers");
     Input(minFlow).help("Minimum nectar flow (ml/h)");
     Input(maxFlow).help("Maximum nectar flow (ml/h)");
     Input(beginDate).equals(QDate(anyYear(), 1, 1));

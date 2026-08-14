@@ -58,6 +58,7 @@ private:
     // Data
     OutputFileStream _jsonStream, _typStream;
     QString _currentModule, _currentClass;
+    //QStringList _currentFootnotes;
 };
 
 }

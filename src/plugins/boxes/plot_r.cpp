@@ -19,7 +19,7 @@ PUBLISH(PlotR)
 PlotR::PlotR(QString name, Box *parent)
     : Box(name, parent), _unresolved(true)
 {
-    Help("produces an R plot");
+    help("produces an R plot");
     Input(ports).help("Port(s) on y-axis");
     Input(layout).equals("facetted").help("Either \"merged\" or \"facetted\"");
     Input(type).equals("default").help("Type of plot (default|density|histogram(nbins)|SobolConvergence|SobolIndices)");

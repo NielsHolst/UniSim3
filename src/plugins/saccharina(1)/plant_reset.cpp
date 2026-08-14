@@ -16,7 +16,7 @@ PUBLISH(PlantReset)
 PlantReset::PlantReset(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("resets plant biomass and reserves");
+    help("resets plant biomass and reserves");
     Input(biomassInit).equals(0.1).unit("g dw/m").help("Initial total biomass");
     Input(concCInit).equals(0.3).unit("g C/g dw").help("Initial total biomass carbon concentration");
     Input(concNInit).equals(0.02).unit("g N/g dw").help("Initial total biomass nitrogen concentration");

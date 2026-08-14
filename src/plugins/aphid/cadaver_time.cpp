@@ -18,7 +18,7 @@ PUBLISH(CadaverTime)
 CadaverTime::CadaverTime(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes day-degree time step accelerated by high RH");
+    help("computes day-degree time step accelerated by high RH");
     Input(isSporulating).help("Are cadavers sporulating?").unit("boolean");
     Input(timeStep).help("Time step $(\\tau)$").unit("DD");
     Input(rhAccelaration).help("Acceleration factor above RH threshold $(h)$").unit("-");

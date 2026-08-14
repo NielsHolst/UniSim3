@@ -16,7 +16,7 @@ PUBLISH(Fsalinity)
 Fsalinity::Fsalinity(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates the effect of salinity on growth rate");
+    help("calculates the effect of salinity on growth rate");
     Input(S).imports("env[S]").unit("PSU").help("Environmental salinity level");
     Output(value).unit("[0;1]").help("Growth factor adjustment for salinity");
 }

@@ -46,8 +46,9 @@ private:
     Expression
         _expression;        // Any path operands have been replaced with port pointers, when the expression was closed
     QString
-        _outputName;        // Unique name labelling of the column for this port in the output text file;
+        _outputName,        // Unique name labelling of the column for this port in the output text file;
                             // empty if not included in output
+        _parentClassName;   // Name of the parent class (with namespace) that declared this port
     QVector<Port *>
         _exportPorts;       // Ports which imports this port
     Caller _importCaller;   // Latest object calling for an import of this port (for error message)
@@ -60,6 +61,7 @@ public:
     Port& acceptNull();
     Port& unit(QString value);
     Port& help(QString value);
+    Port& parentClassName(QString name);
     Port& status(PortStatus value);
     void outputName(QString name);
 

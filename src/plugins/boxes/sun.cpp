@@ -23,7 +23,7 @@ PUBLISH(Sun)
 Sun::Sun(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes sun-earth astronomy");
+    help("computes sun-earth astronomy");
     Input(latitude).imports("calendar[latitude]");
     Input(longitude).imports("calendar[longitude]");
     Input(dateTime).imports("calendar[dateTime]");

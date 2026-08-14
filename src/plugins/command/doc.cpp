@@ -70,19 +70,15 @@ void doc::writeTypeScript() {
             QString moduleClassName = factory->id() + "::" + className;
             Box *box = MegaFactory::create<Box>(moduleClassName, "dummy");
             if (box) {
-                QFileInfo source = QFileInfo(box->sourceCodeFilePathName());
-                source = QFileInfo(source.dir().filePath(source.completeBaseName() + ".typ"));
                 _typStream << "#class-api("
                            << "\"" << moduleName << "\", "
                            << "\"" << className << "\")\n";
+                QFileInfo source = QFileInfo(box->sourceCodeFilePathName());
+                source = QFileInfo(source.dir().filePath(source.completeBaseName() + ".typ"));
                 if (source.exists()) {
-                    _typStream << "#include \"../../src/plugins/"
-                               << moduleName << "/"
-                               << source.fileName() << "\"\n";
-                    _typStream << "TEST class "
-                               << box->className(Namespace::Include) << "\n// "
-                               << box->sourceCodeFilePathNames().join("\n// ")
-                               << "\n";
+                    int n = QString("C:/Work/QDev/UniSim3").size();
+                    _typStream << "#include "
+                               << "\"" << source.canonicalFilePath().mid(n) << "\"\n";
                 }
             }
         }
@@ -127,15 +123,23 @@ void doc::writeClasses(FactoryPlugIn *factory) {
 
 void doc::writeClass(FactoryPlugIn *factory, QString className) {
     const int tab = 10;
+    // _currentFootnotes.clear();
     Box *box = MegaFactory::create<Box>(factory->id() + "::" + className, "dummy");
     if (box) {
         _jsonStream << nameValue("id", _currentModule + "::" + className, tab) << ",\n"
-                << nameValue("description", escChars(box->bareHelp()), tab) << ",\n";
+                << nameValue("description", escChars(box->help()), tab) << ",\n";
 
         _jsonStream << label("inputs", tab) << "[";
         writePorts(box, PortType::Input);
         _jsonStream << indent(tab) + "],\n";
-
+        // if (!_currentFootnotes.isEmpty()) {
+        //     _jsonStream << indent(tab) << "#text(size: 10pt)[\n";
+        //     int i = 0;
+        //     for (const QString &footnote: std::as_const(_currentFootnotes)) {
+        //         _jsonStream << indent(tab) << QChar('a' + i++) << ") " + footnote + "\n";
+        //     }
+        //     _jsonStream << indent(tab) << "]\n";
+        // }
 
         _jsonStream << label("outputs", tab) << "[";
         writePorts(box, PortType::Output);
@@ -178,11 +182,19 @@ void doc::writePort(const Port *port) {
             value = "$infinity$";
     }
 
+    QString defaultValue = escChars(value);
+    // const bool createFootnote = (defaultValue.size() > 12);
+    // if (createFootnote) {
+    //     QString letter = QChar('a' + (int) _currentFootnotes.size());
+    //     _currentFootnotes.push_back(defaultValue);
+    //     defaultValue = letter + ")";
+    // }
+
     _jsonStream << indent(tab - 2) << "{\n"
             << nameValue("id", _currentModule + "::" + _currentClass + "::" + port->name(), tab) << ",\n"
             << nameValue("name", port->name(), tab) << ",\n"
             << nameValue("type", port->value().typeName(), tab) << ",\n"
-            << nameValue("default", escChars(value), tab) << ",\n"
+            << nameValue("default", defaultValue, tab) << ",\n"
             << nameValue("description", escChars(port->help()), tab) << "\n"
             << indent(tab - 2) << "}";
 }

@@ -17,7 +17,7 @@ PUBLISH(EnergySaving)
 EnergySaving::EnergySaving(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("looks up % energy saving of a screen product");
+    help("looks up % energy saving of a screen product");
     Input(screenName).help("Name of screen product");
     Output(value).unit("%").help("Documented energy saving used for calibration");
 }

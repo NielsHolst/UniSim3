@@ -15,7 +15,7 @@ PUBLISH(Computation)
 
 Computation::Computation(QString name, Box *parent)    : Box(name, parent)
 {
-    Help("provides information on the computation schedule");
+    help("provides information on the computation schedule");
     Output(step).help("Name of current computation step");
     updateStep();
 }

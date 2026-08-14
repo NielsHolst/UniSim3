@@ -21,7 +21,7 @@ namespace vg {
 AverageShelterLayer::AverageShelterLayer(QString name, Box *parent)
     : LayerAsOutput(name, parent)
 {
-    Help("computes average parameters for covers and screens");
+    help("computes average parameters for covers and screens");
     Input(areas).imports("shelter/faces/*[area]");
     Input(swWeights).imports("shelter/faces/*[swWeight]");
     Input(lwWeights).imports("shelter/faces/*[lwWeight]");

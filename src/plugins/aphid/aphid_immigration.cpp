@@ -18,7 +18,7 @@ PUBLISH(AphidImmigration)
 AphidImmigration::AphidImmigration(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes daily immigration");
+    help("computes daily immigration");
     Input(cropGrowthStage).help("Current crop growth stage").unit("Zadoks");
     Input(fromCropGrowthStage).help("Immigration begins as this growth stage").equals(31).unit("Zadoks");
     Input(toCropGrowthStage).help("Immigration ends as this growth stage").equals(80).unit("Zadoks");

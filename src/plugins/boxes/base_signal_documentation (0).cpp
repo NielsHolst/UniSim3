@@ -15,7 +15,7 @@ PUBLISH(BaseSignalDocumentation)
 BaseSignalDocumentation::BaseSignalDocumentation(QString name, Box *parent)
     : BaseSignal(name, parent)
 {
-    Help("is a base class for setting signals").documentClassName("BaseSignal");
+    help("is a base class for setting signals").documentClassName("BaseSignal");
 }
 
 bool BaseSignalDocumentation::computeFlag() {

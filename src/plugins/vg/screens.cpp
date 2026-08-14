@@ -20,7 +20,7 @@ PUBLISH(Screens)
 Screens::Screens(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("holds Screen children");
+    help("holds Screen children");
 }
 
 void Screens::amend() {

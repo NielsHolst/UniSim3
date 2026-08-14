@@ -16,7 +16,7 @@ PUBLISH(ControlledEnvironmentChapman)
 ControlledEnvironmentChapman::ControlledEnvironmentChapman(QString name, QObject *parent)
     : ControlledEnvironmentBase(name, parent)
 {
-    Help("calculates area loss by erosion");
+    help("calculates area loss by erosion");
     Input(preIrradiation).unit("micromole PAR/m2/s").help("Pre-treatmeant Irradiation");
     Input(preNitrogen).unit("mmol N/L").help("Pre-treatmeant water nitrogen");
     Input(startOfTreatment).unit("h").help("Starting time of treatment");

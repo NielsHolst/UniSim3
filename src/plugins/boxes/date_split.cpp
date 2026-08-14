@@ -20,7 +20,7 @@ PUBLISH(DateSplit)
 DateSplit::DateSplit(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("splits a date into day, month and year");
+    help("splits a date into day, month and year");
     Input(date).help("The date to split");
     Output(day).help("Day of month");
     Output(month).help("Month");

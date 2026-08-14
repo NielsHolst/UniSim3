@@ -15,7 +15,7 @@ PUBLISH(Sah)
 
 Sah::Sah(QString name, Box *parent)
     : Box(name, parent) {
-    Help("computes saturated absolute humidity");
+    help("computes saturated absolute humidity");
     Input(temperature).unit("oC").help("Temperature");
     Input(value).unit("kg/m3").help("Saturated absolute humidity");
 }

@@ -17,7 +17,7 @@ PUBLISH(SupplyNitrogen)
 SupplyNitrogen::SupplyNitrogen(QString name, Box *parent)
     : SupplyBase(name, parent)
 {
-    Help("computes uptake supply of nitrogen");
+    help("computes uptake supply of nitrogen");
     Input(beta).unit("g N/g dw/molar N").help("Nitrogen uptake rate");
     Input(area).unit("m2/m").help("Leaf area");
     Input(waterN).unit("molar N").help("Water nitrogen concentration");

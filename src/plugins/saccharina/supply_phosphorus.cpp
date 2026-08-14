@@ -17,7 +17,7 @@ PUBLISH(SupplyPhosphorus)
 SupplyPhosphorus::SupplyPhosphorus(QString name, Box *parent)
     : SupplyBase(name, parent)
 {
-    Help("computes uptake supply of phosphorus");
+    help("computes uptake supply of phosphorus");
     Input(gamma).unit("g P/g dw/molar P").help("Phosphorus uptake rate");
     Input(area).unit("m2/m").help("Leaf area");
     Input(waterP).unit("molar P").help("Water phosphorus concentration");

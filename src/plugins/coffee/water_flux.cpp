@@ -15,7 +15,7 @@ PUBLISH(WaterFlux)
 
 WaterFlux::WaterFlux(QString name, QObject *parent)
     : Box(name, parent) {
-    Help("models water flux");
+    help("models water flux");
     Input(transpirationCoef).equals(7.1).unit("mm/d").help("Transpiration coefficient");
     Input(rootDepth).imports("coffee[rootDepth]");
     Input(potEvaporation).unit("mm/d").help("Potential evaporation");

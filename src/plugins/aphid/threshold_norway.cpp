@@ -16,7 +16,7 @@ PUBLISH(ThresholdNorway)
 ThresholdNorway::ThresholdNorway(QString name, Box *parent)
     : ThresholdBase(name, parent)
 {
-    Help("evaluates aphid damage threshold used in Norway (VIPS, Klingen 2008");
+    help("evaluates aphid damage threshold used in Norway (VIPS, Klingen 2008");
 }
 
 void ThresholdNorway::update() {

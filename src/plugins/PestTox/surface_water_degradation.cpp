@@ -19,7 +19,7 @@ PUBLISH (SurfaceWaterDegradation )
 SurfaceWaterDegradation ::SurfaceWaterDegradation (QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("manages fate of pesticide in surface water");
+    help("manages fate of pesticide in surface water");
     Input(inflow).unit("g a.i/ha").equals(0.).help("Inflow as runoff from the field");
     Input(inflow2).unit("g a.i/ha").equals(0.).help("Inflow as spray drift off-field edge");
     Input(DT50).unit("day").equals(4.5).help("Biodegradation half-life");

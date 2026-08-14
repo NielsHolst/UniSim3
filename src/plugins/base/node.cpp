@@ -25,7 +25,8 @@ Node::Node(QString name, Node *parent)
 
 Node::~Node() {
     _current = nullptr;
-    for (auto child : _children)
+
+    for (auto child : std::as_const(_children))
         delete child;
     _children.clear();
 }
@@ -70,9 +71,19 @@ void Node::setObjectName(QString name) {
     _objectName = name;
 }
 
-// void Node::setSourceCodeFilePathName(QString name) {
-//     _sourceCodeFilePathName = name;
-// }
+void Node::setDoc(QString doc) {
+    auto pos = doc.indexOf(" ");
+    QString qualifiedName = doc.first(pos);
+    QStringList parts = qualifiedName.split("::");
+    if (!qualifiedName.contains("::") || parts.size() > 2)
+        ThrowException("Documentation must begin with a qualified class name (<namespace>::<classname>)").value(doc).context(this);
+    setClassName(parts.at(0), parts.at(1));
+    _doc = doc.mid(pos + 1);
+}
+
+void Node::setSourceCodeFilePathName(QString name) {
+    _sourceCodeFilePathNames.push_front(name);
+}
 
 void Node::setPluginName(QString pluginName) {
     _pluginName = pluginName;
@@ -102,14 +113,6 @@ void Node::enumerate(int &i) {
     _order = i++;
 }
 
-// QString Node::docFilePathName() const {
-//     QFileInfo fileInfo = QFileInfo(sourceCodeFilePathName());
-//     QString path = fileInfo.filePath(),
-//         baseName = fileInfo.baseName(),
-//         filePathName = path + "/" + baseName + ".typ";
-//     return QFileInfo(filePathName).exists() ? filePathName : "";
-// }
-
 QString Node::fullName(const Node *node) {
     QStringList names;
     QString portName("");
@@ -134,13 +137,17 @@ QString Node::className(Namespace ns) const {
             _pedigree.last().toText(ns);
 }
 
+QString Node::sourceCodeFilePathName() const {
+    return _sourceCodeFilePathNames.isEmpty() ? "" : QFileInfo(_sourceCodeFilePathNames.first()).canonicalFilePath();
+}
+
 QString Node::Type::toText(Namespace ns) const {
     return (ns == Namespace::Include) ? (namespaceName + "::" + className) : className;
 }
 
 QString Node::pedigreeAsString(Namespace ns) const {
     QStringList list;
-    for (auto type : _pedigree)
+    for (const auto &type : _pedigree)
         list << type.toText(ns);
     return list.join(" -> ");
 }
@@ -167,7 +174,7 @@ bool Node::isType(QString name) const {
 
 template <> QVector<Box*> Node::children() {
     QVector<Box*> result;
-    for (auto child : _children) {
+    for (auto &child : _children) {
         Box* res = dynamic_cast<Box*>(child);
         if (res) result << res;
     }

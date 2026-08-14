@@ -14,7 +14,7 @@ PUBLISH(ImmigrantOviposition)
 ImmigrantOviposition::ImmigrantOviposition(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("computes oviposition rate of immigrant BPH");
+    help("computes oviposition rate of immigrant BPH");
     Input(immigrants).imports("environment[Immigrants]").help("Number of immigrants present");
     Input(vegetative).imports("environment[Vegetative]");
     Input(fecundity).help("Daily no. of eggs laid per immigrant");

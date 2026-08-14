@@ -22,7 +22,7 @@ PUBLISH(Calibration)
 Calibration::Calibration(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates deviation from observations");
+    help("calculates deviation from observations");
     Input(obsFileName).help("Name of file with observations");
     Input(date).imports("calendar[date]");
     Input(area).imports("area[value]");

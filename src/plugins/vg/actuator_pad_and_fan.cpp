@@ -19,7 +19,7 @@ PUBLISH(ActuatorPadAndFan)
 ActuatorPadAndFan::ActuatorPadAndFan(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models a pad-and-fan cooling system");
+    help("models a pad-and-fan cooling system");
     Input(productName).help("Name of product holding pad and fan parameters");
     Input(number).equals(1).help("Number of pad and fan units");
     Input(state).help("Running state relative to full effect").unit("[0;1]");

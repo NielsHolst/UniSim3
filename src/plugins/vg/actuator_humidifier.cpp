@@ -19,7 +19,7 @@ PUBLISH(ActuatorHumidifier)
 ActuatorHumidifier::ActuatorHumidifier(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models a humidifier");
+    help("models a humidifier");
     Input(productName).help("Name of product holding humidifier parameters");
     Input(number).unit("int").help("Number of humidifiers installed");
     Input(state).equals(1.).help("Running state relative to full effect").unit("[0;1]");

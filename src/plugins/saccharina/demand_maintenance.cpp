@@ -16,7 +16,7 @@ PUBLISH(DemandMaintenance)
 DemandMaintenance::DemandMaintenance(QString name, Box *parent)
     : Density(name, parent)
 {
-    Help("computes maintenance respiration");
+    help("computes maintenance respiration");
     Input(biomass).unit("g dw/m").help("Total dry weight");
     Input(T).unit("oC").help("Temperature");
     Input(Q10).equals(1.05).help("Temperature response");

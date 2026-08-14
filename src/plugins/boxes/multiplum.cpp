@@ -15,7 +15,7 @@ PUBLISH(Multiplum)
 Multiplum::Multiplum(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes multiplum of factors");
+    help("computes multiplum of factors");
     Input(factors).help("Input factors");
     Output(value).help("The multiplum");
 }

@@ -18,7 +18,7 @@ PUBLISH(HoneyDemandRespiration)
 HoneyDemandRespiration::HoneyDemandRespiration(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("computes honey demand for adult respiration");
+    help("computes honey demand for adult respiration");
     Input(workers).imports("houserkeeper[number]|forager[number]").transform(Sum).help("Number of workers");
     Input(respirationRate).equals(7).help("Honey used for worker bee respiration (mg/d/bee");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");

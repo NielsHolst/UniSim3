@@ -16,7 +16,7 @@ PUBLISH(Trapezoid)
 Trapezoid::Trapezoid(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("models a trapezoid of three line segmentsT");
+    help("models a trapezoid of three line segmentsT");
     Input(T).unit("oC").help("Current temperature");
     Input(T0).unit("oC").help("Minimum temperature");
     Input(Topt1).unit("oC").help("Lower temperature optimum");

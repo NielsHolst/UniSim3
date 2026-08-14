@@ -21,7 +21,7 @@ PUBLISH(HeatBuffer)
 HeatBuffer::HeatBuffer(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models a heat buffer");
+    help("models a heat buffer");
     Input(volume).equals(10).help("Buffer volume").unit("m3");
     Input(maxTemperature).equals(95.).help("Max. temperature of water in buffer").unit("oC");
     Input(U).equals(10.).help("U-value relative to surroundings").unit("W/K");

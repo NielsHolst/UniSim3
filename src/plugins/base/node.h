@@ -9,6 +9,8 @@
 #include <QString>
 #include <QVector>
 
+#define Doc(X) setDoc(X); setSourceCodeFilePathName(__FILE__)
+
 namespace base {
 
 class Box;
@@ -30,7 +32,9 @@ public:
     void setPluginName(QString pluginName);
     void setClassName(QString nameSpaceName, QString className);
     void setObjectName(QString name);
-    // void setSourceCodeFilePathName(QString name);
+    void setDoc(QString doc);
+    void setSourceCodeFilePathName(QString name);
+
     void setOrder(int order);
     void addAttribute(QString name, QString value);
     void removeChild(Node *child);
@@ -45,8 +49,9 @@ public:
     QString objectName() const { return _objectName; }
     QString fullName()   const { return fullName(this); }
     QString pluginName() const { return _pluginName; }
-    // QString sourceCodeFilePathName() const { return _sourceCodeFilePathName; }
-    // QString docFilePathName() const;
+    QString doc()        const { return _doc; }
+    QString sourceCodeFilePathName() const;
+    QStringList sourceCodeFilePathNames() const { return _sourceCodeFilePathNames; }
 
     static QString fullName (const Node *node);
     template <class T=Node*> static QStringList fullNames(const QVector<const T *> &nodes);
@@ -71,13 +76,15 @@ public:
 private:
     // Data
     Pedigree _pedigree;
-    QString _objectName, _pluginName;
+    QString _objectName, _pluginName, _doc;
+    QStringList _sourceCodeFilePathNames;
     Node *_parent;
     QVector<Node*> _children;
     int _order;
     QMap<QString, QString> _attributes;
     bool _doWriteOnCommand;
     static const Node *_current;
+
     // Methods
     void addChild(Node *child);
     void enumerate(int &i);

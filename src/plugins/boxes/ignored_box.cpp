@@ -13,7 +13,7 @@ PUBLISH(IgnoredBox)
 
 IgnoredBox::IgnoredBox(QString name, Box *parent)
     : Box(name, parent) {
-    Help("is ignored during standard operations (`reset()`, `update()`, etc.");
+    help("is ignored during standard operations (`reset()`, `update()`, etc.");
     ignore(true);
 }
 

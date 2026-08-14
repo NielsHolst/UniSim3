@@ -16,7 +16,7 @@ PUBLISH(Area)
 Area::Area(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("converts biomass to plant-related areas");
+    help("converts biomass to plant-related areas");
     Input(biomass).unit("g dw/m").help("Dry weight on which to compute areas");
     Input(ca).unit("leaf m2/g dw").help("Scaling of dry weight to leaf area");
     Input(ea).equals(0.667).help("Scaling exponent of dry weight to leaf area");

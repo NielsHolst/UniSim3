@@ -17,7 +17,7 @@ PUBLISH(Cover)
 Cover::Cover(QString name, Box *parent)
     : LayerAsInput(name, parent)
 {
-    Help("holds cover radiation and heat parameters");
+    help("holds cover radiation and heat parameters");
     port("checkBoundaries")->equals(true);
 }
 

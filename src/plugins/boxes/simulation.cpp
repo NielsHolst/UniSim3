@@ -28,7 +28,7 @@ PUBLISH(Simulation)
 Simulation::Simulation(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("runs a simulation");
+    help("runs a simulation");
     Input(iterations).equals(1).help("Number of iterations to run");
     Input(steps).computes("if exists(Calendar::*[steps]) then Calendar::*[steps] else 1");
     Input(stopIteration).equals(false).help("Stop running after this iteration?");

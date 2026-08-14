@@ -23,7 +23,7 @@ PUBLISH(ActuatorHeatPipe)
 ActuatorHeatPipe::ActuatorHeatPipe(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes outflow temperature and effect");
+    help("computes outflow temperature and effect");
     Input(volume).equals(15.).help("Pipe volume").unit("m3");
     Input(flowRate).equals(20.).help("Water flow rate").unit("m3/h");
     Input(k).equals(0.0063).help("Calibration parameter");

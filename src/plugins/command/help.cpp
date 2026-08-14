@@ -192,7 +192,7 @@ void help::showPlugin() {
         createBox(_plugIn->id() + "::" + name);
         if (!_box)
             ThrowException("Cannot create object of class '" + name + "'");
-        info.addLine(name, _box->bareHelp());
+        info.addLine(name, _box->help());
     }
     QStringList all = headerLines + info.combined();
     dialog().information(all.join("\n"));

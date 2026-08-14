@@ -16,7 +16,7 @@ PUBLISH(Biocontrol)
 Biocontrol::Biocontrol(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("estimates biocontrol effects");
+    help("estimates biocontrol effects");
     Input(aphidPressureWithoutF).help("Accumulated aphid pressure without fungus").unit("aphid days");
     Input(aphidPressureWithF).help("Accumulated aphid pressure with fungus").unit("aphid days");
 

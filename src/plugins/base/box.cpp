@@ -24,7 +24,7 @@ double Box::_diagnoseMax = std::numeric_limits<double>::max();
 Box::Box(QString name, Box *parent)
     : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _ignore(false), _timer(this)
 {
-    Help("is a container of boxes and ports");
+    help("is a container of boxes and ports");
     setClassName("base", "Box");
     if (!_latest || parent)
         _latest = this;
@@ -72,14 +72,13 @@ const Port* Box::port(QString name, Caller caller) const {
     return port;
 }
 
-Box& Box::bareHelp(QString s) {
+Box& Box::help(QString s) {
     _help = s;
     return *this;
 }
 
-QString Box::bareHelp() const {
-    // Use help text only in derived classes
-    return (className()=="Box") ? "is an empty box" : _help;
+QString Box::help() const {
+    return doc().isEmpty() ? _help : doc();
 }
 
 void Box::sideEffects(QString s) {
@@ -104,33 +103,6 @@ void Box::ignore(bool doIgnore) {
 
 bool Box::ignore() const {
     return _ignore;
-}
-
-// Box& Box::documentClassName(QString name) {
-//     _documentClassName = name;
-//     return *this;
-// }
-
-// QString Box::documentClassName() const {
-//     return (_documentClassName == "") ? className() : _documentClassName;
-// }
-
-Box& Box::sourceCodeFilePathName(QString name) {
-    _sourceCodeFilePathNames.push_front(name);
-    return *this;
-}
-
-QString Box::sourceCodeFilePathName() const {
-    return QFileInfo(_sourceCodeFilePathNames.first()).canonicalFilePath();
-    // QFileInfo fileInfo = QFileInfo(_sourceCodeFilePathNames.first());
-    // QString path = fileInfo.canonicalPath(),
-    //     baseName = fileInfo.baseName(),
-    //     filePathName = path + "/" + baseName + ".typ";
-    // return QFileInfo::exists(filePathName) ? filePathName : "";
-}
-
-QStringList Box::sourceCodeFilePathNames() const {
-    return _sourceCodeFilePathNames;
 }
 
 bool Box::hasRoot() {

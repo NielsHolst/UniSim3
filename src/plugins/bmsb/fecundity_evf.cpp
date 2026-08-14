@@ -17,7 +17,7 @@ PUBLISH(FecundityEVF)
 FecundityEVF::FecundityEVF(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the fecundity using FecundityEVF (Extreme Vaue Fnction) model; later replace daily rate to hourly rate");
+    help("estimate the fecundity using FecundityEVF (Extreme Vaue Fnction) model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a).equals(228.61208).help("Estimate of coefficient a0)");
         Input(b).equals(-15.04058).help("Estimate of coefficient a1");

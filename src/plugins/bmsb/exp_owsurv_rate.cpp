@@ -17,7 +17,7 @@ PUBLISH(ExpOWSurvRate)
 ExpOWSurvRate::ExpOWSurvRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the daily survival rate using Exp model; later replace daily rate to hourly rate");
+    help("estimate the daily survival rate using Exp model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(-17).help("Temperature (Â°C)");
         Input(a).equals(1.9902546174469).help("Estimate of the coefficient a)");
         Input(b).equals(0.0521511391227991).help("Estimate of the coefficient b");

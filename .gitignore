@@ -14,8 +14,7 @@ Makefile*
 object_script*
 bin/
 bind/
-bin32/
-bind32/
+build/
 output/
 src/resources/data/input/*
 ship/bin/

@@ -19,7 +19,7 @@ PUBLISH(Community)
 Community::Community(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("models a community of one or two plants in the Conductance Model");
+    help("models a community of one or two plants in the Conductance Model");
     Input(n).imports("./*[n]");
     Input(LA).imports("./*[LAPlant]");
     Output(time).help("Simulation progress (days)");

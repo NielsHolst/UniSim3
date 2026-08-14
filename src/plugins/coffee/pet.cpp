@@ -17,7 +17,7 @@ PUBLISH(Pet)
 
 Pet::Pet(QString name, QObject *parent)
     : Box(name, parent) {
-    Help("computes potential evapotranspiration");
+    help("computes potential evapotranspiration");
     Input(globRad).unit("MJ/m2/d").help("Sunlight intensity");
     Input(lai).unit("m2/m2").help("Leaf area index");
     Input(interceptedRain).unit("mm/d").help("Rain intercepted by the plant");

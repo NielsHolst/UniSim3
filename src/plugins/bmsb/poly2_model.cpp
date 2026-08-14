@@ -17,7 +17,7 @@ PUBLISH(Poly2Model)
 Poly2Model::Poly2Model(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the adult pre-oviposition period using Poly2Model (Polynomial); later replace daily rate to hourly rate");
+    help("estimate the adult pre-oviposition period using Poly2Model (Polynomial); later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a0).equals(228.61208).help("Estimate of coefficient a0)");
         Input(a1).equals(-15.04058).help("Estimate of coefficient a1");

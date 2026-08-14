@@ -16,7 +16,7 @@ PUBLISH(Crop)
 Crop::Crop(QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("manages the fraction of seeds sown");
+    help("manages the fraction of seeds sown");
     Input(sowingDate).equals("1/5").help("Date of sowing");
     Input(date).imports("calendar[date]");
 

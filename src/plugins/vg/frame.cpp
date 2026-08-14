@@ -17,7 +17,7 @@ PUBLISH(Frame)
 Frame::Frame(QString name, Box *parent)
     : LayerAsInput(name, parent)
 {
-    Help("holds the radiation and heat parameters of the cover frame (often steel)");
+    help("holds the radiation and heat parameters of the cover frame (often steel)");
     Input(coverage).equals(0.1).unit("[0;1]").help("Proportion of shelter covered by frame material");
     port("checkBoundaries")->equals(true);
 

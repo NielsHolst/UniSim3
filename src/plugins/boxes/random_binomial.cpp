@@ -17,7 +17,7 @@ PUBLISH(RandomBinomial)
 RandomBinomial::RandomBinomial(QString name, Box *parent)
     : RandomBaseTyped<bool>(name, parent)
 {
-    Help("produces random numbers from the binomial distribution");
+    help("produces random numbers from the binomial distribution");
     port("P")->equals(0.5).help("Probability of event");
     port("min")->help("Not used");
     port("max")->help("Not used");

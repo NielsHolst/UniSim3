@@ -17,7 +17,7 @@ PUBLISH(LightAbsorptionLeaf)
 LightAbsorptionLeaf::LightAbsorptionLeaf(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates the light absorbed by a leaf");
+    help("calculates the light absorbed by a leaf");
     Input(I).imports("env[I]");
     Input(area).imports("area[value]");
     Output(value).unit("mu mol PAR / s").help("Radiation absorbed per plant");

@@ -16,7 +16,7 @@ PUBLISH(ProportionalSignal)
 ProportionalSignal::ProportionalSignal(QString name, Box *parent)
     : SlidingSignal(name, parent)
 {
-    Help("produces a signal value that responds proportionally to the input value");
+    Doc("boxes::ProportionalSignal produces a signal value that responds proportionally to the input value");
 }
 
 double ProportionalSignal::slide(double proportion) {

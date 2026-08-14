@@ -20,7 +20,7 @@ PrimaryDistributionSoil::PrimaryDistributionSoil(QString name, Box *parent)
     : PrimaryDistributionBase(name, parent)
 {
 
-    Help("Computes pesticide deposition in the topsoil");
+    help("Computes pesticide deposition in the topsoil");
     Input(fractionTakenSurroundings).unit("(g a.i/ha)").imports("../surroundings[fractionTaken]").help("Dose taken by wind drift off-field edge");
     Input(fractionTakenCrop).unit("g a.i/ha").imports("../crop[fractionTaken]").help("Dose deposited on the crop or leaf surface");
 }

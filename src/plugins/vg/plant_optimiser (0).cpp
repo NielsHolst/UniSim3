@@ -25,7 +25,7 @@ double optimiserFunction(double temperature, double co2) {
 PlantOptimiser::PlantOptimiser(QString name, Box *parent)
     : Box(name, parent), optimiser(optimiserFunction)
 {
-    Help("optimises plant growth");
+    help("optimises plant growth");
     Input(minTemperature).equals(15.).unit("oC").help("Lower bound on optimisation");
     Input(maxTemperature).equals(30.).unit("oC").help("Upper bound on optimisation");
     Input(minCo2).equals(300.).unit("ppm").help("Lower bound on optimisation");

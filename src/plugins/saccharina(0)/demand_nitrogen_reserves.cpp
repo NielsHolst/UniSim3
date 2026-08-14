@@ -16,7 +16,7 @@ PUBLISH(DemandNitrogenReserves)
 DemandNitrogenReserves::DemandNitrogenReserves(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates demand for nitrogen reserves");
+    help("calculates demand for nitrogen reserves");
     Input(maxReservesProportionN).imports("reserves/nitrogen[maxProportion]");
     Input(reservesProportionN).imports("reserves/nitrogen[proportion]");
     Input(structuralMass).imports("structure[mass]");

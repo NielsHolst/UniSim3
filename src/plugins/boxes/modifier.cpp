@@ -18,7 +18,7 @@ PUBLISH(Modifier)
 Modifier::Modifier(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("modifies ports of existing boxes");
+    help("modifies ports of existing boxes");
     Input(boxes).help("Vector of paths to boxes");
     Input(report).equals(true).help("Report modified ports?");
 }

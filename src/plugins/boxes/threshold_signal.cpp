@@ -14,7 +14,7 @@ PUBLISH(ThresholdSignal)
 
 ThresholdSignal::ThresholdSignal(QString name, Box *parent)
     : BaseSignal(name, parent){
-    Help("sets a signal according to a threshold value");
+    Doc("boxes::ThresholdSignal sets a signal according to a threshold value");
     Input(input).help("Input that is compared to threshold");
     Input(threshold).help("Threshold value");
     Input(flagAbove).equals(true).help("Raise flag when input is at or above threshold?");

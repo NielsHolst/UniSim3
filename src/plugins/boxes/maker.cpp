@@ -17,7 +17,7 @@ PUBLISH(Maker)
 Maker::Maker(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("clones all boxes inside it according to one of three methods");
+    help("clones all boxes inside it according to one of three methods");
     Input(replicates).equals(1).help("Supply either, (1) the number of clones to replicate from child boxes;");
     Input(names).help("or (2) the names of clones;");
     Input(fileName).help("or (3) a file; each line specifies a clone; column headings label inputs to each clone.");

@@ -14,7 +14,7 @@ PUBLISH(OvipositionDistribution)
 OvipositionDistribution::OvipositionDistribution(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("distributes eggs laid among seeds parasitised 0, 1 or more times");
+    help("distributes eggs laid among seeds parasitised 0, 1 or more times");
     Input(numEggsLaid).help("Number of eggs laid");
     Input(p0).unit("[0;1]").help("Preference for undamaged seeds");
     Input(p1).unit("[0;1]").help("Preference for seeds parasitised once");

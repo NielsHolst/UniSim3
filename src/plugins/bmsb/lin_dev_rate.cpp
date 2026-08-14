@@ -17,7 +17,7 @@ PUBLISH(LinDevRate)
 LinDevRate::LinDevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the stage-specific daily developmental rate using linear model; later replace daily rate to hourly rate");
+    help("estimate the stage-specific daily developmental rate using linear model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a0).equals(-0.03248936).help("Estimate of constant a0");
         Input(a1).equals(0.00228921).help("Estimate of slope coefficient a1)");

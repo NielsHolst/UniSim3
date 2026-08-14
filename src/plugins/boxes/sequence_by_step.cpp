@@ -15,7 +15,7 @@ PUBLISH(SequenceByStep)
 SequenceByStep::SequenceByStep(QString name, Box *parent)
     : SequenceBase(name, parent)
 {
-    Help("produces a sequence of numbers changing by every step");
+    help("produces a sequence of numbers changing by every step");
     Output(steps).noClear().help("The number of steps needed to run through all values");
 }
 

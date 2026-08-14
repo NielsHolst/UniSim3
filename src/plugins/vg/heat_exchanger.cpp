@@ -19,7 +19,7 @@ PUBLISH(HeatExchanger)
 HeatExchanger::HeatExchanger(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models a heat exchanger");
+    help("models a heat exchanger");
     Input(groundArea).imports("gh/geometry[groundArea]",CA);
     Input(outdoorsTemperature).imports("outdoors/temperature[value]",CA);
     Input(indoorsTemperature).imports("indoors/temperature[value]",CA);

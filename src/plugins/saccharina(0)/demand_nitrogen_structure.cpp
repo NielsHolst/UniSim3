@@ -16,7 +16,7 @@ PUBLISH(DemandNitrogenStructure)
 DemandNitrogenStructure::DemandNitrogenStructure(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates demand for structural nitrogen");
+    help("calculates demand for structural nitrogen");
     Input(demandCarbonStructure).imports("demand/carbon/structure[value]");
     Input(proportionC).imports("/sim/structure[proportionC]");
     Input(proportionN).imports("/sim/structure[proportionN]");

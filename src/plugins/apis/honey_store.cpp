@@ -17,7 +17,7 @@ PUBLISH(HoneyStore)
 HoneyStore::HoneyStore(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("holds colony honey store");
+    help("holds colony honey store");
     Input(initial).equals(2).help("Initial store holding (kg)");
     Input(capacity).equals(40).help("Maximum holding capacity (kg)");
     Input(change).help("Change in honey store over one time step (kg)");

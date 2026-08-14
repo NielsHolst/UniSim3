@@ -17,7 +17,7 @@ PUBLISH(Minimum)
 Minimum::Minimum(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes minimum of inputs");
+    help("computes minimum of inputs");
     Input(values).help("Input values");
     Output(value).help("Minimum of inputs; zero if no inputs");
     Output(count).help("Number of inputs");

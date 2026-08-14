@@ -48,9 +48,29 @@
 
   result
 }
+
 #let parameter-table(parameters) = {
   if parameters.len() == 0 {
     return
+  }
+
+  let long-defaults = parameters.filter(
+    p => p.default.len() > 12
+  )
+
+  let footnote-label(i) = {
+    "abcdefghijklmnopqrstuvwxyz".at(i) + ")"
+  }
+
+  let rendered-default(p) = {
+    if p.default.len() <= 12 {
+      render-value(p.default)
+    } else {
+      let i = long-defaults.position(
+        x => x.id == p.id
+      )
+      footnote-label(i)
+    }
   }
 
   table(
@@ -65,10 +85,23 @@
     ..parameters.map(p => (
       raw(p.name),
       raw(p.type),
-      render-value(p.default),
+      rendered-default(p),
       inline-code(p.description)
     )).flatten(),
   )
+
+  if long-defaults.len() > 0 {
+    // v(4pt)
+
+    for (i, p) in long-defaults.enumerate() {
+      [
+        #footnote-label(i)
+        #h(3pt)
+        #render-value(p.default)
+      ]
+      linebreak()
+    }
+  }
 }
 
 #let class-api(module, class) = {

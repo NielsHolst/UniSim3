@@ -16,7 +16,7 @@ PUBLISH(ScalingSalinity)
 ScalingSalinity::ScalingSalinity(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("scales growth rate by salinity");
+    help("scales growth rate by salinity");
     Input(S).imports("env[S]").unit("PSU").help("Environmental salinity level");
     Input(S50).equals(16).unit("PSU").help("Salinity that is 50% optimal");
     Input(Sopt).equals(25).unit("PSU").help("Minimum salinity that is optimal");

@@ -16,7 +16,7 @@ PUBLISH(Application)
 Application::Application(QString name, Box *parent)
 	: Box(name, parent)
 {
-    Help("manages the dose applied");
+    help("manages the dose applied");
     Input(date).imports("calendar[date]");
     Input(applicationDate).equals("1/3").help("Date of application");
     Input(concentration).unit("g a.i./L").equals(480.).help("Concentration");

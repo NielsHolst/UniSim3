@@ -10,8 +10,6 @@
 #include "port.h"
 #include "resolved_references.h"
 
-#include "dialog_base.h"
-
 namespace base {
 
 Port::Port(QString name, PortType type, Node *parent)
@@ -59,6 +57,11 @@ Port& Port::help(QString value) {
 
 Port& Port::status(PortStatus value) {
     _status = value;
+    return *this;
+}
+
+Port& Port::parentClassName(QString name) {
+    _parentClassName = name;
     return *this;
 }
 

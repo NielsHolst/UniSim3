@@ -17,7 +17,7 @@ PUBLISH(PopUp)
 
 PopUp::PopUp(QString name, Box *parent)
     : Box(name, parent) {
-    Help("shows message in pop-up window");
+    help("shows message in pop-up window");
     Input(title).help("Title");
     Input(text).help("Short informative text");
     Input(details).help("Further details");

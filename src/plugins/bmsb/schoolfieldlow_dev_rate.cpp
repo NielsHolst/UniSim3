@@ -16,7 +16,7 @@ PUBLISH(SchoolFieldLowDevRate)
 SchoolFieldLowDevRate::SchoolFieldLowDevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the stage-specific daily developmental rate using SchoolFieldLow model; later replace daily rate to hourly rate");
+    help("estimate the stage-specific daily developmental rate using SchoolFieldLow model; later replace daily rate to hourly rate");
         Input(TPhi).equals(298).help("Development rate at the intrinsic optimum temperature TÎ¦ (1/day) assuming no enzyme inactivation (days -1)");
         Input(dailytempC).equals(17).help("Absolute temperature (K) (237.16Â° K = 0Â°C)");
         Input(rhoPhi).equals(0.72).help("Length of day (hours)");

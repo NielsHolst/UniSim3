@@ -18,7 +18,7 @@ PUBLISH(Allocation)
 Allocation::Allocation(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models allocation of carbon and nitrogen supplies");
+    help("models allocation of carbon and nitrogen supplies");
     Input(massCStruct).imports("plant[massCStruct]");
     Input(massNStruct).imports("plant[massNStruct]");
     Input(massCRes).imports("plant[massCRes]");

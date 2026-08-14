@@ -17,7 +17,7 @@ PUBLISH(Floor)
 Floor::Floor(QString name, Box *parent)
     : LayerAsInput(name, parent)
 {
-    Help("holds floor radiation and heat parameters");
+    help("holds floor radiation and heat parameters");
 }
 
 } //namespace

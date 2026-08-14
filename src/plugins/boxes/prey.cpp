@@ -13,7 +13,7 @@ PUBLISH(Prey)
 
 Prey::Prey(QString name, Box *parent)
     : Box(name, parent) {
-    Help("defines the prey parameters for interaction with the parent Predator");
+    help("defines the prey parameters for interaction with the parent Predator");
     Input(density).help("Density");
     Input(attackRate).help("Attack rate").unit("per predator per time unit");
     Input(gainFactor).equals(1.).help("Conversion of resource into supply units").unit("supply/resource");

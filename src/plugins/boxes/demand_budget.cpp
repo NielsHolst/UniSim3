@@ -14,7 +14,7 @@ PUBLISH(DemandBudget)
 
 DemandBudget::DemandBudget(QString name, Box *parent)
     : Box(name, parent) {
-    Help("computes gross demand from energy budget");
+    help("computes gross demand from energy budget");
     Input(demandNet).help("Net demand").unit("#prey");
     Input(demandResp).help("Respiration demand").unit("#prey");
     Input(egested).help("Egested or unused fraction of prey").unit("[0;1]");

@@ -13,7 +13,7 @@ PUBLISH(Stock)
 Stock::Stock(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("models female life-time fecundiy");
+    help("models female life-time fecundiy");
     Input(size).equals(100.).unit("kg").help("Weight of seeds stored");
     Input(seedsPerKg).equals(7000.).unit("per kg").help("Number of seeds per kg put on storage");
     Input(undamagedTo1).help("No. of undamaged seeds -> parasitised once");

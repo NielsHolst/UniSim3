@@ -19,7 +19,7 @@ PUBLISH(LightSum)
 LightSum::LightSum(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("accumulates indoors average light sum");
+    help("accumulates indoors average light sum");
     Input(numDays).equals(3.).unit("d").help("Number of days to accumulate light sum");
     Input(stepWithinDay).imports("calendar[stepWithinDay]");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");

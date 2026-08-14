@@ -17,7 +17,7 @@ PUBLISH(DewPoint)
 DewPoint::DewPoint(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("computes dew point");
+    help("computes dew point");
     Input(temperature).unit("oC").help("Air temperature");
     Input(rh).unit("%").help("Air relative humidity");
     Output(value).unit("oC").help("Dew point temperature");

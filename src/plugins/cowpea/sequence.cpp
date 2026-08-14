@@ -11,7 +11,7 @@ PUBLISH(Sequence)
 Sequence::Sequence(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("produces a sequence of numbers in a [min,max] range");
+    help("produces a sequence of numbers in a [min,max] range");
     Input(by).equals("update").help("The sequence value can either be updated at 'reset' or 'update'");
     Input(min).equals(0).help("Minimum value in sequence");
     Input(max).equals(1).help("Maximum value in sequence");

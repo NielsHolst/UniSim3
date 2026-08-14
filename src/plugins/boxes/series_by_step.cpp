@@ -15,7 +15,7 @@ PUBLISH(SeriesByStep)
 SeriesByStep::SeriesByStep(QString name, Box *parent)
     : SeriesBase(name, parent)
 {
-    Help("produces a series of numbers changing by every step");
+    help("produces a series of numbers changing by every step");
     Output(steps).noClear().help("The number of steps needed to run through all values");
 }
 

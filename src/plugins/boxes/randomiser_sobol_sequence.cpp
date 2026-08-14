@@ -18,7 +18,7 @@ PUBLISH(RandomiserSobolSequence)
 RandomiserSobolSequence::RandomiserSobolSequence(QString name, Box *parent)
     : RandomiserBase(name, parent), sobol(nullptr), variate(nullptr)
 {
-    Help("draws quasi-random numbers [0;1) from the Sobol' sequence");
+    help("draws quasi-random numbers [0;1) from the Sobol' sequence");
 }
 
 RandomiserSobolSequence::~RandomiserSobolSequence() {

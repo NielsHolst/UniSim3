@@ -22,7 +22,7 @@ PUBLISH(FoodWeb)
 
 FoodWeb::FoodWeb(QString name, Box *parent)
     : Box(name, parent), _foodWeb(this), _a(this) {
-    Help("resolves food web acquisitions among Predator and Parasite objects");
+    help("resolves food web acquisitions among Predator and Parasite objects");
     Input(timeStep).equals(1.).help("Simulation time step");
     Input(report).equals(true).help("Show food web report?");
 }

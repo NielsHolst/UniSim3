@@ -16,7 +16,7 @@ PUBLISH(SharpeDeMicheleSurvRate)
 SharpeDeMicheleSurvRate::SharpeDeMicheleSurvRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("estimate the stage-specific daily survival rate using SharpeDeMichele model; later replace daily rate to hourly rate");
+    help("estimate the stage-specific daily survival rate using SharpeDeMichele model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (in Â°C), must covert to Kelvin (237.16Â° K = 0Â°C)");
         Input(Phi).equals(9.889e+0).help("A coversion factor with no thermodyamic meaning");
         Input(HA).equals(6.404e+03).help("Enthalpy of activation of the reaction that is catalyzed by the enzyme (cal/mol)");

@@ -14,7 +14,7 @@ PUBLISH(OffsetDateTime)
 
 OffsetDateTime::OffsetDateTime(QString name, Box *parent)
     : Box(name, parent) {
-    Help("computes a date-time plus/minus an offset");
+    help("computes a date-time plus/minus an offset");
     Input(dateTime).help("Date-time that will be offset");
     Input(days).help("Offset (negative or positive)").unit("d");
     Input(hours).help("Offset (negative or positive)").unit("h");

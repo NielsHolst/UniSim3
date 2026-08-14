@@ -18,7 +18,7 @@ PUBLISH(BudgetSolver)
 BudgetSolver::BudgetSolver(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("solves energy and water budgets");
+    help("solves energy and water budgets");
 }
 
 void BudgetSolver::amend() {

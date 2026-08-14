@@ -6,8 +6,6 @@
 #include "base_signal.h"
 #include "phys_math.h"
 
-#include "dialog_base.h"
-
 using phys_math::infinity;
 
 namespace base {
@@ -15,11 +13,7 @@ namespace base {
 BaseSignal::BaseSignal(QString name, Box *parent)
     : Box(name, parent)
 {
-    setClassName("base", "BaseSignal");
-    Help("base::BaseSignal is a base class for setting signals");
-    // Doc("base::BaseSignal is a base class for setting signals");
-
-    dialog().information("TEST BaseSignal: " + className(Namespace::Include));
+    Doc("base::BaseSignal is a base class for setting signals");
     Input(initialSignal).help("Value of `signal` at reset");
     Input(initialFlag).equals(false).help("Value of flag at reset");
     Output(signal).help("Value of the signal");

@@ -19,7 +19,7 @@ PUBLISH(RandomLogNormal)
 RandomLogNormal::RandomLogNormal(QString name, Box *parent)
     : RandomBaseTyped<double>(name, parent)
 {
-    Help("produces random numbers from the log-normal distribution");
+    help("produces random numbers from the log-normal distribution");
     port("min")->equals(0.01);
 }
 

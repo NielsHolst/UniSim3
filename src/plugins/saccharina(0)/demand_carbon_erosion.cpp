@@ -16,7 +16,7 @@ PUBLISH(DemandCarbonErosion)
 DemandCarbonErosion::DemandCarbonErosion(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates carbon loss by erosion");
+    help("calculates carbon loss by erosion");
     Input(areaErosion).imports("area/erosion[value]");
     Input(proportionC).imports("carbon/structure[proportionC]");
     Input(kA).imports("area[kA]");

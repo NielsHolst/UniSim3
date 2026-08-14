@@ -16,7 +16,7 @@ PUBLISH(Biomass)
 Biomass::Biomass(QString name, QObject *parent)
     : Box(name, parent)
 {
-    Help("calculates the yield, weight, C and N percent of the system");
+    help("calculates the yield, weight, C and N percent of the system");
     Input(structuralMass).imports("structure[mass]");
     Input(structuralMassGrowth).imports("allocation[supplyMassStructure]");
     Input(plantDensity).imports("area[plantDensity]");

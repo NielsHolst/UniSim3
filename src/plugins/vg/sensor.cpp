@@ -23,7 +23,7 @@ PUBLISH(Sensor)
 Sensor::Sensor(QString name, Box *parent)
     : Box(name, parent)
 {
-    Help("provides sensor inputs");
+    help("provides sensor inputs");
     Input(indoorsTemperatureIn).equals(missing);
     Input(indoorsRhIn).equals(missing);
     Input(indoorsCo2In).equals(missing);

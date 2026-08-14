@@ -15,7 +15,7 @@ PUBLISH(SeriesByIteration)
 SeriesByIteration::SeriesByIteration(QString name, Box *parent)
     : SeriesBase(name, parent)
 {
-    Help("produces a given series of numbers changing by every iteration");
+    help("produces a given series of numbers changing by every iteration");
     Output(iterations).noClear().help("The number of iterations needed to run through all values");
 }
 
