@@ -75,19 +75,25 @@
 
   table(
     columns: (1.2fr, 1.5fr, 1fr, 3fr),
-    inset: 6pt,
+    inset: (x: 6pt, y: 5pt),
+    stroke: none,
+ 
+    row-gutter: (2pt, 0pt),
+ 
+    table.hline(y: 0, stroke: 0.6pt),
 
-    [*Parameter*],
-    [*Type*],
-    [*Default*],
-    [*Description*],
+    table.header[*Parameter*][*Type*][*Default*][*Description*],
 
+    table.hline(y: 0, position: bottom, stroke: 0.6pt),
+    table.hline(y: 1, position: top, stroke: 0.6pt),
+  
     ..parameters.map(p => (
       raw(p.name),
       raw(p.type),
       rendered-default(p),
       inline-code(p.description)
     )).flatten(),
+    table.hline(stroke: 0.6pt),
   )
 
   if long-defaults.len() > 0 {
