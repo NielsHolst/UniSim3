@@ -12,6 +12,8 @@
 #include <QString>
 #include <QElapsedTimer>
 
+#include "base_dllexport.h"
+
 class QProgressBar;
 class QTextEdit;
 class QWinTaskbarProgress;
@@ -20,7 +22,7 @@ namespace base {
 
 class History;
 
-class DialogBase : public QObject
+class UNI_API DialogBase : public QObject
 {
 public:
     DialogBase(QObject *parent);

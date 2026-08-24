@@ -9,6 +9,8 @@
 #include <float.h>
 #include <cmath>
 
+#include "base_dllexport.h"
+
 namespace base {
     class Node;
 }
@@ -17,13 +19,13 @@ namespace TestNum {
 
 // Fuzzy equality of one number with zero
 
-inline bool eqZero(double n, double feps=1e-6) {
+UNI_API inline bool eqZero(double n, double feps=1e-6) {
     return -feps<n && n<feps;
 }
 
 // Fuzzy comparison of two double numbers
 
-inline bool eq(double n, double d, double feps = 1e-6) {
+UNI_API inline bool eq(double n, double d, double feps = 1e-6) {
     if (n==0.)
         return eqZero(d, feps);
     if (d==0.)
@@ -35,78 +37,78 @@ inline bool eq(double n, double d, double feps = 1e-6) {
     return (1.-feps<n/d && n/d<1+feps) || fabs(n-d)<feps;
 }
 
-inline bool ne(double n, double d, double feps = 1e-6) {
+UNI_API inline bool ne(double n, double d, double feps = 1e-6) {
     return !eq(n,d,feps);
 }
 
-inline bool lt(double n, double d, double feps = 1e-6) {
+UNI_API inline bool lt(double n, double d, double feps = 1e-6) {
     return n<d && !eq(n,d,feps);
 }
 
-inline bool le(double n, double d, double feps = 1e-6) {
+UNI_API inline bool le(double n, double d, double feps = 1e-6) {
     return n<d || eq(n,d,feps);
 }
 
-inline bool gt(double n, double d, double feps = 1e-6) {
+UNI_API inline bool gt(double n, double d, double feps = 1e-6) {
     return n>d && !eq(n,d,feps);
 }
 
-inline bool ge(double n, double d, double feps = 1e-6) {
+UNI_API inline bool ge(double n, double d, double feps = 1e-6) {
     return n>d || eq(n,d,feps);
 }
 
 // Fuzzy comparison of one number with zero
 
-inline bool neZero(double n, double feps = 1e-6) {
+UNI_API inline bool neZero(double n, double feps = 1e-6) {
     return !eqZero(n,feps);
 }
 
-inline bool ltZero(double n, double feps = 1e-6) {
+UNI_API inline bool ltZero(double n, double feps = 1e-6) {
     return n<0. && !eqZero(n,feps);
 }
 
-inline bool leZero(double n, double feps = 1e-6) {
+UNI_API inline bool leZero(double n, double feps = 1e-6) {
     return n<0. || eqZero(n,feps);
 }
 
-inline bool gtZero(double n, double feps = 1e-6) {
+UNI_API inline bool gtZero(double n, double feps = 1e-6) {
     return n>0. && !eqZero(n,feps);
 }
 
-inline bool geZero(double n, double feps = 1e-6) {
+UNI_API inline bool geZero(double n, double feps = 1e-6) {
     return n>0. || eqZero(n,feps);
 }
 
 // Fuzzy rounding in zero neighbourhood
 
-inline double snapToZero(double &n, double feps = 1e-6) {
+UNI_API inline double snapToZero(double &n, double feps = 1e-6) {
     if (eqZero(n, feps))
         n = 0.;
     return n;
 }
 
-inline double snapToZero(const double &n, double feps = 1e-6) {
+UNI_API inline double snapToZero(const double &n, double feps = 1e-6) {
     return eqZero(n, feps) ? 0. : n;
 }
 
-void assureEqZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);
+UNI_API void assureEqZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);
 
-void assureGeZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);
+UNI_API void assureGeZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);
 
-void assureLeZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);
+UNI_API void assureLeZero(double &n, const char *varName, base::Node *context, double feps = 1e-6);
 
 // Fuzzy rounding in neighbourhood of constant
 
-inline void snapTo(double &n, double d, double feps = 1e-6) {
+UNI_API inline void snapTo(double &n, double d, double feps = 1e-6) {
     if (eq(n, d, feps))
         n = d;
 }
 
-void assureEq(double &n, double d, const char *varName, base::Node *context, double feps = 1e-6);
+UNI_API void assureEq(double &n, double d, const char *varName, base::Node *context, double feps = 1e-6);
 
-void assureGe(double &n, double d, const char *varName, base::Node *context, double feps = 1e-6);
+UNI_API void assureGe(double &n, double d, const char *varName, base::Node *context, double feps = 1e-6);
 
-void assureLe(double &n, double d, const char *varName, base::Node *context, double feps = 1e-6);
+UNI_API void assureLe(double &n, double d, const char *varName, base::Node *context, double feps = 1e-6);
 
 } // namespace
 

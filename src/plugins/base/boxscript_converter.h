@@ -5,13 +5,15 @@
 */
 #ifndef BOXSCRIPT_CONVERTER_H
 #define BOXSCRIPT_CONVERTER_H
+
 #include <QVector>
+#include "base_dllexport.h"
 
 namespace base {
 class Box;
 class Port;
 
-class BoxscriptConverter{
+class UNI_API BoxscriptConverter{
 public:
     enum class Option{WriteUserScript, WriteAll};
     BoxscriptConverter(base::Box *root, Option option);

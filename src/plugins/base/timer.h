@@ -5,16 +5,19 @@
 */
 #ifndef BASE_TIMER_H
 #define BASE_TIMER_H
+
 #include <chrono>
 #include <QMap>
 #include <QString>
 #include <QStringList>
 
+#include "base_dllexport.h"
+
 namespace base {
 
 class Box;
 
-class Timer
+class UNI_API Timer
 {
 public:
     Timer(Box *parent);

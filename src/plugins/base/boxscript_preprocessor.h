@@ -10,9 +10,11 @@
 #include <QString>
 #include <QVector>
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class BoxScriptPreprocessor
+class UNI_API BoxScriptPreprocessor
 {
 public:
     struct FileInclude {

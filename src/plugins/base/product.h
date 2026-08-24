@@ -5,14 +5,16 @@
 */
 #ifndef BASE_PRODUCT_H
 #define BASE_PRODUCT_H
+
 #include "product_base.h"
+#include "base_dllexport.h"
 
 #define PUBLISH(name) static Product<name> name##Product(#name, productList());
 
 namespace base {
 
 template <class T>
-class Product : public ProductBase
+class UNI_API Product : public ProductBase
 {
 public:
     Product(QString name, ProductList &list);

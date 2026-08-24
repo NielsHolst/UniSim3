@@ -5,13 +5,16 @@
 */
 #ifndef LOGGER_H
 #define LOGGER_H
+
 #include <QFile>
 #include <QString>
 #include <QTextStream>
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class Logger {
+class UNI_API Logger {
 public:
     Logger();
     ~Logger();

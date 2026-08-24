@@ -9,15 +9,16 @@
 #include <QString>
 #include "boxscript_ast.h"
 #include "expression.h"
+#include "base_dllexport.h"
 
 namespace base {
-class Port;
+    class Port;
 }
 
 namespace boxscript{ namespace parser {
     typedef std::shared_ptr<ast::boxscript> Result;
-    Result parse(std::string source, std::string fileNamePath = "");
-    base::Expression parseExpression(base::Port *parent, QString s);
+    UNI_API Result parse(std::string source, std::string fileNamePath = "");
+    UNI_API base::Expression parseExpression(base::Port *parent, QString s);
 }}
 
 #endif

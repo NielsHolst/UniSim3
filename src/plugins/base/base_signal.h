@@ -7,10 +7,11 @@
 #define BASE_BASE_SIGNAL_H
 
 #include "box.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class BaseSignal : public base::Box
+class UNI_API BaseSignal : public base::Box
 {
 public:
     BaseSignal(QString name, Box *parent);

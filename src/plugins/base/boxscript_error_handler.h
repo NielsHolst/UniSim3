@@ -8,10 +8,10 @@
 
 #include "boxscript.h"
 
+#include "base_dllexport.h"
+
 #include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
 #include <boost/spirit/home/x3/support/utility/error_reporting.hpp>
-
-#include <map>
 
 namespace boxscript { namespace parser
 {
@@ -27,7 +27,7 @@ namespace boxscript { namespace parser
     // tag used to get our error handler from the context
     using error_handler_tag = x3::error_handler_tag;
 
-    struct error_handler_base
+    UNI_API struct error_handler_base
     {
         template <typename Iterator, typename Exception, typename Context>
         x3::error_handler_result on_error(

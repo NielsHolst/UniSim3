@@ -6,9 +6,11 @@
 #ifndef BASE_NBD_H
 #define BASE_NBD_H
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class Nbd {
+class UNI_API Nbd {
 public:
     Nbd();
     Nbd(double mu, double k);

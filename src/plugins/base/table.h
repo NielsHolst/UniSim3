@@ -7,12 +7,14 @@
 #define BASE_TABLE_H
 
 #include <QMap>
+
 #include "node.h"
 #include <QStringList>
+#include "base_dllexport.h"
 
 namespace base {
 
-class Table : public Node
+class UNI_API Table : public Node
 {
 public:
     enum Labelling {ColumnLabelled, RowLabelled, BothLabelled, NoLabelling};

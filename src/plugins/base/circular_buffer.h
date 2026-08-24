@@ -9,10 +9,12 @@
 #include <QVector>
 #include "exception.h"
 
+#include "base_dllexport.h"
+
 namespace base {
 
 template <class T>
-class CircularBuffer
+class UNI_API CircularBuffer
 {
 public:
     CircularBuffer();

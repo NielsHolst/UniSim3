@@ -5,9 +5,11 @@
 */
 #ifndef BASE_MONITOR_H
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class Monitor {
+class UNI_API Monitor {
 public:
     Monitor(bool *flag) {
         _flag  = flag;

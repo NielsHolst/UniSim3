@@ -13,6 +13,7 @@
 #include "path.h"
 #include "port.h"
 #include "timer.h"
+#include "base_dllexport.h"
 
 #define Input(X)  (*new base::Port(#X, base::PortType::Input , this)).initialize(& X).parentClassName(className(Namespace::Include))
 #define Output(X) (*new base::Port(#X, base::PortType::Output, this)).initialize(& X).parentClassName(className(Namespace::Include))
@@ -24,7 +25,7 @@ namespace base {
 
 class Port;
 
-class Box : public Node
+class UNI_API Box : public Node
 {
 public:
     Box(QString name, Box *parent);
@@ -105,10 +106,12 @@ private:
     QVector<Port*> _portsInOrder, _trackedPorts;
     bool _amended, _initialized, _cloned, _ignore;
     Timer _timer;
+#if 0
     static std::unique_ptr<Box> _root;
     static Box *_latest;
     static bool _debugOn, _diagnoseOn;
     static double _diagnoseMin, _diagnoseMax;
+#endif
     // Methods
     Box *latestRoot();
     void createTimers();

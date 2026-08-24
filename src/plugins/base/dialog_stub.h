@@ -7,10 +7,11 @@
 #define BASE_DIALOG_STUB_H
 
 #include "dialog_base.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class DialogStub : public DialogBase
+class UNI_API DialogStub : public DialogBase
 {
 public:
     DialogStub(QObject *parent);

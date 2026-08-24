@@ -11,7 +11,9 @@
 #include <QDateTime>
 #include <QString>
 #include <QTime>
+
 #include "caller.h"
+#include "base_dllexport.h"
 
 #define ThrowException(X) \
     throw base::Exception((X)).file(__FILE__).line(__LINE__)
@@ -20,7 +22,7 @@ namespace base {
 
 class Node;
 
-class Exception {
+class UNI_API Exception {
 public:
     Exception(QString message);
     Exception& file(const char *s);

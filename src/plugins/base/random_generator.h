@@ -5,12 +5,15 @@
 */
 #ifndef BASE_RANDOM_GENERATOR_H
 #define BASE_RANDOM_GENERATOR_H
+
 #include <memory>
 #include <boost/random/mersenne_twister.hpp>
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class RandomGenerator
+class UNI_API RandomGenerator
 {
 public: 
     typedef boost::mt19937 Generator;
@@ -26,7 +29,7 @@ private:
 
 RandomGenerator::Generator &randomGenerator();
 
-void seedRandomGenerator(int seed);
+UNI_API void seedRandomGenerator(int seed);
 
 } //namespace
 #endif

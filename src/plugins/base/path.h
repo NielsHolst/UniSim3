@@ -5,22 +5,25 @@
 */
 #ifndef BASE_PATH_H
 #define BASE_PATH_H
+
 #include <algorithm>
 #include <optional>
 #include <string>
 #include <vector>
 #include <QSet>
 #include <QVector>
+
 #include "exception.h"
 #include "node.h"
 #include "port_type.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Expression;
 class Port;
 
-class Path {
+class UNI_API Path {
 public:
     // Types
     using Object  = base::Node;

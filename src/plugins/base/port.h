@@ -5,6 +5,7 @@
 */
 #ifndef BASE_PORT_H
 #define BASE_PORT_H
+
 #include <boost/variant/get.hpp>
 #include <QMap>
 #include <QSet>
@@ -12,6 +13,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVector>
+
 #include "caller.h"
 #include "convert.h"
 #include "exception.h"
@@ -21,12 +23,13 @@
 #include "port_type.h"
 #include "port_status.h"
 #include "value.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Box;
 
-class Port : public Node {
+class UNI_API Port : public Node {
 private:
     PortType _type;         // Purpose of the port
     PortStatus _status;     // Status of port value
@@ -163,7 +166,7 @@ template <> inline const Value* Port::valuePtr() const
     return &_value;
 }
 
-inline uint qHash(const Port* port) {
+UNI_API inline uint qHash(const Port* port) {
     return port->order();
 }
 

@@ -10,6 +10,7 @@
 #include <QTextEdit>
 #include "dialog_base.h"
 #include "history.h"
+#include "base_dllexport.h"
 
 class QMainWindow;
 class QProgressBar;
@@ -18,7 +19,7 @@ class QWinTaskbarProgress;
 
 namespace base {
 
-class DialogWidget : public QTextEdit
+class UNI_API DialogWidget : public QTextEdit
 {
     Q_OBJECT
 public:

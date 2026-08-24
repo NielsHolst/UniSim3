@@ -18,7 +18,7 @@ namespace boxscript { namespace parser
 
     // The Phrase Parse Context
 //    typedef x3::phrase_parse_context<x3::ascii::space_type>::type phrase_context_type;
-    typedef x3::phrase_parse_context< typeof(boxscript::parser::skipper)>::type phrase_context_type;
+    typedef x3::phrase_parse_context< decltype(boxscript::parser::skipper)>::type phrase_context_type;
 
     // Our Error Handler
     typedef error_handler<iterator_type> error_handler_type;

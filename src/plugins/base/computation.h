@@ -8,11 +8,14 @@
 #include <QStack>
 #include <QString>
 
+#include "base_dllexport.h"
+
 namespace base {
 
 class Node;
 
-class Computation {
+// @TODO(bjarke): re-check this one
+class UNI_API Computation {
 public:
     enum class Step {Ready, Construct, Modify, Amend, Initialize, Reset, Update, Cleanup, Debrief, Scratch};
     static Step lookup(QString step, Node *context=nullptr);

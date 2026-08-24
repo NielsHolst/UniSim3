@@ -11,6 +11,8 @@
 #include "boxscript_error_handler.h"
 #include "boxscript.h"
 
+#include "base_dllexport.h"
+
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/utility/annotate_on_success.hpp>
 
@@ -257,7 +259,7 @@ namespace boxscript { namespace parser
 
 namespace boxscript
 {
-    parser::boxscript_type const& boxscript()
+    UNI_API parser::boxscript_type const& boxscript()
     {
         return parser::boxscript;
     }

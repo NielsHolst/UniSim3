@@ -10,10 +10,11 @@
 #include <QVector>
 #include "convert.h"
 #include "table.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class DataFrame : public Table
+class UNI_API DataFrame : public Table
 {
 public:
     DataFrame(Node *parent = nullptr);
@@ -70,8 +71,6 @@ QVector<QVector<T>> DataFrame::rows() const {
     for (QStringList row : _rows) all << convert<T, QVector>( row );
     return all;
 }
-
-
 
 } //namespace
 

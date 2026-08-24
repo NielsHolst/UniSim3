@@ -95,8 +95,17 @@ message($${BOOST_PATH})
 
 # Own libraries that we use, except 'base' does not use itself
 !equals(BOXES_PLUGIN_NAME, "base") {
-    win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
-    unix:LIBS  += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
-    macx:LIBS  += -L"$$(HOME)/lib" -luniversal_simulator_base$${SUFFIX}
+    msvc {
+        win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}.lib
+    } else: mingw {
+        win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
+        unix:LIBS  += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
+        macx:LIBS  += -L"$$(HOME)/lib" -luniversal_simulator_base$${SUFFIX}
+    }
+} else {
+    QMAKE_LFLAGS += -Wl,--exclude-all-symbols
+    DEFINES += BUILD_DLL
 }
+
+message($${DEFINES})
 

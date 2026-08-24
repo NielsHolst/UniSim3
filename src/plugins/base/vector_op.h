@@ -5,7 +5,10 @@
 */
 #ifndef BASE_VECTOR_OP_H
 #define BASE_VECTOR_OP_H
+
 #include <QVector>
+
+#include "base_dllexport.h"
 
 namespace base {
     class Node;
@@ -13,40 +16,40 @@ namespace base {
 
 namespace vector_op {
 
-typedef QVector<double> Vec;
-typedef double Scalar;
+typedef UNI_API QVector<double> Vec;
+typedef UNI_API double Scalar;
 
 // Unary
-void add(Vec &v, const Scalar &x);
-void add(Vec &v, const Vec &x, base::Node *context=nullptr);
-void subtract(Vec &v, const Vec &x, base::Node *context=nullptr);
-void subtract(Vec &v, const Scalar &x);
-void multiply(Vec &v, const Vec &x, base::Node *context=nullptr);
-void multiply(Vec &v, const Scalar &x);
-void inverse(Vec &v, const Vec &x, base::Node *context=nullptr);
+UNI_API void add(Vec &v, const Scalar &x);
+UNI_API void add(Vec &v, const Vec &x, base::Node *context=nullptr);
+UNI_API void subtract(Vec &v, const Vec &x, base::Node *context=nullptr);
+UNI_API void subtract(Vec &v, const Scalar &x);
+UNI_API void multiply(Vec &v, const Vec &x, base::Node *context=nullptr);
+UNI_API void multiply(Vec &v, const Scalar &x);
+UNI_API void inverse(Vec &v, const Vec &x, base::Node *context=nullptr);
 
 // Binary
-void sum(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
-void sum(Vec &v, const Vec &x, const Scalar &y);
-void difference(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
-void difference(Vec &v, const Vec &x, const Scalar &y);
-void difference(Vec &v, const Scalar &x, const Vec &y);
-void product(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
-void product(Vec &v, const Vec &x, const Scalar &y);
-bool eq(const Vec &x, const Vec &y, double feps = 1e-6, base::Node *context=nullptr);
+UNI_API void sum(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
+UNI_API void sum(Vec &v, const Vec &x, const Scalar &y);
+UNI_API void difference(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
+UNI_API void difference(Vec &v, const Vec &x, const Scalar &y);
+UNI_API void difference(Vec &v, const Scalar &x, const Vec &y);
+UNI_API void product(Vec &v, const Vec &x, const Vec &y, base::Node *context=nullptr);
+UNI_API void product(Vec &v, const Vec &x, const Scalar &y);
+UNI_API bool eq(const Vec &x, const Vec &y, double feps = 1e-6, base::Node *context=nullptr);
 
 // Summary
-double sum(const Vec &x);
-double product(const Vec &x);
-double average(const Vec &x);
-double max(const Vec &x);
-double min(const Vec &x);
-int whichMax(const Vec &x);
-int whichMin(const Vec &x);
-double weightedAverage(const Vec &x, const Vec &weights, base::Node *context=nullptr);
-double sumOfProducts(const Vec &x, const Vec &y, base::Node *context=nullptr);
+UNI_API double sum(const Vec &x);
+UNI_API double product(const Vec &x);
+UNI_API double average(const Vec &x);
+UNI_API double max(const Vec &x);
+UNI_API double min(const Vec &x);
+UNI_API int whichMax(const Vec &x);
+UNI_API int whichMin(const Vec &x);
+UNI_API double weightedAverage(const Vec &x, const Vec &weights, base::Node *context=nullptr);
+UNI_API double sumOfProducts(const Vec &x, const Vec &y, base::Node *context=nullptr);
 
-bool any(const QVector<bool> &x);
+UNI_API bool any(const QVector<bool> &x);
 
 } //namespace
 

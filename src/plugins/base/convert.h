@@ -16,6 +16,7 @@
 #include "bare_date.h"
 #include "exception.h"
 #include "path.h"
+#include "base_dllexport.h"
 
 namespace base {
 
@@ -32,10 +33,10 @@ using vBareDate  = QVector<BareDate>;
 using vValuePtr  = QVector<const Value*>;
 
 template <class, template <class> class>
-struct isInstance : public std::false_type {};
+UNI_API struct isInstance : public std::false_type {};
 
 template <class T, template <class> class U>
-struct isInstance<U<T>, U> : public std::true_type {};
+UNI_API struct isInstance<U<T>, U> : public std::true_type {};
 
 // Define conversions to type T from type U
 template <class T, class U> T convert(U ) {

@@ -5,12 +5,15 @@
 */
 #ifndef BASE_RESOLVED_REFERENCES_H
 #define BASE_RESOLVED_REFERENCES_H
+
 #include <memory>
 #include <QHash>
 #include <QStringList>
 #include <QVector>
+
 #include "computation.h"
 #include "exception.h"
+#include "base_dllexport.h"
 
 namespace base {
 
@@ -19,12 +22,12 @@ class Node;
 class Port;
 
 template <class T>
-struct ResolvedReferenceKey {
+struct UNI_API ResolvedReferenceKey {
     const Node *referee;
     const T *reference;
 };
 
-class ResolvedReferences {
+class UNI_API ResolvedReferences {
 public:
     static void clear();
     static void add(const Node *referee, QVector<Port*> ports);
@@ -76,11 +79,11 @@ void ResolvedReferences::References<T>::check() {
 template <> void ResolvedReferences::References<Port>::add(const Node *referee, QVector<Port*> references);
 template <> void ResolvedReferences::References<Box >::add(const Node *referee, QVector<Box* > references);
 
-size_t qHash(const ResolvedReferenceKey<Port> &key);
-bool operator==(const ResolvedReferenceKey<Port> &a, const ResolvedReferenceKey<Port> &b);
+UNI_API size_t qHash(const ResolvedReferenceKey<Port> &key);
+UNI_API bool operator==(const ResolvedReferenceKey<Port> &a, const ResolvedReferenceKey<Port> &b);
 
-size_t qHash(const ResolvedReferenceKey<Box> &key);
-bool operator==(const ResolvedReferenceKey<Box> &a, const ResolvedReferenceKey<Box> &b);
+UNI_API size_t qHash(const ResolvedReferenceKey<Box> &key);
+UNI_API bool operator==(const ResolvedReferenceKey<Box> &a, const ResolvedReferenceKey<Box> &b);
 
 }
 

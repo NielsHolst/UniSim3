@@ -5,9 +5,12 @@
 */
 #ifndef BASE_NODE_H
 #define BASE_NODE_H
+
 #include <QMap>
 #include <QString>
 #include <QVector>
+
+#include "base_dllexport.h"
 
 #define Doc(X) setDoc(X); setSourceCodeFilePathName(__FILE__)
 
@@ -15,7 +18,7 @@ namespace base {
 
 class Box;
 
-class Node 
+class UNI_API Node
 {
 public:
     enum class Namespace{Include, Exclude};

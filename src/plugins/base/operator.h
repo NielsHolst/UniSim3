@@ -5,11 +5,14 @@
 */
 #ifndef BASE_OPERATOR_H
 #define BASE_OPERATOR_H
+
 #include <QString>
+
+#include "base_dllexport.h"
 
 namespace base {
 
-enum class Operator {
+enum class UNI_API Operator {
     Add,
     Subtract,
     Multiply,
@@ -28,16 +31,16 @@ enum class Operator {
     Comma
 };
 
-enum class Parenthesis {
+enum class UNI_API Parenthesis {
     Left,
     Right
 };
 
-extern int precedence(Operator op);
+UNI_API extern int precedence(Operator op);
 
-extern int arity(Operator op);
+UNI_API extern int arity(Operator op);
 
-Operator lookupOperator(QString op);
+UNI_API Operator lookupOperator(QString op);
 
 }
 #endif

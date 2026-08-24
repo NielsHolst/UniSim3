@@ -5,15 +5,18 @@
 */
 #ifndef BASE_SAVE_GRAMMAR_BASE_H
 #define BASE_SAVE_GRAMMAR_BASE_H
+
 #include <QFile>
 #include <QSet>
 #include <QTextStream>
+
+#include "base_dllexport.h"
 
 namespace base {
 
 class Box;
 
-class SaveGrammarBase
+class UNI_API SaveGrammarBase
 {
 public:
     SaveGrammarBase();

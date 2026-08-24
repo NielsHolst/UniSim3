@@ -5,12 +5,15 @@
 */
 #ifndef BASE_HISTORY_H
 #define BASE_HISTORY_H
+
 #include <QStringList>
 #include <QVector>
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class History
+class UNI_API History
 {
 public:
     History(int bufferSize = 100);

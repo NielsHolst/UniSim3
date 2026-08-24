@@ -5,18 +5,20 @@
 */
 #ifndef PORT_STATUS_H
 #define PORT_STATUS_H
+
 #include "convert.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-enum class PortStatus {
+enum class UNI_API PortStatus {
     Unknown,
     TypeDefault,
     ConstructionDefault,
     UserDefined
 };
 
-template<> QString convert(PortStatus status);
+template<> QString UNI_API convert(PortStatus status);
 
 }
 

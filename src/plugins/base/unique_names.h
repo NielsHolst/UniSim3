@@ -5,16 +5,19 @@
 */
 #ifndef BASE_UNIQUE_NAMES_H
 #define BASE_UNIQUE_NAMES_H
+
 #include <QObject>
 #include <QStringList>
 #include <QList>
+
 #include "node.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Port;
 
-class UniqueNames
+class UNI_API UniqueNames
 {
 public:
     UniqueNames(QVector<QString> fullNames);

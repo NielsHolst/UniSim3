@@ -14,12 +14,12 @@
 
 namespace base {
 
-std::unique_ptr<Box> Box::_root;
-Box *Box::_latest  = nullptr;
-bool Box::_debugOn = false;
-bool Box::_diagnoseOn = false;
-double Box::_diagnoseMin = std::numeric_limits<double>::lowest();
-double Box::_diagnoseMax = std::numeric_limits<double>::max();
+static std::unique_ptr<Box> _root;
+static Box * _latest  = nullptr;
+static bool _debugOn = false;
+static bool _diagnoseOn = false;
+static double _diagnoseMin = std::numeric_limits<double>::lowest();
+static double _diagnoseMax = std::numeric_limits<double>::max();
 
 Box::Box(QString name, Box *parent)
     : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _ignore(false), _timer(this)

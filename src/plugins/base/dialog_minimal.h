@@ -7,13 +7,14 @@
 #define BASE_DIALOG_MINIMAL_H
 
 #include "dialog_quiet.h"
+#include "base_dllexport.h"
 
 class QProgressBar;
 class QProgressDialog;
 
 namespace base {
 
-class DialogMinimal : public DialogQuiet
+class UNI_API DialogMinimal : public DialogQuiet
 {
 public:
     DialogMinimal(QObject *parent);
