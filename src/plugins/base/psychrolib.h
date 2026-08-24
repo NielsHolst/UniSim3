@@ -13,7 +13,7 @@
  * Helper functions
  *****************************************************************************************************/
 
-enum UNI_API UnitSystem { UNDEFINED, IP, SI };
+enum UnitSystem { UNDEFINED, IP, SI };
 
 void UNI_API SetUnitSystem
   ( enum UnitSystem Units       // (i) System of units (IP or SI)
