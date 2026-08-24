@@ -10,16 +10,18 @@
 #include <QDate>
 #include <QDateTime>
 #include <QTime>
+
 #include "bare_date.h"
 #include "exception.h"
 #include "path.h"
 #include "value_typed.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Port;
 
-class Value {
+class UNI_API Value {
 public:
 
     struct Null {
@@ -386,7 +388,7 @@ template <class U> U Value::as() const
 }
 
 // Needed for QMap<Value::Type>
-inline uint qHash(const Value::Type &key) {
+UNI_API inline uint qHash(const Value::Type &key) {
     return static_cast<uint>(key);
 }
 

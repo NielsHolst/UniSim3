@@ -7,6 +7,7 @@
 #define BASE_DIALOG_H
 
 #include "dialog_base.h"
+#include "base_dllexport.h"
 
 namespace base {
 
@@ -14,7 +15,7 @@ class History;
 
 class DialogWidget;
 
-class Dialog : public DialogBase
+class UNI_API Dialog : public DialogBase
 {
 public:
     Dialog(QObject *parent);

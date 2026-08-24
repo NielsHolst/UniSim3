@@ -7,11 +7,12 @@
 #define BASE_DIALOG_QUIET_H
 
 #include "dialog_base.h"
+#include "base_dllexport.h"
 #include "win_taskbar_progress.h"
 
 namespace base {
 
-class DialogQuiet : public DialogBase
+class UNI_API DialogQuiet : public DialogBase
 {
 public:
     DialogQuiet(QObject *parent);

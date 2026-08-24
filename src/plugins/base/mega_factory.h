@@ -9,15 +9,17 @@
 #include <QDir>
 #include <QMultiMap>
 #include <QObject>
+
 #include "box.h"
 #include "exception.h"
+#include "base_dllexport.h"
 
 namespace base {
 	
 class Box;
 class FactoryPlugIn;
 
-class MegaFactory : public QObject
+class UNI_API MegaFactory : public QObject
 {
 public:
     static void loadPlugins();

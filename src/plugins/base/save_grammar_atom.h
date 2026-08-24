@@ -5,12 +5,15 @@
 */
 #ifndef BASE_SAVE_GRAMMAR_ATOM_H
 #define BASE_SAVE_GRAMMAR_ATOM_H
+
 #include <QString>
+
 #include "save_grammar_base.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class SaveGrammarAtom : public SaveGrammarBase
+class UNI_API SaveGrammarAtom : public SaveGrammarBase
 {
 public:
     SaveGrammarAtom();

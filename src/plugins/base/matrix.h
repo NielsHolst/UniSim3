@@ -8,15 +8,17 @@
 
 #include <QTextStream>
 #include <QVector>
+
 #include "convert.h"
 #include "data_frame.h"
 #include "table.h"
 #include "vector_op.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 template <class T>
-class Matrix : public Table
+class UNI_API Matrix : public Table
 {
 public:
     Matrix(Node *parent = nullptr);

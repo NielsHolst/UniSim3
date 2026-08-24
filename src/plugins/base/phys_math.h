@@ -5,11 +5,14 @@
 */
 #ifndef PHYS_MATH_H
 #define PHYS_MATH_H
+
 #include <limits>
 #include <math.h>
 #include <stdlib.h>
 #include <boost/math/constants/constants.hpp>
 #include <QPair>
+
+#include "base_dllexport.h"
 
 /*! \file phys_math.h
 // General physical functions and constants
@@ -40,76 +43,76 @@ const double xGauss3[3] = {0.1127, 0.5, 0.8873},
              wGauss3[3] = {0.2778, 0.4444, 0.2778};
 
 // Amount of water vapour
-double ahFromSh(double sh);
-double ahFromVp(double temperature, double vp);
-double shFromAh(double ah);
-double shFromVp(double temperature, double vp);
-double vpFromAh(double temperature, double ah);
-double vpFromSh(double temperature, double sh);
+UNI_API double ahFromSh(double sh);
+UNI_API double ahFromVp(double temperature, double vp);
+UNI_API double shFromAh(double ah);
+UNI_API double shFromVp(double temperature, double vp);
+UNI_API double vpFromAh(double temperature, double ah);
+UNI_API double vpFromSh(double temperature, double sh);
 
 // Saturated amount of water vapour
-double sah(double temperature);
-double ssh(double temperature);
-double svp(double temperature);
-double svpSlope(double temperature);
+UNI_API double sah(double temperature);
+UNI_API double ssh(double temperature);
+UNI_API double svp(double temperature);
+UNI_API double svpSlope(double temperature);
 
 // Relative measures of water vapour
-double rhFromAh(double temperature, double ah);
-double rhFromSh(double temperature, double sh);
-double rhFromVp(double temperature, double vp);
+UNI_API double rhFromAh(double temperature, double ah);
+UNI_API double rhFromSh(double temperature, double sh);
+UNI_API double rhFromVp(double temperature, double vp);
 
-double ahFromRh(double temperature, double rh);
-double shFromRh(double temperature, double rh);
-double vpFromRh(double temperature, double rh);
+UNI_API double ahFromRh(double temperature, double rh);
+UNI_API double shFromRh(double temperature, double rh);
+UNI_API double vpFromRh(double temperature, double rh);
 
-double adxFromRh(double temperature, double rh);
-double sdxFromRh(double temperature, double rh);
-double vpdFromRh(double temperature, double rh);
-double rhFromAdx(double temperature, double adx);
-double rhFromSdx(double temperature, double sdx);
-double rhFromVpd(double temperature, double vpd);
+UNI_API double adxFromRh(double temperature, double rh);
+UNI_API double sdxFromRh(double temperature, double rh);
+UNI_API double vpdFromRh(double temperature, double rh);
+UNI_API double rhFromAdx(double temperature, double adx);
+UNI_API double rhFromSdx(double temperature, double sdx);
+UNI_API double rhFromVpd(double temperature, double vpd);
 
 // CO2
-double ppmFromAbsCo2(double temperature, double abs, double P = P0);
-double absFromPpmCo2(double temperature, double ppm, double P = P0);
+UNI_API double ppmFromAbsCo2(double temperature, double abs, double P = P0);
+UNI_API double absFromPpmCo2(double temperature, double ppm, double P = P0);
 
 // Other climatic parameters
-double Tdew(double temperature, double rh);
-double Twet(double temperature, double rh);
-double rhFromTwet(double temperature, double Twet);
-double virtualTemperatureFromAh(double temperature, double ah);
-double rhoAir(double temperature, double P = P0);
-double enthalpy(double temperature, double sh);
-double evaporationHeat(double temperature);
+UNI_API double Tdew(double temperature, double rh);
+UNI_API double Twet(double temperature, double rh);
+UNI_API double rhFromTwet(double temperature, double Twet);
+UNI_API double virtualTemperatureFromAh(double temperature, double ah);
+UNI_API double rhoAir(double temperature, double P = P0);
+UNI_API double enthalpy(double temperature, double sh);
+UNI_API double evaporationHeat(double temperature);
 
 // Radiation
-double jointEmissivity(double em1, double em2);
+UNI_API double jointEmissivity(double em1, double em2);
 
 // Mathematics
-inline double infinity() { return std::numeric_limits<double>::infinity(); }
-inline double safeDiv(double a, double b) {return (a==0. && b==0.) ? 0. : a/b;}
-inline bool isNan(double x) { return std::fpclassify(x) == FP_NAN; }
-inline int sqr(int x) {return x*x;}
-inline double sqr(double x) {return x*x;}
-inline double p2(double x) { return sqr(x); }
-inline double p3(double x) { return pow(x, 3.); }
-inline double p4(double x) { return pow(x, 4.); }
-inline double p4K(double T) { return pow(T+T0, 4.); }
+UNI_API inline double infinity() { return std::numeric_limits<double>::infinity(); }
+UNI_API inline double safeDiv(double a, double b) {return (a==0. && b==0.) ? 0. : a/b;}
+UNI_API inline bool isNan(double x) { return std::fpclassify(x) == FP_NAN; }
+UNI_API inline int sqr(int x) {return x*x;}
+UNI_API inline double sqr(double x) {return x*x;}
+UNI_API inline double p2(double x) { return sqr(x); }
+UNI_API inline double p3(double x) { return pow(x, 3.); }
+UNI_API inline double p4(double x) { return pow(x, 4.); }
+UNI_API inline double p4K(double T) { return pow(T+T0, 4.); }
 
-double cumNormal(double x, double m=0, double sd=1);
-double invCumNormal(double p, double m=0, double sd=1);
-QPair<double, double> inferNormal(double xmin, double xmax, double p=0.99);
-double invNormalRange(double u, double xmin, double xmax, double p=0.99);
+UNI_API double cumNormal(double x, double m=0, double sd=1);
+UNI_API double invCumNormal(double p, double m=0, double sd=1);
+UNI_API QPair<double, double> inferNormal(double xmin, double xmax, double p=0.99);
+UNI_API double invNormalRange(double u, double xmin, double xmax, double p=0.99);
 
-double logistic(double current, double target, double rate, double dt);
-double propIntegral(double current, double target, double rate, double dt);
-double propExpIntegral(double current, double target, double rate, double dt, double exponent);
-double invPropExpIntegral(double integral, double target, double rate, double dt, double exponent);
+UNI_API double logistic(double current, double target, double rate, double dt);
+UNI_API double propIntegral(double current, double target, double rate, double dt);
+UNI_API double propExpIntegral(double current, double target, double rate, double dt, double exponent);
+UNI_API double invPropExpIntegral(double integral, double target, double rate, double dt, double exponent);
 
 // Pointer math
-size_t hashPointers(const void *p, const void *q);
+UNI_API size_t hashPointers(const void *p, const void *q);
 
-template <class T> T minmax(T min, T value, T max) {
+template <class T> T UNI_API minmax(T min, T value, T max) {
     if (value < min)
         return min;
     if (value > max)
@@ -117,19 +120,19 @@ template <class T> T minmax(T min, T value, T max) {
     return value;
 }
 
-struct Parabola {
+struct UNI_API Parabola {
     double a,b,c;
 };
-Parabola fitParabola(double y0, double y1, double y2);
-Parabola fitParabola(const double *x, const double *y);
+UNI_API Parabola fitParabola(double y0, double y1, double y2);
+UNI_API Parabola fitParabola(const double *x, const double *y);
 
-double fitPointPPS(double y0, double y1, double y2_slope);
+UNI_API double fitPointPPS(double y0, double y1, double y2_slope);
 
-double fitSlopePPP(double y0, double y1, double y2);
+UNI_API double fitSlopePPP(double y0, double y1, double y2);
 
-double sineWaveUp(double proportion, double y0, double y1);
+UNI_API double sineWaveUp(double proportion, double y0, double y1);
 
-double sineWaveDown(double proportion, double y0, double y1);
+UNI_API double sineWaveDown(double proportion, double y0, double y1);
 
 } //namespace
 

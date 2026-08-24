@@ -7,11 +7,13 @@
 #define BASE_ORGANISATION_H
 
 #include <QApplication>
+
 #include "version.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-struct Organisation{
+struct UNI_API Organisation{
     Organisation() {
         QCoreApplication::setOrganizationName("AarhusUniversity");
         QCoreApplication::setOrganizationDomain("www.ecolmod.org");
@@ -20,7 +22,7 @@ struct Organisation{
     }
 };
 
-Organisation organisation;
+UNI_API Organisation organisation;
 
 }
 

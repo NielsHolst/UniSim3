@@ -5,8 +5,11 @@
 */
 #ifndef BASE_TIME_UNIT_H
 #define BASE_TIME_UNIT_H
+
 #include <QDateTime>
 #include <QString>
+
+#include "base_dllexport.h"
 
 namespace base {
 class Node;
@@ -14,24 +17,24 @@ class Node;
 
 namespace Time {
 
-enum class Unit{Seconds, Minutes, Hours, Days, Years};
+enum class UNI_API Unit{Seconds, Minutes, Hours, Days, Years};
 
-QString toString(Unit unit);
-Unit toUnit(QString s, base::Node *concerning = nullptr);
-int toSeconds(Unit unit);
-int toSeconds(QString unit);
-double toDays(Unit unit);
-double toDays(QString unit);
+UNI_API QString toString(Unit unit);
+UNI_API Unit toUnit(QString s, base::Node *concerning = nullptr);
+UNI_API int toSeconds(Unit unit);
+UNI_API int toSeconds(QString unit);
+UNI_API double toDays(Unit unit);
+UNI_API double toDays(QString unit);
 
-struct Period {
+struct UNI_API Period {
     Period(int t, Unit u) : time(t), unit(u) {}
     Period(int t, QString u) : time(t), unit(toUnit(u)) {}
     int time;
     Unit unit;
 };
 
-QDateTime operator+(const QDateTime &dateTime, Period period);
-QDateTime operator-(const QDateTime &dateTime, Period period);
+UNI_API QDateTime operator+(const QDateTime &dateTime, Period period);
+UNI_API QDateTime operator-(const QDateTime &dateTime, Period period);
 
 } //namespace
 

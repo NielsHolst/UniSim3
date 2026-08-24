@@ -9,6 +9,8 @@
 #include <QMap>
 #include <QString>
 
+#include "base_dllexport.h"
+
 namespace base {
 
 class Box;
@@ -16,7 +18,7 @@ class Node;
 class ProductBase;
 using ProductList =  QMap<QString, ProductBase*>;
 
-class ProductBase
+class UNI_API ProductBase
 {
 public:
     ProductBase(QString name, ProductList &list);

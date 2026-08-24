@@ -5,12 +5,15 @@
 */
 #ifndef BASE_GRADIENT_ASCENT_H
 #define BASE_GRADIENT_ASCENT_H
+
 #include <iostream>
 #include <QVector>
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class GradientAscent {
+class UNI_API GradientAscent {
 public:
     typedef double (*Function)(double, double);
 

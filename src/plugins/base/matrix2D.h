@@ -5,12 +5,15 @@
 */
 #ifndef BASE_MATRIX2D_H
 #define BASE_MATRIX2D_H
+
 #include <QVector>
+
 #include "exception.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-template <class T> class Matrix2D
+template <class T> class UNI_API Matrix2D
 {
 public:
     Matrix2D(Node *parent=nullptr);

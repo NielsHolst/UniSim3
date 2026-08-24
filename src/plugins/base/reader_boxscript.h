@@ -7,13 +7,14 @@
 #define BASE_READER_BOXSCRIPT_H
 
 #include "reader_base.h"
+#include "base_dllexport.h"
 
 namespace ast {
     struct Node;
 }
 namespace base {
 
-class ReaderBoxScript : public ReaderBase
+class UNI_API ReaderBoxScript : public ReaderBase
 {
 public:
     ReaderBoxScript(BoxBuilder *builder);

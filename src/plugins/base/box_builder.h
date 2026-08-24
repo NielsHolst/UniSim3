@@ -12,12 +12,13 @@
 #include "exception.h"
 #include "expression.h"
 #include "port.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Box;
 
-class BoxBuilder
+class UNI_API BoxBuilder
 {
 public:
     BoxBuilder(Box *parent=nullptr);

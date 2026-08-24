@@ -4,6 +4,7 @@
 ** See: www.gnu.org/licenses/lgpl.html.
 */
 #include "xml_node.h"
+#include "exception.h"
 
 namespace base {
 

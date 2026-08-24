@@ -5,21 +5,24 @@
 */
 #ifndef BASE_EXPRESSION_H
 #define BASE_EXPRESSION_H
+
 #include <stack>
 #include <variant>
 #include <vector>
+
 #include "boxscript_ast.h"
 #include "operator.h"
 #include "path.h"
 #include "success.h"
 #include "value.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Box;
 class Port;
 
-class Expression
+class UNI_API Expression
 {
 public:
     using ValuePtr = const Value*;
@@ -107,7 +110,7 @@ template <class T> void Expression::push(T element)
       _stack.push_back(element);
 }
 
-QString conditionalToString(Expression::Conditional cond);
+UNI_API QString conditionalToString(Expression::Conditional cond);
 
 }
 #endif

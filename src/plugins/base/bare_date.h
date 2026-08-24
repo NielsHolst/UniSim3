@@ -7,9 +7,11 @@
 #define BASE_BARE_DATE_H
 #include <QDate>
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class BareDate {
+class UNI_API BareDate {
 public:
     static const int baseYear = 2000;
 
@@ -30,17 +32,17 @@ private:
 
 // Addition
 
-BareDate operator+(const BareDate &bare, double x);
-BareDate operator+(double x, const BareDate &bare);
+UNI_API BareDate operator+(const BareDate &bare, double x);
+UNI_API BareDate operator+(double x, const BareDate &bare);
 
 // Subtraction
 
-BareDate operator-(const BareDate &bare, double x);
-int operator-(const BareDate &a, const BareDate &b);
+UNI_API BareDate operator-(const BareDate &bare, double x);
+UNI_API int operator-(const BareDate &a, const BareDate &b);
 
 // Comparisons between two BareDate objects
 
-inline bool  operator==(const BareDate &a, const BareDate &b) {
+inline bool operator==(const BareDate &a, const BareDate &b) {
     return (a.date() == b.date());
 }
 

@@ -13,11 +13,12 @@
 #include "bare_date.h"
 #include "exception.h"
 #include "value.h"
+#include "base_dllexport.h"
 //#include "value_typed.h"
 
 namespace base {
 
-class ValueCollection {
+class UNI_API ValueCollection {
 public:
     ValueCollection();
     ValueCollection(QVector<const Value*> values);

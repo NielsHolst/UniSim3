@@ -9,11 +9,12 @@
 #include "convert.h"
 #include "exception.h"
 #include "path.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 template <class T>
-class ValueTyped {
+class UNI_API ValueTyped {
 public:
     ValueTyped()            : _variable(nullptr), _isInitialized(false) { }
 

@@ -9,11 +9,13 @@
 #include <QMap>
 #include <QVector>
 
+#include "base_dllexport.h"
+
 #define HELP(id, command, text) static base::CommandHelp id##CommandHelp(command, text);
 
 namespace base {
 
-class CommandHelp {
+class UNI_API CommandHelp {
 public:
     CommandHelp(){}
     CommandHelp(QString command, QString description);

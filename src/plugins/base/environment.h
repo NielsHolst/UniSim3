@@ -10,15 +10,17 @@
 #include <QMap>
 #include <QStack>
 #include <QVariant>
+
 #include "convert.h"
 #include "exception.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class Box;
 class Command;
 
-class Environment {
+class UNI_API Environment {
 public:
     enum Folder {Work, Input, Output, Notepad, Atom, Graphviz};
     const Folder LastFolder = Graphviz;

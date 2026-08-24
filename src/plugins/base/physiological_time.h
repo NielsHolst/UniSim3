@@ -5,11 +5,13 @@
 */
 #ifndef BASE_PHYSIOLOGICAL_TIME
 #define BASE_PHYSIOLOGICAL_TIME
+
 #include "box.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class PhysiologicalTime : public Box
+class UNI_API PhysiologicalTime : public Box
 {
 public:
     PhysiologicalTime(QString name, Box *parent);

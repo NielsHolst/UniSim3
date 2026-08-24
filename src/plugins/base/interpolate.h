@@ -7,6 +7,7 @@
 #define BASE_INTERPOLATE_H
 
 #include <QMap>
+
 #include "data_grid.h"
 #include "exception.h"
 

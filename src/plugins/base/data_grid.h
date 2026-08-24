@@ -17,11 +17,11 @@
 #include <QVector>
 #include "node.h"
 #include "convert.h"
-
+#include "base_dllexport.h"
 
 namespace base {
 
-class DataGrid : public Node
+class UNI_API DataGrid : public Node
 {
 public:
     DataGrid(QString filePath, Node *parent = nullptr);

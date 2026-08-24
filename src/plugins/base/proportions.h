@@ -5,14 +5,17 @@
 */
 #ifndef BASE_PROPORTIONS_H
 #define BASE_PROPORTIONS_H
+
 #include <QObject>
 #include <QSet>
 #include <QVector>
+
 #include "node.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class Proportions : public base::Node, QObject {
+class UNI_API Proportions : public base::Node, QObject {
 public:
     Proportions(base::Node *parent);
     void add(double proportion);

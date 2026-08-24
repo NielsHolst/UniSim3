@@ -7,11 +7,13 @@
 #define BASE_FACTORY_PLUG_IN_H
 
 #include <QtPlugin>
+
 #include "product_base.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class FactoryPlugIn
+class UNI_API FactoryPlugIn
 {
 public:
     virtual QString id() const = 0;

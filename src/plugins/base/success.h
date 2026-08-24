@@ -6,9 +6,11 @@
 #ifndef BASE_SUCCESS_H
 #define BASE_SUCCESS_H
 
+#include "base_dllexport.h"
+
 namespace base {
 
-enum class Success{MaySucceed, MustSucceed};
+enum class UNI_API Success{MaySucceed, MustSucceed};
 
 }
 #endif

@@ -5,14 +5,17 @@
 */
 #ifndef BASE_READER_BASE_H
 #define BASE_READER_BASE_H
+
 #include <QString>
+
 #include "box_builder.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class BoxBuilder;
 
-class ReaderBase
+class UNI_API ReaderBase
 {
 public:
     ReaderBase(BoxBuilder *builder);

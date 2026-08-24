@@ -8,9 +8,11 @@
 #include <QStringList>
 #include "node.h"
 
+#include "base_dllexport.h"
+
 namespace base {
 
-class Command : public Node
+class UNI_API Command : public Node
 {
 public:
     Command(QString name, Box *parent = nullptr);

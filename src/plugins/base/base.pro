@@ -20,11 +20,10 @@ unix:DESTDIR  = "$${BIN_PATH}"
 macx:DESTDIR = "~/lib"
 TARGET = universal_simulator_base$${SUFFIX}
 
-
-
 # Our project header and source code
 HEADERS +=  \
     bare_date.h \
+    base_dllexport.h \
     base_signal.h \
     box.h \
     box_builder.h \

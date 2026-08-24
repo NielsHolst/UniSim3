@@ -10,11 +10,12 @@
 #include <QMultiMap>
 #include <QString>
 #include <QVector>
-#include "exception.h"
+
+#include "base_dllexport.h"
 
 namespace base {
 
-class XmlNode
+class UNI_API XmlNode
 {
 public:
     enum class NoMatch{Accept, Error} ;

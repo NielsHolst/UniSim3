@@ -7,6 +7,7 @@
 #define BOXSCRIPT_H
 
 #include "boxscript_ast.h"
+#include "base_dllexport.h"
 
 #include <boost/spirit/home/x3.hpp>
 
@@ -19,11 +20,11 @@ namespace boxscript
     ///////////////////////////////////////////////////////////////////////////
     namespace parser
     {
-        struct boxscript_class;
-        typedef x3::rule<boxscript_class, ast::boxscript> boxscript_type;
+        UNI_API struct boxscript_class;
+        UNI_API typedef x3::rule<boxscript_class, ast::boxscript> boxscript_type;
         BOOST_SPIRIT_DECLARE(boxscript_type);
     }
-    parser::boxscript_type const& boxscript();
+    UNI_API parser::boxscript_type const& boxscript();
 }
 
 #endif

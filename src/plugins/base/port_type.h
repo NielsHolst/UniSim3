@@ -5,15 +5,18 @@
 */
 #ifndef BASE_PORT_TYPE_H
 #define BASE_PORT_TYPE_H
+
 #include <QString>
+
+#include "base_dllexport.h"
 
 namespace base {
 
-enum class PortType{Input, Output, Auxiliary};
+enum class UNI_API PortType{Input, Output, Auxiliary};
 
-bool isPortType(QString s);
-PortType portTypeFromString(QString s);
-QString portTypeToString(PortType type);
+UNI_API bool isPortType(QString s);
+UNI_API PortType portTypeFromString(QString s);
+UNI_API QString portTypeToString(PortType type);
 
 }
 

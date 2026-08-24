@@ -8,13 +8,14 @@
 #include <QDir>
 #include <QString>
 
+#include "base_dllexport.h"
 
 namespace base {
 
-void copyFolder(QDir source, QDir destination, QString sourceText);
-void copyFolderHard(QDir source, QDir destination);
-void copyFile(QString sourcePath, QString destinationPath);
-void renameFolder(QDir dir);
+UNI_API void copyFolder(QDir source, QDir destination, QString sourceText);
+UNI_API void copyFolderHard(QDir source, QDir destination);
+UNI_API void copyFile(QString sourcePath, QString destinationPath);
+UNI_API void renameFolder(QDir dir);
 
 } //namespace
 

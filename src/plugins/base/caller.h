@@ -8,13 +8,15 @@
 
 #include <QString>
 
+#include "base_dllexport.h"
+
 #define CA Caller(this, QString(__FILE__), __LINE__)
 
 namespace base {
 
 class Node;
 
-class Caller {
+class UNI_API Caller {
 public:
     Caller();
     Caller(const Node *caller, QString file, int line);

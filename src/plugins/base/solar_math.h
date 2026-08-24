@@ -5,12 +5,15 @@
 */
 #ifndef SOLAR_MATH_H
 #define SOLAR_MATH_H
+
 #include <QDate>
 #include <QTime>
 
+#include "base_dllexport.h"
+
 namespace phys_math {
 
-struct Sun {
+struct UNI_API Sun {
     QTime
         sunrise, noon, sunset, solarTime;
     double
@@ -20,20 +23,18 @@ struct Sun {
 
 };
 
-Sun calcSun(double latitude, double longitude, QDateTime dateTime, double timeZone);
+UNI_API Sun calcSun(double latitude, double longitude, QDateTime dateTime, double timeZone);
 
-qint64 excelDateValue(QDate date);
+UNI_API qint64 excelDateValue(QDate date);
 // Excel codes a date as days since 1/1/1900, pretending 1900 was a leap year
 
-double extraterrestrialFlux(QDate date);
+UNI_API double extraterrestrialFlux(QDate date);
 // W/m2 at the top of the atmosphere
 
-double clearSkyTransmittance(double sunElevation, double altitude);
+UNI_API double clearSkyTransmittance(double sunElevation, double altitude);
 // Optimal W/m2 at the soil surface
 
-double angleOfIncidence(double sunElevation, double sunAzimuth, double surfaceSlope, double surfaceAzimuth);
-
-
+UNI_API double angleOfIncidence(double sunElevation, double sunAzimuth, double surfaceSlope, double surfaceAzimuth);
 
 } //namespace
 

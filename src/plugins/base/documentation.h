@@ -5,11 +5,13 @@
 */
 #ifndef BASE_DOCUMENTATION_H
 #define BASE_DOCUMENTATION_H
+
 #include "box.h"
+#include "base_dllexport.h"
 
 namespace base {
 
-class Documentation : public base::Box
+class UNI_API Documentation : public base::Box
 {
 public:
     Documentation(QString name, Box *parent);

@@ -8,13 +8,15 @@
 
 #include <QFile>
 #include <QXmlStreamReader>
+
 #include "reader_base.h"
+#include "base_dllexport.h"
 
 namespace base {
 
 class XmlNode;
 
-class ReaderXml : public ReaderBase
+class UNI_API ReaderXml : public ReaderBase
 {
 public:
     ReaderXml(BoxBuilder *builder);

@@ -5,12 +5,15 @@
 */
 #ifndef BASE_VERSION_H
 #define BASE_VERSION_H
+
 #include <QString>
 
+#include "base_dllexport.h"
+
 namespace base {
-    QString version();
-    QString versionRaw();
-    QString version(QString raw);
+    UNI_API QString version();
+    UNI_API QString versionRaw();
+    UNI_API QString version(QString raw);
 }
 
 #endif
