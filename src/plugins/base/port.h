@@ -133,7 +133,7 @@ template <class T> Port& Port::initialize(T *variable) {
     return *this;
 }
 
-template <> Port& Port::initialize(Path *variable);
+template <> UNI_API Port& Port::initialize(Path *variable);
 
 template <class T> Port& Port::initialize(T fixedValue) {
     _value.initialize(fixedValue);

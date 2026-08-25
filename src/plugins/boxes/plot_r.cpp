@@ -15,7 +15,6 @@ namespace boxes {
 
 PUBLISH(PlotR)
 
-
 PlotR::PlotR(QString name, Box *parent)
     : Box(name, parent), _unresolved(true)
 {
