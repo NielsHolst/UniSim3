@@ -54,9 +54,9 @@ public:
     static Box* root();
     static Box* root(Box *box);
 
-    template<class T> T findOne(QString path);
-    template<class T> T findMaybeOne(QString path);
-    template<class T> QVector<T> findMany(QString path);
+    template<class T> UNI_API T findOne(QString path);
+    template<class T> UNI_API T findMaybeOne(QString path);
+    template<class T> UNI_API QVector<T> findMany(QString path);
 
     virtual void amend() {}
     virtual void initialize() {}
@@ -128,7 +128,7 @@ template<class T> inline T Box::findMaybeOne(QString path) {
     return Path(path).findMaybeOne<T>(this);
 }
 
-template<class T> inline  QVector<T> Box::findMany(QString path) {
+template<class T> inline QVector<T> Box::findMany(QString path) {
     return Path(path).findMany<T>(this);
 }
 

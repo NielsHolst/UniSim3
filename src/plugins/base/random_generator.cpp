@@ -12,8 +12,9 @@
 
 namespace base {
 
-std::unique_ptr<RandomGenerator> RandomGenerator::theRandomGenerator = nullptr;
+static std::unique_ptr<RandomGenerator> theRandomGenerator = nullptr;
 
+// @TODO(bjarke): double check this class
 RandomGenerator::RandomGenerator()
 {
 }
@@ -25,9 +26,9 @@ unsigned RandomGenerator::Shuffler::operator()(unsigned i) {
 
 
 RandomGenerator::Generator &randomGenerator() {
-    if (!RandomGenerator::theRandomGenerator)
-        RandomGenerator::theRandomGenerator = std::unique_ptr<RandomGenerator>( new RandomGenerator );
-    return (RandomGenerator::theRandomGenerator->generator);
+    if (!theRandomGenerator)
+        theRandomGenerator = std::unique_ptr<RandomGenerator>( new RandomGenerator );
+    return (theRandomGenerator->generator);
 }
 
 void seedRandomGenerator(int seed) {

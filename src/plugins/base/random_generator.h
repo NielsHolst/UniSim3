@@ -15,19 +15,17 @@ namespace base {
 
 class UNI_API RandomGenerator
 {
-public: 
+public:
+    RandomGenerator();
     typedef boost::mt19937 Generator;
-    friend RandomGenerator::Generator &randomGenerator();
     struct Shuffler {
         unsigned operator()(unsigned i);
     };
-private:
-    RandomGenerator();
     Generator generator;
-    static std::unique_ptr<RandomGenerator> theRandomGenerator;
+private: 
 };
 
-RandomGenerator::Generator &randomGenerator();
+UNI_API RandomGenerator::Generator &randomGenerator();
 
 UNI_API void seedRandomGenerator(int seed);
 

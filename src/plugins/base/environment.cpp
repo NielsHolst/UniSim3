@@ -23,14 +23,14 @@
 
 namespace base {
 
-std::unique_ptr<Environment> Environment::_environment = nullptr;
+static std::unique_ptr<Environment> _environment = nullptr;
 
 const QString PATH_NOT_SET = "/FolderNotSet";
 
 Environment& environment() {
-    if (!Environment::_environment)
-        Environment::_environment = std::unique_ptr<Environment>( new Environment );
-    return *Environment::_environment;
+    if (!_environment)
+        _environment = std::unique_ptr<Environment>( new Environment );
+    return *_environment;
 }
 
 Environment::Environment()
