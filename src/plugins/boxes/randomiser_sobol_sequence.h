@@ -5,13 +5,15 @@
 */
 #ifndef RANDOMISER_SOBOL_SEQUENCE_H
 #define RANDOMISER_SOBOL_SEQUENCE_H
+
 #include <boost/random/variate_generator.hpp>
 #include <boost/random/sobol.hpp>
+#include <base/base_dllexport.h>
 #include "randomiser_base.h"
 
 namespace boxes {
 
-class RandomiserSobolSequence : public RandomiserBase
+class UNI_API RandomiserSobolSequence : public RandomiserBase
 {
 public:
     RandomiserSobolSequence(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef RUNNING_AVERAGE_TIMED_H
 #define RUNNING_AVERAGE_TIMED_H
+
+#include <base/base_dllexport.h>
 #include "running_sum_timed.h"
 
 namespace boxes {
 
-class RunningAverageTimed : public RunningSumTimed
+class UNI_API RunningAverageTimed : public RunningSumTimed
 {
 public: 
     RunningAverageTimed(QString name, Box *parent);

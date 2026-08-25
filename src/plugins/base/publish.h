@@ -5,12 +5,14 @@
 */
 #ifndef PUBLISH_H
 #define PUBLISH_H
+
 #include <base/product_base.h>
 #include <base/product.h>
+#include <base/base_dllexport.h>
 
 namespace BOXES_PLUGIN_NAME {
 
-base::ProductList& productList();
+UNI_API base::ProductList& productList();
 
 } //namespace
 #endif

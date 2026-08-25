@@ -5,12 +5,14 @@
 */
 #ifndef OUTPUT_TEXT_H
 #define OUTPUT_TEXT_H
+
 #include <base/box.h>
 #include <base/path.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class OutputText : public base::Box
+class UNI_API OutputText : public base::Box
 {
 public:
     OutputText(QString name, base::Box *parent);

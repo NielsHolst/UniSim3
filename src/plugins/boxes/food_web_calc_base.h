@@ -5,12 +5,14 @@
 */
 #ifndef FOOD_WEB_CALC_BASE_H
 #define FOOD_WEB_CALC_BASE_H
+
 #include <base/box.h>
 #include <base/matrix2D.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class FoodWebCalcBase : public base::Box
+class UNI_API FoodWebCalcBase : public base::Box
 {
 public: 
     FoodWebCalcBase(QString name, Box *parent);

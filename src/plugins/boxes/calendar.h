@@ -5,15 +5,18 @@
 */
 #ifndef CALENDAR_H
 #define CALENDAR_H
+
 #include <QDate>
 #include <QDateTime>
 #include <QTime>
+
 #include <base/bare_date.h>
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Calendar : public base::Box
+class UNI_API Calendar : public base::Box
 {
 public: 
     Calendar(QString name, Box *parent);

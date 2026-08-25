@@ -5,11 +5,13 @@
 */
 #ifndef SINE_WAVE_TEMPERATURE
 #define SINE_WAVE_TEMPERATURE
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class SineWaveTemperature : public base::Box
+class UNI_API SineWaveTemperature : public base::Box
 {
 public: 
     SineWaveTemperature(QString name, Box *parent);

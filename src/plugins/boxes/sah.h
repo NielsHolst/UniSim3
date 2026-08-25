@@ -5,11 +5,13 @@
 */
 #ifndef SAH_H
 #define SAH_H
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class Sah : public base::Box
+class UNI_API Sah : public base::Box
 {
 public: 
     Sah(QString name, Box *parent);

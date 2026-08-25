@@ -5,12 +5,15 @@
 */
 #ifndef SELECT_FILE_H
 #define SELECT_FILE_H
+
 #include <QStringList>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class SelectFile : public base::Box
+class UNI_API SelectFile : public base::Box
 {
 public:
     SelectFile(QString name, Box *parent);

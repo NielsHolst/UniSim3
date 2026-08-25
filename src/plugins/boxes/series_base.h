@@ -5,12 +5,15 @@
 */
 #ifndef SERIES_BASE_H
 #define SERIES_BASE_H
+
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include "values_base.h"
 
 namespace boxes {
 
-class SeriesBase : public ValuesBase
+class UNI_API SeriesBase : public ValuesBase
 {
 public:
     SeriesBase(QString name, Box *parent);

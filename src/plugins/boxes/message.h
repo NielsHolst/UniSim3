@@ -5,11 +5,13 @@
 */
 #ifndef MESSAGE_H
 #define MESSAGE_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Message : public base::Box
+class UNI_API Message : public base::Box
 {
 public: 
     Message(QString name, Box *parent);

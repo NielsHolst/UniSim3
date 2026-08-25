@@ -5,13 +5,15 @@
 */
 #ifndef POPULATION_H
 #define POPULATION_H
+
 #include <base/box.h>
 #include <base/circular_buffer.h>
 #include <base/port.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Population : public base::Box
+class UNI_API Population : public base::Box
 {
 public:
     Population(QString name, Box *parent);

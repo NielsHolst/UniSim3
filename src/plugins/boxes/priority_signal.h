@@ -7,11 +7,13 @@
 #define PRIORITY_SIGNAL_H
 
 #include <QVector>
+
 #include <base/base_signal.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class PrioritySignal : public base::BaseSignal
+class UNI_API PrioritySignal : public base::BaseSignal
 {
 public:
     PrioritySignal(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef SET_H
 #define SET_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class set : public base::Command
+class UNI_API set : public base::Command
 {
 public:
     set(QString name, base::Box *parent);

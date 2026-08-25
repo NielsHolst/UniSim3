@@ -5,11 +5,13 @@
 */
 #ifndef RUNNING_SUM_TIMED_H
 #define RUNNING_SUM_TIMED_H
+
+#include <base/base_dllexport.h>
 #include "running_base.h"
 
 namespace boxes {
 
-class RunningSumTimed : public RunningBase
+class UNI_API RunningSumTimed : public RunningBase
 {
 public: 
     RunningSumTimed(QString name, Box *parent);

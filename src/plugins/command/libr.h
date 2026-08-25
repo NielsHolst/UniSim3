@@ -5,11 +5,13 @@
 */
 #ifndef LIBR_H
 #define LIBR_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class libr : public base::Command
+class UNI_API libr : public base::Command
 {
 public:
     libr(QString name, base::Box *parent);

@@ -5,7 +5,9 @@
 */
 #ifndef DISTRIBUTED_DELAY_BASE_H
 #define DISTRIBUTED_DELAY_BASE_H
+
 #include <QVector>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -13,7 +15,7 @@ namespace base {
 
 namespace boxes {
 
-class DistributedDelayBase
+class UNI_API DistributedDelayBase
 {
 public:
     DistributedDelayBase(base::Box *parent);

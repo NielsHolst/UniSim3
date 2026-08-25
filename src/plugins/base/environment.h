@@ -97,7 +97,6 @@ private:
     QStack<QString> _latestLoadArgs;
     // Singleton
     static std::unique_ptr<Environment> _environment;
-    friend Environment& environment();
     // Methods
     QString fileCounterKey();
     int fileCountervalue();
@@ -108,7 +107,7 @@ private:
     void getDirSettings();
 };
 
-Environment& environment();
+UNI_API Environment& environment();
 
 template<class T> T convert(Environment::Folder )  { ThrowException("Cannot only convert Folder to QString"); }
 

@@ -5,14 +5,17 @@
 */
 #ifndef LOAD_H
 #define LOAD_H
+
 #include <QFile>
 #include <QTextStream>
 #include <QVector>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class load : public base::Command
+class UNI_API load : public base::Command
 {
 public:
     load(QString name, base::Box *parent);

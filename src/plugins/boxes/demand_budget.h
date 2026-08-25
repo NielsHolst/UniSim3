@@ -5,11 +5,13 @@
 */
 #ifndef DEMAND_BUDGET
 #define DEMAND_BUDGET
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class DemandBudget : public base::Box
+class UNI_API DemandBudget : public base::Box
 {
 public: 
     DemandBudget(QString name, Box *parent);

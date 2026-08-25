@@ -5,12 +5,15 @@
 */
 #ifndef HELP_CLASS_HTML_H
 #define HELP_CLASS_HTML_H
+
 #include <QDir>
+
 #include "help_class_base.h"
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class HelpClassHtml : public HelpClassBase
+class UNI_API HelpClassHtml : public HelpClassBase
 {
 public:
     HelpClassHtml(base::Box *box);

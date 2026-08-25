@@ -76,13 +76,13 @@ template <class T> QString Exception::asString(T v) noexcept {
     return s;
 }
 
-template <> QString Exception::asString(bool v) noexcept;
-template <> QString Exception::asString(char v) noexcept;
-template <> QString Exception::asString(const char *v) noexcept;
-template <> QString Exception::asString(QString v) noexcept;
-template <> QString Exception::asString(QDate v) noexcept;
-template <> QString Exception::asString(QTime v) noexcept;
-template <> QString Exception::asString(QDateTime v) noexcept;
+template <> UNI_API QString Exception::asString(bool v) noexcept;
+template <> UNI_API QString Exception::asString(char v) noexcept;
+template <> UNI_API QString Exception::asString(const char *v) noexcept;
+template <> UNI_API QString Exception::asString(QString v) noexcept;
+template <> UNI_API QString Exception::asString(QDate v) noexcept;
+template <> UNI_API QString Exception::asString(QTime v) noexcept;
+template <> UNI_API QString Exception::asString(QDateTime v) noexcept;
 
 }
 #endif

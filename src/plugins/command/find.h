@@ -5,12 +5,15 @@
 */
 #ifndef FIND_H
 #define FIND_H
+
 #include <QVector>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class find : public base::Command
+class UNI_API find : public base::Command
 {
 public:
     find(QString name, base::Box *parent);

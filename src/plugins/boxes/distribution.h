@@ -5,12 +5,15 @@
 */
 #ifndef DISTRIBUTION_H
 #define DISTRIBUTION_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Distribution : public base::Box
+class UNI_API Distribution : public base::Box
 {
 public: 
     Distribution(QString name, Box *parent);

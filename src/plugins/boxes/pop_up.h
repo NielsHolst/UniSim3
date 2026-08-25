@@ -5,13 +5,16 @@
 */
 #ifndef POP_UP_H
 #define POP_UP_H
+
 #include <QMessageBox>
+
 #include <base/box.h>
 #include <base/computation.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class PopUp : public base::Box
+class UNI_API PopUp : public base::Box
 {
 public: 
     PopUp(QString name, Box *parent);

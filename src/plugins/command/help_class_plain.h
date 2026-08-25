@@ -5,11 +5,13 @@
 */
 #ifndef HELP_CLASS_PLAIN_H
 #define HELP_CLASS_PLAIN_H
+
+#include <base/base_dllexport.h>
 #include "help_class_base.h"
 
 namespace command {
 
-class HelpClassPlain : public HelpClassBase
+class UNI_API HelpClassPlain : public HelpClassBase
 {
 public:
     HelpClassPlain(base::Box *box);

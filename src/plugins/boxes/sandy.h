@@ -5,11 +5,13 @@
 */
 #ifndef SANDY_H
 #define SANDY_H
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class Sandy : public base::Box
+class UNI_API Sandy : public base::Box
 {
 public:
     Sandy(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef PROFILE_H
 #define PROFILE_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class profile : public base::Command
+class UNI_API profile : public base::Command
 {
 public:
     profile(QString name, base::Box *parent);

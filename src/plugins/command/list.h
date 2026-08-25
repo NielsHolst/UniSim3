@@ -5,12 +5,14 @@
 */
 #ifndef LIST_H
 #define LIST_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 #include "list_options.h"
 
 namespace command {
 
-class list : public base::Command
+class UNI_API list : public base::Command
 {
 public:
     list(QString name, base::Box *parent);

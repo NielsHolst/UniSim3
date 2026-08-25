@@ -8,10 +8,11 @@
 
 #include <base/box.h>
 #include <base/bare_date.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class AllTypes : public base::Box
+class UNI_API AllTypes : public base::Box
 {
 public:
     AllTypes(QString name, Box *parent);

@@ -5,7 +5,9 @@
 */
 #ifndef HEAD_H
 #define HEAD_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -13,7 +15,7 @@ namespace base {
 
 namespace command {
 
-class head : public base::Command
+class UNI_API head : public base::Command
 {
 public:
     head(QString name, base::Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef FOOD_WEB_H
 #define FOOD_WEB_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class FoodWeb : public base::Box
+class UNI_API FoodWeb : public base::Box
 {
 public: 
     FoodWeb(QString name, Box *parent);

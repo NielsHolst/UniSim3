@@ -5,11 +5,13 @@
 */
 #ifndef HOST_H
 #define HOST_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Host : public base::Box
+class UNI_API Host : public base::Box
 {
 public: 
     Host(QString name, Box *parent);

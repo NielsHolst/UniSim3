@@ -5,12 +5,15 @@
 */
 #ifndef RECONFIGURE_H
 #define RECONFIGURE_H
+
 #include <QDir>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class reconfigure : public base::Command
+class UNI_API reconfigure : public base::Command
 {
 public:
     reconfigure(QString name, base::Box *parent);

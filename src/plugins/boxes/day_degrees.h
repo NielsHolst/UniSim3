@@ -5,11 +5,12 @@
 */
 #ifndef DAY_DEGREES
 #define DAY_DEGREES
+
 #include <base/physiological_time.h>
 
 namespace boxes {
 
-class DayDegrees : public base::PhysiologicalTime
+class UNI_API DayDegrees : public base::PhysiologicalTime
 {
 public: 
     DayDegrees(QString name, Box *parent);

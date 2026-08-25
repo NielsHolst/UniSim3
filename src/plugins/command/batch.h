@@ -5,13 +5,17 @@
 */
 #ifndef BATCH_H
 #define BATCH_H
+
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class batch : public base::Command
+class UNI_API batch : public base::Command
 {
 public:
     batch(QString name, base::Box *parent);

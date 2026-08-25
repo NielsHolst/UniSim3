@@ -5,12 +5,15 @@
 */
 #ifndef PARASITE_H
 #define PARASITE_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Parasite : public base::Box
+class UNI_API Parasite : public base::Box
 {
 public: 
     Parasite(QString name, Box *parent);

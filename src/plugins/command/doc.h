@@ -5,10 +5,13 @@
 */
 #ifndef DOC_H
 #define DOC_H
+
 #include <QFile>
 #include <QTextStream>
+
 #include <base/command.h>
 #include "base/port_type.h"
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -19,7 +22,7 @@ namespace base {
 
 namespace command {
 
-class doc : public base::Command
+class UNI_API doc : public base::Command
 {
     class OutputFileStream {
     public:

@@ -5,11 +5,13 @@
 */
 #ifndef RANDOM_NORMAL_H
 #define RANDOM_NORMAL_H
+
+#include <base/base_dllexport.h>
 #include "random_base_typed.h"
 
 namespace boxes {
 
-class RandomNormal : public RandomBaseTyped<double>
+class UNI_API RandomNormal : public RandomBaseTyped<double>
 {
 public: 
     RandomNormal(QString name, Box *parent);

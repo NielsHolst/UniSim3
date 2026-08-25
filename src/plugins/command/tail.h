@@ -5,7 +5,9 @@
 */
 #ifndef TAIL_H
 #define TAIL_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -13,7 +15,7 @@ namespace base {
 
 namespace command {
 
-class tail : public base::Command
+class UNI_API tail : public base::Command
 {
 public:
     tail(QString name, base::Box *parent);

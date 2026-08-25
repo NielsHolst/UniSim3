@@ -5,11 +5,13 @@
 */
 #ifndef PREP_H
 #define PREP_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class prep : public base::Command
+class UNI_API prep : public base::Command
 {
 public:
     prep(QString name, base::Box *parent);

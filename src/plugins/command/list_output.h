@@ -5,7 +5,10 @@
 */
 #ifndef LIST_OUTPUT_H
 #define LIST_OUTPUT_H
+
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include "list_options.h"
 
 namespace base {
@@ -14,7 +17,7 @@ namespace base {
     class Value;
 }
 
-namespace command {
+namespace UNI_API command {
 
 class ListOutput{
 public:

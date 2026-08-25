@@ -5,11 +5,13 @@
 */
 #ifndef PREY_H
 #define PREY_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Prey : public base::Box
+class UNI_API Prey : public base::Box
 {
 public: 
     Prey(QString name, Box *parent);

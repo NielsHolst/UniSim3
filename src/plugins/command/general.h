@@ -5,10 +5,14 @@
 */
 #ifndef COMMAND_GENERAL
 #define COMMAND_GENERAL
+
 #include <boost/circular_buffer.hpp>
+
 #include <QFile>
 #include <QStringList>
 #include <QVector>
+
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -17,18 +21,17 @@ namespace base {
 
 namespace command {
 
-QString info(QVector<base::Node*> nodes);
-QString info(QVector<base::Box *> boxes);
-QString info(base::Node *node);
+UNI_API QString info(QVector<base::Node*> nodes);
+UNI_API QString info(QVector<base::Box *> boxes);
+UNI_API QString info(base::Node *node);
 
-QString readHeader(QFile &file);
-QStringList readHeadLines(QFile &file, int n);
-QStringList readTailLines(QFile &file, int n);
-void skipLines(QFile &file, int n);
-QStringList readLines(QFile &file, int n);
-QVector<int> getWidths(QStringList lines);
-QStringList rightJustify(QStringList lines, QVector<int> widths);
-
+UNI_API QString readHeader(QFile &file);
+UNI_API QStringList readHeadLines(QFile &file, int n);
+UNI_API QStringList readTailLines(QFile &file, int n);
+UNI_API void skipLines(QFile &file, int n);
+UNI_API QStringList readLines(QFile &file, int n);
+UNI_API QVector<int> getWidths(QStringList lines);
+UNI_API QStringList rightJustify(QStringList lines, QVector<int> widths);
 
 }
 

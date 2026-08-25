@@ -5,11 +5,13 @@
 */
 #ifndef GET_FOLDER_H
 #define GET_FOLDER_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class get_folders : public base::Command
+class UNI_API get_folders : public base::Command
 {
 public:
     get_folders(QString name, base::Box *parent);

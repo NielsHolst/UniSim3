@@ -5,9 +5,12 @@
 */
 #ifndef VECTOR_SUM_H
 #define VECTOR_SUM_H
+
 #include <QList>
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Port;
@@ -15,7 +18,7 @@ namespace base {
 
 namespace boxes {
 
-class VectorSum : public base::Box
+class UNI_API VectorSum : public base::Box
 {
 public:
     VectorSum(QString name, Box *parent);

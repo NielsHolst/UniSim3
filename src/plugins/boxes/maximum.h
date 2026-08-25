@@ -5,12 +5,15 @@
 */
 #ifndef MAXIMUM_H
 #define MAXIMUM_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Maximum : public base::Box
+class UNI_API Maximum : public base::Box
 {
 public: 
     Maximum(QString name, Box *parent);

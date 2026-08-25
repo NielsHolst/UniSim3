@@ -5,7 +5,9 @@
 */
 #ifndef RANDOM_BASE_H
 #define RANDOM_BASE_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class RandomOrder;
@@ -15,7 +17,7 @@ namespace boxes {
 
 class RandomiserBase;
 
-class RandomBase : public base::Box
+class UNI_API RandomBase : public base::Box
 {
 public: 
     RandomBase(QString name, Box *parent);

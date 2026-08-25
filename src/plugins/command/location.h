@@ -5,11 +5,13 @@
 */
 #ifndef LOCATION_H
 #define LOCATION_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class location : public base::Command
+class UNI_API location : public base::Command
 {
 public:
     location(QString name, base::Box *parent);

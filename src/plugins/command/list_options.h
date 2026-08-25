@@ -5,8 +5,11 @@
 */
 #ifndef LIST_OPTIONS_H
 #define LIST_OPTIONS_H
+
 #include <QSet>
+
 #include <base/convert.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
@@ -25,13 +28,13 @@ enum class ListOption{
 
 typedef QSet<ListOption> ListOptionSet;
 
-uint qHash(const ListOption &a);
+UNI_API uint qHash(const ListOption &a);
 
 }
 
 namespace base {
-    template<> command::ListOption convert(char c);
-    template<> command::ListOptionSet convert(QString s);
+    template<> UNI_API command::ListOption convert(char c);
+    template<> UNI_API command::ListOptionSet convert(QString s);
 }
 
 #endif

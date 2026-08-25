@@ -5,14 +5,17 @@
 */
 #ifndef WHAT_H
 #define WHAT_H
+
 #include <QFile>
 #include <QTextStream>
 #include <QVector>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class what : public base::Command
+class UNI_API what : public base::Command
 {
 public:
     what(QString name, base::Box *parent);

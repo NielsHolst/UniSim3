@@ -5,13 +5,16 @@
 */
 #ifndef BUFFER_H
 #define BUFFER_H
+
 #include <boost/circular_buffer.hpp>
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Buffer : public base::Box
+class UNI_API Buffer : public base::Box
 {
 public:
     Buffer(QString name, Box *parent);

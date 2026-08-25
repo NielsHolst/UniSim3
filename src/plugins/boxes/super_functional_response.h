@@ -5,11 +5,13 @@
 */
 #ifndef SUPER_FUNCTIONAL_RESPONSE
 #define SUPER_FUNCTIONAL_RESPONSE
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class SuperFunctionalResponse : public base::Box
+class UNI_API SuperFunctionalResponse : public base::Box
 {
 public: 
     SuperFunctionalResponse(QString name, Box *parent);

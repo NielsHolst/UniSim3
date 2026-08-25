@@ -5,13 +5,15 @@
 */
 #ifndef RANDOMISER_MONTE_CARLO_H
 #define RANDOMISER_MONTE_CARLO_H
+
 #include <boost/random/variate_generator.hpp>
 #include <base/random_generator.h>
+#include <base/base_dllexport.h>
 #include "randomiser_base.h"
 
 namespace boxes {
 
-class RandomiserMonteCarlo : public RandomiserBase
+class UNI_API RandomiserMonteCarlo : public RandomiserBase
 {
 public:
     RandomiserMonteCarlo(QString name, Box *parent);

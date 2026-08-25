@@ -5,11 +5,13 @@
 */
 #ifndef DEBUG_H
 #define DEBUG_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class debug : public base::Command
+class UNI_API debug : public base::Command
 {
 public:
     debug(QString name, base::Box *parent);

@@ -8,6 +8,7 @@ BOXES_PLUGIN_NAME = boxes
 
 include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 
+DEFINES += BUILD_DLL
 QT += widgets
 
 HEADERS +=  \

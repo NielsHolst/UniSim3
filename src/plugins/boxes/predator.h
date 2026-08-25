@@ -5,12 +5,15 @@
 */
 #ifndef PREDATOR_H
 #define PREDATOR_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Predator : public base::Box
+class UNI_API Predator : public base::Box
 {
 public: 
     Predator(QString name, Box *parent);

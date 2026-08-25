@@ -5,12 +5,15 @@
 */
 #ifndef SUN_DIFFUSE_RADIATION_H
 #define SUN_DIFFUSE_RADIATION_H
+
 #include <QDateTime>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class SunDiffuseRadiation : public base::Box
+class UNI_API SunDiffuseRadiation : public base::Box
 {
 public: 
     SunDiffuseRadiation(QString name, Box *parent);

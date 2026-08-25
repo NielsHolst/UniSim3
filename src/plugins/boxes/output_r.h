@@ -5,12 +5,15 @@
 */
 #ifndef OUTPUT_R_H
 #define OUTPUT_R_H
+
 #include <QDir>
 #include <QFile>
 #include <QString>
 #include <QVector>
+
 #include <base/box.h>
 #include <base/path.h>
+#include <base/base_dllexport.h>
 
 class QFile;
 
@@ -18,7 +21,7 @@ namespace boxes {
 
 class PageR;
 
-class OutputR : public base::Box
+class UNI_API OutputR : public base::Box
 {
 public:
     OutputR(QString name, Box *parent);

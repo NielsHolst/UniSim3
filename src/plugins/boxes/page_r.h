@@ -5,15 +5,18 @@
 */
 #ifndef PAGE_R_H
 #define PAGE_R_H
+
 #include <QVector>
+
 #include <base/box.h>
 #include <base/path.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
 class PlotR;
 
-class PageR : public base::Box
+class UNI_API PageR : public base::Box
 {
 public:
     PageR(QString name, base::Box *parent);

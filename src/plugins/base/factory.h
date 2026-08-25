@@ -7,10 +7,11 @@
 #define BASE_FACTORY_H
 
 #include <base/factory_plug_in.h>
+#include <base/base_dllexport.h>
 
 namespace BOXES_PLUGIN_NAME {
 
-class Factory : public QObject, public base::FactoryPlugIn
+class UNI_API Factory : public QObject, public base::FactoryPlugIn
 {
 Q_OBJECT
 Q_INTERFACES(base::FactoryPlugIn)

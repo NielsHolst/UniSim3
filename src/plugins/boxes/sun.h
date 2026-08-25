@@ -5,12 +5,15 @@
 */
 #ifndef SUN_H
 #define SUN_H
+
 #include <QDateTime>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class Sun : public base::Box
+class UNI_API Sun : public base::Box
 {
 public: 
     Sun(QString name, Box *parent);

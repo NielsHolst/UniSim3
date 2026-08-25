@@ -5,12 +5,15 @@
 */
 #ifndef TIME_TO_HOURS_H
 #define TIME_TO_HOURS_H
+
 #include <QTime>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class TimeToHours : public base::Box
+class UNI_API TimeToHours : public base::Box
 {
 public:
     TimeToHours(QString name, Box *parent);

@@ -5,7 +5,9 @@
 */
 #ifndef DISTRIBUTED_DELAY_2D_H
 #define DISTRIBUTED_DELAY_2D_H
+
 #include "distributed_delay_base.h"
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -13,7 +15,7 @@ namespace base {
 
 namespace boxes {
 
-class DistributedDelay2D : public DistributedDelayBase
+class UNI_API DistributedDelay2D : public DistributedDelayBase
 {
 public:
     struct FixedParameters {

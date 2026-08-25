@@ -5,12 +5,15 @@
 */
 #ifndef SEQUENCE_BY_STEP_H
 #define SEQUENCE_BY_STEP_H
+
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include "sequence_base.h"
 
 namespace boxes {
 
-class SequenceByStep : public SequenceBase
+class UNI_API SequenceByStep : public SequenceBase
 {
 public:
     SequenceByStep(QString name, Box *parent);

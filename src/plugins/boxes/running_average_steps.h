@@ -5,11 +5,13 @@
 */
 #ifndef RUNNING_AVERAGE_STEPS_H
 #define RUNNING_AVERAGE_STEPS_H
+
+#include <base/base_dllexport.h>
 #include "running_sum_steps.h"
 
 namespace boxes {
 
-class RunningAverageSteps : public RunningSumSteps
+class UNI_API RunningAverageSteps : public RunningSumSteps
 {
 public: 
     RunningAverageSteps(QString name, Box *parent);

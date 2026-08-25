@@ -5,12 +5,14 @@
 */
 #ifndef COMMAND_DOCUMENTATION_H
 #define COMMAND_DOCUMENTATION_H
+
 #include <base/documentation.h>
+#include <base/base_dllexport.h>
 #include <base/publish.h>
 
 namespace command {
 
-class commandDocumentation : public base::Documentation
+class UNI_API commandDocumentation : public base::Documentation
 {
 public:
     commandDocumentation(QString name, base::Box *parent);

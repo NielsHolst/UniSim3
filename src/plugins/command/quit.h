@@ -5,11 +5,13 @@
 */
 #ifndef QUIT_H
 #define QUIT_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class quit : public base::Command
+class UNI_API quit : public base::Command
 {
 public:
     quit(QString name, base::Box *parent);

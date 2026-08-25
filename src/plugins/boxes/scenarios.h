@@ -7,8 +7,10 @@
 #define SCENARIOS_H
 
 #include <QVector>
+
 #include <base/box.h>
 #include <base/data_frame.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class DataFrame;
@@ -17,7 +19,7 @@ namespace base {
 
 namespace boxes {
 
-class Scenarios : public base::Box
+class UNI_API Scenarios : public base::Box
 {
 public:
     Scenarios(QString name, Box *parent);

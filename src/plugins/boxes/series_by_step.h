@@ -5,11 +5,13 @@
 */
 #ifndef SERIES_BY_STEP_H
 #define SERIES_BY_STEP_H
+
+#include <base/base_dllexport.h>
 #include "series_base.h"
 
 namespace boxes {
 
-class SeriesByStep : public SeriesBase
+class UNI_API SeriesByStep : public SeriesBase
 {
 public:
     SeriesByStep(QString name, Box *parent);

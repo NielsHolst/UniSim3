@@ -5,11 +5,13 @@
 */
 #ifndef COMBINATIONS_H
 #define COMBINATIONS_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Combinations : public base::Box
+class UNI_API Combinations : public base::Box
 {
 public: 
     Combinations(QString name, Box *parent);

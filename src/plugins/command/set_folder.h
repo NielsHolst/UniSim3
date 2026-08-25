@@ -5,11 +5,13 @@
 */
 #ifndef SET_FOLDER_H
 #define SET_FOLDER_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class set_folder : public base::Command
+class UNI_API set_folder : public base::Command
 {
 public:
     set_folder(QString name, base::Box *parent);
