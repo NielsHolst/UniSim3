@@ -5,11 +5,13 @@
 */
 #ifndef HUMP_H
 #define HUMP_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Hump : public base::Box
+class UNI_API Hump : public base::Box
 {
 public: 
     Hump(QString name, Box *parent);

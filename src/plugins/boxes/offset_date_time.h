@@ -5,12 +5,15 @@
 */
 #ifndef OFFSET_DATE_TIME_H
 #define OFFSET_DATE_TIME_H
+
 #include <QDateTime>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class OffsetDateTime : public base::Box
+class UNI_API OffsetDateTime : public base::Box
 {
 public: 
     OffsetDateTime(QString name, Box *parent);

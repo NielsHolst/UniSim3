@@ -5,9 +5,12 @@
 */
 #ifndef VECTOR_SCALED_H
 #define VECTOR_SCALED_H
+
 #include <QList>
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Port;
@@ -15,7 +18,7 @@ namespace base {
 
 namespace boxes {
 
-class VectorScaled : public base::Box
+class UNI_API VectorScaled : public base::Box
 {
 public:
     VectorScaled(QString name, Box *parent);

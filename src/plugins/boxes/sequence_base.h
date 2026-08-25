@@ -5,11 +5,13 @@
 */
 #ifndef SEQUENCE_BASE_H
 #define SEQUENCE_BASE_H
+
+#include <base/base_dllexport.h>
 #include "values_base.h"
 
 namespace boxes {
 
-class SequenceBase : public ValuesBase
+class UNI_API SequenceBase : public ValuesBase
 {
 public:
     SequenceBase(QString name, Box *parent);

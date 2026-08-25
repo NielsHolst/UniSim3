@@ -5,11 +5,13 @@
 */
 #ifndef MAXIMUM_AT_H
 #define MAXIMUM_AT_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class MaximumAt : public base::Box
+class UNI_API MaximumAt : public base::Box
 {
 public: 
     MaximumAt(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef CREATE_H
 #define CREATE_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class create : public base::Command
+class UNI_API create : public base::Command
 {
 public:
     create(QString name, base::Box *parent);

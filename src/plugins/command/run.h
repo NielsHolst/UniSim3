@@ -5,7 +5,9 @@
 */
 #ifndef RUN_H
 #define RUN_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -14,7 +16,7 @@ namespace base {
 
 namespace command {
 
-class run : public base::Command
+class UNI_API run : public base::Command
 {
 public:
     run(QString name, base::Box *parent);

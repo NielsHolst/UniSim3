@@ -5,13 +5,15 @@
 */
 #ifndef RANDOMISER_STRATIFIED_H
 #define RANDOMISER_STRATIFIED_H
+
 #include <boost/random/variate_generator.hpp>
 #include <base/random_generator.h>
+#include <base/base_dllexport.h>
 #include "randomiser_base.h"
 
 namespace boxes {
 
-class RandomiserStratified : public RandomiserBase
+class UNI_API RandomiserStratified : public RandomiserBase
 {
 public:
     RandomiserStratified(QString name, Box *parent);

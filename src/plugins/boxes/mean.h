@@ -5,12 +5,15 @@
 */
 #ifndef MEAN_H
 #define MEAN_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Mean : public base::Box
+class UNI_API Mean : public base::Box
 {
 public: 
     Mean(QString name, Box *parent);

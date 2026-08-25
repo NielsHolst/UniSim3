@@ -5,11 +5,13 @@
 */
 #ifndef GET_H
 #define GET_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class get : public base::Command
+class UNI_API get : public base::Command
 {
 public:
     get(QString name, base::Box *parent);

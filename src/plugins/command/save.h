@@ -5,11 +5,13 @@
 */
 #ifndef SAVE_H
 #define SAVE_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class save : public base::Command
+class UNI_API save : public base::Command
 {
 public:
     save(QString name, base::Box *parent);

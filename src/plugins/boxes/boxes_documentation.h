@@ -5,12 +5,14 @@
 */
 #ifndef BOXES_DOCUMENTATION_H
 #define BOXES_DOCUMENTATION_H
+
 #include <base/documentation.h>
 #include <base/publish.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class boxesDocumentation : public base::Documentation
+class UNI_API boxesDocumentation : public base::Documentation
 {
 public:
     boxesDocumentation(QString name, Box *parent);

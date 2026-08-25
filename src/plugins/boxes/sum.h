@@ -5,12 +5,15 @@
 */
 #ifndef SUM_H
 #define SUM_H
+
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class Sum : public base::Box
+class UNI_API Sum : public base::Box
 {
 public: 
     Sum(QString name, Box *parent);

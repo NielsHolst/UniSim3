@@ -5,11 +5,13 @@
 */
 #ifndef SPLIT_H
 #define SPLIT_H
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class Split : public base::Box
+class UNI_API Split : public base::Box
 {
 public: 
     Split(QString name, Box *parent);

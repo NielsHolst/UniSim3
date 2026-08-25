@@ -5,11 +5,13 @@
 */
 #ifndef CLEAR_H
 #define CLEAR_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class clear : public base::Command
+class UNI_API clear : public base::Command
 {
 public:
     clear(QString name, base::Box *parent);

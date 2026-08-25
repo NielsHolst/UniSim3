@@ -5,11 +5,13 @@
 */
 #ifndef NUMBERED_FILE_H
 #define NUMBERED_FILE_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class NumberedFile : public base::Box
+class UNI_API NumberedFile : public base::Box
 {
 public:
     NumberedFile(QString name, Box *parent);

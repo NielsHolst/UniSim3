@@ -6,11 +6,12 @@
 #ifndef PROPORTIONAL_SIGNAL_H
 #define PROPORTIONAL_SIGNAL_H
 
+#include <base/base_dllexport.h>
 #include "sliding_signal.h"
 
 namespace boxes {
 
-class ProportionalSignal : public SlidingSignal
+class UNI_API ProportionalSignal : public SlidingSignal
 {
 public:
     ProportionalSignal(QString name, Box *parent);

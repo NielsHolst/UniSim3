@@ -5,8 +5,11 @@
 */
 #ifndef HELP_H
 #define HELP_H
+
 #include <base/command.h>
 #include <base/port_type.h>
+#include <base/base_dllexport.h>
+
 #include "help_class_base.h"
 
 namespace base {
@@ -16,7 +19,7 @@ namespace base {
 
 namespace command {
 
-class help : public base::Command
+class UNI_API help : public base::Command
 {
 public:
     help(QString name, base::Box *parent);
@@ -48,7 +51,7 @@ private:
     void updateHtmlFiles();
 };
 
-struct LineInfo {
+struct UNI_API LineInfo {
 public:
     LineInfo();
     void addLine(QString name, QString desc);

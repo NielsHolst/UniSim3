@@ -5,12 +5,15 @@
 */
 #ifndef SEQUENCE_BY_ITERATION_H
 #define SEQUENCE_BY_ITERATION_H
+
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include "sequence_base.h"
 
 namespace boxes {
 
-class SequenceByIteration : public SequenceBase
+class UNI_API SequenceByIteration : public SequenceBase
 {
 public:
     SequenceByIteration(QString name, Box *parent);

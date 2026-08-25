@@ -5,10 +5,13 @@
 */
 #ifndef SIMULATION_H
 #define SIMULATION_H
+
 #include <QElapsedTimer>
 #include <QList>
 #include <QTime>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Port;
@@ -16,7 +19,7 @@ namespace base {
 
 namespace boxes {
 
-class Simulation : public base::Box
+class UNI_API Simulation : public base::Box
 {
 public:
     Simulation(QString name, Box *parent);

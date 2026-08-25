@@ -5,11 +5,13 @@
 */
 #ifndef SERIES_BY_ITERATION_H
 #define SERIES_BY_ITERATION_H
+
+#include <base/base_dllexport.h>
 #include "series_base.h"
 
 namespace boxes {
 
-class SeriesByIteration : public SeriesBase
+class UNI_API SeriesByIteration : public SeriesBase
 {
 public:
     SeriesByIteration(QString name, Box *parent);

@@ -5,11 +5,14 @@
 */
 #ifndef OUTPUT_WRITER_H
 #define OUTPUT_WRITER_H
+
 #include <QFile>
 #include <QList>
 #include <QTextStream>
+
 #include <base/box.h>
 #include <base/path.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Port;
@@ -18,7 +21,7 @@ namespace base {
 
 namespace boxes {
 
-class OutputWriter : public base::Box
+class UNI_API OutputWriter : public base::Box
 {
 public:
     OutputWriter(QString name, base::Box *parent);

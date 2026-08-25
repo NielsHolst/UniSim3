@@ -5,11 +5,13 @@
 */
 #ifndef ON_OFF_BASE_H
 #define ON_OFF_BASE_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-template <class X, class Limits=X> class OnOffBase : public base::Box
+template <class X, class Limits=X> class UNI_API OnOffBase : public base::Box
 {
 public:
     OnOffBase(QString name, Box *parent) : Box(name, parent) {

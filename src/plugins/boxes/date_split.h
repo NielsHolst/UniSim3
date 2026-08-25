@@ -5,12 +5,15 @@
 */
 #ifndef DATE_SPLIT_H
 #define DATE_SPLIT_H
+
 #include <QDate>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class DateSplit : public base::Box
+class UNI_API DateSplit : public base::Box
 {
 public:
     DateSplit(QString name, Box *parent);

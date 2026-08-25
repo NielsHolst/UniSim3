@@ -6,11 +6,12 @@
 #ifndef THRESHOLD_SIGNAL_H
 #define THRESHOLD_SIGNAL_H
 
+#include <base/base_dllexport.h>
 #include <base/base_signal.h>
 
 namespace boxes {
 
-class ThresholdSignal : public base::BaseSignal
+class UNI_API ThresholdSignal : public base::BaseSignal
 {
 public:
     ThresholdSignal(QString name, Box *parent);

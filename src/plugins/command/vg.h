@@ -5,9 +5,12 @@
 */
 #ifndef VG_H
 #define VG_H
+
 #include <QFile>
 #include <QTextStream>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -15,7 +18,7 @@ namespace base {
 
 namespace command {
 
-class vg : public base::Command
+class UNI_API vg : public base::Command
 {
 public:
     vg(QString name, base::Box *parent);

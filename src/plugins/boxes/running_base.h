@@ -5,12 +5,15 @@
 */
 #ifndef RUNNING_BASE_H
 #define RUNNING_BASE_H
+
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class RunningBase : public base::Box
+class UNI_API RunningBase : public base::Box
 {
 public: 
     RunningBase(QString name, Box *parent);

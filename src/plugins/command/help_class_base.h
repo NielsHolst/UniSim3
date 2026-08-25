@@ -5,8 +5,11 @@
 */
 #ifndef HELP_CLASS_BASE_H
 #define HELP_CLASS_BASE_H
+
 #include <QString>
+
 #include <base/port_type.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -15,7 +18,7 @@ namespace base {
 
 namespace command {
 
-class HelpClassBase
+class UNI_API HelpClassBase
 {
 public:
     HelpClassBase(base::Box *box);

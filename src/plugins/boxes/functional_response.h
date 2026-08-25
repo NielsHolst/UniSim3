@@ -5,11 +5,13 @@
 */
 #ifndef FUNCTIONAL_RESPONSE
 #define FUNCTIONAL_RESPONSE
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class FunctionalResponse : public base::Box
+class UNI_API FunctionalResponse : public base::Box
 {
 public: 
     FunctionalResponse(QString name, Box *parent);

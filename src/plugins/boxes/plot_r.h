@@ -5,11 +5,14 @@
 */
 #ifndef PLOT_R_H
 #define PLOT_R_H
+
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
+
 #include <base/box.h>
 #include <base/path.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Port;
@@ -17,7 +20,7 @@ namespace base {
 
 namespace boxes {
 
-class PlotR : public base::Box
+class UNI_API PlotR : public base::Box
 {
 public:
     PlotR(QString name, base::Box *parent);

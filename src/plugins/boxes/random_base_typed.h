@@ -5,13 +5,15 @@
 */
 #ifndef RANDOM_BASE_TYPED_H
 #define RANDOM_BASE_TYPED_H
+
 #include <base/environment.h>
 #include <base/exception.h>
+#include <base/base_dllexport.h>
 #include "random_base.h"
 
 namespace boxes {
 
-template <class T> class RandomBaseTyped : public RandomBase
+template <class T> class UNI_API RandomBaseTyped : public RandomBase
 {
 public: 
     RandomBaseTyped(QString name, Box *parent);

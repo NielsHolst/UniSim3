@@ -7,10 +7,11 @@
 #define FIXED_SIGNAL_H
 
 #include <base/base_signal.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class FixedSignal : public base::BaseSignal
+class UNI_API FixedSignal : public base::BaseSignal
 {
 public:
     FixedSignal(QString name, Box *parent);

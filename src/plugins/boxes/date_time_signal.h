@@ -8,10 +8,11 @@
 
 #include <base/bare_date.h>
 #include <base/base_signal.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class DateTimeSignal : public base::BaseSignal
+class UNI_API DateTimeSignal : public base::BaseSignal
 {
 public:
     DateTimeSignal(QString name, Box *parent);

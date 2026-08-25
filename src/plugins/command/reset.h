@@ -5,11 +5,13 @@
 */
 #ifndef RESET_H
 #define RESET_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class reset : public base::Command
+class UNI_API reset : public base::Command
 {
 public:
     reset(QString name, base::Box *parent);

@@ -6,6 +6,7 @@
 #ifndef STAGE_AND_PHASE_H
 #define STAGE_AND_PHASE_H
 
+#include <base/base_dllexport.h>
 #include "distributed_delay_2d.h"
 #include "stage_base.h"
 
@@ -13,7 +14,7 @@ namespace boxes {
 
 class DistributedDelay2D;
 
-class StageAndPhase : public StageBase
+class UNI_API StageAndPhase : public StageBase
 {
 public:
     StageAndPhase(QString name, Box *parent);

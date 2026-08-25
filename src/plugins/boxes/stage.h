@@ -3,34 +3,36 @@
 ** Released under the terms of the GNU Lesser General Public License version 3.0 or later.
 ** See: www.gnu.org/licenses/lgpl.html.
 */
-    #ifndef STAGE_H
-    #define STAGE_H
-    #include "stage_base.h"
+#ifndef STAGE_H
+#define STAGE_H
 
-    namespace boxes {
+#include <base/base_dllexport.h>
+#include "stage_base.h"
 
-    class DistributedDelay;
+namespace boxes {
 
-    class Stage : public StageBase
-    {
-    public:
-        Stage(QString name, Box *parent);
-        void myReset();
-        void update();
+class DistributedDelay;
 
-        // special methods
-        void createDistributedDelay();
-    private:
-        // inputs
-        double inflow, phaseOutflowProportion;
+class UNI_API Stage : public StageBase
+{
+public:
+    Stage(QString name, Box *parent);
+    void myReset();
+    void update();
 
-        // outputs
-        double outflow;
+    // special methods
+    void createDistributedDelay();
+private:
+    // inputs
+    double inflow, phaseOutflowProportion;
 
-        // data
-        bool _firstUpdate;
-        DistributedDelay *_dd;
-    };
+    // outputs
+    double outflow;
 
-    }
-    #endif
+    // data
+    bool _firstUpdate;
+    DistributedDelay *_dd;
+};
+
+}
+#endif

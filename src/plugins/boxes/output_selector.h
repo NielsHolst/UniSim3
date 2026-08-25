@@ -5,12 +5,15 @@
 */
 #ifndef OUTPUT_SELECTOR_H
 #define OUTPUT_SELECTOR_H
+
 #include <QDateTime>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class OutputSelector : public base::Box
+class UNI_API OutputSelector : public base::Box
 {
 public:
     OutputSelector(QString name, Box *parent);

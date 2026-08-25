@@ -50,7 +50,6 @@ public:
     void updateProgress(const ProgressInfo &info);
 
     void error(QString s);
-    friend DialogBase& dialog();
     void resetErrorCount();
     int errorCount() const;
 
@@ -71,7 +70,7 @@ private:
 };
 
 // singleton method
-DialogBase& dialog();
+UNI_API DialogBase& dialog();
 
 }
 

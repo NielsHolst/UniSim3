@@ -5,11 +5,13 @@
 */
 #ifndef LOBRY_ROSSO_FLANDROIS_H
 #define LOBRY_ROSSO_FLANDROIS_H
+
 #include <base/physiological_time.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class LobryRossoFlandrois : public base::PhysiologicalTime
+class UNI_API LobryRossoFlandrois : public base::PhysiologicalTime
 {
 public: 
     LobryRossoFlandrois(QString name, Box *parent);

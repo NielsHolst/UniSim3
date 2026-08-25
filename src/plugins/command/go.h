@@ -5,12 +5,15 @@
 */
 #ifndef GO_H
 #define GO_H
+
 #include <QVector>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class go : public base::Command
+class UNI_API go : public base::Command
 {
 public:
     go(QString name, base::Box *parent);

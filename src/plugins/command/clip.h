@@ -5,14 +5,17 @@
 */
 #ifndef CLIP_H
 #define CLIP_H
+
 #include <QFile>
 #include <QTextStream>
 #include <QVector>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class clip : public base::Command
+class UNI_API clip : public base::Command
 {
 public:
     clip(QString name, base::Box *parent);

@@ -5,16 +5,19 @@
 */
 #ifndef RANDOMISER_BASE_H
 #define RANDOMISER_BASE_H
+
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 #include <base/matrix.h>
 
 namespace boxes {
 
 class RandomBase;
-class RandomiserBase : public base::Box
+class UNI_API RandomiserBase : public base::Box
 {
 public:
     RandomiserBase(QString name, Box *parent);

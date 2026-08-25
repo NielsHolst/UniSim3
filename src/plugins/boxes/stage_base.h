@@ -7,12 +7,14 @@
 #define STAGE_BASE_H
 
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 #include "distributed_delay_base.h"
 
 namespace boxes {
 
-class StageBase : public base::Box
+class UNI_API StageBase : public base::Box
 {
 public:
     StageBase(QString name, Box *parent);

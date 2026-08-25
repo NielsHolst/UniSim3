@@ -5,7 +5,9 @@
 */
 #ifndef ROWS_H
 #define ROWS_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -13,7 +15,7 @@ namespace base {
 
 namespace command {
 
-class rows : public base::Command
+class UNI_API rows : public base::Command
 {
 public:
     rows(QString name, base::Box *parent);

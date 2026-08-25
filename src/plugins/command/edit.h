@@ -5,14 +5,17 @@
 */
 #ifndef EDIT_H
 #define EDIT_H
+
 #include <QFile>
 #include <QTextStream>
 #include <QVector>
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class edit : public base::Command
+class UNI_API edit : public base::Command
 {
 public:
     edit(QString name, base::Box *parent);

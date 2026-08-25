@@ -6,11 +6,12 @@
 #ifndef SLIDING_SIGNAL_H
 #define SLIDING_SIGNAL_H
 
+#include <base/base_dllexport.h>
 #include <base/base_signal.h>
 
 namespace boxes {
 
-class SlidingSignal : public base::BaseSignal
+class UNI_API SlidingSignal : public base::BaseSignal
 {
 public:
     SlidingSignal(QString name, Box *parent);

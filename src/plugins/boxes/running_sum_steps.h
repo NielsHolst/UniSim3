@@ -5,11 +5,13 @@
 */
 #ifndef RUNNING_SUM_STEPS_H
 #define RUNNING_SUM_STEPS_H
+
+#include <base/base_dllexport.h>
 #include "running_base.h"
 
 namespace boxes {
 
-class RunningSumSteps : public RunningBase
+class UNI_API RunningSumSteps : public RunningBase
 {
 public: 
     RunningSumSteps(QString name, Box *parent);

@@ -5,12 +5,14 @@
 */
 #ifndef WRITE_H
 #define WRITE_H
+
 #include <base/command.h>
 #include <base/boxscript_converter.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class write : public base::Command
+class UNI_API write : public base::Command
 {
 public:
     write(QString name, base::Box *parent);

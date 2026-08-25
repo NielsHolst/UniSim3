@@ -5,11 +5,13 @@
 */
 #ifndef FOOD_WEB_CALC_PARASITE_HOST_H
 #define FOOD_WEB_CALC_PARASITE_HOST_H
+
 #include "food_web_calc_base.h"
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class FoodWebCalcParasiteHost : public FoodWebCalcBase
+class UNI_API FoodWebCalcParasiteHost : public FoodWebCalcBase
 {
 public: 
     FoodWebCalcParasiteHost(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef DEW_POINT_H
 #define DEW_POINT_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class DewPoint : public base::Box
+class UNI_API DewPoint : public base::Box
 {
 public: 
     DewPoint(QString name, Box *parent);

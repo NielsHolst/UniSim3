@@ -5,12 +5,15 @@
 */
 #ifndef DATE_H
 #define DATE_H
+
 #include <QDate>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Date : public base::Box
+class UNI_API Date : public base::Box
 {
 public:
     Date(QString name, Box *parent);

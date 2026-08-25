@@ -5,12 +5,15 @@
 */
 #ifndef MULTIPLUM_H
 #define MULTIPLUM_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Multiplum : public base::Box
+class UNI_API Multiplum : public base::Box
 {
 public:
     Multiplum(QString name, Box *parent);

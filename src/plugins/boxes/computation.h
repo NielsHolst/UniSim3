@@ -7,10 +7,11 @@
 #define COMPUTATION_H
 
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Computation : public base::Box
+class UNI_API Computation : public base::Box
 {
 public:
     Computation(QString name, Box *parent);

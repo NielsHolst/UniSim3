@@ -5,11 +5,13 @@
 */
 #ifndef SUPPLY_BUDGET
 #define SUPPLY_BUDGET
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class SupplyBudget : public base::Box
+class UNI_API SupplyBudget : public base::Box
 {
 public: 
     SupplyBudget(QString name, Box *parent);

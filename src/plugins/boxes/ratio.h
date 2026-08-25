@@ -5,13 +5,16 @@
 */
 #ifndef RATIO_H
 #define RATIO_H
+
 #include <QList>
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Ratio : public base::Box
+class UNI_API Ratio : public base::Box
 {
 public:
     Ratio(QString name, Box *parent);

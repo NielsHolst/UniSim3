@@ -5,11 +5,13 @@
 */
 #ifndef BRIERE_H
 #define BRIERE_H
+
 #include <base/physiological_time.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Briere : public base::PhysiologicalTime
+class UNI_API Briere : public base::PhysiologicalTime
 {
 public: 
     Briere(QString name, Box *parent);

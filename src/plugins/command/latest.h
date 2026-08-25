@@ -5,11 +5,13 @@
 */
 #ifndef LATEST_H
 #define LATEST_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class latest : public base::Command
+class UNI_API latest : public base::Command
 {
 public:
     latest(QString name, base::Box *parent);

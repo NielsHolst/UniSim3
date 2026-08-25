@@ -7,6 +7,7 @@
 #define MAKER_H
 
 #include <base/box.h>
+#include <base/base_dllexport.h>
 #include <base/data_frame.h>
 
 namespace base {
@@ -15,7 +16,7 @@ class DataFrame;
 
 namespace boxes {
 
-class Maker : public base::Box
+class UNI_API Maker : public base::Box
 {
 public:
     Maker(QString name, Box *parent);

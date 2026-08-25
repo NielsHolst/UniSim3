@@ -5,11 +5,13 @@
 */
 #ifndef IGNORED_BOX_H
 #define IGNORED_BOX_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class IgnoredBox : public base::Box
+class UNI_API IgnoredBox : public base::Box
 {
 public: 
     IgnoredBox(QString name, Box *parent);

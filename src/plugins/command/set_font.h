@@ -5,11 +5,13 @@
 */
 #ifndef SET_FONT_H
 #define SET_FONT_H
+
+#include <base/base_dllexport.h>
 #include "set.h"
 
 namespace command {
 
-class set_font : public set
+class UNI_API set_font : public set
 {
 public:
     set_font(QString name, base::Box *parent);

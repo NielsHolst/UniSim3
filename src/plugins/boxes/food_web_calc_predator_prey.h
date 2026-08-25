@@ -5,11 +5,13 @@
 */
 #ifndef FOOD_WEB_CALC_PREDATOR_PREY_H
 #define FOOD_WEB_CALC_PREDATOR_PREY_H
+
 #include "food_web_calc_base.h"
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class FoodWebCalcPredatorPrey : public FoodWebCalcBase
+class UNI_API FoodWebCalcPredatorPrey : public FoodWebCalcBase
 {
 public: 
     FoodWebCalcPredatorPrey(QString name, Box *parent);

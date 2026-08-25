@@ -12,12 +12,14 @@
 #include <QFile>
 #include <QTime>
 #include <QVector>
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 #include <base/environment.h>
 
 namespace boxes {
 
-class Records : public base::Box
+class UNI_API Records : public base::Box
 {
 public:
     Records(QString name, Box *parent);

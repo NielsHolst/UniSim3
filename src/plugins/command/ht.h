@@ -5,7 +5,9 @@
 */
 #ifndef HT_H
 #define HT_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace base {
     class Box;
@@ -13,7 +15,7 @@ namespace base {
 
 namespace command {
 
-class ht : public base::Command
+class UNI_API ht : public base::Command
 {
 public:
     ht(QString name, base::Box *parent);

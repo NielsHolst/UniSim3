@@ -5,11 +5,13 @@
 */
 #ifndef ON_OFF_H
 #define ON_OFF_H
+
+#include <base/base_dllexport.h>
 #include "on_off_base.h"
 
 namespace boxes {
 
-class OnOff : public OnOffBase<double>
+class UNI_API OnOff : public OnOffBase<double>
 {
 public:
     OnOff(QString name, Box *parent);

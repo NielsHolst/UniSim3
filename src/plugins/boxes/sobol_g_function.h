@@ -5,11 +5,13 @@
 */
 #ifndef SOBOL_G_FUNCTION_H
 #define SOBOL_G_FUNCTION_H
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class SobolGFunction : public base::Box
+class UNI_API SobolGFunction : public base::Box
 {
 public:
     SobolGFunction(QString name, Box *parent);

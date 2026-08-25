@@ -5,12 +5,15 @@
 */
 #ifndef MINIMUM_H
 #define MINIMUM_H
+
 #include <QVector>
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Minimum : public base::Box
+class UNI_API Minimum : public base::Box
 {
 public: 
     Minimum(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef DIAGNOSE_H
 #define DIAGNOSE_H
+
 #include <base/command.h>
+#include <base/base_dllexport.h>
 
 namespace command {
 
-class diagnose : public base::Command
+class UNI_API diagnose : public base::Command
 {
 public:
     diagnose(QString name, base::Box *parent);

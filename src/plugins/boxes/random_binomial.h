@@ -5,11 +5,13 @@
 */
 #ifndef RANDOM_BINOMIAL_H
 #define RANDOM_BINOMIAL_H
+
+#include <base/base_dllexport.h>
 #include "random_base_typed.h"
 
 namespace boxes {
 
-class RandomBinomial : public RandomBaseTyped<bool>
+class UNI_API RandomBinomial : public RandomBaseTyped<bool>
 {
 public: 
     RandomBinomial(QString name, Box *parent);

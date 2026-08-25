@@ -5,11 +5,13 @@
 */
 #ifndef VALUES_BASE_H
 #define VALUES_BASE_H
+
+#include <base/base_dllexport.h>
 #include <base/box.h>
 
 namespace boxes {
 
-class ValuesBase : public base::Box
+class UNI_API ValuesBase : public base::Box
 {
 public:
     ValuesBase(QString name, Box *parent);

@@ -5,11 +5,13 @@
 */
 #ifndef AH_FROM_RH_RH_H
 #define AH_FROM_RH_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class AhFromRh : public base::Box
+class UNI_API AhFromRh : public base::Box
 {
 public: 
     AhFromRh(QString name, Box *parent);

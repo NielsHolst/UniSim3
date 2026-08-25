@@ -7,10 +7,11 @@
 #define ACCUMULATOR_H
 
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
 
-class Accumulator : public base::Box
+class UNI_API Accumulator : public base::Box
 {
 public:
     Accumulator(QString name, Box *parent);

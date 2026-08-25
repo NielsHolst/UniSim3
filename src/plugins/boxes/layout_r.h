@@ -7,17 +7,19 @@
 #define LAYOUT_R_H
 
 #include <QMap>
+
 #include <base/convert.h>
 #include <base/exception.h>
+#include <base/base_dllexport.h>
 
 namespace boxes {
     enum LayoutR {Merged, Facetted};
 }
 
 namespace base  {
-    template<> boxes::LayoutR convert(QString source);
-    template<class T> T convert(boxes::LayoutR source); // undefined
-    template<> QString convert(boxes::LayoutR source);
+    template<> UNI_API boxes::LayoutR convert(QString source);
+    template<class T> UNI_API T convert(boxes::LayoutR source); // undefined
+    template<> UNI_API QString convert(boxes::LayoutR source);
 }
 
 #endif

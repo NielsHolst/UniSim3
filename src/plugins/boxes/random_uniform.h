@@ -5,11 +5,13 @@
 */
 #ifndef RANDOM_UNIFORM_H
 #define RANDOM_UNIFORM_H
+
+#include <base/base_dllexport.h>
 #include "random_base_typed.h"
 
 namespace boxes {
 
-class RandomUniform : public RandomBaseTyped<double>
+class UNI_API RandomUniform : public RandomBaseTyped<double>
 {
 public: 
     RandomUniform(QString name, Box *parent);
