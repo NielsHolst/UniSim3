@@ -57,9 +57,6 @@ public:
     QString latestCommand() const;
 
 private:
-    // singleton data
-    static DialogBase *_dialog;
-    static QStack<QString> _messages;
     // data
     int _errorCount;
     double _nextShowProgress;

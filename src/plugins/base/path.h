@@ -36,7 +36,7 @@ public:
 
     class Alternative;
 
-    class Node {
+    class UNI_API Node {
     public:
         Node(QString directive, QString className, QString objectName);
         Node(std::vector<std::string> names);
@@ -50,7 +50,7 @@ public:
         friend Alternative;
     };
 
-    class Port {
+    class UNI_API Port {
     public:
         Port(QString directive, QString name);
         Port(std::vector<std::string> names);
@@ -65,7 +65,7 @@ public:
         friend Alternative;
     };
 
-    class Alternative {
+    class UNI_API Alternative {
     public:
         Alternative();
         void setRoot(bool hasRoot);
@@ -127,10 +127,10 @@ public:
     QString toString() const;
     const QVector<Alternative> &alternatives() const;
     const Objects& matches(base::Node *anchor = nullptr) const;
-    template<class T> T findOne(base::Node *anchor = nullptr) const;
-    template<class T> T findMaybeOne(base::Node *anchor = nullptr) const;
-    template<class T> QVector<T> findMany(base::Node *anchor = nullptr) const;
-    template<class T> QStringList findManyNames(base::Node *anchor = nullptr) const;
+    template<class T> UNI_API T findOne(base::Node *anchor = nullptr) const;
+    template<class T> UNI_API T findMaybeOne(base::Node *anchor = nullptr) const;
+    template<class T> UNI_API QVector<T> findMany(base::Node *anchor = nullptr) const;
+    template<class T> UNI_API QStringList findManyNames(base::Node *anchor = nullptr) const;
     QSet<base::Node*> nodesOnPath() const;
     static bool isValid(QString path);
 private:
@@ -182,9 +182,9 @@ template<class T> QStringList Path::findManyNames(base::Node *anchor) const {
     return names;
 }
 
-template<> QVector<base::Port*> Path::findMany(base::Node *anchor) const;
+template<> UNI_API QVector<base::Port*> Path::findMany(base::Node *anchor) const;
 
-inline uint qHash(const base::Node* node) {
+UNI_API inline uint qHash(const base::Node* node) {
     return node->order();
 }
 
