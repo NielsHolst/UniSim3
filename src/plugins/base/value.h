@@ -112,7 +112,7 @@ public:
     // Set to value with compatible type U at vector index;
     // for scalers i must be zero
 
-    template <class T> const T* constPtr() const;
+    template <class T> UNI_API const T* constPtr() const;
     // Return pointer in native type T
 
     template <class U> U as() const;
@@ -320,23 +320,23 @@ template <class U> void Value::changeValueAt(U value, int i)
 }
 
 
-template <> const bool*               Value::constPtr() const;
-template <> const int*                Value::constPtr() const;
-template <> const double*             Value::constPtr() const;
-template <> const QString*            Value::constPtr() const;
-template <> const QDate*              Value::constPtr() const;
-template <> const QTime*              Value::constPtr() const;
-template <> const QDateTime*          Value::constPtr() const;
-template <> const BareDate*           Value::constPtr() const;
-template <> const Path*               Value::constPtr() const;
-template <> const QVector<bool>*      Value::constPtr() const;
-template <> const QVector<int>*       Value::constPtr() const;
-template <> const QVector<double>*    Value::constPtr() const;
-template <> const QVector<QString>*   Value::constPtr() const;
-template <> const QVector<QDate>*     Value::constPtr() const;
-template <> const QVector<QTime>*     Value::constPtr() const;
-template <> const QVector<QDateTime>* Value::constPtr() const;
-template <> const QVector<BareDate>*  Value::constPtr() const;
+template <> UNI_API const bool*               Value::constPtr() const;
+template <> UNI_API const int*                Value::constPtr() const;
+template <> UNI_API const double*             Value::constPtr() const;
+template <> UNI_API const QString*            Value::constPtr() const;
+template <> UNI_API const QDate*              Value::constPtr() const;
+template <> UNI_API const QTime*              Value::constPtr() const;
+template <> UNI_API const QDateTime*          Value::constPtr() const;
+template <> UNI_API const BareDate*           Value::constPtr() const;
+template <> UNI_API const Path*               Value::constPtr() const;
+template <> UNI_API const QVector<bool>*      Value::constPtr() const;
+template <> UNI_API const QVector<int>*       Value::constPtr() const;
+template <> UNI_API const QVector<double>*    Value::constPtr() const;
+template <> UNI_API const QVector<QString>*   Value::constPtr() const;
+template <> UNI_API const QVector<QDate>*     Value::constPtr() const;
+template <> UNI_API const QVector<QTime>*     Value::constPtr() const;
+template <> UNI_API const QVector<QDateTime>* Value::constPtr() const;
+template <> UNI_API const QVector<BareDate>*  Value::constPtr() const;
 
 template <class U> U Value::as() const
 {
