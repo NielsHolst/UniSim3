@@ -12,12 +12,13 @@
 
 namespace base {
 
-static DialogBase *_dialog = nullptr;
-static QStack<QString> _messages;
+DialogBase* DialogBase::_dialog = nullptr;
+QStack<QString> DialogBase::_messages;
 
 DialogBase& dialog() {
-    Q_ASSERT(_dialog);
-    return *_dialog;
+
+    Q_ASSERT(DialogBase::_dialog);
+    return *DialogBase::_dialog;
 }
 
 DialogBase::DialogBase(QObject *parent)

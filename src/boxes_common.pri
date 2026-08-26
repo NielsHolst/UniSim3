@@ -102,9 +102,6 @@ message($${BOOST_PATH})
         unix:LIBS  += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
         macx:LIBS  += -L"$$(HOME)/lib" -luniversal_simulator_base$${SUFFIX}
     }
-} else {
-    QMAKE_LFLAGS += -Wl,--exclude-all-symbols
-    DEFINES += BUILD_DLL
 }
 
 message($${DEFINES})

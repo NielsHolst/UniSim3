@@ -95,6 +95,9 @@ private:
     bool _isFirstInstallation, _isSilent, _isUnattended;
     QMap<QString, QVariant> _options;
     QStack<QString> _latestLoadArgs;
+    // Singleton
+    static std::unique_ptr<Environment> _environment;
+    friend UNI_API Environment& environment();
     // Methods
     QString fileCounterKey();
     int fileCountervalue();
@@ -107,7 +110,7 @@ private:
 
 UNI_API Environment& environment();
 
-template<class T> T convert(Environment::Folder )  { ThrowException("Cannot only convert Folder to QString"); }
+template<class T> UNI_API T convert(Environment::Folder )  { ThrowException("Cannot only convert Folder to QString"); }
 
 template<> UNI_API QString convert(Environment::Folder transform);
 template<> UNI_API Environment::Folder convert(QString s);

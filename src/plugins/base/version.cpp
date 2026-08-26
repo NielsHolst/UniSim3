@@ -5,8 +5,10 @@
 */
 #ifndef BASE_VERSION_H
 #define BASE_VERSION_H
+
 #include <QFile>
 #include <QStringList>
+
 #include "exception.h"
 #include "version.h"
 
@@ -16,7 +18,7 @@ namespace  {
 
 namespace base {
 
-QString versionRaw() {
+UNI_API QString versionRaw() {
     QFile file (":/version.txt");
     if (!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         return unknown;
@@ -24,7 +26,7 @@ QString versionRaw() {
     return file.readAll();
 }
 
-QString version(QString raw) {
+UNI_API QString version(QString raw) {
     QStringList items = raw.split("\t");
     if (items.size() != 4) {
         return unknown;
@@ -38,7 +40,7 @@ QString version(QString raw) {
     return code;
 }
 
-QString version() {
+UNI_API QString version() {
     return version(versionRaw());
 }
 
