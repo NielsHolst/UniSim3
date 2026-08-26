@@ -23,7 +23,7 @@ namespace base {
 class Expression;
 class Port;
 
-class UNI_API Path {
+class Path {
 public:
     // Types
     using Object  = base::Node;
@@ -117,22 +117,22 @@ public:
     //
 
     // Methods
-    Path(base::Port *parent=nullptr);
-    Path(QString path, base::Port *parent=nullptr);
-    Path(const Expression *expression);
-    void setParent(base::Port *parent);
-    base::Port *parent();
-    void add(const Alternative &alternative);
-    void add(const Path &path);
-    QString toString() const;
-    const QVector<Alternative> &alternatives() const;
-    const Objects& matches(base::Node *anchor = nullptr) const;
-    template<class T> UNI_API T findOne(base::Node *anchor = nullptr) const;
-    template<class T> UNI_API T findMaybeOne(base::Node *anchor = nullptr) const;
-    template<class T> UNI_API QVector<T> findMany(base::Node *anchor = nullptr) const;
-    template<class T> UNI_API QStringList findManyNames(base::Node *anchor = nullptr) const;
-    QSet<base::Node*> nodesOnPath() const;
-    static bool isValid(QString path);
+    UNI_API Path(base::Port *parent=nullptr);
+    UNI_API Path(QString path, base::Port *parent=nullptr);
+    UNI_API Path(const Expression *expression);
+    UNI_API void setParent(base::Port *parent);
+    UNI_API base::Port *parent();
+    UNI_API void add(const Alternative &alternative);
+    UNI_API void add(const Path &path);
+    UNI_API QString toString() const;
+    UNI_API const QVector<Alternative> &alternatives() const;
+    UNI_API const Objects& matches(base::Node *anchor = nullptr) const;
+    template<class T> T findOne(base::Node *anchor = nullptr) const;
+    template<class T> T findMaybeOne(base::Node *anchor = nullptr) const;
+    template<class T> QVector<T> findMany(base::Node *anchor = nullptr) const;
+    template<class T> QStringList findManyNames(base::Node *anchor = nullptr) const;
+    UNI_API QSet<base::Node*> nodesOnPath() const;
+    UNI_API static bool isValid(QString path);
 private:
     // Data
     base::Port *_parent;

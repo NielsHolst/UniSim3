@@ -17,9 +17,9 @@ namespace base {
     class Value;
 }
 
-namespace UNI_API command {
+namespace command {
 
-class ListOutput{
+class UNI_API ListOutput{
 public:
     ListOutput(QVector<base::Box *> boxes, ListOptionSet options);
     QString toString();

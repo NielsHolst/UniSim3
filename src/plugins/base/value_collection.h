@@ -18,28 +18,26 @@
 
 namespace base {
 
-class UNI_API ValueCollection {
+class ValueCollection {
 public:
-    ValueCollection();
-    ValueCollection(QVector<const Value*> values);
-    ~ValueCollection();
+    UNI_API ValueCollection();
+    UNI_API ValueCollection(QVector<const Value*> values);
+    UNI_API ~ValueCollection();
 
-    void initialize(QVector<const Value*> values);
+    UNI_API void initialize(QVector<const Value*> values);
 
-    void update();
+    UNI_API void update();
     // Update buffered values
 
-    bool isEmpty() const;
+    UNI_API bool isEmpty() const;
     // Is collection empty?
 
-    const Value& values();
+    UNI_API const Value& values();
     // Get values collected into one value
 
-    Value::Type type() const;
-    static Value::Type type(QVector<const Value*> values);
+    UNI_API Value::Type type() const;
+    UNI_API static Value::Type type(QVector<const Value*> values);
     // Common type of values; never a vector
-
-
 private:
     // Pointers to original values
     QVector<const Value*> _original;

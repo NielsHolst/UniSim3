@@ -15,16 +15,16 @@ namespace base {
 class Node;
 
 // @TODO(bjarke): re-check this one
-class UNI_API Computation {
+class Computation {
 public:
     enum class Step {Ready, Construct, Modify, Amend, Initialize, Reset, Update, Cleanup, Debrief, Scratch};
-    static Step lookup(QString step, Node *context=nullptr);
-    static QString toString(Step step);
-    static void changeStep(Step step);
-    static Step currentStep();
+    UNI_API static Step lookup(QString step, Node *context=nullptr);
+    UNI_API static QString toString(Step step);
+    UNI_API static void changeStep(Step step);
+    UNI_API static Step currentStep();
 
-    static void pushStep(Step step);
-    static void popStep();
+    UNI_API static void pushStep(Step step);
+    UNI_API static void popStep();
 
 private:
     static Step _currentStep;

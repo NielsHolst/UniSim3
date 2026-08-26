@@ -25,80 +25,80 @@ namespace base {
 
 class Port;
 
-class UNI_API Box : public Node
+class Box : public Node
 {
 public:
-    Box(QString name, Box *parent);
-    virtual ~Box();
-    void addPort(Port *port);
+    UNI_API Box(QString name, Box *parent);
+    UNI_API virtual ~Box();
+    UNI_API void addPort(Port *port);
 
-    Port* peakPort(QString name);
-    const Port* peakPort(QString name) const;
+    UNI_API Port* peakPort(QString name);
+    UNI_API const Port* peakPort(QString name) const;
 
-    Port* port(QString name, Caller caller=Caller());
-    const Port* port(QString name, Caller caller=Caller()) const;
+    UNI_API Port* port(QString name, Caller caller=Caller());
+    UNI_API const Port* port(QString name, Caller caller=Caller()) const;
 
-    Box& help(QString s);
-    QString help() const;
+    UNI_API Box& help(QString s);
+    UNI_API QString help() const;
 
-    void sideEffects(QString s);
-    QString sideEffects() const;
+    UNI_API void sideEffects(QString s);
+    UNI_API QString sideEffects() const;
 
-    void additionalOutputs(QString description);
-    QString additionalOutputs() const;
+    UNI_API void additionalOutputs(QString description);
+    UNI_API QString additionalOutputs() const;
 
-    void ignore(bool doIgnore);
-    bool ignore() const;
+    UNI_API void ignore(bool doIgnore);
+    UNI_API bool ignore() const;
 
-    static bool hasRoot();
-    static Box* root();
-    static Box* root(Box *box);
+    UNI_API static bool hasRoot();
+    UNI_API static Box* root();
+    UNI_API static Box* root(Box *box);
 
-    template<class T> UNI_API T findOne(QString path);
-    template<class T> UNI_API T findMaybeOne(QString path);
-    template<class T> UNI_API QVector<T> findMany(QString path);
+    template<class T> T findOne(QString path);
+    template<class T> T findMaybeOne(QString path);
+    template<class T> QVector<T> findMany(QString path);
 
-    virtual void amend() {}
-    virtual void initialize() {}
-    virtual void reset() {}
-    virtual void update() {}
-    virtual void cleanup() {}
-    virtual void debrief() {}
-    virtual void run();
+    UNI_API virtual void amend() {}
+    UNI_API virtual void initialize() {}
+    UNI_API virtual void reset() {}
+    UNI_API virtual void update() {}
+    UNI_API virtual void cleanup() {}
+    UNI_API virtual void debrief() {}
+    UNI_API virtual void run();
 
-    void amendFamily();
-    void initializeFamily();
-    void resetFamily();
-    void updateFamily();
-    void cleanupFamily();
-    void debriefFamily();
+    UNI_API void amendFamily();
+    UNI_API void initializeFamily();
+    UNI_API void resetFamily();
+    UNI_API void updateFamily();
+    UNI_API void cleanupFamily();
+    UNI_API void debriefFamily();
 
-    void updateConstness();
-    void updateConstnessFamily();
+    UNI_API void updateConstness();
+    UNI_API void updateConstnessFamily();
 
-    bool isInitialized() const;
+    UNI_API bool isInitialized() const;
 
-    const QVector<Port*> &portsInOrder();
-    void touchPorts();
-    void evaluatePorts();
-    void verifyPorts();
-    void registerPorts();
+    UNI_API const QVector<Port*> &portsInOrder();
+    UNI_API void touchPorts();
+    UNI_API void evaluatePorts();
+    UNI_API void verifyPorts();
+    UNI_API void registerPorts();
 
-    Box* clone(QString name, Box *parent);
-    Box* cloneFamily(QString name, Box *parent);
-    bool isCloned() const;
+    UNI_API Box* clone(QString name, Box *parent);
+    UNI_API Box* cloneFamily(QString name, Box *parent);
+    UNI_API bool isCloned() const;
 
-    static bool debug();
-    static void debug(bool on);
-    static bool diagnose();
-    static void diagnose(double minValue, double maxValue);
-    static void diagnoseOff();
+    UNI_API static bool debug();
+    UNI_API static void debug(bool on);
+    UNI_API static bool diagnose();
+    UNI_API static void diagnose(double minValue, double maxValue);
+    UNI_API static void diagnoseOff();
 
-    void createTimer(QString name);
-    void startTimer(QString name);
-    void stopTimer(QString name);
+    UNI_API void createTimer(QString name);
+    UNI_API void startTimer(QString name);
+    UNI_API void stopTimer(QString name);
 
-    QString profileReport();
+    UNI_API QString profileReport();
 private:
     // Data
     QString _help, _sideEffects, _additionalOutputs;
@@ -106,12 +106,10 @@ private:
     QVector<Port*> _portsInOrder, _trackedPorts;
     bool _amended, _initialized, _cloned, _ignore;
     Timer _timer;
-#if 0
     static std::unique_ptr<Box> _root;
     static Box *_latest;
     static bool _debugOn, _diagnoseOn;
     static double _diagnoseMin, _diagnoseMax;
-#endif
     // Methods
     Box *latestRoot();
     void createTimers();
