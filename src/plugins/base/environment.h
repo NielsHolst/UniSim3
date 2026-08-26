@@ -110,7 +110,7 @@ private:
 
 UNI_API Environment& environment();
 
-template<class T> UNI_API T convert(Environment::Folder )  { ThrowException("Cannot only convert Folder to QString"); }
+template<class T> T convert(Environment::Folder )  { ThrowException("Cannot only convert Folder to QString"); }
 
 template<> UNI_API QString convert(Environment::Folder transform);
 template<> UNI_API Environment::Folder convert(QString s);
