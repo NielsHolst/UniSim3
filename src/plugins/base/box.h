@@ -58,12 +58,12 @@ public:
     template<class T> T findMaybeOne(QString path);
     template<class T> QVector<T> findMany(QString path);
 
-    UNI_API virtual void amend() {}
-    UNI_API virtual void initialize() {}
-    UNI_API virtual void reset() {}
-    UNI_API virtual void update() {}
-    UNI_API virtual void cleanup() {}
-    UNI_API virtual void debrief() {}
+    virtual void amend() {}
+    virtual void initialize() {}
+    virtual void reset() {}
+    virtual void update() {}
+    virtual void cleanup() {}
+    virtual void debrief() {}
     UNI_API virtual void run();
 
     UNI_API void amendFamily();
