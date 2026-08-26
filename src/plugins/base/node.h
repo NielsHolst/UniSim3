@@ -48,13 +48,13 @@ public:
     template <class T=Node*> QVector<T> children();
     template <class T=Node*> QVector<T> descendants();
 
-    UNI_API QString name()       const { return _objectName; }
-    UNI_API QString objectName() const { return _objectName; }
-    UNI_API QString fullName()   const { return fullName(this); }
-    UNI_API QString pluginName() const { return _pluginName; }
-    UNI_API QString doc()        const { return _doc; }
+    QString name()       const { return _objectName; }
+    QString objectName() const { return _objectName; }
+    QString fullName()   const { return fullName(this); }
+    QString pluginName() const { return _pluginName; }
+    QString doc()        const { return _doc; }
     UNI_API QString sourceCodeFilePathName() const;
-    UNI_API QStringList sourceCodeFilePathNames() const { return _sourceCodeFilePathNames; }
+    QStringList sourceCodeFilePathNames() const { return _sourceCodeFilePathNames; }
 
     UNI_API static QString fullName (const Node *node);
     template <class T=Node*> static QStringList fullNames(const QVector<const T *> &nodes);
@@ -63,15 +63,15 @@ public:
     template <class T=Node*> static QStringList names    (const QVector<      T *> &nodes);
 
     UNI_API QString className(Namespace ns = Namespace::Exclude) const;
-    UNI_API const Pedigree & pedigree() const { return _pedigree; }
+    const Pedigree & pedigree() const { return _pedigree; }
     UNI_API QString pedigreeAsString(Namespace ns = Namespace::Exclude) const;
     UNI_API bool isType(QString name) const;
 
-    UNI_API int order() const       { return _order; }
-    UNI_API const QMap<QString, QString> & attributes() const { return _attributes; }
+    int order() const       { return _order; }
+    const QMap<QString, QString> & attributes() const { return _attributes; }
 
-    UNI_API bool doWriteOnCommand() const { return _doWriteOnCommand; }
-    UNI_API void doWriteOnCommand(bool doWrite) { _doWriteOnCommand = doWrite; }
+    bool doWriteOnCommand() const { return _doWriteOnCommand; }
+    void doWriteOnCommand(bool doWrite) { _doWriteOnCommand = doWrite; }
 
     UNI_API static void setCurrent(Node const* node);
     UNI_API static const Node *current();
