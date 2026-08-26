@@ -20,6 +20,9 @@ unix:DESTDIR  = "$${BIN_PATH}"
 macx:DESTDIR = "~/lib"
 TARGET = universal_simulator_base$${SUFFIX}
 
+QMAKE_LFLAGS += -Wl,--exclude-all-symbols
+DEFINES += BUILD_DLL
+
 # Our project header and source code
 HEADERS +=  \
     bare_date.h \

@@ -57,6 +57,10 @@ public:
     QString latestCommand() const;
 
 private:
+    // singleton
+    static DialogBase *_dialog;
+    static QStack<QString> _messages;
+    friend UNI_API DialogBase& dialog();
     // data
     int _errorCount;
     double _nextShowProgress;
