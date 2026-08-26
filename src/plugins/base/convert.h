@@ -33,10 +33,10 @@ using vBareDate  = QVector<BareDate>;
 using vValuePtr  = QVector<const Value*>;
 
 template <class, template <class> class>
-UNI_API struct isInstance : public std::false_type {};
+struct UNI_API isInstance : public std::false_type {};
 
 template <class T, template <class> class U>
-UNI_API struct isInstance<U<T>, U> : public std::true_type {};
+struct UNI_API isInstance<U<T>, U> : public std::true_type {};
 
 // Define conversions to type T from type U
 template <class T, class U> T convert(U ) {

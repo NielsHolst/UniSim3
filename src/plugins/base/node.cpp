@@ -11,7 +11,7 @@
 
 namespace base {
 
-const Node *Node::_current = nullptr;
+Node const* Node::_current = nullptr;
 
 Node::Node(QString name, Node *parent)
     : _objectName(name), _parent(parent), _order(-1), _doWriteOnCommand(true)
@@ -29,6 +29,16 @@ Node::~Node() {
     for (auto child : std::as_const(_children))
         delete child;
     _children.clear();
+}
+
+void Node::setCurrent(const Node *node)
+{
+    _current = node;
+}
+
+const Node *Node::current()
+{
+    return _current;
 }
 
 void Node::addChild(Node *child) {

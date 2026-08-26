@@ -50,39 +50,45 @@ win32:lessThan(QT_MAJOR_VERSION, 6) {
 # Show warning when using deprecated Qt features
 DEFINES += QT_DEPRECATED_WARNINGS
 
-# Compiler options add-ons
-QMAKE_CXXFLAGS += -Wall -Wextra # -Wconversion
+mingw {
+    # Compiler options add-ons
+    QMAKE_CXXFLAGS += -Wall -Wextra # -Wconversion
 
-# Compiler options to silence warnings
-QMAKE_CXXFLAGS += -Wno-padded -Wno-int-in-bool-context -Wno-maybe-uninitialized
+    # Compiler options to silence warnings
+    QMAKE_CXXFLAGS += -Wno-padded -Wno-int-in-bool-context -Wno-maybe-uninitialized
 
-#greaterThan(QT_MAJOR_VERSION, 5) {
-#    QMAKE_CXXFLAGS += -Wno-clazy-non-pod-global-static
-#}
+    #greaterThan(QT_MAJOR_VERSION, 5) {
+    #    QMAKE_CXXFLAGS += -Wno-clazy-non-pod-global-static
+    #}
 
-# Compiler options to silence warnings when compiling Boost
-QMAKE_CXXFLAGS += -Wno-unused-local-typedefs -Wno-attributes -Wno-deprecated-declarations -Wno-misleading-indentation -Wno-nonnull
-DEFINES += BOOST_ALLOW_DEPRECATED_HEADERS
-DEFINES += BOOST_MATH_DISABLE_DEPRECATED_03_WARNING
+    # Compiler options to silence warnings when compiling Boost
+    QMAKE_CXXFLAGS += -Wno-unused-local-typedefs -Wno-attributes -Wno-deprecated-declarations -Wno-misleading-indentation -Wno-nonnull
+    DEFINES += BOOST_ALLOW_DEPRECATED_HEADERS
+    DEFINES += BOOST_MATH_DISABLE_DEPRECATED_03_WARNING
 
-# Compiler options to silence warnings when compiling under Mac OS X
-MY_HASH = $$LITERAL_HASH
-NO_PRAGMA_MESSAGES = $$join(MY_HASH, , -Wno-\\, pragma-messages)
-macx:QMAKE_CXXFLAGS += $${NO_PRAGMA_MESSAGES} -Wno-inconsistent-missing-override -Wno-unknown-warning-option
+    # Compiler options to silence warnings when compiling under Mac OS X
+    MY_HASH = $$LITERAL_HASH
+    NO_PRAGMA_MESSAGES = $$join(MY_HASH, , -Wno-\\, pragma-messages)
+    macx:QMAKE_CXXFLAGS += $${NO_PRAGMA_MESSAGES} -Wno-inconsistent-missing-override -Wno-unknown-warning-option
 
-# Compiler options to silence warnings when compiling under Win and Linux
-!macx:QMAKE_CXXFLAGS += -Wno-unknown-pragmas
+    # Compiler options to silence warnings when compiling under Win and Linux
+    !macx:QMAKE_CXXFLAGS += -Wno-unknown-pragmas
 
-# Compiler options for extra debug info (can be toggled off)
-QMAKE_CXXFLAGS_DEBUG -= -g
-QMAKE_CXXFLAGS_DEBUG += -g3
+    # Compiler options for extra debug info (can be toggled off)
+    QMAKE_CXXFLAGS_DEBUG -= -g
+    QMAKE_CXXFLAGS_DEBUG += -g3
 
-# Compiler options to speed up code
-QMAKE_CXXFLAGS_RELEASE += -ffast-math -O2
+    # Compiler options to speed up code
+    QMAKE_CXXFLAGS_RELEASE += -ffast-math -O2
 
-# Compiler option that would have saved me some days' work
-QMAKE_CXXFLAGS += -Wdelete-non-virtual-dtor
+    # Compiler option that would have saved me some days' work
+    QMAKE_CXXFLAGS += -Wdelete-non-virtual-dtor
 
+    # Manually export/import symbols using 'UNI_API' defined in 'base/base_export'
+    QMAKE_LFLAGS += -Wl,--exclude-all-symbols
+} else: msvc {
+    QMAKE_CXXFLAGS += /Od /std:c++17
+}
 
 # Additional folders with header files
 BOOST_PATH = $$(BOOST_ROOT)
@@ -93,13 +99,9 @@ INCLUDEPATH += $${BOOST_PATH}
 
 # Own libraries that we use, except 'base' does not use itself
 !equals(BOXES_PLUGIN_NAME, "base") {
-    msvc {
-        win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}.lib
-    } else: mingw {
-        win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
-        unix:LIBS  += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
-        macx:LIBS  += -L"$$(HOME)/lib" -luniversal_simulator_base$${SUFFIX}
-    }
+    win32:LIBS += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
+    unix:LIBS  += -L"$${BIN_PATH}" -luniversal_simulator_base$${SUFFIX}
+    macx:LIBS  += -L"$$(HOME)/lib" -luniversal_simulator_base$${SUFFIX}
 }
 
 message($${DEFINES})

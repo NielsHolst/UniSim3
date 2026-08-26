@@ -18,7 +18,7 @@ namespace base {
 
 class Box;
 
-class UNI_API Node
+class Node
 {
 public:
     enum class Namespace{Include, Exclude};
@@ -29,52 +29,52 @@ public:
     };
     using Pedigree = QVector<Type>;
 
-    Node(QString name, Node *parent);
-    virtual ~Node();
-    void setParent(Node *parent);
-    void setPluginName(QString pluginName);
-    void setClassName(QString nameSpaceName, QString className);
-    void setObjectName(QString name);
-    void setDoc(QString doc);
-    void setSourceCodeFilePathName(QString name);
+    UNI_API Node(QString name, Node *parent);
+    UNI_API virtual ~Node();
+    UNI_API void setParent(Node *parent);
+    UNI_API void setPluginName(QString pluginName);
+    UNI_API void setClassName(QString nameSpaceName, QString className);
+    UNI_API void setObjectName(QString name);
+    UNI_API void setDoc(QString doc);
+    UNI_API void setSourceCodeFilePathName(QString name);
 
-    void setOrder(int order);
-    void addAttribute(QString name, QString value);
-    void removeChild(Node *child);
+    UNI_API void setOrder(int order);
+    UNI_API void addAttribute(QString name, QString value);
+    UNI_API void removeChild(Node *child);
 
-    static void enumerate();
+    UNI_API static void enumerate();
 
     template <class T=Node*> T parent() const;
     template <class T=Node*> QVector<T> children();
     template <class T=Node*> QVector<T> descendants();
 
-    QString name()       const { return _objectName; }
-    QString objectName() const { return _objectName; }
-    QString fullName()   const { return fullName(this); }
-    QString pluginName() const { return _pluginName; }
-    QString doc()        const { return _doc; }
-    QString sourceCodeFilePathName() const;
-    QStringList sourceCodeFilePathNames() const { return _sourceCodeFilePathNames; }
+    UNI_API QString name()       const { return _objectName; }
+    UNI_API QString objectName() const { return _objectName; }
+    UNI_API QString fullName()   const { return fullName(this); }
+    UNI_API QString pluginName() const { return _pluginName; }
+    UNI_API QString doc()        const { return _doc; }
+    UNI_API QString sourceCodeFilePathName() const;
+    UNI_API QStringList sourceCodeFilePathNames() const { return _sourceCodeFilePathNames; }
 
-    static QString fullName (const Node *node);
+    UNI_API static QString fullName (const Node *node);
     template <class T=Node*> static QStringList fullNames(const QVector<const T *> &nodes);
     template <class T=Node*> static QStringList names    (const QVector<const T *> &nodes);
     template <class T=Node*> static QStringList fullNames(const QVector<      T *> &nodes);
     template <class T=Node*> static QStringList names    (const QVector<      T *> &nodes);
 
-    QString className(Namespace ns = Namespace::Exclude) const;
-    const Pedigree & pedigree() const { return _pedigree; }
-    QString pedigreeAsString(Namespace ns = Namespace::Exclude) const;
-    bool isType(QString name) const;
+    UNI_API QString className(Namespace ns = Namespace::Exclude) const;
+    UNI_API const Pedigree & pedigree() const { return _pedigree; }
+    UNI_API QString pedigreeAsString(Namespace ns = Namespace::Exclude) const;
+    UNI_API bool isType(QString name) const;
 
-    int order() const       { return _order; }
-    const QMap<QString, QString> & attributes() const { return _attributes; }
+    UNI_API int order() const       { return _order; }
+    UNI_API const QMap<QString, QString> & attributes() const { return _attributes; }
 
-    bool doWriteOnCommand() const { return _doWriteOnCommand; }
-    void doWriteOnCommand(bool doWrite) { _doWriteOnCommand = doWrite; }
+    UNI_API bool doWriteOnCommand() const { return _doWriteOnCommand; }
+    UNI_API void doWriteOnCommand(bool doWrite) { _doWriteOnCommand = doWrite; }
 
-    static void setCurrent(const Node *node) { _current = node; }
-    static const Node *current() { return _current; }
+    UNI_API static void setCurrent(Node const* node);
+    UNI_API static const Node *current();
 
 private:
     // Data
@@ -86,7 +86,7 @@ private:
     int _order;
     QMap<QString, QString> _attributes;
     bool _doWriteOnCommand;
-    static const Node *_current;
+    static Node const* _current;
 
     // Methods
     void addChild(Node *child);
