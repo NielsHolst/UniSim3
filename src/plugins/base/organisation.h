@@ -21,9 +21,6 @@ struct UNI_API Organisation{
         QCoreApplication::setApplicationVersion(version());
     }
 };
-
-UNI_API Organisation organisation;
-
 }
 
 #endif // ORGANISATION_H
