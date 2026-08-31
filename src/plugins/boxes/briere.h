@@ -15,8 +15,8 @@ class UNI_API Briere : public base::PhysiologicalTime
 {
 public: 
     Briere(QString name, Box *parent);
-    void reset();
-    void updateStep();
+    void reset() override;
+    void updateStep() override;
 private:
     // Inputs
     double T0, Tmax, a;

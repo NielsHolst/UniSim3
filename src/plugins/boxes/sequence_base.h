@@ -15,7 +15,7 @@ class UNI_API SequenceBase : public ValuesBase
 {
 public:
     SequenceBase(QString name, Box *parent);
-    void setValues();
+    void setValues() override;
 private:
     // Inputs
     double min, max, by;

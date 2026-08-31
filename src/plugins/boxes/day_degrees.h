@@ -14,8 +14,8 @@ class UNI_API DayDegrees : public base::PhysiologicalTime
 {
 public: 
     DayDegrees(QString name, Box *parent);
-    void reset();
-    void updateStep();
+    void reset() override;
+    void updateStep() override;
 private:
     // Inputs
     double T0, Topt, Tmax;

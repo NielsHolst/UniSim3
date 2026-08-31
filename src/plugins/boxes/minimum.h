@@ -18,8 +18,8 @@ class UNI_API Minimum : public base::Box
 public: 
     Minimum(QString name, Box *parent);
     // standard methods
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     QVector<double> values;
     double value;

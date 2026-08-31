@@ -15,8 +15,8 @@ class UNI_API ValuesBase : public base::Box
 {
 public:
     ValuesBase(QString name, Box *parent);
-    void amend() final;
-    void initialize() final;
+    void amend() override final;
+    void initialize() override final;
     virtual void setValues() = 0;
 protected:
     // Inputs

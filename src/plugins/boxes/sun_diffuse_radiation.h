@@ -17,8 +17,8 @@ class UNI_API SunDiffuseRadiation : public base::Box
 {
 public: 
     SunDiffuseRadiation(QString name, Box *parent);
-    void reset();
-	void update();
+    void reset() override;
+    void update() override;
 
 private:
     // inputs

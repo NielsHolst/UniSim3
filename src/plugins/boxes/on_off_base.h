@@ -25,11 +25,11 @@ public:
         Output(value).help("Current on or off value");
         Output(isOn).help("Is switch on?");
     }
-    void reset() {
+    void reset() override {
         setSwitch();
         setValue();
     }
-    void update() {
+    void update() override {
         if (!(isOn && isSticky)) {
             setSwitch();
             setValue();

@@ -17,7 +17,7 @@ class UNI_API SeriesBase : public ValuesBase
 {
 public:
     SeriesBase(QString name, Box *parent);
-    void setValues();
+    void setValues() override;
 private:
     // Inputs
     QVector<double> numbers;

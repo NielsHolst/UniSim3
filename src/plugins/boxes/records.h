@@ -25,11 +25,11 @@ public:
     Records(QString name, Box *parent);
     ~Records();
     // standard methods
-    void amend();
-    void initialize();
-    void reset();
-    void update();
-    void cleanup();
+    void amend() override;
+    void initialize() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
 
 private:
     // inputs

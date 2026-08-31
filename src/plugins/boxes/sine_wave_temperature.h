@@ -15,9 +15,9 @@ class UNI_API SineWaveTemperature : public base::Box
 {
 public: 
     SineWaveTemperature(QString name, Box *parent);
-    void amend();
-    void reset();
-    void update();
+    void amend() override;
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     QString recordsName, TminName, TmaxName;

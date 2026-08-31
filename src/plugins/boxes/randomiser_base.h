@@ -21,9 +21,9 @@ class UNI_API RandomiserBase : public base::Box
 {
 public:
     RandomiserBase(QString name, Box *parent);
-    void initialize() final;
-    void reset() final;
-    void debrief() final;
+    void initialize() override final;
+    void reset() override final;
+    void debrief() override final;
     virtual int numStrata() const = 0;
     virtual double draw01() = 0;
 private:

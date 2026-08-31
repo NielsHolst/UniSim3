@@ -15,12 +15,12 @@ class UNI_API Computation : public base::Box
 {
 public:
     Computation(QString name, Box *parent);
-    void amend();
-    void initialize();
-    void reset();
-    void update();
-    void cleanup();
-    void debrief();
+    void amend() override;
+    void initialize() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
+    void debrief() override;
 
 private:
     // Outputs

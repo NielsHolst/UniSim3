@@ -15,8 +15,8 @@ class UNI_API Sandy : public base::Box
 {
 public:
     Sandy(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double xMin, xMax, x, yMax, a, b;

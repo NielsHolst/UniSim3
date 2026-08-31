@@ -15,7 +15,7 @@ class UNI_API RunningSumTimed : public RunningBase
 {
 public: 
     RunningSumTimed(QString name, Box *parent);
-    void reset();
+    void reset() override;
 private:
     // Input
     double timeWindow, timeStepSecs;

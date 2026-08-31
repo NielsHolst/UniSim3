@@ -15,8 +15,8 @@ class UNI_API Sah : public base::Box
 {
 public: 
     Sah(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double temperature;

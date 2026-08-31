@@ -22,10 +22,10 @@ class UNI_API RandomBase : public base::Box
 public: 
     RandomBase(QString name, Box *parent);
     virtual ~RandomBase() {}
-    void amend() final;
-    void initialize() final;
-    void reset() final;
-    void update() final;
+    void amend() override final;
+    void initialize() override final;
+    void reset() override final;
+    void update() override final;
     RandomiserBase* randomiser();
     void setDrawAtReset(bool value) { drawAtReset = value; }
     virtual void drawValue() = 0;

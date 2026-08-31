@@ -17,8 +17,8 @@ class UNI_API Population : public base::Box
 {
 public:
     Population(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double initial, ageIncrement;

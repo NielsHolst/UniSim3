@@ -20,9 +20,9 @@ class UNI_API PageR : public base::Box
 {
 public:
     PageR(QString name, base::Box *parent);
-    void initialize();
-    void reset();
-    void update();
+    void initialize() override;
+    void reset() override;
+    void update() override;
     QString toScript();
     QString functionName();
 private:

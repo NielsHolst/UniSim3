@@ -18,12 +18,12 @@ class UNI_API PopUp : public base::Box
 {
 public: 
     PopUp(QString name, Box *parent);
-    void amend();
-    void initialize();
-    void reset();
-    void update();
-    void cleanup();
-    void debrief();
+    void amend() override;
+    void initialize() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
+    void debrief() override;
 private:
     // Inputs
     QString when, title, text, details, defaultButton, escapeButton, icon;

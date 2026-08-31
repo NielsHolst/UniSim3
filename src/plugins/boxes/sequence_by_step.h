@@ -17,10 +17,10 @@ class UNI_API SequenceByStep : public SequenceBase
 {
 public:
     SequenceByStep(QString name, Box *parent);
-    void setCounter();
-    void setSteps();
-    void reset();
-    void update();
+    void setCounter() override;
+    void setSteps() override;
+    void reset() override;
+    void update() override;
 private:
     // Outputs
     int steps;

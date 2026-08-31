@@ -15,8 +15,8 @@ class UNI_API MaximumAt : public base::Box
 {
 public: 
     MaximumAt(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     int step;

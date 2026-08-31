@@ -16,9 +16,9 @@ class UNI_API FoodWebCalcBase : public base::Box
 {
 public: 
     FoodWebCalcBase(QString name, Box *parent);
-    void amend();
-    void reset();
-    void update() final;
+    void amend() override;
+    void reset() override;
+    void update() override final;
 protected:
     // Inputs
     double timeStep;

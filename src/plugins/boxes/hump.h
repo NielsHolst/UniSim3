@@ -16,9 +16,9 @@ class UNI_API Hump : public base::Box
 public: 
     Hump(QString name, Box *parent);
     // standard methods
-    void initialize();
-    void reset();
-    void update();
+    void initialize() override;
+    void reset() override;
+    void update() override;
 private:
     // Input
     double x, x0, x1, ymin, ymax;

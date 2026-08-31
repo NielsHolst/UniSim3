@@ -15,8 +15,8 @@ class UNI_API FunctionalResponse : public base::Box
 {
 public: 
     FunctionalResponse(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double attacker, prey, attackRate, demandGross, timeStep;

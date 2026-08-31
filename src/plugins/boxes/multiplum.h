@@ -17,8 +17,8 @@ class UNI_API Multiplum : public base::Box
 {
 public:
     Multiplum(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     QVector<double> factors;

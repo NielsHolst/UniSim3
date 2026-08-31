@@ -17,11 +17,11 @@ class UNI_API Stage : public StageBase
 {
 public:
     Stage(QString name, Box *parent);
-    void myReset();
-    void update();
+    void myReset() override;
+    void update() override;
 
     // special methods
-    void createDistributedDelay();
+    void createDistributedDelay() override;
 private:
     // inputs
     double inflow, phaseOutflowProportion;

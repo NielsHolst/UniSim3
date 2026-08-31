@@ -17,9 +17,9 @@ class UNI_API SequenceByIteration : public SequenceBase
 {
 public:
     SequenceByIteration(QString name, Box *parent);
-    void setCounter();
-    void setIterations();
-    void reset();
+    void setCounter() override;
+    void setIterations() override;
+    void reset() override;
 private:
     int iterations;
 };

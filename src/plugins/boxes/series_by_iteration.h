@@ -15,9 +15,9 @@ class UNI_API SeriesByIteration : public SeriesBase
 {
 public:
     SeriesByIteration(QString name, Box *parent);
-    void setCounter();
-    void setIterations();
-    void reset();
+    void setCounter() override;
+    void setIterations() override;
+    void reset() override;
 private:
     // Outputs
     int iterations;

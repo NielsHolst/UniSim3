@@ -17,8 +17,8 @@ class UNI_API Sun : public base::Box
 {
 public: 
     Sun(QString name, Box *parent);
-    void reset();
-	void update();
+    void reset() override;
+    void update() override;
 
 private:
     // inputs

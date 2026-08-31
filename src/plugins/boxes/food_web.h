@@ -15,7 +15,7 @@ class UNI_API FoodWeb : public base::Box
 {
 public: 
     FoodWeb(QString name, Box *parent);
-    void amend();
+    void amend() override;
 private:
     // Inputs
     double timeStep;

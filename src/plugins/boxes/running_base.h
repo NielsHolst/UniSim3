@@ -17,8 +17,8 @@ class UNI_API RunningBase : public base::Box
 {
 public: 
     RunningBase(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double input, initial;

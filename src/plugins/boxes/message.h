@@ -15,11 +15,11 @@ class UNI_API Message : public base::Box
 {
 public: 
     Message(QString name, Box *parent);
-    void initialize();
-    void reset();
-    void update();
-    void cleanup();
-    void debrief();
+    void initialize() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
+    void debrief() override;
 private:
     // Inputs
     QString text, when;

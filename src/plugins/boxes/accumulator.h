@@ -15,8 +15,8 @@ class UNI_API Accumulator : public base::Box
 {
 public:
     Accumulator(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 
 private:
     // Inputs

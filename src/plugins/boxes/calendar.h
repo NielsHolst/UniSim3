@@ -21,9 +21,9 @@ class UNI_API Calendar : public base::Box
 public: 
     Calendar(QString name, Box *parent);
 	//standard methods
-    void initialize();
-    void reset();
-	void update();
+    void initialize() override;
+    void reset() override;
+    void update() override;
 
 private:
     // inputs

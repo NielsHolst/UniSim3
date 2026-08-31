@@ -15,8 +15,8 @@ class UNI_API LobryRossoFlandrois : public base::PhysiologicalTime
 {
 public: 
     LobryRossoFlandrois(QString name, Box *parent);
-    void reset();
-    void updateStep();
+    void reset() override;
+    void updateStep() override;
 private:
     // Inputs
     double Tmin, Topt, Tmax, maximum;

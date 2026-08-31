@@ -15,7 +15,7 @@ class UNI_API RunningAverageTimed : public RunningSumTimed
 {
 public: 
     RunningAverageTimed(QString name, Box *parent);
-    void update();
+    void update() override;
 };
 
 } //namespace

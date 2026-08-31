@@ -17,8 +17,8 @@ class UNI_API DateTime : public base::Box
 {
 public:
     DateTime(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     QString dateTimeString;

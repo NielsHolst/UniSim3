@@ -17,8 +17,8 @@ class UNI_API OffsetDateTime : public base::Box
 {
 public: 
     OffsetDateTime(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     QDateTime dateTime;
