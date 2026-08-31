@@ -113,10 +113,8 @@ QString Environment::openOutputFile(QFile &file, QString extension) {
 
 QString Environment::outputFilePath(QString extension, int offset) {
     QString fileName = _latestLoadArg;
-
-    char numberFilled[16];
-    sprintf(numberFilled, "%04d", fileCountervalue() + offset);
-
+    int value = fileCountervalue();
+    QString numberFilled = QString("%1").arg(value + offset, 4, 10, QChar('0'));
     QString ext = (extension.at(0) == '.') ? extension : ("." + extension);
     return outputFileNamePath(QFileInfo(fileName).completeBaseName() + "_" + numberFilled + ext);
 }

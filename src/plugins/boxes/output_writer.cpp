@@ -92,6 +92,7 @@ void OutputWriter::initialize() {
     decimalChar = ch;
 
     // Open output file and write column headings and formats
+    // @TODO(bjarke) triggers hang on this function call
     openFileStream();
     writeColumnLabels();
     if (!skipFormats)
