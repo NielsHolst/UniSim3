@@ -18,8 +18,8 @@ class UNI_API Buffer : public base::Box
 {
 public:
     Buffer(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double initial, input, increment;

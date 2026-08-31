@@ -17,11 +17,11 @@ class UNI_API OutputSelector : public base::Box
 {
 public:
     OutputSelector(QString name, Box *parent);
-    void initialize();
-    void reset();
-    void update();
-    void cleanup();
-    void debrief();
+    void initialize() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
+    void debrief() override;
 private:
     // Inputs
     int step, beginStep, period;

@@ -24,8 +24,8 @@ class UNI_API PlotR : public base::Box
 {
 public:
     PlotR(QString name, base::Box *parent);
-    void initialize();
-    void update();
+    void initialize() override;
+    void update() override;
     QString toScript();
 private:
     // Inputs

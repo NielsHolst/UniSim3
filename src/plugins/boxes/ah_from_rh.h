@@ -15,8 +15,8 @@ class UNI_API AhFromRh : public base::Box
 {
 public: 
     AhFromRh(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double rh, temperature;

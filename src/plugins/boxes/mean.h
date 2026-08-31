@@ -18,8 +18,8 @@ class UNI_API Mean : public base::Box
 public: 
     Mean(QString name, Box *parent);
     // standard methods
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     QVector<double> values;
     double value;

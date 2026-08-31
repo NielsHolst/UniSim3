@@ -15,10 +15,10 @@ class UNI_API Split : public base::Box
 {
 public: 
     Split(QString name, Box *parent);
-    void amend();
-    void initialize();
-    void reset();
-    void update();
+    void amend() override;
+    void initialize() override;
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double whole;

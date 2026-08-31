@@ -25,12 +25,12 @@ class UNI_API OutputWriter : public base::Box
 {
 public:
     OutputWriter(QString name, base::Box *parent);
-    void amend();
-    void initialize();
-    void reset();
-    void update();
-    void cleanup();
-    void debrief();
+    void amend() override;
+    void initialize() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
+    void debrief() override;
 private:
     // Inputs
     base::Path ports;

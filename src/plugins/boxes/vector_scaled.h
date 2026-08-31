@@ -22,8 +22,8 @@ class UNI_API VectorScaled : public base::Box
 {
 public:
     VectorScaled(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     QVector<double> vector;

@@ -15,9 +15,9 @@ class UNI_API NumberedFile : public base::Box
 {
 public:
     NumberedFile(QString name, Box *parent);
-    void initialize();
-    void reset();
-    void update();
+    void initialize() override;
+    void reset() override;
+    void update() override;
 private:
     // Input
     QString fileName;

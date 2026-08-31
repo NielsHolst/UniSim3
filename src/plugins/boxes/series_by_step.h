@@ -15,10 +15,10 @@ class UNI_API SeriesByStep : public SeriesBase
 {
 public:
     SeriesByStep(QString name, Box *parent);
-    void setCounter();
-    void setSteps();
-    void reset();
-    void update();
+    void setCounter() override;
+    void setSteps() override;
+    void reset() override;
+    void update() override;
 private:
     // Outputs
     int steps;

@@ -15,8 +15,8 @@ class UNI_API SupplyBudget : public base::Box
 {
 public: 
     SupplyBudget(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double supplyGross, demandNet, demandResp, egested, conversionCost;

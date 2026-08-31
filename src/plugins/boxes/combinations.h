@@ -15,9 +15,9 @@ class UNI_API Combinations : public base::Box
 {
 public: 
     Combinations(QString name, Box *parent);
-    void amend();
-    void initialize();
-    void cleanup();
+    void amend() override;
+    void initialize() override;
+    void cleanup() override;
     static QString counterName(const Box *box);
 private:
     // Outputs

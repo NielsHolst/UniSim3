@@ -15,7 +15,7 @@ class UNI_API RunningAverageSteps : public RunningSumSteps
 {
 public: 
     RunningAverageSteps(QString name, Box *parent);
-    void update();
+    void update() override;
 };
 
 } //namespace

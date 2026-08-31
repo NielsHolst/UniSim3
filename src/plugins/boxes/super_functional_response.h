@@ -15,8 +15,8 @@ class UNI_API SuperFunctionalResponse : public base::Box
 {
 public: 
     SuperFunctionalResponse(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double demand, attacker, host, attackRate, timeStep;

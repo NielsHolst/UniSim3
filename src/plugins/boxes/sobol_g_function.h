@@ -15,9 +15,9 @@ class UNI_API SobolGFunction : public base::Box
 {
 public:
     SobolGFunction(QString name, Box *parent);
-    void initialize();
-    void reset();
-    void update();
+    void initialize() override;
+    void reset() override;
+    void update() override;
 private:
     // Input
     QVector<double> a, x;

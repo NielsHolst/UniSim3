@@ -15,8 +15,8 @@ class UNI_API SlidingSignal : public base::BaseSignal
 {
 public:
     SlidingSignal(QString name, Box *parent);
-    bool computeFlag();
-    double computeSignal(bool);
+    bool computeFlag() override;
+    double computeSignal(bool) override;
     virtual double slide(double proportion) = 0;
 protected:
     double input, threshold, thresholdBand, minSignal, maxSignal;

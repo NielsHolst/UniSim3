@@ -15,8 +15,8 @@ class UNI_API FixedSignal : public base::BaseSignal
 {
 public:
     FixedSignal(QString name, Box *parent);
-    bool computeFlag();
-    double computeSignal(bool);
+    bool computeFlag() override;
+    double computeSignal(bool) override;
 };
 
 } //namespace

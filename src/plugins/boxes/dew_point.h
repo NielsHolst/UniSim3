@@ -16,8 +16,8 @@ class UNI_API DewPoint : public base::Box
 public: 
     DewPoint(QString name, Box *parent);
     // standard methods
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double temperature, rh;

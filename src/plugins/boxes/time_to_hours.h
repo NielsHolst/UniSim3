@@ -17,8 +17,8 @@ class UNI_API TimeToHours : public base::Box
 {
 public:
     TimeToHours(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     QTime time;

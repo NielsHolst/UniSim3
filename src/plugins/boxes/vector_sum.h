@@ -22,9 +22,9 @@ class UNI_API VectorSum : public base::Box
 {
 public:
     VectorSum(QString name, Box *parent);
-    void initialize();
-    void reset();
-    void update();
+    void initialize() override;
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     QString input;

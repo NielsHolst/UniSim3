@@ -25,9 +25,9 @@ class UNI_API OutputR : public base::Box
 {
 public:
     OutputR(QString name, Box *parent);
-    void amend();
-    void initialize();
-    void debrief();
+    void amend() override;
+    void initialize() override;
+    void debrief() override;
 
     QString toScript();
     void addRCode(QString s);

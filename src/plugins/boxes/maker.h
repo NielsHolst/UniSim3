@@ -20,8 +20,7 @@ class UNI_API Maker : public base::Box
 {
 public:
     Maker(QString name, Box *parent);
-    void amend();
-
+    void amend() override;
 private:
     // inputs
     int replicates;

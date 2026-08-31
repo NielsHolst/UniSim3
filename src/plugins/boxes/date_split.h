@@ -17,8 +17,8 @@ class UNI_API DateSplit : public base::Box
 {
 public:
     DateSplit(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     QDate date;

@@ -15,8 +15,8 @@ class UNI_API FoodWebCalcParasiteHost : public FoodWebCalcBase
 {
 public: 
     FoodWebCalcParasiteHost(QString name, Box *parent);
-    void amend();
-    void reset();
+    void amend() override;
+    void reset() override;
 protected:
     // Outputs (indirect)
     base::Matrix2D<double> _Snet;

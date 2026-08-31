@@ -23,9 +23,8 @@ class UNI_API Scenarios : public base::Box
 {
 public:
     Scenarios(QString name, Box *parent);
-    void amend();
-    void reset();
-
+    void amend() override;
+    void reset() override;
 private:
     // Inputs
     QString fileName, title;

@@ -16,7 +16,7 @@ class UNI_API OutputText : public base::Box
 {
 public:
     OutputText(QString name, base::Box *parent);
-    void amend();
+    void amend() override;
 private:
     // Inputs
     base::Path ports;

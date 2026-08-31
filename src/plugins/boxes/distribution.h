@@ -17,10 +17,10 @@ class UNI_API Distribution : public base::Box
 {
 public: 
     Distribution(QString name, Box *parent);
-    void amend();
-    void reset();
-    void update();
-    void cleanup();
+    void amend() override;
+    void reset() override;
+    void update() override;
+    void cleanup() override;
 private:
     // Input
     double input, divisor;

@@ -19,11 +19,11 @@ class UNI_API StageAndPhase : public StageBase
 public:
     StageAndPhase(QString name, Box *parent);
     // standard methods
-    void myReset();
-    void update();
+    void myReset() override;
+    void update() override;
 
     // special methods
-    void createDistributedDelay();
+    void createDistributedDelay() override;
 
 private:
     // inputs

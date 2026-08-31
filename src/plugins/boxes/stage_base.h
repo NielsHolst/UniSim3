@@ -19,7 +19,7 @@ class UNI_API StageBase : public base::Box
 public:
     StageBase(QString name, Box *parent);
     virtual ~StageBase();
-    void reset() final;
+    void reset() override final;
     virtual void myReset() = 0;
 
     QVector<double> &data();

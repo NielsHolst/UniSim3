@@ -15,8 +15,8 @@ class UNI_API ThresholdSignal : public base::BaseSignal
 {
 public:
     ThresholdSignal(QString name, Box *parent);
-    bool computeFlag();
-    double computeSignal(bool flag);
+    bool computeFlag() override;
+    double computeSignal(bool flag) override;
 private:
     double threshold, input, signalFlagged, signalUnflagged;
     bool flagAbove;

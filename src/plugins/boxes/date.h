@@ -17,8 +17,8 @@ class UNI_API Date : public base::Box
 {
 public:
     Date(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     QString dmy;

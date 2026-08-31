@@ -17,9 +17,9 @@ class UNI_API SelectFile : public base::Box
 {
 public:
     SelectFile(QString name, Box *parent);
-    void amend();
-    void initialize();
-    void reset();
+    void amend() override;
+    void initialize() override;
+    void reset() override;
 private:
     // Input
     QString folder, filter;

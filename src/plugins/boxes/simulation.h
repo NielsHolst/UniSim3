@@ -23,11 +23,11 @@ class UNI_API Simulation : public base::Box
 {
 public:
     Simulation(QString name, Box *parent);
-    void initialize();
-    void reset();
-    void cleanup();
-    void debrief();
-    void run();
+    void initialize() override;
+    void reset() override;
+    void cleanup() override;
+    void debrief() override;
+    void run() override;
 private:
     // Inputs
     int iterations, steps;

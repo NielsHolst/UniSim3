@@ -18,8 +18,8 @@ class UNI_API Ratio : public base::Box
 {
 public:
     Ratio(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Inputs
     double denominator, divisor, zeroTolerance;
