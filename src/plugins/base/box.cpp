@@ -215,6 +215,7 @@ void Box::initializeFamily() {
 
     _timer.reset();
     const auto boxes = children<Box*>();
+    // @TODO(bjarke): getting stuck here forever if running demo/butterfly.box
     for (auto box : boxes) {
         if (!box->ignore())
             box->initializeFamily();
