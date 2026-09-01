@@ -27,38 +27,38 @@ namespace ast
 
     typedef x3::forward_ast<Expression> GroupedExpression;
 
-    UNI_API struct Time : x3::position_tagged {
+    struct UNI_API Time : x3::position_tagged {
         int hour, minute, second;
         base::Value value() const;
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const Time& x);
 
-    UNI_API struct BareDate : x3::position_tagged {
+    struct UNI_API BareDate : x3::position_tagged {
         int day, month;
         base::Value value() const;
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const BareDate& x);
 
-    UNI_API struct Bool : x3::position_tagged {
+    struct UNI_API Bool : x3::position_tagged {
         std::string stringValue;
         base::Value value() const;
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const Bool& x);
 
-    UNI_API struct Date : x3::position_tagged {
+    struct UNI_API Date : x3::position_tagged {
         int day, month, year;
         base::Value value() const;
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const Date& x);
 
-    UNI_API struct DateTime : x3::position_tagged {
+    struct UNI_API DateTime : x3::position_tagged {
         Date date;
         Time time;
         base::Value value() const;
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const DateTime& x);
 
-    UNI_API struct FunctionCall : x3::position_tagged {
+    struct UNI_API FunctionCall : x3::position_tagged {
         typedef x3::forward_ast<Expression> Argument;
 
         std::string name;
@@ -70,7 +70,7 @@ namespace ast
     using PathNode = std::vector<std::string>;
     UNI_API std::ostream& operator<<(std::ostream& os, const PathNode& x);
 
-    UNI_API struct PathAlternative : x3::position_tagged {
+    struct UNI_API PathAlternative : x3::position_tagged {
         boost::optional<std::string> root;
         std::vector<PathNode> nodes;
         boost::optional<PathNode> port;
@@ -82,7 +82,7 @@ namespace ast
     UNI_API std::ostream& operator<<(std::ostream& os, const Path& x);
     UNI_API base::Path value(Path &path);
 
-    UNI_API struct QuotedString : x3::position_tagged {
+    struct UNI_API QuotedString : x3::position_tagged {
         std::string stringValue;
         base::Value value() const;
     };
@@ -94,7 +94,7 @@ namespace ast
 //        int value;
 //    };
 
-    UNI_API struct Number : x3::variant<double, int>,
+    struct UNI_API Number : x3::variant<double, int>,
             x3::position_tagged
     {
         enum class Type{Double, Int};
@@ -115,7 +115,7 @@ namespace ast
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const Number& x);
 
-    UNI_API struct Operand : x3::variant<DateTime, Date, BareDate, Time, Number,
+    struct UNI_API Operand : x3::variant<DateTime, Date, BareDate, Time, Number,
                                  Path, FunctionCall, Bool, QuotedString, GroupedExpression>,
             x3::position_tagged
     {
@@ -146,14 +146,14 @@ namespace ast
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const Operand& x);
 
-    UNI_API struct Operation : x3::position_tagged {
+    struct UNI_API Operation : x3::position_tagged {
         std::string operator_;
         Operand operand;
         void build(base::Expression *expression);
     };
     UNI_API std::ostream& operator<<(std::ostream& os, const Operation& x);
 
-    UNI_API struct Expression : x3::position_tagged {
+    struct UNI_API Expression : x3::position_tagged {
         boost::optional<char> sign;
         Operand firstOperand;
         std::vector<Operation> operations;
@@ -164,7 +164,7 @@ namespace ast
 
     using IfExpression = std::vector<Expression>;
 
-    UNI_API struct Assignment : x3::position_tagged {
+    struct UNI_API Assignment : x3::position_tagged {
         char qualifier;
         std::vector<std::string> names;
         char equals;
@@ -186,7 +186,7 @@ namespace ast
     UNI_API std::ostream& operator<<(std::ostream& os, const ChildBox& x);
     UNI_API std::ostream& print     (std::ostream& os, const ChildBox& x, int level);
 
-    UNI_API struct Box : x3::position_tagged {
+    struct UNI_API Box : x3::position_tagged {
         std::string className, objectName;
         std::vector<Assignment> assignments;
         std::vector<ChildBox> children;
@@ -195,7 +195,7 @@ namespace ast
     UNI_API std::ostream& operator<<(std::ostream& os, const Box& x);
     UNI_API std::ostream& print     (std::ostream& os, const Box& x, int level);
 
-    UNI_API struct boxscript : x3::position_tagged
+    struct UNI_API boxscript : x3::position_tagged
     {
         Box root;
     };
