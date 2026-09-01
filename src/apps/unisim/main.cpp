@@ -125,8 +125,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setObjectName("application");
 
-		// @NOTE(bjarke): should set variables needed in .DLLs
-		base::Organisation org;
+    base::Organisation org;
 
     bool hasArguments = (argc > 1);
     int result;
