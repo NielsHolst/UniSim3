@@ -9,11 +9,10 @@
 #include <QApplication>
 
 #include "version.h"
-#include "base_dllexport.h"
 
 namespace base {
 
-struct UNI_API Organisation{
+struct Organisation {
     Organisation() {
         QCoreApplication::setOrganizationName("AarhusUniversity");
         QCoreApplication::setOrganizationDomain("www.ecolmod.org");
