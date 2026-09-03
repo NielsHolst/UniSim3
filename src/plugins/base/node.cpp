@@ -83,7 +83,7 @@ void Node::setObjectName(QString name) {
 
 void Node::setDoc(QString doc) {
     auto pos = doc.indexOf(" ");
-    QString qualifiedName = doc.first(pos);
+    QString qualifiedName = doc.left(pos);
     QStringList parts = qualifiedName.split("::");
     if (!qualifiedName.contains("::") || parts.size() > 2)
         ThrowException("Documentation must begin with a qualified class name (<namespace>::<classname>)").value(doc).context(this);

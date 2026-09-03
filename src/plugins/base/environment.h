@@ -11,6 +11,8 @@
 #include <QStack>
 #include <QVariant>
 
+#include <memory>
+
 #include "convert.h"
 #include "exception.h"
 #include "base_dllexport.h"
