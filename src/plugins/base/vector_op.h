@@ -16,8 +16,8 @@ namespace base {
 
 namespace vector_op {
 
-typedef UNI_API QVector<double> Vec;
-typedef UNI_API double Scalar;
+typedef QVector<double> Vec;
+typedef double Scalar;
 
 // Unary
 UNI_API void add(Vec &v, const Scalar &x);
