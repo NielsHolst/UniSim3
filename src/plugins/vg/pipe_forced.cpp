@@ -23,7 +23,7 @@ PUBLISH(PipeForced)
 PipeForced::PipeForced(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("computes outflow temperature and effect (simplified for IG)");
+    Doc("computes outflow temperature and effect (simplified for IG)");
     Input(Tair).imports("indoors/temperature[value]",CA);
     Input(innerDiameter).equals(43.5).help("Pipe inner diameter").unit("mm");
     Input(waterVolume).equals(7.5).help("Total volume of water in pipes in greenhouse").unit("m3");

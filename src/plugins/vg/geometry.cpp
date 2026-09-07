@@ -21,7 +21,7 @@ PUBLISH(Geometry)
 Geometry::Geometry(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("defines the greenhouse geometry");
+    Doc("defines the greenhouse geometry");
     Input(orientation).equals(90.).help("Orientation of greenhouse").unit("[0;180]");
     Input(numSpans).equals(1).help("Number of spans");
     Input(spanWidth).equals(40.).help("Width of a span").unit("m");

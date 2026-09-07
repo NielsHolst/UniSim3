@@ -16,7 +16,7 @@ PUBLISH(Phenology)
 
 Phenology::Phenology(QString name, QObject *parent)
     : Box(name, parent) {
-    help("models coffee plant development");
+    Doc("models coffee plant development");
     Input(juvenilePeriod).equals(900).unit("d").help("Period from planting until reproductive");
     Input(floweringOnsetTrigger).equals(1000.).unit("mm d").help("Trigger based on rainfall and day of year");
     Input(T0).equals(10.).unit("oC").help("Base temperature for development");

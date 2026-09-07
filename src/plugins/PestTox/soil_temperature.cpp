@@ -16,7 +16,7 @@ PUBLISH (SoilTemperature)
 SoilTemperature::SoilTemperature(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages soil temperature");
+    Doc("manages soil temperature");
     Input(Tmin).unit("Â°C").imports("weather[Tmin]").help("Daily minimum temperature");
     Input(Tmax).unit("Â°C").imports("weather[Tmax]").help("Daily maximum temperature");
     Input(dayLength).unit("h").imports("sun[dayLength]").help("Day length");

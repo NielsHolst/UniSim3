@@ -14,7 +14,7 @@ PUBLISH(FixedPreferences)
 FixedPreferences::FixedPreferences(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("keeps fixed female oviposition preferences");
+    Doc("keeps fixed female oviposition preferences");
     Input(p0).unit("[0;1]").help("Preference for undamaged seeds");
     Input(p1).unit("[0;1]").help("Preference for seeds parasitised once");
     Output(p2).unit("[0;1]").help("Preference for seeds parasitised more than once");

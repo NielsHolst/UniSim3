@@ -18,7 +18,7 @@ RunoffAmount::RunoffAmount(QString name, Box *parent)
 	: Box(name, parent)
 {
 
-    help("manages runoff amount");
+    Doc("manages runoff amount");
     Input(P).unit("mm").equals(1.).help("Daily rainfall");
     Input(fsand).unit("fraction").equals(0.5).help("Fraction of sand in the soil");
 

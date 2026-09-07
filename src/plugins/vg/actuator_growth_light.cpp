@@ -19,7 +19,7 @@ PUBLISH(ActuatorGrowthLight)
 ActuatorGrowthLight::ActuatorGrowthLight(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models power use and radiation from growth light");
+    Doc("models power use and radiation from growth light");
     Input(productName).help("Name of product holding lamp parameters");
     Input(numberInstalled).unit("/m2").help("Number of lamps installed");
     Input(efficiency).equals(1.).help("Proportion of intensity actually emitted").unit("[0;1]");

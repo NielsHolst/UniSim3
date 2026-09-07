@@ -17,7 +17,7 @@ PUBLISH(HeatPumpProduct)
 HeatPumpProduct::HeatPumpProduct(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("holds the parameters of a heat pump product");
+    Doc("holds the parameters of a heat pump product");
     Input(maxCoolingLoad).equals(78.4).help("Maximum cooling power").unit("kW");
     Input(coolingEfficiency).equals(0.69).help("Effective proportion of cooling power").unit("[0;1]");
     Input(maxFlowRate).equals(2.5).help("Maximum air flow rate").unit("m3/s");

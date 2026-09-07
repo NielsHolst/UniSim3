@@ -16,7 +16,7 @@ PUBLISH(DemandReserves)
 DemandReserves::DemandReserves(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates demand for reserves");
+    Doc("calculates demand for reserves");
     Input(biomassTotal).imports("plant[biomassTotal]");
     Input(massCStruct).imports("plant[massCStruct]");
     Input(massCRes).imports("plant[massCRes]");

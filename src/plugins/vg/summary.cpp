@@ -18,7 +18,7 @@ PUBLISH(Summary)
 Summary::Summary(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("summarises greenhouse budget");
+    Doc("summarises greenhouse budget");
     Input(heatPipesHeatFlux).imports("gh/actuators/heatPipes[heatFlux]").unit("W/m2");
     Input(lampsPowerUsage).imports("gh/actuators/growthLights[powerUsage]").unit("W/m2");
     Input(co2Injection).imports("gh/actuators/co2[value]").unit("g/m2/h");

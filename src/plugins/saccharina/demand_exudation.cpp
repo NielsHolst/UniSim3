@@ -18,7 +18,7 @@ PUBLISH(DemandExudation)
 DemandExudation::DemandExudation(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("computes exudation");
+    Doc("computes exudation");
     Input(biomass).unit("g dw/m").help("Exuding biomass");
     Input(eC).unit("g C/g dw/d").help("Carbon exudation rate");
     Input(eN).unit("g N/g dw/d").help("Nitrogen exudation rate");

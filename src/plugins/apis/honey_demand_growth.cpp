@@ -18,7 +18,7 @@ PUBLISH(HoneyDemandGrowth)
 HoneyDemandGrowth::HoneyDemandGrowth(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes honey demand for juvenile growth");
+    Doc("computes honey demand for juvenile growth");
     Input(cohortNumbers).help("Larva cohort numbers");
     Input(cohortDemands).help("Larva cohort growth demands (mg)");
     Input(cost).equals(0.3).help("Relative cost per unit of biomass browth");

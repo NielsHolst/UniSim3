@@ -29,7 +29,7 @@ PUBLISH(OutputR)
 OutputR::OutputR(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("creates output and scripts for R");
+    Doc("creates output and scripts for R");
     sideEffects("writes an R script to the output folder\ncopies an R script to the clipboard");
     Input(keepPlots).equals(true).help("Keep previous plots before showing new plots in R?");
     Input(clearMemory).equals(false).help("Clear R memory?");

@@ -19,7 +19,7 @@ PUBLISH(GrowthLightController)
 GrowthLightController::GrowthLightController(QString name, Box *parent)
     : Box(name, parent), isOn(false)
 {
-    help("control lights on/off according to setting");
+    Doc("control lights on/off according to setting");
     Input(mode).help("Control mode can be 0=off, 1=by threshold, 2=by light sum, 10=on").unit("0|1|2|10");
     Input(input).help("Current value of threshold variable");
     Input(thresholdLow). help("If threshold-controlled the light is switched on below this threshold").unit("W/m2");

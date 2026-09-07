@@ -17,7 +17,7 @@ PUBLISH(SupplyCarbon)
 SupplyCarbon::SupplyCarbon(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates supply of carbon");
+    Doc("calculates supply of carbon");
     Input(concN).imports("plant[concN]");
     Input(k).equals(0.7).unit("-").help("Light extinction coefficient");
     Input(lai).imports("geometry[lai]");

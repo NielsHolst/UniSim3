@@ -17,7 +17,7 @@ PUBLISH(Mean)
 Mean::Mean(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes average of inputs");
+    Doc("computes average of inputs");
     Input(values).help("Input values");
     Output(value).help("Average of inputs; zero if no inputs");
     Output(count).help("Number of inputs");

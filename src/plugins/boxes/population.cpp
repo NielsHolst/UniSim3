@@ -22,7 +22,7 @@ Population::Population(QString name, Box *parent)
       _cohorts(&cohorts),
       _age(&age)
 {
-    help("models population dynamics by cohorts (experimental)");
+    Doc("models population dynamics by cohorts (experimental)");
     Input(initial).equals(100);
     Input(ageIncrement);
     Input(bufferSize).equals(100);

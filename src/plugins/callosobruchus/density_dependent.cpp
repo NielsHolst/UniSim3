@@ -12,7 +12,7 @@ PUBLISH(DensityDependent)
 DensityDependent::DensityDependent(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models density-dependt survival and damage");
+    Doc("models density-dependt survival and damage");
     Input(seedCapacity).equals(9).help("Number of beetles one seed can sustain");
     Input(beetlesProducedTotal).help("Total number of beetles produced since stocking");
     Input(seedsTotal).help("Total number of seeds stocked");

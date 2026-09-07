@@ -11,7 +11,7 @@ PUBLISH(RandomPreferences)
 RandomPreferences::RandomPreferences(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models random female oviposition preferences");
+    Doc("models random female oviposition preferences");
     Output(p0).unit("[0;1]").help("Preference for undamaged seeds");
     Output(p1).unit("[0;1]").help("Preference for seeds parasitised once");
     Output(p2).unit("[0;1]").help("Preference for seeds parasitised more than once");

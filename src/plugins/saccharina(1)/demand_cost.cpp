@@ -16,7 +16,7 @@ PUBLISH(DemandCost)
 DemandCost::DemandCost(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates demand for construction cost");
+    Doc("calculates demand for construction cost");
     Input(costStruct).equals(0.571).unit("g C/g C").help("Cost for construction of structure");
     Input(costCRes).equals(0.267).unit("g C/g C").help("Cost for construction of carbon reserves");
     Input(costNRes).equals(0.781).unit("g C/g N").help("Cost for construction of nitrogen reserves");

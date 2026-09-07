@@ -48,7 +48,7 @@ PUBLISH(Budget)
 Budget::Budget(QString name, base::Box *parent)
     : Box(name, parent)
 {
-    help("resolves energy and water budgets across layers and volumes");
+    Doc("resolves energy and water budgets across layers and volumes");
     Input(radPrecision).equals(0.1).unit("W/m2 | &micro;mol/m2/s").help("Precision of numerical solution to radiation budget");
     Input(tempPrecision).equals(2.0).unit("K").help("Max. allowed temperature change in a sub-step among layers");
     Input(writeHighRes).equals(false).help("Write output at finest time resolution (indicated by `subDateTime`)");

@@ -16,7 +16,7 @@ PUBLISH(DemandExudation)
 DemandExudation::DemandExudation(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates demand for exudation");
+    Doc("calculates demand for exudation");
     Input(relExudation).equals(0.23).unit("g C/g C").help("Relative exudation cost");
     Input(demandGrowthC).imports("../growth[carbon]");
     Input(demandCRes).imports("../reserves[carbon]");

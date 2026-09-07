@@ -18,7 +18,7 @@ PUBLISH(Exponential)
 Exponential::Exponential(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates y-increments for given x-increments along an exponential growth curve");
+    Doc("calculates y-increments for given x-increments along an exponential growth curve");
     Input(y).help("Current y-values");
     Input(r).equals(0).help("Exponential growth rate (per dt) of any y");
     Input(dt).help("Time step for any y");

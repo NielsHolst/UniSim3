@@ -26,7 +26,7 @@ const double doubleMax = std::numeric_limits<double>::max();
 PidController::PidController(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("delivers PID control of a control variable");
+    Doc("delivers PID control of a control variable");
     Input(sensedValue).help("The sensed value");
     Input(desiredValue).help("The desired value (setpoint)");
     Input(Kprop).equals(0.1).help("The proportional gain");

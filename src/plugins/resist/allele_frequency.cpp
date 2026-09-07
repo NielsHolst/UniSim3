@@ -18,7 +18,7 @@ PUBLISH(AlleleFrequency)
 AlleleFrequency::AlleleFrequency(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes allele frequencies from genotypes");
+    Doc("computes allele frequencies from genotypes");
     Input(genotypeFrequency).help("Genotype frequency (ss,sr,rr");
     Output(p).help("Frequency of S allele");
     Output(q).help("Frequency of R allele");

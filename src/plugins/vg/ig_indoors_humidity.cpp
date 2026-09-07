@@ -19,7 +19,7 @@ PUBLISH(IgIndoorsHumidity)
 IgIndoorsHumidity::IgIndoorsHumidity(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("models indoors humidity (simplified for IG)");
+    Doc("models indoors humidity (simplified for IG)");
     Input(rh).help("Indoors relative humidity").unit("[0;100]");
     Input(temperature).imports("indoors/temperature[value]",CA).unit("oC");
     Output(ah).help("Indoors absolute humidity").unit("kg/m3");

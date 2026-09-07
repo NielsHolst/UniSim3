@@ -2,16 +2,17 @@
 
 #import "../../../doc/lib/helpers.typ": code-with-link
 
-- #link(<make-numbered-clones>)[Make numbered clones]
-- #link(<make-named-clones>)[Make named clones]
-- #link(<make-clones-from-file>)[Make clones from file]
+- #link(<make_numbered_clones>)[Make numbered clones]
+- #link(<make_named_clones>)[Make named clones]
+- #link(<make_clones_from_file>)[Make clones from file]
 
 === Usage
 You use a `Maker` box if you want to make several copies \(clones) of a
 box in the boxscript. The clones will all be exact copies of the
 original box \(albeit with different names), including its port values
 and any child boxes, recursively \(i.e. the clones are deep copies).
-=== ⏷ Make numbered clones
+
+==== Make numbered clones <make_numbered_clones>
 In the first example, we create want to create four box objets
 representing islands with populations of foxes and rabbits. The
 geolocation of the islands and animal densities should be random. Here
@@ -201,7 +202,8 @@ different in all aspects in every iteration:
 
 Note the there can only be one randomiser box on a boxscript. All the
 random variables in a boxscript draw numbers from this one source.
-=== Make named clones
+
+==== Make named clones <make_named_clones>
 To continue the example above, let\'s say that we want to model some
 concrete islands with known positions but still with random population
 densities. We can achieve this by supplying the `Maker` box with a
@@ -249,3 +251,5 @@ As you can see, we got the wished for structure of the model:
 ```
 > list
 ```
+==== Make clones from file <make_clones_from_file>
+#highlight[To do...]

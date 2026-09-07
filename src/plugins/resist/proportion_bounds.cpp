@@ -17,7 +17,7 @@ PUBLISH(ProportionBounds)
 ProportionBounds::ProportionBounds(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes bounds on a log scale for a proportion");
+    Doc("computes bounds on a log scale for a proportion");
     Input(logP).help("Log10 of the average proportion");
     Input(logWidth).help("Width of log10 interval setting the bounds (>0)");
     Output(Pmin).help("Lower bound of interval");

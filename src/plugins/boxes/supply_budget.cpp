@@ -14,7 +14,7 @@ PUBLISH(SupplyBudget)
 
 SupplyBudget::SupplyBudget(QString name, Box *parent)
     : Box(name, parent) {
-    help("computes net supply from energy budget");
+    Doc("computes net supply from energy budget");
     Input(supplyGross).help("Gross supply").unit("#prey");
     Input(demandNet).help("Net demand").unit("#prey");
     Input(demandResp).help("Respiration demand").unit("#prey");

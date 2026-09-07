@@ -20,7 +20,7 @@ PUBLISH(RandomNormal)
 RandomNormal::RandomNormal(QString name, Box *parent)
     : RandomBaseTyped<double>(name, parent)
 {
-    help("produces random numbers from the normal distribution");
+    Doc("produces random numbers from the normal distribution");
 }
 
 

@@ -20,7 +20,7 @@ PUBLISH(SelectFile)
 SelectFile::SelectFile(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("selects a file from a folder");
+    Doc("selects a file from a folder");
     Input(folder).help("Relative path to folder");
     Input(filter).equals("*.txt").help("File filter");
     Input(selectFileNumber).equals(1).help("Which file to pick");

@@ -14,7 +14,7 @@ PUBLISH(NitrogenSupply)
 
 NitrogenSupply::NitrogenSupply(QString name, QObject *parent)
     : Box(name, parent) {
-    help("uses Michaelis-Menten model for nitrogen uptake");
+    Doc("uses Michaelis-Menten model for nitrogen uptake");
     Input(efficiency).equals(0.002).unit("kg N/kg C/d").help("N uptake efficiency");
     Input(soilN50).equals(0.036).help("Soil N for 50% maximum N uptake");
     Input(rootC).imports("coffee[rootC]");

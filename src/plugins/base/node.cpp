@@ -75,10 +75,15 @@ void Node::setDoc(QString doc) {
     auto pos = doc.indexOf(" ");
     QString qualifiedName = doc.first(pos);
     QStringList parts = qualifiedName.split("::");
-    if (!qualifiedName.contains("::") || parts.size() > 2)
-        ThrowException("Documentation must begin with a qualified class name (<namespace>::<classname>)").value(doc).context(this);
-    setClassName(parts.at(0), parts.at(1));
-    _doc = doc.mid(pos + 1);
+    bool hasQualifiedName = (qualifiedName.contains("::") && parts.size() > 2);
+    if (hasQualifiedName) {
+        setClassName(parts.at(0), parts.at(1));
+        _doc = doc.mid(pos + 1);
+    }
+    else {
+        // ThrowException("Documentation must begin with a qualified class name (<namespace>::<classname>)").value(doc).context(this);
+        _doc = doc;
+    }
 }
 
 void Node::setSourceCodeFilePathName(QString name) {

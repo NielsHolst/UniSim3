@@ -19,7 +19,7 @@ PUBLISH(ActuatorScreen)
 ActuatorScreen::ActuatorScreen(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models the state of a screen layer");
+    Doc("models the state of a screen layer");
     Input(lagPeriod).equals(5.).unit("min").help("Time to draw the screen completely");
     Input(desiredState).unit("[0;1]").help("State desired by screen controller");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");

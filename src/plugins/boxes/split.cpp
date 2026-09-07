@@ -22,7 +22,7 @@ const int N = 5;
 
 Split::Split(QString name, Box *parent)
     : Box(name, parent) {
-    help("splits a number into proportional pieces (max. 5)");
+    Doc("splits a number into proportional pieces (max. 5)");
     Input(whole).help("The number to be split");
     Input(proportions).help("Vector of proportions; sum<=1");
     Output(pieces).help("Vector holding proportions of whole; same length as proportions");

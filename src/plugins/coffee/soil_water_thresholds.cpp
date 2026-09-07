@@ -13,7 +13,7 @@ PUBLISH(SoilWaterThresholds)
 
 SoilWaterThresholds::SoilWaterThresholds(QString name, QObject *parent)
     : Box(name, parent) {
-    help("holds soil water parameters");
+    Doc("holds soil water parameters");
     Input(concWaterMax).equals(0.63).unit("m3/m3").help("Maximum soil water concentration");
     Input(propWaterDry).equals(0.01).unit("[0;1]").help("Proportional accessibility when dry");
     Input(propWaterWilt).equals(0.41).unit("[0;1]").help("Proportional accessibility at wilting point");

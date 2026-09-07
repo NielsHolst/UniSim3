@@ -16,7 +16,7 @@ PUBLISH(DemandStore)
 DemandStore::DemandStore(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("computes store's biomass demand");
+    Doc("computes store's biomass demand");
     Input(propStore).unit("[0;1]").help("Store's proportion of total biomass");
     Input(propStructure).unit("[0;1]").help("Structure's proportion of total biomass");
     Input(concC).unit("g C/g dw").help("Carbon concentration");

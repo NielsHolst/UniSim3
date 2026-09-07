@@ -17,7 +17,7 @@ PUBLISH(ExtremeValFunc)
 ExtremeValFunc::ExtremeValFunc(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the Extreme Vaue Function;later replace daily rate to hourly rate");
+    Doc("estimate the Extreme Vaue Function;later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(k1).equals(228.61208).help("Estimate of parameter k1, maximum value for dependent parameter)");
         Input(Tmax).equals(-15.04058).help("Estimate of parameter Tmax, opt temp at which dependent parameter is maximized");

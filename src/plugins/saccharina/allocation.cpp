@@ -18,7 +18,7 @@ PUBLISH(Allocation)
 Allocation::Allocation(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("allocates supplies according to demands");
+    Doc("allocates supplies according to demands");
     Input(dwStructure).unit("g dw/m").help("Structural biomass");
     Input(dwC).unit("g C/m").help("Biomass of carbon store");
     Input(dwN).unit("g N/m").help("Biomass of nitrogen store");

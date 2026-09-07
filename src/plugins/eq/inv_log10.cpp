@@ -15,7 +15,7 @@ PUBLISH(InvLog10)
 InvLog10::InvLog10(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes 10^x");
+    Doc("computes 10^x");
     Input(x).equals(1).help("Input value");
     Output(value).help("Output value");
 }

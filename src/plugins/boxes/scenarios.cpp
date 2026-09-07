@@ -20,7 +20,7 @@ PUBLISH(Scenarios)
 Scenarios::Scenarios(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("runs scenarios from a text file");
+    Doc("runs scenarios from a text file");
     Input(fileName).equals("scenarios.txt").help("Text file with columns, one for each output produced. One iteration is run for each line").equals("scenarios.txt");
     Input(title).equals("Scenario").help("Name of column that holds title of scenario (optional)");
     Output(iterations).help("Number of iterations needed to run scenarios").noClear();

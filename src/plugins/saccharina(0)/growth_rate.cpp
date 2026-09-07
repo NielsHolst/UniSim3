@@ -17,7 +17,7 @@ PUBLISH(GrowthRate)
 GrowthRate::GrowthRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates optimal plant growth rate");
+    Doc("calculates optimal plant growth rate");
     Input(gMature).imports("parameters[g] ").unit("per hour").help("Growth rate of mature plants");
     Input(kg).imports("parameters[kg] ").unit("-").help("Relative faster growth rate of young plants");
     Input(maturity);

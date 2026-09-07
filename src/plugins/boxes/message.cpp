@@ -16,7 +16,7 @@ PUBLISH(Message)
 Message::Message(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("prints a message at the prompt");
+    Doc("prints a message at the prompt");
     Input(text).help("Text message to print");
     Input(when).help("In which step to print the message (reset, initialize, etc.)");
 }

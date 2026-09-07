@@ -18,7 +18,7 @@ PUBLISH(LightAbsorptionCanopy)
 LightAbsorptionCanopy::LightAbsorptionCanopy(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates the light absorbed by the canopy");
+    Doc("calculates the light absorbed by the canopy");
     Input(I).imports("env[I]");
     Input(crownZoneArea).imports("area[crownZoneArea]");
     Input(plantDensity).imports("area[plantDensity]");

@@ -6,12 +6,12 @@
 === Background
 If you need to summarise the trend of a port by the maximum value it
 attained and in which step it happened, you can use a
-#link(<maximumat>)[MaximumAt] box. The interface is simple. Just watch
+`MaximumAt` box. The interface is simple. Just watch
 the example below. If you run the simulation for several iterations, the
 outputs `at` and `max` may differ between iterations.
 
 === Usage
-We will use a #link(<hump>)[Hump] box for demonstration since we now the
+We will use a #link(<boxes_Hump>)[Hump] box for demonstration since we now the
 position of its maximum value:
 
 #code-with-link(

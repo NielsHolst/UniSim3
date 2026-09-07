@@ -17,7 +17,7 @@ PUBLISH(NrrEVF)
 NrrEVF::NrrEVF(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the Net Reproductive Rate using NrrEVF (Extreme Vaue Function) model; later replace daily rate to hourly rate");
+    Doc("estimate the Net Reproductive Rate using NrrEVF (Extreme Vaue Function) model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a).equals(228.61208).help("Estimate of coefficient a0)");
         Input(b).equals(-15.04058).help("Estimate of coefficient a1");

@@ -15,7 +15,7 @@ PUBLISH(Distribution)
 Distribution::Distribution(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes distribution fractiles");
+    Doc("computes distribution fractiles");
     const QVector<int> q = {1, 5, 25, 50, 75, 95, 99};
     Input(input).help("the input port to anayse");
     Input(divisor).equals(100.).help("Divisor applied to `sections");

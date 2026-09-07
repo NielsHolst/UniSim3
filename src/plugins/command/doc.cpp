@@ -80,6 +80,10 @@ void doc::writeTypeScript() {
                     _typStream << "#include "
                                << "\"" << source.canonicalFilePath().mid(n) << "\"\n";
                 }
+                else if (!box->help().isEmpty()){
+                    _typStream << "=== Usage\n`" << className << "` "
+                               << box->help() << ".\n";
+                }
             }
         }
     }
@@ -127,21 +131,11 @@ void doc::writeClass(FactoryPlugIn *factory, QString className) {
     Box *box = MegaFactory::create<Box>(factory->id() + "::" + className, "dummy");
     if (box) {
         _jsonStream << nameValue("id", _currentModule + "::" + className, tab) << ",\n"
-                << nameValue("description", escChars(box->help()), tab) << ",\n";
-
-        _jsonStream << label("inputs", tab) << "[";
+                    << nameValue("description", escChars(box->help()), tab) << ",\n"
+                    << label("inputs", tab) << "[";
         writePorts(box, PortType::Input);
-        _jsonStream << indent(tab) + "],\n";
-        // if (!_currentFootnotes.isEmpty()) {
-        //     _jsonStream << indent(tab) << "#text(size: 10pt)[\n";
-        //     int i = 0;
-        //     for (const QString &footnote: std::as_const(_currentFootnotes)) {
-        //         _jsonStream << indent(tab) << QChar('a' + i++) << ") " + footnote + "\n";
-        //     }
-        //     _jsonStream << indent(tab) << "]\n";
-        // }
-
-        _jsonStream << label("outputs", tab) << "[";
+        _jsonStream << indent(tab) + "],\n"
+                    << label("outputs", tab) << "[";
         writePorts(box, PortType::Output);
         _jsonStream << indent(tab) + "]\n";
     }
@@ -183,18 +177,12 @@ void doc::writePort(const Port *port) {
     }
 
     QString defaultValue = escChars(value);
-    // const bool createFootnote = (defaultValue.size() > 12);
-    // if (createFootnote) {
-    //     QString letter = QChar('a' + (int) _currentFootnotes.size());
-    //     _currentFootnotes.push_back(defaultValue);
-    //     defaultValue = letter + ")";
-    // }
-
     _jsonStream << indent(tab - 2) << "{\n"
             << nameValue("id", _currentModule + "::" + _currentClass + "::" + port->name(), tab) << ",\n"
             << nameValue("name", port->name(), tab) << ",\n"
             << nameValue("type", port->value().typeName(), tab) << ",\n"
             << nameValue("default", defaultValue, tab) << ",\n"
+            << nameValue("unit", port->unit(), tab) << ",\n"
             << nameValue("description", escChars(port->help()), tab) << "\n"
             << indent(tab - 2) << "}";
 }

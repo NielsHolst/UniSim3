@@ -19,7 +19,7 @@ PUBLISH(HoneySupply)
 HoneySupply::HoneySupply(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes potential honey supply");
+    Doc("computes potential honey supply");
     Input(cohortNumbers).help("Forager cohort numbers");
     Input(cropVolume).equals(0.030).help("Volume of forager crop (ml)");
     Input(handlingTime).equals(10).help("Interval between foraging trips (min)");

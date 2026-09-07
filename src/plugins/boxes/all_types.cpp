@@ -15,7 +15,7 @@ PUBLISH(AllTypes)
 AllTypes::AllTypes(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("contains one port of each types - useful to learn about types");
+    Doc("contains one port of each type - useful to learn about types");
     NamedInput("bool", _bool);
     NamedInput("int", _int);
     NamedInput("double", _double);

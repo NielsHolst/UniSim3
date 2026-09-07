@@ -17,7 +17,7 @@ PUBLISH (TopsoilRunoff)
 TopsoilRunoff::TopsoilRunoff(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages fate of pesticide due to runoff in the topsoil");
+    Doc("manages fate of pesticide due to runoff in the topsoil");
     Input(S).unit("fraction").equals(0.01).help("Slope of the field");
     Input(wbz).unit("m").equals(1.).help("Buffer zone");
     Input(P).unit("mm").equals(1.).help("Daily rainfall");

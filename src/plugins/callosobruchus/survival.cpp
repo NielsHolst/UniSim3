@@ -11,7 +11,7 @@ PUBLISH(Survival)
 Survival::Survival(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models survival of immature stages");
+    Doc("models survival of immature stages");
     Input(seedCapacity).equals(9).help("Number of immatures one seed can sustain");
     Input(eggsTotal).help("Total number of eggs laid since stocking");
     Input(seedsTotal).help("Total number of seeds stocked");

@@ -16,7 +16,7 @@ PUBLISH(LabCalibration)
 LabCalibration::LabCalibration(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates calibration variables from lab data");
+    Doc("calculates calibration variables from lab data");
     Input(step).imports("sim[step]");
     Input(length).imports("area[length]");
     Input(startOfTreatment).equals(1).unit("h").help("Starting time of treatment");

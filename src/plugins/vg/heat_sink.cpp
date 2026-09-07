@@ -20,7 +20,7 @@ PUBLISH(HeatSink)
 HeatSink::HeatSink(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("provides an artificial sink for excess heat");
+    Doc("provides an artificial sink for excess heat");
     Input(setpointVentilation).imports("setpoints/ventilationTemperature[value]", CA);
     Input(indoorsTemperature).imports("indoors[temperature]", CA);
     Input(averageHeight).imports("gh/geometry[averageHeight]", CA);

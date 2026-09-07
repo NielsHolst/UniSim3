@@ -15,7 +15,7 @@ PUBLISH(Gompertz)
 Gompertz::Gompertz(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates y-increments for given x-increments along an integral Gompertz curve (increasing from 0 to 1)");
+    Doc("calculates y-increments for given x-increments along an integral Gompertz curve (increasing from 0 to 1)");
 
     QVector<double> one;
     one << 1;

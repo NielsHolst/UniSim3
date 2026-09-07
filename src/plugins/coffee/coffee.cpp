@@ -15,7 +15,7 @@ PUBLISH(Coffee)
 
 Coffee::Coffee(QString name, QObject *parent)
     : Box(name, parent) {
-    help("models coffee growth and development");
+    Doc("models coffee growth and development");
     Input(leafC0).equals(0.05).unit("kg/m2").help("Initial density of leaf carbon");
     Input(woodyC0).equals(0.05).unit("kg/m2").help("Initial density of woody carbon");
     Input(rootC0).equals(0.05).unit("kg/m2").help("Initial density of root carbon");

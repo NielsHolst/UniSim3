@@ -15,7 +15,7 @@ PUBLISH(Host)
 
 Host::Host(QString name, Box *parent)
     : Box(name, parent) {
-    help("defines the host parameters for interaction with the parent Parasite");
+    Doc("defines the host parameters for interaction with the parent Parasite");
     Input(density).help("Density");
     Input(attackRate).help("Attack rate").unit("per parasite per time unit");
     Input(gainFactor).equals(1.).help("Conversion of resource into supply units").unit("supply/attacks");

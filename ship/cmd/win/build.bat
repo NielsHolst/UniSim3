@@ -49,24 +49,6 @@ pushd ..\..\..
 call clean
 popd
 
-echo = Build ship apps =
-del /S /Q ..\bin
-pushd ..\src
-qmake ship-cmd.pro
-if errorlevel 1 goto :end_fail
-mingw32-make
-if errorlevel 1 goto :end_fail
-popd
-
-echo = Update Qt resources =
-call update-qt-resources.bat 
-if errorlevel 1 goto :end_fail
-..\bin\update-qt-resources %MAJOR% %MINOR% %SUB% %VERSION%
-
-echo = Update Qt project  =
-..\bin\update-qt-project %MAJOR% %MINOR% %SUB% %VERSION%
-if errorlevel 1 goto :end_fail
-
 echo = Build Universal Simulator =
 pushd ..\..\..
 qmake UniSim3.pro

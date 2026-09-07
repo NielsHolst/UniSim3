@@ -19,7 +19,7 @@ PUBLISH (PrimaryDistributionAir)
 PrimaryDistributionAir::PrimaryDistributionAir(QString name, Box *parent)
     : PrimaryDistributionBase(name, parent)
 {
-    help("manages spray drift");
+    Doc("manages spray drift");
     Input(a1).help("Wind drift coefficient");
     Input(b1).help("Wind drift coefficient");
     Input(a2).help("Wind drift coefficient");

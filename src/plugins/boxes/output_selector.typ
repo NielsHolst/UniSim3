@@ -9,15 +9,15 @@
 - #link(<final-output>)[Final output]
 
 === Usage
-<usage>
+<output-selector-usage>
 The `OutputSelector` box determines when output should be produced by
 the `OutputWriter` box. Hence, if you do not include an `OutputSelector`
 box in your boxscript then the `OutputWriter` box will create one for
 you. The default behaviour of `OutputSelector` is to write one line of
 output for every #emph[reset] and #emph[update] step during the
-simulation \(see #link(<computation-steps>)[Computationel model];). The
+simulation \(see #highlight[Computationel model]). The
 `useLocalDecimalChar` and `skipFormats` define different features of the
-output file as explained for #link(<outputwriter>)[OutputWriter];.
+output file as explained for #link(<boxes_OutputWriter>)[OutputWriter].
 
 If you want to change the default behaviour of `OutputSelector`, you
 must include an `OutputSelector` box in your boxscript. The right place
@@ -28,7 +28,7 @@ or `OutputR` box, since `OutputSelector` affects the output produced by
 === Skip a number of lines
 <skip-a-number-of-lines>
 You can set the number `steps` and `iterations` a simulation is running
-in the #link(<simulation>)[Simulation] object. That will by itself
+in the #link(<boxes_Simulation>)[Simulation] object. That will by itself
 result in `iterations` \* \(`steps` + 1) lines in the output file
 \(adding one for each iteration because a line is written also in the
 reset step). You can skip a number of initial lines in each iteration by

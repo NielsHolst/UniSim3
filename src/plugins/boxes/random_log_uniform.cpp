@@ -17,7 +17,7 @@ PUBLISH(RandomLogUniform)
 RandomLogUniform::RandomLogUniform(QString name, Box *parent)
     : RandomBaseTyped<double>(name, parent)
 {
-    help("produces random numbers from the log uniform distribution");
+    Doc("produces random numbers from the log uniform distribution");
     port("min")->equals(0.01);
 }
 

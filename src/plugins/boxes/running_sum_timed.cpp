@@ -18,7 +18,7 @@ PUBLISH(RunningSumTimed)
 RunningSumTimed::RunningSumTimed(QString name, Box *parent)
     : RunningBase(name, parent)
 {
-    help("computes running sum in a time window");
+    Doc("computes running sum in a time window");
     Input(timeWindow).equals(1).help("Time window to average over in units of timeUnit").unit("int>0");
     Input(timeUnit).equals("d").help("Unit of time window").unit("y|d|h|m|s");
     Input(timeStepSecs).imports("calendar[timeStepSecs]");

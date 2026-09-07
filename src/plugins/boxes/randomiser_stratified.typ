@@ -1,3 +1,3 @@
 // randomiser_stratified.typ
 
-See #link(<randomisersobolsequence>)[RandomiserSobolSequence];.
+See #link(<boxes_RandomiserSobolSequence>)[RandomiserSobolSequence];.

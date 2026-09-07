@@ -17,7 +17,7 @@ PUBLISH(SupplyNitrogen)
 SupplyNitrogen::SupplyNitrogen(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates supply of nitrogen");
+    Doc("calculates supply of nitrogen");
     Input(uptakeRate).equals(20e-6).unit("g N/microM/M2/d").help("Uptake rate of nitrogen");
     Input(area).imports("geometry[area]");
     Input(N).imports("env[N]");

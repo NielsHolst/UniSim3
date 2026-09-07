@@ -17,7 +17,7 @@ PUBLISH (OrganicCarbonWaterPartitioning)
 OrganicCarbonWaterPartitioning::OrganicCarbonWaterPartitioning(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages the value of organic carbon water partitioning");
+    Doc("manages the value of organic carbon water partitioning");
     Input(Koc).unit("L/kg").equals(9.).help("Organic-carbon portioning coefficient");
     Input(pH).equals(7.).help("Soil pH");
     Input(pKa).equals(0.8).help("Acid dissociation constants for glyphosate are pKa1 0.8 (1st phosphonic), pKa2 2.3 (carboxylate), pKa3 6.0 (2nd phosphonic), and pKa4 11.0 (amine)");

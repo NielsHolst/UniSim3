@@ -24,7 +24,7 @@ double Box::_diagnoseMax = std::numeric_limits<double>::max();
 Box::Box(QString name, Box *parent)
     : Node(name, parent), _amended(false), _initialized(false), _cloned(false), _ignore(false), _timer(this)
 {
-    help("is a container of boxes and ports");
+    Doc("is a container of boxes and ports");
     setClassName("base", "Box");
     if (!_latest || parent)
         _latest = this;

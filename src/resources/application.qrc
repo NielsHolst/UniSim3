@@ -55,6 +55,7 @@
     <file>data/input/demo/output_selector/output_selector4.box</file>
     <file>data/input/demo/physics/dew-point.box</file>
     <file>data/input/demo/port_types/null.box</file>
+    <file>data/input/demo/random_binomial/random_binomial1.box</file>
     <file>data/input/demo/randomiser/randomiser1.box</file>
     <file>data/input/demo/randomiser/randomiser2.box</file>
     <file>data/input/demo/randomiser/randomiser3.box</file>
@@ -65,7 +66,6 @@
     <file>data/input/demo/randomiser/randomiser6.box</file>
     <file>data/input/demo/randomiser/randomiser7.box</file>
     <file>data/input/demo/randomiser/randomiser7.R</file>
-    <file>data/input/demo/random_binomial/random_binomial1.box</file>
     <file>data/input/demo/records/records1.box</file>
     <file>data/input/demo/records/records2.box</file>
     <file>data/input/demo/records/records3.box</file>
@@ -165,6 +165,13 @@
     <file>data/input/models/PestTox/scenarios-bufferzone.txt</file>
     <file>data/input/models/PestTox/weather/free_radicals_table.txt</file>
     <file>data/input/models/PestTox/weather/Pathumthani.txt</file>
+    <file>data/input/models/pieris/flakkebjerg 2009.txt</file>
+    <file>data/input/models/pieris/lrf_model (0).R</file>
+    <file>data/input/models/pieris/lrf_model (1).R</file>
+    <file>data/input/models/pieris/lrf_model.R</file>
+    <file>data/input/models/pieris/lrf_model_final.R</file>
+    <file>data/input/models/pieris/pieris.box</file>
+    <file>data/input/models/pieris/von_schmalensee.R</file>
     <file>data/input/models/prostephanus/fecundity.R</file>
     <file>data/input/models/prostephanus/fig_10.box</file>
     <file>data/input/models/prostephanus/fig_10.R</file>
@@ -181,8 +188,8 @@
     <file>data/input/models/prostephanus/Mono9394.txt</file>
     <file>data/input/models/prostephanus/obs.txt</file>
     <file>data/input/models/prostephanus/reference.txt</file>
-    <file>data/input/models/sitophilus/figs_5_6.box</file>
     <file>data/input/models/sitophilus/fig_2_dev_rate.box</file>
+    <file>data/input/models/sitophilus/figs_5_6.box</file>
     <file>data/input/models/sitophilus/line_parabola (0).R</file>
     <file>data/input/models/sitophilus/line_parabola (1).R</file>
     <file>data/input/models/sitophilus/line_parabola (2).R</file>
@@ -191,6 +198,7 @@
     <file>data/input/models/sitophilus/line_parabola.R</file>
     <file>data/input/models/sitophilus/obs_dev_rate.R</file>
     <file>data/input/models/sitophilus/obs_dev_rate.txt</file>
+    <file>data/input/models/vg/2025-04-28 UofA.box</file>
     <file>data/input/models/vg/buildup/1_sky_cover_floor.box</file>
     <file>data/input/models/vg/buildup/2_sky_cover_floor_ventilated.box</file>
     <file>data/input/models/vg/buildup/3_sky_cover_heatpipe_floor.box</file>

@@ -16,7 +16,7 @@ PUBLISH(SobolGFunction)
 SobolGFunction::SobolGFunction(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes Sobol' g function");
+    Doc("computes Sobol' g function");
     Input(a).help("Vector of parameters");
     Input(x).unit("[0;1]").help("Vector of inputs");
     Output(value).help("B value");

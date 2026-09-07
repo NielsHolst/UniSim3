@@ -15,7 +15,7 @@ PUBLISH(FunctionalResponse)
 
 FunctionalResponse::FunctionalResponse(QString name, Box *parent)
     : Box(name, parent) {
-    help("computes a Gutierrez-BaumgÃ¤rtner functional response");
+    Doc("computes a Gutierrez-BaumgÃ¤rtner functional response");
     Input(attacker).help("Attacker density").unit("#predators");
     Input(prey).help("Resource density").unit("#prey");
     Input(demandGross).help("Gross demand of attacker").unit("#prey");

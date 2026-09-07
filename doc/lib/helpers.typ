@@ -2,8 +2,21 @@
 #let demo-dir = "../../doc/generated/demo"
 #let demo-path(path) = demo-dir + "/" + path
 
+#let max-default-length = 11
+
 #let demo-image(path, args: (:)) = {
   image(demo-path(path), ..args)
+}
+
+#let render-unit(unit) = {
+  if unit == "oC" {
+    [°C]
+  }
+  else if unit == "/oC" {
+    [/°C]
+  } else {
+    raw(unit)
+  }
 }
 #let render-value(value) = {
   if value == "$infinity$" {
@@ -50,29 +63,51 @@
 }
 
 #let parameter-table(parameters) = {
+  // Nothing to do?
   if parameters.len() == 0 {
     return
   }
 
+  // Define functions
   let long-defaults = parameters.filter(
-    p => p.default.len() > 12
+    p => p.default.len() > max-default-length
   )
 
   let footnote-label(i) = {
     "abcdefghijklmnopqrstuvwxyz".at(i) + ")"
   }
 
-  let rendered-default(p) = {
-    if p.default.len() <= 12 {
-      render-value(p.default)
+  let render-default-with-unit(p) = {
+      let value = render-value(p.default)
+
+      if "unit" in p and p.unit != "" {
+        [#value #render-unit(p.unit)]
+      } else {
+        value
+      }
+  }
+
+  let render-default(p) = {
+    if p.default.len() <= max-default-length {
+      render-default-with-unit(p)
     } else {
       let i = long-defaults.position(
         x => x.id == p.id
       )
-      footnote-label(i)
+
+      if "unit" in p and p.unit != "" {
+        [
+          #footnote-label(i)
+          #h(3pt)
+          #render-unit(p.unit)
+        ]
+      } else {
+        footnote-label(i)
+      }
     }
   }
-
+  
+  // Construct table
   table(
     columns: (1.2fr, 1.5fr, 1fr, 3fr),
     inset: (x: 6pt, y: 5pt),
@@ -90,7 +125,7 @@
     ..parameters.map(p => (
       raw(p.name),
       raw(p.type),
-      rendered-default(p),
+      render-default(p),
       inline-code(p.description)
     )).flatten(),
     table.hline(stroke: 0.6pt),

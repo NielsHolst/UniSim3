@@ -15,7 +15,7 @@ PUBLISH(TaylorDevRate)
 TaylorDevRate::TaylorDevRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily developmental rate using Taylor model; later replace daily rate to hourly rate");
+    Doc("estimate the stage-specific daily developmental rate using Taylor model; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(Rm).equals(0.132).help("Estimate of coefficient Rm)");
         Input(Tm).equals(30.555).help("Estimate of coefficient Tm");

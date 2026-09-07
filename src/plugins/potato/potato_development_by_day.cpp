@@ -16,7 +16,7 @@ PUBLISH(PotatoDevelopmentByDay)
 PotatoDevelopmentByDay::PotatoDevelopmentByDay(QString name, QObject *parent)
     : PotatoDevelopmentBase(name, parent)
 {
-    help("models development based on daily min-max temperatures");
+    Doc("models development based on daily min-max temperatures");
     Input(minStep).imports("./min[step]").help("The Physiologic Development at the minimum temperature in a day");
     Input(maxStep).imports("./max[step]").help("The Physiologic Development at the maximum temperature in a day");
 }

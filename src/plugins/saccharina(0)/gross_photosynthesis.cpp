@@ -16,7 +16,7 @@ PUBLISH(GrossPhotosynthesis)
 GrossPhotosynthesis::GrossPhotosynthesis(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates gross photosynthetic rate (eqs. 10-11)");
+    Doc("calculates gross photosynthetic rate (eqs. 10-11)");
     Input(alpha).imports("lightInhibition[alpha]");
     Input(beta).imports("lightInhibition[beta]");
     Input(I).imports("env[I]");

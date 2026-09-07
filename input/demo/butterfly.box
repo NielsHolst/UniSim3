@@ -2,7 +2,7 @@
 Simulation sim {
   Calendar calendar {
     .begin = 01/05/2009
-    .end   = 30/09/2009
+    .end   = 20/07/2009  //30/09/2009
   }
   Records weather {
     .fileName = "weather/flakkebjerg 2009.txt"
@@ -35,12 +35,15 @@ Simulation sim {
   }
   OutputR {
     PageR {
-      // .xAxis = calendar[date]
+      .xAxis = calendar[date]
       PlotR {
         .ports = weather[Tavg]
       }
       PlotR {
         .ports = Stage::*[content]
+      }
+      PlotR {
+        .ports = larva[content]
       }
     }
   }

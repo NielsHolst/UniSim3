@@ -18,7 +18,7 @@ PUBLISH(Area)
 Area::Area(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("keeps tracks of the frond area");
+    Doc("keeps tracks of the frond area");
 //    Input(a).equals(2.72).unit("dm2").help("Power law scaling of weight to area (y=ax^b)"); //4.19 2.72
 //    Input(b).equals(0.747).help("Power law scaling of weight to area (y=ax^b)"); // 0.785 0.747
 //    Input(a).equals(3.69).unit("dm2").help("Power law scaling of weight to area (y=ax^b)"); //4.19 2.72

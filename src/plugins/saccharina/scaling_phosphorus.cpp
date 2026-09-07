@@ -16,7 +16,7 @@ PUBLISH(ScalingPhosphorus)
 ScalingPhosphorus::ScalingPhosphorus(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("scales photosynthesis by plant phosphorus concentration");
+    Doc("scales photosynthesis by plant phosphorus concentration");
     Input(concP).unit("g P/g dw").help("Plant phosphorus concentration");
     Input(concPopt).unit("g P/g dw").help("Optimal plant phosphorus concentration for growth");
     Output(value).unit("[0;1]").help("Scaling factor");

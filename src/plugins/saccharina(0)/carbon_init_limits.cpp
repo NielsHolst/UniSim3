@@ -16,7 +16,7 @@ PUBLISH(CarbonInitLimits)
 CarbonInitLimits::CarbonInitLimits(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates initial limits for carbon reserves from g");
+    Doc("calculates initial limits for carbon reserves from g");
     Input(Pmax).imports("parameters/Pmax[value]");
     Input(slope).equals(-1750.).help("Cinit on Pmax");
     Input(intercept).equals(2.95).help("Intercept of Cinit on Pmax");

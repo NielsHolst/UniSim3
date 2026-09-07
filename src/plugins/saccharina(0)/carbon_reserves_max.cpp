@@ -17,7 +17,7 @@ PUBLISH(CarbonReservesMax)
 CarbonReservesMax::CarbonReservesMax(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates maximum carbon reserves");
+    Doc("calculates maximum carbon reserves");
     Input(youngMax).unit("g C per g structure").equals(0.23).help("Maximum reserves of young plants");
     Input(matureMax).unit("g C per g structure").equals(1.10).help("Maximum reserves of mature plants");
     Input(maturity).imports("maturity[value]");

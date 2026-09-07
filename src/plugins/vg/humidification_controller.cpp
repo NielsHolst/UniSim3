@@ -17,7 +17,7 @@ PUBLISH(HumidificationController)
 HumidificationController::HumidificationController(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("controls humidifiers according to setpoint");
+    Doc("controls humidifiers according to setpoint");
     Input(spState).imports("setpoints/humidification/state[value]");
     Output(state).unit("[0;1]").help("Desired state of humifiers");
 }

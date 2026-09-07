@@ -21,7 +21,7 @@ PUBLISH(Face)
 Face::Face(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models the greenhouse faces");
+    Doc("models the greenhouse faces");
     Input(cover).equals("glass").help("A material listed in shelter/covers");
     Input(screens).help("Zero or more screen materials listed in shelter/screens; '+' separated");
     Input(area).unit("m2").help("Area of face");

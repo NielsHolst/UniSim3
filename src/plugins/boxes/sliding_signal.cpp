@@ -10,7 +10,7 @@ namespace boxes {
 SlidingSignal::SlidingSignal(QString name, Box *parent)
     : BaseSignal(name, parent)
 {
-    help("base class for computing a signal that slides with an input");
+    Doc("base class for computing a signal that slides with an input");
     Input(input).equals(25.).help("Value determining the signal");
     Input(threshold).equals(25.).help("Input threshold above which the signal is changing");
     Input(thresholdBand).equals(5.).help("Interval of the input over which the signal is changing");

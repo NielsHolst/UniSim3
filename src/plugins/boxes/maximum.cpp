@@ -19,7 +19,7 @@ PUBLISH(Maximum)
 Maximum::Maximum(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes maximum of inputs");
+    Doc("computes maximum of inputs");
     Input(values).help("Input values");
     Output(value).help("Maximum of inputs; zero if no inputs");
     Output(count).help("Number of inputs");

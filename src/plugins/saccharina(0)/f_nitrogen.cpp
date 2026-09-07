@@ -19,7 +19,7 @@ PUBLISH(Fnitrogen)
 Fnitrogen::Fnitrogen(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates the effect of nitrogen reserves on growth rate");
+    Doc("calculates the effect of nitrogen reserves on growth rate");
     Input(proportion).imports("reserves/nitrogen[proportion]");
     Input(minValue).equals(0.545).help("Minimum scaling value");
     Input(slope).equals(7.85).help("Slope of sigmoid curve");

@@ -14,7 +14,7 @@ namespace vg {
 LayerAsInput::LayerAsInput(QString name, Box *parent)
     : Layer(name, parent)
 {
-    help("holds radiative and heat parameters of a layer used for parameter input");
+    Doc("holds radiative and heat parameters of a layer used for parameter input");
     Input(swAbsorptivityTop).unit("[0;1]").help("Short-wave absorptivity at the top");
     Input(swReflectivityTop).unit("[0;1]").help("Short-wave reflectivity at the top");
     Input(swTransmissivityTop).equals(1.).unit("[0;1]").help("Short-wave transmissivity at the top");

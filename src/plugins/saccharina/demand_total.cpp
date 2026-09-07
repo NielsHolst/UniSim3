@@ -19,7 +19,7 @@ PUBLISH(DemandTotal)
 DemandTotal::DemandTotal(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("computes total demand");
+    Doc("computes total demand");
     Input(dws).unit("g dw/m/d").help("Dry weight demands");
     Input(Cs).unit("g C/m/d").help("Carbon demands");
     Input(Ns).unit("g N/m/d").help("Nitrogen demands");

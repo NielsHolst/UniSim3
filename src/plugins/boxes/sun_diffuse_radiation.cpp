@@ -18,7 +18,7 @@ PUBLISH(SunDiffuseRadiation)
 SunDiffuseRadiation::SunDiffuseRadiation(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes proportion diffuse global radiation");
+    Doc("computes proportion diffuse global radiation");
     Input(globalRadiation).unit("W/2").help("Global radiation");
     Input(angotRadiation).imports("sun[angot]");
     Output(value).unit("[0;1]").help("Proportion diffuse light");

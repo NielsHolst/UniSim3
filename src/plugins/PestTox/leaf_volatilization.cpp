@@ -20,7 +20,7 @@ LeafVolatilization::LeafVolatilization(QString name, Box *parent)
     : LossRate(name, parent)
 {
 
-    help("manages fate of pesticide on crop or leaf surface due to volatilization");
+    Doc("manages fate of pesticide on crop or leaf surface due to volatilization");
     Input(VP).unit("Pa").imports("applications[vapourPressure]").help("Vapour pressure of the pesticide at reference temperature");
     Input(Ea).unit("kJ/mol").imports("applications[activationEnergyVolatilization]").help("Activation energy");
     Input(Tref).unit("Â°C").imports("applications[Tref]").help("Reference temperature");

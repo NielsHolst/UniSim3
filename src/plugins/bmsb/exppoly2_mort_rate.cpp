@@ -17,7 +17,7 @@ PUBLISH(ExpPoly2MortRate)
 ExpPoly2MortRate::ExpPoly2MortRate(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("estimate the stage-specific daily survival rate using ExpPoly2 (ExpPolynomial) model and convert to mortality rate; later replace daily rate to hourly rate");
+    Doc("estimate the stage-specific daily survival rate using ExpPoly2 (ExpPolynomial) model and convert to mortality rate; later replace daily rate to hourly rate");
         Input(dailytempC).equals(17).help("Temperature (Â°C)");
         Input(a0).equals(13.41368).help("Estimate of coefficient a0)");
         Input(a1).equals(-1.25998).help("Estimate of coefficient a1");

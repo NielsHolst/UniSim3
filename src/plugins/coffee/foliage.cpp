@@ -14,7 +14,7 @@ PUBLISH(Foliage)
 
 Foliage::Foliage(QString name, QObject *parent)
     : Box(name, parent) {
-    help("models coffee leaves");
+    Doc("models coffee leaves");
     Input(slaMax).equals(27.0).help("Maximum specific leaf area");
     Input(fSlaMin).equals(0.64).unit("[0;1]").help("Lower bound of specific leaf area, relative to slaMax");
     Input(transpirationRatio).imports("coffee/waterFlux[transpirationRatio]");

@@ -14,7 +14,7 @@ PUBLISH(BphReproduction)
 BphReproduction::BphReproduction(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("computes BPH net reproduction from rice growth stages");
+    Doc("computes BPH net reproduction from rice growth stages");
     Input(max).equals(30).help("Max. net reproduction");
     Input(vegetative).imports("environment[Vegetative]");
     Input(reproductive).imports("environment[Reproductive]");

@@ -16,7 +16,7 @@ PUBLISH(DemandStructure)
 DemandStructure::DemandStructure(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("computes demand for structural growth");
+    Doc("computes demand for structural growth");
     Input(g).unit("g dw/g dw/d").help("Optimal growth rate");
     Input(concC).unit("g C/g dw").help("Carbon concentration");
     Input(concN).unit("g N/g dw").help("Nitrogen concentration");

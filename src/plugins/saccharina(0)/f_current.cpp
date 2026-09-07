@@ -16,7 +16,7 @@ PUBLISH(Fcurrent)
 Fcurrent::Fcurrent(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates the effect of water current on nitrogen uptake");
+    Doc("calculates the effect of water current on nitrogen uptake");
     Input(uMin).equals(0.28).unit("[0;1]").help("Minimum value");
     Input(U63).equals(0.045).unit("m/s").help("Current giving a value of 0.63 when uMin=0");
     Input(U).imports("env[U]").unit("m/s").help("Water current");

@@ -16,7 +16,7 @@ PUBLISH(Prevalence)
 Prevalence::Prevalence(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes prevalence of exposed aphids and of cadavers");
+    Doc("computes prevalence of exposed aphids and of cadavers");
     Input(aphidDensity).help("Current total density of live aphids").unit("per tiller");
     Input(exposedDensity).help("Current density of exposed aphids").unit("per tiller");
     Input(cadaverDensity).help("Current density of cadavers").unit("per tiller");

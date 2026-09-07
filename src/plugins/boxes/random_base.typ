@@ -45,7 +45,7 @@ distributions:
 They all share the interface of `RandomBase`. Of the four inputs, you
 should only ever use `P` in your boxscripts. If you want to change when
 random numbers are drawn, you should do so in the
-#link(<randomiserbase>)[RandomiserBase] box. For this reason the three
+#highlight(RandomiserBase) box. For this reason the three
 inputs \(`drawAtInitialize`, `drawAtReset` and `drawAtUpdate`) will not
 be listed among the inputs for the boxes derived from `RandomBase`
 below.
@@ -54,4 +54,4 @@ below.
 You can have as many of these different kinds of #strong[random] boxes
 as you want, but you should always keep as siblings inside one common
 parent box, together with one #strong[randomiser] box, as described for
-#link(<randomiserbase>)[RandomiserBase];.
+#highlight(RandomiserBase).

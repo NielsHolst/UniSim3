@@ -26,7 +26,7 @@ PUBLISH(Calendar)
 Calendar::Calendar(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("keeps check on date and time");
+    Doc("keeps check on date and time");
     Input(latitude).equals(52).help("Latitude").unit("[-90,90]");
     Input(longitude).equals(11).help("Longitiude").unit("[-180,180]");
     Input(timeZone).equals(1).help("Time zone").unit("h");

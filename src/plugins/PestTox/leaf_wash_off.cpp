@@ -18,7 +18,7 @@ PUBLISH (LeafWashOff)
 LeafWashOff::LeafWashOff(QString name, Box *parent)
     : LossRate(name, parent)
 {
-    help("manages fate of pesticide on crop or leaf surface due to washoff");
+    Doc("manages fate of pesticide on crop or leaf surface due to washoff");
     Input(rainfall).unit("mm").imports("weather[Rain]").help("Daily rainfall");
     Input(washOffCoefficient).unit("per mm").help("Wash-off coefficient");
 }

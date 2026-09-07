@@ -10,7 +10,7 @@ PUBLISH(Jump)
 Jump::Jump(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("generates the 3n+1 sequence");
+    Doc("generates the 3n+1 sequence");
     Input(initial).equals(27);
     Output(value);
     Output(finished);

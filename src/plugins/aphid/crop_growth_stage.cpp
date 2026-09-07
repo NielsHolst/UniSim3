@@ -16,7 +16,7 @@ PUBLISH(CropGrowthStage)
 CropGrowthStage::CropGrowthStage(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("models wheat development based on Norwegian data");
+    Doc("models wheat development based on Norwegian data");
     Input(valueAtStart).equals(20).help("Growth stage at the beginning of the growth season $(G_0)$").unit("Zadoks");
     Input(dayDegrees).help("Day-degrees passed since growth season started $(\\tau)$").unit("DD");
     Input(dayDegreesHalfways).equals(720).help("Time when development is half completed $(\\tau_{50})$").unit("DD");

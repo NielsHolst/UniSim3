@@ -17,7 +17,7 @@ PUBLISH(Proportions)
 Proportions::Proportions(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("holds plant proportion parameters");
+    Doc("holds plant proportion parameters");
     Input(concStructureC).unit("g C/g dw").help("Concentration of carbon in structure");
     Input(concStructureN).unit("g N/g dw").help("Concentration of nitrogen in structure");
     Input(concStoreC).unit("g C/g dw").help("Concentration of carbon in structure");

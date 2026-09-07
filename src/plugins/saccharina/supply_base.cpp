@@ -13,7 +13,7 @@ namespace saccharina {
 SupplyBase::SupplyBase(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("is a base class for computing supply in response to demand");
+    Doc("is a base class for computing supply in response to demand");
     Input(demand).unit("g/m/d").help("Demand for C, N or P");
     Output(value).unit("g/m/d)").help("Supply of C, N or P");
     Output(sdRatio).unit("[0;1]").help("Supply/demand ratio");

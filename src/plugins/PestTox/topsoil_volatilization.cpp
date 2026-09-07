@@ -18,7 +18,7 @@ PUBLISH (TopsoilVolatilization)
 TopsoilVolatilization::TopsoilVolatilization(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages topsoil volatilization");
+    Doc("manages topsoil volatilization");
     Input(Tair).unit("Â°C").imports("weather[Tavg]").help("Daily average air temperature");
     Input(MV).unit("cm3/mol").equals(140.83).help("Molar volume of the pesticide");
     Input(BLair).unit("m").equals(0.00475).help("Thickness of the air boundary layer for the evaporation");

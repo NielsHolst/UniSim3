@@ -16,7 +16,7 @@ PUBLISH(Parasitoid)
 Parasitoid::Parasitoid(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("Releasing parasitoid every week");
+    Doc("Releasing parasitoid every week");
     Input(date).help("initial date");
     Input(firstDate).help("releasing date");
     Input(number).equals(0).help("number of parasitoid");

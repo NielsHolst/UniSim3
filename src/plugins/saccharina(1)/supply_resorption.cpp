@@ -16,7 +16,7 @@ PUBLISH(SupplyResorption)
 SupplyResorption::SupplyResorption(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates amount of carbon and nitrogen resorbed");
+    Doc("calculates amount of carbon and nitrogen resorbed");
     Input(propCResorbed).equals(0.4).unit("[0;1]").help("Proportion of carbon resorbed");
     Input(propNResorbed).equals(0.6).unit("[0;1]").help("Proportion of nitrogen resorbed");
     Input(senescentBiomass).imports("biomassStruct[outflow]");

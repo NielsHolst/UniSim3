@@ -14,7 +14,7 @@ PUBLISH(Parasite)
 
 Parasite::Parasite(QString name, Box *parent)
     : Box(name, parent) {
-    help("defines the demand and supply of a parasite");
+    Doc("defines the demand and supply of a parasite");
     Input(density).help("Density");
     Input(demand).help("Amount of resource needed");
     Output(supply).help("Total amount of resource acquired");

@@ -15,7 +15,7 @@ PUBLISH(Ratio)
 Ratio::Ratio(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes a ratio; 0/0 yields 0");
+    Doc("computes a ratio; 0/0 yields 0");
     Input(denominator).help("Number to be divided");
     Input(divisor).help("The divisor");
     Input(zeroTolerance).help("Used for infinity check");

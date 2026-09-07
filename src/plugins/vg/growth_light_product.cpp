@@ -19,7 +19,7 @@ PUBLISH(GrowthLightProduct)
 GrowthLightProduct::GrowthLightProduct(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("holds the parameters for a lamp product");
+    Doc("holds the parameters for a lamp product");
     Input(power).help("Power per lamp").unit("W");
     Input(ballast).help("Ballast power per lamp").unit("W");
     Input(parPhotonCoef).equals(1.6).help("Number of PAR photons per spent lamp energy").unit("micromole PAR/J");

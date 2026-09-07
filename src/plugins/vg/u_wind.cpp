@@ -17,7 +17,7 @@ PUBLISH(UWind)
 UWind::UWind(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates U-values of wind-exposed cover");
+    Doc("calculates U-values of wind-exposed cover");
     Input(windSpeed).imports("outdoors[windSpeed]",CA).unit("m/s");
     Input(UwindMinimum).equals(2.8).help("Heat transfer coefficient at no wind").unit("W/m2/K");
     Input(UwindSlope).equals(1.2).help("Heat transfer coefficient linear increase with wind speed").unit("W/m2/K/(m/s)");

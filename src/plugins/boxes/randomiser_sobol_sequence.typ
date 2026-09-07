@@ -3,15 +3,12 @@
 #import "../../../doc/lib/helpers.typ": code-with-link
 #import "../../../doc/lib/helpers.typ": demo-figure
 
-`RandomiserSobolSequence` is derived from
-#link(<randomiserbase>)[RandomiserBase];.
-
 === Usage
 You can use `RandomiserMonteCarlo` for stochastic modelling and
 uncertainty analysis, but
-#link(<randomiserstratified>)[RandomiserStratified] will explore the
+#link(<boxes_RandomiserStratified>)[RandomiserStratified] will explore the
 parameter space more efficiently. For sensitivity analysis,
-#link(<randomisersobolsequence>)[RandomiserSobolSequence] is the
+#link(<boxes_RandomiserSobolSequence>)[RandomiserSobolSequence] is the
 preferred choice because it is the most effective of the three in
 covering all of the parameter space.
 
@@ -22,7 +19,7 @@ one randomiser box into a script. The only good reason would be for a
 direct comparison like here. Each of the three randomisers is the source
 of random numbers used to generate random numbers for two variables `x`
 and `y`, both with a uniform distribution of numbers in the interval
-\[20;40) \(see #link(<randomuniform>)[RandomUniform];).
+\[20;40) \(see #link(<boxes_RandomUniform>)[RandomUniform];).
 
 #code-with-link(
   "https://ecolmod.org/input/demo/randomiser/randomiser7.box",
@@ -117,9 +114,9 @@ n-dimensional space.
 The `randomiser` box is ignorant about the statistical distributions
 that are generated from. Behind the scenes it just produces random
 numbers in the interval \[0;1\], which are then grabbed by its sibling
-random boxes \(in this example #link(<randomuniform>)[RandomUniform];)
+random boxes (in this example #link(<boxes_RandomUniform>)[RandomUniform])
 and transformed into the appropriate distribution. For another
 distribution than uniform, you can check out
-#link(<randomnormal>)[RandomNormal];, for example.
+#link(<boxes_RandomNormal>)[RandomNormal];, for example.
 
-Find more examples in #link(<randomiserbase>)[RandomiserBase];.
+Find more examples in #highlight[RandomiserBase].

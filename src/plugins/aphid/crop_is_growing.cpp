@@ -16,7 +16,7 @@ PUBLISH(CropIsGrowing)
 CropIsGrowing::CropIsGrowing(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("computes if the crop has started to grow");
+    Doc("computes if the crop has started to grow");
     Input(temperature).help("Daily average temperature").unit("oC");
     Input(T0).equals(5.).help("Threshold that triggers crop growth").unit("oC");
     Output(value).help("Is the crop currently growing?");

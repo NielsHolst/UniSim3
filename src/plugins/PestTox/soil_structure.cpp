@@ -18,7 +18,7 @@ SoilStructure::SoilStructure(QString name, Box *parent)
 	: Box(name, parent)
 {
 
-    help("manages soil porosity");
+    Doc("manages soil porosity");
     Input(fa).unit("fraction").equals(0.25).help("Fraction of air in the soil");
     Input(fw).unit("fraction").equals(0.25).help("Fraction of water in the soil");
 

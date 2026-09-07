@@ -16,7 +16,7 @@ PUBLISH(PmaxMinimum)
 PmaxMinimum::PmaxMinimum(QString name, QObject *parent)
     : Box(name, parent)
 {
-    help("calculates minimum Pmax from g");
+    Doc("calculates minimum Pmax from g");
     Input(g).imports("parameters/g[value]");
     Input(slope).equals(0.0533).help("Slope of Pmax on g");
     Input(intercept).equals(0.00016).help("Intercept of Pmax on g");

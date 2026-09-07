@@ -18,7 +18,7 @@ PUBLISH(Compartment)
 Compartment::Compartment(QString name, Box *parent)
 	: Box(name, parent)
 {
-    help("manages the current load of active ingredient in a compartment");
+    Doc("manages the current load of active ingredient in a compartment");
     Input(gain).unit("g a.i. per ha").help("Daily gain");
     Input(loss).unit("g a.i. per ha").help("Daily loss");
 

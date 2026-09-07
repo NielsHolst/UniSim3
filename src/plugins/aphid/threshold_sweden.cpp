@@ -16,7 +16,7 @@ PUBLISH(ThresholdSweden)
 ThresholdSweden::ThresholdSweden(QString name, Box *parent)
     : ThresholdBase(name, parent)
 {
-    help("evaluates aphid damage threshold used in Sweden (high yielding wheat, Larsson 2005");
+    Doc("evaluates aphid damage threshold used in Sweden (high yielding wheat, Larsson 2005");
 }
 
 void ThresholdSweden::update() {

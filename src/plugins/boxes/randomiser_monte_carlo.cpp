@@ -18,7 +18,7 @@ PUBLISH(RandomiserMonteCarlo)
 RandomiserMonteCarlo::RandomiserMonteCarlo(QString name, Box *parent)
     : RandomiserBase(name, parent), variate(nullptr)
 {
-    help("draws random numbers [0;1) by Monte Carlo method");
+    Doc("draws random numbers [0;1) by Monte Carlo method");
 }
 
 RandomiserMonteCarlo::~RandomiserMonteCarlo() {

@@ -23,7 +23,7 @@ PUBLISH(Stage)
 Stage::Stage(QString name, Box *parent)
     : StageBase(name, parent)
 {
-    help("models a distributed delay");
+    Doc("models a distributed delay");
     Input(inflow).help("Amount of inflow");
     Input(phaseOutflowProportion).help("Proportion that will change phase in next time step");
     Output(outflow).help("Outflow emerging from the stage");

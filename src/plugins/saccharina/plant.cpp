@@ -19,7 +19,7 @@ PUBLISH(Plant)
 Plant::Plant(QString name, Box *parent)
     : Density(name, parent)
 {
-    help("keeps track of whole plant variables");
+    Doc("keeps track of whole plant variables");
     Input(wSC).imports("../structure[C]");
     Input(wSN).imports("../structure[N]");
     Input(wCC).imports("../storeC[C]");

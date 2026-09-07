@@ -18,7 +18,7 @@ PUBLISH(HumidifierProduct)
 HumidifierProduct::HumidifierProduct(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("holds humidifier product parameters");
+    Doc("holds humidifier product parameters");
     Input(efficiency).help("Not used");
     Input(maxRate).equals(1.2).help("Maximum humidification rate").unit("kg/s");
     Input(maxPowerUse).equals(2.4).help("Maximum power use for fogging").unit("kW");

@@ -17,7 +17,7 @@ PUBLISH(DemandRespiration)
 DemandRespiration::DemandRespiration(QString name, Box *parent)
     : Box(name, parent)
 {
-    help("calculates temperature-dependent respiration rate");
+    Doc("calculates temperature-dependent respiration rate");
     Input(resp20).equals(0.01).unit("d-1").help("Respiration rate at 20 oC");
     Input(Q10).equals(1.05).help("For Q10 rule");
     Input(biomassTotal).imports("plant[biomassTotal]");

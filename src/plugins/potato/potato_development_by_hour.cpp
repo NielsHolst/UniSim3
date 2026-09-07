@@ -18,7 +18,7 @@ PUBLISH(PotatoDevelopmentByHour)
 PotatoDevelopmentByHour::PotatoDevelopmentByHour(QString name, QObject *parent)
     : PotatoDevelopmentBase(name, parent)
 {
-    help("models development based on hourly temperature (Altsim 1.0, Pelletier, 1987)");
+    Doc("models development based on hourly temperature (Altsim 1.0, Pelletier, 1987)");
     Input(temp).imports("weather[Temp]").help("The hourly temperature");
 }
 

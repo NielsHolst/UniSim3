@@ -7,7 +7,6 @@
 #define BASE_VERSION_H
 #include <QFile>
 #include <QStringList>
-#include "exception.h"
 #include "version.h"
 
 namespace  {
@@ -26,11 +25,9 @@ QString versionRaw() {
 
 QString version(QString raw) {
     QStringList items = raw.split("\t");
-    if (items.size() != 4) {
+    if (items.size() != 3) {
         return unknown;
     }
-    QString config = items.at(3);
-    items.removeAt(3);
     QString code = items.join(".");
     #ifdef QT_DEBUG
         code += " (debug)";
