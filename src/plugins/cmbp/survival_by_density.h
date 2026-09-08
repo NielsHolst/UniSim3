@@ -7,15 +7,16 @@
 #ifndef SURVIVAL_BY_DENSITY_H
 #define SURVIVAL_BY_DENSITY_H
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
-class SurvivalByDensity : public base::Box
+class UNI_API SurvivalByDensity : public base::Box
 {
 public:
     SurvivalByDensity(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double e1, N;

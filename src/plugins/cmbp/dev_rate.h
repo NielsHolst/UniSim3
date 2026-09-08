@@ -6,16 +6,18 @@
 */
 #ifndef DEV_RATE_H
 #define DEV_RATE_H
+
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
-class DevRate : public base::Box
+class UNI_API DevRate : public base::Box
 {
 public:
     DevRate(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double b1, b2, b3, b4, T;

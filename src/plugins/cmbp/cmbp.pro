@@ -8,6 +8,8 @@ BOXES_PLUGIN_NAME = cmbp
 
 include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 
+DEFINES += BUILD_DLL
+
 HEADERS += \
     cmbp_documentation.h \
     dev_rate.h \

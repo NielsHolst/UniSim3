@@ -8,6 +8,8 @@ BOXES_PLUGIN_NAME = callosobruchus
 
 include("$$_PRO_FILE_PWD_/../../boxes_plugin.pri")
 
+DEFINES += BUILD_DLL
+
 HEADERS +=  \
   callosobruchus_documentation.h \
   fecundity.h \

@@ -7,15 +7,16 @@
 #ifndef EXPONENTIAL_PEAK_H
 #define EXPONENTIAL_PEAK_H
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
-class ExponentialPeak : public base::Box
+class UNI_API ExponentialPeak : public base::Box
 {
 public:
     ExponentialPeak(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double optimum, d1, d2, x;

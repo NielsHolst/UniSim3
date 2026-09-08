@@ -7,6 +7,7 @@
 #ifndef IMMIGRATION_H
 #define IMMIGRATION_H
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
@@ -14,8 +15,8 @@ class Immigration : public base::Box
 {
 public:
     Immigration(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     int day;

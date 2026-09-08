@@ -7,15 +7,16 @@
 #ifndef FECUNDITY_H
 #define FECUNDITY_H
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
-class Fecundity : public base::Box
+class UNI_API Fecundity : public base::Box
 {
 public:
     Fecundity(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double maxFecundity, r, T, sexRatio;

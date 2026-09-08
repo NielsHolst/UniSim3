@@ -1,13 +1,14 @@
 #pragma once
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace callosobruchus {
 
-class Stock : public base::Box
+class UNI_API Stock : public base::Box
 {
 public:
     Stock(QString name, Box *parent);
-    void reset();
+    void reset() override;
 private:
     // Inputs
     double size, seedsPerKg;

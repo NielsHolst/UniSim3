@@ -7,15 +7,16 @@
 #ifndef GRAIN_MOISTURE_CONTENT_H
 #define GRAIN_MOISTURE_CONTENT_H
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
-class GrainMoistureContent : public base::Box
+class UNI_API GrainMoistureContent : public base::Box
 {
 public:
     GrainMoistureContent(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double c1, c2, c3, rh;

@@ -7,15 +7,16 @@
 #ifndef GRAIN_STORE_H
 #define GRAIN_STORE_H
 #include <base/box.h>
+#include <base/base_dllexport.h>
 
 namespace cmbp {
 
-class GrainStore : public base::Box
+class UNI_API GrainStore : public base::Box
 {
 public:
     GrainStore(QString name, Box *parent);
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 private:
     // Input
     double Tmin, Tmax, Toffset, mass;
