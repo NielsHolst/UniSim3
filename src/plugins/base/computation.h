@@ -14,7 +14,6 @@ namespace base {
 
 class Node;
 
-// @TODO(bjarke): re-check this one
 class Computation {
 public:
     enum class Step {Ready, Construct, Modify, Amend, Initialize, Reset, Update, Cleanup, Debrief, Scratch};

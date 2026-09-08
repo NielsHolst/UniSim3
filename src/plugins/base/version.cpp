@@ -10,6 +10,7 @@
 #include <QStringList>
 
 #include "version.h"
+#include "base_dllexport.h"
 
 namespace  {
     const QString unknown{"(Unknown version)"};
