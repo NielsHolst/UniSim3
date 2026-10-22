@@ -28,3 +28,8 @@ site/media/models/
 site/snippets/plugins/
 site/download/
 doc/generated
+/.vs
+*.sln
+*.filters
+*.qtvscr
+*.vcxproj
